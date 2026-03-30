@@ -21,9 +21,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install -r "SwissTony 2/requirements.txt"
-
       - name: Collect AMC & Polymarket data
         working-directory: box-office-tracker
         run: python3 collect.py
@@ -31,14 +28,6 @@ jobs:
       - name: Generate predictions
         working-directory: box-office-tracker
         run: python3 predict.py
-
-      - name: Execute trades
-        working-directory: box-office-tracker
-        run: python3 trade.py
-        env:
-          POLYMARKET_PRIVATE_KEY: ${{ secrets.POLYMARKET_PRIVATE_KEY }}
-          POLYMARKET_FUNDER_ADDRESS: ${{ secrets.POLYMARKET_FUNDER_ADDRESS }}
-          DRY_RUN: ${{ vars.DRY_RUN || 'true' }}
 
       - name: Commit updated data
         run: |
