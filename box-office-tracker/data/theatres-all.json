@@ -1,157 +1,834 @@
 {
-  "_description": "National sample of ~50 AMC theatres per timezone for box office prediction. Covers top 20 DMAs with urban/suburban mix.",
+  "_description": "National sample of ~200 AMC theatres for box office prediction. Covers top 25+ DMAs with urban/suburban mix.",
   "ET": [
-    {"name": "AMC Empire 25",                  "slug": "amc-empire-25",                  "dma": "New York"},
-    {"name": "AMC Lincoln Square 13",          "slug": "amc-lincoln-square-13",          "dma": "New York"},
-    {"name": "AMC Kips Bay 15",                "slug": "amc-kips-bay-15",                "dma": "New York"},
-    {"name": "AMC 34th Street 14",             "slug": "amc-34th-street-14",             "dma": "New York"},
-    {"name": "AMC 84th Street 6",              "slug": "amc-84th-street-6",              "dma": "New York"},
-    {"name": "AMC Newport Centre 11",          "slug": "amc-newport-centre-11",          "dma": "New York"},
-    {"name": "AMC Magic Johnson Harlem 9",     "slug": "amc-magic-johnson-harlem-9",     "dma": "New York"},
-    {"name": "AMC Boston Common 19",           "slug": "amc-boston-common-19",            "dma": "Boston"},
-    {"name": "AMC Assembly Row 12",            "slug": "amc-assembly-row-12",             "dma": "Boston"},
-    {"name": "AMC Framingham 16",              "slug": "amc-framingham-16",               "dma": "Boston"},
-    {"name": "AMC Braintree 10",               "slug": "amc-braintree-10",                "dma": "Boston"},
-    {"name": "AMC Burlington Cinema 10",       "slug": "amc-burlington-cinema-10",        "dma": "Boston"},
-    {"name": "AMC Methuen 20",                 "slug": "amc-methuen-20",                  "dma": "Boston"},
-    {"name": "AMC Aventura 24",                "slug": "amc-aventura-24",                 "dma": "Miami"},
-    {"name": "AMC Sunset Place 24",            "slug": "amc-sunset-place-24",             "dma": "Miami"},
-    {"name": "AMC DINE-IN Coral Ridge 10",     "slug": "amc-dine-in-coral-ridge-10",      "dma": "Miami"},
-    {"name": "AMC Pembroke Lakes 9",           "slug": "amc-pembroke-lakes-9",             "dma": "Miami"},
-    {"name": "AMC Pompano Beach 18",           "slug": "amc-pompano-beach-18",             "dma": "Miami"},
-    {"name": "AMC Veterans 24",                "slug": "amc-veterans-24",                  "dma": "Tampa"},
-    {"name": "AMC Sundial 12",                 "slug": "amc-sundial-12",                   "dma": "Tampa"},
-    {"name": "AMC West Shore 14",              "slug": "amc-west-shore-14",                "dma": "Tampa"},
-    {"name": "AMC Bradenton 20",               "slug": "amc-bradenton-20",                 "dma": "Tampa"},
-    {"name": "AMC DINE-IN Disney Springs 24",  "slug": "amc-dine-in-disney-springs-24",    "dma": "Orlando"},
-    {"name": "AMC Altamonte Mall 18",          "slug": "amc-altamonte-mall-18",             "dma": "Orlando"},
-    {"name": "AMC Tysons Corner 16",           "slug": "amc-tysons-corner-16",              "dma": "Washington DC"},
-    {"name": "AMC Hoffman Center 22",          "slug": "amc-hoffman-center-22",             "dma": "Washington DC"},
-    {"name": "AMC Georgetown 14",              "slug": "amc-georgetown-14",                 "dma": "Washington DC"},
-    {"name": "AMC Shirlington 7",              "slug": "amc-shirlington-7",                 "dma": "Washington DC"},
-    {"name": "AMC Worldgate 9",                "slug": "amc-worldgate-9",                   "dma": "Washington DC"},
-    {"name": "AMC Neshaminy 24",               "slug": "amc-neshaminy-24",                  "dma": "Philadelphia"},
-    {"name": "AMC Cherry Hill 24",             "slug": "amc-cherry-hill-24",                "dma": "Philadelphia"},
-    {"name": "AMC Voorhees 16",                "slug": "amc-voorhees-16",                   "dma": "Philadelphia"},
-    {"name": "AMC Plymouth Meeting Mall 12",   "slug": "amc-plymouth-meeting-mall-12",      "dma": "Philadelphia"},
-    {"name": "AMC DINE-IN Fashion District 8", "slug": "amc-dine-in-fashion-district-8",    "dma": "Philadelphia"},
-    {"name": "AMC Phipps Plaza 14",            "slug": "amc-phipps-plaza-14",               "dma": "Atlanta"},
-    {"name": "AMC Northlake 14",               "slug": "amc-northlake-14",                  "dma": "Atlanta"},
-    {"name": "AMC Sugarloaf Mills 18",         "slug": "amc-sugarloaf-mills-18",            "dma": "Atlanta"},
-    {"name": "AMC Barrett Commons 24",         "slug": "amc-barrett-commons-24",             "dma": "Atlanta"},
-    {"name": "AMC Camp Creek 14",              "slug": "amc-camp-creek-14",                  "dma": "Atlanta"},
-    {"name": "AMC DINE-IN North Point Mall 12","slug": "amc-dine-in-north-point-mall-12",   "dma": "Atlanta"},
-    {"name": "AMC Highwoods 20",               "slug": "amc-highwoods-20",                   "dma": "Raleigh"},
-    {"name": "AMC Carolina Pavilion 22",       "slug": "amc-carolina-pavilion-22",           "dma": "Charlotte"},
-    {"name": "AMC Concord Mills 24",           "slug": "amc-concord-mills-24",               "dma": "Charlotte"},
-    {"name": "AMC Forum 30",                   "slug": "amc-forum-30",                       "dma": "Detroit"},
-    {"name": "AMC Star Great Lakes 25",        "slug": "amc-star-great-lakes-25",            "dma": "Detroit"},
-    {"name": "AMC Livonia 20",                 "slug": "amc-livonia-20",                     "dma": "Detroit"},
-    {"name": "AMC John R 15",                  "slug": "amc-john-r-15",                      "dma": "Detroit"},
-    {"name": "AMC Castleton Square 14",        "slug": "amc-castleton-square-14",            "dma": "Indianapolis"},
-    {"name": "AMC Indianapolis 17",            "slug": "amc-indianapolis-17",                "dma": "Indianapolis"},
-    {"name": "AMC Perry Crossing 18",          "slug": "amc-perry-crossing-18",              "dma": "Indianapolis"}
+    {
+      "name": "AMC Empire 25",
+      "slug": "amc-empire-25",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC Lincoln Square 13",
+      "slug": "amc-lincoln-square-13",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC Kips Bay 15",
+      "slug": "amc-kips-bay-15",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC 34th Street 14",
+      "slug": "amc-34th-street-14",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC 84th Street 6",
+      "slug": "amc-84th-street-6",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC Newport Centre 11",
+      "slug": "amc-newport-centre-11",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC Magic Johnson Harlem 9",
+      "slug": "amc-magic-johnson-harlem-9",
+      "dma": "New York"
+    },
+    {
+      "name": "AMC Boston Common 19",
+      "slug": "amc-boston-common-19",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Assembly Row 12",
+      "slug": "amc-assembly-row-12",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Framingham 16",
+      "slug": "amc-framingham-16",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Braintree 10",
+      "slug": "amc-braintree-10",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Burlington Cinema 10",
+      "slug": "amc-burlington-cinema-10",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Methuen 20",
+      "slug": "amc-methuen-20",
+      "dma": "Boston"
+    },
+    {
+      "name": "AMC Aventura 24",
+      "slug": "amc-aventura-24",
+      "dma": "Miami"
+    },
+    {
+      "name": "AMC Sunset Place 24",
+      "slug": "amc-sunset-place-24",
+      "dma": "Miami"
+    },
+    {
+      "name": "AMC DINE-IN Coral Ridge 10",
+      "slug": "amc-dine-in-coral-ridge-10",
+      "dma": "Miami"
+    },
+    {
+      "name": "AMC Pembroke Lakes 9",
+      "slug": "amc-pembroke-lakes-9",
+      "dma": "Miami"
+    },
+    {
+      "name": "AMC Pompano Beach 18",
+      "slug": "amc-pompano-beach-18",
+      "dma": "Miami"
+    },
+    {
+      "name": "AMC Veterans 24",
+      "slug": "amc-veterans-24",
+      "dma": "Tampa"
+    },
+    {
+      "name": "AMC Sundial 12",
+      "slug": "amc-sundial-12",
+      "dma": "Tampa"
+    },
+    {
+      "name": "AMC West Shore 14",
+      "slug": "amc-west-shore-14",
+      "dma": "Tampa"
+    },
+    {
+      "name": "AMC Bradenton 20",
+      "slug": "amc-bradenton-20",
+      "dma": "Tampa"
+    },
+    {
+      "name": "AMC DINE-IN Disney Springs 24",
+      "slug": "amc-dine-in-disney-springs-24",
+      "dma": "Orlando"
+    },
+    {
+      "name": "AMC Altamonte Mall 18",
+      "slug": "amc-altamonte-mall-18",
+      "dma": "Orlando"
+    },
+    {
+      "name": "AMC Tysons Corner 16",
+      "slug": "amc-tysons-corner-16",
+      "dma": "Washington DC"
+    },
+    {
+      "name": "AMC Hoffman Center 22",
+      "slug": "amc-hoffman-center-22",
+      "dma": "Washington DC"
+    },
+    {
+      "name": "AMC Georgetown 14",
+      "slug": "amc-georgetown-14",
+      "dma": "Washington DC"
+    },
+    {
+      "name": "AMC Shirlington 7",
+      "slug": "amc-shirlington-7",
+      "dma": "Washington DC"
+    },
+    {
+      "name": "AMC Worldgate 9",
+      "slug": "amc-worldgate-9",
+      "dma": "Washington DC"
+    },
+    {
+      "name": "AMC Neshaminy 24",
+      "slug": "amc-neshaminy-24",
+      "dma": "Philadelphia"
+    },
+    {
+      "name": "AMC Cherry Hill 24",
+      "slug": "amc-cherry-hill-24",
+      "dma": "Philadelphia"
+    },
+    {
+      "name": "AMC Voorhees 16",
+      "slug": "amc-voorhees-16",
+      "dma": "Philadelphia"
+    },
+    {
+      "name": "AMC Plymouth Meeting Mall 12",
+      "slug": "amc-plymouth-meeting-mall-12",
+      "dma": "Philadelphia"
+    },
+    {
+      "name": "AMC DINE-IN Fashion District 8",
+      "slug": "amc-dine-in-fashion-district-8",
+      "dma": "Philadelphia"
+    },
+    {
+      "name": "AMC Phipps Plaza 14",
+      "slug": "amc-phipps-plaza-14",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC Northlake 14",
+      "slug": "amc-northlake-14",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC Sugarloaf Mills 18",
+      "slug": "amc-sugarloaf-mills-18",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC Barrett Commons 24",
+      "slug": "amc-barrett-commons-24",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC Camp Creek 14",
+      "slug": "amc-camp-creek-14",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC DINE-IN North Point Mall 12",
+      "slug": "amc-dine-in-north-point-mall-12",
+      "dma": "Atlanta"
+    },
+    {
+      "name": "AMC Highwoods 20",
+      "slug": "amc-highwoods-20",
+      "dma": "Raleigh"
+    },
+    {
+      "name": "AMC Carolina Pavilion 22",
+      "slug": "amc-carolina-pavilion-22",
+      "dma": "Charlotte"
+    },
+    {
+      "name": "AMC Concord Mills 24",
+      "slug": "amc-concord-mills-24",
+      "dma": "Charlotte"
+    },
+    {
+      "name": "AMC Forum 30",
+      "slug": "amc-forum-30",
+      "dma": "Detroit"
+    },
+    {
+      "name": "AMC Star Great Lakes 25",
+      "slug": "amc-star-great-lakes-25",
+      "dma": "Detroit"
+    },
+    {
+      "name": "AMC Livonia 20",
+      "slug": "amc-livonia-20",
+      "dma": "Detroit"
+    },
+    {
+      "name": "AMC John R 15",
+      "slug": "amc-john-r-15",
+      "dma": "Detroit"
+    },
+    {
+      "name": "AMC Castleton Square 14",
+      "slug": "amc-castleton-square-14",
+      "dma": "Indianapolis"
+    },
+    {
+      "name": "AMC Indianapolis 17",
+      "slug": "amc-indianapolis-17",
+      "dma": "Indianapolis"
+    },
+    {
+      "name": "AMC Perry Crossing 18",
+      "slug": "amc-perry-crossing-18",
+      "dma": "Indianapolis"
+    },
+    {
+      "name": "AMC Thoroughbred 20",
+      "slug": "amc-thoroughbred-20",
+      "dma": "Nashville"
+    },
+    {
+      "name": "AMC CLASSIC Murfreesboro 16",
+      "slug": "amc-classic-murfreesboro-16",
+      "dma": "Nashville"
+    },
+    {
+      "name": "AMC Bellevue 12",
+      "slug": "amc-bellevue-12",
+      "dma": "Nashville"
+    },
+    {
+      "name": "AMC Easton Town Center 30",
+      "slug": "amc-easton-town-center-30",
+      "dma": "Columbus"
+    },
+    {
+      "name": "AMC Dublin Village 18",
+      "slug": "amc-dublin-village-18",
+      "dma": "Columbus"
+    },
+    {
+      "name": "AMC Grove City 14",
+      "slug": "amc-grove-city-14",
+      "dma": "Columbus"
+    },
+    {
+      "name": "AMC Newport On The Levee 20",
+      "slug": "amc-newport-on-the-levee-20",
+      "dma": "Cincinnati"
+    },
+    {
+      "name": "AMC West Chester 18",
+      "slug": "amc-west-chester-18",
+      "dma": "Cincinnati"
+    },
+    {
+      "name": "AMC Waterfront 22",
+      "slug": "amc-waterfront-22",
+      "dma": "Pittsburgh"
+    },
+    {
+      "name": "AMC Regency 24",
+      "slug": "amc-regency-24",
+      "dma": "Jacksonville"
+    },
+    {
+      "name": "AMC Orange Park 24",
+      "slug": "amc-orange-park-24",
+      "dma": "Jacksonville"
+    }
   ],
   "CT": [
-    {"name": "AMC River East 21",              "slug": "amc-river-east-21",                  "dma": "Chicago"},
-    {"name": "AMC NEWCITY 14",                 "slug": "amc-newcity-14",                     "dma": "Chicago"},
-    {"name": "AMC Village Crossing 18",        "slug": "amc-village-crossing-18",             "dma": "Chicago"},
-    {"name": "AMC DINE-IN Block 37",           "slug": "amc-dine-in-block-37",                "dma": "Chicago"},
-    {"name": "AMC DINE-IN Rosemont 12",        "slug": "amc-dine-in-rosemont-12",             "dma": "Chicago"},
-    {"name": "AMC 600 North Michigan 9",       "slug": "amc-600-north-michigan-9",             "dma": "Chicago"},
-    {"name": "AMC Roosevelt Collection 16",    "slug": "amc-roosevelt-collection-16",          "dma": "Chicago"},
-    {"name": "AMC South Barrington 24",        "slug": "amc-south-barrington-24",              "dma": "Chicago"},
-    {"name": "AMC Streets of Woodfield 20",    "slug": "amc-streets-of-woodfield-20",          "dma": "Chicago"},
-    {"name": "AMC Yorktown 18",                "slug": "amc-yorktown-18",                      "dma": "Chicago"},
-    {"name": "AMC Northbrook 14",              "slug": "amc-northbrook-14",                    "dma": "Chicago"},
-    {"name": "AMC Oakbrook Center 12",         "slug": "amc-oakbrook-center-12",               "dma": "Chicago"},
-    {"name": "AMC Randhurst 12",               "slug": "amc-randhurst-12",                     "dma": "Chicago"},
-    {"name": "AMC Niles 12",                   "slug": "amc-niles-12",                         "dma": "Chicago"},
-    {"name": "AMC Ford City 14",               "slug": "amc-ford-city-14",                     "dma": "Chicago"},
-    {"name": "AMC DINE-IN Mesquite 30",        "slug": "amc-dine-in-mesquite-30",              "dma": "Dallas"},
-    {"name": "AMC NorthPark 15",               "slug": "amc-northpark-15",                     "dma": "Dallas"},
-    {"name": "AMC Stonebriar 24",              "slug": "amc-stonebriar-24",                    "dma": "Dallas"},
-    {"name": "AMC Grapevine Mills 24",         "slug": "amc-grapevine-mills-24",               "dma": "Dallas"},
-    {"name": "AMC Firewheel 18",               "slug": "amc-firewheel-18",                     "dma": "Dallas"},
-    {"name": "AMC Irving Mall 14",             "slug": "amc-irving-mall-14",                   "dma": "Dallas"},
-    {"name": "AMC The Parks At Arlington 18",  "slug": "amc-the-parks-at-arlington-18",        "dma": "Dallas"},
-    {"name": "AMC Southlake 24",               "slug": "amc-southlake-24",                     "dma": "Dallas"},
-    {"name": "AMC Gulf Pointe 30",             "slug": "amc-gulf-pointe-30",                   "dma": "Houston"},
-    {"name": "AMC Willowbrook 24",             "slug": "amc-willowbrook-24",                   "dma": "Houston"},
-    {"name": "AMC First Colony 24",            "slug": "amc-first-colony-24",                  "dma": "Houston"},
-    {"name": "AMC Deerbrook 24",               "slug": "amc-deerbrook-24",                     "dma": "Houston"},
-    {"name": "AMC Katy Mills 20",              "slug": "amc-katy-mills-20",                    "dma": "Houston"},
-    {"name": "AMC Woodlands Square 20",        "slug": "amc-woodlands-square-20",              "dma": "Houston"},
-    {"name": "AMC Fountains 18",               "slug": "amc-fountains-18",                     "dma": "Houston"},
-    {"name": "AMC Houston 8",                  "slug": "amc-houston-8",                        "dma": "Houston"},
-    {"name": "AMC Eden Prairie Mall 18",       "slug": "amc-eden-prairie-mall-18",              "dma": "Minneapolis"},
-    {"name": "AMC Rosedale 14",                "slug": "amc-rosedale-14",                       "dma": "Minneapolis"},
-    {"name": "AMC Southdale 16",               "slug": "amc-southdale-16",                      "dma": "Minneapolis"},
-    {"name": "AMC Coon Rapids 16",             "slug": "amc-coon-rapids-16",                    "dma": "Minneapolis"},
-    {"name": "AMC Inver Grove 16",             "slug": "amc-inver-grove-16",                    "dma": "Minneapolis"},
-    {"name": "AMC CLASSIC Mounds View 15",     "slug": "amc-classic-mounds-view-15",            "dma": "Minneapolis"},
-    {"name": "AMC Metropark Square 10",        "slug": "amc-metropark-square-10",               "dma": "Houston"},
-    {"name": "AMC Spring 10",                  "slug": "amc-spring-10",                         "dma": "Houston"},
-    {"name": "AMC Eastchase 9",                "slug": "amc-eastchase-9",                       "dma": "Houston"},
-    {"name": "AMC CLASSIC Brazos Mall 14",     "slug": "amc-classic-brazos-mall-14",            "dma": "Houston"},
-    {"name": "AMC Rio Cinemas 18",             "slug": "amc-rio-cinemas-18",                    "dma": "Houston"},
-    {"name": "AMC Centerpoint 11",             "slug": "amc-centerpoint-11",                    "dma": "Houston"},
-    {"name": "AMC Village On The Parkway 9",   "slug": "amc-village-on-the-parkway-9",          "dma": "Dallas"},
-    {"name": "AMC CLASSIC Forney 12",          "slug": "amc-classic-forney-12",                 "dma": "Dallas"},
-    {"name": "AMC Birchwood 10",               "slug": "amc-birchwood-10",                      "dma": "Minneapolis"},
-    {"name": "AMC CLASSIC Bloomington 12",     "slug": "amc-classic-bloomington-12",             "dma": "Minneapolis"},
-    {"name": "AMC Causeway 13",                "slug": "amc-causeway-13",                        "dma": "Houston"}
+    {
+      "name": "AMC River East 21",
+      "slug": "amc-river-east-21",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC NEWCITY 14",
+      "slug": "amc-newcity-14",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Village Crossing 18",
+      "slug": "amc-village-crossing-18",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC DINE-IN Block 37",
+      "slug": "amc-dine-in-block-37",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC DINE-IN Rosemont 12",
+      "slug": "amc-dine-in-rosemont-12",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC 600 North Michigan 9",
+      "slug": "amc-600-north-michigan-9",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Roosevelt Collection 16",
+      "slug": "amc-roosevelt-collection-16",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC South Barrington 24",
+      "slug": "amc-south-barrington-24",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Streets of Woodfield 20",
+      "slug": "amc-streets-of-woodfield-20",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Yorktown 18",
+      "slug": "amc-yorktown-18",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Northbrook 14",
+      "slug": "amc-northbrook-14",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Oakbrook Center 12",
+      "slug": "amc-oakbrook-center-12",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Randhurst 12",
+      "slug": "amc-randhurst-12",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Niles 12",
+      "slug": "amc-niles-12",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC Ford City 14",
+      "slug": "amc-ford-city-14",
+      "dma": "Chicago"
+    },
+    {
+      "name": "AMC DINE-IN Mesquite 30",
+      "slug": "amc-dine-in-mesquite-30",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC NorthPark 15",
+      "slug": "amc-northpark-15",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Stonebriar 24",
+      "slug": "amc-stonebriar-24",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Grapevine Mills 24",
+      "slug": "amc-grapevine-mills-24",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Firewheel 18",
+      "slug": "amc-firewheel-18",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Irving Mall 14",
+      "slug": "amc-irving-mall-14",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC The Parks At Arlington 18",
+      "slug": "amc-the-parks-at-arlington-18",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Southlake 24",
+      "slug": "amc-southlake-24",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Gulf Pointe 30",
+      "slug": "amc-gulf-pointe-30",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Willowbrook 24",
+      "slug": "amc-willowbrook-24",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC First Colony 24",
+      "slug": "amc-first-colony-24",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Deerbrook 24",
+      "slug": "amc-deerbrook-24",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Katy Mills 20",
+      "slug": "amc-katy-mills-20",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Woodlands Square 20",
+      "slug": "amc-woodlands-square-20",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Fountains 18",
+      "slug": "amc-fountains-18",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Houston 8",
+      "slug": "amc-houston-8",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Eden Prairie Mall 18",
+      "slug": "amc-eden-prairie-mall-18",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Rosedale 14",
+      "slug": "amc-rosedale-14",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Southdale 16",
+      "slug": "amc-southdale-16",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Coon Rapids 16",
+      "slug": "amc-coon-rapids-16",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Inver Grove 16",
+      "slug": "amc-inver-grove-16",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC CLASSIC Mounds View 15",
+      "slug": "amc-classic-mounds-view-15",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Metropark Square 10",
+      "slug": "amc-metropark-square-10",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Spring 10",
+      "slug": "amc-spring-10",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Eastchase 9",
+      "slug": "amc-eastchase-9",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC CLASSIC Brazos Mall 14",
+      "slug": "amc-classic-brazos-mall-14",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Rio Cinemas 18",
+      "slug": "amc-rio-cinemas-18",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Centerpoint 11",
+      "slug": "amc-centerpoint-11",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Village On The Parkway 9",
+      "slug": "amc-village-on-the-parkway-9",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC CLASSIC Forney 12",
+      "slug": "amc-classic-forney-12",
+      "dma": "Dallas"
+    },
+    {
+      "name": "AMC Birchwood 10",
+      "slug": "amc-birchwood-10",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC CLASSIC Bloomington 12",
+      "slug": "amc-classic-bloomington-12",
+      "dma": "Minneapolis"
+    },
+    {
+      "name": "AMC Causeway 13",
+      "slug": "amc-causeway-13",
+      "dma": "Houston"
+    },
+    {
+      "name": "AMC Barrywoods 24",
+      "slug": "amc-barrywoods-24",
+      "dma": "Kansas City"
+    },
+    {
+      "name": "AMC Independence Commons 20",
+      "slug": "amc-independence-commons-20",
+      "dma": "Kansas City"
+    },
+    {
+      "name": "AMC Ward Parkway 14",
+      "slug": "amc-ward-parkway-14",
+      "dma": "Kansas City"
+    },
+    {
+      "name": "AMC Town Center 20",
+      "slug": "amc-town-center-20",
+      "dma": "Kansas City"
+    },
+    {
+      "name": "AMC Legends 14",
+      "slug": "amc-legends-14",
+      "dma": "Kansas City"
+    },
+    {
+      "name": "AMC DINE-IN Prairiefire 17",
+      "slug": "amc-dine-in-prairiefire-17",
+      "dma": "Kansas City"
+    }
   ],
   "PT": [
-    {"name": "AMC The Grove 14",               "slug": "amc-the-grove-14",                      "dma": "Los Angeles"},
-    {"name": "AMC Century City 15",            "slug": "amc-century-city-15",                    "dma": "Los Angeles"},
-    {"name": "AMC Burbank 16",                 "slug": "amc-burbank-16",                         "dma": "Los Angeles"},
-    {"name": "AMC The Americana at Brand 18",  "slug": "amc-the-americana-at-brand-18",          "dma": "Los Angeles"},
-    {"name": "AMC Santa Monica 7",             "slug": "amc-santa-monica-7",                     "dma": "Los Angeles"},
-    {"name": "AMC The Regency 20",             "slug": "amc-the-regency-20",                     "dma": "Los Angeles"},
-    {"name": "AMC Lakewood Mall 12",           "slug": "amc-lakewood-mall-12",                   "dma": "Los Angeles"},
-    {"name": "AMC DINE-IN Marina 6",           "slug": "amc-dine-in-marina-6",                   "dma": "Los Angeles"},
-    {"name": "AMC Brentwood 14",               "slug": "amc-brentwood-14",                       "dma": "Los Angeles"},
-    {"name": "AMC DINE-IN Fullerton 20",       "slug": "amc-dine-in-fullerton-20",               "dma": "Los Angeles"},
-    {"name": "AMC Orange 30",                  "slug": "amc-orange-30",                           "dma": "Los Angeles"},
-    {"name": "AMC Tustin 14 @ The District",   "slug": "amc-tustin-14-at-the-district",          "dma": "Los Angeles"},
-    {"name": "AMC Puente Hills 20",            "slug": "amc-puente-hills-20",                    "dma": "Los Angeles"},
-    {"name": "AMC Norwalk 20",                 "slug": "amc-norwalk-20",                          "dma": "Los Angeles"},
-    {"name": "AMC Marina Pacifica 12",         "slug": "amc-marina-pacifica-12",                  "dma": "Los Angeles"},
-    {"name": "AMC Montebello 10",              "slug": "amc-montebello-10",                       "dma": "Los Angeles"},
-    {"name": "AMC La Mirada 7",                "slug": "amc-la-mirada-7",                         "dma": "Los Angeles"},
-    {"name": "AMC Metreon 16",                 "slug": "amc-metreon-16",                          "dma": "San Francisco"},
-    {"name": "AMC Bay Street 16",              "slug": "amc-bay-street-16",                       "dma": "San Francisco"},
-    {"name": "AMC Mercado 20",                 "slug": "amc-mercado-20",                          "dma": "San Francisco"},
-    {"name": "AMC Eastridge 15",               "slug": "amc-eastridge-15",                        "dma": "San Francisco"},
-    {"name": "AMC Saratoga 14",                "slug": "amc-saratoga-14",                         "dma": "San Francisco"},
-    {"name": "AMC NewPark 12",                 "slug": "amc-newpark-12",                          "dma": "San Francisco"},
-    {"name": "AMC Sunnyvale 12",               "slug": "amc-sunnyvale-12",                        "dma": "San Francisco"},
-    {"name": "AMC Kabuki 8",                   "slug": "amc-kabuki-8",                            "dma": "San Francisco"},
-    {"name": "AMC Mission Valley 20",          "slug": "amc-mission-valley-20",                   "dma": "San Diego"},
-    {"name": "AMC Fashion Valley 18",          "slug": "amc-fashion-valley-18",                   "dma": "San Diego"},
-    {"name": "AMC Palm Promenade 24",          "slug": "amc-palm-promenade-24",                   "dma": "San Diego"},
-    {"name": "AMC La Jolla 12",                "slug": "amc-la-jolla-12",                         "dma": "San Diego"},
-    {"name": "AMC Chula Vista 10",             "slug": "amc-chula-vista-10",                      "dma": "San Diego"},
-    {"name": "AMC Otay Ranch 12",              "slug": "amc-otay-ranch-12",                       "dma": "San Diego"},
-    {"name": "AMC Plaza Bonita 14",            "slug": "amc-plaza-bonita-14",                     "dma": "San Diego"},
-    {"name": "AMC Poway 10",                   "slug": "amc-poway-10",                            "dma": "San Diego"},
-    {"name": "AMC UTC 14",                     "slug": "amc-utc-14",                              "dma": "San Diego"},
-    {"name": "AMC Southcenter 16",             "slug": "amc-southcenter-16",                      "dma": "Seattle"},
-    {"name": "AMC Pacific Place 11",           "slug": "amc-pacific-place-11",                    "dma": "Seattle"},
-    {"name": "AMC Kent Station 14",            "slug": "amc-kent-station-14",                     "dma": "Seattle"},
-    {"name": "AMC Alderwood Mall 16",          "slug": "amc-alderwood-mall-16",                   "dma": "Seattle"},
-    {"name": "AMC Factoria 8",                 "slug": "amc-factoria-8",                          "dma": "Seattle"},
-    {"name": "AMC Woodinville 12",             "slug": "amc-woodinville-12",                      "dma": "Seattle"},
-    {"name": "AMC Arizona Center 24",          "slug": "amc-arizona-center-24",                   "dma": "Phoenix"},
-    {"name": "AMC Desert Ridge 18",            "slug": "amc-desert-ridge-18",                     "dma": "Phoenix"},
-    {"name": "AMC Deer Valley 17",             "slug": "amc-deer-valley-17",                      "dma": "Phoenix"},
-    {"name": "AMC Ahwatukee 24",               "slug": "amc-ahwatukee-24",                        "dma": "Phoenix"},
-    {"name": "AMC Westgate 20",                "slug": "amc-westgate-20",                          "dma": "Phoenix"},
-    {"name": "AMC Westminster Promenade 24",   "slug": "amc-westminster-promenade-24",             "dma": "Denver"},
-    {"name": "AMC Flatiron Crossing 14",       "slug": "amc-flatiron-crossing-14",                 "dma": "Denver"},
-    {"name": "AMC Highlands Ranch 24",         "slug": "amc-highlands-ranch-24",                   "dma": "Denver"},
-    {"name": "AMC DINE-IN Southlands 16",      "slug": "amc-dine-in-southlands-16",                "dma": "Denver"},
-    {"name": "AMC Arapahoe Crossing 16",       "slug": "amc-arapahoe-crossing-16",                 "dma": "Denver"}
+    {
+      "name": "AMC The Grove 14",
+      "slug": "amc-the-grove-14",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Century City 15",
+      "slug": "amc-century-city-15",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Burbank 16",
+      "slug": "amc-burbank-16",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC The Americana at Brand 18",
+      "slug": "amc-the-americana-at-brand-18",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Santa Monica 7",
+      "slug": "amc-santa-monica-7",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC The Regency 20",
+      "slug": "amc-the-regency-20",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Lakewood Mall 12",
+      "slug": "amc-lakewood-mall-12",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC DINE-IN Marina 6",
+      "slug": "amc-dine-in-marina-6",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Brentwood 14",
+      "slug": "amc-brentwood-14",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC DINE-IN Fullerton 20",
+      "slug": "amc-dine-in-fullerton-20",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Orange 30",
+      "slug": "amc-orange-30",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Tustin 14 @ The District",
+      "slug": "amc-tustin-14-at-the-district",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Puente Hills 20",
+      "slug": "amc-puente-hills-20",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Norwalk 20",
+      "slug": "amc-norwalk-20",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Marina Pacifica 12",
+      "slug": "amc-marina-pacifica-12",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Montebello 10",
+      "slug": "amc-montebello-10",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC La Mirada 7",
+      "slug": "amc-la-mirada-7",
+      "dma": "Los Angeles"
+    },
+    {
+      "name": "AMC Metreon 16",
+      "slug": "amc-metreon-16",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Bay Street 16",
+      "slug": "amc-bay-street-16",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Mercado 20",
+      "slug": "amc-mercado-20",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Eastridge 15",
+      "slug": "amc-eastridge-15",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Saratoga 14",
+      "slug": "amc-saratoga-14",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC NewPark 12",
+      "slug": "amc-newpark-12",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Sunnyvale 12",
+      "slug": "amc-sunnyvale-12",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Kabuki 8",
+      "slug": "amc-kabuki-8",
+      "dma": "San Francisco"
+    },
+    {
+      "name": "AMC Mission Valley 20",
+      "slug": "amc-mission-valley-20",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Fashion Valley 18",
+      "slug": "amc-fashion-valley-18",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Palm Promenade 24",
+      "slug": "amc-palm-promenade-24",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC La Jolla 12",
+      "slug": "amc-la-jolla-12",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Chula Vista 10",
+      "slug": "amc-chula-vista-10",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Otay Ranch 12",
+      "slug": "amc-otay-ranch-12",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Plaza Bonita 14",
+      "slug": "amc-plaza-bonita-14",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Poway 10",
+      "slug": "amc-poway-10",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC UTC 14",
+      "slug": "amc-utc-14",
+      "dma": "San Diego"
+    },
+    {
+      "name": "AMC Southcenter 16",
+      "slug": "amc-southcenter-16",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Pacific Place 11",
+      "slug": "amc-pacific-place-11",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Kent Station 14",
+      "slug": "amc-kent-station-14",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Alderwood Mall 16",
+      "slug": "amc-alderwood-mall-16",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Factoria 8",
+      "slug": "amc-factoria-8",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Woodinville 12",
+      "slug": "amc-woodinville-12",
+      "dma": "Seattle"
+    },
+    {
+      "name": "AMC Arizona Center 24",
+      "slug": "amc-arizona-center-24",
+      "dma": "Phoenix"
+    },
+    {
+      "name": "AMC Desert Ridge 18",
+      "slug": "amc-desert-ridge-18",
+      "dma": "Phoenix"
+    },
+    {
+      "name": "AMC Deer Valley 17",
+      "slug": "amc-deer-valley-17",
+      "dma": "Phoenix"
+    },
+    {
+      "name": "AMC Ahwatukee 24",
+      "slug": "amc-ahwatukee-24",
+      "dma": "Phoenix"
+    },
+    {
+      "name": "AMC Westgate 20",
+      "slug": "amc-westgate-20",
+      "dma": "Phoenix"
+    },
+    {
+      "name": "AMC Westminster Promenade 24",
+      "slug": "amc-westminster-promenade-24",
+      "dma": "Denver"
+    },
+    {
+      "name": "AMC Flatiron Crossing 14",
+      "slug": "amc-flatiron-crossing-14",
+      "dma": "Denver"
+    },
+    {
+      "name": "AMC Highlands Ranch 24",
+      "slug": "amc-highlands-ranch-24",
+      "dma": "Denver"
+    },
+    {
+      "name": "AMC DINE-IN Southlands 16",
+      "slug": "amc-dine-in-southlands-16",
+      "dma": "Denver"
+    },
+    {
+      "name": "AMC Arapahoe Crossing 16",
+      "slug": "amc-arapahoe-crossing-16",
+      "dma": "Denver"
+    }
   ]
 }
