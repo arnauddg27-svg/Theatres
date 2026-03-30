@@ -77,12 +77,9 @@ jobs:
         working-directory: box-office-tracker
         run: python3 predict.py
 
-      - name: Run trading (dry run)
-        if: steps.cal.outputs.is_tuesday != 'true'
-        working-directory: box-office-tracker
-        env:
-          DRY_RUN: "true"
-        run: python3 trade.py || echo "Trade step skipped (no predictions or missing deps)"
+      # Trading runs from EU VPS (Polymarket blocks US IPs).
+      # GH Actions only collects data + predicts. The EU VPS cron
+      # pulls the repo and runs trade.py separately.
 
       - name: Commit updated data
         run: |
