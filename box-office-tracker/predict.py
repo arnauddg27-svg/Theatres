@@ -50,12 +50,23 @@ SEAT_DEFLATORS = {
     2: 0.90, 1: 1.0, 0: 1.0,    # Standard = baseline
 }
 
-DAY_WEIGHTS = {
+DAY_WEIGHTS_DEFAULT = {
     "Thursday": 0.12,
     "Friday":   0.32,
     "Saturday": 0.33,
     "Sunday":   0.23,
 }
+
+
+def get_day_weights(cal):
+    """Get day weights from calibration, falling back to defaults.
+
+    Calibrate.py updates these weights every Tuesday from actual daily
+    box office splits. Over time they converge on the true distribution.
+    """
+    if cal:
+        return cal.get("calibration_factors", {}).get("day_weights", DAY_WEIGHTS_DEFAULT)
+    return DAY_WEIGHTS_DEFAULT
 
 DAY_CONFIDENCE = {
     1: (0.70, 1.40),   # 1 day collected
@@ -71,16 +82,46 @@ DEFAULT_SEATS_PER_SHOW = 200   # when no seat map available
 
 # ── Data Loading ─────────────────────────────────────────────────────────────
 
-def load_seat_data():
-    """Load seat-counts.csv and group by movie → date → list of theatre rows."""
+def _current_weekend_friday():
+    """Return the Friday that anchors the current opening weekend (Thu-Sun)."""
+    from datetime import timedelta
+    now = datetime.now()
+    wd = now.weekday()  # Mon=0 ... Sun=6
+    if wd == 3:
+        return (now + timedelta(days=1)).strftime("%Y-%m-%d")
+    if wd == 4:
+        return now.strftime("%Y-%m-%d")
+    if wd == 5:
+        return (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    if wd == 6:
+        return (now - timedelta(days=2)).strftime("%Y-%m-%d")
+    # Mon-Wed: use next Friday
+    return (now + timedelta(days=(4 - wd))).strftime("%Y-%m-%d")
+
+
+def load_seat_data(weekend_of=None):
+    """Load seat-counts.csv and group by movie → date → list of theatre rows.
+
+    If weekend_of is set, only loads rows from that opening weekend.
+    If not set, uses the current weekend (Thu-Sun → Friday anchor).
+    Falls back to loading all rows if weekend_of column is absent (old data).
+    """
     if not os.path.exists(SEAT_CSV):
         return {}
+
+    if weekend_of is None:
+        weekend_of = _current_weekend_friday()
+
     data = {}
     with open(SEAT_CSV, "r") as f:
         for row in csv.DictReader(f):
             movie = row.get("movie_title", "")
             date = row.get("date", "")
             if not movie or not date:
+                continue
+            # Filter to this weekend if the column exists
+            row_weekend = row.get("weekend_of", "")
+            if row_weekend and row_weekend != weekend_of:
                 continue
             data.setdefault(movie, {}).setdefault(date, []).append(row)
     return data
@@ -285,13 +326,16 @@ def days_to_weekend(daily_estimates, cal):
     """Stage D: project partial-weekend data to full weekend.
 
     daily_estimates: dict of {day_name: domestic_daily_mid}
+    Uses calibrated day weights (learned from actual results) to project
+    partial data to a full Thu-Sun weekend.
     Returns (mid, low, high).
     """
     if not daily_estimates:
         return 0, 0, 0
 
+    day_weights = get_day_weights(cal)
     collected_sum = sum(daily_estimates.values())
-    collected_weight = sum(DAY_WEIGHTS.get(day, 0) for day in daily_estimates)
+    collected_weight = sum(day_weights.get(day, 0) for day in daily_estimates)
 
     if collected_weight <= 0:
         return collected_sum, collected_sum * 0.5, collected_sum * 2.0
@@ -502,19 +546,26 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
         csv_day = rows[0].get("day_of_week", "") if rows else ""
         day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
-        # Use latest run for each theatre
-        latest_by_theatre = {}
+        # Dedup by (theatre, format) using latest run_id.
+        # Each theatre-format pair is a separate observation — IMAX at
+        # AMC Grove is a different data point than Laser at AMC Grove.
+        # This keeps week-over-week comparisons fair: we always measure
+        # the same format tier at the same theatre at the same time slot.
+        latest_by_theatre_fmt = {}
         for row in rows:
             t_id = row.get("theatre_id", "") or row.get("theatre_name", "")
-            run_id = row.get("run_id", "") or row.get("check_time", "")
-            prev = latest_by_theatre.get(t_id)
-            if not prev or run_id > prev.get("_sort_key", ""):
-                latest_by_theatre[t_id] = {**row, "_sort_key": run_id}
+            fmt = (row.get("auditorium_type", "") or row.get("format", "")
+                   or row.get("auditorium_name", "") or "Standard")
+            key = f"{t_id}|{fmt}"
+            sort_key = row.get("run_id", "") or row.get("check_time", "")
+            prev = latest_by_theatre_fmt.get(key)
+            if not prev or sort_key > prev.get("_sort_key", ""):
+                latest_by_theatre_fmt[key] = {**row, "_sort_key": sort_key}
 
-        # Stage A: per-theatre revenue
+        # Stage A: per-theatre-format revenue
         theatre_results = []
         no_data_count = 0
-        for row in latest_by_theatre.values():
+        for row in latest_by_theatre_fmt.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
                 theatre_results.append(result)

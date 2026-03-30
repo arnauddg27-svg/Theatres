@@ -129,7 +129,8 @@ def kelly_fraction(our_prob: float, market_price: float) -> float:
 
 # ── Confidence Scoring ──────────────────────────────────────────────────────
 
-def prediction_confidence(prediction: dict) -> float:
+def prediction_confidence(prediction: dict,
+                          calibration: dict | None = None) -> float:
     """Score prediction confidence from 0 (no data) to 1 (high confidence).
 
     Factors:
@@ -137,6 +138,12 @@ def prediction_confidence(prediction: dict) -> float:
     - Theatre count: more theatres = tighter estimate
     - Seat vs Polymarket weight: higher seat weight = we have real data
     - CI width relative to midpoint: tighter = more confident
+    - Historical accuracy: if past predictions were accurate, boost confidence
+
+    The historical_accuracy factor is what makes the system learn week-over-week.
+    After each weekend, calibrate.py records our error. If we've been within 15%
+    on average, we trust our model more → bigger bets. If we've been off by 40%,
+    we dampen confidence → smaller bets.
     """
     n_days = prediction.get("n_days", 0)
     n_theatres = prediction.get("n_theatres_total", 0)
@@ -158,18 +165,39 @@ def prediction_confidence(prediction: dict) -> float:
     # CI tightness: if CI is ±50% of mid, confidence is low
     if mid > 0:
         ci_width_pct = (high - low) / mid
-        # ±10% → 1.0, ±30% → 0.7, ±50% → 0.5
         ci_factor = max(0.2, 1.0 - ci_width_pct)
     else:
         ci_factor = 0.0
 
-    # Weighted combination
-    confidence = (
-        0.35 * day_factor +
-        0.20 * theatre_factor +
-        0.25 * data_factor +
-        0.20 * ci_factor
-    )
+    # Historical accuracy factor: learned from past weekends
+    # No history → 0.5 (neutral). Good track record → up to 0.9.
+    # Poor track record → down to 0.1.
+    accuracy_factor = 0.5  # default: no history
+    if calibration:
+        acc_list = calibration.get("calibration_factors", {}).get("historical_accuracy", [])
+        if acc_list:
+            mean_error = sum(a["abs_error_pct"] for a in acc_list) / len(acc_list)
+            # 5% error → 0.95, 15% → 0.75, 30% → 0.5, 50%+ → 0.2
+            accuracy_factor = max(0.1, min(1.0, 1.0 - mean_error / 60))
+
+    # Weighted combination — accuracy gets 15% weight when available
+    if calibration and calibration.get("calibration_factors", {}).get("historical_accuracy"):
+        confidence = (
+            0.30 * day_factor +
+            0.15 * theatre_factor +
+            0.20 * data_factor +
+            0.20 * ci_factor +
+            0.15 * accuracy_factor
+        )
+    else:
+        # No history yet — use original weights
+        confidence = (
+            0.35 * day_factor +
+            0.20 * theatre_factor +
+            0.25 * data_factor +
+            0.20 * ci_factor
+        )
+
     return min(1.0, max(0.0, confidence))
 
 
@@ -231,7 +259,8 @@ def _parse_token_ids(mkt: dict) -> list[str]:
 # ── Core Strategy ───────────────────────────────────────────────────────────
 
 def analyze_distribution(movie: str, prediction: dict,
-                         event_markets: list[dict]) -> DistributionComparison:
+                         event_markets: list[dict],
+                         calibration: dict | None = None) -> DistributionComparison:
     """Build and compare our distribution vs the market's across ALL brackets.
 
     This is the foundation — before deciding what to trade, we need to see
@@ -241,12 +270,20 @@ def analyze_distribution(movie: str, prediction: dict,
     low = prediction["blend_low_m"]
     high = prediction["blend_high_m"]
 
+    # Apply calibration scale factor if available
+    scale = 1.0
+    if calibration:
+        scale = calibration.get("calibration_factors", {}).get("overall_scale_factor", 1.0)
+        mid *= scale
+        low *= scale
+        high *= scale
+
     # Std from CI width. The CI comes from DAY_CONFIDENCE in predict.py:
     #   1 day: (0.70, 1.40) → range = 0.70 × mid → std ≈ range/4
     #   3 days: (0.92, 1.10) → range = 0.18 × mid → std ≈ range/4
     std = max((high - low) / 4.0, mid * 0.03)
 
-    confidence = prediction_confidence(prediction)
+    confidence = prediction_confidence(prediction, calibration)
 
     brackets = []
     market_probs = []
@@ -314,7 +351,8 @@ def analyze_distribution(movie: str, prediction: dict,
 
 def find_edge_brackets(movie: str, prediction: dict,
                        event_markets: list[dict],
-                       min_edge: float = 0.05) -> list[TradeSignal]:
+                       min_edge: float = 0.05,
+                       calibration: dict | None = None) -> list[TradeSignal]:
     """Find brackets where our model has edge, using full distribution analysis.
 
     Compares our probability distribution against the market's across ALL
@@ -323,7 +361,7 @@ def find_edge_brackets(movie: str, prediction: dict,
     2. Kelly fraction is positive
     3. Prediction confidence is above threshold
     """
-    dist = analyze_distribution(movie, prediction, event_markets)
+    dist = analyze_distribution(movie, prediction, event_markets, calibration)
 
     if dist.confidence < 0.15:
         return []  # not enough data to trade

@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 """
-Box Office Seat-Map Tracker
+Box Office Seat-Map Tracker (Playwright Edition)
+=================================================
 Scrapes Polymarket for active box-office betting markets,
-then checks AMC seat maps for occupancy data.
+then uses Playwright headless Chrome to fetch AMC seat maps
+for occupancy data.
+
+Usage:
+    python3 scraper.py              # All theatres
+    python3 scraper.py PT           # Pacific theatres only
+    python3 scraper.py ET           # Eastern theatres only
 """
 
-import requests
+import asyncio
 import csv
 import json
 import os
-import sys
 import re
-from datetime import datetime, timezone
+import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+import uuid
+
+import requests
+from playwright.async_api import async_playwright
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -22,179 +33,153 @@ SEAT_CSV = DATA_DIR / "seat-counts.csv"
 POLY_CSV = DATA_DIR / "polymarket-markets.csv"
 RUN_LOG  = DATA_DIR / "run-log.md"
 
-THEATRES = {
-    "ET": [
-        {"name": "AMC Aventura 24",       "id": 610,  "slug": "amc-aventura-24",       "city": "Aventura, FL"},
-        {"name": "AMC Neshaminy 24",      "id": 164,  "slug": "amc-neshaminy-24",      "city": "Bensalem, PA"},
-        {"name": "AMC Veterans 24",       "id": 626,  "slug": "amc-veterans-24",       "city": "Tampa, FL"},
-    ],
-    "CT": [
-        {"name": "AMC DINE-IN Mesquite 30", "id": 56, "slug": "amc-dine-in-mesquite-30", "city": "Mesquite, TX"},
-        {"name": "AMC NorthPark 15",       "id": 58,  "slug": "amc-northpark-15",       "city": "Dallas, TX"},
-        {"name": "AMC Gulf Pointe 30",     "id": 104, "slug": "amc-gulf-pointe-30",     "city": "Houston, TX"},
-        {"name": "AMC River East 21",      "id": 322, "slug": "amc-river-east-21",      "city": "Chicago, IL"},
-        {"name": "AMC DINE-IN Rosemont 12","id": 160, "slug": "amc-dine-in-rosemont-12","city": "Rosemont, IL"},
-    ],
-    "PT": [
-        {"name": "AMC The Grove 14",      "id": 188, "slug": "amc-the-grove-14",      "city": "Los Angeles, CA"},
-        {"name": "AMC Burbank 16",        "id": 2228,"slug": "amc-burbank-16",        "city": "Burbank, CA"},
-    ],
-}
+THEATRES_JSON = DATA_DIR / "theatres-all.json"
+
+
+def load_theatres():
+    """Load theatre list from JSON. Falls back to a minimal default."""
+    if THEATRES_JSON.exists():
+        with open(THEATRES_JSON, "r") as f:
+            data = json.load(f)
+        # Strip metadata keys
+        return {k: v for k, v in data.items() if not k.startswith("_")}
+    # Fallback: minimal set if JSON is missing
+    return {
+        "ET": [{"name": "AMC Empire 25", "slug": "amc-empire-25"}],
+        "CT": [{"name": "AMC River East 21", "slug": "amc-river-east-21"}],
+        "PT": [{"name": "AMC The Grove 14", "slug": "amc-the-grove-14"}],
+    }
 
 # AMC format priority (higher = bigger room, more important)
 FORMAT_PRIORITY = {
+    "imax with laser": 110,
     "imax": 100,
     "dolby cinema": 90,
     "dolby": 90,
     "prime": 80,
     "prime at amc": 80,
+    "xl": 75,
     "laser at amc": 70,
+    "laser": 70,
     "reald 3d": 30,
+    "open caption": 20,
     "standard": 10,
     "digital": 10,
 }
 
-# Headers to mimic browser requests to AMC
-AMC_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Referer": "https://www.amctheatres.com/",
-    "Origin": "https://www.amctheatres.com",
-}
+# Concurrency — how many browser tabs to run in parallel.
+MAX_CONCURRENT_TABS = 5
+
+
+def opening_weekend_friday(dt=None):
+    """Return the Friday that anchors this opening weekend.
+
+    Thu→Sun all map to the same Friday. This is the 'weekend_of' key
+    that lets predict.py group data from one opening weekend together
+    and ignore data from previous weekends for the same movie.
+    """
+    dt = dt or datetime.now()
+    weekday = dt.weekday()  # Mon=0 ... Sun=6
+    if weekday == 3:    # Thursday
+        friday = dt + timedelta(days=1)
+    elif weekday == 4:  # Friday
+        friday = dt
+    elif weekday == 5:  # Saturday
+        friday = dt - timedelta(days=1)
+    elif weekday == 6:  # Sunday
+        friday = dt - timedelta(days=2)
+    else:
+        friday = dt  # Mon-Wed shouldn't happen (day guard), but be safe
+    return friday.strftime("%Y-%m-%d")
 
 
 # ─── Polymarket Scraper ─────────────────────────────────────────────────────
 
 def fetch_polymarket_box_office():
     """
-    Query Polymarket Gamma API for active box-office / movie markets.
+    Find active opening-weekend box office bracket events on Polymarket.
+
+    Uses the same logic as trade.py: searches the Gamma events API for
+    events with "opening weekend" AND "box office" in the title, then
+    extracts the quoted movie name. This ensures scraper.py collects
+    seat data for exactly the movies trade.py will try to trade.
+
     Returns list of dicts with movie info.
     """
     print("\n📊 Checking Polymarket for active box office markets...")
 
-    markets_found = []
-    base_url = "https://gamma-api.polymarket.com/markets"
+    url = "https://gamma-api.polymarket.com/events"
+    params = {
+        "active": "true",
+        "closed": "false",
+        "limit": 500,
+        "order": "volume24hr",
+        "ascending": "false",
+    }
 
-    # Search with multiple keyword strategies
-    search_terms = ["box office", "opening weekend", "movie gross", "domestic gross", "weekend box office"]
-
-    seen_ids = set()
-
-    for term in search_terms:
-        try:
-            params = {
-                "active": "true",
-                "closed": "false",
-                "limit": 50,
-                "order": "volume24hr",
-                "ascending": "false",
-            }
-            # The Gamma API supports text search via the 'tag' or general query
-            # Try fetching all active markets and filtering
-            resp = requests.get(base_url, params=params, timeout=15)
-            resp.raise_for_status()
-            data = resp.json()
-
-            for market in data:
-                mid = market.get("id", "")
-                if mid in seen_ids:
-                    continue
-
-                question = market.get("question", "").lower()
-                description = market.get("description", "").lower()
-
-                # Check if this market is about box office / movie performance
-                box_office_keywords = [
-                    "box office", "opening weekend", "gross", "domestic",
-                    "million", "$", "movie", "film", "theater", "theatre",
-                    "ticket", "blockbuster"
-                ]
-
-                is_box_office = any(kw in question for kw in box_office_keywords) or \
-                                any(kw in description for kw in box_office_keywords)
-
-                if is_box_office:
-                    seen_ids.add(mid)
-
-                    # Extract movie title from question
-                    movie_title = extract_movie_title(market.get("question", ""))
-
-                    outcome_prices = market.get("outcomePrices", "[]")
-                    if isinstance(outcome_prices, str):
-                        try:
-                            outcome_prices = json.loads(outcome_prices)
-                        except:
-                            outcome_prices = []
-
-                    markets_found.append({
-                        "movie_title": movie_title,
-                        "market_url": f"https://polymarket.com/event/{market.get('slug', mid)}",
-                        "question": market.get("question", ""),
-                        "current_odds": outcome_prices[0] if outcome_prices else "N/A",
-                        "volume": market.get("volume", "N/A"),
-                        "market_id": mid,
-                    })
-        except Exception as e:
-            print(f"  ⚠️  Error searching Polymarket for '{term}': {e}")
-
-    # Also try the events endpoint which groups related markets
     try:
-        events_url = "https://gamma-api.polymarket.com/events"
-        params = {"active": "true", "closed": "false", "limit": 100}
-        resp = requests.get(events_url, params=params, timeout=15)
+        resp = requests.get(url, params=params, timeout=15)
         resp.raise_for_status()
         events = resp.json()
-
-        for event in events:
-            title = event.get("title", "").lower()
-            desc = event.get("description", "").lower()
-
-            if any(kw in title or kw in desc for kw in ["box office", "opening weekend", "gross", "movie"]):
-                # Get markets within this event
-                event_markets = event.get("markets", [])
-                for market in event_markets:
-                    mid = market.get("id", "")
-                    if mid in seen_ids:
-                        continue
-                    seen_ids.add(mid)
-
-                    outcome_prices = market.get("outcomePrices", "[]")
-                    if isinstance(outcome_prices, str):
-                        try:
-                            outcome_prices = json.loads(outcome_prices)
-                        except:
-                            outcome_prices = []
-
-                    markets_found.append({
-                        "movie_title": extract_movie_title(market.get("question", event.get("title", ""))),
-                        "market_url": f"https://polymarket.com/event/{event.get('slug', '')}",
-                        "question": market.get("question", ""),
-                        "current_odds": outcome_prices[0] if outcome_prices else "N/A",
-                        "volume": market.get("volume", "N/A"),
-                        "market_id": mid,
-                    })
     except Exception as e:
-        print(f"  ⚠️  Error fetching Polymarket events: {e}")
+        print(f"  ❌ Polymarket API error: {e}")
+        return []
 
-    print(f"  Found {len(markets_found)} box office market(s)")
+    markets_found = []
+    seen_movies = set()
+
+    for event in events:
+        title = event.get("title", "")
+        title_lower = title.lower()
+
+        # Same filter as trade.py: must have BOTH keywords
+        if "opening weekend" not in title_lower or "box office" not in title_lower:
+            continue
+
+        # Extract movie name from quoted title (e.g. "Thunderbolts" Opening Weekend...)
+        raw_title = title.replace("\u201c", '"').replace("\u201d", '"')
+        movie_name = None
+        if '"' in raw_title:
+            parts = raw_title.split('"')
+            if len(parts) >= 3:
+                movie_name = parts[1]
+
+        if not movie_name:
+            movie_name = extract_movie_title(title)
+
+        if movie_name in seen_movies:
+            continue
+        seen_movies.add(movie_name)
+
+        # Get aggregate volume
+        total_volume = sum(
+            float(m.get("volume", 0) or 0)
+            for m in event.get("markets", [])
+        )
+
+        slug = event.get("slug", "")
+        markets_found.append({
+            "movie_title": movie_name,
+            "market_url": f"https://polymarket.com/event/{slug}",
+            "question": title,
+            "current_odds": "N/A",
+            "volume": total_volume,
+            "market_id": str(event.get("id", "")),
+        })
+
+    print(f"  Found {len(markets_found)} box office movie(s)")
     for m in markets_found:
-        print(f"    • {m['movie_title']}: {m['question']}")
+        print(f"    • {m['movie_title']} (vol: ${m['volume']:,.0f})")
 
     return markets_found
 
 
 def extract_movie_title(question):
-    """
-    Try to extract a movie title from a Polymarket question.
-    e.g. "Will 'Thunderbolts' gross over $100M?" → "Thunderbolts"
-    """
-    # Look for quoted titles
-    quoted = re.findall(r"['\"]([^'\"]+)['\"]", question)
+    """Extract a movie title from a Polymarket question."""
+    quoted = re.findall(r'[\'"\u201c\u201d]([^\'"\u201c\u201d]+)[\'"\u201c\u201d]', question)
     if quoted:
         return quoted[0]
 
-    # Look for title patterns like "Will X gross..." or "X opening weekend"
     patterns = [
         r"(?:Will|Can)\s+(.+?)\s+(?:gross|earn|make|hit|reach|open)",
         r"(.+?)\s+(?:opening weekend|box office|domestic gross)",
@@ -204,7 +189,6 @@ def extract_movie_title(question):
         if match:
             return match.group(1).strip()
 
-    # Fallback: return the full question
     return question[:60]
 
 
@@ -212,7 +196,6 @@ def save_polymarket_data(markets):
     """Save Polymarket markets to CSV."""
     today = datetime.now().strftime("%Y-%m-%d")
 
-    # Check if today's data already exists
     existing = set()
     if POLY_CSV.exists():
         with open(POLY_CSV, "r") as f:
@@ -227,217 +210,168 @@ def save_polymarket_data(markets):
         for m in markets:
             if m["market_url"] not in existing:
                 writer.writerow([
-                    today,
-                    m["movie_title"],
-                    m["market_url"],
-                    m["question"],
-                    m["current_odds"],
-                    m["volume"],
-                    ""  # notes
+                    today, m["movie_title"], m["market_url"],
+                    m["question"], m["current_odds"], m["volume"], "",
                 ])
                 new_count += 1
 
     print(f"  Saved {new_count} new market entries to CSV")
 
 
-# ─── AMC Scraper ─────────────────────────────────────────────────────────────
+# ─── AMC Playwright Scraper ─────────────────────────────────────────────────
 
-def fetch_amc_showtimes(theatre, date_str):
+async def fetch_amc_showtimes_pw(page, theatre, date_str):
     """
-    Fetch showtimes for a given AMC theatre on a given date.
-    Tries the AMC website's internal API endpoints.
+    Fetch showtimes for a theatre using Playwright.
+
+    Navigates to AMC's showtime page and waits for movie <section> elements
+    to appear (smart wait instead of fixed sleep). Falls back to a short
+    sleep if sections never appear (empty showtime day).
+
     Returns list of showtime dicts.
     """
     theatre_slug = theatre["slug"]
-    theatre_id = theatre["id"]
+    url = f"https://www.amctheatres.com/showtimes/all/{date_str}/{theatre_slug}/all"
 
-    print(f"\n🎬 Fetching showtimes for {theatre['name']}...")
+    print(f"  🎬 {theatre['name']}...")
 
-    # AMC's website fetches showtimes from their API
-    # Try the v2 API endpoint (used by their frontend)
-    urls_to_try = [
-        f"https://www.amctheatres.com/api/v2/theatres/{theatre_id}/showtimes?date={date_str}",
-        f"https://api.amctheatres.com/v2/theatres/{theatre_id}/showtimes?date={date_str}",
-        # Their website also uses this pattern
-        f"https://www.amctheatres.com/showtimes/all/{date_str}/{theatre_slug}/all",
-    ]
-
-    for url in urls_to_try:
+    try:
+        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        # Smart wait: watch for the actual showtime sections to render
         try:
-            resp = requests.get(url, headers=AMC_HEADERS, timeout=15)
-            if resp.status_code == 200:
-                content_type = resp.headers.get("content-type", "")
-                if "json" in content_type:
-                    data = resp.json()
-                    print(f"  ✅ Got JSON response from {url[:60]}...")
-                    return parse_amc_json_showtimes(data, theatre)
-                else:
-                    # HTML response — parse it
-                    print(f"  📄 Got HTML response from {url[:60]}...")
-                    return parse_amc_html_showtimes(resp.text, theatre)
-            else:
-                print(f"  ❌ {resp.status_code} from {url[:60]}...")
-        except Exception as e:
-            print(f"  ⚠️  Error: {e}")
-
-    print(f"  ❌ Could not fetch showtimes for {theatre['name']}")
-    return []
-
-
-def parse_amc_json_showtimes(data, theatre):
-    """Parse JSON showtime response from AMC API."""
-    showtimes = []
-
-    # Handle different JSON structures
-    if isinstance(data, dict):
-        # Could be nested under various keys
-        items = data.get("showtimes", data.get("_embedded", {}).get("showtimes", []))
-        if not items and "movies" in data:
-            items = data["movies"]
-    elif isinstance(data, list):
-        items = data
-    else:
+            await page.wait_for_selector(
+                'section[aria-label^="Showtimes for"]', timeout=12000
+            )
+        except Exception:
+            # No sections appeared — page may be empty or slow
+            await asyncio.sleep(2)
+    except Exception as e:
+        print(f"    ❌ Navigation failed: {e}")
         return []
 
-    for item in items:
-        movie_name = item.get("movieName", item.get("title", item.get("name", "Unknown")))
-
-        # Get showtime details
-        performances = item.get("showtimes", item.get("performances", [item]))
-
-        for perf in performances:
-            showtime_str = perf.get("showtime", perf.get("startTime", perf.get("performanceTime", "")))
-            auditorium = perf.get("auditorium", perf.get("theatreName", ""))
-            format_type = perf.get("format", perf.get("movieFormat", perf.get("experienceType", "Standard")))
-            perf_id = perf.get("id", perf.get("performanceId", perf.get("showtimeId", "")))
-
-            showtimes.append({
-                "movie": movie_name,
-                "showtime": showtime_str,
-                "auditorium": auditorium,
-                "format": format_type,
-                "performance_id": perf_id,
-                "theatre": theatre,
-            })
-
+    showtimes = await page.evaluate(EXTRACT_SHOWTIMES_JS)
+    print(f"    📋 {len(showtimes)} showtime(s)")
     return showtimes
 
 
-def parse_amc_html_showtimes(html, theatre):
-    """Parse HTML showtime page from AMC website."""
-    showtimes = []
+# Extracted to a constant so it's not duplicated across calls
+EXTRACT_SHOWTIMES_JS = r'''() => {
+    const results = [];
+    const sections = document.querySelectorAll('section[aria-label^="Showtimes for"]');
 
-    # Look for JSON data embedded in the HTML (common pattern)
-    # AMC often includes a __NEXT_DATA__ or similar JSON blob
-    json_patterns = [
-        r'__NEXT_DATA__\s*=\s*({.*?})\s*</script>',
-        r'window\.__data\s*=\s*({.*?})\s*;',
-        r'"showtimes"\s*:\s*(\[.*?\])',
-    ]
+    for (const section of sections) {
+        const ariaLabel = section.getAttribute('aria-label') || '';
+        const movieName = ariaLabel.replace('Showtimes for ', '');
 
-    for pattern in json_patterns:
-        match = re.search(pattern, html, re.DOTALL)
-        if match:
-            try:
-                data = json.loads(match.group(1))
-                print(f"  📦 Found embedded JSON data")
-                return parse_amc_json_showtimes(data, theatre)
-            except json.JSONDecodeError:
-                continue
+        const formatItems = section.querySelectorAll('li[aria-label$="Showtimes"]');
 
-    # Fallback: parse HTML with regex (basic approach)
-    # Look for showtime links like <a href="/showtimes/..." data-showtime="7:00pm">
-    showtime_blocks = re.findall(
-        r'data-(?:showtime|time)=["\']([^"\']+)["\'].*?'
-        r'(?:data-movie(?:name|title)=["\']([^"\']+)["\'])?',
-        html, re.DOTALL | re.IGNORECASE
-    )
+        for (const fmtItem of formatItems) {
+            const fmtLabel = fmtItem.getAttribute('aria-label') || '';
+            const formatName = fmtLabel.replace(' Showtimes', '');
 
-    for time_str, movie in showtime_blocks:
-        showtimes.append({
-            "movie": movie or "Unknown",
-            "showtime": time_str,
-            "auditorium": "",
-            "format": "Standard",
-            "performance_id": "",
-            "theatre": theatre,
-        })
+            const links = fmtItem.querySelectorAll('a[href*="/showtimes/"]');
 
-    if not showtimes:
-        print(f"  ⚠️  Could not parse showtimes from HTML")
+            for (const link of links) {
+                const href = link.href || '';
+                const match = href.match(/\/showtimes\/(\d+)$/);
+                if (!match) continue;
 
-    return showtimes
+                const text = link.textContent.trim();
+                const timeMatch = text.match(/(\d{1,2}:\d{2}\s*(?:am|pm))/i);
+                const timeStr = timeMatch ? timeMatch[1] : text.split('\n')[0].trim();
+
+                let flags = '';
+                if (text.includes('Almost Full')) flags = 'Almost Full';
+                else if (text.includes('Sold Out')) flags = 'Sold Out';
+                else if (text.includes('Reserved')) flags = 'Reserved';
+
+                results.push({
+                    movie: movieName,
+                    showtime: timeStr,
+                    showtime_id: match[1],
+                    format: formatName,
+                    flags: flags,
+                });
+            }
+        }
+    }
+    return results;
+}'''
 
 
-def fetch_amc_seat_map(performance_id, theatre):
+async def fetch_amc_seat_map_pw(page, showtime_id):
     """
-    Fetch seat map for a specific performance.
-    Returns dict with total_seats, seats_sold, seats_available.
+    Fetch seat map for a specific showtime using Playwright.
+
+    Navigates to /showtimes/{id} which redirects to /showtimes/{id}/seats.
+    Waits for seat <input> elements to render, then counts them.
+
+    Returns dict with total_seats, seats_sold, seats_available, occupancy_pct.
     """
-    if not performance_id:
+    if not showtime_id:
         return None
 
-    print(f"  🪑 Fetching seat map for performance {performance_id}...")
+    url = f"https://www.amctheatres.com/showtimes/{showtime_id}"
 
-    urls_to_try = [
-        f"https://www.amctheatres.com/api/v2/performances/{performance_id}/seats",
-        f"https://api.amctheatres.com/v2/performances/{performance_id}/seats",
-        f"https://www.amctheatres.com/api/v2/theatres/{theatre['id']}/performances/{performance_id}/seatmap",
-    ]
-
-    for url in urls_to_try:
+    try:
+        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        # Smart wait: seat inputs appear once the seat map JS hydrates
         try:
-            resp = requests.get(url, headers=AMC_HEADERS, timeout=15)
-            if resp.status_code == 200:
-                data = resp.json()
-                return parse_seat_map(data)
-        except Exception as e:
-            print(f"  ⚠️  Seat map error: {e}")
+            await page.wait_for_selector(
+                'input[aria-label*="Recliner"], input[aria-label*="Seat"]',
+                timeout=10000,
+            )
+        except Exception:
+            # No seat inputs — general admission or broken page
+            return None
+    except Exception as e:
+        print(f"      ⚠️  Seat page failed: {e}")
+        return None
 
-    return None
+    seat_data = await page.evaluate(COUNT_SEATS_JS)
+
+    if seat_data["total_seats"] == 0:
+        return None
+
+    return seat_data
 
 
-def parse_seat_map(data):
-    """Parse seat map data and count seats."""
-    total = 0
-    sold = 0
-    available = 0
+COUNT_SEATS_JS = r'''() => {
+    const inputs = document.querySelectorAll('input[aria-label]');
+    let total = 0;
+    let sold = 0;
+    let available = 0;
 
-    # Handle different data structures
-    seats = data.get("seats", data.get("seatMap", {}).get("seats", []))
+    for (const input of inputs) {
+        const label = (input.getAttribute('aria-label') || '').toLowerCase();
 
-    if isinstance(seats, list):
-        for seat in seats:
-            if isinstance(seat, dict):
-                total += 1
-                status = seat.get("status", seat.get("seatStatus", "")).lower()
-                if status in ("sold", "occupied", "taken", "held", "reserved", "unavailable"):
-                    sold += 1
-                elif status in ("available", "open", "free"):
-                    available += 1
-                else:
-                    # Unknown status — count as available by default
-                    available += 1
+        // Skip non-seat inputs (filters, search, etc)
+        if (!(/[a-z]\d+/.test(label) || label.includes('recliner') || label.includes('seat'))) {
+            continue;
+        }
+        // Skip wheelchair and companion seats
+        if (label.includes('wheelchair') || label.includes('companion')) {
+            continue;
+        }
 
-    # Sometimes seats are nested in rows
-    if not seats and "rows" in data:
-        for row in data.get("rows", []):
-            row_seats = row.get("seats", [])
-            for seat in row_seats:
-                total += 1
-                status = seat.get("status", seat.get("seatStatus", "")).lower()
-                if status in ("sold", "occupied", "taken", "held", "reserved", "unavailable"):
-                    sold += 1
-                else:
-                    available += 1
-
-    return {
-        "total_seats": total,
-        "seats_sold": sold,
-        "seats_available": available,
-        "occupancy_pct": round(sold / total * 100, 1) if total > 0 else 0,
+        total++;
+        if (input.disabled) {
+            sold++;
+        } else {
+            available++;
+        }
     }
 
+    return {
+        total_seats: total,
+        seats_sold: sold,
+        seats_available: available,
+        occupancy_pct: total > 0 ? Math.round(sold / total * 1000) / 10 : 0,
+    };
+}'''
+
+
+# ─── Showtime Selection ─────────────────────────────────────────────────────
 
 def get_format_priority(format_str):
     """Get priority score for an auditorium format."""
@@ -447,69 +381,20 @@ def get_format_priority(format_str):
     for key, priority in FORMAT_PRIORITY.items():
         if key in fmt_lower:
             return priority
-    return 10  # default standard
-
-
-def find_main_show(showtimes, movie_title):
-    """
-    From a list of showtimes for a movie at a theatre,
-    find the "main show" — biggest room, prime evening slot.
-    """
-    # Filter to this movie (fuzzy match)
-    movie_lower = movie_title.lower().strip()
-    matching = [s for s in showtimes if movie_lower in s.get("movie", "").lower() or
-                s.get("movie", "").lower() in movie_lower]
-
-    if not matching:
-        return None, "Movie not showing at this theatre"
-
-    # Filter to evening window (5 PM - 9:30 PM)
-    evening = []
-    for s in matching:
-        hour = parse_showtime_hour(s.get("showtime", ""))
-        if hour and 17 <= hour <= 21.5:
-            evening.append(s)
-
-    if not evening:
-        # No evening shows — use whatever is available
-        evening = matching
-
-    # Sort by: format priority (descending), then closeness to 7 PM
-    def sort_key(s):
-        fmt_priority = get_format_priority(s.get("format", ""))
-        hour = parse_showtime_hour(s.get("showtime", "")) or 19
-        closeness_to_7pm = abs(hour - 19)  # how far from 7 PM
-        return (-fmt_priority, closeness_to_7pm)
-
-    evening.sort(key=sort_key)
-
-    best = evening[0]
-    reason = f"Selected {best.get('format', 'Standard')} at {best.get('showtime', '?')} — " \
-             f"highest format priority, closest to prime time"
-
-    # Also return runner-up if it's a different format (e.g. IMAX primary + Dolby secondary)
-    runner_up = None
-    if len(evening) > 1:
-        second = evening[1]
-        if get_format_priority(second.get("format", "")) >= 80 and \
-           second.get("format", "").lower() != best.get("format", "").lower():
-            runner_up = second
-
-    return best, reason, runner_up
+    return 10
 
 
 def parse_showtime_hour(time_str):
-    """Parse a time string into decimal hours (e.g. '7:30 PM' → 19.5)."""
+    """Parse a time string into decimal hours (e.g. '7:30pm' -> 19.5)."""
     if not time_str:
         return None
 
-    # Handle various formats
     time_str = time_str.strip().upper()
 
     patterns = [
-        r'(\d{1,2}):(\d{2})\s*(AM|PM)',       # "7:30 PM"
-        r'(\d{1,2})(\d{2})\s*(AM|PM)',         # "730PM"
-        r'T(\d{2}):(\d{2})',                     # ISO format "T19:30"
+        r'(\d{1,2}):(\d{2})\s*(AM|PM)',
+        r'(\d{1,2})(\d{2})\s*(AM|PM)',
+        r'T(\d{2}):(\d{2})',
     ]
 
     for pat in patterns:
@@ -529,7 +414,74 @@ def parse_showtime_hour(time_str):
     return None
 
 
+def find_evening_shows(showtimes, movie_title):
+    """
+    Find all evening shows (6-9pm) for a movie, one per format tier.
+
+    Returns a list of (show, reason) tuples — one per unique format,
+    each the closest-to-7pm showtime in that format. This ensures
+    week-over-week comparability: we always measure the prime evening
+    show for each format tier the movie was given.
+
+    The format tier (IMAX vs Dolby vs Laser etc.) and the occupancy %
+    are what matter for prediction — not absolute seat count.
+    """
+    movie_lower = movie_title.lower().strip()
+    matching = [s for s in showtimes
+                if movie_lower in s.get("movie", "").lower()
+                or s.get("movie", "").lower() in movie_lower]
+
+    if not matching:
+        return []
+
+    # Filter to evening window (6 PM - 9 PM) for consistency
+    evening = []
+    for s in matching:
+        hour = parse_showtime_hour(s.get("showtime", ""))
+        if hour and 18 <= hour <= 21:
+            evening.append(s)
+
+    if not evening:
+        # Fallback: closest to 7pm from whatever is available
+        evening = matching
+
+    # Group by format, pick closest to 7pm in each format
+    by_format = {}
+    for s in evening:
+        fmt = s.get("format", "Standard")
+        hour = parse_showtime_hour(s.get("showtime", "")) or 19
+        dist = abs(hour - 19)
+        if fmt not in by_format or dist < by_format[fmt][1]:
+            by_format[fmt] = (s, dist)
+
+    # Sort by format priority (highest first), return all
+    results = []
+    for fmt, (show, _) in sorted(by_format.items(),
+                                  key=lambda x: -get_format_priority(x[0])):
+        reason = f"{fmt} @ {show.get('showtime', '?')} (evening, closest to 7pm)"
+        results.append((show, reason))
+
+    return results
+
+
 # ─── Data Logging ────────────────────────────────────────────────────────────
+
+def ensure_csv_header():
+    """Create seat-counts.csv with header if it doesn't exist."""
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if not SEAT_CSV.exists():
+        with open(SEAT_CSV, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow([
+                "weekend_of", "run_id",
+                "date", "day_of_week", "theatre_name", "theatre_city",
+                "timezone", "movie_title", "polymarket_market", "showtime",
+                "check_time", "minutes_after_showtime", "auditorium_name",
+                "auditorium_type", "total_seats", "seats_sold",
+                "seats_available", "occupancy_pct", "ticket_price_estimate",
+                "notes",
+            ])
+
 
 def log_seat_data(row_data):
     """Append a row to the seat counts CSV."""
@@ -561,15 +513,108 @@ def log_run(tz_group, movies, results, issues):
 
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
-def run(tz_group="ALL"):
+async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
+                          weekend_of="", run_id=""):
     """
-    Main entry point.
-    tz_group: "ET", "CT", "PT", or "ALL"
+    Scrape one theatre's showtimes + seat maps on its own browser tab.
+    Returns (results_list, issues_list, csv_rows_list).
+    """
+    tz = theatre.get("_tz", "")
+    context = await browser.new_context(viewport={"width": 1280, "height": 800})
+    page = await context.new_page()
+    results = []
+    issues = []
+    csv_rows = []
+    today = datetime.now().strftime("%Y-%m-%d")
+    day_of_week = datetime.now().strftime("%A")
+
+    try:
+        showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
+
+        if not showtimes:
+            issues.append(f"{theatre['name']}: No showtimes retrieved")
+            return results, issues, csv_rows
+
+        for movie_title in movie_titles:
+            evening_shows = find_evening_shows(showtimes, movie_title)
+
+            if not evening_shows:
+                issues.append(f"{theatre['name']}: '{movie_title}' not showing")
+                continue
+
+            current_hour = datetime.now().hour + datetime.now().minute / 60
+            check_time = datetime.now().isoformat()
+
+            for show, reason in evening_shows:
+                fmt = show.get("format", "Standard")
+                st = show.get("showtime", "?")
+                flags = show.get("flags", "")
+
+                seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+
+                showtime_hour = parse_showtime_hour(st)
+                delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
+
+                if seat_data:
+                    occ = seat_data["occupancy_pct"]
+                    print(f"    🪑 {theatre['name']}: {movie_title} {fmt} — "
+                          f"{seat_data['seats_sold']}/{seat_data['total_seats']} ({occ}%)")
+
+                    csv_rows.append([
+                        weekend_of, run_id,
+                        today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
+                        tz, movie_title, market_urls.get(movie_title, ""),
+                        st, check_time, delta_minutes,
+                        "", fmt,
+                        seat_data["total_seats"], seat_data["seats_sold"],
+                        seat_data["seats_available"], occ,
+                        "", f"{flags}. {reason}" if flags else reason,
+                    ])
+                    results.append({
+                        "theatre": theatre["name"], "movie": movie_title,
+                        "format": fmt, "showtime": st,
+                        "occupancy": occ, "delta": delta_minutes,
+                    })
+                else:
+                    issues.append(f"{theatre['name']}: No seat map for {movie_title} {fmt}")
+                    csv_rows.append([
+                        weekend_of, run_id,
+                        today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
+                        tz, movie_title, market_urls.get(movie_title, ""),
+                        st, check_time, delta_minutes,
+                        "", fmt, "", "", "", "", "",
+                        f"Seat map unavailable. {flags}. {reason}",
+                    ])
+    finally:
+        await context.close()
+
+    return results, issues, csv_rows
+
+
+async def run_async(tz_group="ALL"):
+    """
+    Main entry point (async).
+    Parallelizes across MAX_CONCURRENT_TABS browser tabs using a semaphore.
     """
     print(f"{'='*60}")
-    print(f"🎬 Box Office Tracker — {tz_group} Group")
+    print(f"🎬 Box Office Tracker (Playwright) — {tz_group} Group")
     print(f"   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"   Concurrency: {MAX_CONCURRENT_TABS} tabs")
     print(f"{'='*60}")
+
+    ensure_csv_header()
+
+    # Only collect data Thu-Sun (opening weekend). Mon-Wed data has no
+    # day-weight in predict.py and would corrupt the weekend projection.
+    day_of_week = datetime.now().strftime("%A")
+    if day_of_week not in ("Thursday", "Friday", "Saturday", "Sunday"):
+        print(f"\n⚠️  Today is {day_of_week} — skipping collection.")
+        print(f"   Seat data is only useful Thu-Sun (opening weekend).")
+        print(f"   Use 'python scraper.py --force' to override.")
+        if "--force" not in sys.argv:
+            return
+
+    theatres_map = load_theatres()
 
     # Step 1: Get Polymarket movies
     poly_markets = fetch_polymarket_box_office()
@@ -583,111 +628,57 @@ def run(tz_group="ALL"):
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
 
-    # Step 2: Check theatres
+    # Step 2: Build flat list of theatres to scrape
     today = datetime.now().strftime("%Y-%m-%d")
-    day_of_week = datetime.now().strftime("%A")
-
+    weekend = opening_weekend_friday()
+    run_id = datetime.now().strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
     groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
 
+    all_theatres = []
+    for group in groups_to_check:
+        for theatre in theatres_map.get(group, []):
+            all_theatres.append({**theatre, "_tz": group})
+
+    print(f"\n🏛️  Scraping {len(all_theatres)} theatres across {len(groups_to_check)} timezone(s)...")
+    print(f"   Weekend: {weekend}  Run: {run_id}")
+
+    # Step 3: Parallel scrape with semaphore
     all_results = []
     all_issues = []
+    sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
 
-    for group in groups_to_check:
-        theatres = THEATRES.get(group, [])
-        print(f"\n{'─'*40}")
-        print(f"🏛️  Checking {len(theatres)} {group} theatre(s)...")
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
 
-        for theatre in theatres:
-            showtimes = fetch_amc_showtimes(theatre, today)
+        async def bounded_scrape(theatre):
+            async with sem:
+                return await _scrape_theatre(
+                    browser, theatre, today, movie_titles, market_urls,
+                    weekend_of=weekend, run_id=run_id,
+                )
 
-            if not showtimes:
-                issue = f"{theatre['name']}: No showtimes retrieved"
-                print(f"  ⚠️  {issue}")
-                all_issues.append(issue)
-                continue
+        tasks = [bounded_scrape(t) for t in all_theatres]
+        outcomes = await asyncio.gather(*tasks, return_exceptions=True)
 
-            print(f"  📋 Found {len(showtimes)} total showtime(s)")
+        await browser.close()
 
-            for movie_title in movie_titles:
-                best_show, reason, *extra = find_main_show(showtimes, movie_title)
-                runner_up = extra[0] if extra else None
+    # Step 4: Collect results and write CSV rows
+    for i, outcome in enumerate(outcomes):
+        if isinstance(outcome, Exception):
+            name = all_theatres[i]["name"]
+            all_issues.append(f"{name}: {outcome}")
+            print(f"  ❌ {name}: {outcome}")
+            continue
+        results, issues, csv_rows = outcome
+        all_results.extend(results)
+        all_issues.extend(issues)
+        for row in csv_rows:
+            log_seat_data(row)
 
-                if best_show is None:
-                    issue = f"{theatre['name']}: '{movie_title}' not showing"
-                    print(f"  ⚠️  {issue}")
-                    all_issues.append(issue)
-                    continue
-
-                print(f"  🎯 Main show: {movie_title} — {best_show.get('format', 'Std')} @ {best_show.get('showtime', '?')}")
-                print(f"     Reason: {reason}")
-
-                # Fetch seat map
-                seat_data = fetch_amc_seat_map(best_show.get("performance_id"), theatre)
-
-                check_time = datetime.now().strftime("%I:%M %p")
-                showtime_hour = parse_showtime_hour(best_show.get("showtime", ""))
-                current_hour = datetime.now().hour + datetime.now().minute / 60
-                delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
-
-                if seat_data:
-                    print(f"  🪑 Seats: {seat_data['seats_sold']}/{seat_data['total_seats']} "
-                          f"({seat_data['occupancy_pct']}% full)")
-
-                    row = [
-                        today, day_of_week, theatre["name"], theatre["city"], group,
-                        movie_title, market_urls.get(movie_title, ""),
-                        best_show.get("showtime", ""), check_time, delta_minutes,
-                        best_show.get("auditorium", ""), best_show.get("format", "Standard"),
-                        seat_data["total_seats"], seat_data["seats_sold"],
-                        seat_data["seats_available"], seat_data["occupancy_pct"],
-                        "", reason
-                    ]
-                    log_seat_data(row)
-
-                    all_results.append({
-                        "theatre": theatre["name"],
-                        "movie": movie_title,
-                        "format": best_show.get("format", "Standard"),
-                        "showtime": best_show.get("showtime", "?"),
-                        "occupancy": seat_data["occupancy_pct"],
-                        "delta": delta_minutes,
-                    })
-                else:
-                    issue = f"{theatre['name']}: Could not fetch seat map for {movie_title}"
-                    print(f"  ⚠️  {issue}")
-                    all_issues.append(issue)
-
-                    # Still log what we know (without seat data)
-                    row = [
-                        today, day_of_week, theatre["name"], theatre["city"], group,
-                        movie_title, market_urls.get(movie_title, ""),
-                        best_show.get("showtime", ""), check_time, delta_minutes,
-                        best_show.get("auditorium", ""), best_show.get("format", "Standard"),
-                        "", "", "", "", "", f"Seat map unavailable. {reason}"
-                    ]
-                    log_seat_data(row)
-
-                # Also check runner-up format if available
-                if runner_up:
-                    print(f"  🔄 Also checking secondary format: {runner_up.get('format', 'Std')} @ {runner_up.get('showtime', '?')}")
-                    seat_data2 = fetch_amc_seat_map(runner_up.get("performance_id"), theatre)
-                    if seat_data2:
-                        row = [
-                            today, day_of_week, theatre["name"], theatre["city"], group,
-                            movie_title, market_urls.get(movie_title, ""),
-                            runner_up.get("showtime", ""), check_time,
-                            int((current_hour - (parse_showtime_hour(runner_up.get("showtime", "")) or current_hour)) * 60),
-                            runner_up.get("auditorium", ""), runner_up.get("format", "Standard"),
-                            seat_data2["total_seats"], seat_data2["seats_sold"],
-                            seat_data2["seats_available"], seat_data2["occupancy_pct"],
-                            "", f"Secondary format. {reason}"
-                        ]
-                        log_seat_data(row)
-
-    # Step 3: Log the run
+    # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues)
 
-    # Step 4: Weekend summary (if Saturday and PT or ALL)
+    day_of_week = datetime.now().strftime("%A")
     if day_of_week == "Saturday" and tz_group in ("PT", "ALL"):
         generate_weekend_summary()
 
@@ -703,13 +694,11 @@ def generate_weekend_summary():
     today = datetime.now()
     today_str = today.strftime("%Y-%m-%d")
 
-    # Read all seat count data
     rows = []
     if SEAT_CSV.exists():
         with open(SEAT_CSV, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                # Include rows from the past 3 days
                 rows.append(row)
 
     if not rows:
@@ -722,7 +711,6 @@ def generate_weekend_summary():
         f.write(f"# Weekend Box Office Summary — {today_str}\n\n")
         f.write(f"Generated: {today.strftime('%Y-%m-%d %H:%M')}\n\n")
 
-        # Group by movie
         movies = {}
         for row in rows:
             movie = row.get("movie_title", "Unknown")
@@ -757,6 +745,11 @@ def generate_weekend_summary():
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
+
+def run(tz_group="ALL"):
+    """Sync wrapper for the async pipeline."""
+    asyncio.run(run_async(tz_group))
+
 
 if __name__ == "__main__":
     tz = sys.argv[1].upper() if len(sys.argv) > 1 else "ALL"
