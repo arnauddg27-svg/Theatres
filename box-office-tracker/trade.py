@@ -32,14 +32,7 @@ from urllib.request import Request, urlopen
 
 from dotenv import load_dotenv
 
-# Add SwissTony to path for PolymarketClient
-SWISSTONY_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..", "SwissTony"
-)
-sys.path.insert(0, os.path.abspath(SWISSTONY_PATH))
-
-from src.data.polymarket import PolymarketClient  # noqa: E402
+from polymarket_client import PolymarketClient  # noqa: E402
 
 # Local imports
 from strategy import (  # noqa: E402
@@ -67,10 +60,13 @@ CLOB_HOST = "https://clob.polymarket.com"
 def load_trade_config() -> dict:
     """Load trading config from env vars."""
     load_dotenv()
-    # Also check SwissTony's .env
-    swisstony_env = os.path.join(SWISSTONY_PATH, ".env")
-    if os.path.exists(swisstony_env):
-        load_dotenv(swisstony_env)
+    # Also check parent project's .env files
+    for env_path in [
+        os.path.join(os.path.dirname(__file__), ".env"),
+        os.path.join(os.path.dirname(__file__), "..", ".env"),
+    ]:
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
 
     private_key = os.environ.get("POLYMARKET_PRIVATE_KEY", "").strip()
     funder = os.environ.get("POLYMARKET_FUNDER_ADDRESS", "").strip()
@@ -327,13 +323,15 @@ def run_trading(config: dict, movie_filter: str | None = None):
                 mkt["outcomePrices"] = json.dumps([mkt["_live_ask"]])
 
         # Full distribution analysis — compare ours vs market across ALL brackets
-        dist = analyze_distribution(movie, pred, enriched)
+        # Pass calibration so historical accuracy influences confidence + scaling
+        dist = analyze_distribution(movie, pred, enriched, calibration=cal)
         print(f"\n{format_distribution(dist)}")
 
         # Find edge brackets using confidence-aware Kelly sizing
         signals = find_edge_brackets(
             movie, pred, enriched,
-            min_edge=config["min_edge"]
+            min_edge=config["min_edge"],
+            calibration=cal,
         )
 
         if not signals:
