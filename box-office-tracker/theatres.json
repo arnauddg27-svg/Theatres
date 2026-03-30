@@ -1,0 +1,99 @@
+{
+  "timezone_groups": {
+    "ET": {
+      "check_time_local": "7:20 PM",
+      "theatres": [
+        {
+          "name": "AMC Aventura 24",
+          "slug": "amc-aventura-24",
+          "url": "https://www.amctheatres.com/movie-theatres/miami/amc-aventura-24",
+          "city": "Aventura, FL",
+          "timezone": "America/New_York",
+          "largest_auditorium_seats": "~350 (IMAX or Dolby)"
+        },
+        {
+          "name": "AMC Neshaminy 24",
+          "slug": "amc-neshaminy-24",
+          "url": "https://www.amctheatres.com/movie-theatres/philadelphia/amc-neshaminy-24",
+          "city": "Bensalem, PA",
+          "timezone": "America/New_York",
+          "largest_auditorium_seats": "~350 (IMAX or Dolby)"
+        },
+        {
+          "name": "AMC Veterans 24",
+          "slug": "amc-veterans-24",
+          "url": "https://www.amctheatres.com/movie-theatres/tampa-bay/amc-veterans-24",
+          "city": "Tampa, FL",
+          "timezone": "America/New_York",
+          "largest_auditorium_seats": "~300 (Dolby Cinema)"
+        }
+      ]
+    },
+    "CT": {
+      "check_time_local": "7:20 PM",
+      "theatres": [
+        {
+          "name": "AMC DINE-IN Mesquite 30",
+          "slug": "amc-dine-in-mesquite-30",
+          "url": "https://www.amctheatres.com/movie-theatres/dallas-fort-worth/amc-dine-in-mesquite-30",
+          "city": "Mesquite, TX",
+          "timezone": "America/Chicago",
+          "largest_auditorium_seats": "~300"
+        },
+        {
+          "name": "AMC NorthPark 15",
+          "slug": "amc-northpark-15",
+          "url": "https://www.amctheatres.com/movie-theatres/dallas-fort-worth/amc-northpark-15",
+          "city": "Dallas, TX",
+          "timezone": "America/Chicago",
+          "largest_auditorium_seats": "~300 (Dolby Cinema)"
+        },
+        {
+          "name": "AMC Gulf Pointe 30",
+          "slug": "amc-gulf-pointe-30",
+          "url": "https://www.amctheatres.com/movie-theatres/houston/amc-gulf-pointe-30",
+          "city": "Houston, TX",
+          "timezone": "America/Chicago",
+          "largest_auditorium_seats": "~350"
+        },
+        {
+          "name": "AMC River East 21",
+          "slug": "amc-river-east-21",
+          "url": "https://www.amctheatres.com/movie-theatres/chicago/amc-river-east-21",
+          "city": "Chicago, IL",
+          "timezone": "America/Chicago",
+          "largest_auditorium_seats": "~400 (IMAX)"
+        },
+        {
+          "name": "AMC DINE-IN Rosemont 12",
+          "slug": "amc-dine-in-rosemont-12",
+          "url": "https://www.amctheatres.com/movie-theatres/chicago/amc-dine-in-rosemont-12",
+          "city": "Rosemont, IL",
+          "timezone": "America/Chicago",
+          "largest_auditorium_seats": "~250"
+        }
+      ]
+    },
+    "PT": {
+      "check_time_local": "7:20 PM",
+      "theatres": [
+        {
+          "name": "AMC The Grove 14",
+          "slug": "amc-the-grove-14",
+          "url": "https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-grove-14",
+          "city": "Los Angeles, CA",
+          "timezone": "America/Los_Angeles",
+          "largest_auditorium_seats": "~350 (Dolby Cinema)"
+        },
+        {
+          "name": "AMC Burbank 16",
+          "slug": "amc-burbank-16",
+          "url": "https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-16",
+          "city": "Burbank, CA",
+          "timezone": "America/Los_Angeles",
+          "largest_auditorium_seats": "~350 (Dolby Cinema)"
+        }
+      ]
+    }
+  }
+}

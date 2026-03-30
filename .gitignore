@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# Env
+.env
+*.env
+
+# Data / DB
+box-office-tracker/data/trades.db
+
+# Archives
+*.zip
+
+# macOS
+.DS_Store
