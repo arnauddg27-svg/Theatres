@@ -18,6 +18,9 @@ on:
         required: false
         default: 'ALL'
 
+permissions:
+  contents: write
+
 env:
   # Map UTC hour to timezone group for scheduled runs
   # 0=ET, 2=CT, 4=PT
