@@ -414,18 +414,21 @@ def parse_showtime_hour(time_str):
     return None
 
 
-def find_evening_shows(showtimes, movie_title):
+def find_evening_shows(showtimes, movie_title, current_hour=None):
     """
-    Find all evening shows (6-9pm) for a movie, one per format tier.
+    Find all past/in-progress evening shows (5pm-midnight) for a movie.
 
-    Returns a list of (show, reason) tuples — one per unique format,
-    each the closest-to-7pm showtime in that format. This ensures
-    week-over-week comparability: we always measure the prime evening
-    show for each format tier the movie was given.
+    Returns ALL shows per format that have already started (showtime <= now),
+    so we capture actual attendance rather than advance bookings.
+    If no shows have started yet (early run), falls back to all evening shows.
 
-    The format tier (IMAX vs Dolby vs Laser etc.) and the occupancy %
-    are what matter for prediction — not absolute seat count.
+    current_hour: decimal hour in local theatre timezone (e.g. 21.5 = 9:30pm).
+                  Defaults to now if not provided.
     """
+    if current_hour is None:
+        now = datetime.now()
+        current_hour = now.hour + now.minute / 60
+
     movie_lower = movie_title.lower().strip()
     matching = [s for s in showtimes
                 if movie_lower in s.get("movie", "").lower()
@@ -434,33 +437,38 @@ def find_evening_shows(showtimes, movie_title):
     if not matching:
         return []
 
-    # Filter to evening window (6 PM - 9 PM) for consistency
-    evening = []
-    for s in matching:
-        hour = parse_showtime_hour(s.get("showtime", ""))
-        if hour and 18 <= hour <= 21:
-            evening.append(s)
+    # Filter to evening window (5pm - midnight)
+    evening = [s for s in matching
+               if parse_showtime_hour(s.get("showtime", "")) is not None
+               and 17 <= parse_showtime_hour(s.get("showtime", "")) <= 24]
 
     if not evening:
-        # Fallback: closest to 7pm from whatever is available
         evening = matching
 
-    # Group by format, pick closest to 7pm in each format
-    by_format = {}
-    for s in evening:
-        fmt = s.get("format", "Standard")
-        hour = parse_showtime_hour(s.get("showtime", "")) or 19
-        dist = abs(hour - 19)
-        if fmt not in by_format or dist < by_format[fmt][1]:
-            by_format[fmt] = (s, dist)
+    # Only keep shows that have already started (showtime <= now)
+    started = [s for s in evening
+               if (parse_showtime_hour(s.get("showtime", "")) or 25) <= current_hour]
 
-    # Sort by format priority (highest first), return all
+    # If nothing has started yet, fall back to all evening shows
+    if not started:
+        started = evening
+
+    # Return ALL started shows per format (not just one per format)
     results = []
-    for fmt, (show, _) in sorted(by_format.items(),
-                                  key=lambda x: -get_format_priority(x[0])):
-        reason = f"{fmt} @ {show.get('showtime', '?')} (evening, closest to 7pm)"
-        results.append((show, reason))
+    seen = set()
+    for s in sorted(started,
+                    key=lambda x: -(parse_showtime_hour(x.get("showtime", "")) or 0)):
+        fmt = s.get("format", "Standard")
+        st = s.get("showtime", "?")
+        key = (fmt, st)
+        if key in seen:
+            continue
+        seen.add(key)
+        reason = f"{fmt} @ {st} (started, past showtime)"
+        results.append((show, reason) if False else (s, reason))
 
+    # Sort by format priority
+    results.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
     return results
 
 
@@ -535,15 +543,15 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
             issues.append(f"{theatre['name']}: No showtimes retrieved")
             return results, issues, csv_rows
 
+        current_hour = datetime.now().hour + datetime.now().minute / 60
+        check_time = datetime.now().isoformat()
+
         for movie_title in movie_titles:
-            evening_shows = find_evening_shows(showtimes, movie_title)
+            evening_shows = find_evening_shows(showtimes, movie_title, current_hour)
 
             if not evening_shows:
-                issues.append(f"{theatre['name']}: '{movie_title}' not showing")
+                issues.append(f"{theatre['name']}: '{movie_title}' not showing or no started shows")
                 continue
-
-            current_hour = datetime.now().hour + datetime.now().minute / 60
-            check_time = datetime.now().isoformat()
 
             for show, reason in evening_shows:
                 fmt = show.get("format", "Standard")
