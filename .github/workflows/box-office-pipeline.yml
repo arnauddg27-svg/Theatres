@@ -9,13 +9,13 @@ on:
     - cron: '0 23 * * 4,5,6,0'
     # PT ~5pm = 1am UTC (Fri-Mon, next calendar day)
     - cron: '0 1 * * 5,6,0,1'
-    # ── Phase 2: fetch seat maps at ~9pm local (shows well underway) ─────────
-    # ET ~9pm = 2am UTC  (offset by 1h from Phase 1 PT to avoid collision)
-    - cron: '0 2 * * 4,5,6,0'
-    # CT ~9pm = 4am UTC
-    - cron: '0 4 * * 4,5,6,0'
-    # PT ~9pm = 6am UTC
-    - cron: '0 6 * * 4,5,6,0'
+    # ── Phase 2: fetch seat maps at ~10pm local (shows well underway) ────────
+    # ET ~10pm = 3am UTC
+    - cron: '0 3 * * 4,5,6,0'
+    # CT ~10pm = 5am UTC
+    - cron: '0 5 * * 4,5,6,0'
+    # PT ~10pm = 7am UTC
+    - cron: '0 7 * * 4,5,6,0'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
     - cron: '0 14 * * 2'
   workflow_dispatch:
@@ -36,7 +36,7 @@ env:
   # Map UTC hour → timezone group
   # Phase 1 (collect-links): 21=ET, 23=CT, 1=PT
   # Phase 2 (seat maps):      2=ET,  4=CT, 6=PT
-  TZ_BY_HOUR:   '{"21":"ET","23":"CT","1":"PT","2":"ET","4":"CT","6":"PT"}'
+  TZ_BY_HOUR:   '{"21":"ET","23":"CT","1":"PT","3":"ET","5":"CT","7":"PT"}'
   # Hours that indicate Phase 1 (collect-links) rather than Phase 2 (seat scrape)
   PHASE1_HOURS: '["21","23","1"]'
 
