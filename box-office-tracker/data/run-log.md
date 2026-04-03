@@ -788,3 +788,557 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie SCREENX at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie SCREENX at AMC; AMC Santa Monica 7: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Santa Monica 7: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Santa Monica 7: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Lakewood Mall 12: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Lakewood Mall 12: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Brentwood 14: No seat map for The Super Mario Galaxy Movie IMAX at AMC; AMC Orange 30: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Orange 30: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Tustin 14 @ The District: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Tustin 14 @ The District: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Metreon 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Metreon 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Metreon 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Bay Street 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Bay Street 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Eastridge 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Eastridge 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC NewPark 12: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC NewPark 12: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mission Valley 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mission Valley 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Palm Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Palm Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Chula Vista 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Chula Vista 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Chula Vista 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Poway 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Poway 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC UTC 14: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC UTC 14: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Kent Station 14: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie XL at AMC; AMC Woodinville 12: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Arizona Center 24: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Westminster Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Westminster Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Highlands Ranch 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Highlands Ranch 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC DINE-IN Southlands 16: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC
 
 ---
+
+## 2026-04-03 08:10 — PT Group
+
+**Polymarket movies tracked:** The Super Mario Galaxy Movie
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC The Grove 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 10:45pm | 28.6% | -887 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 8:00pm | 71.9% | -722 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 5:15pm | 68% | -557 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 11:30pm | 6.5% | -932 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 8:45pm | 69.8% | -767 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:00pm | 58.1% | -602 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | Laser at AMC | 10:15pm | 7.8% | -857 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 51.2% | -662 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | RealD 3D | 9:45pm | 0% | -827 min |
+| AMC The Grove 14 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 15.1% | -692 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:45pm | 62.7% | -827 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 79.1% | -662 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 1.1% | -887 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 54.7% | -722 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 5.5% | -557 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 5.7% | -857 min |
+| AMC Century City 15 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 30% | -692 min |
+| AMC Burbank 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 11:15pm | 10.3% | -917 min |
+| AMC Burbank 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 8:40pm | 76.2% | -762 min |
+| AMC Burbank 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:00pm | 74.3% | -602 min |
+| AMC Santa Monica 7 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 10.9% | -542 min |
+| AMC Santa Monica 7 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 11.1% | -782 min |
+| AMC Santa Monica 7 | The Super Mario Galaxy Movie | RealD 3D | 7:40pm | 12.8% | -702 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 7:10pm | 43% | -672 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 11:20pm | 5.9% | -921 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 8:45pm | 45.6% | -767 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:00pm | 42.6% | -602 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:55pm | 0% | -897 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:35pm | 0% | -876 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:05pm | 8.3% | -786 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:20pm | 10.9% | -741 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 13.8% | -707 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 5.2% | -572 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 2.2% | -857 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | RealD 3D | 9:25pm | 0.5% | -807 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 1.4% | -692 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | RealD 3D | 6:35pm | 9.2% | -636 min |
+| AMC The Regency 20 | The Super Mario Galaxy Movie | Spanish Language Dubbed with No Subtitles | 5:10pm | 2.8% | -552 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 9:10pm | 30% | -792 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:10pm | 64.8% | -732 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:40pm | 63.9% | -702 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 6:25pm | 60% | -627 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 61.5% | -572 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 52.8% | -542 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | RealD 3D | 10:00pm | 2.2% | -842 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | RealD 3D | 8:35pm | 25.8% | -756 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | RealD 3D | 7:15pm | 32.3% | -677 min |
+| AMC Lakewood Mall 12 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 9.1% | -602 min |
+| AMC DINE-IN Marina 6 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 14.9% | -857 min |
+| AMC DINE-IN Marina 6 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 54.3% | -692 min |
+| AMC DINE-IN Marina 6 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 11:00pm | 22.4% | -902 min |
+| AMC DINE-IN Marina 6 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 8:30pm | 69% | -752 min |
+| AMC DINE-IN Marina 6 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 6:00pm | 67.2% | -602 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | IMAX at AMC | 9:00pm | 2.4% | -781 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | IMAX at AMC | 6:00pm | 26.5% | -601 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:00pm | 14.8% | -841 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 65.8% | -661 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 1.1% | -811 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 2.2% | -796 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 12.4% | -721 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 1.5% | -616 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 7.4% | -541 min |
+| AMC Brentwood 14 | The Super Mario Galaxy Movie | RealD 3D | 6:30pm | 7.1% | -631 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 6.3% | -886 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:15pm | 22.7% | -856 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 55% | -721 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 71.9% | -691 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 50% | -556 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 11:15pm | 0% | -916 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 10:00pm | 0% | -841 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 9:45pm | 14.6% | -826 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 12.2% | -751 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 7:15pm | 9.4% | -676 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 7:00pm | 43.8% | -661 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 25.5% | -586 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 9:15pm | 46.3% | -796 min |
+| AMC DINE-IN Fullerton 20 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 6:30pm | 83.3% | -631 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:30pm | 48.8% | -811 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:30pm | 76.1% | -631 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | XL at AMC | 11:00pm | 1% | -901 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | XL at AMC | 8:00pm | 10.9% | -721 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 11:35pm | 2.2% | -935 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 11:20pm | 0% | -920 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 10:50pm | 0% | -890 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 10:25pm | 0% | -866 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 9.2% | -751 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 20.9% | -736 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 7:50pm | 18% | -710 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 8.4% | -646 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 6:10pm | 14.6% | -611 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 16.8% | -571 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 3.4% | -556 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | RealD 3D | 10:00pm | 0% | -841 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 3.9% | -781 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | RealD 3D | 7:00pm | 9.8% | -661 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 3.9% | -601 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | RealD 3D | 5:00pm | 2% | -541 min |
+| AMC Orange 30 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 8:45pm | 0% | -766 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 10:00pm | 56.3% | -841 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 7:15pm | 71.5% | -676 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:45pm | 22% | -886 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 8:00pm | 65.3% | -721 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:15pm | 56.7% | -556 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 13.6% | -871 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 60.2% | -691 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 64% | -631 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 4.1% | -781 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 9.6% | -736 min |
+| AMC Tustin 14 @ The District | The Super Mario Galaxy Movie | RealD 3D | 5:35pm | 34.2% | -575 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 11:30pm | 16.1% | -931 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 8:45pm | 68.9% | -766 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:00pm | 78.3% | -601 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:15pm | 22.9% | -856 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 69.2% | -691 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 11:00pm | 0% | -901 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -886 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 4.4% | -871 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 11.1% | -841 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 33.7% | -796 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 58.1% | -721 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 59.4% | -631 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 24.3% | -571 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 49.5% | -556 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | RealD 3D | 11:15pm | 0% | -916 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | RealD 3D | 9:45pm | 0% | -826 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 17.4% | -751 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | RealD 3D | 7:00pm | 26.6% | -661 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 11% | -586 min |
+| AMC Puente Hills 20 | The Super Mario Galaxy Movie | English Spoken with Chinese and English Subtitles | 8:15pm | 2.7% | -736 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | IMAX at AMC | 10:45pm | 2.4% | -885 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | IMAX at AMC | 8:00pm | 59.6% | -720 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | IMAX at AMC | 5:15pm | 36.8% | -555 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:45pm | 44.1% | -825 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 66.5% | -660 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 35.9% | -840 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 66.3% | -765 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 59.1% | -675 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Laser at AMC | 6:00pm | 61.2% | -600 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 3.4% | -855 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | RealD 3D | 9:15pm | 0% | -795 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 32.9% | -735 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 41.6% | -690 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 10.6% | -570 min |
+| AMC Norwalk 20 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 6:30pm | 38.8% | -630 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | Laser at AMC | 9:55pm | 20.5% | -835 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 60% | -750 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 77.8% | -660 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:35pm | 57.8% | -574 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | RealD 3D | 10:25pm | 2.2% | -865 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | RealD 3D | 9:25pm | 4.4% | -805 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 44.4% | -690 min |
+| AMC Marina Pacifica 12 | The Super Mario Galaxy Movie | RealD 3D | 6:30pm | 42.9% | -630 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 45.7% | -840 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | Laser at AMC | 8:40pm | 69.2% | -760 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | Laser at AMC | 7:10pm | 74.1% | -670 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | Laser at AMC | 6:25pm | 67.5% | -625 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | RealD 3D | 10:45pm | 0% | -885 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | RealD 3D | 9:15pm | 23.1% | -795 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | RealD 3D | 8:00pm | 45.7% | -720 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | RealD 3D | 5:50pm | 30.8% | -589 min |
+| AMC Montebello 10 | The Super Mario Galaxy Movie | RealD 3D | 5:10pm | 12.8% | -550 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 7.8% | -824 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 22.1% | -764 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 60.3% | -659 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 3.4% | -869 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 34.5% | -704 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | RealD 3D | 6:30pm | 34% | -629 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 26.5% | -599 min |
+| AMC La Mirada 7 | The Super Mario Galaxy Movie | RealD 3D | 5:00pm | 18.1% | -539 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:15pm | 9.2% | -854 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 49.7% | -689 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -884 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 5.3% | -629 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 0% | -554 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 7.3% | -749 min |
+| AMC Metreon 16 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 8.1% | -584 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:30pm | 13.6% | -869 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:45pm | 60.7% | -704 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 24.8% | -539 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | XL at AMC | 10:00pm | 0% | -839 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | XL at AMC | 7:15pm | 2.1% | -674 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 0% | -824 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 2% | -779 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 5.9% | -689 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 5.6% | -659 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 5.4% | -749 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 8.3% | -584 min |
+| AMC Bay Street 16 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 6:15pm | 0% | -614 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:45pm | 19.5% | -823 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 72.3% | -658 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Laser at AMC | 11:00pm | 0% | -898 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 0% | -808 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 15.4% | -793 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 30% | -733 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 14% | -643 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 0% | -853 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 21.7% | -688 min |
+| AMC Mercado 20 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 6:30pm | 13.5% | -628 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:15pm | 30.3% | -793 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:30pm | 44.1% | -628 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 0.7% | -823 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 0.7% | -763 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 21.8% | -658 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Laser at AMC | 6:00pm | 4% | -598 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 0.4% | -733 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 3.8% | -703 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 1.9% | -568 min |
+| AMC Eastridge 15 | The Super Mario Galaxy Movie | Spanish Language Dubbed with No Subtitles | 5:00pm | 3.4% | -538 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:15pm | 7.6% | -793 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:30pm | 33.8% | -628 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | XL at AMC | 10:00pm | 0.9% | -838 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | XL at AMC | 7:15pm | 2.2% | -673 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 0% | -778 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 0% | -703 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 0% | -538 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | RealD 3D | 8:45pm | 0% | -763 min |
+| AMC Saratoga 14 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 0.9% | -598 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:00pm | 24.6% | -778 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:00pm | 37.9% | -598 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 47.3% | -628 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 25.6% | -538 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 3.5% | -868 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 31.4% | -703 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 9:30pm | 3.3% | -808 min |
+| AMC NewPark 12 | The Super Mario Galaxy Movie | English Spoken with Chinese and English Subtitles | 7:15pm | 10.1% | -673 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 9:00pm | 57.8% | -777 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:15pm | 66.4% | -612 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:00pm | 19.4% | -837 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:15pm | 65.8% | -672 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 11:00pm | 0% | -897 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 0% | -867 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 25% | -732 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 33.9% | -702 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 17.9% | -567 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 17.4% | -537 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | RealD 3D | 9:30pm | 10.2% | -807 min |
+| AMC Sunnyvale 12 | The Super Mario Galaxy Movie | RealD 3D | 6:45pm | 17.6% | -642 min |
+| AMC Kabuki 8 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -837 min |
+| AMC Kabuki 8 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 12.5% | -777 min |
+| AMC Kabuki 8 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 28.9% | -717 min |
+| AMC Kabuki 8 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 23.9% | -657 min |
+| AMC Kabuki 8 | The Super Mario Galaxy Movie | Laser at AMC | 6:00pm | 19.3% | -597 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:15pm | 27.3% | -852 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 74.1% | -687 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 0% | -822 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 1.1% | -777 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 0% | -732 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 13.9% | -717 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 5.1% | -657 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 5% | -612 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 1% | -567 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 10:45pm | 0% | -882 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 9:30pm | 0% | -807 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 8:45pm | 0% | -762 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 6:45pm | 5.4% | -642 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 0% | -597 min |
+| AMC Mission Valley 20 | The Super Mario Galaxy Movie | RealD 3D | 5:15pm | 3.6% | -552 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:30pm | 12.6% | -867 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:45pm | 66.7% | -702 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 47% | -537 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | XL at AMC | 8:45pm | 11.4% | -762 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | XL at AMC | 6:00pm | 28.6% | -597 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 6% | -837 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 9.1% | -792 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 32.7% | -672 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 29.5% | -612 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 6.6% | -732 min |
+| AMC Palm Promenade 24 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 4.4% | -567 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -836 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 23.4% | -806 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 3.3% | -746 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 16.1% | -731 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 21.2% | -671 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 10.6% | -641 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 13.4% | -566 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 1.4% | -536 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 0% | -866 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 1.2% | -776 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 16.7% | -701 min |
+| AMC La Jolla 12 | The Super Mario Galaxy Movie | RealD 3D | 6:15pm | 20.9% | -611 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 11:00pm | 0% | -896 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 10:15pm | 2.3% | -851 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 4.6% | -791 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 28.5% | -761 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 66.3% | -686 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 63.2% | -626 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 0% | -566 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | RealD 3D | 10:45pm | 1.2% | -881 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | RealD 3D | 8:00pm | 36% | -716 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 29.2% | -596 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | RealD 3D | 5:15pm | 32.6% | -551 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | undefined | 9:45pm | 9.8% | -821 min |
+| AMC Chula Vista 10 | The Super Mario Galaxy Movie | undefined | 7:00pm | 67.5% | -656 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:30pm | 14.5% | -805 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:45pm | 65.6% | -640 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | XL at AMC | 10:00pm | 0% | -835 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | XL at AMC | 7:15pm | 13.8% | -670 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 0% | -865 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 2.7% | -745 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 7.5% | -700 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:45pm | 8.2% | -580 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 8% | -535 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 0% | -775 min |
+| AMC Otay Ranch 12 | The Super Mario Galaxy Movie | RealD 3D | 6:15pm | 4.7% | -610 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 9:30pm | 4.4% | -805 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:45pm | 19.6% | -640 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 11:00pm | 7.5% | -895 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 8:30pm | 60.2% | -745 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:45pm | 57.9% | -580 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | XL at AMC | 10:00pm | 0% | -835 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | XL at AMC | 7:15pm | 3.3% | -670 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -880 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 1.6% | -775 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 16% | -715 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 22.2% | -550 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 0% | -865 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 0% | -700 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | RealD 3D | 6:15pm | 4.2% | -610 min |
+| AMC Plaza Bonita 14 | The Super Mario Galaxy Movie | RealD 3D | 5:00pm | 0% | -535 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 7.6% | -805 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | Laser at AMC | 7:40pm | 52.9% | -695 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 63.1% | -670 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 81.6% | -610 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 50% | -535 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 2.6% | -775 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 43.8% | -730 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | RealD 3D | 6:45pm | 69.7% | -640 min |
+| AMC Poway 10 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 52.1% | -565 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:45pm | 26.6% | -820 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 71.6% | -655 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | PRIME at AMC | 10:45pm | 4.9% | -880 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | PRIME at AMC | 8:00pm | 26.8% | -715 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | PRIME at AMC | 5:15pm | 22% | -550 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 10:15pm | 2.4% | -850 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 0% | -790 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 11% | -760 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 35.7% | -685 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 8.9% | -625 min |
+| AMC UTC 14 | The Super Mario Galaxy Movie | Laser at AMC | 6:00pm | 8.8% | -595 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:00pm | 16.3% | -834 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 63.9% | -684 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 54.4% | -534 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | XL at AMC | 10:30pm | 1.8% | -864 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | XL at AMC | 5:30pm | 12.3% | -564 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -879 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 6% | -819 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 0% | -774 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 2.1% | -669 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 8.4% | -624 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | Laser at AMC | 6:10pm | 2.5% | -604 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | RealD 3D | 9:30pm | 1% | -804 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | RealD 3D | 8:00pm | 2.8% | -714 min |
+| AMC Southcenter 16 | The Super Mario Galaxy Movie | RealD 3D | 7:00pm | 2.9% | -654 min |
+| AMC Pacific Place 11 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 1.5% | -744 min |
+| AMC Pacific Place 11 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 2.6% | -579 min |
+| AMC Pacific Place 11 | The Super Mario Galaxy Movie | undefined | 10:15pm | 4.5% | -849 min |
+| AMC Pacific Place 11 | The Super Mario Galaxy Movie | undefined | 7:30pm | 16.2% | -684 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 11:00pm | 1.1% | -894 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 8:30pm | 21.1% | -744 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:00pm | 31.8% | -594 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:30pm | 16.4% | -804 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 60.3% | -654 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -834 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 10.6% | -774 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 28.8% | -699 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 23.6% | -684 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 29.5% | -669 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 41.5% | -624 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 13.6% | -609 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 17.8% | -549 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 11.4% | -534 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 0% | -864 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | RealD 3D | 8:00pm | 3.3% | -714 min |
+| AMC Kent Station 14 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 32.2% | -564 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:15pm | 30.9% | -789 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:30pm | 52% | -624 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | XL at AMC | 10:45pm | 0% | -879 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | XL at AMC | 8:00pm | 9.5% | -714 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | XL at AMC | 5:15pm | 3.2% | -549 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 0% | -864 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:45pm | 0.6% | -819 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 4.3% | -654 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | RealD 3D | 8:45pm | 0% | -759 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 0.9% | -699 min |
+| AMC Alderwood Mall 16 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 8.5% | -594 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | Laser at AMC | 10:20pm | 3.2% | -854 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | Laser at AMC | 9:10pm | 25% | -784 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | Laser at AMC | 7:40pm | 17.3% | -694 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 46.8% | -654 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 30.8% | -534 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | RealD 3D | 9:40pm | 1.4% | -814 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | RealD 3D | 8:10pm | 14.9% | -724 min |
+| AMC Factoria 8 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 29.9% | -564 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:30pm | 20.8% | -864 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:45pm | 67.2% | -699 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 66.4% | -534 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -834 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 33.3% | -744 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 43.2% | -669 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | Laser at AMC | 5:45pm | 43.2% | -579 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | RealD 3D | 9:15pm | 11.7% | -789 min |
+| AMC Woodinville 12 | The Super Mario Galaxy Movie | RealD 3D | 6:30pm | 29.8% | -624 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | RealD 3D | 10:15pm | 3.5% | -848 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 0% | -743 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 5.8% | -683 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 4.6% | -578 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 10:45pm | 0% | -878 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 10:30pm | 0% | -863 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 9:45pm | 0.2% | -818 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 9:30pm | 0% | -803 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 8:00pm | 4.8% | -713 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 7:00pm | 4.3% | -653 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | Spanish Language Dubbed with No Subtitles | 6:45pm | 4% | -638 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 6:15pm | 12.5% | -608 min |
+| AMC Arizona Center 24 | The Super Mario Galaxy Movie | undefined | 5:15pm | 6.3% | -548 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 9:00pm | 0.7% | -773 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:15pm | 16.2% | -608 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:30pm | 3% | -863 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:45pm | 53.8% | -698 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 50% | -533 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -878 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -833 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 4.4% | -743 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 23.8% | -683 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 27.4% | -668 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | Laser at AMC | 5:45pm | 15.6% | -578 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | RealD 3D | 11:00pm | 0% | -893 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | RealD 3D | 9:30pm | 7.3% | -803 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 0% | -728 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | RealD 3D | 6:45pm | 8.3% | -638 min |
+| AMC Desert Ridge 18 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 1.9% | -563 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 8:45pm | 12.9% | -758 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:00pm | 25.2% | -593 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:30pm | 2% | -863 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:45pm | 43.7% | -698 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 5:00pm | 12.2% | -533 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Laser at AMC | 10:00pm | 0% | -833 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 3.5% | -803 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Laser at AMC | 7:15pm | 26.1% | -668 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 16% | -638 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | RealD 3D | 9:45pm | 0% | -818 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 7.9% | -728 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | RealD 3D | 7:00pm | 30.4% | -653 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 41.3% | -563 min |
+| AMC Deer Valley 17 | The Super Mario Galaxy Movie | Spanish Language Dubbed with No Subtitles | 9:15pm | 24.3% | -788 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | PRIME at AMC | 9:45pm | 4.3% | -817 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | PRIME 3D | 7:00pm | 47.3% | -652 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 10:30pm | 4.4% | -862 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 10:15pm | 8.3% | -847 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 9:30pm | 6.6% | -802 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 16.7% | -742 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 13.2% | -727 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 7:45pm | 31.9% | -697 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 7:30pm | 57.3% | -682 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 49.5% | -637 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:45pm | 59.4% | -577 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 37.4% | -562 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 17.6% | -532 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | RealD 3D | 9:00pm | 4.4% | -772 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | RealD 3D | 8:00pm | 6.3% | -712 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | RealD 3D | 6:15pm | 3.3% | -607 min |
+| AMC Ahwatukee 24 | The Super Mario Galaxy Movie | RealD 3D | 5:15pm | 28.1% | -547 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 11:30pm | 2.2% | -922 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 8:45pm | 11.8% | -757 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:00pm | 14.8% | -592 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:15pm | 13.7% | -847 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 34.5% | -682 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 11:00pm | 0% | -892 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -877 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 0% | -772 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:15pm | 0% | -727 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 6.7% | -712 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:30pm | 0% | -562 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 0% | -547 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | RealD 3D | 11:15pm | 0% | -907 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | RealD 3D | 10:00pm | 0% | -832 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 1.3% | -742 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | RealD 3D | 7:15pm | 0% | -667 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | RealD 3D | 5:45pm | 1.8% | -577 min |
+| AMC Westgate 20 | The Super Mario Galaxy Movie | English Spoken with Spanish Subtitles | 6:15pm | 1.3% | -607 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:40pm | 19.4% | -812 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 71% | -652 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 10:40pm | 0% | -872 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 9:25pm | 0% | -797 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:40pm | 22.2% | -752 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 29.7% | -712 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:45pm | 47.9% | -637 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:00pm | 48.9% | -592 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:50pm | 29.5% | -582 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:20pm | 31% | -552 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 44.6% | -727 min |
+| AMC Westminster Promenade 24 | The Super Mario Galaxy Movie | RealD 3D | 5:35pm | 23.2% | -567 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 9:15pm | 21% | -786 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | IMAX with Laser at AMC | 6:30pm | 62.9% | -621 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 10:15pm | 3.1% | -846 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:30pm | 22.3% | -681 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | Laser at AMC | 8:45pm | 22.2% | -756 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | Laser at AMC | 7:00pm | 25.8% | -651 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | RealD 3D | 9:45pm | 0% | -816 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | RealD 3D | 8:15pm | 2.8% | -726 min |
+| AMC Flatiron Crossing 14 | The Super Mario Galaxy Movie | RealD 3D | 5:30pm | 14.1% | -561 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:45pm | 9.5% | -816 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 7:00pm | 73.3% | -651 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 10:45pm | 0% | -876 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 9:15pm | 5.2% | -786 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:50pm | 3.8% | -760 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 8:00pm | 40% | -711 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:30pm | 67.1% | -621 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 71.2% | -606 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:50pm | 42.3% | -580 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:15pm | 66.5% | -546 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | Laser at AMC | 5:00pm | 45.9% | -531 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | RealD 3D | 8:30pm | 0% | -741 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | RealD 3D | 7:45pm | 0% | -696 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | RealD 3D | 7:15pm | 38.5% | -666 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | RealD 3D | 6:45pm | 24.4% | -636 min |
+| AMC Highlands Ranch 24 | The Super Mario Galaxy Movie | RealD 3D | 6:00pm | 34.1% | -591 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:00pm | 36% | -771 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:00pm | 78.3% | -591 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | RealD 3D | 10:30pm | 0% | -861 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | RealD 3D | 7:30pm | 20% | -681 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | RealD 3D | 5:15pm | 36.5% | -546 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Open Caption (On-screen Subtitles) | 11:15pm | 6.8% | -906 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 11:45pm | 0% | -936 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 10:30pm | 0% | -861 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 10:00pm | 2.2% | -831 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 9:45pm | 0% | -816 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 9:15pm | 17.8% | -786 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 8:15pm | 48.6% | -726 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 7:45pm | 44.4% | -696 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 7:15pm | 61.1% | -666 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 6:45pm | 73.3% | -636 min |
+| AMC DINE-IN Southlands 16 | The Super Mario Galaxy Movie | Dine-In Delivery to Seat | 6:15pm | 58.7% | -606 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | IMAX at AMC | 10:30pm | 1.6% | -861 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | IMAX at AMC | 7:45pm | 21.8% | -696 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | IMAX at AMC | 5:00pm | 33% | -531 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 9:30pm | 13.2% | -801 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Dolby Cinema at AMC | 6:45pm | 80.8% | -636 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Laser at AMC | 9:00pm | 12.9% | -771 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Laser at AMC | 8:30pm | 46.3% | -741 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Laser at AMC | 6:15pm | 54.8% | -606 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | Laser at AMC | 5:45pm | 63.2% | -576 min |
+| AMC Arapahoe Crossing 16 | The Super Mario Galaxy Movie | RealD 3D | 7:15pm | 23.2% | -666 min |
+
+**Issues:** AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Century City 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie SCREENX at AMC; AMC Burbank 16: No seat map for The Super Mario Galaxy Movie SCREENX at AMC; AMC The Americana at Brand 18: No showtimes retrieved; AMC Santa Monica 7: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Santa Monica 7: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC The Regency 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Lakewood Mall 12: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Orange 30: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Orange 30: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Metreon 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Metreon 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Bay Street 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Bay Street 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mercado 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Eastridge 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Eastridge 15: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Saratoga 14: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC NewPark 12: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC NewPark 12: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mission Valley 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Mission Valley 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Fashion Valley 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Palm Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Palm Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Chula Vista 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Poway 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Southcenter 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Alderwood Mall 16: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Westminster Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Westminster Promenade 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Highlands Ranch 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Highlands Ranch 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC
+
+---
