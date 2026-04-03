@@ -2,13 +2,20 @@ name: Box Office Pipeline
 
 on:
   schedule:
-    # Thu-Sun evening runs, staggered by timezone:
-    # ET ~8pm = midnight UTC  (Thu=4, Fri=5, Sat=6, Sun=0)
-    - cron: '0 0 * * 4,5,6,0'
-    # CT ~8pm = 2am UTC
+    # ── Phase 1: collect showtime links at ~5pm local (before shows start) ──
+    # ET ~5pm = 21 UTC
+    - cron: '0 21 * * 4,5,6,0'
+    # CT ~5pm = 23 UTC
+    - cron: '0 23 * * 4,5,6,0'
+    # PT ~5pm = 1am UTC (Fri-Mon, next calendar day)
+    - cron: '0 1 * * 5,6,0,1'
+    # ── Phase 2: fetch seat maps at ~9pm local (shows well underway) ─────────
+    # ET ~9pm = 2am UTC  (offset by 1h from Phase 1 PT to avoid collision)
     - cron: '0 2 * * 4,5,6,0'
-    # PT ~8pm = 4am UTC
+    # CT ~9pm = 4am UTC
     - cron: '0 4 * * 4,5,6,0'
+    # PT ~9pm = 6am UTC
+    - cron: '0 6 * * 4,5,6,0'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
     - cron: '0 14 * * 2'
   workflow_dispatch:
@@ -17,14 +24,21 @@ on:
         description: 'Timezone group to scrape (ET, CT, PT, or ALL)'
         required: false
         default: 'ALL'
+      phase:
+        description: 'Phase to run: collect-links (Phase 1) or scrape (Phase 2)'
+        required: false
+        default: 'scrape'
 
 permissions:
   contents: write
 
 env:
-  # Map UTC hour to timezone group for scheduled runs
-  # 0=ET, 2=CT, 4=PT
-  TZ_BY_HOUR: '{"0":"ET","2":"CT","4":"PT"}'
+  # Map UTC hour → timezone group
+  # Phase 1 (collect-links): 21=ET, 23=CT, 1=PT
+  # Phase 2 (seat maps):      2=ET,  4=CT, 6=PT
+  TZ_BY_HOUR:   '{"21":"ET","23":"CT","1":"PT","2":"ET","4":"CT","6":"PT"}'
+  # Hours that indicate Phase 1 (collect-links) rather than Phase 2 (seat scrape)
+  PHASE1_HOURS: '["21","23","1"]'
 
 jobs:
   collect:
@@ -48,15 +62,18 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium --with-deps
 
-      - name: Determine timezone group
+      - name: Determine timezone group and phase
         id: tz
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "group=${{ github.event.inputs.tz_group || 'ALL' }}" >> "$GITHUB_OUTPUT"
+            echo "phase=${{ github.event.inputs.phase || 'scrape' }}" >> "$GITHUB_OUTPUT"
           else
             HOUR=$(date -u +%-H)
             GROUP=$(echo '${{ env.TZ_BY_HOUR }}' | python3 -c "import sys,json; print(json.load(sys.stdin).get(sys.argv[1],'ALL'))" "$HOUR")
+            IS_PHASE1=$(echo '${{ env.PHASE1_HOURS }}' | python3 -c "import sys,json; print('collect-links' if str(sys.argv[1]) in json.load(sys.stdin) else 'scrape')" "$HOUR")
             echo "group=$GROUP" >> "$GITHUB_OUTPUT"
+            echo "phase=$IS_PHASE1" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Determine if calibration day
@@ -70,13 +87,18 @@ jobs:
         working-directory: box-office-tracker
         run: python3 calibrate.py
 
-      - name: Collect seat data (${{ steps.tz.outputs.group }})
-        if: steps.cal.outputs.is_tuesday != 'true'
+      - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
+        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'collect-links'
+        working-directory: box-office-tracker
+        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
+
+      - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
+        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 scraper.py ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
-        if: steps.cal.outputs.is_tuesday != 'true'
+        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 predict.py
 
@@ -89,5 +111,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add box-office-tracker/data/
-          git diff --staged --quiet || git commit -m "data: box office ${{ steps.tz.outputs.group }} run"
+          git diff --staged --quiet || git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           git push
