@@ -71,6 +71,20 @@ FORMAT_PRIORITY = {
 # Concurrency — how many browser tabs to run in parallel.
 MAX_CONCURRENT_TABS = 5
 
+# UTC offsets for each tz group (April = DST in effect for US)
+TZ_UTC_OFFSET = {"ET": -4, "CT": -5, "MT": -6, "PT": -7}
+
+
+def local_now(tz_group):
+    """Return current datetime adjusted to the local time for a tz group."""
+    offset = TZ_UTC_OFFSET.get(tz_group, 0)
+    return datetime.now(timezone.utc) + timedelta(hours=offset)
+
+
+def local_date_str(tz_group):
+    """Return today's date string in the local timezone of the tz group."""
+    return local_now(tz_group).strftime("%Y-%m-%d")
+
 
 def opening_weekend_friday(dt=None):
     """Return the Friday that anchors this opening weekend.
@@ -539,8 +553,9 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     results = []
     issues = []
     csv_rows = []
-    today = datetime.now().strftime("%Y-%m-%d")
-    day_of_week = datetime.now().strftime("%A")
+    # Use the passed date_str (already adjusted to local TZ) as the CSV date stamp
+    today = date_str
+    day_of_week = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
     try:
         current_hour = datetime.now().hour + datetime.now().minute / 60
@@ -688,12 +703,13 @@ async def run_collect_links_async(tz_group="ALL"):
         return
 
     movie_titles = [m["movie_title"] for m in poly_markets]
-    today = datetime.now().strftime("%Y-%m-%d")
+    ref_tz = tz_group if tz_group != "ALL" else "ET"
+    today = local_date_str(ref_tz)
     groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
     all_theatres = []
     for group in groups:
         for t in theatres_map.get(group, []):
-            all_theatres.append({**t, "_tz": group})
+            all_theatres.append({**t, "_tz": group, "_date": local_date_str(group)})
 
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
 
@@ -705,7 +721,8 @@ async def run_collect_links_async(tz_group="ALL"):
 
         async def bounded(theatre):
             async with sem:
-                result = await _collect_links_theatre(browser, theatre, today, movie_titles)
+                t_date = theatre.get("_date", today)
+                result = await _collect_links_theatre(browser, theatre, t_date, movie_titles)
                 return theatre["name"], theatre.get("_tz", ""), result
 
         outcomes = await asyncio.gather(*[bounded(t) for t in all_theatres], return_exceptions=True)
@@ -740,11 +757,19 @@ async def run_async(tz_group="ALL"):
 
     ensure_csv_header()
 
+    # Use tz-adjusted local date (server clock is UTC; runs after midnight UTC
+    # would otherwise stamp tomorrow's date on tonight's data).
+    groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
+    # For mixed-TZ runs use ET as the reference (most conservative, first to tick over)
+    ref_tz = tz_group if tz_group != "ALL" else "ET"
+    local = local_now(ref_tz)
+    today = local.strftime("%Y-%m-%d")
+    local_dow = local.strftime("%A")
+
     # Only collect data Thu-Sun (opening weekend). Mon-Wed data has no
     # day-weight in predict.py and would corrupt the weekend projection.
-    day_of_week = datetime.now().strftime("%A")
-    if day_of_week not in ("Thursday", "Friday", "Saturday", "Sunday"):
-        print(f"\n⚠️  Today is {day_of_week} — skipping collection.")
+    if local_dow not in ("Thursday", "Friday", "Saturday", "Sunday"):
+        print(f"\n⚠️  Today is {local_dow} ({ref_tz} local) — skipping collection.")
         print(f"   Seat data is only useful Thu-Sun (opening weekend).")
         print(f"   Use 'python scraper.py --force' to override.")
         if "--force" not in sys.argv:
@@ -765,17 +790,16 @@ async def run_async(tz_group="ALL"):
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
 
     # Step 2: Build flat list of theatres to scrape
-    today = datetime.now().strftime("%Y-%m-%d")
-    weekend = opening_weekend_friday()
-    run_id = datetime.now().strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
-    groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
+    weekend = opening_weekend_friday(local)
+    run_id = local.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
 
     all_theatres = []
     for group in groups_to_check:
+        # Each group uses its own local date for the AMC showtime URL
         for theatre in theatres_map.get(group, []):
-            all_theatres.append({**theatre, "_tz": group})
+            all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
 
-    # Check for Phase 1 links saved today
+    # Check for Phase 1 links saved today (use per-group local date)
     saved_links = None
     if LINKS_JSON.exists():
         try:
@@ -802,14 +826,14 @@ async def run_async(tz_group="ALL"):
 
         async def bounded_scrape(theatre):
             async with sem:
-                # Phase 2: pass saved showtime IDs for this theatre (if any)
+                t_date = theatre.get("_date", today)
                 theatre_saved = None
                 if saved_links is not None:
                     entry = saved_links.get(theatre["name"])
                     if entry:
                         theatre_saved = entry.get("movies")
                 return await _scrape_theatre(
-                    browser, theatre, today, movie_titles, market_urls,
+                    browser, theatre, t_date, movie_titles, market_urls,
                     weekend_of=weekend, run_id=run_id,
                     saved_movies=theatre_saved,
                 )
