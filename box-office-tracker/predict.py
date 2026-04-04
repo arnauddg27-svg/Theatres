@@ -166,32 +166,24 @@ def save_calibration(cal):
 # ── Stage A: Per-Theatre Daily Revenue ───────────────────────────────────────
 
 def time_multiplier(row):
-    """Estimate multiplier for pre-showtime checks (tickets still being sold)."""
-    check_time = row.get("check_time", "")
-    show_time = row.get("show_datetime_local", "") or row.get("show_datetime_utc", "")
-    if not check_time or not show_time:
-        return 1.0
+    """Estimate multiplier based on minutes_after_showtime from the CSV.
+
+    Negative = scraped before show started (still selling tickets).
+    Zero or positive = scraped after show started (occupancy is near-final).
+    """
     try:
-        # Parse ISO timestamps
-        ct = datetime.fromisoformat(check_time.replace("Z", "+00:00"))
-        # show_datetime_local may be like "2026-03-23T19:00"
-        st = datetime.fromisoformat(show_time)
-        # Make both naive for comparison if needed
-        if ct.tzinfo and not st.tzinfo:
-            ct = ct.replace(tzinfo=None)
-        elif st.tzinfo and not ct.tzinfo:
-            st = st.replace(tzinfo=None)
-        minutes_to_show = (st - ct).total_seconds() / 60
-        if minutes_to_show > 120:
-            return 1.6
-        elif minutes_to_show > 60:
-            return 1.3
-        elif minutes_to_show > 0:
-            return 1.1
-        else:
-            return 1.0
+        delta = int(row.get("minutes_after_showtime", 0) or 0)
     except (ValueError, TypeError):
-        return 1.0
+        delta = 0
+
+    if delta < -120:
+        return 1.6   # >2h before showtime — occupancy will grow significantly
+    elif delta < -60:
+        return 1.3
+    elif delta < 0:
+        return 1.1   # <1h before — nearly final
+    else:
+        return 1.0   # after showtime — actual attendance
 
 
 def infer_format_rank(row):
@@ -546,26 +538,24 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
         csv_day = rows[0].get("day_of_week", "") if rows else ""
         day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
-        # Dedup by (theatre, format) using latest run_id.
-        # Each theatre-format pair is a separate observation — IMAX at
-        # AMC Grove is a different data point than Laser at AMC Grove.
-        # This keeps week-over-week comparisons fair: we always measure
-        # the same format tier at the same theatre at the same time slot.
-        latest_by_theatre_fmt = {}
+        # Group by (theatre, format): collect all showtime rows per pair.
+        # Each row is one showtime — revenue = sum across all captured showings.
+        # Use latest run_id to pick the freshest occupancy reading per showtime.
+        rows_by_theatre_fmt_show = {}
         for row in rows:
-            t_id = row.get("theatre_id", "") or row.get("theatre_name", "")
-            fmt = (row.get("auditorium_type", "") or row.get("format", "")
-                   or row.get("auditorium_name", "") or "Standard")
-            key = f"{t_id}|{fmt}"
+            t_id = row.get("theatre_name", "")
+            fmt = (row.get("auditorium_type", "") or row.get("auditorium_name", "") or "Standard")
+            showtime = row.get("showtime", "")
+            key = f"{t_id}|{fmt}|{showtime}"
             sort_key = row.get("run_id", "") or row.get("check_time", "")
-            prev = latest_by_theatre_fmt.get(key)
+            prev = rows_by_theatre_fmt_show.get(key)
             if not prev or sort_key > prev.get("_sort_key", ""):
-                latest_by_theatre_fmt[key] = {**row, "_sort_key": sort_key}
+                rows_by_theatre_fmt_show[key] = {**row, "_sort_key": sort_key}
 
-        # Stage A: per-theatre-format revenue
+        # Stage A: per-showtime revenue, then sum per theatre-format
         theatre_results = []
         no_data_count = 0
-        for row in latest_by_theatre_fmt.values():
+        for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
                 theatre_results.append(result)

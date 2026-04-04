@@ -166,20 +166,30 @@ def fetch_polymarket_box_office():
             continue
         seen_movies.add(movie_name)
 
-        # Get aggregate volume
-        total_volume = sum(
-            float(m.get("volume", 0) or 0)
-            for m in event.get("markets", [])
-        )
-
         slug = event.get("slug", "")
+        event_url = f"https://polymarket.com/event/{slug}"
+        total_volume = 0
+
+        # Extract individual bracket markets (one per question/price pair)
+        bracket_markets = []
+        for m in event.get("markets", []):
+            vol = float(m.get("volume", 0) or 0)
+            total_volume += vol
+            bracket_markets.append({
+                "market_question": m.get("question", ""),
+                "outcome_prices": m.get("outcomePrices", ""),
+                "volume": vol,
+                "market_id": str(m.get("id", "")),
+            })
+
         markets_found.append({
             "movie_title": movie_name,
-            "market_url": f"https://polymarket.com/event/{slug}",
+            "market_url": event_url,
             "question": title,
             "current_odds": "N/A",
             "volume": total_volume,
             "market_id": str(event.get("id", "")),
+            "bracket_markets": bracket_markets,
         })
 
     print(f"  Found {len(markets_found)} box office movie(s)")
@@ -208,7 +218,7 @@ def extract_movie_title(question):
 
 
 def save_polymarket_data(markets):
-    """Save Polymarket markets to CSV."""
+    """Save Polymarket bracket markets to CSV — one row per bracket question."""
     today = datetime.now().strftime("%Y-%m-%d")
 
     existing = set()
@@ -217,20 +227,28 @@ def save_polymarket_data(markets):
             reader = csv.DictReader(f)
             for row in reader:
                 if row.get("date") == today:
-                    existing.add(row.get("market_url", ""))
+                    existing.add(row.get("market_id", ""))
 
     new_count = 0
+    write_header = not POLY_CSV.exists()
     with open(POLY_CSV, "a", newline="") as f:
         writer = csv.writer(f)
+        if write_header:
+            writer.writerow(["date", "movie_title", "market_url",
+                             "market_question", "outcome_prices",
+                             "volume", "market_id", "notes"])
         for m in markets:
-            if m["market_url"] not in existing:
+            for bkt in m.get("bracket_markets", []):
+                if bkt["market_id"] in existing:
+                    continue
                 writer.writerow([
                     today, m["movie_title"], m["market_url"],
-                    m["question"], m["current_odds"], m["volume"], "",
+                    bkt["market_question"], bkt["outcome_prices"],
+                    bkt["volume"], bkt["market_id"], "",
                 ])
                 new_count += 1
 
-    print(f"  Saved {new_count} new market entries to CSV")
+    print(f"  Saved {new_count} new bracket market entries to CSV")
 
 
 # ─── AMC Playwright Scraper ─────────────────────────────────────────────────
