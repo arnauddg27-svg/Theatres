@@ -502,7 +502,7 @@ def ensure_csv_header():
                 "check_time", "minutes_after_showtime", "auditorium_name",
                 "auditorium_type", "total_seats", "seats_sold",
                 "seats_available", "occupancy_pct", "ticket_price_estimate",
-                "notes",
+                "amc_seat_map_url", "notes",
             ])
 
 
@@ -621,6 +621,8 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     print(f"    🪑 {theatre['name']}: {movie_title} {fmt} — "
                           f"{seat_data['seats_sold']}/{seat_data['total_seats']} ({occ}%)")
 
+                    showtime_id = show.get("showtime_id", "")
+                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}" if showtime_id else ""
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
@@ -629,7 +631,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         "", fmt,
                         seat_data["total_seats"], seat_data["seats_sold"],
                         seat_data["seats_available"], occ,
-                        "", f"{flags}. {reason}" if flags else reason,
+                        amc_url, f"{flags}. {reason}" if flags else reason,
                     ])
                     results.append({
                         "theatre": theatre["name"], "movie": movie_title,
@@ -638,13 +640,15 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     })
                 else:
                     issues.append(f"{theatre['name']}: No seat map for {movie_title} {fmt}")
+                    showtime_id = show.get("showtime_id", "")
+                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}" if showtime_id else ""
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
                         tz, movie_title, market_urls.get(movie_title, ""),
                         st, check_time, delta_minutes,
                         "", fmt, "", "", "", "", "",
-                        f"Seat map unavailable. {flags}. {reason}",
+                        amc_url, f"Seat map unavailable. {flags}. {reason}",
                     ])
     finally:
         await context.close()
