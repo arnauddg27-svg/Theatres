@@ -111,5 +111,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add box-office-tracker/data/
-          git diff --staged --quiet || git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
+          git diff --staged --quiet && exit 0
+          git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
+          git pull --rebase origin main
           git push
