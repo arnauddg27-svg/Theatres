@@ -71,14 +71,23 @@ FORMAT_PRIORITY = {
 # Concurrency — how many browser tabs to run in parallel.
 MAX_CONCURRENT_TABS = 5
 
-# UTC offsets for each tz group (April = DST in effect for US)
-TZ_UTC_OFFSET = {"ET": -4, "CT": -5, "MT": -6, "PT": -7}
+_TZ_NAMES = {"ET": "America/New_York", "CT": "America/Chicago",
+             "MT": "America/Denver",   "PT": "America/Los_Angeles"}
 
 
 def local_now(tz_group):
-    """Return current datetime adjusted to the local time for a tz group."""
-    offset = TZ_UTC_OFFSET.get(tz_group, 0)
-    return datetime.now(timezone.utc) + timedelta(hours=offset)
+    """Return current datetime in the local timezone for a tz group.
+    Uses Python's zoneinfo (stdlib 3.9+) so DST is handled automatically.
+    Falls back to a fixed -5h offset if the tz name is unknown.
+    """
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo(_TZ_NAMES.get(tz_group, "America/New_York"))
+        return datetime.now(tz)
+    except Exception:
+        # Fallback: approximate offset (ET=-4 DST / -5 STD)
+        fallback = {"ET": -4, "CT": -5, "MT": -6, "PT": -7}
+        return datetime.now(timezone.utc) + timedelta(hours=fallback.get(tz_group, -5))
 
 
 def local_date_str(tz_group):
@@ -668,7 +677,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
                         tz, movie_title, market_urls.get(movie_title, ""),
                         st, check_time, delta_minutes,
-                        "", fmt, "", "", "", "", "",
+                        "", fmt, "", "", "", "",
                         amc_url, f"Seat map unavailable. {flags}. {reason}",
                     ])
     finally:
