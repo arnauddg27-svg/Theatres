@@ -1,2534 +1,2701 @@
 {
   "date": "2026-04-04",
-  "collected_at": "2026-04-04T23:24:15.513469",
+  "collected_at": "2026-04-05T01:05:47.870671",
   "theatres": {
-    "AMC River East 21": {
-      "tz": "CT",
+    "AMC Century City 15": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
+            "showtime": "6:00pm",
+            "showtime_id": "141222505",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141222506",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "141222507",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "141026221",
+            "showtime_id": "141222629",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141026222",
+            "showtime": "9:45pm",
+            "showtime_id": "141222630",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141222689",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141222690",
+            "format": "RealD 3D"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141026323",
-            "format": "PRIME 3D"
+            "showtime_id": "141222604",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141926973",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141445925",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141742912",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141926899",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142044283",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141445926",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142047005",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:15pm",
+            "showtime_id": "141742913",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Burbank 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141239431",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:40pm",
-            "showtime_id": "141026324",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141026337",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:30pm",
-            "showtime_id": "141920561",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141026124",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141920569",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "141026237",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141920616",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142043252",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "142043251",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "141476838",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:40pm",
-            "showtime_id": "142038988",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:20pm",
-            "showtime_id": "141920581",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:50pm",
-            "showtime_id": "142039500",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "141920567",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141476839",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:10pm",
-            "showtime_id": "141920582",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC NEWCITY 14": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141305690",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141305748",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141305691",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141305749",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141285374",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141285375",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141305804",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141305799",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141515124",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "142005032",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141515125",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142044603",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC DINE-IN Block 37": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141020250",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141020296",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141020255",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141020171",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141020345",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141020353",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142043733",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141516831",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142043732",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141978660",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141516832",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ]
-      }
-    },
-    "AMC DINE-IN Rosemont 12": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:20pm",
-            "showtime_id": "141037500",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141037501",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:40pm",
-            "showtime_id": "141037682",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:20pm",
-            "showtime_id": "141037581",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "141037681",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141037441",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "141037442",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141037582",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:40pm",
-            "showtime_id": "141513277",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141513278",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ]
-      }
-    },
-    "AMC Roosevelt Collection 16": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141045311",
+            "showtime_id": "141239432",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "141045312",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141045193",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141045194",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141045341",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141045452",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141045413",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141045443",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141045405",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "141496370",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "142035620",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142046162",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142041493",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142035612",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142045192",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141496371",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142045191",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Streets of Woodfield 20": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141265598",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141265599",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141265683",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141265649",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141265684",
-            "format": "RealD 3D"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "141265618",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141265554",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141265553",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141265619",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141808590",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141867483",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141947347",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141365142",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141947343",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141365143",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Northbrook 14": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141199398",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141199360",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141199473",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141199401",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141199363",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141199530",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141199445",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141199532",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141199444",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141518248",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "141518249",
-            "format": "undefined"
-          }
-        ]
-      }
-    },
-    "AMC Oakbrook Center 12": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141247460",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141247461",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141247431",
+            "showtime_id": "141239605",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141247432",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:55pm",
-            "showtime_id": "142004824",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141247625",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141247629",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141247268",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:15pm",
-            "showtime_id": "142004735",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141520740",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142043082",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141520741",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:45pm",
-            "showtime_id": "142004818",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Randhurst 12": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141098443",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141926738",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:50pm",
-            "showtime_id": "141098444",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141926736",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141098612",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "141098613",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141926705",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141098534",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141523296",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141523297",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Ford City 14": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "142045121",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141109801",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141109650",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141109565",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141964503",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141109651",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141109479",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141964504",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141109684",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141109800",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "142043632",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:25pm",
-            "showtime_id": "142045119",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141964494",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141109685",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141109540",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:15pm",
-            "showtime_id": "141964500",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141524358",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141524359",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC DINE-IN Mesquite 30": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "8:20pm",
-            "showtime_id": "141050848",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "10:55pm",
-            "showtime_id": "141050849",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "141050864",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:55pm",
-            "showtime_id": "141050865",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142009448",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "11:05pm",
-            "showtime_id": "142009458",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "142043822",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "8:50pm",
-            "showtime_id": "142043820",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "10:35pm",
-            "showtime_id": "142043819",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "11:25pm",
-            "showtime_id": "142043821",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "11:55pm",
-            "showtime_id": "142009318",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:05pm",
-            "showtime_id": "141298495",
-            "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
             "showtime": "8:40pm",
-            "showtime_id": "141298493",
-            "format": "Spanish Language Dubbed with No Subtitles"
+            "showtime_id": "141239606",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:15pm",
-            "showtime_id": "141298494",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141050762",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "141050761",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "11:55pm",
-            "showtime_id": "141050766",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "142009355",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "141298450",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:50pm",
-            "showtime_id": "142009354",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:25pm",
-            "showtime_id": "141298451",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:25pm",
-            "showtime_id": "142009353",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:20pm",
-            "showtime_id": "141050958",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "8:55pm",
-            "showtime_id": "141050962",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:55pm",
-            "showtime_id": "142009459",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:35pm",
-            "showtime_id": "142009472",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "142009460",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "142009471",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:35pm",
-            "showtime_id": "142009446",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:10pm",
-            "showtime_id": "142043829",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "6:25pm",
-            "showtime_id": "142045779",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "142043828",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "6:50pm",
-            "showtime_id": "142009418",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "142045759",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "142009365",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:25pm",
-            "showtime_id": "142009419",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:35pm",
-            "showtime_id": "142043818",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:35pm",
-            "showtime_id": "142009366",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "142043816",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:05pm",
-            "showtime_id": "142043826",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:30pm",
-            "showtime_id": "142045758",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:30pm",
-            "showtime_id": "142043814",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "11:40pm",
-            "showtime_id": "142045761",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:40pm",
-            "showtime_id": "142009406",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:05pm",
-            "showtime_id": "142043815",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141409313",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "142043813",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:25pm",
-            "showtime_id": "142009410",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141409314",
-            "format": "Dine-In Delivery to Seat"
-          }
-        ]
-      }
-    },
-    "AMC NorthPark 15": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141265262",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141265265",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141265291",
+            "showtime_id": "141239604",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141265290",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141265016",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141265126",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141265130",
-            "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141265012",
+            "showtime_id": "141480019",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "141480020",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "141692117",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141265158",
+            "showtime": "9:50pm",
+            "showtime_id": "142008299",
             "format": "Laser at AMC"
           }
         ],
         "The Drama": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141517456",
+            "showtime": "10:50pm",
+            "showtime_id": "142008196",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "142039978",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "142008216",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142043105",
+            "showtime_id": "141489526",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141517460",
+            "showtime": "8:55pm",
+            "showtime_id": "141692116",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141489510",
             "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC Stonebriar 24": {
-      "tz": "CT",
+    "AMC Lakewood Mall 12": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141282680",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "6:45pm",
+            "showtime_id": "141949123",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141282681",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "8:10pm",
+            "showtime_id": "141268657",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141282587",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141282588",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "10:50pm",
+            "showtime_id": "141268658",
+            "format": "RealD 3D"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "141940465",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141940541",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141940608",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:20pm",
-            "showtime_id": "141282492",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141282721",
+            "showtime_id": "141268684",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141940584",
+            "showtime": "7:15pm",
+            "showtime_id": "141174169",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141282713",
+            "showtime": "7:40pm",
+            "showtime_id": "141949144",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "141940598",
+            "showtime": "9:00pm",
+            "showtime_id": "141268685",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141949124",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141174170",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "142046711",
             "format": "Laser at AMC"
           }
         ],
         "The Drama": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141859335",
+            "showtime": "7:00pm",
+            "showtime_id": "141424396",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "9:25pm",
+            "showtime_id": "142046710",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "141424397",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Marina 6": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141138030",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141138033",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141138165",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141138166",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141138229",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141362048",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "141466516",
+            "showtime_id": "141921611",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141362049",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "142044879",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141921616",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Orange 30": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141032427",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141032426",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141032327",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141032328",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141910537",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141032299",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141032589",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141032177",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141032590",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141246795",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141032297",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141910383",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141910354",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141032455",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:20pm",
-            "showtime_id": "141859336",
+            "showtime_id": "141910384",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "141466515",
+            "showtime_id": "141910355",
             "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Grapevine Mills 24": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141299007",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141299032",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "141299062",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:05pm",
-            "showtime_id": "141299039",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141962410",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141962442",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141298835",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141299133",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141299128",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141962388",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142044777",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141299129",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141996738",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142044776",
-            "format": "undefined"
           }
         ],
         "The Drama": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141471056",
-            "format": "undefined"
+            "showtime": "6:15pm",
+            "showtime_id": "142044793",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "141471057",
-            "format": "undefined"
+            "showtime": "7:35pm",
+            "showtime_id": "141318253",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141962478",
-            "format": "undefined"
+            "showtime": "8:05pm",
+            "showtime_id": "141910417",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "141962479",
-            "format": "undefined"
+            "showtime": "9:15pm",
+            "showtime_id": "142044792",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "142045068",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "141318254",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:50pm",
+            "showtime_id": "141910416",
+            "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC Firewheel 18": {
-      "tz": "CT",
+    "AMC Tustin 14 @ The District": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141228273",
+            "showtime_id": "141275793",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141228271",
+            "showtime_id": "141275794",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141227852",
+            "showtime": "8:00pm",
+            "showtime_id": "141275771",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141227853",
+            "showtime": "10:45pm",
+            "showtime_id": "141309638",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141970038",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141228164",
+            "showtime": "8:15pm",
+            "showtime_id": "141943187",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141228165",
+            "showtime": "9:15pm",
+            "showtime_id": "141275844",
             "format": "RealD 3D"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141228065",
-            "format": "XL at AMC"
+            "showtime": "6:30pm",
+            "showtime_id": "141275843",
+            "format": "Laser at AMC"
           },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142042841",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141969990",
+            "showtime_id": "141468576",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141228009",
+            "showtime_id": "141857471",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "141468553",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "141857452",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "142042840",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Puente Hills 20": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141055900",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141055896",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "141055895",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141056010",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141056013",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141929481",
+            "format": "English Spoken with Chinese and English Subtitles"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141929452",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141056177",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141929453",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141056178",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "11:15pm",
+            "showtime_id": "141929454",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141929526",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141056035",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141055875",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141056036",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141929482",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141055876",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141326842",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141870819",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142045358",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141326841",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141870820",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142047006",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142046281",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:15pm",
+            "showtime_id": "141326840",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "142044745",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Norwalk 20": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141250948",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141250951",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141250920",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141250923",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141250827",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "141948901",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141250826",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141251040",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141948884",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141948867",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141251041",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141948888",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "141948930",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141948855",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141491887",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141948856",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142046139",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141491888",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Marina Pacifica 12": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141206543",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141206644",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "141206544",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "141206640",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141206775",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141206672",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "141206776",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141898655",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "141898605",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141682521",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:35pm",
+            "showtime_id": "141898656",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "141969991",
+            "showtime_id": "141898602",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141228035",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141444398",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:10pm",
-            "showtime_id": "141969985",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141444399",
+            "showtime_id": "141682522",
             "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC Gulf Pointe 30": {
-      "tz": "CT",
+    "AMC Montebello 10": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
+            "showtime": "5:50pm",
+            "showtime_id": "141890255",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "141027241",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141027242",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141027219",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "141083736",
+            "format": "RealD 3D"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141027220",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141027338",
-            "format": "4DX at AMC"
-          },
-          {
-            "showtime": "11:15pm",
-            "showtime_id": "141027339",
-            "format": "4DX at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141944486",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141944572",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141027050",
+            "showtime_id": "141083831",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141027051",
+            "showtime": "10:45pm",
+            "showtime_id": "141083737",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:25pm",
+            "showtime_id": "141083832",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "141083711",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "141890256",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141083710",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141583075",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141944573",
+            "showtime_id": "141583076",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142044885",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC La Mirada 7": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141318367",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141318430",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141318422",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141946306",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141318421",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141318368",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142045110",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141318431",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141946313",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141946314",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Bay Street 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141270006",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141270007",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141270084",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141270087",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141269888",
             "format": "RealD 3D"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141027115",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141027116",
+            "showtime_id": "141269963",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142044816",
-            "format": "Laser at AMC"
+            "showtime": "10:00pm",
+            "showtime_id": "141269966",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141944485",
+            "showtime": "6:15pm",
+            "showtime_id": "141270156",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141026936",
+            "showtime_id": "141927779",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "142032829",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141944387",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "142044817",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141026937",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142032830",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141944388",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:20pm",
-            "showtime_id": "142044818",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141944624",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141327322",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141944517",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141944625",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141327323",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC First Colony 24": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141243975",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141243976",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141244066",
-            "format": "PRIME 3D"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141244067",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "7:05pm",
-            "showtime_id": "142044333",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141244147",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "142017913",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "142017890",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "142017929",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141243920",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142018000",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141244148",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142017928",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "142017828",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141475403",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "142017827",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141475402",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Deerbrook 24": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141278990",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141278991",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "11:30pm",
-            "showtime_id": "141278989",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141278895",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141278896",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:15pm",
-            "showtime_id": "142017032",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "142017031",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142017024",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "142017061",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141278922",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141279032",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "142017025",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141278918",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "142017062",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141279033",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "142017001",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "142017026",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:35pm",
-            "showtime_id": "142017051",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142017002",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:25pm",
-            "showtime_id": "142017052",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "142017053",
-            "format": "undefined"
-          }
-        ]
-      }
-    },
-    "AMC Katy Mills 20": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141230454",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141230455",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141230696",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141230697",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "142043988",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141986608",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "142043986",
-            "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142043991",
-            "format": "Spanish Language Dubbed with No Subtitles"
+            "showtime_id": "141927621",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "141230573",
-            "format": "Spanish Language Dubbed with No Subtitles"
+            "showtime": "9:00pm",
+            "showtime_id": "141270155",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141986630",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141230556",
-            "format": "RealD 3D"
+            "showtime": "9:45pm",
+            "showtime_id": "141927782",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141986631",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141230632",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "142043985",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141986617",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141230633",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141986618",
+            "showtime_id": "142045355",
             "format": "Laser at AMC"
           }
         ],
         "The Drama": [
           {
             "showtime": "6:10pm",
-            "showtime_id": "141986637",
+            "showtime_id": "141927725",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141323380",
+            "showtime_id": "141377397",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141986636",
+            "showtime": "9:10pm",
+            "showtime_id": "141927727",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141323381",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Southdale 16": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "8:10pm",
-            "showtime_id": "141291737",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141291707",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141291708",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142021055",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "142021122",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142020963",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141291835",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141291607",
-            "format": "undefined"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "142021076",
-            "format": "undefined"
+            "showtime_id": "141377398",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141291608",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141874629",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141874618",
-            "format": "undefined"
+            "showtime": "10:20pm",
+            "showtime_id": "142045354",
+            "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC CLASSIC Mounds View 15": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141317262",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:35pm",
-            "showtime_id": "141317263",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "141996434",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141317218",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141996502",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141317249",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141996431",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141519998",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141996466",
-            "format": "undefined"
-          }
-        ]
-      }
-    },
-    "AMC Metropark Square 10": {
-      "tz": "CT",
+    "AMC Mercado 20": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
             "showtime": "8:15pm",
-            "showtime_id": "141270907",
+            "showtime_id": "141158517",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "141270908",
+            "showtime_id": "141158518",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141270989",
+            "showtime_id": "141158454",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141270990",
+            "showtime": "9:45pm",
+            "showtime_id": "141158455",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141913676",
+            "showtime_id": "141987634",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141913708",
+            "showtime": "7:30pm",
+            "showtime_id": "141158387",
             "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:35pm",
-            "showtime_id": "141913707",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:35pm",
-            "showtime_id": "141913714",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141913673",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141913715",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "8:05pm",
-            "showtime_id": "141506439",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:50pm",
-            "showtime_id": "141913685",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:20pm",
-            "showtime_id": "142045187",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Spring 10": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141089209",
+            "showtime_id": "141158388",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141089132",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "142044765",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "141089210",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141089133",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142046018",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "142042725",
+            "showtime": "6:30pm",
+            "showtime_id": "141158660",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141719591",
+            "showtime_id": "141987090",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141089235",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142042718",
+            "showtime": "9:15pm",
+            "showtime_id": "141158661",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141719593",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "141089234",
+            "showtime_id": "141987091",
             "format": "Laser at AMC"
           }
         ],
         "The Drama": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141418504",
+            "showtime_id": "141987504",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141426912",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141418506",
+            "showtime_id": "141987501",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141426913",
             "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC Rio Cinemas 18": {
-      "tz": "CT",
+    "AMC Eastridge 15": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141273961",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141273962",
+            "showtime": "6:30pm",
+            "showtime_id": "141234333",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141274045",
+            "showtime_id": "141234334",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141234460",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141234461",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141234414",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142008417",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141234542",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142008387",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141234543",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141477748",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141477749",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Saratoga 14": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141249693",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141249692",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141249790",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141249794",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141249606",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141249607",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141249758",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141902576",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142044963",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141489884",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142044966",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141489885",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC NewPark 12": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141275911",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141275912",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141275968",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141275969",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142021736",
+            "format": "English Spoken with Chinese and English Subtitles"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141276056",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141276057",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141276032",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141276080",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141667922",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141667923",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Sunnyvale 12": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141248830",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141248831",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141248865",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141248866",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141248877",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141248876",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141248928",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141979043",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141248929",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141979044",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141979065",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141644330",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141644331",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Mission Valley 20": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141231864",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141231865",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141232050",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141232051",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141231918",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141939245",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141231919",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141939243",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141231745",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141939444",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141232029",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141231744",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141939468",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141939445",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141232032",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142045526",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141939325",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141483737",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141939321",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141483736",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Chula Vista 10": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141043568",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141043444",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141043445",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141899070",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141899018",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141043572",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141899071",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142041316",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141899014",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142041314",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "141043573",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141043594",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141043595",
+            "format": "undefined"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141560619",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "142041313",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141560620",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "142041308",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Otay Ranch 12": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141232786",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141232785",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141232681",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141232783",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141232784",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141873686",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141911353",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141232684",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141873676",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141781369",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141781370",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Plaza Bonita 14": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141244203",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141244204",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141244304",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141244305",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141917599",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141244439",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141244344",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141244345",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141917728",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141244440",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142040940",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141917729",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141383056",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141383057",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142040941",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Poway 10": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141734569",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141094988",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141094895",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141094989",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141095009",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141924932",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141095010",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141734568",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141570921",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141570922",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC UTC 14": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141137629",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141137630",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141137743",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142006025",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141273668",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142006004",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142006024",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141273837",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "142005980",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141273838",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141273887",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141505322",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141505323",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142005961",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC CLASSIC Forney 12": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141291969",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141292047",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141292048",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141990725",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141990812",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141291935",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141291968",
-            "format": "undefined"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141483171",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "141483164",
-            "format": "undefined"
-          }
-        ]
-      }
-    },
-    "AMC Causeway 13": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141115770",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141940755",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141115771",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141701182",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "142041062",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141940714",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:40pm",
-            "showtime_id": "141855762",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "141701183",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Independence Commons 20": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "141242422",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "141242426",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141242284",
-            "format": "Spanish Language Dubbed with No Subtitles"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141242154",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141242308",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141242153",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141242285",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141242432",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141955759",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141242307",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141242433",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:45pm",
-            "showtime_id": "141955758",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Drama": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "141955753",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "141422215",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141955752",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "141422216",
-            "format": "Laser at AMC"
-          }
-        ]
-      }
-    },
-    "AMC Legends 14": {
-      "tz": "CT",
-      "movies": {
-        "The Super Mario Galaxy Movie": [
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141263867",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141263868",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141263750",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141263749",
-            "format": "RealD 3D"
+            "showtime_id": "141137744",
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141263900",
+            "showtime_id": "141137708",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141263781",
+            "showtime": "6:30pm",
+            "showtime_id": "141949941",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141137833",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "141263901",
+            "showtime_id": "141137709",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141263784",
+            "showtime": "10:00pm",
+            "showtime_id": "141949942",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141137834",
             "format": "Laser at AMC"
           }
         ],
         "The Drama": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141489379",
+            "showtime": "6:45pm",
+            "showtime_id": "141315999",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141489380",
+            "showtime": "7:45pm",
+            "showtime_id": "141861416",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142045781",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141316000",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141861417",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142045782",
             "format": "Laser at AMC"
           }
         ]
       }
     },
-    "AMC DINE-IN Prairiefire 17": {
-      "tz": "CT",
+    "AMC Southcenter 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141229995",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141229996",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141230128",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141230127",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141305859",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141230059",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141230033",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141230032",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141230168",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141990505",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141990587",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141305837",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "142044108",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141437915",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141437916",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Kent Station 14": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141104457",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141104462",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141104463",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141104515",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141104516",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141104357",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141104358",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141940820",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141104420",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141941072",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141940948",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141940890",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141104421",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141940953",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141386754",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141940875",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142044858",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "141941011",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Alderwood Mall 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141179684",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141179685",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141179632",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141179633",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141179334",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141985486",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141179156",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141179157",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141179933",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141985710",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141179934",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141985711",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141464864",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142043052",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141464865",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Arizona Center 24": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141935865",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141025266",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141484447",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141025267",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141935733",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141025413",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142044980",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141025193",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141935732",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141025416",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142044982",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141935819",
+            "format": "undefined"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141484380",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141935870",
+            "format": "undefined"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141484381",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Ahwatukee 24": {
+      "tz": "PT",
       "movies": {
         "The Super Mario Galaxy Movie": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141024587",
-            "format": "XL at AMC"
+            "showtime_id": "141219926",
+            "format": "PRIME 3D"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141219927",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141220102",
+            "format": "RealD 3D"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141265404",
-            "format": "XL at AMC"
+            "showtime_id": "141219867",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141024591",
-            "format": "XL at AMC"
+            "showtime": "9:00pm",
+            "showtime_id": "141220103",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "141899645",
-            "format": "XL at AMC"
+            "showtime": "5:45pm",
+            "showtime_id": "141219818",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141024686",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141910799",
-            "format": "Dine-In Delivery to Seat"
+            "showtime": "6:45pm",
+            "showtime_id": "141220052",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141265456",
-            "format": "Dine-In Delivery to Seat"
+            "showtime_id": "141219995",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:40pm",
-            "showtime_id": "141024687",
-            "format": "Dine-In Delivery to Seat"
+            "showtime": "7:45pm",
+            "showtime_id": "141219741",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "141910800",
-            "format": "Dine-In Delivery to Seat"
+            "showtime": "8:15pm",
+            "showtime_id": "141219695",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141219819",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141220053",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141219996",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141219737",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141496126",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142043524",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142023719",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:25pm",
+            "showtime_id": "142036442",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141527105",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142043525",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142023718",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Westgate 20": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141261385",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141261384",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "141270379",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141261455",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141261454",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141270216",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141261334",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141261333",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141261482",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141270324",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141261481",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141270325",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "11:15pm",
+            "showtime_id": "141261480",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141270217",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141939979",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141939980",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141503599",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141939947",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141503598",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141939948",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Westminster Promenade 24": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141039268",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "141265459",
+            "showtime_id": "141039267",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141039243",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "141286661",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "142045525",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141039396",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142019584",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142019477",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141039156",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "141286746",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142019478",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "141286654",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "141324744",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:55pm",
+            "showtime_id": "142019374",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141324743",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142019375",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Southlands 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141057494",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:45pm",
+            "showtime_id": "141057498",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:15pm",
+            "showtime_id": "141057438",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141057290",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141937439",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141057291",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "142044233",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141057364",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "11:20pm",
-            "showtime_id": "141899648",
+            "showtime": "7:00pm",
+            "showtime_id": "141937503",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141937434",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141057437",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141937497",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141937438",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "The Drama": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141325341",
+            "showtime": "9:30pm",
+            "showtime_id": "141937534",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141910890",
+            "showtime": "10:00pm",
+            "showtime_id": "142046062",
             "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "11:30pm",
+            "showtime_id": "141937384",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Arapahoe Crossing 16": {
+      "tz": "PT",
+      "movies": {
+        "The Super Mario Galaxy Movie": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141104849",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141104848",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141105041",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141105040",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141104916",
+            "format": "RealD 3D"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141910881",
-            "format": "Dine-In Delivery to Seat"
+            "showtime_id": "141104980",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141325342",
-            "format": "Dine-In Delivery to Seat"
+            "showtime_id": "141920292",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Drama": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141331168",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "141910891",
-            "format": "Dine-In Delivery to Seat"
+            "showtime": "10:30pm",
+            "showtime_id": "141331167",
+            "format": "Laser at AMC"
           }
         ]
       }
