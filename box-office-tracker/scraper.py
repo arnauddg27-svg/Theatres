@@ -833,17 +833,32 @@ async def run_async(tz_group="ALL"):
         for theatre in theatres_map.get(group, []):
             all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
 
-    # Check for Phase 1 links saved today (use per-group local date)
+    # Check for Phase 1 links — accept if collected within the last 12 hours.
+    # Date-string comparison fails at midnight PT (Phase 1 at 6pm PT = UTC next day,
+    # Phase 2 at midnight PT = UTC further into next day → different local dates).
     saved_links = None
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
                 links_data = json.load(f)
-            if links_data.get("date") == today:
-                saved_links = links_data.get("theatres", {})
-                print(f"\n📂 Found Phase 1 links for today ({len(saved_links)} theatres) — skipping showtime pages")
+            collected_at_str = links_data.get("collected_at", "")
+            if collected_at_str:
+                collected_at = datetime.fromisoformat(collected_at_str.replace("Z", "+00:00"))
+                if collected_at.tzinfo is None:
+                    collected_at = collected_at.replace(tzinfo=timezone.utc)
+                age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
+                if age_hours <= 12:
+                    saved_links = links_data.get("theatres", {})
+                    print(f"\n📂 Phase 1 links from {age_hours:.1f}h ago ({len(saved_links)} theatres) — skipping showtime pages")
+                else:
+                    print(f"\n⚠️  showtime-links.json is {age_hours:.1f}h old (>12h) — fetching live")
             else:
-                print(f"\n⚠️  showtime-links.json is from {links_data.get('date')}, not today — fetching live")
+                # Fallback to date comparison for old-format files
+                if links_data.get("date") == today:
+                    saved_links = links_data.get("theatres", {})
+                    print(f"\n📂 Found Phase 1 links for today ({len(saved_links)} theatres) — skipping showtime pages")
+                else:
+                    print(f"\n⚠️  showtime-links.json is from {links_data.get('date')}, not today — fetching live")
         except Exception as e:
             print(f"\n⚠️  Could not load showtime-links.json: {e} — fetching live")
 
