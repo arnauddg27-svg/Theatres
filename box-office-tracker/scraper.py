@@ -576,8 +576,11 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     day_of_week = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
     try:
-        current_hour = datetime.now().hour + datetime.now().minute / 60
-        check_time = datetime.now().isoformat()
+        # current_hour must be in LOCAL time for this theatre's timezone.
+        # GitHub Actions runs on UTC; AMC showtimes are local time.
+        tz_local = local_now(tz)
+        current_hour = tz_local.hour + tz_local.minute / 60
+        check_time = datetime.now(timezone.utc).isoformat()
 
         if saved_movies is not None:
             # ── Phase 2 path: use pre-collected showtime IDs ──────────────────
