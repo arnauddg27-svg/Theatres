@@ -900,9 +900,9 @@ async def run_async(tz_group="ALL"):
 
     # Only collect data Thu-Sun (opening weekend). Mon-Wed data has no
     # day-weight in predict.py and would corrupt the weekend projection.
-    if local_dow not in ("Thursday", "Friday", "Saturday", "Sunday"):
+    if local_dow not in ("Thursday", "Friday", "Saturday", "Sunday", "Monday"):
         print(f"\n⚠️  Today is {local_dow} ({ref_tz} local) — skipping collection.")
-        print(f"   Seat data is only useful Thu-Sun (opening weekend).")
+        print(f"   Seat data is only useful Thu-Mon (opening weekend).")
         print(f"   Use 'python scraper.py --force' to override.")
         if "--force" not in sys.argv:
             return
