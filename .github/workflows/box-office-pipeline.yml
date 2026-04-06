@@ -7,6 +7,8 @@ on:
     - cron: '0 21 * * 4,5,6,0'
     # CT ~5pm = 23 UTC
     - cron: '0 23 * * 4,5,6,0'
+    # MT ~5pm = 23:30 UTC (DST) / 0:00 UTC (MST)
+    - cron: '30 23 * * 4,5,6,0'
     # PT ~5pm = 1am UTC (Fri-Mon, next calendar day)
     - cron: '0 1 * * 5,6,0,1'
     # ── Phase 2: fetch seat maps at ~10pm local (shows well underway) ────────
@@ -14,6 +16,8 @@ on:
     - cron: '0 3 * * 4,5,6,0'
     # CT ~10pm = 5am UTC
     - cron: '0 5 * * 4,5,6,0'
+    # MT ~10pm = 5:30am UTC (DST) / 6:00 UTC (MST)
+    - cron: '30 5 * * 4,5,6,0'
     # PT ~10pm = 7am UTC
     - cron: '0 7 * * 4,5,6,0'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
@@ -33,12 +37,12 @@ permissions:
   contents: write
 
 env:
-  # Map UTC hour → timezone group
-  # Phase 1 (collect-links): 21=ET, 23=CT, 1=PT
-  # Phase 2 (seat maps):      2=ET,  4=CT, 6=PT
-  TZ_BY_HOUR:   '{"21":"ET","23":"CT","1":"PT","3":"ET","5":"CT","7":"PT"}'
-  # Hours that indicate Phase 1 (collect-links) rather than Phase 2 (seat scrape)
-  PHASE1_HOURS: '["21","23","1"]'
+  # Map UTC hour:minute → timezone group
+  # Phase 1 (collect-links): 21:00=ET, 23:00=CT, 23:30=MT, 1:00=PT
+  # Phase 2 (seat maps):      3:00=ET,  5:00=CT,  5:30=MT, 7:00=PT
+  TZ_BY_HOUR:   '{"21:00":"ET","23:00":"CT","23:30":"MT","1:00":"PT","3:00":"ET","5:00":"CT","5:30":"MT","7:00":"PT"}'
+  # Hour:minute values that indicate Phase 1 (collect-links)
+  PHASE1_HOURS: '["21:00","23:00","23:30","1:00"]'
 
 jobs:
   collect:
@@ -70,8 +74,11 @@ jobs:
             echo "phase=${{ github.event.inputs.phase || 'scrape' }}" >> "$GITHUB_OUTPUT"
           else
             HOUR=$(date -u +%-H)
-            GROUP=$(echo '${{ env.TZ_BY_HOUR }}' | python3 -c "import sys,json; print(json.load(sys.stdin).get(sys.argv[1],'ALL'))" "$HOUR")
-            IS_PHASE1=$(echo '${{ env.PHASE1_HOURS }}' | python3 -c "import sys,json; print('collect-links' if str(sys.argv[1]) in json.load(sys.stdin) else 'scrape')" "$HOUR")
+            MIN=$(date -u +%-M)
+            # Round minutes to :00 or :30 slot
+            if [ "$MIN" -ge 15 ] && [ "$MIN" -lt 45 ]; then SLOT="$HOUR:30"; else SLOT="$HOUR:00"; fi
+            GROUP=$(echo '${{ env.TZ_BY_HOUR }}' | python3 -c "import sys,json; print(json.load(sys.stdin).get(sys.argv[1],'ALL'))" "$SLOT")
+            IS_PHASE1=$(echo '${{ env.PHASE1_HOURS }}' | python3 -c "import sys,json; print('collect-links' if str(sys.argv[1]) in json.load(sys.stdin) else 'scrape')" "$SLOT")
             echo "group=$GROUP" >> "$GITHUB_OUTPUT"
             echo "phase=$IS_PHASE1" >> "$GITHUB_OUTPUT"
           fi
@@ -90,12 +97,12 @@ jobs:
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
         if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'collect-links'
         working-directory: box-office-tracker
-        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
+        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
         if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
-        run: python3 scraper.py ${{ steps.tz.outputs.group }}
+        run: python3 scraper.py ${{ steps.tz.outputs.group }} || python3 scraper.py ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
         if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
@@ -113,5 +120,8 @@ jobs:
           git add box-office-tracker/data/
           git diff --staged --quiet && exit 0
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
-          git pull --rebase origin main
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "Push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
