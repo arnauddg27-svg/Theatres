@@ -1,11 +1,13 @@
 import csv
 import json
 import re
+from datetime import datetime
 import pandas as pd
 import xlsxwriter
 
 CSV_PATH = "./box-office-tracker/data/seat-counts.csv"
-OUT_PATH = "./box-office-tracker/data/2026-04-05-box-office.xlsx"
+_today = datetime.now().strftime("%Y-%m-%d")
+OUT_PATH = f"./box-office-tracker/data/{_today}-box-office.xlsx"
 # TARGET_DATES: set to specific dates, or leave None to use the most recent weekend in the CSV
 TARGET_DATES = None
 
