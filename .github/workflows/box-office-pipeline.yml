@@ -12,10 +12,10 @@ on:
     # PT ~5pm = 1am UTC (Fri-Mon, next calendar day)
     - cron: '0 1 * * 5,6,0,1'
     # ── Phase 2: fetch seat maps at ~10pm local (shows well underway) ────────
-    # ET ~10pm = 3am UTC
-    - cron: '0 3 * * 4,5,6,0'
-    # CT ~10pm = 5am UTC
-    - cron: '0 5 * * 4,5,6,0'
+    # ET ~10pm = 2am UTC (EDT) / 3am UTC (EST)
+    - cron: '0 2 * * 5,6,0,1'
+    # CT ~10pm = 4am UTC (CDT) / 5am UTC (CST)
+    - cron: '0 4 * * 5,6,0,1'
     # MT ~10pm = 5:30am UTC (DST) / 6:00 UTC (MST)
     - cron: '30 5 * * 4,5,6,0'
     # PT ~10pm = 7am UTC
@@ -39,8 +39,8 @@ permissions:
 env:
   # Map UTC hour:minute → timezone group
   # Phase 1 (collect-links): 21:00=ET, 23:00=CT, 23:30=MT, 1:00=PT
-  # Phase 2 (seat maps):      3:00=ET,  5:00=CT,  5:30=MT, 7:00=PT
-  TZ_BY_HOUR:   '{"21:00":"ET","23:00":"CT","23:30":"MT","1:00":"PT","3:00":"ET","5:00":"CT","5:30":"MT","7:00":"PT"}'
+  # Phase 2 (seat maps):      2:00=ET,  4:00=CT,  5:30=MT, 7:00=PT
+  TZ_BY_HOUR:   '{"21:00":"ET","23:00":"CT","23:30":"MT","1:00":"PT","2:00":"ET","4:00":"CT","5:30":"MT","7:00":"PT"}'
   # Hour:minute values that indicate Phase 1 (collect-links)
   PHASE1_HOURS: '["21:00","23:00","23:30","1:00"]'
 
