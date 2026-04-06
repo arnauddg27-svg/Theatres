@@ -3,23 +3,23 @@ name: Box Office Pipeline
 on:
   schedule:
     # ── Phase 1: collect showtime links at ~5pm local (before shows start) ──
-    # ET ~5pm = 21 UTC
-    - cron: '0 21 * * 4,5,6,0'
-    # CT ~5pm = 23 UTC
-    - cron: '0 23 * * 4,5,6,0'
-    # MT ~5pm = 23:30 UTC (DST) / 0:00 UTC (MST)
-    - cron: '30 23 * * 4,5,6,0'
-    # PT ~5pm = 1am UTC (Fri-Mon, next calendar day)
-    - cron: '0 1 * * 5,6,0,1'
-    # ── Phase 2: fetch seat maps at ~10pm local (shows well underway) ────────
-    # ET ~11pm = 3am UTC (EDT) / 4am UTC (EST)
-    - cron: '0 3 * * 5,6,0,1'
-    # CT ~11pm = 5am UTC (CDT) / 6am UTC (CST)
-    - cron: '0 5 * * 5,6,0,1'
-    # MT ~10pm = 5:30am UTC (DST) / 6:00 UTC (MST)
-    - cron: '30 5 * * 4,5,6,0'
-    # PT ~10pm = 7am UTC
-    - cron: '0 7 * * 4,5,6,0'
+    # ET ~5pm = 21 UTC (Thu-Mon)
+    - cron: '0 21 * * 4,5,6,0,1'
+    # CT ~5pm = 23 UTC (Thu-Mon)
+    - cron: '0 23 * * 4,5,6,0,1'
+    # MT ~5pm = 23:30 UTC DST (Thu-Mon)
+    - cron: '30 23 * * 4,5,6,0,1'
+    # PT ~5pm = 1am UTC next day (Fri-Tue)
+    - cron: '0 1 * * 5,6,0,1,2'
+    # ── Phase 2: fetch seat maps at ~11pm local (shows well underway) ───────
+    # ET ~11pm = 3am UTC (Fri-Tue)
+    - cron: '0 3 * * 5,6,0,1,2'
+    # CT ~11pm = 5am UTC (Fri-Tue)
+    - cron: '0 5 * * 5,6,0,1,2'
+    # MT ~11pm = 5:30am UTC DST (Fri-Tue)
+    - cron: '30 5 * * 5,6,0,1,2'
+    # PT ~11pm = 7am UTC (Fri-Tue)
+    - cron: '0 7 * * 5,6,0,1,2'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
     - cron: '0 14 * * 2'
   workflow_dispatch:
