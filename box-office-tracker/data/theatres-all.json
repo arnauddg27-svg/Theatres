@@ -202,11 +202,6 @@
       "dma": "Atlanta"
     },
     {
-      "name": "AMC Highwoods 20",
-      "slug": "amc-highwoods-20",
-      "dma": "Raleigh"
-    },
-    {
       "name": "AMC Carolina Pavilion 22",
       "slug": "amc-carolina-pavilion-22",
       "dma": "Charlotte"
@@ -242,11 +237,6 @@
       "dma": "Indianapolis"
     },
     {
-      "name": "AMC Indianapolis 17",
-      "slug": "amc-indianapolis-17",
-      "dma": "Indianapolis"
-    },
-    {
       "name": "AMC Perry Crossing 18",
       "slug": "amc-perry-crossing-18",
       "dma": "Indianapolis"
@@ -254,11 +244,6 @@
     {
       "name": "AMC Thoroughbred 20",
       "slug": "amc-thoroughbred-20",
-      "dma": "Nashville"
-    },
-    {
-      "name": "AMC CLASSIC Murfreesboro 16",
-      "slug": "amc-classic-murfreesboro-16",
       "dma": "Nashville"
     },
     {
@@ -305,6 +290,711 @@
       "name": "AMC Orange Park 24",
       "slug": "amc-orange-park-24",
       "dma": "Jacksonville"
+    },
+    {
+      "name": "AMC Academy 8",
+      "slug": "amc-academy-8",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Allegany 8",
+      "slug": "amc-allegany-8",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Altoona 12",
+      "slug": "amc-altoona-12",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Anderson Towne Center 9",
+      "slug": "amc-anderson-towne-center-9",
+      "state": "OH"
+    },
+    {
+      "name": "AMC Annapolis Mall 11",
+      "slug": "amc-annapolis-mall-11",
+      "state": "MD"
+    },
+    {
+      "name": "AMC Antioch 8",
+      "slug": "amc-antioch-8",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Avenue 16",
+      "slug": "amc-avenue-16",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Avenue Forsyth 12",
+      "slug": "amc-avenue-forsyth-12",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Aviation 12",
+      "slug": "amc-aviation-12",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Bay Plaza Cinema 13",
+      "slug": "amc-bay-plaza-cinema-13",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Bayou 15",
+      "slug": "amc-bayou-15",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Boulevard 10",
+      "slug": "amc-boulevard-10",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Bradley Square 12",
+      "slug": "amc-bradley-square-12",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Brick Plaza 10",
+      "slug": "amc-brick-plaza-10",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Broadstreet 7",
+      "slug": "amc-broadstreet-7",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Brunswick Square 13",
+      "slug": "amc-brunswick-square-13",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Camp Hill 12",
+      "slug": "amc-camp-hill-12",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Chattanooga 18",
+      "slug": "amc-chattanooga-18",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Cherry Blossom 14",
+      "slug": "amc-cherry-blossom-14",
+      "state": "MI"
+    },
+    {
+      "name": "AMC Clifton Commons 16",
+      "slug": "amc-clifton-commons-16",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Colonial 18",
+      "slug": "amc-colonial-18",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Columbia 14",
+      "slug": "amc-columbia-14",
+      "state": "MD"
+    },
+    {
+      "name": "AMC Columbus 10",
+      "slug": "amc-columbus-10",
+      "state": "OH"
+    },
+    {
+      "name": "AMC Columbus Park 15",
+      "slug": "amc-columbus-park-15",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Courthouse Plaza 8",
+      "slug": "amc-courthouse-plaza-8",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Crystal Run 16",
+      "slug": "amc-crystal-run-16",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC DINE-IN Berkshire 8",
+      "slug": "amc-dine-in-berkshire-8",
+      "state": "PA"
+    },
+    {
+      "name": "AMC DINE-IN Bridgewater 7",
+      "slug": "amc-dine-in-bridgewater-7",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC DINE-IN Essex Green 9",
+      "slug": "amc-dine-in-essex-green-9",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC DINE-IN Holly Springs 9",
+      "slug": "amc-dine-in-holly-springs-9",
+      "state": "NC"
+    },
+    {
+      "name": "AMC DINE-IN Menlo Park 12",
+      "slug": "amc-dine-in-menlo-park-12",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC DINE-IN Midlothian 10",
+      "slug": "amc-dine-in-midlothian-10",
+      "state": "VA"
+    },
+    {
+      "name": "AMC DINE-IN Painters Crossing 9",
+      "slug": "amc-dine-in-painters-crossing-9",
+      "state": "PA"
+    },
+    {
+      "name": "AMC DINE-IN Shops at Riverside 9",
+      "slug": "amc-dine-in-shops-at-riverside-9",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Danbury 16",
+      "slug": "amc-danbury-16",
+      "state": "CT"
+    },
+    {
+      "name": "AMC Dartmouth Mall 11",
+      "slug": "amc-dartmouth-mall-11",
+      "state": "MA"
+    },
+    {
+      "name": "AMC Deptford 8",
+      "slug": "amc-deptford-8",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Destin Commons 14",
+      "slug": "amc-destin-commons-14",
+      "state": "FL"
+    },
+    {
+      "name": "AMC East Hanover 12",
+      "slug": "amc-east-hanover-12",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Evansville 16",
+      "slug": "amc-evansville-16",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Fayetteville 14",
+      "slug": "amc-fayetteville-14",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Fiesta Square 12",
+      "slug": "amc-fiesta-square-12",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Fire Tower 12",
+      "slug": "amc-fire-tower-12",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Fleming Island 12",
+      "slug": "amc-fleming-island-12",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Foothills 12",
+      "slug": "amc-foothills-12",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Freehold 14",
+      "slug": "amc-freehold-14",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Garden State Plaza 16",
+      "slug": "amc-garden-state-plaza-16",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Glen Cove 6",
+      "slug": "amc-glen-cove-6",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Grand Rapids 18",
+      "slug": "amc-grand-rapids-18",
+      "state": "MI"
+    },
+    {
+      "name": "AMC Hampton Towne Centre 24",
+      "slug": "amc-hampton-towne-centre-24",
+      "state": "VA"
+    },
+    {
+      "name": "AMC Hanes 12",
+      "slug": "amc-hanes-12",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Harbison 14",
+      "slug": "amc-harbison-14",
+      "state": "SC"
+    },
+    {
+      "name": "AMC Headquarters Plaza 10",
+      "slug": "amc-headquarters-plaza-10",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Hialeah 12",
+      "slug": "amc-hialeah-12",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Hickory 15",
+      "slug": "amc-hickory-15",
+      "state": "NC"
+    },
+    {
+      "name": "AMC High Point 8",
+      "slug": "amc-high-point-8",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Highland 12",
+      "slug": "amc-highland-12",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Highwoods 20",
+      "slug": "amc-highwoods-20",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Holland 8",
+      "slug": "amc-holland-8",
+      "state": "MI"
+    },
+    {
+      "name": "AMC Huntington Square 12",
+      "slug": "amc-huntington-square-12",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Indian Mound 9",
+      "slug": "amc-indian-mound-9",
+      "state": "OH"
+    },
+    {
+      "name": "AMC Indianapolis 17",
+      "slug": "amc-indianapolis-17",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Jefferson Point 18",
+      "slug": "amc-jefferson-point-18",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Jersey Gardens 20",
+      "slug": "amc-jersey-gardens-20",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Johnson City 14",
+      "slug": "amc-johnson-city-14",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Kalli 12",
+      "slug": "amc-kalli-12",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Lake Square 12",
+      "slug": "amc-lake-square-12",
+      "state": "VA"
+    },
+    {
+      "name": "AMC Lakeshore 8",
+      "slug": "amc-lakeshore-8",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Landmark 8",
+      "slug": "amc-landmark-8",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Loudoun Station 11",
+      "slug": "amc-loudoun-station-11",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Lynnhaven 18",
+      "slug": "amc-lynnhaven-18",
+      "state": "VA"
+    },
+    {
+      "name": "AMC Madison Yards 8",
+      "slug": "amc-madison-yards-8",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Majestic 12",
+      "slug": "amc-majestic-12",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Majestic 6",
+      "slug": "amc-majestic-6",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Maple Ridge 8",
+      "slug": "amc-maple-ridge-8",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Market Fair 15",
+      "slug": "amc-market-fair-15",
+      "state": "NC"
+    },
+    {
+      "name": "AMC MarketFair 10",
+      "slug": "amc-marketfair-10",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Marlton 8",
+      "slug": "amc-marlton-8",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Marple 10",
+      "slug": "amc-marple-10",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Marquis 16",
+      "slug": "amc-marquis-16",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Merchants Crossing 16",
+      "slug": "amc-merchants-crossing-16",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Mobile 16",
+      "slug": "amc-mobile-16",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Monmouth Mall 15",
+      "slug": "amc-monmouth-mall-15",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Montgomery 16",
+      "slug": "amc-montgomery-16",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Morgantown 12",
+      "slug": "amc-morgantown-12",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Mountainside 10",
+      "slug": "amc-mountainside-10",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Muncie 12",
+      "slug": "amc-muncie-12",
+      "state": "IN"
+    },
+    {
+      "name": "AMC New Brunswick 18",
+      "slug": "amc-new-brunswick-18",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC North Dekalb 16",
+      "slug": "amc-north-dekalb-16",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Northgate 14",
+      "slug": "amc-northgate-14",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Owings Mills 17",
+      "slug": "amc-owings-mills-17",
+      "state": "MD"
+    },
+    {
+      "name": "AMC Palisades 21",
+      "slug": "amc-palisades-21",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Park Place 16",
+      "slug": "amc-park-place-16",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Park Terrace 6",
+      "slug": "amc-park-terrace-6",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Parkway Pointe 15",
+      "slug": "amc-parkway-pointe-15",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Pembroke Lakes 9",
+      "slug": "amc-pembroke-lake-9",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Plainville 20",
+      "slug": "amc-plainville-20",
+      "state": "CT"
+    },
+    {
+      "name": "AMC Port Chester 14",
+      "slug": "amc-port-chester-14",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Port St Lucie 14",
+      "slug": "amc-port-st-lucie-14",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Potomac Mills 18",
+      "slug": "amc-potomac-mills-18",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Ridge Park Square 8",
+      "slug": "amc-ridge-park-square-8",
+      "state": "OH"
+    },
+    {
+      "name": "AMC Ridgefield Park 12",
+      "slug": "amc-ridgefield-park-12",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Ritz 13",
+      "slug": "amc-ritz-13",
+      "state": "GA"
+    },
+    {
+      "name": "AMC River Hills 10",
+      "slug": "amc-river-hills-10",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Rivertowne 12",
+      "slug": "amc-rivertowne-12",
+      "state": "DC"
+    },
+    {
+      "name": "AMC Riverview 14",
+      "slug": "amc-riverview-14",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Rockaway 16",
+      "slug": "amc-rockaway-16",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Royale 6",
+      "slug": "amc-royale-6",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Saratoga Springs 11",
+      "slug": "amc-saratoga-springs-11",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Schererville 12",
+      "slug": "amc-schererville-12",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Schererville 16",
+      "slug": "amc-schererville-16",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Security Square 8",
+      "slug": "amc-security-square-8",
+      "state": "MD"
+    },
+    {
+      "name": "AMC SoNo8",
+      "slug": "amc-sono-8",
+      "state": "NY"
+    },
+    {
+      "name": "AMC South Bay Center 12",
+      "slug": "amc-south-bay-center-12",
+      "state": "MA"
+    },
+    {
+      "name": "AMC Southington 12",
+      "slug": "amc-southington-12",
+      "state": "CT"
+    },
+    {
+      "name": "AMC Southpoint 17",
+      "slug": "amc-southpoint-17",
+      "state": "NC"
+    },
+    {
+      "name": "AMC Spring Hill 12",
+      "slug": "amc-spring-hill-12",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Star Gratiot 15",
+      "slug": "amc-star-gratiot-15",
+      "state": "MI"
+    },
+    {
+      "name": "AMC Staten Island 11",
+      "slug": "amc-staten-island-11",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Stones River 9",
+      "slug": "amc-stones-river-9",
+      "state": "TN"
+    },
+    {
+      "name": "AMC Stonybrook 20",
+      "slug": "amc-stonybrook-20",
+      "state": "KY"
+    },
+    {
+      "name": "AMC Sunrise 8",
+      "slug": "amc-sunrise-8",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Tallahassee 20",
+      "slug": "amc-tallahassee-20",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Tamiami 18",
+      "slug": "amc-tamiami-18",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Tiger 13",
+      "slug": "amc-tiger-13",
+      "state": "GA"
+    },
+    {
+      "name": "AMC Tilghman Square 8",
+      "slug": "amc-tilghman-square-8",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Traders Point 12",
+      "slug": "amc-traders-point-12",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Tyngsboro 12",
+      "slug": "amc-tyngsboro-12",
+      "state": "MA"
+    },
+    {
+      "name": "AMC Vestal Town Square 9",
+      "slug": "amc-vestal-town-square-9",
+      "state": "NY"
+    },
+    {
+      "name": "AMC Washington Square 12",
+      "slug": "amc-washington-square-12",
+      "state": "IN"
+    },
+    {
+      "name": "AMC Wayne 14",
+      "slug": "amc-wayne-14",
+      "state": "NJ"
+    },
+    {
+      "name": "AMC Webster 12",
+      "slug": "amc-webster-12",
+      "state": "NY"
+    },
+    {
+      "name": "AMC West Melbourne 12",
+      "slug": "amc-west-melbourne-12",
+      "state": "FL"
+    },
+    {
+      "name": "AMC West Oaks 14",
+      "slug": "amc-west-oaks-14",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Westmoreland 15",
+      "slug": "amc-westmoreland-15",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Weston 8",
+      "slug": "amc-weston-8",
+      "state": "FL"
+    },
+    {
+      "name": "AMC Westwood Town Center 6",
+      "slug": "amc-westwood-town-center-6",
+      "state": "OH"
+    },
+    {
+      "name": "AMC Wheaton Mall 9",
+      "slug": "amc-wheaton-mall-9",
+      "state": "DC"
+    },
+    {
+      "name": "AMC White Marsh 16",
+      "slug": "amc-white-marsh-16",
+      "state": "MD"
+    },
+    {
+      "name": "AMC Woodhaven 10",
+      "slug": "amc-woodhaven-10",
+      "state": "PA"
+    },
+    {
+      "name": "AMC Yulee 10",
+      "slug": "amc-yulee-10",
+      "state": "FL"
     }
   ],
   "CT": [
@@ -577,6 +1267,331 @@
       "name": "AMC DINE-IN Prairiefire 17",
       "slug": "amc-dine-in-prairiefire-17",
       "dma": "Kansas City"
+    },
+    {
+      "name": "AMC Barton Creek Square 14",
+      "slug": "amc-barton-creek-square-14",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Baton Rouge 16",
+      "slug": "amc-baton-rouge-16",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Boerne 11",
+      "slug": "amc-boerne-11",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Burleson 14",
+      "slug": "amc-burleson-14",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Champaign 13",
+      "slug": "amc-champaign-13",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Chantilly 13",
+      "slug": "amc-chantilly-13",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Chenal 9",
+      "slug": "amc-chenal-9",
+      "state": "AR"
+    },
+    {
+      "name": "AMC Council Bluffs 17",
+      "slug": "amc-council-bluffs-17",
+      "state": "NE"
+    },
+    {
+      "name": "AMC Creve Coeur 12",
+      "slug": "amc-creve-coeur-12",
+      "state": "MO"
+    },
+    {
+      "name": "AMC DINE-IN Clearfork 8",
+      "slug": "amc-dine-in-clearfork-8",
+      "state": "TX"
+    },
+    {
+      "name": "AMC DINE-IN Clearview Palace 12",
+      "slug": "amc-dine-in-clearview-palace-12",
+      "state": "LA"
+    },
+    {
+      "name": "AMC DINE-IN Manhattan 13",
+      "slug": "amc-dine-in-manhattan-13",
+      "state": "KS"
+    },
+    {
+      "name": "AMC DINE-IN Tech Ridge 10",
+      "slug": "amc-dine-in-tech-ridge-10",
+      "state": "TX"
+    },
+    {
+      "name": "AMC DINE-IN Vestavia Hills 10",
+      "slug": "amc-dine-in-vestavia-hills-10",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Dakota Square 9",
+      "slug": "amc-dakota-square-9",
+      "state": "ND"
+    },
+    {
+      "name": "AMC Decatur 12",
+      "slug": "amc-decatur-12",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Edinburg 18",
+      "slug": "amc-edinburg-18",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Edwardsville 12",
+      "slug": "amc-edwardsville-12",
+      "state": "MO"
+    },
+    {
+      "name": "AMC El Paso 16",
+      "slug": "amc-el-paso-16",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Elmwood Palace 20",
+      "slug": "amc-elmwood-palace-20",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Esquire 7",
+      "slug": "amc-esquire-7",
+      "state": "MO"
+    },
+    {
+      "name": "AMC Evanston 12",
+      "slug": "amc-evanston-12",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Festival Plaza 16",
+      "slug": "amc-festival-plaza-16",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Fitchburg 18",
+      "slug": "amc-fitchburg-18",
+      "state": "WI"
+    },
+    {
+      "name": "AMC Galaxy 16",
+      "slug": "amc-galaxy-16",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Grand Prairie 18",
+      "slug": "amc-grand-prairie-18",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Hammond Palace 10",
+      "slug": "amc-hammond-palace-10",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Hawthorn 12",
+      "slug": "amc-hawthorn-12",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Highland Village 12",
+      "slug": "amc-highland-village-12",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Houma Palace 10",
+      "slug": "amc-houma-palace-10",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Lakeline 9",
+      "slug": "amc-lakeline-9",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Longview 10",
+      "slug": "amc-longview-10",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Lufkin 9",
+      "slug": "amc-lufkin-9",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Machesney Park 14",
+      "slug": "amc-machesney-park-14",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Mall of Louisiana 15",
+      "slug": "amc-mall-of-louisiana-15",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Mayfair Mall 18",
+      "slug": "amc-mayfair-mall-18",
+      "state": "WI"
+    },
+    {
+      "name": "AMC Norridge 6",
+      "slug": "amc-norridge-6",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Northrock 14",
+      "slug": "amc-northrock-14",
+      "state": "KS"
+    },
+    {
+      "name": "AMC Oakbrook Center 4",
+      "slug": "amc-oakbrook-center-4",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Palace 9",
+      "slug": "amc-palace-9",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Patriot 13",
+      "slug": "amc-patriot-13",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Patton Creek 15",
+      "slug": "amc-patton-creek-15",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Penn Square 10",
+      "slug": "amc-penn-square-10",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Quail Springs Mall 24",
+      "slug": "amc-quail-springs-mall-24",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Rivercenter 11",
+      "slug": "amc-rivercenter-11-with-alamo-imax",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Robinson Crossing 6",
+      "slug": "amc-robinson-crossing-6",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Rockford 16",
+      "slug": "amc-rockford-16",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Sikes Senter 10",
+      "slug": "amc-sikes-senter-10",
+      "state": "TX"
+    },
+    {
+      "name": "AMC Southern Hills 12",
+      "slug": "amc-southern-hills-12",
+      "state": "IA"
+    },
+    {
+      "name": "AMC Southroads 20",
+      "slug": "amc-southroads-20",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Springfield 11",
+      "slug": "amc-springfield-11",
+      "state": "MO"
+    },
+    {
+      "name": "AMC Springfield 12",
+      "slug": "amc-springfield-12",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Springfield 8",
+      "slug": "amc-springfield-8",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Stillwater 10",
+      "slug": "amc-stillwater-10",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Streets Of St Charles 8",
+      "slug": "amc-streets-of-st-charles-8",
+      "state": "MO"
+    },
+    {
+      "name": "AMC Studio 28",
+      "slug": "amc-studio-28",
+      "state": "MO"
+    },
+    {
+      "name": "AMC Summit 16",
+      "slug": "amc-summit-16",
+      "state": "AL"
+    },
+    {
+      "name": "AMC Tulsa Hills 12",
+      "slug": "amc-tulsa-hills-12",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Tyler 14",
+      "slug": "amc-tyler-14",
+      "state": "TX"
+    },
+    {
+      "name": "AMC University Place 8",
+      "slug": "amc-university-place-8",
+      "state": "IL"
+    },
+    {
+      "name": "AMC Valley Bend 18",
+      "slug": "amc-valley-bend-18",
+      "state": "AL"
+    },
+    {
+      "name": "AMC West End Pointe 8",
+      "slug": "amc-west-end-pointe-8",
+      "state": "OK"
+    },
+    {
+      "name": "AMC Westbank Palace 16",
+      "slug": "amc-westbank-palace-16",
+      "state": "LA"
+    },
+    {
+      "name": "AMC Westroads 14",
+      "slug": "amc-westroads-14",
+      "state": "NE"
+    },
+    {
+      "name": "Cinema Centre 8",
+      "slug": "cinema-centre-8",
+      "state": "OK"
     }
   ],
   "PT": [
@@ -829,6 +1844,178 @@
       "name": "AMC Arapahoe Crossing 16",
       "slug": "amc-arapahoe-crossing-16",
       "dma": "Denver"
+    },
+    {
+      "name": "AMC Anaheim GardenWalk 6",
+      "slug": "amc-anaheim-gardenwalk-6",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Bakersfield 6",
+      "slug": "amc-bakersfield-6",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Burbank Town Center 8",
+      "slug": "amc-burbank-town-center-8",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Fallbrook 7",
+      "slug": "amc-fallbrook-7",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Kitsap 8",
+      "slug": "amc-kitsap-8",
+      "state": "WA"
+    },
+    {
+      "name": "AMC Manteca 16",
+      "slug": "amc-manteca-16",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Oak Tree 6",
+      "slug": "amc-oak-tree-6",
+      "state": "WA"
+    },
+    {
+      "name": "AMC Porter Ranch 9",
+      "slug": "amc-porter-ranch-9",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Progress Ridge 13",
+      "slug": "amc-progress-ridge-13",
+      "state": "WA"
+    },
+    {
+      "name": "AMC Rainbow Promenade 10",
+      "slug": "amc-rainbow-promenade-10",
+      "state": "NV"
+    },
+    {
+      "name": "AMC River Park Square 20",
+      "slug": "amc-river-park-square-20",
+      "state": "WA"
+    },
+    {
+      "name": "AMC Santa Anita 16",
+      "slug": "amc-santa-anita-16",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Topanga 12",
+      "slug": "amc-topanga-12",
+      "state": "CA"
+    },
+    {
+      "name": "AMC Town Square 18",
+      "slug": "amc-town-square-18",
+      "state": "NV"
+    },
+    {
+      "name": "AMC Vancouver Mall 23",
+      "slug": "amc-vancouver-mall-23",
+      "state": "WA"
+    },
+    {
+      "name": "AMC Victoria Gardens 12",
+      "slug": "amc-victoria-gardens-12",
+      "state": "CA"
+    }
+  ],
+  "MT": [
+    {
+      "name": "AMC 9+CO 10",
+      "slug": "amc-9-co-10",
+      "state": "CO"
+    },
+    {
+      "name": "AMC Albuquerque 12",
+      "slug": "amc-albuquerque-12",
+      "state": "NM"
+    },
+    {
+      "name": "AMC Arrowhead 14",
+      "slug": "amc-arrowhead-14",
+      "state": "AZ"
+    },
+    {
+      "name": "AMC Brighton 12",
+      "slug": "amc-brighton-12",
+      "state": "CO"
+    },
+    {
+      "name": "AMC Castle Rock 12",
+      "slug": "amc-castle-rock-12",
+      "state": "CO"
+    },
+    {
+      "name": "AMC Chapel Hills 13",
+      "slug": "amc-chapel-hills-13",
+      "state": "CO"
+    },
+    {
+      "name": "AMC DINE-IN Esplanade 14",
+      "slug": "amc-dine-in-esplanade-14",
+      "state": "AZ"
+    },
+    {
+      "name": "AMC DINE-IN SOUTHGATE 9",
+      "slug": "amc-dine-in-southgate-9",
+      "state": "MT"
+    },
+    {
+      "name": "AMC Foothills 15",
+      "slug": "amc-foothills-15",
+      "state": "AZ"
+    },
+    {
+      "name": "AMC Fort Collins 10",
+      "slug": "amc-fort-collins-10",
+      "state": "CO"
+    },
+    {
+      "name": "AMC Layton Hills 9",
+      "slug": "amc-layton-hills-9",
+      "state": "UT"
+    },
+    {
+      "name": "AMC Mesa Grand 14",
+      "slug": "amc-mesa-grand-14",
+      "state": "AZ"
+    },
+    {
+      "name": "AMC Missoula 12",
+      "slug": "amc-missoula-12",
+      "state": "MT"
+    },
+    {
+      "name": "AMC Orchard 12",
+      "slug": "amc-orchard-12",
+      "state": "CO"
+    },
+    {
+      "name": "AMC Provo 8",
+      "slug": "amc-provo-8",
+      "state": "UT"
+    },
+    {
+      "name": "AMC Shiloh 14",
+      "slug": "amc-shiloh-14",
+      "state": "MT"
+    },
+    {
+      "name": "AMC Superstition East 12",
+      "slug": "amc-superstition-east-12",
+      "state": "AZ"
+    },
+    {
+      "name": "AMC West Jordan 12",
+      "slug": "amc-west-jordan-12",
+      "state": "UT"
     }
   ]
 }

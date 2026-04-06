@@ -270,13 +270,10 @@ def analyze_distribution(movie: str, prediction: dict,
     low = prediction["blend_low_m"]
     high = prediction["blend_high_m"]
 
-    # Apply calibration scale factor if available
-    scale = 1.0
-    if calibration:
-        scale = calibration.get("calibration_factors", {}).get("overall_scale_factor", 1.0)
-        mid *= scale
-        low *= scale
-        high *= scale
+    # NOTE: do NOT re-apply overall_scale_factor here.
+    # predict_movie() already applies it inside days_to_weekend(), so
+    # blended_m / blend_low_m / blend_high_m are fully calibrated.
+    # Re-applying would double-count the factor (e.g. 0.9 × 0.9 = 0.81×).
 
     # Std from CI width. The CI comes from DAY_CONFIDENCE in predict.py:
     #   1 day: (0.70, 1.40) → range = 0.70 × mid → std ≈ range/4

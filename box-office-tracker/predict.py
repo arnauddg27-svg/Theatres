@@ -26,10 +26,11 @@ from datetime import datetime, timedelta
 from math import sqrt
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-DATA_DIR        = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-SEAT_CSV        = os.path.join(DATA_DIR, "seat-counts.csv")
-POLY_CSV        = os.path.join(DATA_DIR, "polymarket-markets.csv")
-CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
+DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
+POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
+CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
+THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 
 # ── Default Constants ────────────────────────────────────────────────────────
 DEFAULT_AMC_MARKET_SHARE = 0.25
@@ -161,6 +162,15 @@ def save_calibration(cal):
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(CALIBRATION_JSON, "w") as f:
         json.dump(cal, f, indent=2)
+
+
+def load_theatre_counts():
+    """Load national theatre counts from theatre-counts.json (scraped from BOM)."""
+    if os.path.exists(THEATRE_COUNTS_JSON):
+        with open(THEATRE_COUNTS_JSON) as f:
+            data = json.load(f)
+        return {k: v for k, v in data.items() if not k.startswith("_")}
+    return {}
 
 
 # ── Stage A: Per-Theatre Daily Revenue ───────────────────────────────────────
@@ -521,7 +531,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
 
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
-def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
+def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_theatre_count=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates (Thu-Sun)
     all_dates = sorted(seat_data.keys())
@@ -555,10 +565,13 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
         # Stage A: per-showtime revenue, then sum per theatre-format
         theatre_results = []
         no_data_count = 0
+        showings_by_theatre = {}
         for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
                 theatre_results.append(result)
+                t_name = row.get("theatre_name", "?")
+                showings_by_theatre[t_name] = showings_by_theatre.get(t_name, 0) + 1
             else:
                 no_data_count += 1
 
@@ -567,9 +580,22 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
 
         # Stage B: sum all AMC
         amc_total, amc_stats = sum_amc_theatres(theatre_results)
+        n_amc_theatres = amc_stats.get("n_theatres", 0)
+        avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
+                        if showings_by_theatre else 0)
 
         # Stage C: AMC → domestic
+        # If we have a national theatre count, use it to cross-check our scaling.
+        # Per-theatre revenue from our sample × national theatre count gives an
+        # independent estimate — we blend it 50/50 with the market-share approach.
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
+        if national_theatre_count and n_amc_theatres > 0:
+            mean_rev = amc_stats.get("mean_revenue", 0)
+            nat_est = mean_rev * national_theatre_count
+            # Blend: 60% market-share, 40% national-count extrapolation
+            domestic_mid  = domestic_mid  * 0.6 + nat_est * 0.4
+            domestic_low  = domestic_low  * 0.6 + nat_est * 0.4 * 0.85
+            domestic_high = domestic_high * 0.6 + nat_est * 0.4 * 1.15
 
         daily_estimates[day_name] = domestic_mid
         daily_details[day_name] = {
@@ -578,8 +604,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
             "domestic_mid": domestic_mid,
             "domestic_low": domestic_low,
             "domestic_high": domestic_high,
-            "n_theatres": amc_stats.get("n_theatres", 0),
+            "n_theatres": n_amc_theatres,
             "n_no_data": no_data_count,
+            "avg_showings_per_cinema": round(avg_showings, 1),
             "mean_revenue": amc_stats.get("mean_revenue", 0),
             "median_revenue": amc_stats.get("median_revenue", 0),
             "theatre_results": theatre_results if verbose else [],
@@ -617,6 +644,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
         blend_high_m = seat_high_m
         w_seat, w_poly = 1.0, 0.0
 
+    avg_showings_total = (
+        sum(d.get("avg_showings_per_cinema", 0) for d in daily_details.values()) /
+        len(daily_details) if daily_details else 0
+    )
+
     return {
         "movie": movie,
         "seat_mid_m": seat_mid_m,
@@ -632,6 +664,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False):
         "daily_estimates": daily_estimates,
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
+        "national_theatre_count": national_theatre_count,
+        "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": seat_mid * cal["calibration_factors"].get("amc_market_share", DEFAULT_AMC_MARKET_SHARE),
     }
 
@@ -656,18 +690,22 @@ def print_prediction(pred, verbose=False):
     # Seat-based
     days_str = ", ".join(sorted(pred["daily_estimates"].keys()))
     n_th = pred["n_theatres_total"]
+    nat = pred.get("national_theatre_count")
+    nat_str = f", {nat:,} national" if nat else ""
+    shows_str = f", ~{pred.get('avg_showings_per_cinema', 0):.1f} showings/cinema" if pred.get('avg_showings_per_cinema') else ""
     print(f"  Seat-based:    {fmt_m(pred['seat_mid_m']):>10}  "
           f"({fmt_m(pred['seat_low_m'])} - {fmt_m(pred['seat_high_m'])})")
-    print(f"    Data: {n_th} theatres, {pred['n_days']} day(s) [{days_str}]")
+    print(f"    Data: {n_th} AMC theatres{nat_str}, {pred['n_days']} day(s) [{days_str}]{shows_str}")
 
     # Per-day breakdown
     for day, details in sorted(pred["daily_details"].items(),
                                 key=lambda x: x[1]["date"]):
         amc_m = details["amc_total"] / 1_000_000
         dom_m = details["domestic_mid"] / 1_000_000
+        spd = details.get("avg_showings_per_cinema", 0)
         print(f"    {day} ({details['date']}): "
               f"AMC {fmt_m(amc_m)} → domestic {fmt_m(dom_m)} "
-              f"[{details['n_theatres']} theatres"
+              f"[{details['n_theatres']} theatres, {spd:.1f} showings/cinema"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
     # Polymarket
@@ -794,9 +832,10 @@ def main():
     # Default: predict all movies
     seat_data = load_seat_data()
     poly_data = load_polymarket_data()
+    theatre_counts = load_theatre_counts()
 
     if not seat_data:
-        print("No seat data found. Run collect.py first.")
+        print("No seat data found. Run: python3 scraper.py --collect-links, then python3 scraper.py")
         return
 
     # Filter to a specific movie if requested
@@ -812,14 +851,25 @@ def main():
     factors = cal["calibration_factors"]
     print(f"  Calibration: scale={factors.get('overall_scale_factor', 1.0):.3f}, "
           f"AMC share={factors.get('amc_market_share', DEFAULT_AMC_MARKET_SHARE):.1%}")
+    if theatre_counts:
+        print(f"  National theatre counts: {', '.join(f'{m}: {c:,}' for m, c in theatre_counts.items())}")
     print(f"{'='*70}")
 
     for movie in sorted(seat_data.keys()):
         if movie_filter and movie_filter not in movie.lower():
             continue
 
+        # Fuzzy match movie name to theatre_counts keys
+        nat_count = theatre_counts.get(movie)
+        if not nat_count:
+            for tc_movie, count in theatre_counts.items():
+                if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
+                    nat_count = count
+                    break
+
         pred = predict_movie(movie, seat_data[movie],
-                            poly_data.get(movie, []), cal, verbose=verbose)
+                            poly_data.get(movie, []), cal, verbose=verbose,
+                            national_theatre_count=nat_count)
         if pred:
             print_prediction(pred, verbose=verbose)
 

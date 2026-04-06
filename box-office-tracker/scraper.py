@@ -16,6 +16,7 @@ import asyncio
 import csv
 import json
 import os
+import random
 import re
 import sys
 from datetime import datetime, timedelta, timezone
@@ -33,8 +34,9 @@ SEAT_CSV = DATA_DIR / "seat-counts.csv"
 POLY_CSV = DATA_DIR / "polymarket-markets.csv"
 RUN_LOG  = DATA_DIR / "run-log.md"
 
-THEATRES_JSON = DATA_DIR / "theatres-all.json"
-LINKS_JSON    = DATA_DIR / "showtime-links.json"  # Phase 1 output / Phase 2 input
+THEATRES_JSON    = DATA_DIR / "theatres-all.json"
+LINKS_JSON       = DATA_DIR / "showtime-links.json"   # Phase 1 output / Phase 2 input
+THEATRE_COUNTS_JSON = DATA_DIR / "theatre-counts.json"  # National theatre counts from BOM
 
 
 def load_theatres():
@@ -48,6 +50,7 @@ def load_theatres():
     return {
         "ET": [{"name": "AMC Empire 25", "slug": "amc-empire-25"}],
         "CT": [{"name": "AMC River East 21", "slug": "amc-river-east-21"}],
+        "MT": [{"name": "AMC Westminster 24", "slug": "amc-westminster-24"}],
         "PT": [{"name": "AMC The Grove 14", "slug": "amc-the-grove-14"}],
     }
 
@@ -70,6 +73,20 @@ FORMAT_PRIORITY = {
 
 # Concurrency — how many browser tabs to run in parallel.
 MAX_CONCURRENT_TABS = 5
+# Phase 1 uses lower concurrency to avoid AMC rate-limiting.
+MAX_CONCURRENT_TABS_PHASE1 = 2
+
+# Rotate through realistic Chrome user agents to reduce rate-limiting.
+_USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+]
 
 _TZ_NAMES = {"ET": "America/New_York", "CT": "America/Chicago",
              "MT": "America/Denver",   "PT": "America/Los_Angeles"}
@@ -260,6 +277,99 @@ def save_polymarket_data(markets):
     print(f"  Saved {new_count} new bracket market entries to CSV")
 
 
+# ─── Box Office Mojo — National Theatre Counts ──────────────────────────────
+
+def fetch_bom_theatre_counts(movie_titles):
+    """
+    Scrape Box Office Mojo's current weekend chart to get national theatre counts.
+    Saves results to theatre-counts.json.
+    Returns dict: {movie_title: theatre_count}
+    """
+    print("\n🎭 Fetching national theatre counts from Box Office Mojo...")
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/123.0.0.0 Safari/537.36"
+        )
+    }
+    counts = {}
+    try:
+        resp = requests.get(
+            "https://www.boxofficemojo.com/weekend/chart/",
+            headers=headers, timeout=15
+        )
+        resp.raise_for_status()
+        html = resp.text
+
+        # BOM renders a table: Title | Studio | Weekend | % Change | Theaters | ...
+        # Parse <td> cells — theatre count appears in the "Theaters" column
+        # Each row: rank, title, studio, weekend_gross, ..., theater_count, ...
+        rows = re.findall(
+            r'<td[^>]*>.*?<a[^>]*>([^<]+)</a>.*?</td>(?:.*?<td[^>]*>([^<]+)</td>){3,5}.*?'
+            r'<td[^>]*>\s*([\d,]+)\s*</td>',
+            html, re.DOTALL
+        )
+
+        # Fallback: simpler extraction — find all title+theater_count pairs
+        # BOM table columns (typical): Rank | Title | Studio | Weekend | %Chg | Theaters | Avg | Total | Wks
+        # Extract all numbers that look like theatre counts (1,000–10,000 range)
+        title_blocks = re.findall(
+            r'release/rl\d+[^"]*"[^>]*>([^<]{3,60})</a>.*?'
+            r'<td[^>]*>\s*([\d,]{1,6})\s*</td>',
+            html, re.DOTALL
+        )
+
+        parsed = {}
+        for title, count_str in title_blocks:
+            title = title.strip()
+            try:
+                count = int(count_str.replace(',', ''))
+                if 10 <= count <= 12000:  # plausible theatre count range
+                    parsed[title.lower()] = count
+            except ValueError:
+                continue
+
+        # Match our movie titles to BOM titles (fuzzy)
+        for movie in movie_titles:
+            movie_lower = movie.lower().strip()
+            best_match = None
+            best_score = 0
+            for bom_title, count in parsed.items():
+                # Simple word overlap score
+                m_words = set(movie_lower.split())
+                b_words = set(bom_title.split())
+                overlap = len(m_words & b_words) / max(len(m_words), 1)
+                if overlap > best_score and overlap >= 0.5:
+                    best_score = overlap
+                    best_match = (bom_title, count)
+            if best_match:
+                counts[movie] = best_match[1]
+                print(f"  ✅ {movie}: {best_match[1]:,} theatres (matched '{best_match[0]}')")
+            else:
+                print(f"  ⚠️  {movie}: no BOM match found")
+
+    except Exception as e:
+        print(f"  ❌ BOM fetch failed: {e}")
+
+    # Save / merge with existing
+    existing = {}
+    if THEATRE_COUNTS_JSON.exists():
+        try:
+            with open(THEATRE_COUNTS_JSON) as f:
+                existing = json.load(f)
+        except Exception:
+            pass
+
+    existing.update(counts)
+    existing["_updated"] = datetime.now().isoformat()
+    with open(THEATRE_COUNTS_JSON, "w") as f:
+        json.dump(existing, f, indent=2)
+
+    print(f"  Saved theatre counts for {len(counts)} movies → {THEATRE_COUNTS_JSON}")
+    return counts
+
+
 # ─── AMC Playwright Scraper ─────────────────────────────────────────────────
 
 async def fetch_amc_showtimes_pw(page, theatre, date_str):
@@ -357,11 +467,15 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-        # Smart wait: seat inputs appear once the seat map JS hydrates
+        # Smart wait: seat inputs appear once the seat map JS hydrates.
+        # AMC uses different aria-label patterns by seat type:
+        #   Standard recliners  → "Recliner A1"
+        #   IMAX / Dolby rooms  → "AMC Club Rocker A1"
+        #   Generic labeled     → "Seat A1"
         try:
             await page.wait_for_selector(
-                'input[aria-label*="Recliner"], input[aria-label*="Seat"]',
-                timeout=10000,
+                'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
+                timeout=15000,
             )
         except Exception:
             # No seat inputs — general admission or broken page
@@ -388,7 +502,8 @@ COUNT_SEATS_JS = r'''() => {
         const label = (input.getAttribute('aria-label') || '').toLowerCase();
 
         // Skip non-seat inputs (filters, search, etc)
-        if (!(/[a-z]\d+/.test(label) || label.includes('recliner') || label.includes('seat'))) {
+        // AMC seat types: "Recliner A1", "Seat A1", "AMC Club Rocker A1" (IMAX/Dolby)
+        if (!(/[a-z]\d+/.test(label) || label.includes('recliner') || label.includes('seat') || label.includes('club rocker'))) {
             continue;
         }
         // Skip wheelchair and companion seats
@@ -456,64 +571,6 @@ def parse_showtime_hour(time_str):
     return None
 
 
-def find_evening_shows(showtimes, movie_title, current_hour=None):
-    """
-    Find all past/in-progress evening shows (5pm-midnight) for a movie.
-
-    Returns ALL shows per format that have already started (showtime <= now),
-    so we capture actual attendance rather than advance bookings.
-    If no shows have started yet (early run), falls back to all evening shows.
-
-    current_hour: decimal hour in local theatre timezone (e.g. 21.5 = 9:30pm).
-                  Defaults to now if not provided.
-    """
-    if current_hour is None:
-        now = datetime.now()
-        current_hour = now.hour + now.minute / 60
-
-    movie_lower = movie_title.lower().strip()
-    matching = [s for s in showtimes
-                if movie_lower in s.get("movie", "").lower()
-                or s.get("movie", "").lower() in movie_lower]
-
-    if not matching:
-        return []
-
-    # Filter to evening window (5pm - midnight)
-    evening = [s for s in matching
-               if parse_showtime_hour(s.get("showtime", "")) is not None
-               and 17 <= parse_showtime_hour(s.get("showtime", "")) <= 24]
-
-    if not evening:
-        evening = matching
-
-    # Only keep shows that have already started (showtime <= now)
-    started = [s for s in evening
-               if (parse_showtime_hour(s.get("showtime", "")) or 25) <= current_hour]
-
-    # If nothing has started yet, fall back to all evening shows
-    if not started:
-        started = evening
-
-    # Return ALL started shows per format (not just one per format)
-    results = []
-    seen = set()
-    for s in sorted(started,
-                    key=lambda x: -(parse_showtime_hour(x.get("showtime", "")) or 0)):
-        fmt = s.get("format", "Standard")
-        st = s.get("showtime", "?")
-        key = (fmt, st)
-        if key in seen:
-            continue
-        seen.add(key)
-        reason = f"{fmt} @ {st} (started, past showtime)"
-        results.append((s, reason))
-
-    # Sort by format priority
-    results.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
-    return results
-
-
 # ─── Data Logging ────────────────────────────────────────────────────────────
 
 def ensure_csv_header():
@@ -528,7 +585,7 @@ def ensure_csv_header():
                 "timezone", "movie_title", "polymarket_market", "showtime",
                 "check_time", "minutes_after_showtime", "auditorium_name",
                 "auditorium_type", "total_seats", "seats_sold",
-                "seats_available", "occupancy_pct", "ticket_price_estimate",
+                "seats_available", "occupancy_pct",
                 "amc_seat_map_url", "notes",
             ])
 
@@ -566,14 +623,17 @@ def log_run(tz_group, movies, results, issues):
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                           weekend_of="", run_id="", saved_movies=None):
     """
-    Scrape one theatre's showtimes + seat maps on its own browser tab.
+    Scrape one theatre's seat maps using pre-collected Phase 1 showtime IDs.
 
-    saved_movies: if provided (Phase 2), skip the showtime page entirely and
-                  use pre-saved {movie_title: [{showtime, showtime_id, format}]}
+    saved_movies: required — {movie_title: [{showtime, showtime_id, format}]}
                   collected during Phase 1 (collect-links run).
+                  If None the theatre is skipped (Phase 1 must run first).
 
     Returns (results_list, issues_list, csv_rows_list).
     """
+    if saved_movies is None:
+        return [], [f"{theatre['name']}: no Phase 1 links — skipped"], []
+
     tz = theatre.get("_tz", "")
     context = await browser.new_context(viewport={"width": 1280, "height": 800})
     page = await context.new_page()
@@ -591,46 +651,30 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         current_hour = tz_local.hour + tz_local.minute / 60
         check_time = datetime.now(timezone.utc).isoformat()
 
-        if saved_movies is not None:
-            # ── Phase 2 path: use pre-collected showtime IDs ──────────────────
-            # Build evening_shows directly from saved links (all started shows)
-            movie_shows_map = {}
-            for movie_title, entries in saved_movies.items():
-                started = [
-                    e for e in entries
-                    if (parse_showtime_hour(e.get("showtime", "")) or 25) <= current_hour
-                ]
-                if not started:
-                    started = entries  # fallback: nothing started yet
-                seen = set()
-                shows = []
-                for e in sorted(started,
-                                key=lambda x: -(parse_showtime_hour(x.get("showtime", "")) or 0)):
-                    key = (e.get("format", "Standard"), e.get("showtime", "?"))
-                    if key in seen:
-                        continue
-                    seen.add(key)
-                    shows.append((
-                        {"showtime": e["showtime"], "showtime_id": e["showtime_id"],
-                         "format": e.get("format", "Standard"), "flags": ""},
-                        f"{e.get('format','Standard')} @ {e['showtime']} (saved link)",
-                    ))
-                shows.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
-                movie_shows_map[movie_title] = shows
-        else:
-            # ── Phase 1 / standalone path: fetch showtime page live ───────────
-            showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
-
-            if not showtimes:
-                issues.append(f"{theatre['name']}: No showtimes retrieved")
-                return results, issues, csv_rows
-
-            movie_shows_map = {}
-            for movie_title in movie_titles:
-                evening_shows = find_evening_shows(showtimes, movie_title, current_hour)
-                if not evening_shows:
-                    issues.append(f"{theatre['name']}: '{movie_title}' not showing or no started shows")
-                movie_shows_map[movie_title] = evening_shows
+        # Build evening_shows from saved Phase 1 links (all started shows)
+        movie_shows_map = {}
+        for movie_title, entries in saved_movies.items():
+            started = [
+                e for e in entries
+                if (parse_showtime_hour(e.get("showtime", "")) or 25) <= current_hour
+            ]
+            if not started:
+                started = entries  # fallback: nothing started yet
+            seen = set()
+            shows = []
+            for e in sorted(started,
+                            key=lambda x: -(parse_showtime_hour(x.get("showtime", "")) or 0)):
+                key = (e.get("format", "Standard"), e.get("showtime", "?"))
+                if key in seen:
+                    continue
+                seen.add(key)
+                shows.append((
+                    {"showtime": e["showtime"], "showtime_id": e["showtime_id"],
+                     "format": e.get("format", "Standard"), "flags": ""},
+                    f"{e.get('format','Standard')} @ {e['showtime']} (saved link)",
+                ))
+            shows.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
+            movie_shows_map[movie_title] = shows
 
         for movie_title, evening_shows in movie_shows_map.items():
             if not evening_shows:
@@ -692,10 +736,14 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     No seat maps fetched — just links for later.
     Returns dict: {movie_title: [{showtime, showtime_id, format}, ...]}
     """
-    context = await browser.new_context(viewport={"width": 1280, "height": 800})
+    context = await browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        user_agent=random.choice(_USER_AGENTS),
+    )
     page = await context.new_page()
     collected = {}
     try:
+        await asyncio.sleep(random.uniform(0.5, 2.5))
         showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
         for movie_title in movie_titles:
             movie_lower = movie_title.lower().strip()
@@ -704,7 +752,7 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
                         or s.get("movie", "").lower() in movie_lower]
             evening = [s for s in matching
                        if parse_showtime_hour(s.get("showtime", "")) is not None
-                       and 17 <= parse_showtime_hour(s.get("showtime", "")) <= 24]
+                       and 17 <= parse_showtime_hour(s.get("showtime", "")) <= 23]
             if evening:
                 collected[movie_title] = [
                     {"showtime": s.get("showtime"), "showtime_id": s.get("showtime_id"),
@@ -737,9 +785,10 @@ async def run_collect_links_async(tz_group="ALL"):
         return
 
     movie_titles = [m["movie_title"] for m in poly_markets]
+    fetch_bom_theatre_counts(movie_titles)
     ref_tz = tz_group if tz_group != "ALL" else "ET"
     today = local_date_str(ref_tz)
-    groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
+    groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
     all_theatres = []
     for group in groups:
         for t in theatres_map.get(group, []):
@@ -748,7 +797,7 @@ async def run_collect_links_async(tz_group="ALL"):
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
 
     links = {"date": today, "collected_at": datetime.now().isoformat(), "theatres": {}}
-    sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
+    sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -760,6 +809,24 @@ async def run_collect_links_async(tz_group="ALL"):
                 return theatre["name"], theatre.get("_tz", ""), result
 
         outcomes = await asyncio.gather(*[bounded(t) for t in all_theatres], return_exceptions=True)
+
+        # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
+        failed = [
+            t for t, outcome in zip(all_theatres, outcomes)
+            if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[2])
+        ]
+        if failed:
+            print(f"\n🔄 Retrying {len(failed)} theatres that returned 0 showtimes (5s delay)...")
+            await asyncio.sleep(5)
+            retry_outcomes = await asyncio.gather(*[bounded(t) for t in failed], return_exceptions=True)
+            # Splice retry results back in place of the failed slots
+            fi = 0
+            outcomes = list(outcomes)
+            for i, outcome in enumerate(outcomes):
+                if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[2]):
+                    outcomes[i] = retry_outcomes[fi]
+                    fi += 1
+
         await browser.close()
 
     total_links = 0
@@ -772,10 +839,41 @@ async def run_collect_links_async(tz_group="ALL"):
             total_links += sum(len(v) for v in collected.values())
 
     DATA_DIR.mkdir(exist_ok=True)
+
+    # Merge into existing file so ET/CT/PT Phase 1 runs accumulate in the same file.
+    # Each TZ group runs Phase 1 separately and would otherwise overwrite the others.
+    # We keep collected_at from the FIRST run of the day (oldest), and update
+    # individual theatre entries. Theatres from previous weekends are replaced.
+    existing = {}
+    if LINKS_JSON.exists():
+        try:
+            with open(LINKS_JSON) as f:
+                existing = json.load(f)
+            # Only merge if the existing file is from today (same weekend_of).
+            # If it's stale (>14h old), start fresh so old links don't pollute.
+            existing_at_str = existing.get("collected_at", "")
+            if existing_at_str:
+                existing_at = datetime.fromisoformat(existing_at_str)
+                if existing_at.tzinfo is None:
+                    existing_at = existing_at.replace(tzinfo=timezone.utc)
+                age_h = (datetime.now(timezone.utc) - existing_at).total_seconds() / 3600
+                if age_h > 14:
+                    existing = {}  # stale — start fresh
+        except Exception:
+            existing = {}
+
+    merged_theatres = dict(existing.get("theatres", {}))
+    merged_theatres.update(links["theatres"])   # new entries win
+    links["theatres"] = merged_theatres
+    # Keep the earliest collected_at so the 12h recency window is measured from
+    # the first Phase 1 run (ET), not the last (PT).
+    if existing.get("collected_at"):
+        links["collected_at"] = existing["collected_at"]
+
     with open(LINKS_JSON, "w") as f:
         json.dump(links, f, indent=2)
 
-    print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres → {LINKS_JSON}")
+    print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}")
 
 
 async def run_async(tz_group="ALL"):
@@ -793,7 +891,7 @@ async def run_async(tz_group="ALL"):
 
     # Use tz-adjusted local date (server clock is UTC; runs after midnight UTC
     # would otherwise stamp tomorrow's date on tonight's data).
-    groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "PT"]
+    groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
     # For mixed-TZ runs use ET as the reference (most conservative, first to tick over)
     ref_tz = tz_group if tz_group != "ALL" else "ET"
     local = local_now(ref_tz)
@@ -833,10 +931,11 @@ async def run_async(tz_group="ALL"):
         for theatre in theatres_map.get(group, []):
             all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
 
-    # Check for Phase 1 links — accept if collected within the last 12 hours.
+    # Phase 2 requires Phase 1 links — abort if missing or stale.
     # Date-string comparison fails at midnight PT (Phase 1 at 6pm PT = UTC next day,
-    # Phase 2 at midnight PT = UTC further into next day → different local dates).
-    saved_links = None
+    # Phase 2 at 10pm PT = UTC further into next day → different local dates),
+    # so we use a 12-hour recency window instead.
+    saved_links = {}
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
@@ -847,23 +946,36 @@ async def run_async(tz_group="ALL"):
                 if collected_at.tzinfo is None:
                     collected_at = collected_at.replace(tzinfo=timezone.utc)
                 age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
-                if age_hours <= 12:
+                if age_hours <= 14:
                     saved_links = links_data.get("theatres", {})
-                    print(f"\n📂 Phase 1 links from {age_hours:.1f}h ago ({len(saved_links)} theatres) — skipping showtime pages")
+                    print(f"\n📂 Phase 1 links from {age_hours:.1f}h ago ({len(saved_links)} theatres)")
                 else:
-                    print(f"\n⚠️  showtime-links.json is {age_hours:.1f}h old (>12h) — fetching live")
+                    print(f"\n❌ showtime-links.json is {age_hours:.1f}h old (>14h) — run Phase 1 first.")
+                    return
             else:
-                # Fallback to date comparison for old-format files
+                # Old-format file: fall back to date comparison
                 if links_data.get("date") == today:
                     saved_links = links_data.get("theatres", {})
-                    print(f"\n📂 Found Phase 1 links for today ({len(saved_links)} theatres) — skipping showtime pages")
+                    print(f"\n📂 Phase 1 links for today ({len(saved_links)} theatres)")
                 else:
-                    print(f"\n⚠️  showtime-links.json is from {links_data.get('date')}, not today — fetching live")
+                    print(f"\n❌ showtime-links.json is from {links_data.get('date')}, not today — run Phase 1 first.")
+                    return
         except Exception as e:
-            print(f"\n⚠️  Could not load showtime-links.json: {e} — fetching live")
+            print(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
+            return
+    else:
+        print(f"\n❌ showtime-links.json not found — run Phase 1 first.")
+        return
 
-    print(f"\n🏛️  Scraping {len(all_theatres)} theatres across {len(groups_to_check)} timezone(s)...")
+    # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
+    all_theatres = [t for t in all_theatres if t["name"] in saved_links]
+    print(f"\n🏛️  Scraping {len(all_theatres)} theatres with saved links "
+          f"(across {len(groups_to_check)} timezone(s))...")
     print(f"   Weekend: {weekend}  Run: {run_id}")
+
+    if not all_theatres:
+        print("❌ No theatres found in saved links for this timezone group.")
+        return
 
     # Step 3: Parallel scrape with semaphore
     all_results = []
@@ -876,11 +988,7 @@ async def run_async(tz_group="ALL"):
         async def bounded_scrape(theatre):
             async with sem:
                 t_date = theatre.get("_date", today)
-                theatre_saved = None
-                if saved_links is not None:
-                    entry = saved_links.get(theatre["name"])
-                    if entry:
-                        theatre_saved = entry.get("movies")
+                theatre_saved = saved_links[theatre["name"]].get("movies")
                 return await _scrape_theatre(
                     browser, theatre, t_date, movie_titles, market_urls,
                     weekend_of=weekend, run_id=run_id,
@@ -908,8 +1016,11 @@ async def run_async(tz_group="ALL"):
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues)
 
-    day_of_week = datetime.now().strftime("%A")
-    if day_of_week == "Saturday" and tz_group in ("PT", "ALL"):
+    # Use local time for the day check — PT phase 2 runs at 7am UTC which is
+    # already "Sunday" UTC, but still "Saturday" PT local time.
+    ref_tz_for_day = tz_group if tz_group != "ALL" else "PT"
+    local_day = local_now(ref_tz_for_day).strftime("%A")
+    if local_day in ("Saturday", "Sunday") and tz_group in ("PT", "ALL"):
         generate_weekend_summary()
 
     print(f"\n{'='*60}")
@@ -918,17 +1029,25 @@ async def run_async(tz_group="ALL"):
 
 
 def generate_weekend_summary():
-    """Generate a weekend analysis from Thu-Sat data."""
+    """Generate a weekend analysis from Thu-Sat data for the current weekend only."""
     print("\n📊 Generating weekend summary...")
 
     today = datetime.now()
     today_str = today.strftime("%Y-%m-%d")
+
+    # Compute the Friday anchor for the current opening weekend so we only
+    # include rows from this weekend, not all historical data.
+    current_weekend = opening_weekend_friday()
 
     rows = []
     if SEAT_CSV.exists():
         with open(SEAT_CSV, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
+                row_weekend = row.get("weekend_of", "")
+                # Accept rows that match this weekend, or rows without weekend_of (old data)
+                if row_weekend and row_weekend != current_weekend:
+                    continue
                 rows.append(row)
 
     if not rows:
@@ -984,15 +1103,18 @@ def run(tz_group="ALL"):
 if __name__ == "__main__":
     args = sys.argv[1:]
     collect_links_mode = "--collect-links" in args
-    args = [a for a in args if a != "--collect-links"]
+    force_mode = "--force" in args
+    args = [a for a in args if a not in ("--collect-links", "--force")]
 
     tz = args[0].upper() if args else "ALL"
 
-    if tz not in ("ET", "CT", "PT", "ALL", "--FORCE"):
-        print(f"Usage: python scraper.py [--collect-links] [ET|CT|PT|ALL]")
+    if tz not in ("ET", "CT", "MT", "PT", "ALL"):
+        print(f"Usage: python scraper.py [--collect-links] [--force] [ET|CT|MT|PT|ALL]")
         print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
+        print(f"  --force          Force re-scrape even if showtime-links.json is stale")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")
+        print(f"  MT               Mountain theatres only")
         print(f"  PT               Pacific theatres only")
         print(f"  ALL              All theatres (default)")
         sys.exit(1)
