@@ -84,20 +84,26 @@ DEFAULT_SEATS_PER_SHOW = 200   # when no seat map available
 # ── Data Loading ─────────────────────────────────────────────────────────────
 
 def _current_weekend_friday():
-    """Return the Friday that anchors the current opening weekend (Thu-Sun)."""
+    """Return the Friday that anchors the current opening weekend (Thu-Mon).
+
+    Must match opening_weekend_friday() in scraper.py so weekend_of values
+    in the CSV align with what predict.py filters on.
+    """
     from datetime import timedelta
     now = datetime.now()
     wd = now.weekday()  # Mon=0 ... Sun=6
-    if wd == 3:
+    if wd == 3:   # Thursday → next Friday
         return (now + timedelta(days=1)).strftime("%Y-%m-%d")
-    if wd == 4:
+    if wd == 4:   # Friday
         return now.strftime("%Y-%m-%d")
-    if wd == 5:
+    if wd == 5:   # Saturday
         return (now - timedelta(days=1)).strftime("%Y-%m-%d")
-    if wd == 6:
+    if wd == 6:   # Sunday
         return (now - timedelta(days=2)).strftime("%Y-%m-%d")
-    # Mon-Wed: use next Friday
-    return (now + timedelta(days=(4 - wd))).strftime("%Y-%m-%d")
+    if wd == 0:   # Monday
+        return (now - timedelta(days=3)).strftime("%Y-%m-%d")
+    # Tue-Wed: look back to most recent Friday
+    return (now - timedelta(days=(wd - 4))).strftime("%Y-%m-%d")
 
 
 def load_seat_data(weekend_of=None):
@@ -111,7 +117,11 @@ def load_seat_data(weekend_of=None):
         return {}
 
     if weekend_of is None:
-        weekend_of = _current_weekend_friday()
+        # Use the most recent weekend_of found in the CSV rather than
+        # computing from today's date — avoids day-of-week arithmetic mismatches.
+        with open(SEAT_CSV, "r") as f:
+            weekends = [r.get("weekend_of", "") for r in csv.DictReader(f) if r.get("weekend_of")]
+        weekend_of = max(weekends) if weekends else _current_weekend_friday()
 
     data = {}
     with open(SEAT_CSV, "r") as f:

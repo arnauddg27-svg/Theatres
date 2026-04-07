@@ -129,8 +129,10 @@ def opening_weekend_friday(dt=None):
         friday = dt - timedelta(days=1)
     elif weekday == 6:  # Sunday
         friday = dt - timedelta(days=2)
+    elif weekday == 0:  # Monday
+        friday = dt - timedelta(days=3)
     else:
-        friday = dt  # Mon-Wed shouldn't happen (day guard), but be safe
+        friday = dt - timedelta(days=(weekday - 4))  # Tue-Wed: back to most recent Friday
     return friday.strftime("%Y-%m-%d")
 
 
