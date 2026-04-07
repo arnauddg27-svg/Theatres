@@ -5454,3 +5454,1100 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC Kips Bay 15: No seat map for The Drama undefined; AMC 34th Street 14: No seat map for The Drama Laser at AMC; AMC Boston Common 19: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Assembly Row 12: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Braintree 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Methuen 20: No seat map for The Super Mario Galaxy Movie Spanish Language Dubbed with No Subtitles; AMC Aventura 24: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Sunset Place 24: No seat map for The Super Mario Galaxy Movie IMAX at AMC; AMC Pembroke Lakes 9: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Pompano Beach 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Veterans 24: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Veterans 24: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Bradenton 20: No seat map for The Super Mario Galaxy Movie undefined; AMC Altamonte Mall 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Hoffman Center 22: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Worldgate 9: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Neshaminy 24: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Cherry Hill 24: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC DINE-IN Fashion District 8: No seat map for The Super Mario Galaxy Movie PRIME 3D; AMC Phipps Plaza 14: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Northlake 14: No seat map for The Super Mario Galaxy Movie IMAX at AMC; AMC Sugarloaf Mills 18: No seat map for The Super Mario Galaxy Movie XL at AMC; AMC Barrett Commons 24: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Carolina Pavilion 22: No seat map for The Super Mario Galaxy Movie Open Caption (On-screen Subtitles); AMC Concord Mills 24: No seat map for The Drama undefined; AMC Forum 30: No seat map for The Super Mario Galaxy Movie undefined; AMC Star Great Lakes 25: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Livonia 20: No seat map for The Super Mario Galaxy Movie undefined; AMC Castleton Square 14: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Easton Town Center 30: No seat map for The Super Mario Galaxy Movie undefined; AMC Dublin Village 18: No seat map for The Super Mario Galaxy Movie undefined; AMC Regency 24: No seat map for The Super Mario Galaxy Movie Spanish Language Dubbed with No Subtitles; AMC Altoona 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Anderson Towne Center 9: No seat map for The Super Mario Galaxy Movie undefined; AMC Annapolis Mall 11: No seat map for The Super Mario Galaxy Movie undefined; AMC Aviation 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Bay Plaza Cinema 13: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Bradley Square 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Brick Plaza 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Camp Hill 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Chattanooga 18: No seat map for The Super Mario Galaxy Movie undefined; AMC Cherry Blossom 14: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Colonial 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Colonial 18: No seat map for The Drama Laser at AMC; AMC Columbus Park 15: No seat map for The Drama undefined; AMC Crystal Run 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC DINE-IN Bridgewater 7: No seat map for The Super Mario Galaxy Movie Dine-In Delivery to Seat; AMC DINE-IN Essex Green 9: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC DINE-IN Holly Springs 9: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Danbury 16: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Deptford 8: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Evansville 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Evansville 16: No seat map for The Super Mario Galaxy Movie undefined; AMC Evansville 16: No seat map for The Drama undefined; AMC Fire Tower 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Freehold 14: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Glen Cove 6: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Hampton Towne Centre 24: No seat map for The Super Mario Galaxy Movie undefined; AMC Headquarters Plaza 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC High Point 8: No seat map for The Super Mario Galaxy Movie undefined; AMC Highwoods 20: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Highwoods 20: No seat map for The Super Mario Galaxy Movie Spanish Language Dubbed with No Subtitles; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Holland 8: No seat map for The Super Mario Galaxy Movie undefined; AMC Huntington Square 12: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Indianapolis 17: No seat map for The Drama undefined; AMC Jersey Gardens 20: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Johnson City 14: No seat map for The Super Mario Galaxy Movie undefined; AMC Kalli 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Lake Square 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Lynnhaven 18: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Madison Yards 8: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Majestic 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Maple Ridge 8: No seat map for The Super Mario Galaxy Movie undefined; AMC Market Fair 15: No seat map for The Super Mario Galaxy Movie undefined; AMC MarketFair 10: No seat map for The Super Mario Galaxy Movie undefined; AMC Marple 10: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Marquis 16: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Merchants Crossing 16: No seat map for The Super Mario Galaxy Movie undefined; AMC Montgomery 16: No seat map for The Super Mario Galaxy Movie Spanish Language Dubbed with No Subtitles; AMC Muncie 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC New Brunswick 18: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC North Dekalb 16: No seat map for The Super Mario Galaxy Movie Spanish Language Dubbed with No Subtitles; AMC Northgate 14: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Northgate 14: No seat map for The Super Mario Galaxy Movie undefined; AMC Owings Mills 17: No seat map for The Super Mario Galaxy Movie undefined; AMC Palisades 21: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Park Place 16: No seat map for The Super Mario Galaxy Movie undefined; AMC Park Terrace 6: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Parkway Pointe 15: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Parkway Pointe 15: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Pembroke Lakes 9: No seat map for The Super Mario Galaxy Movie IMAX with Laser at AMC; AMC Plainville 20: No seat map for The Super Mario Galaxy Movie undefined; AMC Port St Lucie 14: No seat map for The Super Mario Galaxy Movie undefined; AMC Potomac Mills 18: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Potomac Mills 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Potomac Mills 18: No seat map for The Drama Laser at AMC; AMC Ridgefield Park 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Ritz 13: No seat map for The Super Mario Galaxy Movie undefined; AMC River Hills 10: No seat map for The Super Mario Galaxy Movie undefined; AMC Rivertowne 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Riverview 14: No seat map for The Super Mario Galaxy Movie undefined; AMC Riverview 14: No seat map for The Drama undefined; AMC Rockaway 16: No seat map for The Super Mario Galaxy Movie Dolby Cinema at AMC; AMC Saratoga Springs 11: No seat map for The Super Mario Galaxy Movie XL at AMC; AMC Security Square 8: No seat map for The Super Mario Galaxy Movie undefined; AMC SoNo8: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Southpoint 17: No seat map for The Drama undefined; AMC Star Gratiot 15: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Staten Island 11: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Staten Island 11: No seat map for The Drama Laser at AMC; AMC Stonybrook 20: No seat map for The Super Mario Galaxy Movie Open Caption (On-screen Subtitles); AMC Tallahassee 20: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Tallahassee 20: No seat map for The Drama undefined; AMC Tamiami 18: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Traders Point 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Tyngsboro 12: No seat map for The Super Mario Galaxy Movie RealD 3D; AMC Vestal Town Square 9: No seat map for The Super Mario Galaxy Movie undefined; AMC Vestal Town Square 9: No seat map for The Super Mario Galaxy Movie undefined; AMC Washington Square 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Washington Square 12: No seat map for The Super Mario Galaxy Movie undefined; AMC Wayne 14: No seat map for The Super Mario Galaxy Movie PRIME at AMC; AMC Westmoreland 15: No seat map for The Super Mario Galaxy Movie undefined; AMC Weston 8: No seat map for The Super Mario Galaxy Movie undefined; AMC Westwood Town Center 6: No seat map for The Super Mario Galaxy Movie undefined; AMC White Marsh 16: No seat map for The Drama undefined; AMC Woodhaven 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Woodhaven 10: No seat map for The Super Mario Galaxy Movie Laser at AMC; AMC Yulee 10: No seat map for The Super Mario Galaxy Movie undefined
 
 ---
+
+## 2026-04-07 08:25 — ET Group
+
+**Polymarket movies tracked:** The Drama
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Empire 25 | The Drama | Laser at AMC | 11:00pm | 0% | -884 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 10:15pm | 6.2% | -839 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 9:45pm | 0.9% | -809 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 9:15pm | 34.5% | -779 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 7:15pm | 83.3% | -659 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 7:00pm | 86.2% | -644 min |
+| AMC Empire 25 | The Drama | Laser at AMC | 6:30pm | 83.2% | -614 min |
+| AMC Empire 25 | The Drama | Open Caption (On-screen Subtitles) | 7:30pm | 77.3% | -674 min |
+| AMC Lincoln Square 13 | The Drama | Laser at AMC | 10:30pm | 5% | -854 min |
+| AMC Lincoln Square 13 | The Drama | Laser at AMC | 9:30pm | 55% | -794 min |
+| AMC Lincoln Square 13 | The Drama | Laser at AMC | 8:45pm | 83.8% | -749 min |
+| AMC Lincoln Square 13 | The Drama | Laser at AMC | 7:30pm | 91% | -674 min |
+| AMC Lincoln Square 13 | The Drama | Laser at AMC | 6:30pm | 93.6% | -614 min |
+| AMC Kips Bay 15 | The Drama | undefined | 10:15pm | 4.8% | -839 min |
+| AMC Kips Bay 15 | The Drama | undefined | 9:45pm | 58.7% | -809 min |
+| AMC Kips Bay 15 | The Drama | undefined | 9:15pm | 76.1% | -779 min |
+| AMC Kips Bay 15 | The Drama | undefined | 8:50pm | 78.9% | -753 min |
+| AMC Kips Bay 15 | The Drama | undefined | 8:30pm | 83.4% | -734 min |
+| AMC Kips Bay 15 | The Drama | undefined | 7:30pm | 85.5% | -674 min |
+| AMC Kips Bay 15 | The Drama | undefined | 7:05pm | 97.4% | -648 min |
+| AMC Kips Bay 15 | The Drama | undefined | 6:30pm | 95.7% | -614 min |
+| AMC Kips Bay 15 | The Drama | undefined | 5:45pm | 79.3% | -569 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 10:30pm | 13% | -854 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 9:30pm | 56.7% | -794 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 8:45pm | 67.6% | -749 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 7:45pm | 82.6% | -689 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 6:45pm | 80.8% | -629 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 6:00pm | 76.5% | -584 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 5:30pm | 82.5% | -554 min |
+| AMC 34th Street 14 | The Drama | Laser at AMC | 5:00pm | 69.6% | -524 min |
+| AMC 84th Street 6 | The Drama | Laser at AMC | 10:35pm | 0% | -858 min |
+| AMC 84th Street 6 | The Drama | Laser at AMC | 10:00pm | 18.4% | -824 min |
+| AMC 84th Street 6 | The Drama | Laser at AMC | 8:00pm | 79% | -704 min |
+| AMC 84th Street 6 | The Drama | Laser at AMC | 7:15pm | 88.6% | -659 min |
+| AMC Newport Centre 11 | The Drama | Laser at AMC | 10:15pm | 11.4% | -839 min |
+| AMC Newport Centre 11 | The Drama | Laser at AMC | 9:30pm | 63.1% | -794 min |
+| AMC Newport Centre 11 | The Drama | Laser at AMC | 7:30pm | 100% | -674 min |
+| AMC Magic Johnson Harlem 9 | The Drama | Laser at AMC | 10:00pm | 1.6% | -824 min |
+| AMC Magic Johnson Harlem 9 | The Drama | Laser at AMC | 7:15pm | 27.8% | -659 min |
+| AMC Boston Common 19 | The Drama | Laser at AMC | 10:00pm | 9.5% | -823 min |
+| AMC Boston Common 19 | The Drama | Laser at AMC | 9:00pm | 29.6% | -763 min |
+| AMC Boston Common 19 | The Drama | Laser at AMC | 7:45pm | 74.6% | -688 min |
+| AMC Boston Common 19 | The Drama | Laser at AMC | 7:00pm | 79.1% | -643 min |
+| AMC Boston Common 19 | The Drama | Open Caption (On-screen Subtitles) | 6:00pm | 16.5% | -583 min |
+| AMC Assembly Row 12 | The Drama | Laser at AMC | 10:15pm | 7.3% | -838 min |
+| AMC Assembly Row 12 | The Drama | Laser at AMC | 9:45pm | 35.1% | -808 min |
+| AMC Assembly Row 12 | The Drama | Laser at AMC | 8:00pm | 81.1% | -703 min |
+| AMC Assembly Row 12 | The Drama | Laser at AMC | 5:00pm | 41.4% | -523 min |
+| AMC Framingham 16 | The Drama | Laser at AMC | 9:30pm | 0% | -793 min |
+| AMC Framingham 16 | The Drama | Open Caption (On-screen Subtitles) | 6:45pm | 31.4% | -628 min |
+| AMC Braintree 10 | The Drama | Laser at AMC | 10:30pm | 8.9% | -853 min |
+| AMC Braintree 10 | The Drama | Laser at AMC | 7:40pm | 73.4% | -683 min |
+| AMC Burlington Cinema 10 | The Drama | Laser at AMC | 9:00pm | 17.4% | -763 min |
+| AMC Burlington Cinema 10 | The Drama | Laser at AMC | 6:00pm | 37% | -583 min |
+| AMC Methuen 20 | The Drama | Laser at AMC | 9:45pm | 1.2% | -808 min |
+| AMC Methuen 20 | The Drama | Laser at AMC | 9:15pm | 8.6% | -778 min |
+| AMC Methuen 20 | The Drama | Laser at AMC | 8:30pm | 8% | -733 min |
+| AMC Methuen 20 | The Drama | Laser at AMC | 6:30pm | 39.5% | -613 min |
+| AMC Methuen 20 | The Drama | Laser at AMC | 5:00pm | 3.7% | -523 min |
+| AMC Methuen 20 | The Drama | Open Caption (On-screen Subtitles) | 7:45pm | 0% | -688 min |
+| AMC Aventura 24 | The Drama | Laser at AMC | 9:00pm | 1.8% | -763 min |
+| AMC Aventura 24 | The Drama | Laser at AMC | 7:30pm | 13.1% | -673 min |
+| AMC Aventura 24 | The Drama | Laser at AMC | 6:15pm | 3.6% | -598 min |
+| AMC Sunset Place 24 | The Drama | undefined | 10:05pm | 15.3% | -827 min |
+| AMC Sunset Place 24 | The Drama | undefined | 8:10pm | 50.6% | -713 min |
+| AMC Sunset Place 24 | The Drama | undefined | 7:10pm | 62.4% | -653 min |
+| AMC Sunset Place 24 | The Drama | undefined | 5:10pm | 8.2% | -533 min |
+| AMC DINE-IN Coral Ridge 10 | The Drama | Dine-In Delivery to Seat | 9:15pm | 26.1% | -778 min |
+| AMC DINE-IN Coral Ridge 10 | The Drama | Dine-In Delivery to Seat | 6:30pm | 58.7% | -613 min |
+| AMC Pembroke Lakes 9 | The Drama | Laser at AMC | 10:00pm | 10.3% | -823 min |
+| AMC Pembroke Lakes 9 | The Drama | Laser at AMC | 7:15pm | 50.7% | -658 min |
+| AMC Pompano Beach 18 | The Drama | Laser at AMC | 9:45pm | 5.1% | -808 min |
+| AMC Pompano Beach 18 | The Drama | Laser at AMC | 7:00pm | 25.5% | -643 min |
+| AMC Pompano Beach 18 | The Drama | Laser at AMC | 6:00pm | 31.6% | -583 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 10:15pm | 0% | -838 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 10:00pm | 5.8% | -823 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 9:15pm | 16.3% | -778 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 8:45pm | 50% | -748 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 7:10pm | 71% | -653 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 6:40pm | 57.8% | -623 min |
+| AMC Veterans 24 | The Drama | Laser at AMC | 6:10pm | 65.1% | -593 min |
+| AMC Sundial 12 | The Drama | Laser at AMC | 10:00pm | 3% | -823 min |
+| AMC Sundial 12 | The Drama | Laser at AMC | 7:15pm | 56.1% | -658 min |
+| AMC West Shore 14 | The Drama | undefined | 9:15pm | 2.3% | -778 min |
+| AMC West Shore 14 | The Drama | undefined | 6:30pm | 18.1% | -613 min |
+| AMC Bradenton 20 | The Drama | undefined | 7:15pm | 8.3% | -658 min |
+| AMC Bradenton 20 | The Drama | undefined | 6:15pm | 0% | -598 min |
+| AMC DINE-IN Disney Springs 24 | The Drama | Laser at AMC | 10:30pm | 6% | -853 min |
+| AMC DINE-IN Disney Springs 24 | The Drama | Laser at AMC | 9:00pm | 27.9% | -763 min |
+| AMC DINE-IN Disney Springs 24 | The Drama | Laser at AMC | 6:15pm | 63.1% | -598 min |
+| AMC DINE-IN Disney Springs 24 | The Drama | Dine-In Delivery to Seat | 10:00pm | 59.4% | -823 min |
+| AMC DINE-IN Disney Springs 24 | The Drama | Dine-In Delivery to Seat | 7:15pm | 88.4% | -658 min |
+| AMC Altamonte Mall 18 | The Drama | Laser at AMC | 10:10pm | 11% | -833 min |
+| AMC Altamonte Mall 18 | The Drama | Laser at AMC | 9:10pm | 18% | -773 min |
+| AMC Altamonte Mall 18 | The Drama | Laser at AMC | 7:10pm | 41.2% | -653 min |
+| AMC Altamonte Mall 18 | The Drama | Laser at AMC | 6:10pm | 31.5% | -593 min |
+| AMC Tysons Corner 16 | The Drama | Laser at AMC | 10:00pm | 1.8% | -823 min |
+| AMC Tysons Corner 16 | The Drama | Laser at AMC | 7:10pm | 34.5% | -653 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 10:00pm | 0% | -823 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 9:00pm | 1.1% | -763 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 8:00pm | 4.6% | -703 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 7:00pm | 39.4% | -643 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 6:00pm | 1.7% | -583 min |
+| AMC Hoffman Center 22 | The Drama | Laser at AMC | 5:00pm | 1.7% | -523 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 10:00pm | 15.3% | -823 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 9:15pm | 55.4% | -778 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 8:30pm | 70.3% | -733 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 7:15pm | 84.7% | -658 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 6:15pm | 69.7% | -598 min |
+| AMC Georgetown 14 | The Drama | Laser at AMC | 5:45pm | 63.5% | -568 min |
+| AMC Shirlington 7 | The Drama | Laser at AMC | 10:00pm | 7.8% | -822 min |
+| AMC Shirlington 7 | The Drama | Laser at AMC | 7:10pm | 76.5% | -652 min |
+| AMC Worldgate 9 | The Drama | undefined | 7:30pm | 20.6% | -672 min |
+| AMC Neshaminy 24 | The Drama | Laser at AMC | 8:45pm | 5.3% | -747 min |
+| AMC Neshaminy 24 | The Drama | Laser at AMC | 6:00pm | 8% | -582 min |
+| AMC Cherry Hill 24 | The Drama | Laser at AMC | 10:00pm | 1.1% | -822 min |
+| AMC Cherry Hill 24 | The Drama | Laser at AMC | 7:15pm | 10.9% | -657 min |
+| AMC Voorhees 16 | The Drama | undefined | 9:05pm | 1.8% | -766 min |
+| AMC Voorhees 16 | The Drama | undefined | 6:15pm | 3.6% | -597 min |
+| AMC Plymouth Meeting Mall 12 | The Drama | Laser at AMC | 10:00pm | 2.4% | -822 min |
+| AMC Plymouth Meeting Mall 12 | The Drama | Laser at AMC | 7:15pm | 67.5% | -657 min |
+| AMC DINE-IN Fashion District 8 | The Drama | Dine-In Delivery to Seat | 10:20pm | 29.5% | -841 min |
+| AMC DINE-IN Fashion District 8 | The Drama | Dine-In Delivery to Seat | 7:20pm | 90.5% | -661 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 10:45pm | 1.1% | -867 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 10:15pm | 0% | -837 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 9:45pm | 0% | -807 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 9:15pm | 10.3% | -777 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 9:00pm | 47.8% | -762 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 7:45pm | 73.3% | -687 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 6:15pm | 58.7% | -597 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 6:00pm | 10.6% | -582 min |
+| AMC Phipps Plaza 14 | The Drama | Laser at AMC | 5:00pm | 10.5% | -522 min |
+| AMC Northlake 14 | The Drama | undefined | 10:00pm | 0% | -822 min |
+| AMC Northlake 14 | The Drama | undefined | 7:15pm | 51.9% | -657 min |
+| AMC Sugarloaf Mills 18 | The Drama | Laser at AMC | 10:00pm | 3.2% | -822 min |
+| AMC Sugarloaf Mills 18 | The Drama | Laser at AMC | 7:00pm | 18.1% | -642 min |
+| AMC Barrett Commons 24 | The Drama | Laser at AMC | 10:15pm | 4.9% | -837 min |
+| AMC Barrett Commons 24 | The Drama | Laser at AMC | 7:40pm | 48.9% | -682 min |
+| AMC Barrett Commons 24 | The Drama | Open Caption (On-screen Subtitles) | 8:10pm | 23.3% | -712 min |
+| AMC Camp Creek 14 | The Drama | undefined | 9:15pm | 0% | -777 min |
+| AMC Camp Creek 14 | The Drama | undefined | 6:30pm | 6.8% | -612 min |
+| AMC DINE-IN North Point Mall 12 | The Drama | Dine-In Delivery to Seat | 9:50pm | 3.7% | -811 min |
+| AMC DINE-IN North Point Mall 12 | The Drama | Dine-In Delivery to Seat | 8:15pm | 19.6% | -717 min |
+| AMC DINE-IN North Point Mall 12 | The Drama | Dine-In Delivery to Seat | 7:00pm | 29.6% | -642 min |
+| AMC DINE-IN North Point Mall 12 | The Drama | Dine-In Delivery to Seat | 5:30pm | 25% | -552 min |
+| AMC Carolina Pavilion 22 | The Drama | undefined | 10:00pm | 0% | -822 min |
+| AMC Carolina Pavilion 22 | The Drama | undefined | 9:00pm | 1.4% | -762 min |
+| AMC Carolina Pavilion 22 | The Drama | undefined | 8:00pm | 21.7% | -702 min |
+| AMC Carolina Pavilion 22 | The Drama | undefined | 7:15pm | 58.9% | -657 min |
+| AMC Carolina Pavilion 22 | The Drama | undefined | 6:15pm | 37% | -597 min |
+| AMC Concord Mills 24 | The Drama | undefined | 10:15pm | 1.5% | -837 min |
+| AMC Concord Mills 24 | The Drama | undefined | 9:15pm | 3.8% | -777 min |
+| AMC Concord Mills 24 | The Drama | undefined | 8:15pm | 30.1% | -717 min |
+| AMC Concord Mills 24 | The Drama | undefined | 7:15pm | 49.3% | -657 min |
+| AMC Concord Mills 24 | The Drama | undefined | 6:15pm | 20.8% | -597 min |
+| AMC Concord Mills 24 | The Drama | undefined | 5:15pm | 22.4% | -537 min |
+| AMC Forum 30 | The Drama | undefined | 9:45pm | 0% | -807 min |
+| AMC Forum 30 | The Drama | undefined | 7:00pm | 3.6% | -642 min |
+| AMC Forum 30 | The Drama | undefined | 6:00pm | 0% | -582 min |
+| AMC Star Great Lakes 25 | The Drama | undefined | 8:05pm | 2.8% | -706 min |
+| AMC Star Great Lakes 25 | The Drama | undefined | 5:10pm | 0% | -532 min |
+| AMC Livonia 20 | The Drama | undefined | 10:00pm | 4.5% | -822 min |
+| AMC Livonia 20 | The Drama | undefined | 7:45pm | 5.1% | -687 min |
+| AMC John R 15 | The Drama | undefined | 9:05pm | 7% | -766 min |
+| AMC John R 15 | The Drama | undefined | 6:20pm | 35.1% | -601 min |
+| AMC Castleton Square 14 | The Drama | Open Caption (On-screen Subtitles) | 7:45pm | 1.4% | -686 min |
+| AMC Castleton Square 14 | The Drama | undefined | 10:30pm | 1.4% | -851 min |
+| AMC Castleton Square 14 | The Drama | undefined | 5:00pm | 28.6% | -521 min |
+| AMC Perry Crossing 18 | The Drama | undefined | 9:45pm | 0% | -806 min |
+| AMC Perry Crossing 18 | The Drama | undefined | 7:30pm | 2.2% | -671 min |
+| AMC Thoroughbred 20 | The Drama | undefined | 10:30pm | 1% | -851 min |
+| AMC Thoroughbred 20 | The Drama | undefined | 9:45pm | 0% | -806 min |
+| AMC Thoroughbred 20 | The Drama | undefined | 7:50pm | 45.1% | -691 min |
+| AMC Thoroughbred 20 | The Drama | undefined | 6:00pm | 9.8% | -581 min |
+| AMC Thoroughbred 20 | The Drama | undefined | 5:00pm | 19.6% | -521 min |
+| AMC Bellevue 12 | The Drama | undefined | 9:15pm | 21.7% | -776 min |
+| AMC Bellevue 12 | The Drama | undefined | 6:15pm | 60.9% | -596 min |
+| AMC Easton Town Center 30 | The Drama | undefined | 9:45pm | 0% | -806 min |
+| AMC Easton Town Center 30 | The Drama | undefined | 9:15pm | 11.1% | -776 min |
+| AMC Easton Town Center 30 | The Drama | undefined | 8:45pm | 6.5% | -746 min |
+| AMC Easton Town Center 30 | The Drama | undefined | 8:00pm | 8.9% | -701 min |
+| AMC Easton Town Center 30 | The Drama | undefined | 6:30pm | 70.4% | -611 min |
+| AMC Dublin Village 18 | The Drama | undefined | 9:45pm | 10% | -806 min |
+| AMC Dublin Village 18 | The Drama | undefined | 7:15pm | 66.7% | -656 min |
+| AMC Grove City 14 | The Drama | undefined | 9:45pm | 0% | -806 min |
+| AMC Grove City 14 | The Drama | undefined | 7:00pm | 3.7% | -641 min |
+| AMC Newport On The Levee 20 | The Drama | undefined | 10:20pm | 6.7% | -841 min |
+| AMC Newport On The Levee 20 | The Drama | undefined | 7:20pm | 54.5% | -661 min |
+| AMC Newport On The Levee 20 | The Drama | undefined | 6:10pm | 37% | -591 min |
+| AMC West Chester 18 | The Drama | undefined | 10:20pm | 9.2% | -841 min |
+| AMC West Chester 18 | The Drama | undefined | 7:30pm | 40.8% | -671 min |
+| AMC Waterfront 22 | The Drama | Laser at AMC | 9:25pm | 1.6% | -786 min |
+| AMC Waterfront 22 | The Drama | Laser at AMC | 8:15pm | 62.1% | -716 min |
+| AMC Waterfront 22 | The Drama | Laser at AMC | 5:30pm | 43.9% | -551 min |
+| AMC Waterfront 22 | The Drama | Open Caption (On-screen Subtitles) | 6:35pm | 34.4% | -616 min |
+| AMC Regency 24 | The Drama | undefined | 10:00pm | 0% | -821 min |
+| AMC Regency 24 | The Drama | undefined | 8:30pm | 4.8% | -731 min |
+| AMC Regency 24 | The Drama | undefined | 7:15pm | 45.2% | -656 min |
+| AMC Regency 24 | The Drama | undefined | 5:45pm | 0% | -566 min |
+| AMC Orange Park 24 | The Drama | undefined | 9:45pm | 0% | -806 min |
+| AMC Orange Park 24 | The Drama | undefined | 8:15pm | 4.3% | -716 min |
+| AMC Orange Park 24 | The Drama | undefined | 7:00pm | 43.1% | -641 min |
+| AMC Orange Park 24 | The Drama | undefined | 5:30pm | 0% | -551 min |
+| AMC Academy 8 | The Drama | Open Caption (On-screen Subtitles) | 7:00pm | 30.8% | -641 min |
+| AMC Allegany 8 | The Drama | undefined | 7:00pm | 14.5% | -641 min |
+| AMC Altoona 12 | The Drama | undefined | 7:45pm | 0.8% | -686 min |
+| AMC Anderson Towne Center 9 | The Drama | undefined | 9:55pm | 0% | -816 min |
+| AMC Anderson Towne Center 9 | The Drama | undefined | 7:30pm | 14.1% | -671 min |
+| AMC Annapolis Mall 11 | The Drama | undefined | 10:30pm | 2% | -851 min |
+| AMC Annapolis Mall 11 | The Drama | undefined | 7:40pm | 40.4% | -681 min |
+| AMC Antioch 8 | The Drama | undefined | 7:30pm | 19.6% | -671 min |
+| AMC Avenue 16 | The Drama | undefined | 10:10pm | 0% | -831 min |
+| AMC Avenue 16 | The Drama | undefined | 7:30pm | 16.5% | -671 min |
+| AMC Avenue Forsyth 12 | The Drama | Laser at AMC | 10:15pm | 0% | -836 min |
+| AMC Avenue Forsyth 12 | The Drama | Laser at AMC | 7:15pm | 5.8% | -656 min |
+| AMC Aviation 12 | The Drama | Laser at AMC | 10:00pm | 5.6% | -821 min |
+| AMC Aviation 12 | The Drama | Laser at AMC | 7:00pm | 16.9% | -641 min |
+| AMC Bay Plaza Cinema 13 | The Drama | Laser at AMC | 10:40pm | 2.7% | -861 min |
+| AMC Bay Plaza Cinema 13 | The Drama | Laser at AMC | 7:45pm | 53.4% | -686 min |
+| AMC Bay Plaza Cinema 13 | The Drama | Laser at AMC | 5:00pm | 15.1% | -521 min |
+| AMC Bayou 15 | The Drama | undefined | 9:45pm | 2% | -806 min |
+| AMC Bayou 15 | The Drama | undefined | 7:00pm | 5.4% | -641 min |
+| AMC Boulevard 10 | The Drama | undefined | 10:30pm | 6.9% | -850 min |
+| AMC Boulevard 10 | The Drama | undefined | 7:45pm | 9.2% | -685 min |
+| AMC Boulevard 10 | The Drama | undefined | 5:00pm | 10% | -520 min |
+| AMC Bradley Square 12 | The Drama | undefined | 9:30pm | 0% | -790 min |
+| AMC Bradley Square 12 | The Drama | undefined | 7:15pm | 0% | -655 min |
+| AMC Brick Plaza 10 | The Drama | Laser at AMC | 10:10pm | 5.4% | -830 min |
+| AMC Brick Plaza 10 | The Drama | Laser at AMC | 7:15pm | 51.8% | -655 min |
+| AMC Brick Plaza 10 | The Drama | Laser at AMC | 5:25pm | 3.6% | -545 min |
+| AMC Broadstreet 7 | The Drama | Laser at AMC | 9:00pm | 11.3% | -760 min |
+| AMC Broadstreet 7 | The Drama | Laser at AMC | 8:00pm | 67.9% | -700 min |
+| AMC Broadstreet 7 | The Drama | Laser at AMC | 5:15pm | 26.4% | -535 min |
+| AMC Brunswick Square 13 | The Drama | undefined | 9:45pm | 10.5% | -805 min |
+| AMC Brunswick Square 13 | The Drama | undefined | 7:00pm | 38.6% | -640 min |
+| AMC Camp Hill 12 | The Drama | undefined | 7:30pm | 4.2% | -670 min |
+| AMC Chattanooga 18 | The Drama | undefined | 9:45pm | 0% | -805 min |
+| AMC Chattanooga 18 | The Drama | undefined | 7:15pm | 6.9% | -655 min |
+| AMC Cherry Blossom 14 | The Drama | undefined | 7:00pm | 0.5% | -640 min |
+| AMC Clifton Commons 16 | The Drama | Laser at AMC | 10:30pm | 0.4% | -850 min |
+| AMC Clifton Commons 16 | The Drama | Laser at AMC | 7:45pm | 24.8% | -685 min |
+| AMC Colonial 18 | The Drama | Laser at AMC | 9:30pm | 26.4% | -790 min |
+| AMC Colonial 18 | The Drama | Laser at AMC | 7:30pm | 55.6% | -670 min |
+| AMC Colonial 18 | The Drama | Laser at AMC | 6:45pm | 39.6% | -625 min |
+| AMC Colonial 18 | The Drama | Laser at AMC | 5:15pm | 30.8% | -535 min |
+| AMC Columbia 14 | The Drama | undefined | 9:50pm | 0.6% | -809 min |
+| AMC Columbia 14 | The Drama | undefined | 7:00pm | 34.4% | -640 min |
+| AMC Columbus 10 | The Drama | undefined | 10:00pm | 0% | -820 min |
+| AMC Columbus 10 | The Drama | undefined | 7:15pm | 19.6% | -655 min |
+| AMC Columbus Park 15 | The Drama | Open Caption (On-screen Subtitles) | 6:30pm | 1.8% | -610 min |
+| AMC Columbus Park 15 | The Drama | undefined | 9:15pm | 0% | -775 min |
+| AMC Courthouse Plaza 8 | The Drama | Laser at AMC | 9:45pm | 26.3% | -805 min |
+| AMC Courthouse Plaza 8 | The Drama | Laser at AMC | 8:45pm | 65.1% | -745 min |
+| AMC Courthouse Plaza 8 | The Drama | Laser at AMC | 7:00pm | 88.2% | -640 min |
+| AMC Crystal Run 16 | The Drama | Laser at AMC | 10:00pm | 0% | -820 min |
+| AMC Crystal Run 16 | The Drama | Laser at AMC | 7:15pm | 74% | -655 min |
+| AMC DINE-IN Berkshire 8 | The Drama | Dine-In Delivery to Seat | 9:45pm | 1.2% | -805 min |
+| AMC DINE-IN Berkshire 8 | The Drama | Dine-In Delivery to Seat | 7:00pm | 19.5% | -640 min |
+| AMC DINE-IN Bridgewater 7 | The Drama | Dine-In Delivery to Seat | 7:55pm | 28.1% | -695 min |
+| AMC DINE-IN Bridgewater 7 | The Drama | Dine-In Delivery to Seat | 5:15pm | 9.4% | -535 min |
+| AMC DINE-IN Essex Green 9 | The Drama | Dine-In Delivery to Seat | 9:00pm | 50.8% | -760 min |
+| AMC DINE-IN Essex Green 9 | The Drama | Dine-In Delivery to Seat | 6:15pm | 54.1% | -595 min |
+| AMC DINE-IN Holly Springs 9 | The Drama | Dine-In Delivery to Seat | 10:30pm | 4.5% | -850 min |
+| AMC DINE-IN Holly Springs 9 | The Drama | Dine-In Delivery to Seat | 7:30pm | 42.7% | -670 min |
+| AMC DINE-IN Menlo Park 12 | The Drama | Dine-In Delivery to Seat | 10:00pm | 4.1% | -820 min |
+| AMC DINE-IN Menlo Park 12 | The Drama | Dine-In Delivery to Seat | 7:15pm | 41.8% | -655 min |
+| AMC DINE-IN Midlothian 10 | The Drama | Dine-In Delivery to Seat | 8:00pm | 14.6% | -700 min |
+| AMC DINE-IN Midlothian 10 | The Drama | Dine-In Delivery to Seat | 5:15pm | 4.2% | -535 min |
+| AMC DINE-IN Painters Crossing 9 | The Drama | Dine-In Delivery to Seat | 8:25pm | 20% | -725 min |
+| AMC DINE-IN Shops at Riverside 9 | The Drama | Dine-In Delivery to Seat | 9:30pm | 16% | -790 min |
+| AMC DINE-IN Shops at Riverside 9 | The Drama | Dine-In Delivery to Seat | 7:15pm | 52.5% | -655 min |
+| AMC DINE-IN Shops at Riverside 9 | The Drama | Dine-In Delivery to Seat | 6:30pm | 70% | -610 min |
+| AMC Danbury 16 | The Drama | Laser at AMC | 10:30pm | 0% | -850 min |
+| AMC Danbury 16 | The Drama | Laser at AMC | 7:30pm | 6.5% | -670 min |
+| AMC Dartmouth Mall 11 | The Drama | undefined | 9:45pm | 16% | -804 min |
+| AMC Dartmouth Mall 11 | The Drama | undefined | 7:00pm | 58% | -639 min |
+| AMC Deptford 8 | The Drama | Laser at AMC | 10:00pm | 4.3% | -819 min |
+| AMC Deptford 8 | The Drama | Laser at AMC | 7:15pm | 41.4% | -654 min |
+| AMC Destin Commons 14 | The Drama | undefined | 9:00pm | 0% | -759 min |
+| AMC Destin Commons 14 | The Drama | undefined | 7:45pm | 1.4% | -684 min |
+| AMC Destin Commons 14 | The Drama | undefined | 5:00pm | 1.8% | -519 min |
+| AMC East Hanover 12 | The Drama | Laser at AMC | 9:30pm | 17.8% | -789 min |
+| AMC East Hanover 12 | The Drama | Laser at AMC | 6:45pm | 11% | -624 min |
+| AMC Evansville 16 | The Drama | undefined | 5:00pm | 9.7% | -519 min |
+| AMC Fayetteville 14 | The Drama | Open Caption (On-screen Subtitles) | 6:40pm | 1% | -619 min |
+| AMC Fayetteville 14 | The Drama | undefined | 9:30pm | 0% | -789 min |
+| AMC Fiesta Square 12 | The Drama | undefined | 10:15pm | 3.1% | -834 min |
+| AMC Fiesta Square 12 | The Drama | undefined | 7:30pm | 62.5% | -669 min |
+| AMC Fire Tower 12 | The Drama | undefined | 10:00pm | 5% | -819 min |
+| AMC Fire Tower 12 | The Drama | undefined | 7:15pm | 21.7% | -654 min |
+| AMC Fleming Island 12 | The Drama | undefined | 9:45pm | 6.6% | -804 min |
+| AMC Fleming Island 12 | The Drama | undefined | 7:30pm | 13.1% | -669 min |
+| AMC Foothills 12 | The Drama | undefined | 9:00pm | 0% | -759 min |
+| AMC Foothills 12 | The Drama | undefined | 6:10pm | 1.6% | -589 min |
+| AMC Freehold 14 | The Drama | Laser at AMC | 10:00pm | 0% | -819 min |
+| AMC Freehold 14 | The Drama | Laser at AMC | 7:15pm | 43.7% | -654 min |
+| AMC Freehold 14 | The Drama | Laser at AMC | 6:30pm | 9.2% | -609 min |
+| AMC Garden State Plaza 16 | The Drama | Laser at AMC | 10:30pm | 0% | -849 min |
+| AMC Garden State Plaza 16 | The Drama | Laser at AMC | 9:45pm | 3% | -804 min |
+| AMC Garden State Plaza 16 | The Drama | Laser at AMC | 7:00pm | 26.5% | -639 min |
+| AMC Glen Cove 6 | The Drama | Laser at AMC | 9:30pm | 9.5% | -789 min |
+| AMC Glen Cove 6 | The Drama | Laser at AMC | 6:35pm | 28% | -614 min |
+| AMC Grand Rapids 18 | The Drama | undefined | 9:00pm | 0% | -759 min |
+| AMC Grand Rapids 18 | The Drama | undefined | 6:15pm | 6.5% | -594 min |
+| AMC Hampton Towne Centre 24 | The Drama | undefined | 10:00pm | 8.1% | -819 min |
+| AMC Hampton Towne Centre 24 | The Drama | undefined | 8:30pm | 0% | -729 min |
+| AMC Hampton Towne Centre 24 | The Drama | undefined | 7:15pm | 24.3% | -654 min |
+| AMC Hampton Towne Centre 24 | The Drama | undefined | 5:40pm | 8.9% | -559 min |
+| AMC Hanes 12 | The Drama | Open Caption (On-screen Subtitles) | 9:30pm | 0% | -789 min |
+| AMC Hanes 12 | The Drama | undefined | 6:45pm | 60.8% | -624 min |
+| AMC Harbison 14 | The Drama | undefined | 9:15pm | 48.6% | -774 min |
+| AMC Harbison 14 | The Drama | undefined | 6:30pm | 56.8% | -609 min |
+| AMC Harbison 14 | The Drama | undefined | 5:00pm | 16.2% | -519 min |
+| AMC Headquarters Plaza 10 | The Drama | Laser at AMC | 10:00pm | 0% | -819 min |
+| AMC Headquarters Plaza 10 | The Drama | Laser at AMC | 7:15pm | 26.2% | -654 min |
+| AMC Hialeah 12 | The Drama | undefined | 9:45pm | 0% | -804 min |
+| AMC Hialeah 12 | The Drama | undefined | 7:00pm | 2.4% | -639 min |
+| AMC Hickory 15 | The Drama | Open Caption (On-screen Subtitles) | 6:15pm | 18.8% | -594 min |
+| AMC Hickory 15 | The Drama | undefined | 7:15pm | 21.6% | -654 min |
+| AMC High Point 8 | The Drama | undefined | 6:30pm | 20.6% | -609 min |
+| AMC Highland 12 | The Drama | undefined | 8:30pm | 0% | -729 min |
+| AMC Highland 12 | The Drama | undefined | 5:45pm | 0% | -564 min |
+| AMC Holland 8 | The Drama | undefined | 8:30pm | 5% | -729 min |
+| AMC Huntington Square 12 | The Drama | Laser at AMC | 10:00pm | 11.1% | -818 min |
+| AMC Huntington Square 12 | The Drama | Laser at AMC | 7:00pm | 65.4% | -638 min |
+| AMC Indian Mound 9 | The Drama | undefined | 7:15pm | 10.8% | -653 min |
+| AMC Indianapolis 17 | The Drama | undefined | 9:40pm | 1.9% | -798 min |
+| AMC Indianapolis 17 | The Drama | undefined | 7:00pm | 45.2% | -638 min |
+| AMC Jefferson Point 18 | The Drama | undefined | 9:40pm | 0% | -798 min |
+| AMC Jefferson Point 18 | The Drama | undefined | 6:50pm | 1.5% | -627 min |
+| AMC Jefferson Point 18 | The Drama | undefined | 5:00pm | 0% | -518 min |
+| AMC Jersey Gardens 20 | The Drama | Laser at AMC | 10:45pm | 0.6% | -863 min |
+| AMC Jersey Gardens 20 | The Drama | Laser at AMC | 7:45pm | 10.6% | -683 min |
+| AMC Johnson City 14 | The Drama | Open Caption (On-screen Subtitles) | 9:35pm | 7% | -792 min |
+| AMC Johnson City 14 | The Drama | undefined | 7:45pm | 14% | -683 min |
+| AMC Johnson City 14 | The Drama | undefined | 5:00pm | 3.5% | -518 min |
+| AMC Kalli 12 | The Drama | undefined | 10:00pm | 4% | -818 min |
+| AMC Kalli 12 | The Drama | undefined | 7:10pm | 4% | -648 min |
+| AMC Lake Square 12 | The Drama | undefined | 7:15pm | 10.1% | -653 min |
+| AMC Lakeshore 8 | The Drama | undefined | 9:30pm | 0% | -788 min |
+| AMC Lakeshore 8 | The Drama | undefined | 7:00pm | 5.4% | -638 min |
+| AMC Loudoun Station 11 | The Drama | undefined | 9:00pm | 3.8% | -758 min |
+| AMC Loudoun Station 11 | The Drama | undefined | 7:45pm | 33.3% | -683 min |
+| AMC Loudoun Station 11 | The Drama | undefined | 5:00pm | 20.4% | -518 min |
+| AMC Lynnhaven 18 | The Drama | undefined | 10:20pm | 0% | -837 min |
+| AMC Lynnhaven 18 | The Drama | undefined | 7:10pm | 2.9% | -648 min |
+| AMC Lynnhaven 18 | The Drama | undefined | 6:40pm | 4.9% | -618 min |
+| AMC Lynnhaven 18 | The Drama | undefined | 5:20pm | 1.4% | -537 min |
+| AMC Madison Yards 8 | The Drama | Laser at AMC | 10:45pm | 3.4% | -863 min |
+| AMC Madison Yards 8 | The Drama | Laser at AMC | 9:40pm | 46.7% | -798 min |
+| AMC Madison Yards 8 | The Drama | Laser at AMC | 8:15pm | 72.4% | -713 min |
+| AMC Madison Yards 8 | The Drama | Laser at AMC | 7:00pm | 84.3% | -638 min |
+| AMC Majestic 12 | The Drama | undefined | 8:30pm | 0.9% | -728 min |
+| AMC Majestic 12 | The Drama | undefined | 7:30pm | 36% | -668 min |
+| AMC Majestic 12 | The Drama | undefined | 5:45pm | 0% | -563 min |
+| AMC Majestic 6 | The Drama | undefined | 9:50pm | 0% | -807 min |
+| AMC Majestic 6 | The Drama | undefined | 7:00pm | 32.5% | -638 min |
+| AMC Maple Ridge 8 | The Drama | undefined | 10:30pm | 7.5% | -848 min |
+| AMC Maple Ridge 8 | The Drama | undefined | 6:30pm | 38.5% | -608 min |
+| AMC Market Fair 15 | The Drama | undefined | 9:40pm | 17.4% | -798 min |
+| AMC Market Fair 15 | The Drama | undefined | 6:50pm | 2.2% | -627 min |
+| AMC MarketFair 10 | The Drama | undefined | 10:30pm | 8% | -848 min |
+| AMC MarketFair 10 | The Drama | undefined | 7:15pm | 77.5% | -653 min |
+| AMC Marlton 8 | The Drama | Laser at AMC | 9:45pm | 5.9% | -803 min |
+| AMC Marlton 8 | The Drama | Laser at AMC | 7:00pm | 78.4% | -638 min |
+| AMC Marple 10 | The Drama | Laser at AMC | 9:45pm | 2.3% | -802 min |
+| AMC Marple 10 | The Drama | Laser at AMC | 7:00pm | 13.6% | -637 min |
+| AMC Marquis 16 | The Drama | undefined | 10:00pm | 0% | -817 min |
+| AMC Marquis 16 | The Drama | undefined | 9:30pm | 3.1% | -787 min |
+| AMC Marquis 16 | The Drama | undefined | 8:45pm | 11.5% | -742 min |
+| AMC Marquis 16 | The Drama | undefined | 6:45pm | 41.2% | -622 min |
+| AMC Merchants Crossing 16 | The Drama | undefined | 8:45pm | 0% | -742 min |
+| AMC Merchants Crossing 16 | The Drama | undefined | 7:20pm | 1.6% | -657 min |
+| AMC Mobile 16 | The Drama | undefined | 7:15pm | 3.3% | -652 min |
+| AMC Monmouth Mall 15 | The Drama | Laser at AMC | 10:30pm | 0% | -847 min |
+| AMC Monmouth Mall 15 | The Drama | Laser at AMC | 8:45pm | 15.4% | -742 min |
+| AMC Monmouth Mall 15 | The Drama | Laser at AMC | 7:45pm | 40.2% | -682 min |
+| AMC Monmouth Mall 15 | The Drama | Laser at AMC | 5:00pm | 6.5% | -517 min |
+| AMC Montgomery 16 | The Drama | Laser at AMC | 10:20pm | 0% | -837 min |
+| AMC Montgomery 16 | The Drama | Laser at AMC | 9:30pm | 7.4% | -787 min |
+| AMC Montgomery 16 | The Drama | Laser at AMC | 7:40pm | 30.3% | -677 min |
+| AMC Montgomery 16 | The Drama | Laser at AMC | 6:45pm | 31.5% | -622 min |
+| AMC Montgomery 16 | The Drama | Laser at AMC | 5:15pm | 13.6% | -532 min |
+| AMC Morgantown 12 | The Drama | undefined | 9:00pm | 12.9% | -757 min |
+| AMC Morgantown 12 | The Drama | undefined | 6:10pm | 4.8% | -587 min |
+| AMC Mountainside 10 | The Drama | Laser at AMC | 10:20pm | 0% | -837 min |
+| AMC Mountainside 10 | The Drama | Laser at AMC | 7:30pm | 19.3% | -667 min |
+| AMC Muncie 12 | The Drama | undefined | 10:00pm | 0% | -817 min |
+| AMC Muncie 12 | The Drama | undefined | 9:45pm | 0% | -802 min |
+| AMC Muncie 12 | The Drama | undefined | 9:05pm | 0% | -762 min |
+| AMC Muncie 12 | The Drama | undefined | 7:00pm | 71.2% | -637 min |
+| AMC Muncie 12 | The Drama | undefined | 6:00pm | 6.7% | -577 min |
+| AMC New Brunswick 18 | The Drama | undefined | 10:00pm | 1% | -817 min |
+| AMC New Brunswick 18 | The Drama | undefined | 7:00pm | 25.6% | -637 min |
+| AMC North Dekalb 16 | The Drama | undefined | 10:00pm | 0.8% | -817 min |
+| AMC North Dekalb 16 | The Drama | undefined | 7:00pm | 11% | -637 min |
+| AMC Northgate 14 | The Drama | undefined | 8:10pm | 0% | -707 min |
+| AMC Northgate 14 | The Drama | undefined | 5:20pm | 0.5% | -537 min |
+| AMC Owings Mills 17 | The Drama | undefined | 9:45pm | 3.5% | -802 min |
+| AMC Owings Mills 17 | The Drama | undefined | 7:00pm | 19.3% | -637 min |
+| AMC Palisades 21 | The Drama | Laser at AMC | 10:00pm | 9.7% | -817 min |
+| AMC Palisades 21 | The Drama | Laser at AMC | 9:00pm | 15% | -757 min |
+| AMC Palisades 21 | The Drama | Laser at AMC | 6:15pm | 35% | -592 min |
+| AMC Palisades 21 | The Drama | Open Caption (On-screen Subtitles) | 7:15pm | 19.4% | -652 min |
+| AMC Park Place 16 | The Drama | undefined | 7:00pm | 63.4% | -637 min |
+| AMC Park Terrace 6 | The Drama | undefined | 10:30pm | 0% | -847 min |
+| AMC Park Terrace 6 | The Drama | undefined | 7:30pm | 96.8% | -667 min |
+| AMC Parkway Pointe 15 | The Drama | Laser at AMC | 10:20pm | 6% | -837 min |
+| AMC Parkway Pointe 15 | The Drama | Laser at AMC | 7:30pm | 72.6% | -667 min |
+| AMC Pembroke Lakes 9 | The Drama | Laser at AMC | 10:00pm | 10.3% | -817 min |
+| AMC Pembroke Lakes 9 | The Drama | Laser at AMC | 7:15pm | 50.7% | -652 min |
+| AMC Plainville 20 | The Drama | undefined | 10:00pm | 1.4% | -817 min |
+| AMC Plainville 20 | The Drama | undefined | 9:00pm | 31% | -757 min |
+| AMC Plainville 20 | The Drama | undefined | 7:10pm | 52.1% | -647 min |
+| AMC Plainville 20 | The Drama | undefined | 6:15pm | 50.7% | -592 min |
+| AMC Port Chester 14 | The Drama | Laser at AMC | 10:00pm | 0% | -817 min |
+| AMC Port Chester 14 | The Drama | Laser at AMC | 7:15pm | 6.7% | -652 min |
+| AMC Port Chester 14 | The Drama | Laser at AMC | 6:30pm | 6.7% | -607 min |
+| AMC Port St Lucie 14 | The Drama | undefined | 7:30pm | 0% | -667 min |
+| AMC Potomac Mills 18 | The Drama | Laser at AMC | 10:15pm | 0.7% | -832 min |
+| AMC Potomac Mills 18 | The Drama | Laser at AMC | 9:45pm | 2.1% | -802 min |
+| AMC Potomac Mills 18 | The Drama | Laser at AMC | 7:30pm | 4.9% | -667 min |
+| AMC Potomac Mills 18 | The Drama | Laser at AMC | 7:00pm | 13.8% | -637 min |
+| AMC Ridge Park Square 8 | The Drama | undefined | 9:20pm | 5.6% | -777 min |
+| AMC Ridge Park Square 8 | The Drama | undefined | 6:30pm | 6.9% | -607 min |
+| AMC Ridgefield Park 12 | The Drama | undefined | 10:00pm | 2.2% | -817 min |
+| AMC Ridgefield Park 12 | The Drama | undefined | 7:15pm | 58.4% | -652 min |
+| AMC Ritz 13 | The Drama | undefined | 9:25pm | 4.2% | -781 min |
+| AMC Ritz 13 | The Drama | undefined | 6:40pm | 27.1% | -616 min |
+| AMC River Hills 10 | The Drama | undefined | 9:50pm | 4.2% | -805 min |
+| AMC River Hills 10 | The Drama | undefined | 7:00pm | 13.9% | -636 min |
+| AMC Rivertowne 12 | The Drama | Laser at AMC | 8:45pm | 3.8% | -741 min |
+| AMC Rivertowne 12 | The Drama | Laser at AMC | 6:00pm | 3.8% | -576 min |
+| AMC Riverview 14 | The Drama | undefined | 10:15pm | 1% | -831 min |
+| AMC Riverview 14 | The Drama | undefined | 8:15pm | 27.8% | -711 min |
+| AMC Riverview 14 | The Drama | undefined | 7:30pm | 46.9% | -666 min |
+| AMC Rockaway 16 | The Drama | Laser at AMC | 9:45pm | 0.4% | -801 min |
+| AMC Rockaway 16 | The Drama | Laser at AMC | 8:00pm | 1.5% | -696 min |
+| AMC Rockaway 16 | The Drama | Laser at AMC | 7:00pm | 8.1% | -636 min |
+| AMC Saratoga Springs 11 | The Drama | undefined | 9:30pm | 0% | -786 min |
+| AMC Saratoga Springs 11 | The Drama | undefined | 7:30pm | 2.4% | -666 min |
+| AMC Schererville 12 | The Drama | Laser at AMC | 6:30pm | 8.1% | -606 min |
+| AMC Schererville 16 | The Drama | Laser at AMC | 10:00pm | 1.1% | -816 min |
+| AMC Schererville 16 | The Drama | Laser at AMC | 7:25pm | 0.6% | -661 min |
+| AMC Security Square 8 | The Drama | undefined | 10:30pm | 1.8% | -846 min |
+| AMC Security Square 8 | The Drama | undefined | 7:30pm | 3.5% | -666 min |
+| AMC SoNo8 | The Drama | undefined | 10:15pm | 0% | -831 min |
+| AMC SoNo8 | The Drama | undefined | 7:30pm | 61.8% | -666 min |
+| AMC South Bay Center 12 | The Drama | Laser at AMC | 9:45pm | 10.5% | -801 min |
+| AMC South Bay Center 12 | The Drama | Laser at AMC | 6:45pm | 55.3% | -621 min |
+| AMC Southington 12 | The Drama | undefined | 9:15pm | 11.1% | -771 min |
+| AMC Southington 12 | The Drama | undefined | 6:30pm | 27.8% | -606 min |
+| AMC Southpoint 17 | The Drama | undefined | 10:45pm | 0% | -861 min |
+| AMC Southpoint 17 | The Drama | undefined | 10:20pm | 5.8% | -835 min |
+| AMC Southpoint 17 | The Drama | undefined | 8:00pm | 81.3% | -696 min |
+| AMC Southpoint 17 | The Drama | undefined | 7:00pm | 65.5% | -636 min |
+| AMC Southpoint 17 | The Drama | undefined | 6:30pm | 66.7% | -606 min |
+| AMC Southpoint 17 | The Drama | undefined | 5:15pm | 45.8% | -531 min |
+| AMC Spring Hill 12 | The Drama | undefined | 9:00pm | 0% | -756 min |
+| AMC Spring Hill 12 | The Drama | undefined | 8:00pm | 0.7% | -696 min |
+| AMC Spring Hill 12 | The Drama | undefined | 5:30pm | 0.8% | -546 min |
+| AMC Star Gratiot 15 | The Drama | undefined | 7:15pm | 6.8% | -651 min |
+| AMC Staten Island 11 | The Drama | Laser at AMC | 10:15pm | 15.7% | -831 min |
+| AMC Staten Island 11 | The Drama | Laser at AMC | 8:15pm | 61.7% | -711 min |
+| AMC Staten Island 11 | The Drama | Laser at AMC | 5:30pm | 44.7% | -546 min |
+| AMC Stones River 9 | The Drama | undefined | 9:45pm | 6.1% | -801 min |
+| AMC Stones River 9 | The Drama | undefined | 6:45pm | 32.9% | -621 min |
+| AMC Stonybrook 20 | The Drama | undefined | 10:15pm | 0.9% | -831 min |
+| AMC Stonybrook 20 | The Drama | undefined | 8:30pm | 18% | -726 min |
+| AMC Stonybrook 20 | The Drama | undefined | 7:15pm | 5.4% | -651 min |
+| AMC Sunrise 8 | The Drama | undefined | 8:15pm | 49.2% | -711 min |
+| AMC Sunrise 8 | The Drama | English Spoken with Spanish Subtitles | 5:30pm | 6.3% | -546 min |
+| AMC Tallahassee 20 | The Drama | undefined | 9:45pm | 67.8% | -801 min |
+| AMC Tallahassee 20 | The Drama | undefined | 9:00pm | 17% | -756 min |
+| AMC Tallahassee 20 | The Drama | undefined | 8:30pm | 83.1% | -726 min |
+| AMC Tallahassee 20 | The Drama | undefined | 7:00pm | 71.2% | -636 min |
+| AMC Tamiami 18 | The Drama | Laser at AMC | 10:25pm | 19.6% | -841 min |
+| AMC Tamiami 18 | The Drama | Laser at AMC | 10:05pm | 65.2% | -820 min |
+| AMC Tamiami 18 | The Drama | Laser at AMC | 7:10pm | 73.9% | -646 min |
+| AMC Tamiami 18 | The Drama | Laser at AMC | 7:00pm | 70.6% | -636 min |
+| AMC Tiger 13 | The Drama | undefined | 7:10pm | 13.6% | -646 min |
+| AMC Tilghman Square 8 | The Drama | Laser at AMC | 9:20pm | 3.9% | -775 min |
+| AMC Tilghman Square 8 | The Drama | Laser at AMC | 6:30pm | 58.8% | -606 min |
+| AMC Traders Point 12 | The Drama | Open Caption (On-screen Subtitles) | 10:30pm | 0% | -845 min |
+| AMC Traders Point 12 | The Drama | undefined | 7:45pm | 22% | -680 min |
+| AMC Traders Point 12 | The Drama | undefined | 5:00pm | 3.4% | -515 min |
+| AMC Tyngsboro 12 | The Drama | Laser at AMC | 9:00pm | 3.1% | -755 min |
+| AMC Tyngsboro 12 | The Drama | Laser at AMC | 7:45pm | 26.9% | -680 min |
+| AMC Vestal Town Square 9 | The Drama | undefined | 8:15pm | 7% | -710 min |
+| AMC Vestal Town Square 9 | The Drama | undefined | 5:30pm | 7% | -545 min |
+| AMC Washington Square 12 | The Drama | undefined | 7:00pm | 3.4% | -635 min |
+| AMC Wayne 14 | The Drama | Laser at AMC | 11:00pm | 12.4% | -875 min |
+| AMC Wayne 14 | The Drama | Laser at AMC | 7:45pm | 66.3% | -680 min |
+| AMC Webster 12 | The Drama | undefined | 10:15pm | 0% | -830 min |
+| AMC Webster 12 | The Drama | undefined | 8:15pm | 12% | -710 min |
+| AMC Webster 12 | The Drama | undefined | 5:30pm | 5.4% | -545 min |
+| AMC West Melbourne 12 | The Drama | undefined | 10:00pm | 0% | -815 min |
+| AMC West Melbourne 12 | The Drama | undefined | 7:10pm | 0% | -645 min |
+| AMC West Oaks 14 | The Drama | undefined | 9:00pm | 16.7% | -755 min |
+| AMC West Oaks 14 | The Drama | undefined | 8:30pm | 34.6% | -725 min |
+| AMC West Oaks 14 | The Drama | undefined | 6:15pm | 13.4% | -590 min |
+| AMC West Oaks 14 | The Drama | undefined | 5:45pm | 42.3% | -560 min |
+| AMC Westmoreland 15 | The Drama | undefined | 7:10pm | 2.7% | -645 min |
+| AMC Weston 8 | The Drama | undefined | 9:30pm | 20.7% | -785 min |
+| AMC Weston 8 | The Drama | undefined | 7:15pm | 39.7% | -650 min |
+| AMC Westwood Town Center 6 | The Drama | undefined | 7:15pm | 34.4% | -650 min |
+| AMC Wheaton Mall 9 | The Drama | Laser at AMC | 9:30pm | 8.2% | -785 min |
+| AMC Wheaton Mall 9 | The Drama | Laser at AMC | 6:30pm | 18.4% | -605 min |
+| AMC White Marsh 16 | The Drama | undefined | 10:30pm | 0.8% | -845 min |
+| AMC White Marsh 16 | The Drama | undefined | 9:45pm | 4.8% | -800 min |
+| AMC White Marsh 16 | The Drama | undefined | 8:15pm | 11% | -710 min |
+| AMC White Marsh 16 | The Drama | undefined | 7:00pm | 15.3% | -635 min |
+| AMC White Marsh 16 | The Drama | undefined | 5:30pm | 5.5% | -545 min |
+| AMC Woodhaven 10 | The Drama | Laser at AMC | 9:30pm | 9.4% | -785 min |
+| AMC Woodhaven 10 | The Drama | Laser at AMC | 6:45pm | 60.4% | -620 min |
+| AMC Yulee 10 | The Drama | undefined | 7:15pm | 0% | -650 min |
+
+**Issues:** AMC Evansville 16: No seat map for The Drama Open Caption (On-screen Subtitles); AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Highwoods 20: No seat map for The Drama Laser at AMC; AMC Washington Square 12: No seat map for The Drama undefined
+
+---
+
+## 2026-04-07 08:31 — CT Group
+
+**Polymarket movies tracked:** The Drama
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC River East 21 | The Drama | Laser at AMC | 11:00pm | 0% | -934 min |
+| AMC River East 21 | The Drama | Laser at AMC | 10:10pm | 1.3% | -884 min |
+| AMC River East 21 | The Drama | Laser at AMC | 9:15pm | 2.9% | -829 min |
+| AMC River East 21 | The Drama | Laser at AMC | 8:15pm | 68.6% | -769 min |
+| AMC River East 21 | The Drama | Laser at AMC | 7:20pm | 73.7% | -713 min |
+| AMC River East 21 | The Drama | Laser at AMC | 7:10pm | 71.7% | -704 min |
+| AMC River East 21 | The Drama | Laser at AMC | 7:00pm | 19.6% | -694 min |
+| AMC River East 21 | The Drama | Laser at AMC | 6:30pm | 61.8% | -664 min |
+| AMC River East 21 | The Drama | Laser at AMC | 5:30pm | 62.7% | -604 min |
+| AMC NEWCITY 14 | The Drama | Laser at AMC | 9:45pm | 11.9% | -859 min |
+| AMC NEWCITY 14 | The Drama | Laser at AMC | 7:00pm | 88.1% | -694 min |
+| AMC Village Crossing 18 | The Drama | Laser at AMC | 9:00pm | 4.5% | -814 min |
+| AMC Village Crossing 18 | The Drama | Laser at AMC | 6:15pm | 15.4% | -649 min |
+| AMC DINE-IN Block 37 | The Drama | Dine-In Delivery to Seat | 10:15pm | 5.4% | -889 min |
+| AMC DINE-IN Block 37 | The Drama | Dine-In Delivery to Seat | 8:00pm | 43.2% | -754 min |
+| AMC DINE-IN Block 37 | The Drama | Dine-In Delivery to Seat | 7:30pm | 83.8% | -724 min |
+| AMC DINE-IN Rosemont 12 | The Drama | Dine-In Delivery to Seat | 10:15pm | 0% | -889 min |
+| AMC DINE-IN Rosemont 12 | The Drama | Dine-In Delivery to Seat | 7:30pm | 45.8% | -724 min |
+| AMC 600 North Michigan 9 | The Drama | undefined | 7:30pm | 71.9% | -724 min |
+| AMC 600 North Michigan 9 | The Drama | undefined | 5:10pm | 55.2% | -584 min |
+| AMC Roosevelt Collection 16 | The Drama | Laser at AMC | 9:40pm | 6.1% | -854 min |
+| AMC Roosevelt Collection 16 | The Drama | Laser at AMC | 7:15pm | 63.2% | -709 min |
+| AMC Roosevelt Collection 16 | The Drama | Laser at AMC | 7:00pm | 58.2% | -694 min |
+| AMC Roosevelt Collection 16 | The Drama | Laser at AMC | 6:30pm | 55.6% | -664 min |
+| AMC South Barrington 24 | The Drama | Laser at AMC | 10:00pm | 0% | -874 min |
+| AMC South Barrington 24 | The Drama | Laser at AMC | 9:10pm | 6.9% | -824 min |
+| AMC South Barrington 24 | The Drama | Laser at AMC | 8:10pm | 11.6% | -764 min |
+| AMC South Barrington 24 | The Drama | Laser at AMC | 7:10pm | 23.3% | -704 min |
+| AMC South Barrington 24 | The Drama | Laser at AMC | 5:10pm | 16.3% | -584 min |
+| AMC Streets of Woodfield 20 | The Drama | Laser at AMC | 9:45pm | 0% | -859 min |
+| AMC Streets of Woodfield 20 | The Drama | Laser at AMC | 8:00pm | 13.8% | -754 min |
+| AMC Streets of Woodfield 20 | The Drama | Laser at AMC | 7:30pm | 19.5% | -724 min |
+| AMC Streets of Woodfield 20 | The Drama | Laser at AMC | 5:15pm | 11.7% | -589 min |
+| AMC Streets of Woodfield 20 | The Drama | Open Caption (On-screen Subtitles) | 7:00pm | 2.6% | -694 min |
+| AMC Yorktown 18 | The Drama | Laser at AMC | 9:45pm | 2.9% | -859 min |
+| AMC Yorktown 18 | The Drama | Laser at AMC | 7:00pm | 61.4% | -694 min |
+| AMC Northbrook 14 | The Drama | undefined | 7:15pm | 18.2% | -709 min |
+| AMC Oakbrook Center 12 | The Drama | Laser at AMC | 10:45pm | 0% | -919 min |
+| AMC Oakbrook Center 12 | The Drama | Laser at AMC | 9:30pm | 6.7% | -844 min |
+| AMC Oakbrook Center 12 | The Drama | Laser at AMC | 7:45pm | 36.6% | -739 min |
+| AMC Randhurst 12 | The Drama | Laser at AMC | 9:25pm | 0.5% | -839 min |
+| AMC Randhurst 12 | The Drama | Laser at AMC | 6:45pm | 2.1% | -679 min |
+| AMC Niles 12 | The Drama | undefined | 7:15pm | 1.5% | -709 min |
+| AMC Ford City 14 | The Drama | Laser at AMC | 10:00pm | 0% | -874 min |
+| AMC Ford City 14 | The Drama | Laser at AMC | 9:15pm | 10.7% | -829 min |
+| AMC Ford City 14 | The Drama | Laser at AMC | 6:30pm | 16% | -664 min |
+| AMC DINE-IN Mesquite 30 | The Drama | Dine-In Delivery to Seat | 10:30pm | 0% | -904 min |
+| AMC DINE-IN Mesquite 30 | The Drama | Dine-In Delivery to Seat | 9:25pm | 0% | -839 min |
+| AMC DINE-IN Mesquite 30 | The Drama | Dine-In Delivery to Seat | 7:45pm | 20.7% | -739 min |
+| AMC DINE-IN Mesquite 30 | The Drama | Dine-In Delivery to Seat | 6:40pm | 28.9% | -674 min |
+| AMC DINE-IN Mesquite 30 | The Drama | Dine-In Delivery to Seat | 5:05pm | 0% | -578 min |
+| AMC NorthPark 15 | The Drama | Laser at AMC | 10:00pm | 1.9% | -874 min |
+| AMC NorthPark 15 | The Drama | Laser at AMC | 7:15pm | 58.5% | -709 min |
+| AMC Stonebriar 24 | The Drama | Laser at AMC | 10:50pm | 4.5% | -923 min |
+| AMC Stonebriar 24 | The Drama | Laser at AMC | 9:20pm | 9% | -833 min |
+| AMC Stonebriar 24 | The Drama | Laser at AMC | 8:00pm | 20.5% | -754 min |
+| AMC Stonebriar 24 | The Drama | Laser at AMC | 6:30pm | 24.4% | -664 min |
+| AMC Stonebriar 24 | The Drama | Laser at AMC | 5:10pm | 15.9% | -584 min |
+| AMC Grapevine Mills 24 | The Drama | Open Caption (On-screen Subtitles) | 6:40pm | 11.4% | -674 min |
+| AMC Grapevine Mills 24 | The Drama | undefined | 9:40pm | 0% | -854 min |
+| AMC Grapevine Mills 24 | The Drama | undefined | 8:35pm | 18.2% | -788 min |
+| AMC Grapevine Mills 24 | The Drama | undefined | 5:45pm | 18.2% | -619 min |
+| AMC Firewheel 18 | The Drama | Laser at AMC | 9:45pm | 2.5% | -859 min |
+| AMC Firewheel 18 | The Drama | Laser at AMC | 7:00pm | 16.4% | -694 min |
+| AMC Irving Mall 14 | The Drama | Laser at AMC | 9:45pm | 0% | -858 min |
+| AMC Irving Mall 14 | The Drama | Laser at AMC | 7:00pm | 18.8% | -693 min |
+| AMC Irving Mall 14 | The Drama | Laser at AMC | 5:40pm | 18.9% | -613 min |
+| AMC The Parks At Arlington 18 | The Drama | Laser at AMC | 10:00pm | 3.4% | -873 min |
+| AMC The Parks At Arlington 18 | The Drama | Laser at AMC | 7:15pm | 9.5% | -708 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 10:30pm | 0% | -903 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 9:30pm | 0% | -843 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 8:15pm | 37.1% | -768 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 7:15pm | 27.3% | -708 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 6:15pm | 19.4% | -648 min |
+| AMC Southlake 24 | The Drama | Laser at AMC | 5:15pm | 34.3% | -588 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 10:45pm | 0.6% | -918 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 9:45pm | 1.1% | -858 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 8:45pm | 1.1% | -798 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 7:45pm | 3.4% | -738 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 6:45pm | 5.1% | -678 min |
+| AMC Gulf Pointe 30 | The Drama | Laser at AMC | 5:45pm | 10.3% | -618 min |
+| AMC Willowbrook 24 | The Drama | Laser at AMC | 10:25pm | 1.9% | -898 min |
+| AMC Willowbrook 24 | The Drama | Laser at AMC | 9:55pm | 0% | -868 min |
+| AMC Willowbrook 24 | The Drama | Laser at AMC | 8:25pm | 16.3% | -778 min |
+| AMC Willowbrook 24 | The Drama | Laser at AMC | 6:20pm | 10.6% | -653 min |
+| AMC First Colony 24 | The Drama | Laser at AMC | 10:00pm | 0% | -873 min |
+| AMC First Colony 24 | The Drama | Laser at AMC | 9:05pm | 13% | -818 min |
+| AMC First Colony 24 | The Drama | Laser at AMC | 7:20pm | 28.6% | -713 min |
+| AMC First Colony 24 | The Drama | Open Caption (On-screen Subtitles) | 6:15pm | 21.7% | -648 min |
+| AMC Deerbrook 24 | The Drama | undefined | 9:05pm | 0% | -818 min |
+| AMC Deerbrook 24 | The Drama | undefined | 8:00pm | 0% | -753 min |
+| AMC Deerbrook 24 | The Drama | undefined | 7:10pm | 0.8% | -703 min |
+| AMC Deerbrook 24 | The Drama | undefined | 6:15pm | 3.2% | -648 min |
+| AMC Katy Mills 20 | The Drama | Laser at AMC | 10:00pm | 0% | -873 min |
+| AMC Katy Mills 20 | The Drama | Laser at AMC | 9:00pm | 6% | -813 min |
+| AMC Katy Mills 20 | The Drama | Laser at AMC | 7:00pm | 4.5% | -693 min |
+| AMC Katy Mills 20 | The Drama | Laser at AMC | 6:10pm | 9% | -643 min |
+| AMC Fountains 18 | The Drama | Laser at AMC | 10:35pm | 0% | -908 min |
+| AMC Fountains 18 | The Drama | Laser at AMC | 9:30pm | 6.8% | -843 min |
+| AMC Fountains 18 | The Drama | Laser at AMC | 7:45pm | 47.4% | -738 min |
+| AMC Fountains 18 | The Drama | Laser at AMC | 6:45pm | 21.1% | -678 min |
+| AMC Fountains 18 | The Drama | Laser at AMC | 5:00pm | 15.8% | -573 min |
+| AMC Houston 8 | The Drama | Laser at AMC | 9:00pm | 15.1% | -813 min |
+| AMC Houston 8 | The Drama | Laser at AMC | 6:15pm | 27.4% | -648 min |
+| AMC Eden Prairie Mall 18 | The Drama | undefined | 9:30pm | 6.9% | -843 min |
+| AMC Eden Prairie Mall 18 | The Drama | undefined | 7:00pm | 56.3% | -693 min |
+| AMC Rosedale 14 | The Drama | undefined | 9:15pm | 9.8% | -828 min |
+| AMC Rosedale 14 | The Drama | undefined | 7:45pm | 42.5% | -738 min |
+| AMC Rosedale 14 | The Drama | undefined | 6:30pm | 53.8% | -663 min |
+| AMC Rosedale 14 | The Drama | undefined | 5:00pm | 6.3% | -573 min |
+| AMC Southdale 16 | The Drama | undefined | 10:00pm | 2.5% | -873 min |
+| AMC Southdale 16 | The Drama | undefined | 7:15pm | 82.8% | -708 min |
+| AMC Coon Rapids 16 | The Drama | undefined | 8:15pm | 9.3% | -768 min |
+| AMC Coon Rapids 16 | The Drama | undefined | 5:30pm | 32% | -603 min |
+| AMC Inver Grove 16 | The Drama | undefined | 9:15pm | 0% | -828 min |
+| AMC Inver Grove 16 | The Drama | undefined | 7:45pm | 0% | -738 min |
+| AMC Inver Grove 16 | The Drama | undefined | 6:30pm | 47.2% | -663 min |
+| AMC Inver Grove 16 | The Drama | undefined | 5:00pm | 0% | -573 min |
+| AMC Metropark Square 10 | The Drama | Laser at AMC | 10:15pm | 0% | -888 min |
+| AMC Metropark Square 10 | The Drama | Laser at AMC | 7:30pm | 26.2% | -723 min |
+| AMC Spring 10 | The Drama | Laser at AMC | 10:15pm | 0% | -888 min |
+| AMC Spring 10 | The Drama | Laser at AMC | 7:30pm | 13.5% | -723 min |
+| AMC Spring 10 | The Drama | Laser at AMC | 5:15pm | 12.4% | -588 min |
+| AMC Eastchase 9 | The Drama | Laser at AMC | 7:00pm | 0% | -692 min |
+| AMC CLASSIC Brazos Mall 14 | The Drama | undefined | 7:30pm | 1.8% | -722 min |
+| AMC Rio Cinemas 18 | The Drama | Laser at AMC | 10:30pm | 0% | -902 min |
+| AMC Rio Cinemas 18 | The Drama | Laser at AMC | 9:45pm | 4.1% | -857 min |
+| AMC Rio Cinemas 18 | The Drama | Laser at AMC | 8:30pm | 18.2% | -782 min |
+| AMC Rio Cinemas 18 | The Drama | Laser at AMC | 7:00pm | 46.9% | -692 min |
+| AMC Rio Cinemas 18 | The Drama | Laser at AMC | 5:30pm | 12.5% | -602 min |
+| AMC Centerpoint 11 | The Drama | Laser at AMC | 9:30pm | 54.2% | -842 min |
+| AMC Centerpoint 11 | The Drama | Laser at AMC | 6:45pm | 83.3% | -677 min |
+| AMC Village On The Parkway 9 | The Drama | Laser at AMC | 10:20pm | 12.5% | -891 min |
+| AMC Village On The Parkway 9 | The Drama | Laser at AMC | 7:30pm | 54.2% | -722 min |
+| AMC Birchwood 10 | The Drama | undefined | 7:50pm | 0% | -741 min |
+| AMC Birchwood 10 | The Drama | undefined | 5:05pm | 0% | -576 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 10:00pm | 0% | -872 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 9:40pm | 2% | -852 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 8:40pm | 9.1% | -792 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 7:20pm | 53% | -711 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 7:00pm | 42% | -692 min |
+| AMC Causeway 13 | The Drama | Laser at AMC | 6:00pm | 40.9% | -632 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 10:00pm | 0% | -872 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 9:00pm | 1.5% | -812 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 8:00pm | 0% | -752 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 7:15pm | 6.5% | -707 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 6:00pm | 5.3% | -632 min |
+| AMC Barrywoods 24 | The Drama | Laser at AMC | 5:15pm | 1.7% | -587 min |
+| AMC Independence Commons 20 | The Drama | Laser at AMC | 10:00pm | 4.2% | -872 min |
+| AMC Independence Commons 20 | The Drama | Laser at AMC | 9:00pm | 0% | -812 min |
+| AMC Independence Commons 20 | The Drama | Laser at AMC | 7:05pm | 25% | -696 min |
+| AMC Independence Commons 20 | The Drama | Laser at AMC | 6:10pm | 12.5% | -642 min |
+| AMC Ward Parkway 14 | The Drama | Laser at AMC | 9:15pm | 3.6% | -827 min |
+| AMC Ward Parkway 14 | The Drama | Laser at AMC | 7:20pm | 38.5% | -711 min |
+| AMC Ward Parkway 14 | The Drama | Laser at AMC | 6:30pm | 50.9% | -662 min |
+| AMC Town Center 20 | The Drama | Laser at AMC | 10:00pm | 6.8% | -872 min |
+| AMC Town Center 20 | The Drama | Laser at AMC | 8:15pm | 24.3% | -767 min |
+| AMC Town Center 20 | The Drama | Laser at AMC | 7:15pm | 55.9% | -707 min |
+| AMC Legends 14 | The Drama | Laser at AMC | 10:30pm | 0% | -902 min |
+| AMC Legends 14 | The Drama | Laser at AMC | 9:45pm | 3.6% | -857 min |
+| AMC Legends 14 | The Drama | Laser at AMC | 7:45pm | 7.6% | -737 min |
+| AMC Legends 14 | The Drama | Laser at AMC | 7:00pm | 8% | -692 min |
+| AMC Barton Creek Square 14 | The Drama | undefined | 10:00pm | 31.1% | -872 min |
+| AMC Barton Creek Square 14 | The Drama | undefined | 8:45pm | 82% | -797 min |
+| AMC Barton Creek Square 14 | The Drama | undefined | 7:15pm | 82% | -707 min |
+| AMC Barton Creek Square 14 | The Drama | undefined | 6:00pm | 73.8% | -632 min |
+| AMC Barton Creek Square 14 | The Drama | undefined | 5:15pm | 25.7% | -587 min |
+| AMC Baton Rouge 16 | The Drama | undefined | 9:45pm | 0% | -856 min |
+| AMC Baton Rouge 16 | The Drama | undefined | 7:00pm | 23.6% | -691 min |
+| AMC Boerne 11 | The Drama | undefined | 7:40pm | 2.2% | -731 min |
+| AMC Burleson 14 | The Drama | Laser at AMC | 9:30pm | 3.6% | -841 min |
+| AMC Burleson 14 | The Drama | Laser at AMC | 6:45pm | 14.3% | -676 min |
+| AMC Champaign 13 | The Drama | Open Caption (On-screen Subtitles) | 7:30pm | 8.4% | -721 min |
+| AMC Chantilly 13 | The Drama | undefined | 7:15pm | 1.4% | -706 min |
+| AMC Chenal 9 | The Drama | undefined | 9:30pm | 0% | -841 min |
+| AMC Chenal 9 | The Drama | undefined | 6:40pm | 22.2% | -671 min |
+| AMC Council Bluffs 17 | The Drama | undefined | 10:00pm | 1.8% | -871 min |
+| AMC Council Bluffs 17 | The Drama | undefined | 7:15pm | 19.5% | -706 min |
+| AMC Creve Coeur 12 | The Drama | undefined | 10:00pm | 0% | -871 min |
+| AMC Creve Coeur 12 | The Drama | undefined | 7:15pm | 35% | -706 min |
+| AMC Creve Coeur 12 | The Drama | undefined | 6:15pm | 33.7% | -646 min |
+| AMC DINE-IN Clearfork 8 | The Drama | Dine-In Delivery to Seat | 9:50pm | 13.9% | -860 min |
+| AMC DINE-IN Clearfork 8 | The Drama | Dine-In Delivery to Seat | 7:00pm | 61.1% | -691 min |
+| AMC DINE-IN Clearview Palace 12 | The Drama | Dine-In Delivery to Seat | 9:00pm | 6.2% | -811 min |
+| AMC DINE-IN Clearview Palace 12 | The Drama | Dine-In Delivery to Seat | 6:00pm | 25.8% | -631 min |
+| AMC DINE-IN Manhattan 13 | The Drama | Dine-In Delivery to Seat | 7:00pm | 23.8% | -691 min |
+| AMC DINE-IN Tech Ridge 10 | The Drama | Dine-In Delivery to Seat | 10:00pm | 6.5% | -871 min |
+| AMC DINE-IN Tech Ridge 10 | The Drama | Dine-In Delivery to Seat | 7:15pm | 69.2% | -706 min |
+| AMC DINE-IN Vestavia Hills 10 | The Drama | Dine-In Delivery to Seat | 10:30pm | 0% | -901 min |
+| AMC DINE-IN Vestavia Hills 10 | The Drama | Dine-In Delivery to Seat | 7:45pm | 33.9% | -736 min |
+| AMC DINE-IN Vestavia Hills 10 | The Drama | Dine-In Delivery to Seat | 5:00pm | 16.9% | -571 min |
+| AMC Dakota Square 9 | The Drama | undefined | 8:15pm | 4.5% | -766 min |
+| AMC Dakota Square 9 | The Drama | undefined | 5:30pm | 9.1% | -601 min |
+| AMC Decatur 12 | The Drama | undefined | 7:40pm | 0% | -731 min |
+| AMC Edinburg 18 | The Drama | undefined | 9:50pm | 12% | -860 min |
+| AMC Edinburg 18 | The Drama | undefined | 7:10pm | 58.3% | -701 min |
+| AMC Edwardsville 12 | The Drama | undefined | 9:00pm | 0% | -811 min |
+| AMC Edwardsville 12 | The Drama | undefined | 6:00pm | 4.5% | -631 min |
+| AMC El Paso 16 | The Drama | undefined | 10:00pm | 0% | -871 min |
+| AMC El Paso 16 | The Drama | undefined | 7:15pm | 35.4% | -706 min |
+| AMC Elmwood Palace 20 | The Drama | undefined | 10:00pm | 0% | -871 min |
+| AMC Elmwood Palace 20 | The Drama | undefined | 9:00pm | 0% | -811 min |
+| AMC Elmwood Palace 20 | The Drama | undefined | 7:05pm | 6.2% | -695 min |
+| AMC Elmwood Palace 20 | The Drama | undefined | 6:10pm | 3.4% | -641 min |
+| AMC Esquire 7 | The Drama | undefined | 10:00pm | 12.7% | -871 min |
+| AMC Esquire 7 | The Drama | undefined | 7:15pm | 76.4% | -706 min |
+| AMC Evanston 12 | The Drama | Laser at AMC | 9:30pm | 10.5% | -841 min |
+| AMC Evanston 12 | The Drama | Laser at AMC | 6:45pm | 16.9% | -676 min |
+| AMC Festival Plaza 16 | The Drama | undefined | 9:00pm | 12.8% | -811 min |
+| AMC Festival Plaza 16 | The Drama | undefined | 6:15pm | 12.8% | -646 min |
+| AMC Fitchburg 18 | The Drama | undefined | 8:20pm | 36.2% | -770 min |
+| AMC Fitchburg 18 | The Drama | undefined | 7:15pm | 67.6% | -706 min |
+| AMC Fitchburg 18 | The Drama | undefined | 5:15pm | 41.9% | -586 min |
+| AMC Galaxy 16 | The Drama | undefined | 7:20pm | 1.4% | -710 min |
+| AMC Grand Prairie 18 | The Drama | undefined | 7:45pm | 0.4% | -736 min |
+| AMC Grand Prairie 18 | The Drama | undefined | 5:00pm | 2.2% | -571 min |
+| AMC Hammond Palace 10 | The Drama | undefined | 9:00pm | 0% | -810 min |
+| AMC Hammond Palace 10 | The Drama | undefined | 7:30pm | 0% | -720 min |
+| AMC Hawthorn 12 | The Drama | Laser at AMC | 9:30pm | 20% | -840 min |
+| AMC Hawthorn 12 | The Drama | Laser at AMC | 6:45pm | 36.4% | -675 min |
+| AMC Highland Village 12 | The Drama | Laser at AMC | 5:10pm | 7.4% | -580 min |
+| AMC Houma Palace 10 | The Drama | undefined | 6:45pm | 0.9% | -675 min |
+| AMC Lakeline 9 | The Drama | undefined | 9:05pm | 7% | -814 min |
+| AMC Lakeline 9 | The Drama | undefined | 6:15pm | 18.6% | -645 min |
+| AMC Longview 10 | The Drama | undefined | 10:00pm | 0% | -870 min |
+| AMC Longview 10 | The Drama | undefined | 7:15pm | 4% | -705 min |
+| AMC Lufkin 9 | The Drama | undefined | 7:45pm | 9.8% | -735 min |
+| AMC Machesney Park 14 | The Drama | undefined | 7:15pm | 2.7% | -705 min |
+| AMC Mall of Louisiana 15 | The Drama | undefined | 9:50pm | 2.2% | -859 min |
+| AMC Mall of Louisiana 15 | The Drama | undefined | 7:05pm | 11.9% | -694 min |
+| AMC Mayfair Mall 18 | The Drama | undefined | 7:15pm | 9.4% | -705 min |
+| AMC Northrock 14 | The Drama | undefined | 9:30pm | 9.6% | -840 min |
+| AMC Northrock 14 | The Drama | undefined | 6:45pm | 63.5% | -675 min |
+| AMC Palace 9 | The Drama | Laser at AMC | 10:00pm | 0% | -870 min |
+| AMC Palace 9 | The Drama | Laser at AMC | 7:15pm | 45.5% | -705 min |
+| AMC Patriot 13 | The Drama | Open Caption (On-screen Subtitles) | 7:15pm | 0% | -705 min |
+| AMC Patton Creek 15 | The Drama | undefined | 9:45pm | 0% | -855 min |
+| AMC Patton Creek 15 | The Drama | undefined | 7:00pm | 2.6% | -690 min |
+| AMC Penn Square 10 | The Drama | undefined | 10:15pm | 0% | -885 min |
+| AMC Penn Square 10 | The Drama | undefined | 7:15pm | 7.1% | -705 min |
+| AMC Penn Square 10 | The Drama | undefined | 5:15pm | 0% | -585 min |
+| AMC Quail Springs Mall 24 | The Drama | undefined | 10:30pm | 1.1% | -900 min |
+| AMC Quail Springs Mall 24 | The Drama | undefined | 9:45pm | 0% | -855 min |
+| AMC Quail Springs Mall 24 | The Drama | undefined | 7:45pm | 3.4% | -735 min |
+| AMC Quail Springs Mall 24 | The Drama | undefined | 7:00pm | 3.9% | -690 min |
+| AMC Quail Springs Mall 24 | The Drama | undefined | 5:00pm | 1.1% | -570 min |
+| AMC Rivercenter 11 | The Drama | undefined | 7:20pm | 13.3% | -709 min |
+| AMC Rivercenter 11 | The Drama | undefined | 6:45pm | 15.6% | -675 min |
+| AMC Robinson Crossing 6 | The Drama | undefined | 10:00pm | 5.6% | -870 min |
+| AMC Robinson Crossing 6 | The Drama | undefined | 7:15pm | 8.5% | -705 min |
+| AMC Rockford 16 | The Drama | undefined | 9:30pm | 0% | -840 min |
+| AMC Rockford 16 | The Drama | undefined | 6:45pm | 1.4% | -675 min |
+| AMC Sikes Senter 10 | The Drama | undefined | 7:10pm | 0% | -700 min |
+| AMC Southern Hills 12 | The Drama | undefined | 7:45pm | 20.9% | -735 min |
+| AMC Springfield 11 | The Drama | undefined | 9:50pm | 5.6% | -859 min |
+| AMC Springfield 11 | The Drama | undefined | 7:00pm | 41.7% | -690 min |
+| AMC Springfield 12 | The Drama | Open Caption (On-screen Subtitles) | 7:45pm | 0% | -735 min |
+| AMC Springfield 12 | The Drama | undefined | 5:00pm | 1.4% | -570 min |
+| AMC Springfield 8 | The Drama | undefined | 7:10pm | 21.8% | -700 min |
+| AMC Stillwater 10 | The Drama | undefined | 7:00pm | 23.2% | -690 min |
+| AMC Streets Of St Charles 8 | The Drama | undefined | 9:50pm | 1.6% | -859 min |
+| AMC Streets Of St Charles 8 | The Drama | undefined | 7:00pm | 29% | -690 min |
+| AMC Studio 28 | The Drama | Laser at AMC | 10:00pm | 0% | -869 min |
+| AMC Studio 28 | The Drama | Laser at AMC | 8:15pm | 1.8% | -764 min |
+| AMC Studio 28 | The Drama | Laser at AMC | 7:15pm | 14% | -704 min |
+| AMC Studio 28 | The Drama | Laser at AMC | 6:30pm | 11% | -659 min |
+| AMC Studio 28 | The Drama | Laser at AMC | 5:15pm | 4.9% | -584 min |
+| AMC Summit 16 | The Drama | undefined | 10:15pm | 1% | -884 min |
+| AMC Summit 16 | The Drama | undefined | 9:15pm | 0% | -824 min |
+| AMC Summit 16 | The Drama | undefined | 7:30pm | 35% | -719 min |
+| AMC Summit 16 | The Drama | undefined | 6:30pm | 4.5% | -659 min |
+| AMC Tulsa Hills 12 | The Drama | undefined | 8:20pm | 1.7% | -769 min |
+| AMC Tulsa Hills 12 | The Drama | undefined | 5:40pm | 9.1% | -609 min |
+| AMC Tyler 14 | The Drama | Open Caption (On-screen Subtitles) | 6:35pm | 0% | -664 min |
+| AMC Tyler 14 | The Drama | undefined | 10:15pm | 0.6% | -884 min |
+| AMC Tyler 14 | The Drama | undefined | 9:30pm | 0% | -839 min |
+| AMC Tyler 14 | The Drama | undefined | 7:30pm | 0% | -719 min |
+| AMC Tyler 14 | The Drama | undefined | 5:45pm | 4.1% | -614 min |
+| AMC University Place 8 | The Drama | undefined | 7:00pm | 5.6% | -689 min |
+| AMC Valley Bend 18 | The Drama | Open Caption (On-screen Subtitles) | 7:35pm | 2.4% | -724 min |
+| AMC West End Pointe 8 | The Drama | undefined | 9:30pm | 4.1% | -839 min |
+| AMC West End Pointe 8 | The Drama | undefined | 6:45pm | 14.3% | -674 min |
+| AMC Westbank Palace 16 | The Drama | undefined | 9:00pm | 9.3% | -809 min |
+| AMC Westbank Palace 16 | The Drama | undefined | 6:35pm | 9.7% | -664 min |
+| AMC Westroads 14 | The Drama | undefined | 8:00pm | 3.9% | -749 min |
+| AMC Westroads 14 | The Drama | undefined | 5:15pm | 5.5% | -584 min |
+| Cinema Centre 8 | The Drama | undefined | 8:30pm | 2.4% | -779 min |
+| Cinema Centre 8 | The Drama | undefined | 5:45pm | 0% | -614 min |
+
+**Issues:** AMC 600 North Michigan 9: No seat map for The Drama undefined; AMC CLASSIC Mounds View 15: No seat map for The Drama undefined; AMC CLASSIC Mounds View 15: No seat map for The Drama undefined; AMC CLASSIC Forney 12: No seat map for The Drama undefined; AMC CLASSIC Forney 12: No seat map for The Drama undefined; AMC CLASSIC Bloomington 12: No seat map for The Drama undefined; AMC Highland Village 12: No seat map for The Drama Laser at AMC
+
+---
+
+## 2026-04-07 08:32 — MT Group
+
+**Polymarket movies tracked:** The Drama
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC 9+CO 10 | The Drama | Laser at AMC | 8:30pm | 71.4% | -839 min |
+| AMC 9+CO 10 | The Drama | Laser at AMC | 5:45pm | 71.4% | -674 min |
+| AMC Albuquerque 12 | The Drama | undefined | 7:20pm | 5% | -769 min |
+| AMC Arrowhead 14 | The Drama | Laser at AMC | 10:40pm | 0% | -969 min |
+| AMC Arrowhead 14 | The Drama | Laser at AMC | 6:30pm | 28.6% | -719 min |
+| AMC Brighton 12 | The Drama | Laser at AMC | 7:15pm | 20.3% | -764 min |
+| AMC Castle Rock 12 | The Drama | Laser at AMC | 8:00pm | 0% | -809 min |
+| AMC Castle Rock 12 | The Drama | Laser at AMC | 5:10pm | 5.6% | -639 min |
+| AMC Chapel Hills 13 | The Drama | undefined | 7:50pm | 2.6% | -799 min |
+| AMC Chapel Hills 13 | The Drama | undefined | 5:05pm | 2.6% | -634 min |
+| AMC DINE-IN Esplanade 14 | The Drama | Dine-In Delivery to Seat | 8:50pm | 6.8% | -859 min |
+| AMC DINE-IN Esplanade 14 | The Drama | Dine-In Delivery to Seat | 8:15pm | 73.3% | -824 min |
+| AMC DINE-IN Esplanade 14 | The Drama | Dine-In Delivery to Seat | 6:30pm | 73.7% | -719 min |
+| AMC DINE-IN Esplanade 14 | The Drama | Dine-In Delivery to Seat | 5:30pm | 60% | -659 min |
+| AMC DINE-IN SOUTHGATE 9 | The Drama | Dine-In Delivery to Seat | 9:55pm | 0% | -924 min |
+| AMC DINE-IN SOUTHGATE 9 | The Drama | Dine-In Delivery to Seat | 8:15pm | 3.8% | -824 min |
+| AMC DINE-IN SOUTHGATE 9 | The Drama | Dine-In Delivery to Seat | 5:30pm | 17% | -659 min |
+| AMC Foothills 15 | The Drama | undefined | 9:00pm | 1.1% | -869 min |
+| AMC Foothills 15 | The Drama | undefined | 6:15pm | 15.6% | -704 min |
+| AMC Fort Collins 10 | The Drama | undefined | 7:15pm | 40% | -764 min |
+| AMC Layton Hills 9 | The Drama | undefined | 9:50pm | 5.7% | -917 min |
+| AMC Layton Hills 9 | The Drama | undefined | 7:00pm | 41.5% | -748 min |
+| AMC Mesa Grand 14 | The Drama | Laser at AMC | 9:45pm | 2.7% | -913 min |
+| AMC Mesa Grand 14 | The Drama | Laser at AMC | 7:00pm | 65.3% | -748 min |
+| AMC Missoula 12 | The Drama | undefined | 8:15pm | 0% | -823 min |
+| AMC Missoula 12 | The Drama | undefined | 5:00pm | 0% | -628 min |
+| AMC Orchard 12 | The Drama | Laser at AMC | 9:45pm | 0% | -913 min |
+| AMC Orchard 12 | The Drama | Laser at AMC | 7:40pm | 12% | -788 min |
+| AMC Orchard 12 | The Drama | Laser at AMC | 5:30pm | 6.9% | -658 min |
+| AMC Provo 8 | The Drama | undefined | 10:00pm | 16.8% | -928 min |
+| AMC Provo 8 | The Drama | undefined | 7:15pm | 47.4% | -763 min |
+| AMC Shiloh 14 | The Drama | undefined | 6:40pm | 2.3% | -728 min |
+| AMC Superstition East 12 | The Drama | Laser at AMC | 9:10pm | 2.5% | -878 min |
+| AMC Superstition East 12 | The Drama | Laser at AMC | 6:45pm | 71.1% | -733 min |
+| AMC West Jordan 12 | The Drama | undefined | 7:00pm | 39.1% | -748 min |
+
+---
+
+## 2026-04-07 08:36 — PT Group
+
+**Polymarket movies tracked:** The Drama
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC The Grove 14 | The Drama | Laser at AMC | 10:45pm | 0% | -1033 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 10:00pm | 17.4% | -988 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 9:00pm | 68.8% | -928 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 8:15pm | 63.6% | -883 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 8:00pm | 86.1% | -868 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 7:00pm | 83.1% | -808 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 6:00pm | 70.3% | -748 min |
+| AMC The Grove 14 | The Drama | Laser at AMC | 5:00pm | 26.5% | -688 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 11:00pm | 0% | -1048 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 10:20pm | 13.3% | -1007 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 9:20pm | 55.1% | -947 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 8:05pm | 56.4% | -872 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 7:30pm | 79.6% | -838 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 6:30pm | 75.8% | -778 min |
+| AMC Century City 15 | The Drama | Laser at AMC | 6:10pm | 29.5% | -758 min |
+| AMC Burbank 16 | The Drama | XL at AMC | 9:30pm | 20% | -958 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 10:35pm | 4.4% | -1022 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 8:55pm | 48.2% | -923 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 8:20pm | 71.2% | -887 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 7:00pm | 69.3% | -808 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 6:20pm | 60.6% | -767 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 5:40pm | 41% | -728 min |
+| AMC Burbank 16 | The Drama | Laser at AMC | 5:10pm | 11.7% | -698 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 10:15pm | 3.8% | -1003 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 9:45pm | 4.3% | -973 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 9:00pm | 48.9% | -928 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 7:30pm | 71.6% | -838 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 7:00pm | 58.1% | -808 min |
+| AMC The Americana at Brand 18 | The Drama | Laser at AMC | 5:45pm | 46.2% | -733 min |
+| AMC Santa Monica 7 | The Drama | Laser at AMC | 9:50pm | 8.5% | -977 min |
+| AMC Santa Monica 7 | The Drama | Laser at AMC | 7:55pm | 80.6% | -863 min |
+| AMC Santa Monica 7 | The Drama | Laser at AMC | 7:00pm | 73.6% | -808 min |
+| AMC Lakewood Mall 12 | The Drama | Laser at AMC | 10:05pm | 4.4% | -992 min |
+| AMC Lakewood Mall 12 | The Drama | Laser at AMC | 7:25pm | 40% | -833 min |
+| AMC DINE-IN Marina 6 | The Drama | Dine-In Delivery to Seat | 10:45pm | 12.5% | -1033 min |
+| AMC DINE-IN Marina 6 | The Drama | Dine-In Delivery to Seat | 10:15pm | 3.2% | -1003 min |
+| AMC DINE-IN Marina 6 | The Drama | Dine-In Delivery to Seat | 9:45pm | 53.4% | -973 min |
+| AMC DINE-IN Marina 6 | The Drama | Dine-In Delivery to Seat | 8:00pm | 86.2% | -868 min |
+| AMC DINE-IN Marina 6 | The Drama | Dine-In Delivery to Seat | 7:00pm | 96.6% | -808 min |
+| AMC DINE-IN Fullerton 20 | The Drama | Laser at AMC | 10:00pm | 7.5% | -988 min |
+| AMC DINE-IN Fullerton 20 | The Drama | Laser at AMC | 9:00pm | 21.6% | -928 min |
+| AMC DINE-IN Fullerton 20 | The Drama | Laser at AMC | 7:15pm | 61.3% | -823 min |
+| AMC DINE-IN Fullerton 20 | The Drama | Laser at AMC | 6:00pm | 30.2% | -748 min |
+| AMC DINE-IN Fullerton 20 | The Drama | Dine-In Delivery to Seat | 9:30pm | 0% | -958 min |
+| AMC Orange 30 | The Drama | Laser at AMC | 10:00pm | 5.3% | -988 min |
+| AMC Orange 30 | The Drama | Laser at AMC | 9:15pm | 4% | -943 min |
+| AMC Orange 30 | The Drama | Laser at AMC | 7:15pm | 26% | -823 min |
+| AMC Orange 30 | The Drama | Laser at AMC | 6:15pm | 9.9% | -763 min |
+| AMC Tustin 14 @ The District | The Drama | Laser at AMC | 10:30pm | 3.4% | -1017 min |
+| AMC Tustin 14 @ The District | The Drama | Laser at AMC | 9:45pm | 3.4% | -972 min |
+| AMC Tustin 14 @ The District | The Drama | Laser at AMC | 9:00pm | 27% | -927 min |
+| AMC Tustin 14 @ The District | The Drama | Laser at AMC | 7:00pm | 65.1% | -807 min |
+| AMC Tustin 14 @ The District | The Drama | Laser at AMC | 6:00pm | 61.1% | -747 min |
+| AMC Puente Hills 20 | The Drama | Laser at AMC | 10:30pm | 2.7% | -1017 min |
+| AMC Puente Hills 20 | The Drama | Laser at AMC | 9:30pm | 11.9% | -957 min |
+| AMC Puente Hills 20 | The Drama | Laser at AMC | 7:15pm | 45.7% | -822 min |
+| AMC Puente Hills 20 | The Drama | Laser at AMC | 6:30pm | 50% | -777 min |
+| AMC Puente Hills 20 | The Drama | Laser at AMC | 5:00pm | 24.3% | -687 min |
+| AMC Puente Hills 20 | The Drama | Open Caption (On-screen Subtitles) | 7:45pm | 27% | -852 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 10:30pm | 2.4% | -1017 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 10:00pm | 0% | -987 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 9:00pm | 46.4% | -927 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 7:30pm | 76.7% | -837 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 6:20pm | 32.7% | -766 min |
+| AMC Norwalk 20 | The Drama | Laser at AMC | 6:00pm | 57.1% | -747 min |
+| AMC Marina Pacifica 12 | The Drama | Laser at AMC | 9:40pm | 7.6% | -967 min |
+| AMC Marina Pacifica 12 | The Drama | Laser at AMC | 8:35pm | 42.3% | -901 min |
+| AMC Marina Pacifica 12 | The Drama | Laser at AMC | 7:40pm | 70.6% | -847 min |
+| AMC Marina Pacifica 12 | The Drama | Laser at AMC | 6:40pm | 60.6% | -787 min |
+| AMC Marina Pacifica 12 | The Drama | Laser at AMC | 5:45pm | 50% | -732 min |
+| AMC Montebello 10 | The Drama | Laser at AMC | 10:15pm | 22.1% | -1002 min |
+| AMC Montebello 10 | The Drama | Laser at AMC | 7:15pm | 67.3% | -822 min |
+| AMC Montebello 10 | The Drama | Laser at AMC | 5:10pm | 52.5% | -697 min |
+| AMC La Mirada 7 | The Drama | Laser at AMC | 9:30pm | 6.9% | -957 min |
+| AMC La Mirada 7 | The Drama | Laser at AMC | 7:15pm | 50% | -822 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 10:00pm | 2.2% | -987 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 9:00pm | 50.5% | -927 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 7:45pm | 69.8% | -852 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 7:15pm | 70% | -822 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 6:15pm | 77.4% | -762 min |
+| AMC Metreon 16 | The Drama | Laser at AMC | 5:00pm | 46.5% | -687 min |
+| AMC Mercado 20 | The Drama | Laser at AMC | 9:00pm | 53.8% | -927 min |
+| AMC Mercado 20 | The Drama | Laser at AMC | 7:30pm | 68.3% | -837 min |
+| AMC Mercado 20 | The Drama | Laser at AMC | 6:15pm | 66.3% | -762 min |
+| AMC Mercado 20 | The Drama | Open Caption (On-screen Subtitles) | 10:15pm | 15% | -1002 min |
+| AMC Eastridge 15 | The Drama | Laser at AMC | 9:00pm | 3.6% | -927 min |
+| AMC Eastridge 15 | The Drama | Laser at AMC | 6:15pm | 11.5% | -762 min |
+| AMC NewPark 12 | The Drama | Laser at AMC | 10:35pm | 2.9% | -1021 min |
+| AMC NewPark 12 | The Drama | Laser at AMC | 6:00pm | 33.3% | -747 min |
+| AMC Sunnyvale 12 | The Drama | Laser at AMC | 10:15pm | 33.3% | -1002 min |
+| AMC Sunnyvale 12 | The Drama | Laser at AMC | 7:50pm | 4.4% | -856 min |
+| AMC Sunnyvale 12 | The Drama | Laser at AMC | 7:30pm | 66.7% | -837 min |
+| AMC Kabuki 8 | The Drama | Laser at AMC | 9:00pm | 25.6% | -927 min |
+| AMC Kabuki 8 | The Drama | Laser at AMC | 7:30pm | 85.5% | -837 min |
+| AMC Kabuki 8 | The Drama | Laser at AMC | 6:30pm | 76.1% | -777 min |
+| AMC Kabuki 8 | The Drama | Laser at AMC | 5:30pm | 60% | -717 min |
+| AMC Mission Valley 20 | The Drama | Laser at AMC | 10:30pm | 2.1% | -1017 min |
+| AMC Mission Valley 20 | The Drama | Laser at AMC | 9:30pm | 6.7% | -957 min |
+| AMC Mission Valley 20 | The Drama | Laser at AMC | 7:45pm | 59.9% | -852 min |
+| AMC Mission Valley 20 | The Drama | Laser at AMC | 6:45pm | 70% | -792 min |
+| AMC Mission Valley 20 | The Drama | Laser at AMC | 5:00pm | 9.5% | -687 min |
+| AMC Fashion Valley 18 | The Drama | Laser at AMC | 9:00pm | 40.8% | -927 min |
+| AMC Fashion Valley 18 | The Drama | Laser at AMC | 8:30pm | 53.2% | -897 min |
+| AMC Fashion Valley 18 | The Drama | Laser at AMC | 7:45pm | 73.5% | -852 min |
+| AMC Fashion Valley 18 | The Drama | Laser at AMC | 6:15pm | 68.4% | -762 min |
+| AMC Fashion Valley 18 | The Drama | Laser at AMC | 5:40pm | 60.8% | -727 min |
+| AMC Palm Promenade 24 | The Drama | Laser at AMC | 10:30pm | 0% | -1016 min |
+| AMC Palm Promenade 24 | The Drama | Laser at AMC | 9:15pm | 2.2% | -941 min |
+| AMC Palm Promenade 24 | The Drama | Laser at AMC | 7:45pm | 13.6% | -851 min |
+| AMC Palm Promenade 24 | The Drama | Laser at AMC | 6:30pm | 5% | -776 min |
+| AMC Palm Promenade 24 | The Drama | Laser at AMC | 5:00pm | 3.4% | -686 min |
+| AMC La Jolla 12 | The Drama | Laser at AMC | 10:30pm | 25.7% | -1016 min |
+| AMC La Jolla 12 | The Drama | Laser at AMC | 8:45pm | 76.3% | -911 min |
+| AMC La Jolla 12 | The Drama | Laser at AMC | 7:45pm | 88.2% | -851 min |
+| AMC La Jolla 12 | The Drama | Laser at AMC | 5:45pm | 86.7% | -731 min |
+| AMC Chula Vista 10 | The Drama | Laser at AMC | 10:00pm | 3.6% | -986 min |
+| AMC Chula Vista 10 | The Drama | Laser at AMC | 9:30pm | 6% | -956 min |
+| AMC Chula Vista 10 | The Drama | Laser at AMC | 8:15pm | 39.5% | -881 min |
+| AMC Chula Vista 10 | The Drama | Laser at AMC | 7:15pm | 73.2% | -821 min |
+| AMC Otay Ranch 12 | The Drama | Laser at AMC | 8:30pm | 6.4% | -896 min |
+| AMC Otay Ranch 12 | The Drama | Laser at AMC | 5:45pm | 5.3% | -731 min |
+| AMC Plaza Bonita 14 | The Drama | Laser at AMC | 9:00pm | 1.5% | -926 min |
+| AMC Plaza Bonita 14 | The Drama | Laser at AMC | 6:15pm | 24.4% | -761 min |
+| AMC Poway 10 | The Drama | Laser at AMC | 9:15pm | 13.2% | -941 min |
+| AMC Poway 10 | The Drama | Laser at AMC | 6:30pm | 55.9% | -776 min |
+| AMC UTC 14 | The Drama | Laser at AMC | 10:30pm | 33.8% | -1016 min |
+| AMC UTC 14 | The Drama | Laser at AMC | 9:30pm | 68.4% | -956 min |
+| AMC UTC 14 | The Drama | Laser at AMC | 7:45pm | 77.5% | -851 min |
+| AMC UTC 14 | The Drama | Laser at AMC | 6:45pm | 86% | -791 min |
+| AMC UTC 14 | The Drama | Laser at AMC | 5:00pm | 62% | -686 min |
+| AMC Southcenter 16 | The Drama | Laser at AMC | 10:30pm | 1.5% | -1016 min |
+| AMC Southcenter 16 | The Drama | Laser at AMC | 5:00pm | 4.5% | -686 min |
+| AMC Southcenter 16 | The Drama | Open Caption (On-screen Subtitles) | 7:45pm | 11.2% | -851 min |
+| AMC Pacific Place 11 | The Drama | undefined | 9:30pm | 3.9% | -956 min |
+| AMC Pacific Place 11 | The Drama | undefined | 7:30pm | 36.6% | -836 min |
+| AMC Pacific Place 11 | The Drama | undefined | 6:15pm | 14.3% | -761 min |
+| AMC Kent Station 14 | The Drama | Laser at AMC | 10:15pm | 4.5% | -1001 min |
+| AMC Kent Station 14 | The Drama | Laser at AMC | 8:40pm | 3.9% | -906 min |
+| AMC Kent Station 14 | The Drama | Laser at AMC | 7:45pm | 5.5% | -851 min |
+| AMC Kent Station 14 | The Drama | Laser at AMC | 6:20pm | 40% | -766 min |
+| AMC Alderwood Mall 16 | The Drama | Laser at AMC | 9:30pm | 0% | -956 min |
+| AMC Alderwood Mall 16 | The Drama | Laser at AMC | 6:45pm | 23.5% | -791 min |
+| AMC Factoria 8 | The Drama | Laser at AMC | 7:30pm | 28.6% | -836 min |
+| AMC Woodinville 12 | The Drama | Laser at AMC | 10:00pm | 0% | -986 min |
+| AMC Woodinville 12 | The Drama | Laser at AMC | 7:10pm | 56.2% | -816 min |
+| AMC Woodinville 12 | The Drama | Laser at AMC | 5:30pm | 17.9% | -716 min |
+| AMC Arizona Center 24 | The Drama | undefined | 8:15pm | 4.9% | -881 min |
+| AMC Arizona Center 24 | The Drama | undefined | 5:30pm | 2.4% | -716 min |
+| AMC Desert Ridge 18 | The Drama | Laser at AMC | 9:30pm | 4.8% | -956 min |
+| AMC Desert Ridge 18 | The Drama | Laser at AMC | 7:15pm | 6.9% | -821 min |
+| AMC Desert Ridge 18 | The Drama | Laser at AMC | 6:45pm | 51.2% | -791 min |
+| AMC Deer Valley 17 | The Drama | Laser at AMC | 9:45pm | 2.8% | -971 min |
+| AMC Deer Valley 17 | The Drama | Laser at AMC | 7:00pm | 4.7% | -806 min |
+| AMC Deer Valley 17 | The Drama | Laser at AMC | 5:15pm | 27% | -701 min |
+| AMC Ahwatukee 24 | The Drama | Laser at AMC | 9:15pm | 0% | -941 min |
+| AMC Ahwatukee 24 | The Drama | Laser at AMC | 7:45pm | 46.3% | -851 min |
+| AMC Ahwatukee 24 | The Drama | Laser at AMC | 6:25pm | 40% | -771 min |
+| AMC Ahwatukee 24 | The Drama | Laser at AMC | 5:00pm | 14.8% | -686 min |
+| AMC Westgate 20 | The Drama | Laser at AMC | 10:15pm | 0% | -1001 min |
+| AMC Westgate 20 | The Drama | Laser at AMC | 8:45pm | 1.9% | -911 min |
+| AMC Westgate 20 | The Drama | Laser at AMC | 7:30pm | 3.5% | -836 min |
+| AMC Westgate 20 | The Drama | Laser at AMC | 6:00pm | 4.5% | -746 min |
+| AMC Flatiron Crossing 14 | The Drama | Laser at AMC | 9:10pm | 13.3% | -935 min |
+| AMC Flatiron Crossing 14 | The Drama | Laser at AMC | 7:05pm | 59.3% | -810 min |
+| AMC Flatiron Crossing 14 | The Drama | Laser at AMC | 6:25pm | 35.6% | -770 min |
+| AMC Highlands Ranch 24 | The Drama | Laser at AMC | 10:00pm | 0% | -985 min |
+| AMC Highlands Ranch 24 | The Drama | Laser at AMC | 9:15pm | 21.2% | -940 min |
+| AMC Highlands Ranch 24 | The Drama | Laser at AMC | 7:50pm | 42.4% | -855 min |
+| AMC Highlands Ranch 24 | The Drama | Laser at AMC | 6:30pm | 71.2% | -775 min |
+| AMC Highlands Ranch 24 | The Drama | Laser at AMC | 5:30pm | 26.9% | -715 min |
+| AMC DINE-IN Southlands 16 | The Drama | Dine-In Delivery to Seat | 9:00pm | 4.3% | -925 min |
+| AMC DINE-IN Southlands 16 | The Drama | Dine-In Delivery to Seat | 6:15pm | 47.8% | -760 min |
+| AMC Arapahoe Crossing 16 | The Drama | Laser at AMC | 9:30pm | 4.2% | -955 min |
+| AMC Arapahoe Crossing 16 | The Drama | Laser at AMC | 6:45pm | 57.9% | -790 min |
+| AMC Anaheim GardenWalk 6 | The Drama | Laser at AMC | 10:00pm | 8% | -985 min |
+| AMC Anaheim GardenWalk 6 | The Drama | Laser at AMC | 7:15pm | 50% | -820 min |
+| AMC Bakersfield 6 | The Drama | undefined | 8:15pm | 20.7% | -880 min |
+| AMC Burbank Town Center 8 | The Drama | Laser at AMC | 10:25pm | 3.3% | -1010 min |
+| AMC Burbank Town Center 8 | The Drama | Laser at AMC | 9:00pm | 34.7% | -925 min |
+| AMC Burbank Town Center 8 | The Drama | Laser at AMC | 7:30pm | 70% | -835 min |
+| AMC Burbank Town Center 8 | The Drama | Laser at AMC | 6:15pm | 59.2% | -760 min |
+| AMC Fallbrook 7 | The Drama | Laser at AMC | 10:15pm | 1.6% | -1000 min |
+| AMC Fallbrook 7 | The Drama | Laser at AMC | 7:15pm | 59.8% | -820 min |
+| AMC Kitsap 8 | The Drama | Laser at AMC | 9:00pm | 0% | -925 min |
+| AMC Kitsap 8 | The Drama | Laser at AMC | 7:15pm | 14.9% | -820 min |
+| AMC Manteca 16 | The Drama | Open Caption (On-screen Subtitles) | 5:15pm | 5.1% | -700 min |
+| AMC Manteca 16 | The Drama | undefined | 8:15pm | 3.3% | -880 min |
+| AMC Oak Tree 6 | The Drama | Laser at AMC | 6:45pm | 77.9% | -790 min |
+| AMC Porter Ranch 9 | The Drama | Laser at AMC | 8:20pm | 60.6% | -885 min |
+| AMC Porter Ranch 9 | The Drama | Laser at AMC | 7:00pm | 60.7% | -805 min |
+| AMC Porter Ranch 9 | The Drama | Laser at AMC | 5:20pm | 57.7% | -705 min |
+| AMC Progress Ridge 13 | The Drama | Open Caption (On-screen Subtitles) | 7:15pm | 12.2% | -820 min |
+| AMC Rainbow Promenade 10 | The Drama | Laser at AMC | 9:15pm | 14.8% | -940 min |
+| AMC Rainbow Promenade 10 | The Drama | Laser at AMC | 7:15pm | 39.8% | -820 min |
+| AMC River Park Square 20 | The Drama | undefined | 10:15pm | 0% | -1000 min |
+| AMC River Park Square 20 | The Drama | undefined | 9:35pm | 0% | -960 min |
+| AMC River Park Square 20 | The Drama | undefined | 8:45pm | 8.9% | -910 min |
+| AMC River Park Square 20 | The Drama | undefined | 7:45pm | 18% | -850 min |
+| AMC River Park Square 20 | The Drama | undefined | 6:45pm | 10.4% | -790 min |
+| AMC River Park Square 20 | The Drama | undefined | 5:45pm | 28.9% | -730 min |
+| AMC Santa Anita 16 | The Drama | Laser at AMC | 10:15pm | 2.2% | -1000 min |
+| AMC Santa Anita 16 | The Drama | Laser at AMC | 9:45pm | 1.6% | -970 min |
+| AMC Santa Anita 16 | The Drama | Laser at AMC | 7:45pm | 3.7% | -850 min |
+| AMC Santa Anita 16 | The Drama | Laser at AMC | 7:15pm | 43.2% | -820 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 10:55pm | 0% | -1040 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 10:15pm | 6.5% | -1000 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 9:30pm | 30% | -955 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 8:10pm | 57.1% | -875 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 7:30pm | 63.4% | -835 min |
+| AMC Topanga 12 | The Drama | Laser at AMC | 5:15pm | 34.3% | -700 min |
+| AMC Town Square 18 | The Drama | Laser at AMC | 10:45pm | 0.7% | -1030 min |
+| AMC Town Square 18 | The Drama | Laser at AMC | 8:00pm | 14.9% | -865 min |
+| AMC Town Square 18 | The Drama | Laser at AMC | 6:20pm | 26.3% | -765 min |
+| AMC Town Square 18 | The Drama | Laser at AMC | 5:10pm | 10.4% | -695 min |
+| AMC Vancouver Mall 23 | The Drama | Open Caption (On-screen Subtitles) | 7:00pm | 1.1% | -805 min |
+| AMC Vancouver Mall 23 | The Drama | undefined | 9:45pm | 0% | -970 min |
+| AMC Victoria Gardens 12 | The Drama | Laser at AMC | 9:00pm | 3.2% | -925 min |
+| AMC Victoria Gardens 12 | The Drama | Laser at AMC | 6:15pm | 10.7% | -760 min |
+
+---
