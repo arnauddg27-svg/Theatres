@@ -849,16 +849,14 @@ async def run_collect_links_async(tz_group="ALL"):
         try:
             with open(LINKS_JSON) as f:
                 existing = json.load(f)
-            # Only merge if the existing file is from today (same weekend_of).
-            # If it's stale (>14h old), start fresh so old links don't pollute.
-            existing_at_str = existing.get("collected_at", "")
-            if existing_at_str:
-                existing_at = datetime.fromisoformat(existing_at_str)
-                if existing_at.tzinfo is None:
-                    existing_at = existing_at.replace(tzinfo=timezone.utc)
-                age_h = (datetime.now(timezone.utc) - existing_at).total_seconds() / 3600
-                if age_h > 14:
-                    existing = {}  # stale — start fresh
+            # Only merge if the existing file is from the same opening weekend.
+            # Wipe only if the file is from a previous weekend (different weekend_of date),
+            # NOT just because it's >14h old — different TZ Phase 1 runs are spread across
+            # the day and would wipe each other if we used a time-based cutoff.
+            existing_weekend = existing.get("date", "")
+            current_weekend = opening_weekend_friday()
+            if existing_weekend and existing_weekend != current_weekend:
+                existing = {}  # previous weekend — start fresh
         except Exception:
             existing = {}
 
@@ -940,18 +938,22 @@ async def run_async(tz_group="ALL"):
         try:
             with open(LINKS_JSON) as f:
                 links_data = json.load(f)
+            links_weekend = links_data.get("date", "")
+            current_weekend = opening_weekend_friday()
             collected_at_str = links_data.get("collected_at", "")
-            if collected_at_str:
-                collected_at = datetime.fromisoformat(collected_at_str.replace("Z", "+00:00"))
-                if collected_at.tzinfo is None:
-                    collected_at = collected_at.replace(tzinfo=timezone.utc)
-                age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
-                if age_hours <= 14:
-                    saved_links = links_data.get("theatres", {})
-                    print(f"\n📂 Phase 1 links from {age_hours:.1f}h ago ({len(saved_links)} theatres)")
-                else:
-                    print(f"\n❌ showtime-links.json is {age_hours:.1f}h old (>14h) — run Phase 1 first.")
-                    return
+            if links_weekend and links_weekend == current_weekend:
+                saved_links = links_data.get("theatres", {})
+                age_str = ""
+                if collected_at_str:
+                    collected_at = datetime.fromisoformat(collected_at_str.replace("Z", "+00:00"))
+                    if collected_at.tzinfo is None:
+                        collected_at = collected_at.replace(tzinfo=timezone.utc)
+                    age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
+                    age_str = f" from {age_hours:.1f}h ago"
+                print(f"\n📂 Phase 1 links{age_str} ({len(saved_links)} theatres)")
+            elif links_weekend:
+                print(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
+                return
             else:
                 # Old-format file: fall back to date comparison
                 if links_data.get("date") == today:
