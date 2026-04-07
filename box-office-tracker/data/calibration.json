@@ -1,0 +1,87 @@
+{
+  "history": [
+    {
+      "movie": "The Super Mario Galaxy Movie",
+      "weekend_of": "2026-04-03",
+      "date": "2026-04-07",
+      "predicted_mid": 1.72,
+      "predicted_low": 1.65,
+      "predicted_high": 1.8,
+      "actual_total": 156.31,
+      "daily_actuals": {
+        "Thursday": 24.61,
+        "Friday": 48.4,
+        "Saturday": 51.0,
+        "Sunday": 32.3
+      },
+      "daily_predictions": {
+        "Thursday": 0.23,
+        "Friday": 1.1,
+        "Saturday": 0.38,
+        "Sunday": 0.0
+      },
+      "error_pct": -98.9,
+      "n_theatres": 1184,
+      "n_days": 4
+    },
+    {
+      "movie": "The Drama",
+      "weekend_of": "2026-04-03",
+      "date": "2026-04-07",
+      "predicted_mid": 30.8,
+      "predicted_low": 0,
+      "predicted_high": 96.86,
+      "actual_total": 14.38,
+      "daily_actuals": {
+        "Friday": 6.42,
+        "Saturday": 4.63,
+        "Sunday": 3.33
+      },
+      "daily_predictions": {
+        "Saturday": 0.17,
+        "Sunday": 0.0
+      },
+      "error_pct": 114.2,
+      "n_theatres": 141,
+      "n_days": 2
+    }
+  ],
+  "calibration_factors": {
+    "amc_market_share": 0.25,
+    "overall_scale_factor": 54.7135,
+    "day_weights": {
+      "Thursday": 0.0787,
+      "Friday": 0.378,
+      "Saturday": 0.3241,
+      "Sunday": 0.2191
+    },
+    "format_scale_factors": {},
+    "historical_accuracy": [
+      {
+        "movie": "The Super Mario Galaxy Movie",
+        "weekend_of": "2026-04-03",
+        "abs_error_pct": 98.9,
+        "n_theatres": 1184,
+        "n_days": 4,
+        "daily_errors": {
+          "Thursday": 99.1,
+          "Friday": 97.7,
+          "Saturday": 99.3,
+          "Sunday": 100.0
+        }
+      },
+      {
+        "movie": "The Drama",
+        "weekend_of": "2026-04-03",
+        "abs_error_pct": 114.2,
+        "n_theatres": 141,
+        "n_days": 2,
+        "daily_errors": {
+          "Saturday": 96.2,
+          "Sunday": 100.0
+        }
+      }
+    ],
+    "last_updated": "2026-04-07"
+  }
+}
