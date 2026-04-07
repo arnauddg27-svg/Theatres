@@ -2,15 +2,24 @@ name: Box Office Pipeline
 
 on:
   schedule:
-    # ── Phase 1: collect showtime links at ~5pm local (before shows start) ──
-    # ET ~5pm = 21 UTC (Thu-Mon)
-    - cron: '0 21 * * 4,5,6,0,1'
-    # CT ~5pm = 23 UTC (Thu-Mon)
-    - cron: '0 23 * * 4,5,6,0,1'
-    # MT ~5pm = 23:30 UTC DST (Thu-Mon)
-    - cron: '30 23 * * 4,5,6,0,1'
-    # PT ~5pm = 1am UTC next day (Fri-Tue)
-    - cron: '0 1 * * 5,6,0,1,2'
+    # ── Phase 1: collect showtime links ─────────────────────────────────────
+    # Thu/Fri/Mon at ~5pm local; Sat/Sun at ~noon local (earlier is fine on peak days)
+    # ET 5pm Thu/Fri/Mon = 21 UTC days 4,5,1
+    - cron: '0 21 * * 4,5,1'
+    # ET noon Sat/Sun = 16 UTC days 6,0
+    - cron: '0 16 * * 6,0'
+    # CT 5pm Thu/Fri/Mon = 23 UTC days 4,5,1
+    - cron: '0 23 * * 4,5,1'
+    # CT noon Sat/Sun = 17 UTC days 6,0
+    - cron: '0 17 * * 6,0'
+    # MT 5pm Thu/Fri/Mon = 23:30 UTC days 4,5,1
+    - cron: '30 23 * * 4,5,1'
+    # MT noon Sat/Sun = 18 UTC days 6,0
+    - cron: '0 18 * * 6,0'
+    # PT 5pm Thu/Fri/Mon = 1am UTC next day (days 5,6,2)
+    - cron: '0 1 * * 5,6,2'
+    # PT noon Sat/Sun = 19 UTC days 6,0
+    - cron: '0 19 * * 6,0'
 # ── Phase 2: fetch seat maps at ~11pm local (shows well underway) ───────
     # ET ~11pm = 3am UTC (Fri-Tue)
     - cron: '0 3 * * 5,6,0,1,2'
@@ -38,11 +47,12 @@ permissions:
 
 env:
   # Map UTC hour:minute → timezone group
-  # Phase 1: 21:00=ET, 23:00=CT, 23:30=MT, 1:00=PT
-  # Phase 2:  3:00=ET,  5:00=CT,  5:30=MT, 7:00=PT
-  TZ_BY_HOUR:   '{"21:00":"ET","23:00":"CT","23:30":"MT","1:00":"PT","3:00":"ET","5:00":"CT","5:30":"MT","7:00":"PT"}'
+  # Phase 1 5pm: 21:00=ET, 23:00=CT, 23:30=MT, 1:00=PT
+  # Phase 1 noon: 16:00=ET, 17:00=CT, 18:00=MT, 19:00=PT
+  # Phase 2:       3:00=ET,  5:00=CT,  5:30=MT, 7:00=PT
+  TZ_BY_HOUR:   '{"21:00":"ET","23:00":"CT","23:30":"MT","1:00":"PT","16:00":"ET","17:00":"CT","18:00":"MT","19:00":"PT","3:00":"ET","5:00":"CT","5:30":"MT","7:00":"PT"}'
   # Hour:minute values that indicate Phase 1 (collect-links)
-  PHASE1_HOURS: '["21:00","23:00","23:30","1:00"]'
+  PHASE1_HOURS: '["21:00","23:00","23:30","1:00","16:00","17:00","18:00","19:00"]'
 
 jobs:
   collect:
