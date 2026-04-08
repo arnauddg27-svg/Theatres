@@ -93,29 +93,31 @@ jobs:
             echo "phase=$IS_PHASE1" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Determine if calibration day
+      - name: Determine if calibration slot
         id: cal
         run: |
+          HOUR=$(date -u +%-H)
           DAY=$(date -u +%u)
-          echo "is_tuesday=$( [ "$DAY" = "2" ] && echo true || echo false )" >> "$GITHUB_OUTPUT"
+          # Only the dedicated 14:00 UTC Tuesday cron is the calibration slot
+          echo "is_cal_slot=$( [ "$DAY" = "2" ] && [ "$HOUR" = "14" ] && echo true || echo false )" >> "$GITHUB_OUTPUT"
 
-      - name: Auto-calibrate (Tuesday only)
-        if: steps.cal.outputs.is_tuesday == 'true'
+      - name: Auto-calibrate (Tuesday 10am ET only)
+        if: steps.cal.outputs.is_cal_slot == 'true'
         working-directory: box-office-tracker
         run: python3 calibrate.py
 
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
-        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'collect-links'
+        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'collect-links'
         working-directory: box-office-tracker
         run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
-        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
+        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 scraper.py ${{ steps.tz.outputs.group }} || python3 scraper.py ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
-        if: steps.cal.outputs.is_tuesday != 'true' && steps.tz.outputs.phase == 'scrape'
+        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 predict.py
 
