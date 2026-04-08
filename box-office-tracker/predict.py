@@ -52,14 +52,14 @@ SEAT_DEFLATORS = {
 }
 
 DAY_WEIGHTS_DEFAULT = {
-    "Thursday": 0.12,
-    "Friday":   0.32,
-    "Saturday": 0.33,
-    "Sunday":   0.23,
+    "Thursday":  0.10,
+    "Friday":    0.27,
+    "Saturday":  0.28,
+    "Sunday":    0.19,
     # Mon-Wed are tail days; small weights used for daily revenue estimation
-    "Monday":   0.10,
-    "Tuesday":  0.06,
-    "Wednesday":0.04,
+    "Monday":    0.08,
+    "Tuesday":   0.05,
+    "Wednesday": 0.03,
 }
 
 

@@ -117,7 +117,7 @@ for (theatre, movie, date), g in df.groupby(['theatre_name', 'movie_title', 'dat
         'Best Occupancy %': best['occupancy_pct'],
         '# Formats': g['auditorium_type'].nunique(),
         '# Showtimes': len(g),
-        'Showings/Cinema': round(len(g) / g['theatre_name'].nunique(), 1) if g['theatre_name'].nunique() else None,
+        'Showings/Cinema': round(len(g) / df[df['date'] == g['date'].iloc[0]]['theatre_name'].nunique(), 1) if df[df['date'] == g['date'].iloc[0]]['theatre_name'].nunique() else None,
         '_amc_url': best['amc_seat_map_url'] if pd.notna(best['amc_seat_map_url']) else '',
         '_tz_order': tz_order.get(best['timezone'], 9),
     })
