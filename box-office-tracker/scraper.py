@@ -121,7 +121,7 @@ def opening_weekend_friday(dt=None):
     """
     dt = dt or datetime.now()
     weekday = dt.weekday()  # Mon=0 ... Sun=6
-    if weekday == 3:    # Thursday
+    if weekday == 3:    # Thursday → next Friday (new opening weekend)
         friday = dt + timedelta(days=1)
     elif weekday == 4:  # Friday
         friday = dt
@@ -131,8 +131,10 @@ def opening_weekend_friday(dt=None):
         friday = dt - timedelta(days=2)
     elif weekday == 0:  # Monday
         friday = dt - timedelta(days=3)
-    else:
-        friday = dt - timedelta(days=(weekday - 4))  # Tue-Wed: back to most recent Friday
+    elif weekday == 1:  # Tuesday
+        friday = dt - timedelta(days=4)
+    else:               # Wednesday
+        friday = dt - timedelta(days=5)
     return friday.strftime("%Y-%m-%d")
 
 
@@ -898,14 +900,6 @@ async def run_async(tz_group="ALL"):
     today = local.strftime("%Y-%m-%d")
     local_dow = local.strftime("%A")
 
-    # Only collect data Thu-Sun (opening weekend). Mon-Wed data has no
-    # day-weight in predict.py and would corrupt the weekend projection.
-    if local_dow not in ("Thursday", "Friday", "Saturday", "Sunday"):
-        print(f"\n⚠️  Today is {local_dow} ({ref_tz} local) — skipping collection.")
-        print(f"   Seat data is only useful Thu-Sun (opening weekend).")
-        print(f"   Use 'python scraper.py --force' to override.")
-        if "--force" not in sys.argv:
-            return
 
     theatres_map = load_theatres()
 
