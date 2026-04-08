@@ -56,6 +56,10 @@ DAY_WEIGHTS_DEFAULT = {
     "Friday":   0.32,
     "Saturday": 0.33,
     "Sunday":   0.23,
+    # Mon-Wed are tail days; small weights used for daily revenue estimation
+    "Monday":   0.10,
+    "Tuesday":  0.06,
+    "Wednesday":0.04,
 }
 
 
@@ -73,7 +77,10 @@ DAY_CONFIDENCE = {
     1: (0.70, 1.40),   # 1 day collected
     2: (0.85, 1.20),   # 2 days
     3: (0.92, 1.10),   # 3 days
-    4: (0.96, 1.05),   # all 4 days
+    4: (0.96, 1.05),   # 4 days (full opening weekend)
+    5: (0.97, 1.04),   # 5 days
+    6: (0.98, 1.03),   # 6 days
+    7: (0.99, 1.02),   # full week
 }
 
 DEFAULT_TICKET_PRICE = 14.50
