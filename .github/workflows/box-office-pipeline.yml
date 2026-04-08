@@ -133,5 +133,6 @@ jobs:
           for i in 1 2 3; do
             git pull --rebase origin main && git push && break
             echo "Push attempt $i failed, retrying in 10s..."
+            [ "$i" = "3" ] && exit 1
             sleep 10
           done
