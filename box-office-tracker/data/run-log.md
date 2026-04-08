@@ -6551,3 +6551,12 @@ This log records each automated run of the seat-map tracking system.
 | AMC Victoria Gardens 12 | The Drama | Laser at AMC | 6:15pm | 10.7% | -760 min |
 
 ---
+
+## 2026-04-08 05:06 — MT Group
+
+**Polymarket movies tracked:** None found
+
+
+**Issues:** No active Polymarket box office markets found
+
+---
