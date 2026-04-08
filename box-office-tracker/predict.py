@@ -92,7 +92,7 @@ def _current_weekend_friday():
     from datetime import timedelta
     now = datetime.now()
     wd = now.weekday()  # Mon=0 ... Sun=6
-    if wd == 3:   # Thursday → next Friday
+    if wd == 3:   # Thursday → next Friday (new opening weekend)
         return (now + timedelta(days=1)).strftime("%Y-%m-%d")
     if wd == 4:   # Friday
         return now.strftime("%Y-%m-%d")
@@ -102,8 +102,10 @@ def _current_weekend_friday():
         return (now - timedelta(days=2)).strftime("%Y-%m-%d")
     if wd == 0:   # Monday
         return (now - timedelta(days=3)).strftime("%Y-%m-%d")
-    # Tue-Wed: look back to most recent Friday
-    return (now - timedelta(days=(wd - 4))).strftime("%Y-%m-%d")
+    if wd == 1:   # Tuesday
+        return (now - timedelta(days=4)).strftime("%Y-%m-%d")
+    # Wednesday
+    return (now - timedelta(days=5)).strftime("%Y-%m-%d")
 
 
 def load_seat_data(weekend_of=None):

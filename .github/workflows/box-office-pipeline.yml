@@ -3,32 +3,32 @@ name: Box Office Pipeline
 on:
   schedule:
     # ── Phase 1: collect showtime links ─────────────────────────────────────
-    # Thu/Fri at ~5pm local; Sat/Sun at ~noon local
-    # ET 5pm Thu/Fri = 21 UTC days 4,5
-    - cron: '0 21 * * 4,5'
-    # ET noon Sat/Sun = 16 UTC days 6,0
+    # Mon-Fri at ~5pm local; Sat-Sun at ~noon local
+    # ET 5pm Mon-Fri = 21 UTC (EDT=UTC-4, days 1,2,3,4,5)
+    - cron: '0 21 * * 1,2,3,4,5'
+    # ET noon Sat/Sun = 16 UTC (days 6,0)
     - cron: '0 16 * * 6,0'
-    # CT 5pm Thu/Fri = 22 UTC days 4,5 (CDT=UTC-5)
-    - cron: '0 22 * * 4,5'
-    # CT noon Sat/Sun = 17 UTC days 6,0 (CDT=UTC-5)
+    # CT 5pm Mon-Fri = 22 UTC (CDT=UTC-5, days 1,2,3,4,5)
+    - cron: '0 22 * * 1,2,3,4,5'
+    # CT noon Sat/Sun = 17 UTC (days 6,0)
     - cron: '0 17 * * 6,0'
-    # MT 5pm Thu/Fri = 23 UTC days 4,5 (MDT=UTC-6)
-    - cron: '0 23 * * 4,5'
-    # MT noon Sat/Sun = 18 UTC days 6,0 (MDT=UTC-6)
+    # MT 5pm Mon-Fri = 23 UTC (MDT=UTC-6, days 1,2,3,4,5)
+    - cron: '0 23 * * 1,2,3,4,5'
+    # MT noon Sat/Sun = 18 UTC (days 6,0)
     - cron: '0 18 * * 6,0'
-    # PT 5pm Thu/Fri = midnight UTC next day (PDT=UTC-7, days 5,6)
-    - cron: '0 0 * * 5,6'
-    # PT noon Sat/Sun = 19 UTC days 6,0 (PDT=UTC-7)
+    # PT 5pm Mon-Fri = midnight UTC next day (PDT=UTC-7, days 2,3,4,5,6)
+    - cron: '0 0 * * 2,3,4,5,6'
+    # PT noon Sat/Sun = 19 UTC (days 6,0)
     - cron: '0 19 * * 6,0'
-    # ── Phase 2: fetch seat maps at ~11pm local ──────────────────────────────
-    # ET ~11pm = 3am UTC (EDT=UTC-4, Fri-Mon)
-    - cron: '0 3 * * 5,6,0,1'
-    # CT ~11pm = 4am UTC (CDT=UTC-5, Fri-Mon)
-    - cron: '0 4 * * 5,6,0,1'
-    # MT ~11pm = 5am UTC (MDT=UTC-6, Fri-Mon)
-    - cron: '0 5 * * 5,6,0,1'
-    # PT ~11pm = 6am UTC (PDT=UTC-7, Fri-Mon)
-    - cron: '0 6 * * 5,6,0,1'
+    # ── Phase 2: fetch seat maps at ~11pm local every day ───────────────────
+    # ET ~11pm = 3am UTC (EDT=UTC-4, every day)
+    - cron: '0 3 * * *'
+    # CT ~11pm = 4am UTC (CDT=UTC-5, every day)
+    - cron: '0 4 * * *'
+    # MT ~11pm = 5am UTC (MDT=UTC-6, every day)
+    - cron: '0 5 * * *'
+    # PT ~11pm = 6am UTC (PDT=UTC-7, every day)
+    - cron: '0 6 * * *'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
     - cron: '0 14 * * 2'
   workflow_dispatch:
