@@ -577,28 +577,77 @@ def parse_showtime_hour(time_str):
 
 # ─── Data Logging ────────────────────────────────────────────────────────────
 
+SEAT_FIELDS = [
+    "weekend_of", "run_id",
+    "date", "day_of_week", "theatre_name", "theatre_city",
+    "timezone", "movie_title", "polymarket_market", "showtime",
+    "check_time", "minutes_after_showtime", "auditorium_name",
+    "auditorium_type", "total_seats", "seats_sold",
+    "seats_available", "occupancy_pct",
+    "amc_seat_map_url", "notes",
+]
+
+SEAT_DEDUPE_FIELDS = (
+    "weekend_of",
+    "date",
+    "theatre_name",
+    "movie_title",
+    "showtime",
+    "auditorium_type",
+    "amc_seat_map_url",
+    "total_seats",
+    "seats_sold",
+    "seats_available",
+)
+
+
 def ensure_csv_header():
     """Create seat-counts.csv with header if it doesn't exist."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not SEAT_CSV.exists():
         with open(SEAT_CSV, "w", newline="") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "weekend_of", "run_id",
-                "date", "day_of_week", "theatre_name", "theatre_city",
-                "timezone", "movie_title", "polymarket_market", "showtime",
-                "check_time", "minutes_after_showtime", "auditorium_name",
-                "auditorium_type", "total_seats", "seats_sold",
-                "seats_available", "occupancy_pct",
-                "amc_seat_map_url", "notes",
-            ])
+            writer.writerow(SEAT_FIELDS)
 
 
-def log_seat_data(row_data):
-    """Append a row to the seat counts CSV."""
-    with open(SEAT_CSV, "a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(row_data)
+def _seat_row_dict(row_data):
+    return dict(zip(SEAT_FIELDS, row_data))
+
+
+def _seat_row_key(row):
+    if isinstance(row, list):
+        row = _seat_row_dict(row)
+    return tuple(str(row.get(field, "") or "") for field in SEAT_DEDUPE_FIELDS)
+
+
+def append_unique_seat_rows(rows):
+    """Append only rows we haven't already logged for this showtime snapshot."""
+    if not rows:
+        return 0, 0
+
+    existing_keys = set()
+    if SEAT_CSV.exists():
+        with open(SEAT_CSV, "r", newline="") as f:
+            for row in csv.DictReader(f):
+                existing_keys.add(_seat_row_key(row))
+
+    pending = []
+    seen_keys = set(existing_keys)
+    skipped = 0
+    for row in rows:
+        key = _seat_row_key(row)
+        if key in seen_keys:
+            skipped += 1
+            continue
+        pending.append(row)
+        seen_keys.add(key)
+
+    if pending:
+        with open(SEAT_CSV, "a", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(pending)
+
+    return len(pending), skipped
 
 
 def log_run(tz_group, movies, results, issues):
@@ -791,7 +840,9 @@ async def run_collect_links_async(tz_group="ALL"):
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
     ref_tz = tz_group if tz_group != "ALL" else "ET"
-    today = local_date_str(ref_tz)
+    ref_local = local_now(ref_tz)
+    today = ref_local.strftime("%Y-%m-%d")
+    current_weekend = opening_weekend_friday(ref_local)
     groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
     all_theatres = []
     for group in groups:
@@ -800,7 +851,16 @@ async def run_collect_links_async(tz_group="ALL"):
 
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
 
-    links = {"date": today, "collected_at": datetime.now().isoformat(), "theatres": {}}
+    # Store the opening-weekend Friday anchor, not the calendar day. Thursday
+    # Phase 1 runs collect links for Friday's opening weekend and must merge
+    # with later TZ-group runs and pass Phase 2 validation that same night.
+    links = {
+        "date": current_weekend,
+        "weekend_of": current_weekend,
+        "collected_local_date": today,
+        "collected_at": datetime.now().isoformat(),
+        "theatres": {},
+    }
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
 
     async with async_playwright() as p:
@@ -857,8 +917,7 @@ async def run_collect_links_async(tz_group="ALL"):
             # Wipe only if the file is from a previous weekend (different weekend_of date),
             # NOT just because it's >14h old — different TZ Phase 1 runs are spread across
             # the day and would wipe each other if we used a time-based cutoff.
-            existing_weekend = existing.get("date", "")
-            current_weekend = opening_weekend_friday()
+            existing_weekend = existing.get("weekend_of") or existing.get("date", "")
             if existing_weekend and existing_weekend != current_weekend:
                 existing = {}  # previous weekend — start fresh
         except Exception:
@@ -867,6 +926,10 @@ async def run_collect_links_async(tz_group="ALL"):
     merged_theatres = dict(existing.get("theatres", {}))
     merged_theatres.update(links["theatres"])   # new entries win
     links["theatres"] = merged_theatres
+    if existing.get("weekend_of"):
+        links["weekend_of"] = existing["weekend_of"]
+    if existing.get("date"):
+        links["date"] = existing["date"]
     # Keep the earliest collected_at so the 12h recency window is measured from
     # the first Phase 1 run (ET), not the last (PT).
     if existing.get("collected_at"):
@@ -878,7 +941,7 @@ async def run_collect_links_async(tz_group="ALL"):
     print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}")
 
 
-async def run_async(tz_group="ALL"):
+async def run_async(tz_group="ALL", force=False):
     """
     Main entry point (async).
     Parallelizes across MAX_CONCURRENT_TABS browser tabs using a semaphore.
@@ -925,17 +988,15 @@ async def run_async(tz_group="ALL"):
         for theatre in theatres_map.get(group, []):
             all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
 
-    # Phase 2 requires Phase 1 links — abort if missing or stale.
-    # Date-string comparison fails at midnight PT (Phase 1 at 6pm PT = UTC next day,
-    # Phase 2 at 10pm PT = UTC further into next day → different local dates),
-    # so we use a 12-hour recency window instead.
+    # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
+    # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
                 links_data = json.load(f)
-            links_weekend = links_data.get("date", "")
-            current_weekend = opening_weekend_friday()
+            links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
+            current_weekend = weekend
             collected_at_str = links_data.get("collected_at", "")
             if links_weekend and links_weekend == current_weekend:
                 saved_links = links_data.get("theatres", {})
@@ -946,6 +1007,11 @@ async def run_async(tz_group="ALL"):
                         collected_at = collected_at.replace(tzinfo=timezone.utc)
                     age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
                     age_str = f" from {age_hours:.1f}h ago"
+                    if age_hours > 12:
+                        if not force:
+                            print(f"\n❌ showtime-links.json is stale ({age_hours:.1f}h old) — run Phase 1 first.")
+                            return
+                        print(f"\n⚠️  showtime-links.json is stale ({age_hours:.1f}h old) — proceeding because --force was set.")
                 print(f"\n📂 Phase 1 links{age_str} ({len(saved_links)} theatres)")
             elif links_weekend:
                 print(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
@@ -978,6 +1044,7 @@ async def run_async(tz_group="ALL"):
     # Step 3: Parallel scrape with semaphore
     all_results = []
     all_issues = []
+    rows_to_write = []
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
 
     async with async_playwright() as p:
@@ -1008,8 +1075,11 @@ async def run_async(tz_group="ALL"):
         results, issues, csv_rows = outcome
         all_results.extend(results)
         all_issues.extend(issues)
-        for row in csv_rows:
-            log_seat_data(row)
+        rows_to_write.extend(csv_rows)
+
+    written_rows, skipped_rows = append_unique_seat_rows(rows_to_write)
+    if skipped_rows:
+        print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
 
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues)
@@ -1022,7 +1092,7 @@ async def run_async(tz_group="ALL"):
         generate_weekend_summary()
 
     print(f"\n{'='*60}")
-    print(f"✅ Run complete — {len(all_results)} seat counts logged, {len(all_issues)} issues")
+    print(f"✅ Run complete — {written_rows} seat counts logged, {len(all_issues)} issues")
     print(f"{'='*60}")
 
 
@@ -1093,9 +1163,9 @@ def generate_weekend_summary():
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
-def run(tz_group="ALL"):
+def run(tz_group="ALL", force=False):
     """Sync wrapper for the async pipeline."""
-    asyncio.run(run_async(tz_group))
+    asyncio.run(run_async(tz_group, force=force))
 
 
 if __name__ == "__main__":
@@ -1120,4 +1190,4 @@ if __name__ == "__main__":
     if collect_links_mode:
         asyncio.run(run_collect_links_async(tz))
     else:
-        run(tz)
+        run(tz, force=force_mode)
