@@ -129,7 +129,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add box-office-tracker/data/
+          git add box-office-tracker/
           git diff --staged --quiet && exit 0
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           for i in 1 2 3; do
