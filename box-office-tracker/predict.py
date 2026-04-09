@@ -24,6 +24,7 @@ Usage:
 import json, csv, os, sys, re, statistics
 from datetime import datetime, timedelta
 from math import sqrt
+from model_calibration import sanitize_calibration, recalibrate_scale_factor
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -165,15 +166,24 @@ def load_calibration():
     """Load calibration.json or return defaults."""
     if os.path.exists(CALIBRATION_JSON):
         with open(CALIBRATION_JSON, "r") as f:
-            return json.load(f)
-    return {
+            cal = json.load(f)
+    else:
+        cal = {
         "history": [],
         "calibration_factors": {
             "amc_market_share": DEFAULT_AMC_MARKET_SHARE,
             "overall_scale_factor": 1.0,
+            "day_weights": DAY_WEIGHTS_DEFAULT,
+            "format_scale_factors": {},
+            "historical_accuracy": [],
             "last_updated": None,
         }
-    }
+        }
+    return sanitize_calibration(
+        cal,
+        day_weights_default=DAY_WEIGHTS_DEFAULT,
+        default_market_share=DEFAULT_AMC_MARKET_SHARE,
+    )
 
 
 def save_calibration(cal):
@@ -518,19 +528,13 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
     }
     cal["history"].append(entry)
 
-    # Update scale factor
+    # Update scale factor using the same bounded logic as calibrate.py.
     history = cal["history"]
-    ratios = [h["actual"] / h["predicted_mid"]
-              for h in history
-              if h.get("actual") and h["predicted_mid"] > 0]
-
-    if ratios:
-        # Exponential moving average
-        alpha = 0.4
-        ema = ratios[-1]
-        for r in reversed(ratios[:-1]):
-            ema = alpha * ema + (1 - alpha) * r
-        cal["calibration_factors"]["overall_scale_factor"] = round(ema, 4)
+    if history:
+        cal["calibration_factors"]["overall_scale_factor"] = recalibrate_scale_factor(
+            history,
+            default=1.0,
+        )
 
     # Refine AMC market share from seat-based estimates
     share_estimates = []

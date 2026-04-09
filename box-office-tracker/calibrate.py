@@ -21,6 +21,7 @@ import sys
 from datetime import datetime, timedelta
 
 import requests
+from model_calibration import sanitize_calibration, recalibrate_scale_factor
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -47,12 +48,13 @@ def load_calibration():
     if os.path.exists(CALIBRATION_JSON):
         with open(CALIBRATION_JSON, "r") as f:
             cal = json.load(f)
-        factors = cal.setdefault("calibration_factors", {})
-        factors.setdefault("day_weights", DEFAULT_CALIBRATION["calibration_factors"]["day_weights"])
-        factors.setdefault("format_scale_factors", {})
-        factors.setdefault("historical_accuracy", [])
-        return cal
-    return json.loads(json.dumps(DEFAULT_CALIBRATION))
+    else:
+        cal = json.loads(json.dumps(DEFAULT_CALIBRATION))
+    return sanitize_calibration(
+        cal,
+        day_weights_default=DEFAULT_CALIBRATION["calibration_factors"]["day_weights"],
+        default_market_share=DEFAULT_CALIBRATION["calibration_factors"]["amc_market_share"],
+    )
 
 
 def save_calibration(cal):
@@ -160,17 +162,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     factors = cal["calibration_factors"]
 
     # 1. Update overall scale factor (EMA)
-    ratios = [
-        h["actual_total"] / h["predicted_mid"]
-        for h in cal["history"]
-        if h.get("actual_total") and h["predicted_mid"] > 0
-    ]
-    if ratios:
-        alpha = 0.4
-        ema = ratios[-1]
-        for r in reversed(ratios[:-1]):
-            ema = alpha * ema + (1 - alpha) * r
-        factors["overall_scale_factor"] = round(ema, 4)
+    factors["overall_scale_factor"] = recalibrate_scale_factor(
+        cal["history"],
+        default=1.0,
+    )
 
     # 2. Update day weights from actual daily proportions
     #    Average the actual day splits across all movies with daily data
