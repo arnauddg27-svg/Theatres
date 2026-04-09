@@ -2,7 +2,7 @@
   "date": "2026-04-10",
   "weekend_of": "2026-04-10",
   "collected_local_date": "2026-04-09",
-  "collected_at": "2026-04-09T21:53:57.375830+00:00",
+  "collected_at": "2026-04-09T22:37:45.672596+00:00",
   "theatres": {
     "AMC Empire 25": {
       "tz": "ET",
@@ -3353,6 +3353,1950 @@
           {
             "showtime": "9:45pm",
             "showtime_id": "142171265",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC River East 21": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "141481075",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141481077",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC NEWCITY 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141467217",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141467218",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Village Crossing 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141340028",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141340029",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Block 37": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "142221744",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141302338",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142221743",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141302339",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Rosemont 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141335821",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "141335822",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC 600 North Michigan 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141381039",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141381040",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Roosevelt Collection 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141486820",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141486822",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC South Barrington 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "142188692",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141332484",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "142188691",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141332376",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Streets of Woodfield 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141364994",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141364984",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Yorktown 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141408096",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "141408012",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Northbrook 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "142105193",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "142105100",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142105228",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Oakbrook Center 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141484247",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141484248",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Randhurst 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141368829",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Niles 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141366222",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Ford City 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141469087",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142178206",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141469088",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Mesquite 30": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:55pm",
+            "showtime_id": "141409257",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141409256",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC NorthPark 15": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142193287",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141517490",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Stonebriar 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141466476",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142078348",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141466477",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Grapevine Mills 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141471079",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141471080",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Firewheel 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142136881",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141444420",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141444421",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Irving Mall 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141323864",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC The Parks At Arlington 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141493941",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141493867",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Southlake 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142052757",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141340503",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142212184",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142103713",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142212187",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141340505",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Gulf Pointe 30": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141322916",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141322917",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Willowbrook 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141322581",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141322582",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142126390",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC First Colony 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141486662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141486663",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Deerbrook 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141494554",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142132465",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Katy Mills 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142115121",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141325831",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141325832",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Woodlands Square 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142143959",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141446274",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142143958",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141446303",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Fountains 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "142214329",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141518422",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142214328",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141518423",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Houston 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141521633",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Eden Prairie Mall 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141486960",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141486961",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rosedale 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141329163",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142139693",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southdale 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141495609",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142170703",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Coon Rapids 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141462099",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Inver Grove 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141466095",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141466124",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Mounds View 15": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141522643",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Metropark Square 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141506396",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141506397",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Spring 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141418537",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142094248",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Eastchase 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141512650",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141922534",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Brazos Mall 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141470086",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rio Cinemas 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142134983",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141505269",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142134972",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141505270",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Centerpoint 11": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141475341",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141475342",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Village On The Parkway 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141496896",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141496897",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Forney 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141507701",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141507702",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Birchwood 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141335898",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Bloomington 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141414321",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Causeway 13": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142209651",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Barrywoods 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142154414",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141434736",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142154416",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141434828",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Independence Commons 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141422228",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141422229",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Ward Parkway 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141503445",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142086337",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Town Center 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142077884",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141333557",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141333558",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Legends 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141489231",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142198089",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Prairiefire 17": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141325229",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Barton Creek Square 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141480560",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141480561",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Baton Rouge 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141322367",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141322368",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Boerne 11": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141322834",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Burleson 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141470750",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142159508",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Champaign 13": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141523548",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chantilly 13": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141513845",
+            "format": "Open Caption (On-screen Subtitles)"
+          }
+        ]
+      }
+    },
+    "AMC Chenal 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "141327426",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141327427",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Council Bluffs 17": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141447632",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142153447",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Creve Coeur 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141348321",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141348322",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Clearfork 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "141360061",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "141360062",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Clearview Palace 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141338395",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Manhattan 13": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141415005",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Tech Ridge 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141512272",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141512273",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Vestavia Hills 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142209845",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141512812",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141512813",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Dakota Square 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141320943",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Decatur 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142066048",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142221741",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141322169",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Edinburg 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "141503768",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141503769",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Edwardsville 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "141340997",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC El Paso 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141591883",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141591884",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Elmwood Palace 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141373224",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Esquire 7": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141496449",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141496450",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Evanston 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141431348",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141431396",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Fitchburg 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141494845",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Galaxy 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141522928",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Grand Prairie 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:50pm",
+            "showtime_id": "142158439",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141330961",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142158440",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Hammond Palace 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142127126",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141512445",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Hawthorn 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141321101",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141321067",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Highland Village 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141368011",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Houma Palace 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141525773",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Lakeline 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141520261",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142170100",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Longview 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141394346",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141394347",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Lufkin 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141331036",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Machesney Park 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141365462",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Mall of Louisiana 15": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141339312",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "142214271",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Mayfair Mall 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141522852",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Norridge 6": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141494139",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141494107",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Northrock 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141366625",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141366626",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Palace 9": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141525247",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141525248",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Patriot 13": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "141403115",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141403296",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Patton Creek 15": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141332098",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "141332077",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Penn Square 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141462789",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141462790",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Quail Springs Mall 24": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142087229",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141462431",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142087230",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141462432",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rivercenter 11": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141517550",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Robinson Crossing 6": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141521313",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141521314",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rockford 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141488301",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Sikes Senter 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "141495931",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southern Hills 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141388220",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southroads 20": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141417420",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "141417421",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 11": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141457695",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "141457696",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141397265",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141409173",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Stillwater 10": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141483473",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Streets Of St Charles 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141442117",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "141442118",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Studio 28": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141334586",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141334608",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141334452",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Summit 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141423427",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "141423428",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Tulsa Hills 12": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141500315",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Tyler 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141517209",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141517210",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC University Place 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "141322306",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141322346",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Valley Bend 18": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141382000",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC West End Pointe 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141487236",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "141487237",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Westbank Palace 16": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141477257",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Westroads 14": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141443903",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "Cinema Centre 8": {
+      "tz": "CT",
+      "movies": {
+        "You, Me & Tuscany": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141499462",
             "format": "undefined"
           }
         ]
