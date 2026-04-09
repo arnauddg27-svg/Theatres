@@ -930,10 +930,10 @@ async def run_collect_links_async(tz_group="ALL"):
         links["weekend_of"] = existing["weekend_of"]
     if existing.get("date"):
         links["date"] = existing["date"]
-    # Keep the earliest collected_at so the 12h recency window is measured from
-    # the first Phase 1 run (ET), not the last (PT).
-    if existing.get("collected_at"):
-        links["collected_at"] = existing["collected_at"]
+    # Use the latest successful Phase 1 refresh time. Weekend Phase 2 runs for
+    # MT/PT happen more than 12h after the ET/noon collection window, so keeping
+    # the earliest timestamp would incorrectly mark fresh same-day links as stale.
+    links["collected_at"] = datetime.now(timezone.utc).isoformat()
 
     with open(LINKS_JSON, "w") as f:
         json.dump(links, f, indent=2)
