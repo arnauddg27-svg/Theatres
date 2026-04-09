@@ -45,15 +45,6 @@ on:
 permissions:
   contents: write
 
-env:
-  # Map UTC hour:minute → timezone group
-  # Phase 1 5pm: 21:00=ET, 22:00=CT, 23:00=MT, 0:00=PT
-  # Phase 1 noon: 16:00=ET, 17:00=CT, 18:00=MT, 19:00=PT
-  # Phase 2:       3:00=ET,  4:00=CT,  5:00=MT,  6:00=PT
-  TZ_BY_HOUR:   '{"21:00":"ET","22:00":"CT","23:00":"MT","0:00":"PT","16:00":"ET","17:00":"CT","18:00":"MT","19:00":"PT","3:00":"ET","4:00":"CT","5:00":"MT","6:00":"PT"}'
-  # Hour:minute values that indicate Phase 1 (collect-links)
-  PHASE1_HOURS: '["21:00","22:00","23:00","0:00","16:00","17:00","18:00","19:00"]'
-
 jobs:
   collect:
     runs-on: ubuntu-latest
@@ -82,42 +73,71 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "group=${{ github.event.inputs.tz_group || 'ALL' }}" >> "$GITHUB_OUTPUT"
             echo "phase=${{ github.event.inputs.phase || 'scrape' }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            case "${{ github.event.schedule }}" in
+              '0 21 * * 1,2,3,4,5'|'0 16 * * 6,0')
+                echo "group=ET" >> "$GITHUB_OUTPUT"
+                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 22 * * 1,2,3,4,5'|'0 17 * * 6,0')
+                echo "group=CT" >> "$GITHUB_OUTPUT"
+                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 23 * * 1,2,3,4,5'|'0 18 * * 6,0')
+                echo "group=MT" >> "$GITHUB_OUTPUT"
+                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 0 * * 2,3,4,5,6'|'0 19 * * 6,0')
+                echo "group=PT" >> "$GITHUB_OUTPUT"
+                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 3 * * *')
+                echo "group=ET" >> "$GITHUB_OUTPUT"
+                echo "phase=scrape" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 4 * * *')
+                echo "group=CT" >> "$GITHUB_OUTPUT"
+                echo "phase=scrape" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 5 * * *')
+                echo "group=MT" >> "$GITHUB_OUTPUT"
+                echo "phase=scrape" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 6 * * *')
+                echo "group=PT" >> "$GITHUB_OUTPUT"
+                echo "phase=scrape" >> "$GITHUB_OUTPUT"
+                ;;
+              '0 14 * * 2')
+                echo "group=ALL" >> "$GITHUB_OUTPUT"
+                echo "phase=calibrate" >> "$GITHUB_OUTPUT"
+                ;;
+              *)
+                echo "Unexpected schedule: ${{ github.event.schedule }}" >&2
+                exit 1
+                ;;
+            esac
           else
-            HOUR=$(date -u +%-H)
-            MIN=$(date -u +%-M)
-            # Round minutes to :00 or :30 slot
-            if [ "$MIN" -ge 15 ] && [ "$MIN" -lt 45 ]; then SLOT="$HOUR:30"; else SLOT="$HOUR:00"; fi
-            GROUP=$(echo '${{ env.TZ_BY_HOUR }}' | python3 -c "import sys,json; print(json.load(sys.stdin).get(sys.argv[1],'ALL'))" "$SLOT")
-            IS_PHASE1=$(echo '${{ env.PHASE1_HOURS }}' | python3 -c "import sys,json; print('collect-links' if str(sys.argv[1]) in json.load(sys.stdin) else 'scrape')" "$SLOT")
-            echo "group=$GROUP" >> "$GITHUB_OUTPUT"
-            echo "phase=$IS_PHASE1" >> "$GITHUB_OUTPUT"
+            echo "Unsupported event type: ${{ github.event_name }}" >&2
+            exit 1
           fi
 
-      - name: Determine if calibration slot
-        id: cal
-        run: |
-          HOUR=$(date -u +%-H)
-          DAY=$(date -u +%u)
-          # Only the dedicated 14:00 UTC Tuesday cron is the calibration slot
-          echo "is_cal_slot=$( [ "$DAY" = "2" ] && [ "$HOUR" = "14" ] && echo true || echo false )" >> "$GITHUB_OUTPUT"
-
       - name: Auto-calibrate (Tuesday 10am ET only)
-        if: steps.cal.outputs.is_cal_slot == 'true'
+        if: steps.tz.outputs.phase == 'calibrate'
         working-directory: box-office-tracker
         run: python3 calibrate.py
 
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
-        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'collect-links'
+        if: steps.tz.outputs.phase == 'collect-links'
         working-directory: box-office-tracker
         run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
-        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'scrape'
+        if: steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 scraper.py ${{ steps.tz.outputs.group }} || python3 scraper.py ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
-        if: steps.cal.outputs.is_cal_slot != 'true' && steps.tz.outputs.phase == 'scrape'
+        if: steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: python3 predict.py
 
