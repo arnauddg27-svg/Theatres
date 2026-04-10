@@ -71,9 +71,8 @@ FORMAT_PRIORITY = {
     "digital": 10,
 }
 
-# Concurrency — how many browser tabs to run in parallel.
-MAX_CONCURRENT_TABS = 5
-# Phase 1 uses lower concurrency to avoid AMC rate-limiting.
+# Concurrency — keep low for both phases to avoid AMC rate-limiting.
+MAX_CONCURRENT_TABS = 3
 MAX_CONCURRENT_TABS_PHASE1 = 2
 
 # Rotate through realistic Chrome user agents to reduce rate-limiting.
@@ -688,7 +687,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         return [], [f"{theatre['name']}: no Phase 1 links — skipped"], []
 
     tz = theatre.get("_tz", "")
-    context = await browser.new_context(viewport={"width": 1280, "height": 800})
+    context = await browser.new_context(
+        viewport={"width": 1280, "height": 800},
+        user_agent=random.choice(_USER_AGENTS),
+    )
     page = await context.new_page()
     results = []
     issues = []
@@ -738,7 +740,12 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 st = show.get("showtime", "?")
                 flags = show.get("flags", "")
 
+                await asyncio.sleep(random.uniform(1.0, 3.0))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                if seat_data is None:
+                    # One retry with a fresh page to work around transient blocks
+                    await asyncio.sleep(random.uniform(3.0, 6.0))
+                    seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
 
                 showtime_hour = parse_showtime_hour(st)
                 delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
