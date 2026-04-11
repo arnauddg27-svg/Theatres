@@ -41,6 +41,10 @@ on:
         description: 'Phase to run: collect-links (Phase 1) or scrape (Phase 2)'
         required: false
         default: 'scrape'
+      force:
+        description: 'Force Phase 2 even if showtime-links.json is stale (>12h old)'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
@@ -134,7 +138,10 @@ jobs:
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
         if: steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
-        run: python3 scraper.py ${{ steps.tz.outputs.group }} || python3 scraper.py ${{ steps.tz.outputs.group }}
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then FORCE_FLAG="--force"; fi
+          python3 scraper.py $FORCE_FLAG ${{ steps.tz.outputs.group }} || python3 scraper.py $FORCE_FLAG ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
         if: steps.tz.outputs.phase == 'scrape'
