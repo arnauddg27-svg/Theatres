@@ -466,7 +466,7 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     if not showtime_id:
         return None
 
-    url = f"https://www.amctheatres.com/showtimes/{showtime_id}"
+    url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
