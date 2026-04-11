@@ -740,11 +740,11 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 st = show.get("showtime", "?")
                 flags = show.get("flags", "")
 
-                await asyncio.sleep(random.uniform(1.0, 3.0))
+                await asyncio.sleep(random.uniform(0.5, 1.5))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
                 if seat_data is None:
-                    # One retry with a fresh page to work around transient blocks
-                    await asyncio.sleep(random.uniform(3.0, 6.0))
+                    # One retry with a short delay to work around transient blocks
+                    await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
 
                 showtime_hour = parse_showtime_hour(st)
