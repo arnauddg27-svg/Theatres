@@ -2,7 +2,7 @@
   "date": "2026-04-10",
   "weekend_of": "2026-04-10",
   "collected_local_date": "2026-04-11",
-  "collected_at": "2026-04-11T19:36:04.487333+00:00",
+  "collected_at": "2026-04-11T21:36:02.022597+00:00",
   "theatres": {
     "AMC Empire 25": {
       "tz": "ET",
@@ -3322,8 +3322,8 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141478214",
+            "showtime": "8:15pm",
+            "showtime_id": "142234707",
             "format": "Laser at AMC"
           }
         ]
@@ -3377,11 +3377,6 @@
       "tz": "ET",
       "movies": {
         "You, Me & Tuscany": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141335245",
-            "format": "undefined"
-          },
           {
             "showtime": "7:45pm",
             "showtime_id": "141335244",
@@ -3482,11 +3477,6 @@
       "tz": "ET",
       "movies": {
         "You, Me & Tuscany": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141500500",
-            "format": "undefined"
-          },
           {
             "showtime": "7:45pm",
             "showtime_id": "141500501",
@@ -3754,6 +3744,11 @@
       "movies": {
         "You, Me & Tuscany": [
           {
+            "showtime": "6:25pm",
+            "showtime_id": "142236083",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
             "showtime_id": "141323101",
             "format": "Laser at AMC"
@@ -3790,6 +3785,11 @@
           {
             "showtime": "7:30pm",
             "showtime_id": "141364865",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142236236",
             "format": "undefined"
           },
           {
