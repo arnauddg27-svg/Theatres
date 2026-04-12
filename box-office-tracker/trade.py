@@ -70,8 +70,8 @@ def load_trade_config() -> dict:
         if os.path.exists(env_path):
             load_dotenv(env_path)
 
-    private_key = os.environ.get("POLYMARKET_PRIVATE_KEY", "").strip()
-    funder = os.environ.get("POLYMARKET_FUNDER_ADDRESS", "").strip()
+    private_key = os.environ.get("POLYMARKET_PRIVATE_KEY", "").strip() or None
+    funder = os.environ.get("POLYMARKET_FUNDER_ADDRESS", "").strip() or None
     dry_run = os.environ.get("DRY_RUN", "true").lower() == "true"
 
     if not dry_run and (not private_key or not funder):
@@ -230,7 +230,7 @@ def run_trading(config: dict, movie_filter: str | None = None):
     poly = PolymarketClient(
         host=CLOB_HOST,
         gamma_host=GAMMA_HOST,
-        private_key=config["private_key"] or None,
+        private_key=config["private_key"],
         chain_id=config["chain_id"],
         signature_type=config["signature_type"],
         funder=config.get("funder"),
