@@ -109,7 +109,13 @@ class PolymarketClient:
                 host, key=private_key, chain_id=chain_id,
                 signature_type=signature_type, funder=funder,
             )
-            self.clob.set_api_creds(self.clob.create_or_derive_api_creds())
+            try:
+                self.clob.set_api_creds(self.clob.create_or_derive_api_creds())
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to derive Polymarket API credentials: {e}. "
+                    "Check that POLYMARKET_PRIVATE_KEY and POLYMARKET_FUNDER_ADDRESS are correct."
+                ) from e
         else:
             self.clob = ClobClient(host)
 

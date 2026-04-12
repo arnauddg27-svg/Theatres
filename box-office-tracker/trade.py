@@ -223,7 +223,11 @@ def match_movie_to_prediction(movie_title: str,
 
 def run_trading(config: dict, movie_filter: str | None = None):
     """Main trading pipeline."""
-    trade_log = TradeLog()
+    try:
+        trade_log = TradeLog()
+    except Exception as e:
+        logger.error(f"Failed to open trade log database: {e}")
+        raise SystemExit(1)
 
     # Connect to Polymarket
     logger.info("Connecting to Polymarket...")

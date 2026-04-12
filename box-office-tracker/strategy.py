@@ -332,7 +332,7 @@ def analyze_distribution(movie: str, prediction: dict,
     else:
         our_norm = our_probs
 
-    kl = kl_divergence(our_norm, market_norm) if market_norm and our_norm else 0.0
+    kl = kl_divergence(our_norm, market_norm) if (market_norm and our_norm and market_sum > 0 and our_sum > 0) else 0.0
 
     return DistributionComparison(
         movie=movie,

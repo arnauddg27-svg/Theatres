@@ -549,7 +549,6 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     except Exception as e:
         body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
         print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
-        await page.unroute("**/*")
         return None
     finally:
         try:
