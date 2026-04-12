@@ -166,10 +166,12 @@ jobs:
           fi
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
             git pull --rebase origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
+              git rebase --abort 2>/dev/null || true
               exit 1
             fi
             sleep $((i * 15))   # exponential backoff: 15s, 30s
