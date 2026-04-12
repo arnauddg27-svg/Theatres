@@ -167,7 +167,8 @@ jobs:
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase origin main && git push && break
+            # -X theirs: on data-file conflicts, our freshly-scraped version wins
+            git pull --rebase -X theirs origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
