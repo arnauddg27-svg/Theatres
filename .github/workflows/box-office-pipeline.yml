@@ -45,6 +45,10 @@ on:
         description: 'Force Phase 2 even if showtime-links.json is stale (>12h old)'
         required: false
         default: 'false'
+      test:
+        description: 'Test mode: run Phase 2 on N theatres only (e.g. 5). Empty = full run.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -141,7 +145,9 @@ jobs:
         run: |
           FORCE_FLAG=""
           if [ "${{ github.event.inputs.force }}" = "true" ]; then FORCE_FLAG="--force"; fi
-          python3 scraper.py $FORCE_FLAG ${{ steps.tz.outputs.group }} || python3 scraper.py $FORCE_FLAG ${{ steps.tz.outputs.group }}
+          TEST_FLAG=""
+          if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
+          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }} || python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
         if: steps.tz.outputs.phase == 'scrape'

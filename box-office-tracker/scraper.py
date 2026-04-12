@@ -974,7 +974,7 @@ async def run_collect_links_async(tz_group="ALL"):
     print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}")
 
 
-async def run_async(tz_group="ALL", force=False):
+async def run_async(tz_group="ALL", force=False, test_max=None):
     """
     Main entry point (async).
     Parallelizes across MAX_CONCURRENT_TABS browser tabs using a semaphore.
@@ -1066,6 +1066,12 @@ async def run_async(tz_group="ALL", force=False):
 
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
+
+    # Test mode: cap to N theatres
+    if test_max:
+        all_theatres = all_theatres[:test_max]
+        print(f"\n🧪 TEST MODE — limiting to {test_max} theatres, time filter bypassed")
+
     print(f"\n🏛️  Scraping {len(all_theatres)} theatres with saved links "
           f"(across {len(groups_to_check)} timezone(s))...")
     print(f"   Weekend: {weekend}  Run: {run_id}")
@@ -1196,23 +1202,37 @@ def generate_weekend_summary():
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
-def run(tz_group="ALL", force=False):
+def run(tz_group="ALL", force=False, test_max=None):
     """Sync wrapper for the async pipeline."""
-    asyncio.run(run_async(tz_group, force=force))
+    asyncio.run(run_async(tz_group, force=force, test_max=test_max))
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
     collect_links_mode = "--collect-links" in args
     force_mode = "--force" in args
+
+    # --test N  →  run Phase 2 on N theatres only, bypass time filter
+    test_max = None
+    if "--test" in args:
+        idx = args.index("--test")
+        try:
+            test_max = int(args[idx + 1])
+            args = args[:idx] + args[idx + 2:]
+        except (IndexError, ValueError):
+            print("Usage: --test N  (N = number of theatres to test)")
+            sys.exit(1)
+        force_mode = True  # --test implies --force
+
     args = [a for a in args if a not in ("--collect-links", "--force")]
 
     tz = args[0].upper() if args else "ALL"
 
     if tz not in ("ET", "CT", "MT", "PT", "ALL"):
-        print(f"Usage: python scraper.py [--collect-links] [--force] [ET|CT|MT|PT|ALL]")
+        print(f"Usage: python scraper.py [--collect-links] [--force] [--test N] [ET|CT|MT|PT|ALL]")
         print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
+        print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")
         print(f"  MT               Mountain theatres only")
