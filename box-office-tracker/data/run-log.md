@@ -6739,3 +6739,482 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC The Grove 14: No seat map for You, Me & Tuscany Laser at AMC; AMC The Grove 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Century City 15: No seat map for You, Me & Tuscany Laser at AMC; AMC Century City 15: No seat map for You, Me & Tuscany Laser at AMC; AMC Burbank 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Burbank 16: No seat map for You, Me & Tuscany Laser at AMC; AMC The Americana at Brand 18: No seat map for You, Me & Tuscany Laser at AMC; AMC The Americana at Brand 18: No seat map for You, Me & Tuscany Laser at AMC; AMC The Americana at Brand 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Santa Monica 7: No seat map for You, Me & Tuscany Laser at AMC; AMC Santa Monica 7: No seat map for You, Me & Tuscany Laser at AMC; AMC The Regency 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Lakewood Mall 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Lakewood Mall 12: No seat map for You, Me & Tuscany Laser at AMC; AMC DINE-IN Marina 6: No seat map for You, Me & Tuscany Dine-In Delivery to Seat; AMC DINE-IN Marina 6: No seat map for You, Me & Tuscany Dine-In Delivery to Seat; AMC DINE-IN Marina 6: No seat map for You, Me & Tuscany Dine-In Delivery to Seat; AMC Brentwood 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Brentwood 14: No seat map for You, Me & Tuscany Laser at AMC; AMC DINE-IN Fullerton 20: No seat map for You, Me & Tuscany Laser at AMC; AMC DINE-IN Fullerton 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Orange 30: No seat map for You, Me & Tuscany Laser at AMC; AMC Orange 30: No seat map for You, Me & Tuscany Laser at AMC; AMC Orange 30: No seat map for You, Me & Tuscany Laser at AMC; AMC Orange 30: No seat map for You, Me & Tuscany Laser at AMC; AMC Tustin 14 @ The District: No seat map for You, Me & Tuscany Laser at AMC; AMC Tustin 14 @ The District: No seat map for You, Me & Tuscany Laser at AMC; AMC Puente Hills 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Puente Hills 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Norwalk 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Norwalk 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Norwalk 20: No seat map for You, Me & Tuscany English Spoken with Spanish Subtitles; AMC Marina Pacifica 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Marina Pacifica 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Montebello 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Montebello 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Montebello 10: No seat map for You, Me & Tuscany Laser at AMC; AMC La Mirada 7: No seat map for You, Me & Tuscany Laser at AMC; AMC La Mirada 7: No seat map for You, Me & Tuscany Laser at AMC; AMC Metreon 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Metreon 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Bay Street 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Bay Street 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Mercado 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Mercado 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Eastridge 15: No seat map for You, Me & Tuscany Laser at AMC; AMC Eastridge 15: No seat map for You, Me & Tuscany Laser at AMC; AMC Saratoga 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Saratoga 14: No seat map for You, Me & Tuscany Laser at AMC; AMC NewPark 12: No seat map for You, Me & Tuscany Laser at AMC; AMC NewPark 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Sunnyvale 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Sunnyvale 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Kabuki 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Kabuki 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Mission Valley 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Mission Valley 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Fashion Valley 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Fashion Valley 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Palm Promenade 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Palm Promenade 24: No seat map for You, Me & Tuscany Laser at AMC; AMC La Jolla 12: No seat map for You, Me & Tuscany Laser at AMC; AMC La Jolla 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Chula Vista 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Chula Vista 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Otay Ranch 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Otay Ranch 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Otay Ranch 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Plaza Bonita 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Plaza Bonita 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Poway 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Poway 10: No seat map for You, Me & Tuscany Laser at AMC; AMC UTC 14: No seat map for You, Me & Tuscany Laser at AMC; AMC UTC 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Southcenter 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Southcenter 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Pacific Place 11: No seat map for You, Me & Tuscany undefined; AMC Pacific Place 11: No seat map for You, Me & Tuscany undefined; AMC Kent Station 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Kent Station 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Alderwood Mall 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Alderwood Mall 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Factoria 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Factoria 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Woodinville 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Woodinville 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Arizona Center 24: No seat map for You, Me & Tuscany undefined; AMC Arizona Center 24: No seat map for You, Me & Tuscany undefined; AMC Desert Ridge 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Desert Ridge 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Deer Valley 17: No seat map for You, Me & Tuscany Laser at AMC; AMC Deer Valley 17: No seat map for You, Me & Tuscany Laser at AMC; AMC Ahwatukee 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Ahwatukee 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Ahwatukee 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Westgate 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Westgate 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Westgate 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Westgate 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Westminster Promenade 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Westminster Promenade 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Westminster Promenade 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Flatiron Crossing 14: No seat map for You, Me & Tuscany Laser at AMC; AMC Highlands Ranch 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Highlands Ranch 24: No seat map for You, Me & Tuscany Laser at AMC; AMC Highlands Ranch 24: No seat map for You, Me & Tuscany Laser at AMC; AMC DINE-IN Southlands 16: No seat map for You, Me & Tuscany Dine-In Delivery to Seat; AMC Arapahoe Crossing 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Arapahoe Crossing 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Arapahoe Crossing 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Anaheim GardenWalk 6: No seat map for You, Me & Tuscany Laser at AMC; AMC Anaheim GardenWalk 6: No seat map for You, Me & Tuscany Laser at AMC; AMC Bakersfield 6: No seat map for You, Me & Tuscany undefined; AMC Bakersfield 6: No seat map for You, Me & Tuscany undefined; AMC Burbank Town Center 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Burbank Town Center 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Burbank Town Center 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Fallbrook 7: No seat map for You, Me & Tuscany Laser at AMC; AMC Fallbrook 7: No seat map for You, Me & Tuscany Laser at AMC; AMC Kitsap 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Kitsap 8: No seat map for You, Me & Tuscany Laser at AMC; AMC Manteca 16: No seat map for You, Me & Tuscany undefined; AMC Manteca 16: No seat map for You, Me & Tuscany undefined; AMC Oak Tree 6: No seat map for You, Me & Tuscany Laser at AMC; AMC Oak Tree 6: No seat map for You, Me & Tuscany Open Caption (On-screen Subtitles); AMC Porter Ranch 9: No seat map for You, Me & Tuscany Laser at AMC; AMC Porter Ranch 9: No seat map for You, Me & Tuscany Laser at AMC; AMC Progress Ridge 13: No seat map for You, Me & Tuscany undefined; AMC Progress Ridge 13: No seat map for You, Me & Tuscany undefined; AMC Rainbow Promenade 10: No seat map for You, Me & Tuscany Laser at AMC; AMC Rainbow Promenade 10: No seat map for You, Me & Tuscany Laser at AMC; AMC River Park Square 20: No seat map for You, Me & Tuscany undefined; AMC River Park Square 20: No seat map for You, Me & Tuscany undefined; AMC River Park Square 20: No seat map for You, Me & Tuscany undefined; AMC Santa Anita 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Santa Anita 16: No seat map for You, Me & Tuscany Laser at AMC; AMC Topanga 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Topanga 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Town Square 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Town Square 18: No seat map for You, Me & Tuscany Laser at AMC; AMC Vancouver Mall 23: No seat map for You, Me & Tuscany undefined; AMC Vancouver Mall 23: No seat map for You, Me & Tuscany undefined; AMC Victoria Gardens 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Victoria Gardens 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Victoria Gardens 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Victoria Gardens 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Victoria Gardens 12: No seat map for You, Me & Tuscany Laser at AMC
 
 ---
+
+## 2026-04-12 16:52 — ET Group
+
+**Polymarket movies tracked:** You, Me & Tuscany
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Empire 25 | You, Me & Tuscany | Laser at AMC | 10:30pm | 2.1% | -367 min |
+| AMC Empire 25 | You, Me & Tuscany | Laser at AMC | 7:45pm | 18.6% | -202 min |
+| AMC Empire 25 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 5:00pm | 16.5% | -37 min |
+| AMC Lincoln Square 13 | You, Me & Tuscany | Laser at AMC | 10:15pm | 1.9% | -352 min |
+| AMC Lincoln Square 13 | You, Me & Tuscany | Laser at AMC | 7:15pm | 61.4% | -172 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 11:00pm | 3.5% | -397 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 10:10pm | 0% | -347 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 7:30pm | 67.4% | -187 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 6:30pm | 23.4% | -127 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 10:25pm | 0% | -361 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 9:25pm | 10.1% | -301 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 8:45pm | 22.1% | -261 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 7:45pm | 17.6% | -201 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 6:45pm | 49.3% | -141 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 5:00pm | 57.1% | -36 min |
+| AMC 84th Street 6 | You, Me & Tuscany | Laser at AMC | 10:15pm | 3.5% | -351 min |
+| AMC 84th Street 6 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:30pm | 21.1% | -186 min |
+| AMC Newport Centre 11 | You, Me & Tuscany | Laser at AMC | 10:15pm | 0% | -351 min |
+| AMC Newport Centre 11 | You, Me & Tuscany | Laser at AMC | 7:30pm | 31.4% | -186 min |
+| AMC Magic Johnson Harlem 9 | You, Me & Tuscany | Laser at AMC | 10:30pm | 0.8% | -366 min |
+| AMC Magic Johnson Harlem 9 | You, Me & Tuscany | Laser at AMC | 7:45pm | 4.5% | -201 min |
+| AMC Magic Johnson Harlem 9 | You, Me & Tuscany | Laser at AMC | 5:00pm | 18.4% | -36 min |
+| AMC Boston Common 19 | You, Me & Tuscany | Laser at AMC | 10:15pm | 1.6% | -351 min |
+| AMC Boston Common 19 | You, Me & Tuscany | Laser at AMC | 7:30pm | 13.1% | -186 min |
+| AMC Assembly Row 12 | You, Me & Tuscany | Laser at AMC | 10:15pm | 0% | -351 min |
+| AMC Assembly Row 12 | You, Me & Tuscany | Laser at AMC | 7:30pm | 16.4% | -186 min |
+| AMC Framingham 16 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -319 min |
+| AMC Framingham 16 | You, Me & Tuscany | Laser at AMC | 7:00pm | 5.7% | -154 min |
+| AMC Braintree 10 | You, Me & Tuscany | Laser at AMC | 9:30pm | 0% | -304 min |
+| AMC Braintree 10 | You, Me & Tuscany | Laser at AMC | 6:45pm | 41.3% | -139 min |
+| AMC Burlington Cinema 10 | You, Me & Tuscany | Laser at AMC | 9:00pm | 0% | -274 min |
+| AMC Burlington Cinema 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 0% | -169 min |
+| AMC Methuen 20 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -334 min |
+| AMC Methuen 20 | You, Me & Tuscany | Laser at AMC | 7:15pm | 0% | -169 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 10:55pm | 0% | -390 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 9:25pm | 2.3% | -300 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 8:15pm | 1.8% | -229 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 6:45pm | 5.7% | -139 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 5:35pm | 7.1% | -69 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 10:30pm | 0% | -364 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 9:30pm | 0% | -304 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 7:40pm | 0% | -195 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 6:40pm | 3.7% | -135 min |
+| AMC DINE-IN Coral Ridge 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 2.2% | -334 min |
+| AMC DINE-IN Coral Ridge 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 26.1% | -169 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 10:00pm | 10.5% | -334 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 7:15pm | 53.9% | -169 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 9:45pm | 1.8% | -319 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 8:40pm | 0% | -254 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 7:00pm | 12.7% | -154 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 5:45pm | 0% | -78 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 10:30pm | 11.4% | -364 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 9:45pm | 2.9% | -319 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 7:45pm | 0% | -199 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 17.6% | -154 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 5:00pm | 25% | -33 min |
+| AMC Sundial 12 | You, Me & Tuscany | Laser at AMC | 9:50pm | 0% | -323 min |
+| AMC Sundial 12 | You, Me & Tuscany | Laser at AMC | 7:10pm | 16.7% | -164 min |
+| AMC West Shore 14 | You, Me & Tuscany | undefined | 10:30pm | 0% | -364 min |
+| AMC West Shore 14 | You, Me & Tuscany | undefined | 7:45pm | 1.5% | -199 min |
+| AMC West Shore 14 | You, Me & Tuscany | undefined | 5:00pm | 10.9% | -33 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 9:35pm | 0% | -308 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 7:50pm | 1.9% | -203 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 6:45pm | 0% | -139 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 5:00pm | 1.9% | -33 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Laser at AMC | 9:00pm | 7.4% | -274 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 8.2% | -154 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 5.8% | -334 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:45pm | 19.6% | -319 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 71% | -169 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:00pm | 70.4% | -93 min |
+| AMC Altamonte Mall 18 | You, Me & Tuscany | Laser at AMC | 10:25pm | 4.4% | -359 min |
+| AMC Altamonte Mall 18 | You, Me & Tuscany | Laser at AMC | 7:30pm | 14% | -184 min |
+| AMC Tysons Corner 16 | You, Me & Tuscany | Laser at AMC | 11:00pm | 0.5% | -393 min |
+| AMC Tysons Corner 16 | You, Me & Tuscany | Laser at AMC | 7:30pm | 0% | -183 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -318 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 9:00pm | 0% | -273 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 7:00pm | 9.6% | -153 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 6:00pm | 23.1% | -93 min |
+| AMC Georgetown 14 | You, Me & Tuscany | Laser at AMC | 9:50pm | 2.7% | -323 min |
+| AMC Georgetown 14 | You, Me & Tuscany | Laser at AMC | 7:10pm | 31.1% | -163 min |
+| AMC Shirlington 7 | You, Me & Tuscany | Laser at AMC | 9:45pm | 7.8% | -318 min |
+| AMC Shirlington 7 | You, Me & Tuscany | Laser at AMC | 7:00pm | 13.7% | -153 min |
+| AMC Worldgate 9 | You, Me & Tuscany | undefined | 10:15pm | 0% | -348 min |
+| AMC Worldgate 9 | You, Me & Tuscany | undefined | 7:30pm | 3.8% | -183 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -318 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 8:30pm | 1.3% | -243 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 0% | -153 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 5:45pm | 2% | -78 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 9:15pm | 0% | -288 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 7:30pm | 0% | -183 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 6:30pm | 2.2% | -123 min |
+| AMC Voorhees 16 | You, Me & Tuscany | undefined | 9:00pm | 0% | -272 min |
+| AMC Voorhees 16 | You, Me & Tuscany | undefined | 7:45pm | 1% | -197 min |
+| AMC Voorhees 16 | You, Me & Tuscany | undefined | 5:00pm | 0% | -32 min |
+| AMC Plymouth Meeting Mall 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -332 min |
+| AMC Plymouth Meeting Mall 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 15.7% | -167 min |
+| AMC DINE-IN Fashion District 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 4.2% | -347 min |
+| AMC DINE-IN Fashion District 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:20pm | 48.4% | -172 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 10:15pm | 2.4% | -347 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 9:00pm | 6.6% | -272 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 7:45pm | 14.3% | -197 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 6:15pm | 19.7% | -107 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 5:00pm | 36.2% | -32 min |
+| AMC Northlake 14 | You, Me & Tuscany | undefined | 10:00pm | 0% | -332 min |
+| AMC Northlake 14 | You, Me & Tuscany | undefined | 7:15pm | 24.3% | -167 min |
+| AMC Sugarloaf Mills 18 | You, Me & Tuscany | Laser at AMC | 9:50pm | 0% | -322 min |
+| AMC Sugarloaf Mills 18 | You, Me & Tuscany | Laser at AMC | 7:00pm | 1.4% | -152 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 10:30pm | 3.2% | -362 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 8:00pm | 11% | -212 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 3.6% | -152 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 5:15pm | 14.1% | -47 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 9:15pm | 0% | -287 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 8:00pm | 4.7% | -212 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 6:30pm | 1.7% | -122 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 5:15pm | 6.7% | -47 min |
+| AMC DINE-IN North Point Mall 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 1.2% | -330 min |
+| AMC DINE-IN North Point Mall 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 28.4% | -150 min |
+| AMC Carolina Pavilion 22 | You, Me & Tuscany | undefined | 10:00pm | 2.7% | -330 min |
+| AMC Carolina Pavilion 22 | You, Me & Tuscany | undefined | 7:10pm | 9.6% | -161 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 10:00pm | 5.1% | -330 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 8:00pm | 3.4% | -210 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 7:15pm | 11.9% | -165 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 9:45pm | 0% | -315 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 8:05pm | 0% | -215 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 7:05pm | 0% | -155 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 5:25pm | 0% | -56 min |
+| AMC Star Great Lakes 25 | You, Me & Tuscany | undefined | 9:20pm | 0% | -290 min |
+| AMC Star Great Lakes 25 | You, Me & Tuscany | undefined | 6:40pm | 0.7% | -131 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 9:30pm | 0% | -300 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 8:45pm | 4.5% | -255 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 7:30pm | 6.6% | -180 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 6:45pm | 0% | -135 min |
+| AMC John R 15 | You, Me & Tuscany | undefined | 10:00pm | 0% | -330 min |
+| AMC John R 15 | You, Me & Tuscany | undefined | 7:45pm | 3.5% | -195 min |
+| AMC John R 15 | You, Me & Tuscany | undefined | 7:15pm | 8.8% | -165 min |
+| AMC Castleton Square 14 | You, Me & Tuscany | undefined | 10:15pm | 1.6% | -345 min |
+| AMC Castleton Square 14 | You, Me & Tuscany | undefined | 7:15pm | 12.9% | -165 min |
+| AMC Castleton Square 14 | You, Me & Tuscany | undefined | 6:05pm | 17.8% | -94 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 9:15pm | 0% | -285 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 7:45pm | 0% | -195 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 6:30pm | 0% | -120 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 5:00pm | 0% | -30 min |
+| AMC Thoroughbred 20 | You, Me & Tuscany | undefined | 10:15pm | 0% | -345 min |
+| AMC Thoroughbred 20 | You, Me & Tuscany | undefined | 6:30pm | 17.6% | -120 min |
+| AMC Thoroughbred 20 | You, Me & Tuscany | undefined | 5:15pm | 18.9% | -45 min |
+| AMC Bellevue 12 | You, Me & Tuscany | undefined | 7:15pm | 27.8% | -165 min |
+| AMC Easton Town Center 30 | You, Me & Tuscany | undefined | 9:30pm | 6.7% | -300 min |
+| AMC Easton Town Center 30 | You, Me & Tuscany | undefined | 6:45pm | 17.8% | -135 min |
+| AMC Dublin Village 18 | You, Me & Tuscany | undefined | 9:30pm | 5% | -300 min |
+| AMC Dublin Village 18 | You, Me & Tuscany | undefined | 7:30pm | 5% | -180 min |
+| AMC Grove City 14 | You, Me & Tuscany | undefined | 7:10pm | 1.5% | -160 min |
+| AMC Newport On The Levee 20 | You, Me & Tuscany | undefined | 10:25pm | 0% | -354 min |
+| AMC Newport On The Levee 20 | You, Me & Tuscany | undefined | 7:40pm | 9.9% | -189 min |
+| AMC West Chester 18 | You, Me & Tuscany | undefined | 10:20pm | 1.3% | -349 min |
+| AMC West Chester 18 | You, Me & Tuscany | undefined | 7:30pm | 13.2% | -179 min |
+| AMC West Chester 18 | You, Me & Tuscany | undefined | 6:30pm | 11.9% | -119 min |
+| AMC Waterfront 22 | You, Me & Tuscany | Laser at AMC | 9:35pm | 0% | -304 min |
+| AMC Waterfront 22 | You, Me & Tuscany | Laser at AMC | 7:40pm | 6.9% | -189 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 10:15pm | 0% | -344 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 9:00pm | 7% | -269 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 7:30pm | 0% | -179 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 6:30pm | 13% | -119 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 9:45pm | 0% | -314 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 8:45pm | 1.1% | -254 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 7:00pm | 1.1% | -149 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 6:00pm | 6.9% | -89 min |
+| AMC Academy 8 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -314 min |
+| AMC Academy 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 3.6% | -149 min |
+| AMC Allegany 8 | You, Me & Tuscany | undefined | 9:45pm | 0% | -312 min |
+| AMC Allegany 8 | You, Me & Tuscany | undefined | 6:55pm | 0% | -142 min |
+| AMC Altoona 12 | You, Me & Tuscany | undefined | 9:45pm | 0% | -312 min |
+| AMC Altoona 12 | You, Me & Tuscany | undefined | 7:00pm | 0% | -147 min |
+| AMC Anderson Towne Center 9 | You, Me & Tuscany | undefined | 9:00pm | 1.2% | -267 min |
+| AMC Anderson Towne Center 9 | You, Me & Tuscany | undefined | 6:45pm | 7.1% | -132 min |
+| AMC Annapolis Mall 11 | You, Me & Tuscany | undefined | 10:00pm | 0% | -327 min |
+| AMC Annapolis Mall 11 | You, Me & Tuscany | undefined | 7:10pm | 11.9% | -157 min |
+| AMC Antioch 8 | You, Me & Tuscany | undefined | 9:30pm | 2.6% | -297 min |
+| AMC Antioch 8 | You, Me & Tuscany | undefined | 6:30pm | 8.2% | -117 min |
+| AMC Avenue 16 | You, Me & Tuscany | undefined | 6:45pm | 0% | -132 min |
+| AMC Avenue Forsyth 12 | You, Me & Tuscany | Laser at AMC | 9:50pm | 0% | -317 min |
+| AMC Avenue Forsyth 12 | You, Me & Tuscany | Laser at AMC | 7:00pm | 1.9% | -147 min |
+| AMC Aviation 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -327 min |
+| AMC Aviation 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 2.4% | -162 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Laser at AMC | 10:10pm | 0% | -337 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Laser at AMC | 6:30pm | 14.7% | -116 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:30pm | 12.3% | -176 min |
+| AMC Bayou 15 | You, Me & Tuscany | undefined | 10:00pm | 0.3% | -326 min |
+| AMC Bayou 15 | You, Me & Tuscany | undefined | 8:45pm | 0% | -251 min |
+| AMC Bayou 15 | You, Me & Tuscany | undefined | 7:15pm | 0% | -161 min |
+| AMC Boulevard 10 | You, Me & Tuscany | undefined | 10:00pm | 6.9% | -326 min |
+| AMC Boulevard 10 | You, Me & Tuscany | undefined | 7:15pm | 9.2% | -161 min |
+| AMC Bradley Square 12 | You, Me & Tuscany | undefined | 10:00pm | 0% | -326 min |
+| AMC Bradley Square 12 | You, Me & Tuscany | undefined | 7:15pm | 0% | -161 min |
+| AMC Brick Plaza 10 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -311 min |
+| AMC Brick Plaza 10 | You, Me & Tuscany | Laser at AMC | 7:10pm | 22.4% | -157 min |
+| AMC Broadstreet 7 | You, Me & Tuscany | Laser at AMC | 9:45pm | 9.4% | -311 min |
+| AMC Broadstreet 7 | You, Me & Tuscany | Laser at AMC | 6:30pm | 9.4% | -116 min |
+| AMC Brunswick Square 13 | You, Me & Tuscany | undefined | 9:00pm | 0% | -266 min |
+| AMC Brunswick Square 13 | You, Me & Tuscany | undefined | 6:15pm | 16.7% | -101 min |
+| AMC Brunswick Square 13 | You, Me & Tuscany | undefined | 5:00pm | 9.4% | -26 min |
+| AMC Camp Hill 12 | You, Me & Tuscany | undefined | 9:15pm | 0% | -281 min |
+| AMC Camp Hill 12 | You, Me & Tuscany | undefined | 7:15pm | 1.1% | -161 min |
+| AMC Chattanooga 18 | You, Me & Tuscany | undefined | 9:40pm | 0% | -307 min |
+| AMC Chattanooga 18 | You, Me & Tuscany | undefined | 7:00pm | 3.4% | -146 min |
+| AMC Cherry Blossom 14 | You, Me & Tuscany | undefined | 9:50pm | 0% | -315 min |
+| AMC Cherry Blossom 14 | You, Me & Tuscany | undefined | 7:05pm | 0.5% | -150 min |
+| AMC Clifton Commons 16 | You, Me & Tuscany | Laser at AMC | 10:20pm | 2.7% | -345 min |
+| AMC Clifton Commons 16 | You, Me & Tuscany | Laser at AMC | 7:20pm | 1.4% | -165 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 10:30pm | 0% | -356 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 9:30pm | 6.2% | -296 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 7:45pm | 27.3% | -191 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 6:45pm | 18.5% | -131 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 5:00pm | 9.1% | -26 min |
+| AMC Columbia 14 | You, Me & Tuscany | undefined | 9:50pm | 0% | -315 min |
+| AMC Columbia 14 | You, Me & Tuscany | undefined | 7:00pm | 7.9% | -146 min |
+| AMC Columbus 10 | You, Me & Tuscany | undefined | 9:55pm | 0% | -321 min |
+| AMC Columbus 10 | You, Me & Tuscany | undefined | 7:15pm | 1.5% | -161 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 10:05pm | 0% | -330 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 9:00pm | 0.4% | -266 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 7:35pm | 0% | -180 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 6:20pm | 0% | -105 min |
+| AMC Courthouse Plaza 8 | You, Me & Tuscany | Laser at AMC | 9:40pm | 1.3% | -306 min |
+| AMC Courthouse Plaza 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 28.9% | -146 min |
+| AMC Crystal Run 16 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -310 min |
+| AMC Crystal Run 16 | You, Me & Tuscany | Laser at AMC | 7:00pm | 10% | -145 min |
+| AMC DINE-IN Berkshire 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:30pm | 1.2% | -355 min |
+| AMC DINE-IN Berkshire 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:45pm | 3.7% | -190 min |
+| AMC DINE-IN Bridgewater 7 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:00pm | 3.1% | -265 min |
+| AMC DINE-IN Bridgewater 7 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:15pm | 6.3% | -100 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:10pm | 0% | -335 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:30pm | 6% | -295 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:20pm | 18% | -165 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:45pm | 15% | -130 min |
+| AMC DINE-IN Holly Springs 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 0% | -340 min |
+| AMC DINE-IN Holly Springs 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:30pm | 18% | -175 min |
+| AMC DINE-IN Menlo Park 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 6.8% | -325 min |
+| AMC DINE-IN Menlo Park 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 13.5% | -160 min |
+| AMC DINE-IN Menlo Park 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:15pm | 54.7% | -100 min |
+| AMC DINE-IN Midlothian 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:00pm | 0% | -265 min |
+| AMC DINE-IN Midlothian 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 1.4% | -145 min |
+| AMC DINE-IN Painters Crossing 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 3.3% | -145 min |
+| AMC DINE-IN Shops at Riverside 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 7.5% | -338 min |
+| AMC DINE-IN Shops at Riverside 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 67.5% | -158 min |
+| AMC Danbury 16 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -323 min |
+| AMC Danbury 16 | You, Me & Tuscany | Laser at AMC | 7:15pm | 0.8% | -158 min |
+| AMC Dartmouth Mall 11 | You, Me & Tuscany | undefined | 7:00pm | 22% | -143 min |
+| AMC Deptford 8 | You, Me & Tuscany | Laser at AMC | 9:45pm | 3.6% | -308 min |
+| AMC Deptford 8 | You, Me & Tuscany | Laser at AMC | 7:05pm | 17.9% | -148 min |
+| AMC Destin Commons 14 | You, Me & Tuscany | undefined | 8:45pm | 0% | -248 min |
+| AMC Destin Commons 14 | You, Me & Tuscany | undefined | 6:00pm | 3.3% | -83 min |
+| AMC East Hanover 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 1.4% | -323 min |
+| AMC East Hanover 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 5.5% | -158 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 10:30pm | 0% | -353 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 7:30pm | 0% | -173 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 5:45pm | 0% | -68 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 5:00pm | 8.7% | -23 min |
+| AMC Fayetteville 14 | You, Me & Tuscany | undefined | 9:45pm | 0% | -308 min |
+| AMC Fayetteville 14 | You, Me & Tuscany | undefined | 7:00pm | 2.6% | -143 min |
+| AMC Fiesta Square 12 | You, Me & Tuscany | undefined | 9:30pm | 0% | -293 min |
+| AMC Fiesta Square 12 | You, Me & Tuscany | undefined | 7:30pm | 2.7% | -172 min |
+| AMC Fire Tower 12 | You, Me & Tuscany | undefined | 10:00pm | 3.4% | -323 min |
+| AMC Fire Tower 12 | You, Me & Tuscany | undefined | 7:15pm | 3.4% | -157 min |
+| AMC Fleming Island 12 | You, Me & Tuscany | undefined | 10:00pm | 0% | -323 min |
+| AMC Fleming Island 12 | You, Me & Tuscany | undefined | 7:30pm | 0% | -172 min |
+| AMC Foothills 12 | You, Me & Tuscany | undefined | 9:05pm | 0% | -267 min |
+| AMC Foothills 12 | You, Me & Tuscany | undefined | 6:15pm | 3.9% | -97 min |
+| AMC Freehold 14 | You, Me & Tuscany | Laser at AMC | 9:45pm | 1% | -308 min |
+| AMC Freehold 14 | You, Me & Tuscany | Laser at AMC | 7:00pm | 1.9% | -142 min |
+| AMC Garden State Plaza 16 | You, Me & Tuscany | Laser at AMC | 10:15pm | 1% | -338 min |
+| AMC Garden State Plaza 16 | You, Me & Tuscany | Laser at AMC | 7:30pm | 4% | -172 min |
+| AMC Glen Cove 6 | You, Me & Tuscany | Laser at AMC | 9:40pm | 0% | -303 min |
+| AMC Glen Cove 6 | You, Me & Tuscany | Laser at AMC | 7:00pm | 0% | -142 min |
+| AMC Grand Rapids 18 | You, Me & Tuscany | undefined | 8:25pm | 0% | -227 min |
+| AMC Grand Rapids 18 | You, Me & Tuscany | undefined | 5:45pm | 3.8% | -67 min |
+| AMC Hanes 12 | You, Me & Tuscany | undefined | 9:00pm | 0% | -262 min |
+| AMC Hanes 12 | You, Me & Tuscany | undefined | 6:15pm | 5.3% | -97 min |
+| AMC Harbison 14 | You, Me & Tuscany | undefined | 10:00pm | 0% | -322 min |
+| AMC Harbison 14 | You, Me & Tuscany | undefined | 7:00pm | 8.3% | -142 min |
+| AMC Harbison 14 | You, Me & Tuscany | undefined | 6:00pm | 17.9% | -82 min |
+| AMC Headquarters Plaza 10 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -322 min |
+| AMC Headquarters Plaza 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 3.9% | -157 min |
+| AMC Hialeah 12 | You, Me & Tuscany | undefined | 10:15pm | 0% | -337 min |
+| AMC Hialeah 12 | You, Me & Tuscany | English Spoken with Spanish Subtitles | 8:30pm | 6.5% | -232 min |
+| AMC Hialeah 12 | You, Me & Tuscany | undefined | 7:30pm | 0% | -172 min |
+| AMC Hialeah 12 | You, Me & Tuscany | English Spoken with Spanish Subtitles | 5:45pm | 6.5% | -67 min |
+| AMC Hickory 15 | You, Me & Tuscany | undefined | 9:00pm | 16.7% | -262 min |
+| AMC Hickory 15 | You, Me & Tuscany | undefined | 7:20pm | 6.7% | -161 min |
+| AMC Hickory 15 | You, Me & Tuscany | undefined | 6:10pm | 16.7% | -92 min |
+| AMC High Point 8 | You, Me & Tuscany | undefined | 10:15pm | 0% | -336 min |
+| AMC High Point 8 | You, Me & Tuscany | undefined | 7:30pm | 5.9% | -171 min |
+| AMC Highland 12 | You, Me & Tuscany | undefined | 7:45pm | 0% | -186 min |
+| AMC Highland 12 | You, Me & Tuscany | undefined | 5:00pm | 0% | -21 min |
+| AMC Holland 8 | You, Me & Tuscany | undefined | 9:00pm | 0% | -261 min |
+| AMC Holland 8 | You, Me & Tuscany | undefined | 6:20pm | 3.3% | -101 min |
+| AMC Huntington Square 12 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -306 min |
+| AMC Huntington Square 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 6.6% | -156 min |
+| AMC Indian Mound 9 | You, Me & Tuscany | undefined | 9:00pm | 1.5% | -259 min |
+| AMC Indian Mound 9 | You, Me & Tuscany | undefined | 6:00pm | 6.2% | -79 min |
+| AMC Indianapolis 17 | You, Me & Tuscany | undefined | 9:45pm | 2.9% | -304 min |
+| AMC Indianapolis 17 | You, Me & Tuscany | undefined | 7:00pm | 5.8% | -139 min |
+| AMC Indianapolis 17 | You, Me & Tuscany | undefined | 5:50pm | 9.6% | -69 min |
+| AMC Jefferson Point 18 | You, Me & Tuscany | undefined | 9:45pm | 0% | -304 min |
+| AMC Jefferson Point 18 | You, Me & Tuscany | undefined | 7:00pm | 1.4% | -139 min |
+| AMC Jersey Gardens 20 | You, Me & Tuscany | Laser at AMC | 10:15pm | 1.7% | -334 min |
+| AMC Jersey Gardens 20 | You, Me & Tuscany | Laser at AMC | 7:30pm | 5.6% | -169 min |
+| AMC Johnson City 14 | You, Me & Tuscany | undefined | 7:35pm | 14% | -174 min |
+| AMC Kalli 12 | You, Me & Tuscany | undefined | 10:00pm | 0% | -319 min |
+| AMC Kalli 12 | You, Me & Tuscany | undefined | 7:00pm | 0% | -139 min |
+| AMC Lake Square 12 | You, Me & Tuscany | undefined | 7:15pm | 0% | -154 min |
+| AMC Lakeshore 8 | You, Me & Tuscany | undefined | 9:00pm | 0% | -259 min |
+| AMC Lakeshore 8 | You, Me & Tuscany | undefined | 7:15pm | 8.1% | -154 min |
+| AMC Loudoun Station 11 | You, Me & Tuscany | undefined | 10:15pm | 0% | -334 min |
+| AMC Loudoun Station 11 | You, Me & Tuscany | undefined | 7:30pm | 11.1% | -169 min |
+| AMC Lynnhaven 18 | You, Me & Tuscany | undefined | 9:00pm | 0% | -259 min |
+| AMC Lynnhaven 18 | You, Me & Tuscany | undefined | 7:00pm | 1.4% | -139 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 10:20pm | 0.9% | -338 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 8:40pm | 0.9% | -238 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 7:30pm | 30.4% | -168 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 6:15pm | 41.5% | -93 min |
+| AMC Majestic 12 | You, Me & Tuscany | undefined | 10:10pm | 0% | -328 min |
+| AMC Majestic 12 | You, Me & Tuscany | undefined | 7:30pm | 1% | -168 min |
+| AMC Majestic 6 | You, Me & Tuscany | undefined | 10:00pm | 2.2% | -318 min |
+| AMC Majestic 6 | You, Me & Tuscany | undefined | 7:15pm | 9% | -153 min |
+| AMC Maple Ridge 8 | You, Me & Tuscany | undefined | 10:00pm | 2% | -318 min |
+| AMC Maple Ridge 8 | You, Me & Tuscany | undefined | 7:30pm | 6% | -168 min |
+| AMC Market Fair 15 | You, Me & Tuscany | undefined | 10:15pm | 4.3% | -333 min |
+| AMC Market Fair 15 | You, Me & Tuscany | undefined | 7:30pm | 4.3% | -168 min |
+| AMC Market Fair 15 | You, Me & Tuscany | undefined | 6:50pm | 47.8% | -127 min |
+| AMC MarketFair 10 | You, Me & Tuscany | undefined | 9:30pm | 12.5% | -288 min |
+| AMC MarketFair 10 | You, Me & Tuscany | undefined | 6:30pm | 42% | -108 min |
+| AMC Marlton 8 | You, Me & Tuscany | Laser at AMC | 10:00pm | 1% | -318 min |
+| AMC Marlton 8 | You, Me & Tuscany | Laser at AMC | 7:15pm | 5.8% | -153 min |
+| AMC Marple 10 | You, Me & Tuscany | Laser at AMC | 10:00pm | 4.8% | -318 min |
+| AMC Marple 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 30.6% | -153 min |
+| AMC Marquis 16 | You, Me & Tuscany | undefined | 9:30pm | 0% | -288 min |
+| AMC Marquis 16 | You, Me & Tuscany | undefined | 6:45pm | 29.9% | -123 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 8:45pm | 0% | -242 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 7:15pm | 0% | -152 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 5:50pm | 3.4% | -67 min |
+| AMC Mobile 16 | You, Me & Tuscany | undefined | 8:25pm | 0% | -222 min |
+| AMC Mobile 16 | You, Me & Tuscany | undefined | 7:15pm | 0% | -152 min |
+| AMC Mobile 16 | You, Me & Tuscany | undefined | 5:45pm | 0% | -62 min |
+| AMC Monmouth Mall 15 | You, Me & Tuscany | Laser at AMC | 10:00pm | 2.2% | -317 min |
+| AMC Monmouth Mall 15 | You, Me & Tuscany | Laser at AMC | 7:15pm | 17.2% | -152 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -317 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 9:00pm | 4.5% | -257 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 7:15pm | 9.1% | -152 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 6:15pm | 2.3% | -92 min |
+| AMC Morgantown 12 | You, Me & Tuscany | undefined | 9:45pm | 0% | -302 min |
+| AMC Morgantown 12 | You, Me & Tuscany | undefined | 7:00pm | 1.6% | -137 min |
+| AMC Mountainside 10 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -302 min |
+| AMC Mountainside 10 | You, Me & Tuscany | Laser at AMC | 7:00pm | 1.3% | -137 min |
+| AMC Muncie 12 | You, Me & Tuscany | undefined | 10:15pm | 0% | -330 min |
+| AMC Muncie 12 | You, Me & Tuscany | undefined | 8:00pm | 9.5% | -195 min |
+| AMC Muncie 12 | You, Me & Tuscany | undefined | 5:15pm | 4.8% | -30 min |
+| AMC New Brunswick 18 | You, Me & Tuscany | undefined | 9:30pm | 1% | -285 min |
+| AMC New Brunswick 18 | You, Me & Tuscany | undefined | 7:20pm | 0.6% | -155 min |
+| AMC North Dekalb 16 | You, Me & Tuscany | undefined | 10:15pm | 0.7% | -330 min |
+| AMC North Dekalb 16 | You, Me & Tuscany | undefined | 7:30pm | 3.6% | -165 min |
+| AMC Northgate 14 | You, Me & Tuscany | undefined | 10:00pm | 0% | -315 min |
+| AMC Northgate 14 | You, Me & Tuscany | undefined | 7:10pm | 1% | -146 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 9:45pm | 0% | -300 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 9:00pm | 3.1% | -255 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 7:00pm | 24.6% | -135 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 6:00pm | 26.2% | -75 min |
+| AMC Palisades 21 | You, Me & Tuscany | Laser at AMC | 9:15pm | 3.3% | -270 min |
+| AMC Palisades 21 | You, Me & Tuscany | Laser at AMC | 6:30pm | 0% | -105 min |
+| AMC Park Place 16 | You, Me & Tuscany | undefined | 9:15pm | 0% | -270 min |
+| AMC Park Place 16 | You, Me & Tuscany | undefined | 6:30pm | 17.3% | -105 min |
+| AMC Park Terrace 6 | You, Me & Tuscany | undefined | 10:15pm | 4.8% | -330 min |
+| AMC Park Terrace 6 | You, Me & Tuscany | undefined | 7:30pm | 42.9% | -165 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 9:50pm | 0% | -305 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 8:00pm | 9.1% | -195 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 7:00pm | 28.2% | -135 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 5:15pm | 9.1% | -30 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 10:00pm | 10.5% | -315 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 7:15pm | 53.9% | -150 min |
+| AMC Plainville 20 | You, Me & Tuscany | undefined | 9:30pm | 0% | -285 min |
+| AMC Plainville 20 | You, Me & Tuscany | undefined | 8:00pm | 16.3% | -195 min |
+| AMC Plainville 20 | You, Me & Tuscany | undefined | 5:15pm | 30.2% | -30 min |
+| AMC Port St Lucie 14 | You, Me & Tuscany | undefined | 6:00pm | 2.7% | -75 min |
+| AMC Potomac Mills 18 | You, Me & Tuscany | Laser at AMC | 10:15pm | 0% | -330 min |
+| AMC Potomac Mills 18 | You, Me & Tuscany | Laser at AMC | 7:30pm | 3.6% | -165 min |
+| AMC Ridge Park Square 8 | You, Me & Tuscany | undefined | 6:45pm | 8% | -120 min |
+| AMC Ridgefield Park 12 | You, Me & Tuscany | undefined | 10:20pm | 0% | -334 min |
+| AMC Ridgefield Park 12 | You, Me & Tuscany | undefined | 7:40pm | 16.7% | -175 min |
+| AMC Ridgefield Park 12 | You, Me & Tuscany | undefined | 5:00pm | 48.3% | -15 min |
+| AMC Ritz 13 | You, Me & Tuscany | undefined | 10:00pm | 6.1% | -315 min |
+| AMC Ritz 13 | You, Me & Tuscany | undefined | 7:20pm | 1.4% | -154 min |
+| AMC River Hills 10 | You, Me & Tuscany | undefined | 8:45pm | 0% | -239 min |
+| AMC River Hills 10 | You, Me & Tuscany | undefined | 6:00pm | 12.5% | -74 min |
+| AMC Rivertowne 12 | You, Me & Tuscany | Laser at AMC | 7:00pm | 5.7% | -134 min |
+| AMC Riverview 14 | You, Me & Tuscany | undefined | 10:15pm | 1.1% | -329 min |
+| AMC Riverview 14 | You, Me & Tuscany | undefined | 7:30pm | 14.4% | -164 min |
+| AMC Riverview 14 | You, Me & Tuscany | undefined | 5:30pm | 31.1% | -44 min |
+| AMC Rockaway 16 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -299 min |
+| AMC Rockaway 16 | You, Me & Tuscany | Laser at AMC | 7:00pm | 0% | -134 min |
+| AMC Royale 6 | You, Me & Tuscany | undefined | 9:45pm | 0% | -299 min |
+| AMC Royale 6 | You, Me & Tuscany | undefined | 7:00pm | 2.6% | -134 min |
+| AMC Saratoga Springs 11 | You, Me & Tuscany | undefined | 10:15pm | 0% | -329 min |
+| AMC Saratoga Springs 11 | You, Me & Tuscany | undefined | 7:30pm | 0% | -164 min |
+| AMC Schererville 12 | You, Me & Tuscany | Laser at AMC | 6:45pm | 0.6% | -119 min |
+| AMC Schererville 16 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -312 min |
+| AMC Schererville 16 | You, Me & Tuscany | Laser at AMC | 7:15pm | 0% | -147 min |
+| AMC Security Square 8 | You, Me & Tuscany | undefined | 9:55pm | 1.8% | -308 min |
+| AMC Security Square 8 | You, Me & Tuscany | undefined | 8:00pm | 0% | -192 min |
+| AMC Security Square 8 | You, Me & Tuscany | undefined | 6:45pm | 0% | -117 min |
+| AMC SoNo8 | You, Me & Tuscany | undefined | 10:00pm | 0% | -312 min |
+| AMC SoNo8 | You, Me & Tuscany | undefined | 7:15pm | 0% | -147 min |
+| AMC South Bay Center 12 | You, Me & Tuscany | Laser at AMC | 8:45pm | 4.4% | -237 min |
+| AMC South Bay Center 12 | You, Me & Tuscany | Laser at AMC | 6:45pm | 14.9% | -117 min |
+| AMC Southington 12 | You, Me & Tuscany | undefined | 9:10pm | 1.8% | -263 min |
+| AMC Southington 12 | You, Me & Tuscany | undefined | 7:00pm | 20% | -132 min |
+| AMC Southpoint 17 | You, Me & Tuscany | undefined | 9:35pm | 1.4% | -287 min |
+| AMC Southpoint 17 | You, Me & Tuscany | undefined | 6:45pm | 49.3% | -117 min |
+| AMC Spring Hill 12 | You, Me & Tuscany | undefined | 7:00pm | 4.1% | -132 min |
+| AMC Staten Island 11 | You, Me & Tuscany | Laser at AMC | 9:30pm | 9.8% | -281 min |
+| AMC Staten Island 11 | You, Me & Tuscany | Laser at AMC | 6:45pm | 33.3% | -116 min |
+| AMC Stones River 9 | You, Me & Tuscany | undefined | 10:45pm | 4.9% | -356 min |
+| AMC Stones River 9 | You, Me & Tuscany | undefined | 7:45pm | 6.1% | -176 min |
+| AMC Stones River 9 | You, Me & Tuscany | undefined | 5:00pm | 34.5% | -11 min |
+| AMC Stonybrook 20 | You, Me & Tuscany | undefined | 8:30pm | 10.1% | -221 min |
+| AMC Stonybrook 20 | You, Me & Tuscany | undefined | 7:00pm | 0.7% | -131 min |
+| AMC Stonybrook 20 | You, Me & Tuscany | undefined | 5:45pm | 4.9% | -56 min |
+| AMC Sunrise 8 | You, Me & Tuscany | undefined | 8:30pm | 20.6% | -221 min |
+| AMC Sunrise 8 | You, Me & Tuscany | undefined | 5:45pm | 30.2% | -56 min |
+| AMC Tallahassee 20 | You, Me & Tuscany | undefined | 9:15pm | 15.9% | -266 min |
+| AMC Tallahassee 20 | You, Me & Tuscany | undefined | 6:30pm | 27.5% | -101 min |
+| AMC Tamiami 18 | You, Me & Tuscany | Laser at AMC | 10:15pm | 13% | -326 min |
+| AMC Tamiami 18 | You, Me & Tuscany | Laser at AMC | 8:30pm | 4.3% | -221 min |
+| AMC Tamiami 18 | You, Me & Tuscany | Laser at AMC | 7:30pm | 45.7% | -161 min |
+| AMC Tiger 13 | You, Me & Tuscany | undefined | 10:15pm | 0% | -326 min |
+| AMC Tiger 13 | You, Me & Tuscany | undefined | 9:00pm | 0% | -251 min |
+| AMC Tiger 13 | You, Me & Tuscany | undefined | 8:15pm | 0% | -206 min |
+| AMC Tiger 13 | You, Me & Tuscany | undefined | 7:30pm | 2.9% | -161 min |
+| AMC Tilghman Square 8 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | -296 min |
+| AMC Tilghman Square 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 5.8% | -131 min |
+| AMC Traders Point 12 | You, Me & Tuscany | undefined | 10:30pm | 0% | -341 min |
+| AMC Traders Point 12 | You, Me & Tuscany | undefined | 7:45pm | 5.3% | -176 min |
+| AMC Traders Point 12 | You, Me & Tuscany | undefined | 5:00pm | 33.3% | -11 min |
+| AMC Tyngsboro 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | -311 min |
+| AMC Tyngsboro 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 2.1% | -146 min |
+| AMC Vestal Town Square 9 | You, Me & Tuscany | undefined | 9:45pm | 0% | -296 min |
+| AMC Vestal Town Square 9 | You, Me & Tuscany | undefined | 7:45pm | 4.1% | -176 min |
+| AMC Washington Square 12 | You, Me & Tuscany | undefined | 7:30pm | 2.7% | -161 min |
+| AMC Wayne 14 | You, Me & Tuscany | Laser at AMC | 10:40pm | 0% | -351 min |
+| AMC Wayne 14 | You, Me & Tuscany | Laser at AMC | 8:00pm | 10.3% | -191 min |
+| AMC Wayne 14 | You, Me & Tuscany | Laser at AMC | 5:10pm | 17.2% | -21 min |
+| AMC Webster 12 | You, Me & Tuscany | undefined | 9:40pm | 1.6% | -290 min |
+| AMC Webster 12 | You, Me & Tuscany | undefined | 7:00pm | 6.3% | -130 min |
+| AMC West Melbourne 12 | You, Me & Tuscany | undefined | 10:00pm | 0% | -310 min |
+| AMC West Melbourne 12 | You, Me & Tuscany | undefined | 7:20pm | 4.1% | -150 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 9:30pm | 6% | -280 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 7:15pm | 1.8% | -145 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 6:45pm | 1.5% | -115 min |
+| AMC Westmoreland 15 | You, Me & Tuscany | undefined | 7:00pm | 0% | -130 min |
+| AMC Weston 8 | You, Me & Tuscany | undefined | 9:45pm | 3.4% | -295 min |
+| AMC Weston 8 | You, Me & Tuscany | undefined | 7:05pm | 0% | -135 min |
+| AMC Westwood Town Center 6 | You, Me & Tuscany | undefined | 9:45pm | 1% | -295 min |
+| AMC Westwood Town Center 6 | You, Me & Tuscany | undefined | 6:45pm | 0% | -115 min |
+| AMC Wheaton Mall 9 | You, Me & Tuscany | Laser at AMC | 7:30pm | 12.8% | -158 min |
+| AMC White Marsh 16 | You, Me & Tuscany | undefined | 10:00pm | 0% | -308 min |
+| AMC White Marsh 16 | You, Me & Tuscany | undefined | 7:15pm | 11.3% | -143 min |
+| AMC White Marsh 16 | You, Me & Tuscany | undefined | 5:30pm | 19.1% | -38 min |
+| AMC Woodhaven 10 | You, Me & Tuscany | Laser at AMC | 10:00pm | 4% | -308 min |
+| AMC Woodhaven 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 4% | -143 min |
+| AMC Yulee 10 | You, Me & Tuscany | undefined | 7:15pm | 0% | -143 min |
+
+**Issues:** AMC Grove City 14: No seat map for You, Me & Tuscany undefined; AMC Hampton Towne Centre 24: Page.evaluate: Execution context was destroyed, most likely because of a navigation; AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC; AMC Lake Square 12: No seat map for You, Me & Tuscany undefined; AMC Port Chester 14: Page.evaluate: Execution context was destroyed, most likely because of a navigation; AMC Port St Lucie 14: No seat map for You, Me & Tuscany undefined; AMC Ridge Park Square 8: No seat map for You, Me & Tuscany undefined; AMC South Bay Center 12: No seat map for You, Me & Tuscany Laser at AMC; AMC Spring Hill 12: No seat map for You, Me & Tuscany undefined; AMC Star Gratiot 15: Page.evaluate: Execution context was destroyed, most likely because of a navigation; AMC Washington Square 12: No seat map for You, Me & Tuscany undefined; AMC West Oaks 14: No seat map for You, Me & Tuscany undefined
+
+---
