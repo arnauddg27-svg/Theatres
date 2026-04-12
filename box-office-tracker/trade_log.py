@@ -88,6 +88,8 @@ class TradeLog:
                AND created_at > datetime('now', '-7 days')""",
             (movie,),
         ).fetchone()
+        if row is None:
+            return False
         return row["cnt"] > 0
 
     def settle_trade(self, trade_id: int, pnl: float):
