@@ -133,7 +133,10 @@ jobs:
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
         if: steps.tz.outputs.phase == 'collect-links'
         working-directory: box-office-tracker
-        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
+        run: |
+          python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || \
+            (echo "Phase 1 attempt 1 failed, retrying in 15s..." && sleep 15 && \
+             python3 scraper.py --collect-links ${{ steps.tz.outputs.group }})
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
         if: steps.tz.outputs.phase == 'scrape'
@@ -143,7 +146,9 @@ jobs:
           if [ "${{ github.event.inputs.force }}" = "true" ]; then FORCE_FLAG="--force"; fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
-          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }} || python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }}
+          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }} || \
+            (echo "Phase 2 attempt 1 failed, retrying in 15s..." && sleep 15 && \
+             python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }})
 
       - name: Generate predictions
         if: steps.tz.outputs.phase == 'scrape'
@@ -155,11 +160,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add box-office-tracker/
-          git diff --staged --quiet && exit 0
+          if git diff --staged --quiet; then
+            echo "No data changes to commit (run produced no new output)."
+            exit 0
+          fi
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           for i in 1 2 3; do
             git pull --rebase origin main && git push && break
-            echo "Push attempt $i failed, retrying in 10s..."
-            [ "$i" = "3" ] && exit 1
-            sleep 10
+            echo "Push attempt $i failed, retrying..."
+            if [ "$i" = "3" ]; then
+              echo "All 3 push attempts failed — data not committed."
+              exit 1
+            fi
+            sleep $((i * 15))   # exponential backoff: 15s, 30s
           done

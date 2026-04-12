@@ -111,7 +111,7 @@ class TradeLog:
         row = self.conn.execute(
             "SELECT COALESCE(SUM(pnl), 0) as total FROM box_office_trades WHERE status='settled'"
         ).fetchone()
-        return row["total"]
+        return row["total"] if row is not None else 0.0
 
     def close(self):
         self.conn.close()

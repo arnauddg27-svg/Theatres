@@ -75,8 +75,10 @@ def fetch_daily_chart(date_str):
     try:
         resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"}, timeout=10)
         if resp.status_code != 200:
+            print(f"  ⚠️  The Numbers returned HTTP {resp.status_code} for {date_str}")
             return {}
-    except Exception:
+    except Exception as e:
+        print(f"  ⚠️  The Numbers fetch failed for {date_str}: {e}")
         return {}
 
     results = {}
@@ -116,17 +118,24 @@ def fetch_opening_weekend_daily(movie_title, friday_date):
     ]
 
     movie_lower = movie_title.lower()
+    movie_words = set(re.sub(r'[^a-z0-9\s]', '', movie_lower).split())
     daily = {}
 
     for day_name, date_str in dates:
         chart = fetch_daily_chart(date_str)
-        matched = None
+        best_gross = None
+        best_score = 0.0
         for title, gross in chart.items():
-            if movie_lower in title.lower() or title.lower() in movie_lower:
-                matched = gross
-                break
-        if matched is not None:
-            daily[day_name] = matched
+            title_words = set(re.sub(r'[^a-z0-9\s]', '', title.lower()).split())
+            if not title_words:
+                continue
+            overlap = len(movie_words & title_words) / max(len(movie_words), len(title_words))
+            # Require at least 60% word overlap to avoid false matches
+            if overlap > best_score and overlap >= 0.6:
+                best_score = overlap
+                best_gross = gross
+        if best_gross is not None:
+            daily[day_name] = best_gross
 
     return daily if daily else None
 

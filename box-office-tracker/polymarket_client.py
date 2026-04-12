@@ -196,22 +196,29 @@ class PolymarketClient:
 
     @staticmethod
     def _normalize_usdc_balance(raw_value) -> float:
+        """Convert raw USDC balance to a float in dollars.
+
+        The py-clob-client returns USDC as a plain decimal string (e.g. "42.50")
+        representing dollars directly — NOT micro-units. We parse it as-is.
+        Integer strings that look like whole-unit token amounts (no decimal point,
+        value >= 1_000_000) are assumed to be micro-USDC (6 decimals) per the
+        ERC-20 standard. Everything else is treated as already in dollars.
+        """
         if raw_value is None:
             return 0.0
-        if isinstance(raw_value, str):
-            value = raw_value.strip()
-            if not value:
+        try:
+            s = str(raw_value).strip()
+            if not s:
                 return 0.0
-            numeric = float(value)
-            if value.isdigit():
-                return numeric / 1e6
-            return numeric
-        if isinstance(raw_value, int):
-            return raw_value / 1e6
-        numeric = float(raw_value)
-        if numeric.is_integer() and numeric >= 1000:
-            return numeric / 1e6
-        return numeric
+            # If the string has no decimal point and the value is >= 1_000_000,
+            # it's micro-USDC (e.g. the raw on-chain integer representation).
+            if "." not in s and s.lstrip("-").isdigit():
+                micro = int(s)
+                if abs(micro) >= 1_000_000:
+                    return micro / 1e6
+            return float(s)
+        except (ValueError, TypeError):
+            return 0.0
 
     def fetch_balance(self) -> float | None:
         try:

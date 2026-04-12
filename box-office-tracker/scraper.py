@@ -378,8 +378,8 @@ def fetch_bom_theatre_counts(movie_titles):
         try:
             with open(THEATRE_COUNTS_JSON) as f:
                 existing = json.load(f)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"  ⚠️  Could not load existing theatre-counts.json ({e}) — will overwrite")
 
     existing.update(counts)
     existing["_updated"] = datetime.now().isoformat()
@@ -1011,7 +1011,8 @@ async def run_collect_links_async(tz_group="ALL"):
             existing_weekend = existing.get("weekend_of") or existing.get("date", "")
             if existing_weekend and existing_weekend != current_weekend:
                 existing = {}  # previous weekend — start fresh
-        except Exception:
+        except Exception as e:
+            print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
             existing = {}
 
     merged_theatres = dict(existing.get("theatres", {}))

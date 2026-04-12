@@ -242,8 +242,15 @@ def run_trading(config: dict, movie_filter: str | None = None):
         balance = poly.fetch_balance()
         if balance is not None:
             logger.info(f"Polymarket balance: ${balance:.2f} USDC")
+        elif not config["dry_run"]:
+            # In live mode a failed balance fetch means credentials are broken or
+            # the API is down — abort rather than trade against a fake number.
+            logger.error("Could not fetch balance in live mode — aborting to avoid phantom trades")
+            poly.close()
+            trade_log.close()
+            return
         else:
-            logger.warning("Could not fetch balance, using $100 default")
+            logger.warning("Could not fetch balance (dry run), using $100 notional")
             balance = 100.0
     else:
         logger.info("No private key — dry run mode, using $100 notional balance")
@@ -287,6 +294,8 @@ def run_trading(config: dict, movie_filter: str | None = None):
 
     total_trades = 0
     total_cost = 0.0
+    consecutive_order_errors = 0
+    MAX_CONSECUTIVE_ERRORS = 3   # abort after this many back-to-back failures
 
     for event in events:
         movie = event["title"]
@@ -376,10 +385,20 @@ def run_trading(config: dict, movie_filter: str | None = None):
                     )
                     order_id = result.get("orderID") or result.get("id") or ""
                     status = "placed"
+                    consecutive_order_errors = 0
                     logger.info(f"  ORDER PLACED: {order_id}")
                 except Exception as e:
                     logger.error(f"  ORDER FAILED: {e}")
                     status = "error"
+                    consecutive_order_errors += 1
+                    if consecutive_order_errors >= MAX_CONSECUTIVE_ERRORS:
+                        logger.error(
+                            f"  {consecutive_order_errors} consecutive order failures — "
+                            f"aborting (likely credential or connectivity issue)"
+                        )
+                        trade_log.close()
+                        poly.close()
+                        return
             else:
                 logger.info(f"  DRY RUN — would buy {trade.size} shares "
                             f"@ {s.market_price:.3f}")

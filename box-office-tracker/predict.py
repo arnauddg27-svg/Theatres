@@ -94,25 +94,28 @@ DEFAULT_SEATS_PER_SHOW = 200   # when no seat map available
 def _current_weekend_friday():
     """Return the Friday that anchors the current opening weekend (Thu-Mon).
 
-    Must match opening_weekend_friday() in scraper.py so weekend_of values
-    in the CSV align with what predict.py filters on.
+    Delegates to scraper.opening_weekend_friday() so both files always agree.
+    Falls back to inline logic if scraper is unavailable (e.g. import cycle).
     """
-    from datetime import timedelta
+    try:
+        from scraper import opening_weekend_friday
+        return opening_weekend_friday()
+    except ImportError:
+        pass
     now = datetime.now()
     wd = now.weekday()  # Mon=0 ... Sun=6
-    if wd == 3:   # Thursday → next Friday (new opening weekend)
+    if wd == 3:
         return (now + timedelta(days=1)).strftime("%Y-%m-%d")
-    if wd == 4:   # Friday
+    if wd == 4:
         return now.strftime("%Y-%m-%d")
-    if wd == 5:   # Saturday
+    if wd == 5:
         return (now - timedelta(days=1)).strftime("%Y-%m-%d")
-    if wd == 6:   # Sunday
+    if wd == 6:
         return (now - timedelta(days=2)).strftime("%Y-%m-%d")
-    if wd == 0:   # Monday
+    if wd == 0:
         return (now - timedelta(days=3)).strftime("%Y-%m-%d")
-    if wd == 1:   # Tuesday
+    if wd == 1:
         return (now - timedelta(days=4)).strftime("%Y-%m-%d")
-    # Wednesday
     return (now - timedelta(days=5)).strftime("%Y-%m-%d")
 
 
@@ -344,10 +347,14 @@ def sum_amc_theatres(theatre_results):
 def amc_to_domestic(amc_revenue, cal):
     """Stage C: scale AMC revenue to total domestic market."""
     share = cal["calibration_factors"].get("amc_market_share", DEFAULT_AMC_MARKET_SHARE)
+    share = max(0.10, min(0.50, share))   # clamp to sane range
     mid = amc_revenue / share
-    # Uncertainty in market share: ±3 points
-    low = amc_revenue / (share + 0.03)
-    high = amc_revenue / max(0.15, share - 0.03)
+    # Uncertainty in market share: ±3 points, both bounds clamped away from 0
+    low  = amc_revenue / min(0.50, share + 0.03)   # higher share → lower gross
+    high = amc_revenue / max(0.10, share - 0.03)   # lower share  → higher gross
+    # Sanity guard: ensure low ≤ mid ≤ high
+    low  = min(low, mid)
+    high = max(high, mid)
     return mid, low, high
 
 
@@ -652,7 +659,18 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         poly_result = polymarket_expected_value(poly_data)
 
     # Stage F: blend
-    n_theatres_total = sum(d["n_theatres"] for d in daily_details.values())
+    # Count unique theatres across all days (a theatre that appears on both
+    # Thursday and Friday should count as 1, not 2).
+    all_theatre_names: set[str] = set()
+    for date_str in all_dates:
+        rows = seat_data[date_str]
+        for row in rows:
+            t_name = row.get("theatre_name", "")
+            if t_name:
+                all_theatre_names.add(t_name)
+    n_theatres_total = len(all_theatre_names) if all_theatre_names else sum(
+        d["n_theatres"] for d in daily_details.values()
+    )
     n_days = len(daily_estimates)
 
     if poly_result:
