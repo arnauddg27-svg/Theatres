@@ -87,6 +87,23 @@ _USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 ]
 
+# Launch args that suppress headless-browser fingerprints detected by sites like AMC
+_CHROMIUM_ARGS = [
+    "--disable-blink-features=AutomationControlled",
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-gpu",
+    "--window-size=1280,800",
+]
+
+# Injected into every page before any script runs — removes the webdriver flag
+_STEALTH_INIT_SCRIPT = """
+Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
+window.chrome = { runtime: {} };
+"""
+
 _TZ_NAMES = {"ET": "America/New_York", "CT": "America/Chicago",
              "MT": "America/Denver",   "PT": "America/Los_Angeles"}
 
@@ -695,7 +712,9 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     context = await browser.new_context(
         viewport={"width": 1280, "height": 800},
         user_agent=random.choice(_USER_AGENTS),
+        locale="en-US",
     )
+    await context.add_init_script(_STEALTH_INIT_SCRIPT)
     page = await context.new_page()
     results = []
     issues = []
@@ -804,7 +823,9 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     context = await browser.new_context(
         viewport={"width": 1280, "height": 800},
         user_agent=random.choice(_USER_AGENTS),
+        locale="en-US",
     )
+    await context.add_init_script(_STEALTH_INIT_SCRIPT)
     page = await context.new_page()
     collected = {}
     try:
@@ -876,7 +897,7 @@ async def run_collect_links_async(tz_group="ALL"):
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded(theatre):
             async with sem:
@@ -1060,7 +1081,7 @@ async def run_async(tz_group="ALL", force=False):
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded_scrape(theatre):
             async with sem:
