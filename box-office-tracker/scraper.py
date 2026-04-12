@@ -471,12 +471,53 @@ EXTRACT_SHOWTIMES_JS = r'''() => {
 }'''
 
 
+def _extract_seats_from_next_data(props, showtime_id):
+    """
+    Recursively search window.__NEXT_DATA__ pageProps for seat count data.
+    AMC SSRs seat layout for in-progress/imminent shows — this is the fast path
+    that avoids RSC requests entirely.
+    Returns seat dict or None.
+    """
+    if not isinstance(props, dict):
+        return None
+
+    # Look for common seat count field names
+    seat_keys = {"totalSeats", "total_seats", "seatsAvailable", "seats_available",
+                 "availableCount", "seatCount", "capacity"}
+    if any(k in props for k in seat_keys):
+        total = props.get("totalSeats") or props.get("total_seats") or props.get("seatCount") or props.get("capacity") or 0
+        avail = props.get("seatsAvailable") or props.get("seats_available") or props.get("availableCount") or 0
+        if total > 0:
+            sold = total - avail
+            return {
+                "total_seats": int(total),
+                "seats_sold": int(sold),
+                "seats_available": int(avail),
+                "occupancy_pct": round(sold / total * 100, 1) if total else 0,
+            }
+
+    # Recurse into nested dicts/lists
+    for v in props.values():
+        if isinstance(v, dict):
+            result = _extract_seats_from_next_data(v, showtime_id)
+            if result:
+                return result
+        elif isinstance(v, list):
+            for item in v:
+                if isinstance(item, dict):
+                    result = _extract_seats_from_next_data(item, showtime_id)
+                    if result:
+                        return result
+    return None
+
+
 async def fetch_amc_seat_map_pw(page, showtime_id):
     """
     Fetch seat map for a specific showtime using Playwright.
 
-    Navigates to /showtimes/{id} which redirects to /showtimes/{id}/seats.
-    Waits for seat <input> elements to render, then counts them.
+    Strategy: AMC uses Next.js. The server embeds initial props in window.__NEXT_DATA__
+    inside the initial HTML. We extract seat data from there first (fastest, no RSC
+    needed). If not present, fall back to waiting for DOM inputs.
 
     Returns dict with total_seats, seats_sold, seats_available, occupancy_pct.
     """
@@ -485,71 +526,46 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
-    # Intercept JSON API responses — capture seat data directly from the network
-    # rather than waiting for React to render DOM inputs.
-    api_seat_data = []
-
-    async def on_response(response):
-        resp_url = response.url
-        ct = response.headers.get("content-type", "")
-        if response.status == 200 and "json" in ct:
-            if any(k in resp_url.lower() for k in ["seat", "showtime", "session", "ticket", "layout"]):
-                try:
-                    body = await response.body()
-                    api_seat_data.append({"url": resp_url, "body": body[:500].decode("utf-8", errors="replace")})
-                except Exception:
-                    pass
-        elif response.status in (403, 429, 401):
-            if any(k in resp_url.lower() for k in ["seat", "showtime", "amc", "ticket"]):
-                print(f"      🚫 API blocked {response.status}: {resp_url[:100]}")
-
-    page.on("response", on_response)
-
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-
-        # Dismiss OneTrust cookie consent banner if present — it blocks the seat map
-        # from rendering on first visit. Accept quickly so React can hydrate.
-        try:
-            cookie_btn = await page.wait_for_selector(
-                "#onetrust-accept-btn-handler, button:has-text('Accept All'), button:has-text('Accept Cookies')",
-                timeout=4000,
-            )
-            if cookie_btn:
-                await cookie_btn.click()
-                await page.wait_for_timeout(500)
-        except Exception:
-            pass  # No cookie banner — fine, continue
-
-        # Smart wait: seat inputs appear once the seat map JS hydrates.
-        # AMC uses different aria-label patterns by seat type:
-        #   Standard recliners  → "Recliner A1"
-        #   IMAX / Dolby rooms  → "AMC Club Rocker A1"
-        #   Generic labeled     → "Seat A1"
-        final_url = page.url
-        title = await page.title()
-        wv = await page.evaluate("() => String(navigator.webdriver)")
-        print(f"      🔍 Landed on: {final_url} | title: {title[:60]} | webdriver={wv}")
-        try:
-            await page.wait_for_selector(
-                'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
-                timeout=20000,
-            )
-        except Exception:
-            # Log what's actually on the page for diagnosis
-            body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,300) || ''")
-            print(f"      ⚠️  No seat inputs. webdriver={wv} | Page text: {body_snippet[:200]}")
-            # Log any API responses captured
-            for r in api_seat_data[:3]:
-                print(f"      📡 API hit: {r['url'][:100]} → {r['body'][:100]}")
-            if not api_seat_data:
-                print(f"      📡 No seat-related API calls captured")
-            return None
     except Exception as e:
-        print(f"      ⚠️  Seat page failed: {e}")
+        print(f"      ⚠️  Seat page goto failed: {e}")
         return None
-    finally:
-        page.remove_listener("response", on_response)
+
+    final_url = page.url
+    title = await page.title()
+    print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
+
+    # ── Strategy 1: read window.__NEXT_DATA__ (server-side rendered, no RSC needed)
+    try:
+        next_data_raw = await page.evaluate("() => JSON.stringify(window.__NEXT_DATA__ || null)")
+        if next_data_raw and next_data_raw != "null":
+            next_data = json.loads(next_data_raw)
+            # Dump key structure for debugging
+            props = next_data.get("props", {}).get("pageProps", {})
+            print(f"      📦 __NEXT_DATA__ keys: {list(props.keys())[:10]}")
+            # Try to find seat data within the props tree
+            seat_data = _extract_seats_from_next_data(props, showtime_id)
+            if seat_data:
+                print(f"      ✅ Seat data from __NEXT_DATA__: {seat_data}")
+                return seat_data
+            else:
+                print(f"      📦 No seat data in __NEXT_DATA__ props")
+        else:
+            print(f"      📦 __NEXT_DATA__ is null/missing")
+    except Exception as e:
+        print(f"      📦 __NEXT_DATA__ read failed: {e}")
+
+    # ── Strategy 2: wait for DOM inputs (React hydration path)
+    try:
+        await page.wait_for_selector(
+            'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
+            timeout=12000,
+        )
+    except Exception:
+        body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
+        print(f"      ⚠️  No seat inputs. Page text: {body_snippet[:150]}")
+        return None
 
     seat_data = await page.evaluate(COUNT_SEATS_JS)
 
