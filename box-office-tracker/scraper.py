@@ -485,6 +485,26 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
+    # Intercept JSON API responses — capture seat data directly from the network
+    # rather than waiting for React to render DOM inputs.
+    api_seat_data = []
+
+    async def on_response(response):
+        resp_url = response.url
+        ct = response.headers.get("content-type", "")
+        if response.status == 200 and "json" in ct:
+            if any(k in resp_url.lower() for k in ["seat", "showtime", "session", "ticket", "layout"]):
+                try:
+                    body = await response.body()
+                    api_seat_data.append({"url": resp_url, "body": body[:500].decode("utf-8", errors="replace")})
+                except Exception:
+                    pass
+        elif response.status in (403, 429, 401):
+            if any(k in resp_url.lower() for k in ["seat", "showtime", "amc", "ticket"]):
+                print(f"      🚫 API blocked {response.status}: {resp_url[:100]}")
+
+    page.on("response", on_response)
+
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
 
@@ -508,7 +528,8 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         #   Generic labeled     → "Seat A1"
         final_url = page.url
         title = await page.title()
-        print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
+        wv = await page.evaluate("() => String(navigator.webdriver)")
+        print(f"      🔍 Landed on: {final_url} | title: {title[:60]} | webdriver={wv}")
         try:
             await page.wait_for_selector(
                 'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
@@ -516,12 +537,19 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
             )
         except Exception:
             # Log what's actually on the page for diagnosis
-            body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
-            print(f"      ⚠️  No seat inputs found. Page text: {body_snippet[:150]}")
+            body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,300) || ''")
+            print(f"      ⚠️  No seat inputs. webdriver={wv} | Page text: {body_snippet[:200]}")
+            # Log any API responses captured
+            for r in api_seat_data[:3]:
+                print(f"      📡 API hit: {r['url'][:100]} → {r['body'][:100]}")
+            if not api_seat_data:
+                print(f"      📡 No seat-related API calls captured")
             return None
     except Exception as e:
         print(f"      ⚠️  Seat page failed: {e}")
         return None
+    finally:
+        page.remove_listener("response", on_response)
 
     seat_data = await page.evaluate(COUNT_SEATS_JS)
 
