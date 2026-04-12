@@ -475,13 +475,18 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         #   Standard recliners  → "Recliner A1"
         #   IMAX / Dolby rooms  → "AMC Club Rocker A1"
         #   Generic labeled     → "Seat A1"
+        final_url = page.url
+        title = await page.title()
+        print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
         try:
             await page.wait_for_selector(
                 'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
                 timeout=15000,
             )
         except Exception:
-            # No seat inputs — general admission or broken page
+            # Log what's actually on the page for diagnosis
+            body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
+            print(f"      ⚠️  No seat inputs found. Page text: {body_snippet[:150]}")
             return None
     except Exception as e:
         print(f"      ⚠️  Seat page failed: {e}")
