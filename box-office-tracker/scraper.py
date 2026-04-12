@@ -486,7 +486,21 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
     try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        await page.goto(url, wait_until="load", timeout=30000)
+
+        # Dismiss OneTrust cookie consent banner if present — it blocks the seat map
+        # from rendering on first visit. Accept quickly so React can hydrate.
+        try:
+            cookie_btn = await page.wait_for_selector(
+                "#onetrust-accept-btn-handler, button:has-text('Accept All'), button:has-text('Accept Cookies')",
+                timeout=4000,
+            )
+            if cookie_btn:
+                await cookie_btn.click()
+                await page.wait_for_timeout(500)
+        except Exception:
+            pass  # No cookie banner — fine, continue
+
         # Smart wait: seat inputs appear once the seat map JS hydrates.
         # AMC uses different aria-label patterns by seat type:
         #   Standard recliners  → "Recliner A1"
@@ -498,7 +512,7 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         try:
             await page.wait_for_selector(
                 'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
-                timeout=15000,
+                timeout=20000,
             )
         except Exception:
             # Log what's actually on the page for diagnosis
