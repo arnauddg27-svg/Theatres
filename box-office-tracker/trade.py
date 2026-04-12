@@ -60,10 +60,12 @@ CLOB_HOST = "https://clob.polymarket.com"
 def load_trade_config() -> dict:
     """Load trading config from env vars."""
     load_dotenv()
-    # Also check parent project's .env files
+    # Check .env files in order: script dir, parent dir, then VPS persistent store
     for env_path in [
         os.path.join(os.path.dirname(__file__), ".env"),
         os.path.join(os.path.dirname(__file__), "..", ".env"),
+        os.path.expanduser("~/.polymarket.env"),   # persistent on EU VPS, survives GHA checkout
+        "/home/gha/.polymarket.env",               # when running as root/other user on VPS
     ]:
         if os.path.exists(env_path):
             load_dotenv(env_path)
