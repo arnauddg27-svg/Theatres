@@ -68,7 +68,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip3 install -r requirements.txt
-          python3 -m playwright install chromium --with-deps
+          python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
 
       - name: Determine timezone group and phase
         id: tz
