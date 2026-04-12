@@ -513,11 +513,12 @@ def _extract_seats_from_next_data(props, showtime_id):
 
 async def fetch_amc_seat_map_pw(page, showtime_id):
     """
-    Fetch seat map for a specific showtime using Playwright.
+    Navigate to /showtimes/{id}/seats and count seat inputs.
 
-    Strategy: AMC uses Next.js. The server embeds initial props in window.__NEXT_DATA__
-    inside the initial HTML. We extract seat data from there first (fastest, no RSC
-    needed). If not present, fall back to waiting for DOM inputs.
+    AMC uses Next.js RSC (React Server Components). From datacenter IPs those
+    RSC requests get 403'd, breaking React hydration. We intercept and silence
+    them so the seat map (which IS server-rendered in the initial HTML for
+    in-progress/imminent shows) can render without errors.
 
     Returns dict with total_seats, seats_sold, seats_available, occupancy_pct.
     """
@@ -526,46 +527,35 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
+    # Silence Next.js RSC requests — they 403 from cloud IPs and break hydration.
+    # The seat map data is SSR'd into the page for active shows, so we don't need them.
+    async def block_rsc(route):
+        if "_rsc=" in route.request.url:
+            await route.fulfill(status=200, content_type="text/plain", body="")
+        else:
+            await route.continue_()
+
+    await page.route("**/*", block_rsc)
+
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
-    except Exception as e:
-        print(f"      ⚠️  Seat page goto failed: {e}")
-        return None
-
-    final_url = page.url
-    title = await page.title()
-    print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
-
-    # ── Strategy 1: read window.__NEXT_DATA__ (server-side rendered, no RSC needed)
-    try:
-        next_data_raw = await page.evaluate("() => JSON.stringify(window.__NEXT_DATA__ || null)")
-        if next_data_raw and next_data_raw != "null":
-            next_data = json.loads(next_data_raw)
-            # Dump key structure for debugging
-            props = next_data.get("props", {}).get("pageProps", {})
-            print(f"      📦 __NEXT_DATA__ keys: {list(props.keys())[:10]}")
-            # Try to find seat data within the props tree
-            seat_data = _extract_seats_from_next_data(props, showtime_id)
-            if seat_data:
-                print(f"      ✅ Seat data from __NEXT_DATA__: {seat_data}")
-                return seat_data
-            else:
-                print(f"      📦 No seat data in __NEXT_DATA__ props")
-        else:
-            print(f"      📦 __NEXT_DATA__ is null/missing")
-    except Exception as e:
-        print(f"      📦 __NEXT_DATA__ read failed: {e}")
-
-    # ── Strategy 2: wait for DOM inputs (React hydration path)
-    try:
+        final_url = page.url
+        title = await page.title()
+        print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
         await page.wait_for_selector(
             'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
             timeout=12000,
         )
-    except Exception:
+    except Exception as e:
         body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
-        print(f"      ⚠️  No seat inputs. Page text: {body_snippet[:150]}")
+        print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
+        await page.unroute("**/*")
         return None
+    finally:
+        try:
+            await page.unroute("**/*")
+        except Exception:
+            pass
 
     seat_data = await page.evaluate(COUNT_SEATS_JS)
 
