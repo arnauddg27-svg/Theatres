@@ -137,17 +137,24 @@ def load_seat_data(weekend_of=None):
         weekend_of = max(weekends) if weekends else _current_weekend_friday()
 
     data = {}
+    rows = []
     with open(SEAT_CSV, "r") as f:
         for row in csv.DictReader(f):
             movie = row.get("movie_title", "")
             date = row.get("date", "")
             if not movie or not date:
                 continue
-            # Filter to this weekend if the column exists
-            row_weekend = row.get("weekend_of", "")
-            if row_weekend and row_weekend != weekend_of:
-                continue
-            data.setdefault(movie, {}).setdefault(date, []).append(row)
+            rows.append(row)
+
+    # Determine whether ANY row in this file has weekend_of set.
+    # If yes, filter strictly by weekend_of; if no (pure old-format CSV),
+    # include all rows so we don't accidentally drop everything.
+    has_weekend_col = any(r.get("weekend_of", "") for r in rows)
+    for row in rows:
+        row_weekend = row.get("weekend_of", "")
+        if has_weekend_col and row_weekend != weekend_of:
+            continue
+        data.setdefault(row["movie_title"], {}).setdefault(row["date"], []).append(row)
     return data
 
 
