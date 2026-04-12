@@ -763,6 +763,13 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         locale="en-US",
     )
     await context.add_init_script(_STEALTH_INIT_SCRIPT)
+    # Pre-accept OneTrust cookie consent so the banner never blocks the seat map
+    await context.add_cookies([
+        {"name": "OptanonAlertBoxClosed", "value": "2026-01-01T00:00:00.000Z",
+         "domain": ".amctheatres.com", "path": "/", "sameSite": "Lax"},
+        {"name": "OptanonConsent", "value": "isGpcEnabled=0&datestamp=Wed+Jan+01+2026+00%3A00%3A00+GMT&version=6.37.0&isIABGlobal=false&hosts=&consentId=abc&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CC0002%3A1%2CC0003%3A1%2CC0004%3A1&geolocation=%3B&AwaitingReconsent=false",
+         "domain": ".amctheatres.com", "path": "/", "sameSite": "Lax"},
+    ])
     page = await context.new_page()
     results = []
     issues = []
