@@ -452,7 +452,7 @@ def polymarket_expected_value(markets_for_movie):
             "low": low, "high": high, "midpoint": midpoint,
             "p_yes": p_yes, "question": question,
         })
-        total_volume = max(total_volume, vol)
+        total_volume += vol
 
     if not brackets:
         return None
