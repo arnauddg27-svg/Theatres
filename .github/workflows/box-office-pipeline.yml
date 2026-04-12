@@ -55,7 +55,7 @@ permissions:
 
 jobs:
   collect:
-    runs-on: ubuntu-22.04
+    runs-on: [self-hosted, local]
     timeout-minutes: 90
 
     steps:
