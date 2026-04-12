@@ -150,23 +150,6 @@ jobs:
         working-directory: box-office-tracker
         run: python3 predict.py
 
-      - name: Trade on Polymarket bracket markets (Thu-Sun only)
-        if: |
-          steps.tz.outputs.phase == 'scrape' &&
-          (steps.tz.outputs.group == 'PT' || github.event_name == 'workflow_dispatch')
-        working-directory: box-office-tracker
-        run: |
-          # Only trade Thu-Sun (opening weekend). PT runs last so we have all-timezone data.
-          # Credentials loaded from /home/gha/.polymarket.env (DRY_RUN=true by default).
-          # Change to DRY_RUN=false in that file when ready to go live.
-          DOW=$(date +%u)  # 1=Mon ... 7=Sun
-          if [ "$DOW" -ge 4 ] || [ "${{ github.event.inputs.force }}" = "true" ]; then
-            echo "Day=$DOW — running trade.py..."
-            python3 trade.py
-          else
-            echo "Day=$DOW — skipping trade (only runs Thu=4 through Sun=7)"
-          fi
-
       - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
