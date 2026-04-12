@@ -486,7 +486,7 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
 
     try:
-        await page.goto(url, wait_until="load", timeout=30000)
+        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
 
         # Dismiss OneTrust cookie consent banner if present — it blocks the seat map
         # from rendering on first visit. Accept quickly so React can hydrate.
