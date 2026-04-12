@@ -695,7 +695,7 @@ def log_run(tz_group, movies, results, issues):
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
-                          weekend_of="", run_id="", saved_movies=None):
+                          weekend_of="", run_id="", saved_movies=None, test_mode=False):
     """
     Scrape one theatre's seat maps using pre-collected Phase 1 showtime IDs.
 
@@ -753,6 +753,9 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     f"{e.get('format','Standard')} @ {e['showtime']} (saved link)",
                 ))
             shows.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
+            # In test mode, only try the single highest-priority show per movie
+            if test_mode:
+                shows = shows[:1]
             movie_shows_map[movie_title] = shows
 
         for movie_title, evening_shows in movie_shows_map.items():
@@ -1097,6 +1100,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     browser, theatre, t_date, movie_titles, market_urls,
                     weekend_of=weekend, run_id=run_id,
                     saved_movies=theatre_saved,
+                    test_mode=bool(test_max),
                 )
 
         tasks = [bounded_scrape(t) for t in all_theatres]
