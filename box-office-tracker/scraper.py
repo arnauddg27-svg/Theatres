@@ -1138,44 +1138,47 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         print("❌ No theatres found in saved links for this timezone group.")
         return
 
-    # Step 3: Parallel scrape with semaphore
+    # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
     all_issues = []
-    rows_to_write = []
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
+    write_lock = asyncio.Lock()
+    written_rows = 0
+    skipped_rows = 0
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded_scrape(theatre):
+            nonlocal written_rows, skipped_rows
             async with sem:
                 t_date = theatre.get("_date", today)
                 theatre_saved = saved_links[theatre["name"]].get("movies")
-                return await _scrape_theatre(
+                outcome = await _scrape_theatre(
                     browser, theatre, t_date, movie_titles, market_urls,
                     weekend_of=weekend, run_id=run_id,
                     saved_movies=theatre_saved,
                     test_mode=bool(test_max),
                 )
+            if isinstance(outcome, Exception):
+                name = theatre["name"]
+                all_issues.append(f"{name}: {outcome}")
+                print(f"  ❌ {name}: {outcome}")
+                return
+            results, issues, csv_rows = outcome
+            all_results.extend(results)
+            all_issues.extend(issues)
+            # Flush to disk immediately so data survives a mid-run kill
+            if csv_rows:
+                async with write_lock:
+                    w, s = append_unique_seat_rows(csv_rows)
+                    written_rows += w
+                    skipped_rows += s
 
         tasks = [bounded_scrape(t) for t in all_theatres]
-        outcomes = await asyncio.gather(*tasks, return_exceptions=True)
+        await asyncio.gather(*tasks)
 
         await browser.close()
-
-    # Step 4: Collect results and write CSV rows
-    for i, outcome in enumerate(outcomes):
-        if isinstance(outcome, Exception):
-            name = all_theatres[i]["name"]
-            all_issues.append(f"{name}: {outcome}")
-            print(f"  ❌ {name}: {outcome}")
-            continue
-        results, issues, csv_rows = outcome
-        all_results.extend(results)
-        all_issues.extend(issues)
-        rows_to_write.extend(csv_rows)
-
-    written_rows, skipped_rows = append_unique_seat_rows(rows_to_write)
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
 
