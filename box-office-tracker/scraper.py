@@ -71,9 +71,10 @@ FORMAT_PRIORITY = {
     "digital": 10,
 }
 
-# Concurrency — keep low for both phases to avoid AMC rate-limiting.
-MAX_CONCURRENT_TABS = 3
-MAX_CONCURRENT_TABS_PHASE1 = 2
+# Concurrency — 1 tab at a time on the 458MB VPS to avoid OOM-killing Chromium.
+# 3 concurrent contexts pushed RAM to ~375MB, past the OOM threshold.
+MAX_CONCURRENT_TABS = 1
+MAX_CONCURRENT_TABS_PHASE1 = 1
 
 # Rotate through realistic Chrome user agents to reduce rate-limiting.
 _USER_AGENTS = [
@@ -88,12 +89,20 @@ _USER_AGENTS = [
 ]
 
 # Launch args that suppress headless-browser fingerprints detected by sites like AMC
+# and minimise memory on the 458MB VPS.
 _CHROMIUM_ARGS = [
     "--disable-blink-features=AutomationControlled",
     "--no-sandbox",
     "--disable-dev-shm-usage",
     "--disable-gpu",
     "--window-size=1280,800",
+    # Memory-saving flags for low-RAM VPS
+    "--disable-extensions",
+    "--disable-sync",
+    "--disable-background-networking",
+    "--disable-default-apps",
+    "--no-first-run",
+    "--js-flags=--max-old-space-size=128",
 ]
 
 # Injected into every page before any script runs — removes the webdriver flag
