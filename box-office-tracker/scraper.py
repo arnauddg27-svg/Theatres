@@ -71,10 +71,9 @@ FORMAT_PRIORITY = {
     "digital": 10,
 }
 
-# Concurrency — 1 tab at a time on the 458MB VPS to avoid OOM-killing Chromium.
-# 3 concurrent contexts pushed RAM to ~375MB, past the OOM threshold.
-MAX_CONCURRENT_TABS = 1
-MAX_CONCURRENT_TABS_PHASE1 = 1
+# Concurrency — 3 tabs on the 2GB VPS (Chromium base ~150MB + 3×75MB = ~375MB, well within limits).
+MAX_CONCURRENT_TABS = 3
+MAX_CONCURRENT_TABS_PHASE1 = 2
 
 # Rotate through realistic Chrome user agents to reduce rate-limiting.
 _USER_AGENTS = [
