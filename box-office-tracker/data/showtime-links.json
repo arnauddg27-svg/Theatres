@@ -2,7 +2,7 @@
   "date": "2026-04-10",
   "weekend_of": "2026-04-10",
   "collected_local_date": "2026-04-13",
-  "collected_at": "2026-04-13T22:10:34.023145+00:00",
+  "collected_at": "2026-04-13T22:45:55.297172+00:00",
   "theatres": {
     "AMC Empire 25": {
       "tz": "ET",
@@ -3383,18 +3383,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
+            "showtime": "5:25pm",
+            "showtime_id": "142101618",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "141481096",
+            "showtime_id": "141481098",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142101641",
+            "showtime": "8:10pm",
+            "showtime_id": "142101616",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141481097",
+            "showtime": "10:30pm",
+            "showtime_id": "141481101",
             "format": "Laser at AMC"
           }
         ]
@@ -3405,13 +3410,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141467228",
+            "showtime": "7:30pm",
+            "showtime_id": "141467232",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141467227",
+            "showtime": "10:00pm",
+            "showtime_id": "141467231",
             "format": "Laser at AMC"
           }
         ]
@@ -3422,23 +3427,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142132339",
+            "showtime": "6:15pm",
+            "showtime_id": "141340012",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141340008",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142132338",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141340009",
+            "showtime": "9:00pm",
+            "showtime_id": "141340013",
             "format": "Laser at AMC"
           }
         ]
@@ -3450,22 +3445,22 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142144369",
+            "showtime_id": "142144371",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141302346",
+            "showtime": "7:15pm",
+            "showtime_id": "141302350",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "142144370",
+            "showtime_id": "142144372",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141302347",
+            "showtime": "10:00pm",
+            "showtime_id": "141302351",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -3477,12 +3472,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:20pm",
-            "showtime_id": "141335833",
+            "showtime_id": "142116601",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141335834",
+            "showtime": "10:10pm",
+            "showtime_id": "142116602",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -3494,12 +3489,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141381051",
+            "showtime_id": "141381055",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "142091161",
+            "showtime_id": "142091160",
             "format": "undefined"
           }
         ]
@@ -3510,18 +3505,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
+            "showtime": "9:45pm",
+            "showtime_id": "142192411",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "141486796",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "142229364",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "142192145",
+            "showtime_id": "141486799",
             "format": "Laser at AMC"
           }
         ]
@@ -3532,13 +3522,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "142188697",
+            "showtime": "5:30pm",
+            "showtime_id": "142188688",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142188698",
+            "showtime": "6:30pm",
+            "showtime_id": "141332473",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142188686",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141332474",
             "format": "Laser at AMC"
           }
         ]
@@ -3549,23 +3549,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "142111013",
+            "showtime": "7:00pm",
+            "showtime_id": "141365176",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141365172",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141365173",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142111011",
+            "showtime": "9:45pm",
+            "showtime_id": "141365177",
             "format": "Laser at AMC"
           }
         ]
@@ -3577,12 +3567,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141408107",
+            "showtime_id": "141408112",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142106229",
+            "showtime": "9:45pm",
+            "showtime_id": "141408113",
             "format": "Laser at AMC"
           }
         ]
@@ -3593,13 +3583,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141384892",
-            "format": "undefined"
+            "showtime": "7:45pm",
+            "showtime_id": "141384877",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "142105240",
+            "showtime_id": "142105184",
             "format": "undefined"
           }
         ]
@@ -3611,12 +3601,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "142175112",
+            "showtime_id": "142195641",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "142175113",
+            "showtime_id": "142195642",
             "format": "Laser at AMC"
           }
         ]
@@ -3627,18 +3617,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "141368837",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141368835",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "141368836",
+            "showtime": "7:15pm",
+            "showtime_id": "141368840",
             "format": "Laser at AMC"
           }
         ]
@@ -3650,12 +3630,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141366231",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142113990",
+            "showtime_id": "141366210",
             "format": "undefined"
           }
         ]
@@ -3667,17 +3642,17 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141469077",
+            "showtime_id": "141469079",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142163907",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "141469078",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142133056",
+            "showtime_id": "141469089",
             "format": "Laser at AMC"
           }
         ]
@@ -3688,23 +3663,33 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "141409271",
+            "showtime": "7:00pm",
+            "showtime_id": "141409276",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "142197284",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "142197335",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:50pm",
-            "showtime_id": "142178074",
+            "showtime_id": "142197337",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "141409270",
+            "showtime": "9:45pm",
+            "showtime_id": "141409275",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "142178075",
+            "showtime_id": "142197334",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -3715,18 +3700,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "141517503",
+            "showtime": "6:45pm",
+            "showtime_id": "141517508",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142193305",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141517504",
+            "showtime": "9:25pm",
+            "showtime_id": "141517509",
             "format": "Laser at AMC"
           }
         ]
@@ -3737,18 +3717,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
+            "showtime": "6:15pm",
+            "showtime_id": "141466401",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "141466488",
+            "showtime_id": "141466493",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "142121815",
+            "showtime": "9:05pm",
+            "showtime_id": "142121811",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141466489",
+            "showtime": "10:00pm",
+            "showtime_id": "141466494",
             "format": "Laser at AMC"
           }
         ]
@@ -3759,23 +3744,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142178772",
+            "showtime": "9:30pm",
+            "showtime_id": "142178708",
             "format": "undefined"
           },
           {
-            "showtime": "8:35pm",
-            "showtime_id": "142178773",
+            "showtime": "5:30pm",
+            "showtime_id": "142178769",
             "format": "undefined"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141471091",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "141471092",
+            "showtime": "8:10pm",
+            "showtime_id": "142178766",
             "format": "undefined"
           }
         ]
@@ -3786,18 +3766,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "142141545",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "141444432",
+            "showtime_id": "141444436",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142150288",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141444433",
+            "showtime": "9:00pm",
+            "showtime_id": "141444437",
             "format": "Laser at AMC"
           }
         ]
@@ -3808,13 +3788,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141323825",
-            "format": "Laser at AMC"
+            "showtime": "5:30pm",
+            "showtime_id": "141323766",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "141323828",
+            "showtime": "8:10pm",
+            "showtime_id": "141323829",
             "format": "Laser at AMC"
           }
         ]
@@ -3826,12 +3806,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141493950",
-            "format": "Laser at AMC"
+            "showtime_id": "141493868",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141493951",
+            "showtime": "9:45pm",
+            "showtime_id": "142186945",
             "format": "Laser at AMC"
           }
         ]
@@ -3842,28 +3822,28 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141340511",
+            "showtime": "6:30pm",
+            "showtime_id": "141340513",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "142099139",
+            "showtime": "7:45pm",
+            "showtime_id": "142137153",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "142099118",
+            "showtime": "8:30pm",
+            "showtime_id": "142136996",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142235185",
+            "showtime": "9:15pm",
+            "showtime_id": "142136978",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "142099140",
+            "showtime_id": "142137007",
             "format": "Laser at AMC"
           }
         ]
@@ -3874,28 +3854,28 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "142107595",
-            "format": "Laser at AMC"
+            "showtime": "7:20pm",
+            "showtime_id": "141322934",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:05pm",
-            "showtime_id": "141322928",
+            "showtime": "5:10pm",
+            "showtime_id": "142107588",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142107596",
+            "showtime_id": "142107589",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141322929",
+            "showtime_id": "141322933",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "142107597",
+            "showtime_id": "142107590",
             "format": "Laser at AMC"
           }
         ]
@@ -3906,23 +3886,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141322690",
+            "showtime": "6:55pm",
+            "showtime_id": "142185397",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:25pm",
-            "showtime_id": "142163042",
+            "showtime": "8:20pm",
+            "showtime_id": "142185386",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "142163020",
+            "showtime": "9:30pm",
+            "showtime_id": "142185410",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141322691",
+            "showtime": "10:30pm",
+            "showtime_id": "142185381",
             "format": "Laser at AMC"
           }
         ]
@@ -3933,13 +3913,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141486689",
+            "showtime": "7:45pm",
+            "showtime_id": "141486691",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142219285",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141486690",
+            "showtime": "9:45pm",
+            "showtime_id": "142219288",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141486692",
             "format": "Laser at AMC"
           }
         ]
@@ -3951,12 +3941,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "142193665",
+            "showtime_id": "141494567",
             "format": "undefined"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142193666",
+            "showtime_id": "141494568",
             "format": "undefined"
           }
         ]
@@ -3967,13 +3957,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141325846",
+            "showtime": "7:00pm",
+            "showtime_id": "141325849",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141325847",
+            "showtime_id": "141325851",
             "format": "Laser at AMC"
           }
         ]
@@ -3984,23 +3974,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "142176213",
+            "showtime": "6:25pm",
+            "showtime_id": "142176185",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141446252",
+            "showtime": "7:15pm",
+            "showtime_id": "141446254",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "142176214",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141446253",
+            "showtime": "10:00pm",
+            "showtime_id": "141446255",
             "format": "Laser at AMC"
           }
         ]
@@ -4011,18 +3996,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141518433",
+            "showtime": "5:15pm",
+            "showtime_id": "141518440",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "142234951",
+            "showtime": "6:50pm",
+            "showtime_id": "142237152",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:55pm",
+            "showtime_id": "141518438",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:35pm",
-            "showtime_id": "141518434",
+            "showtime_id": "141518439",
             "format": "Laser at AMC"
           }
         ]
@@ -4033,13 +4023,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142072839",
+            "showtime": "6:15pm",
+            "showtime_id": "141521646",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142072865",
+            "showtime": "9:00pm",
+            "showtime_id": "141521645",
             "format": "Laser at AMC"
           }
         ]
@@ -4051,12 +4041,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141487005",
+            "showtime_id": "141486984",
             "format": "undefined"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141487006",
+            "showtime_id": "141486985",
             "format": "undefined"
           }
         ]
@@ -4067,13 +4057,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141329168",
+            "showtime": "6:30pm",
+            "showtime_id": "141329172",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141329169",
+            "showtime": "9:15pm",
+            "showtime_id": "141329173",
             "format": "undefined"
           }
         ]
@@ -4085,12 +4075,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141495618",
+            "showtime_id": "141495622",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141495619",
+            "showtime_id": "141495623",
             "format": "undefined"
           }
         ]
@@ -4101,13 +4091,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141462112",
+            "showtime": "5:30pm",
+            "showtime_id": "141462115",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141462113",
+            "showtime": "8:15pm",
+            "showtime_id": "141462116",
             "format": "undefined"
           }
         ]
@@ -4118,18 +4108,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141466118",
+            "showtime": "6:15pm",
+            "showtime_id": "141466116",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142121450",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141466119",
+            "showtime": "9:00pm",
+            "showtime_id": "141466117",
             "format": "undefined"
           }
         ]
@@ -4140,8 +4125,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:50pm",
-            "showtime_id": "141522652",
+            "showtime": "5:40pm",
+            "showtime_id": "141522656",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "141522657",
             "format": "undefined"
           }
         ]
@@ -4152,13 +4142,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141506410",
+            "showtime": "7:45pm",
+            "showtime_id": "141506415",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "142127154",
+            "showtime": "9:40pm",
+            "showtime_id": "142135316",
             "format": "Laser at AMC"
           }
         ]
@@ -4170,12 +4160,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "142090718",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "142090701",
+            "showtime_id": "142090726",
             "format": "Laser at AMC"
           }
         ]
@@ -4186,8 +4171,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "142120022",
+            "showtime": "6:15pm",
+            "showtime_id": "141512662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142120017",
             "format": "Laser at AMC"
           }
         ]
@@ -4198,18 +4188,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141469983",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142163619",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141469986",
+            "showtime": "7:00pm",
+            "showtime_id": "141469987",
             "format": "undefined"
           }
         ]
@@ -4220,23 +4200,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141505282",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "142107210",
+            "showtime": "6:15pm",
+            "showtime_id": "142113783",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141505283",
+            "showtime_id": "141505288",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141505284",
+            "showtime_id": "141505289",
             "format": "Laser at AMC"
           }
         ]
@@ -4248,12 +4223,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141475350",
+            "showtime_id": "141475353",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141475349",
+            "showtime_id": "141475352",
             "format": "Laser at AMC"
           }
         ]
@@ -4264,13 +4239,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141496905",
+            "showtime": "7:20pm",
+            "showtime_id": "141496908",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141496906",
+            "showtime": "10:10pm",
+            "showtime_id": "141496909",
             "format": "Laser at AMC"
           }
         ]
@@ -4281,8 +4256,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141507711",
+            "showtime": "5:45pm",
+            "showtime_id": "141507713",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141507712",
             "format": "undefined"
           }
         ]
@@ -4293,13 +4273,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141335907",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141335910",
+            "showtime": "7:00pm",
+            "showtime_id": "141335911",
             "format": "undefined"
           }
         ]
@@ -4310,14 +4285,9 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141414332",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141414333",
-            "format": "undefined"
+            "showtime": "7:30pm",
+            "showtime_id": "141414336",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
@@ -4327,13 +4297,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141388590",
+            "showtime": "7:30pm",
+            "showtime_id": "141388553",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141388591",
+            "showtime": "10:00pm",
+            "showtime_id": "141388554",
             "format": "Laser at AMC"
           }
         ]
@@ -4345,22 +4315,22 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "142154402",
+            "showtime_id": "141434750",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141434746",
+            "showtime": "7:00pm",
+            "showtime_id": "142154191",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "142154401",
+            "showtime_id": "142154390",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141434745",
+            "showtime": "9:45pm",
+            "showtime_id": "141434749",
             "format": "Laser at AMC"
           }
         ]
@@ -4372,22 +4342,17 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "141422243",
-            "format": "Laser at AMC"
+            "showtime_id": "141422247",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142111579",
+            "showtime": "7:15pm",
+            "showtime_id": "142111668",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141422244",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142111600",
+            "showtime_id": "141422248",
             "format": "Laser at AMC"
           }
         ]
@@ -4399,12 +4364,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141503355",
+            "showtime_id": "141503358",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "142153625",
+            "showtime": "9:30pm",
+            "showtime_id": "142153619",
             "format": "Laser at AMC"
           }
         ]
@@ -4416,17 +4381,17 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141333568",
+            "showtime_id": "141333537",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142124042",
+            "showtime": "8:20pm",
+            "showtime_id": "142148997",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141333569",
+            "showtime_id": "141333538",
             "format": "Laser at AMC"
           }
         ]
@@ -4437,23 +4402,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "142198203",
+            "showtime": "7:00pm",
+            "showtime_id": "141489278",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142234959",
+            "showtime": "8:00pm",
+            "showtime_id": "142198037",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142198166",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141489272",
+            "showtime": "9:45pm",
+            "showtime_id": "142198199",
             "format": "Laser at AMC"
           }
         ]
@@ -4465,12 +4425,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141325239",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:10pm",
-            "showtime_id": "141325240",
+            "showtime_id": "141325243",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4482,12 +4437,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141480571",
+            "showtime_id": "141480576",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141480572",
+            "showtime_id": "141480577",
             "format": "undefined"
           }
         ]
@@ -4499,17 +4454,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141322378",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "142233664",
+            "showtime_id": "141322383",
             "format": "undefined"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141322379",
+            "showtime_id": "141322384",
             "format": "undefined"
           }
         ]
@@ -4520,13 +4470,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "142068610",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "142068608",
+            "showtime": "7:20pm",
+            "showtime_id": "142068613",
             "format": "undefined"
           }
         ]
@@ -4537,13 +4482,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142159498",
-            "format": "Laser at AMC"
+            "showtime": "6:15pm",
+            "showtime_id": "141470766",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "142159499",
+            "showtime": "9:05pm",
+            "showtime_id": "141470765",
             "format": "Laser at AMC"
           }
         ]
@@ -4554,13 +4499,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141523557",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141523558",
+            "showtime": "7:30pm",
+            "showtime_id": "141523561",
             "format": "undefined"
           }
         ]
@@ -4571,13 +4511,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141513854",
+            "showtime": "5:30pm",
+            "showtime_id": "141513857",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141513855",
+            "showtime": "8:00pm",
+            "showtime_id": "141513856",
             "format": "undefined"
           }
         ]
@@ -4588,13 +4528,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141327437",
+            "showtime": "7:45pm",
+            "showtime_id": "141327404",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141327436",
+            "showtime": "9:30pm",
+            "showtime_id": "142228601",
             "format": "undefined"
           }
         ]
@@ -4605,13 +4545,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141447753",
+            "showtime": "7:15pm",
+            "showtime_id": "141447754",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141447752",
+            "showtime_id": "142153368",
             "format": "undefined"
           }
         ]
@@ -4622,13 +4562,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141348336",
+            "showtime": "6:30pm",
+            "showtime_id": "141348339",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141348337",
+            "showtime": "9:15pm",
+            "showtime_id": "141348340",
             "format": "undefined"
           }
         ]
@@ -4640,12 +4580,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:20pm",
-            "showtime_id": "141360073",
+            "showtime_id": "141360077",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141360074",
+            "showtime_id": "141360078",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4656,8 +4596,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141338404",
+            "showtime": "6:00pm",
+            "showtime_id": "141338410",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141338411",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4668,8 +4613,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141414987",
+            "showtime": "7:15pm",
+            "showtime_id": "141414991",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4680,13 +4625,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141512282",
+            "showtime": "7:15pm",
+            "showtime_id": "141512288",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141512283",
+            "showtime": "10:00pm",
+            "showtime_id": "141512289",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4697,18 +4642,18 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142129328",
+            "showtime": "7:20pm",
+            "showtime_id": "141512827",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "141512822",
+            "showtime": "8:15pm",
+            "showtime_id": "142129183",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "141512823",
+            "showtime_id": "141512828",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4719,13 +4664,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141320957",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "141320958",
+            "showtime": "7:30pm",
+            "showtime_id": "141320961",
             "format": "undefined"
           }
         ]
@@ -4737,7 +4677,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:20pm",
-            "showtime_id": "141322180",
+            "showtime_id": "141322184",
             "format": "undefined"
           }
         ]
@@ -4748,13 +4688,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141503831",
-            "format": "undefined"
+            "showtime": "9:45pm",
+            "showtime_id": "141503835",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141503832",
+            "showtime": "7:10pm",
+            "showtime_id": "141503834",
             "format": "undefined"
           }
         ]
@@ -4765,8 +4705,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "141341006",
+            "showtime": "5:50pm",
+            "showtime_id": "141341010",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "141341009",
             "format": "undefined"
           }
         ]
@@ -4777,13 +4722,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142190486",
+            "showtime": "6:50pm",
+            "showtime_id": "141591898",
             "format": "undefined"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142190487",
+            "showtime_id": "141591899",
             "format": "undefined"
           }
         ]
@@ -4794,13 +4739,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:40pm",
-            "showtime_id": "141373200",
+            "showtime": "6:25pm",
+            "showtime_id": "141373205",
             "format": "undefined"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "141373199",
+            "showtime": "9:10pm",
+            "showtime_id": "141373204",
             "format": "undefined"
           }
         ]
@@ -4812,12 +4757,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141496458",
+            "showtime_id": "141496463",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141496459",
+            "showtime_id": "142126298",
             "format": "undefined"
           }
         ]
@@ -4828,13 +4773,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141491951",
+            "showtime": "6:30pm",
+            "showtime_id": "141431342",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "141491952",
+            "showtime": "9:20pm",
+            "showtime_id": "141431343",
             "format": "Laser at AMC"
           }
         ]
@@ -4846,7 +4791,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141494853",
+            "showtime_id": "141494855",
             "format": "undefined"
           }
         ]
@@ -4857,14 +4802,9 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:25pm",
-            "showtime_id": "142118649",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "142118646",
-            "format": "undefined"
+            "showtime": "7:35pm",
+            "showtime_id": "142120733",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
@@ -4875,22 +4815,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "142135021",
+            "showtime_id": "142140986",
             "format": "undefined"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142135079",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "142135022",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "142135080",
+            "showtime_id": "142141005",
             "format": "undefined"
           }
         ]
@@ -4901,13 +4831,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "142079810",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142079795",
+            "showtime": "6:30pm",
+            "showtime_id": "142079763",
             "format": "undefined"
           }
         ]
@@ -4918,18 +4843,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141321080",
+            "showtime": "7:15pm",
+            "showtime_id": "141321084",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141321078",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141321079",
+            "showtime": "10:00pm",
+            "showtime_id": "141321083",
             "format": "Laser at AMC"
           }
         ]
@@ -4940,13 +4860,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141367992",
+            "showtime": "5:30pm",
+            "showtime_id": "141367996",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142058755",
+            "showtime": "8:15pm",
+            "showtime_id": "141367997",
             "format": "Laser at AMC"
           }
         ]
@@ -4957,13 +4877,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141525742",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142118222",
+            "showtime": "7:15pm",
+            "showtime_id": "141525747",
             "format": "undefined"
           }
         ]
@@ -4975,12 +4890,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141520267",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "142170185",
+            "showtime_id": "141520269",
             "format": "undefined"
           }
         ]
@@ -4992,12 +4902,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:20pm",
-            "showtime_id": "141394358",
+            "showtime_id": "141394362",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141394359",
+            "showtime": "9:30pm",
+            "showtime_id": "141394363",
             "format": "undefined"
           }
         ]
@@ -5009,12 +4919,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "142143485",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:50pm",
-            "showtime_id": "142143486",
+            "showtime_id": "141331049",
             "format": "undefined"
           }
         ]
@@ -5025,13 +4930,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141365471",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "142084051",
+            "showtime": "7:45pm",
+            "showtime_id": "141365473",
             "format": "undefined"
           }
         ]
@@ -5042,13 +4942,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:05pm",
-            "showtime_id": "141339264",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "142134629",
+            "showtime": "7:55pm",
+            "showtime_id": "141339268",
             "format": "undefined"
           }
         ]
@@ -5059,13 +4954,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141522847",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141522846",
+            "showtime": "7:30pm",
+            "showtime_id": "142143122",
             "format": "undefined"
           }
         ]
@@ -5077,12 +4967,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141494117",
+            "showtime_id": "141494123",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141494118",
+            "showtime_id": "141494122",
             "format": "Laser at AMC"
           }
         ]
@@ -5094,12 +4984,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141366635",
-            "format": "undefined"
+            "showtime_id": "141366617",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141366638",
+            "showtime_id": "142093264",
             "format": "undefined"
           }
         ]
@@ -5110,13 +5000,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141489823",
+            "showtime": "7:15pm",
+            "showtime_id": "141489828",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141489824",
+            "showtime": "10:00pm",
+            "showtime_id": "141489829",
             "format": "Laser at AMC"
           }
         ]
@@ -5127,8 +5017,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:50pm",
-            "showtime_id": "141403095",
+            "showtime": "5:30pm",
+            "showtime_id": "141403108",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142144319",
             "format": "undefined"
           }
         ]
@@ -5139,13 +5034,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141332102",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141332078",
+            "showtime": "8:00pm",
+            "showtime_id": "141332105",
             "format": "undefined"
           }
         ]
@@ -5157,12 +5047,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141462801",
+            "showtime_id": "142069117",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141462802",
+            "showtime_id": "142069116",
             "format": "undefined"
           }
         ]
@@ -5174,22 +5064,17 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "142134098",
+            "showtime_id": "142134095",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142133785",
+            "showtime": "7:30pm",
+            "showtime_id": "142133780",
             "format": "undefined"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "142134099",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142133786",
+            "showtime_id": "142134096",
             "format": "undefined"
           }
         ]
@@ -5200,8 +5085,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "142138207",
+            "showtime": "7:45pm",
+            "showtime_id": "141517558",
             "format": "undefined"
           }
         ]
@@ -5213,12 +5098,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141505704",
+            "showtime_id": "142096604",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141505705",
+            "showtime_id": "142096603",
             "format": "undefined"
           }
         ]
@@ -5229,13 +5114,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141488310",
-            "format": "undefined"
+            "showtime": "6:20pm",
+            "showtime_id": "141488317",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141488311",
+            "showtime": "7:50pm",
+            "showtime_id": "142164829",
             "format": "undefined"
           }
         ]
@@ -5246,13 +5131,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "142075333",
+            "showtime": "5:30pm",
+            "showtime_id": "142075336",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "142075332",
+            "showtime": "8:20pm",
+            "showtime_id": "141495915",
             "format": "undefined"
           }
         ]
@@ -5263,13 +5148,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141388229",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142116199",
+            "showtime": "7:15pm",
+            "showtime_id": "141388232",
             "format": "undefined"
           }
         ]
@@ -5281,22 +5161,22 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "142145632",
+            "showtime_id": "142174954",
             "format": "undefined"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141417432",
+            "showtime": "7:30pm",
+            "showtime_id": "141417436",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142145631",
+            "showtime": "9:35pm",
+            "showtime_id": "142174923",
             "format": "undefined"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141417433",
+            "showtime": "10:15pm",
+            "showtime_id": "141417437",
             "format": "undefined"
           }
         ]
@@ -5308,12 +5188,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141457837",
+            "showtime_id": "141457847",
             "format": "undefined"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "141457836",
+            "showtime": "9:40pm",
+            "showtime_id": "141457846",
             "format": "undefined"
           }
         ]
@@ -5325,12 +5205,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:40pm",
-            "showtime_id": "141397276",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142100519",
+            "showtime_id": "141397282",
             "format": "undefined"
           }
         ]
@@ -5342,7 +5217,7 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:20pm",
-            "showtime_id": "141409178",
+            "showtime_id": "141409180",
             "format": "undefined"
           }
         ]
@@ -5353,13 +5228,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141483483",
+            "showtime": "5:25pm",
+            "showtime_id": "141483487",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141483482",
+            "showtime": "8:05pm",
+            "showtime_id": "141483486",
             "format": "undefined"
           }
         ]
@@ -5371,12 +5246,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141442100",
+            "showtime_id": "141442104",
             "format": "undefined"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141442101",
+            "showtime": "9:45pm",
+            "showtime_id": "141442105",
             "format": "undefined"
           }
         ]
@@ -5388,22 +5263,22 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142137510",
+            "showtime_id": "142148246",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141334610",
+            "showtime_id": "141334614",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "142137511",
+            "showtime_id": "142148247",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141334611",
+            "showtime_id": "141334615",
             "format": "Laser at AMC"
           }
         ]
@@ -5414,18 +5289,23 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141423439",
+            "showtime": "6:15pm",
+            "showtime_id": "142146581",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142146593",
+            "showtime": "7:15pm",
+            "showtime_id": "141423444",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142146579",
             "format": "undefined"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "141423440",
+            "showtime_id": "141423445",
             "format": "undefined"
           }
         ]
@@ -5436,13 +5316,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "9:40pm",
-            "showtime_id": "142108397",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "142108450",
+            "showtime": "7:30pm",
+            "showtime_id": "142169536",
             "format": "undefined"
           }
         ]
@@ -5453,13 +5328,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:55pm",
-            "showtime_id": "142082146",
-            "format": "undefined"
+            "showtime": "10:10pm",
+            "showtime_id": "142082107",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "142082145",
+            "showtime": "7:30pm",
+            "showtime_id": "142082106",
             "format": "undefined"
           }
         ]
@@ -5470,13 +5345,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141322328",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142068128",
+            "showtime": "7:30pm",
+            "showtime_id": "141322319",
             "format": "undefined"
           }
         ]
@@ -5487,13 +5357,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "142151933",
-            "format": "undefined"
-          },
-          {
             "showtime": "7:15pm",
-            "showtime_id": "142151836",
+            "showtime_id": "142151895",
             "format": "undefined"
           }
         ]
@@ -5505,12 +5370,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141487248",
+            "showtime_id": "141487253",
             "format": "undefined"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "141487249",
+            "showtime": "10:30pm",
+            "showtime_id": "142196154",
             "format": "undefined"
           }
         ]
@@ -5522,17 +5387,12 @@
         "You, Me & Tuscany": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141477279",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "142237669",
+            "showtime_id": "141477280",
             "format": "undefined"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142142144",
+            "showtime_id": "142142153",
             "format": "undefined"
           }
         ]
@@ -5543,13 +5403,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142145390",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142145391",
+            "showtime": "8:00pm",
+            "showtime_id": "141443916",
             "format": "undefined"
           }
         ]
@@ -5560,13 +5415,8 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141499474",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141499473",
+            "showtime": "7:30pm",
+            "showtime_id": "141499478",
             "format": "undefined"
           }
         ]
@@ -7073,8 +6923,13 @@
       "movies": {
         "You, Me & Tuscany": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "142086103",
+            "showtime": "8:30pm",
+            "showtime_id": "142070338",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141373040",
             "format": "undefined"
           }
         ]
