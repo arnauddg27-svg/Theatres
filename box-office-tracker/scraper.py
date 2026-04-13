@@ -837,7 +837,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                           f"{seat_data['seats_sold']}/{seat_data['total_seats']} ({occ}%)")
 
                     showtime_id = show.get("showtime_id", "")
-                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}" if showtime_id else ""
+                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
@@ -856,7 +856,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 else:
                     issues.append(f"{theatre['name']}: No seat map for {movie_title} {fmt}")
                     showtime_id = show.get("showtime_id", "")
-                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}" if showtime_id else ""
+                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
