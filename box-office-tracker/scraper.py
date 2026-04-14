@@ -253,6 +253,35 @@ def fetch_polymarket_box_office():
     return markets_found
 
 
+def load_movies_from_csv(weekend_of):
+    """
+    Fallback: read movie titles and market URLs from polymarket-markets.csv
+    for the given opening weekend. Used Mon-Wed after the Polymarket market
+    has closed but we still want to collect seat data through Wednesday.
+
+    Returns list of dicts with movie_title and market_url (same shape as
+    fetch_polymarket_box_office(), minus bracket_markets).
+    """
+    if not POLY_CSV.exists():
+        return []
+    seen = {}
+    with open(POLY_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            title = row.get("movie_title", "").strip()
+            url   = row.get("market_url", "").strip()
+            if title and title not in seen:
+                seen[title] = url
+    if not seen:
+        return []
+    markets = [{"movie_title": t, "market_url": u, "bracket_markets": []}
+               for t, u in seen.items()]
+    print(f"  ↩️  Polymarket market closed — falling back to {len(markets)} movie(s) "
+          f"from saved CSV (weekend_of={weekend_of})")
+    for m in markets:
+        print(f"    • {m['movie_title']}")
+    return markets
+
+
 def extract_movie_title(question):
     """Extract a movie title from a Polymarket question."""
     quoted = re.findall(r'[\'"\u201c\u201d]([^\'"\u201c\u201d]+)[\'"\u201c\u201d]', question)
@@ -928,17 +957,22 @@ async def run_collect_links_async(tz_group="ALL"):
     print(f"{'='*60}")
 
     theatres_map = load_theatres()
+    ref_tz = tz_group if tz_group != "ALL" else "ET"
+    ref_local = local_now(ref_tz)
     poly_markets = fetch_polymarket_box_office()
     save_polymarket_data(poly_markets)
 
     if not poly_markets:
-        print("❌ No active Polymarket box office markets.")
+        # Mon-Wed: market has closed, fall back to saved CSV for this weekend
+        current_weekend_check = opening_weekend_friday(ref_local)
+        poly_markets = load_movies_from_csv(current_weekend_check)
+
+    if not poly_markets:
+        print("❌ No active Polymarket box office markets and no saved CSV fallback.")
         return
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
-    ref_tz = tz_group if tz_group != "ALL" else "ET"
-    ref_local = local_now(ref_tz)
     today = ref_local.strftime("%Y-%m-%d")
     current_weekend = opening_weekend_friday(ref_local)
     groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
@@ -1069,16 +1103,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     poly_markets = fetch_polymarket_box_office()
     save_polymarket_data(poly_markets)
 
+    # Step 2: Build flat list of theatres to scrape
+    weekend = opening_weekend_friday(local)
+
     if not poly_markets:
-        print("\n❌ No active box office markets on Polymarket. Nothing to track.")
+        # Mon-Wed: market may have closed — fall back to saved CSV for this weekend
+        poly_markets = load_movies_from_csv(weekend)
+
+    if not poly_markets:
+        print("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
         log_run(tz_group, [], [], ["No active Polymarket box office markets found"])
         return
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
-
-    # Step 2: Build flat list of theatres to scrape
-    weekend = opening_weekend_friday(local)
     run_id = local.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
 
     all_theatres = []
