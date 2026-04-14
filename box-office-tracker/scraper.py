@@ -1364,4 +1364,4 @@ if __name__ == "__main__":
     if collect_links_mode:
         asyncio.run(run_collect_links_async(tz))
     else:
-        run(tz, force=force_mode)
+        run(tz, force=force_mode, test_max=test_max)
