@@ -259,6 +259,9 @@ def load_movies_from_csv(weekend_of):
     for the given opening weekend. Used Mon-Wed after the Polymarket market
     has closed but we still want to collect seat data through Wednesday.
 
+    Filters rows by matching their date's opening_weekend_friday() to
+    weekend_of, so we never bleed in movies from prior weekends.
+
     Returns list of dicts with movie_title and market_url (same shape as
     fetch_polymarket_box_office(), minus bracket_markets).
     """
@@ -267,9 +270,19 @@ def load_movies_from_csv(weekend_of):
     seen = {}
     with open(POLY_CSV, "r") as f:
         for row in csv.DictReader(f):
-            title = row.get("movie_title", "").strip()
-            url   = row.get("market_url", "").strip()
-            if title and title not in seen:
+            date_str = row.get("date", "").strip()
+            title    = row.get("movie_title", "").strip()
+            url      = row.get("market_url", "").strip()
+            if not title or not date_str:
+                continue
+            try:
+                row_dt = datetime.strptime(date_str, "%Y-%m-%d")
+                row_weekend = opening_weekend_friday(row_dt)
+            except ValueError:
+                continue
+            if row_weekend != weekend_of:
+                continue
+            if title not in seen:
                 seen[title] = url
     if not seen:
         return []
