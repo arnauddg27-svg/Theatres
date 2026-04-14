@@ -67,10 +67,13 @@ jobs:
           # Remove old runner versions — keep only what the current symlinks point to
           current_ext=$(readlink /home/gha/actions-runner/externals 2>/dev/null | xargs basename 2>/dev/null)
           current_bin=$(readlink /home/gha/actions-runner/bin 2>/dev/null | xargs basename 2>/dev/null)
-          for d in /home/gha/actions-runner/externals.* /home/gha/actions-runner/bin.*; do
-            base=$(basename "$d")
-            [ "$base" != "$current_ext" ] && [ "$base" != "$current_bin" ] && rm -rf "$d"
-          done
+          if [ -n "$current_ext" ] && [ -n "$current_bin" ]; then
+            for d in /home/gha/actions-runner/externals.* /home/gha/actions-runner/bin.*; do
+              [ -e "$d" ] || continue
+              base=$(basename "$d")
+              [ "$base" != "$current_ext" ] && [ "$base" != "$current_bin" ] && rm -rf "$d"
+            done
+          fi
           pip3 cache purge 2>/dev/null || true
           apt-get clean 2>/dev/null || true
           df -h / | tail -1
