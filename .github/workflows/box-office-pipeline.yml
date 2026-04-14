@@ -59,6 +59,15 @@ jobs:
     timeout-minutes: 180
 
     steps:
+      - name: Free disk space
+        run: |
+          rm -rf /home/gha/actions-runner/_work/_update 2>/dev/null || true
+          rm -rf /home/gha/actions-runner/_work/_temp/* 2>/dev/null || true
+          rm -f /home/gha/actions-runner/_diag/*.log 2>/dev/null || true
+          pip3 cache purge 2>/dev/null || true
+          apt-get clean 2>/dev/null || true
+          df -h / | tail -1
+
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
