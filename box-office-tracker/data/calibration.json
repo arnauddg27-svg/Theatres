@@ -44,16 +44,38 @@
       "error_pct": 114.2,
       "n_theatres": 141,
       "n_days": 2
+    },
+    {
+      "movie": "You, Me & Tuscany",
+      "weekend_of": "2026-04-10",
+      "date": "2026-04-14",
+      "predicted_mid": 0.66,
+      "predicted_low": 0.61,
+      "predicted_high": 0.72,
+      "actual_total": 7.75,
+      "daily_actuals": {
+        "Friday": 3.16,
+        "Saturday": 2.84,
+        "Sunday": 1.76
+      },
+      "daily_predictions": {
+        "Thursday": 0.0,
+        "Sunday": 0.16,
+        "Tuesday": 0.0
+      },
+      "error_pct": -91.5,
+      "n_theatres": 399,
+      "n_days": 3
     }
   ],
   "calibration_factors": {
     "amc_market_share": 0.25,
-    "overall_scale_factor": 54.7135,
+    "overall_scale_factor": 1.4876,
     "day_weights": {
-      "Thursday": 0.0787,
-      "Friday": 0.378,
-      "Saturday": 0.3241,
-      "Sunday": 0.2191
+      "Thursday": 0.0525,
+      "Friday": 0.3878,
+      "Saturday": 0.3381,
+      "Sunday": 0.2217
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -80,8 +102,18 @@
           "Saturday": 96.2,
           "Sunday": 100.0
         }
+      },
+      {
+        "movie": "You, Me & Tuscany",
+        "weekend_of": "2026-04-10",
+        "abs_error_pct": 91.5,
+        "n_theatres": 399,
+        "n_days": 3,
+        "daily_errors": {
+          "Sunday": 90.6
+        }
       }
     ],
-    "last_updated": "2026-04-07"
+    "last_updated": "2026-04-14"
   }
 }
