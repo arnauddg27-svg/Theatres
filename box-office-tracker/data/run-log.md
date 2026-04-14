@@ -7273,3 +7273,17 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** No active Polymarket box office markets found
 
 ---
+
+## 2026-04-14 12:59 — ET Group
+
+**Polymarket movies tracked:** You, Me & Tuscany
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Empire 25 | You, Me & Tuscany | Laser at AMC | 7:30pm | 28.9% | -632 min |
+| AMC Lincoln Square 13 | You, Me & Tuscany | Laser at AMC | 9:45pm | 10% | -767 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 10:30pm | 3.5% | -812 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 9:25pm | 21.7% | -747 min |
+| AMC 84th Street 6 | You, Me & Tuscany | Laser at AMC | 9:45pm | 5.3% | -766 min |
+
+---
