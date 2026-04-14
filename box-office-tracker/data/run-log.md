@@ -7264,3 +7264,12 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** No active Polymarket box office markets found
 
 ---
+
+## 2026-04-14 07:57 — PT Group
+
+**Polymarket movies tracked:** None found
+
+
+**Issues:** No active Polymarket box office markets found
+
+---
