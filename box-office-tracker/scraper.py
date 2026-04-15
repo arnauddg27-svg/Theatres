@@ -18,6 +18,7 @@ import json
 import os
 import random
 import re
+import signal
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -1322,6 +1323,13 @@ def generate_weekend_summary():
 
 def run(tz_group="ALL", force=False, test_max=None):
     """Sync wrapper for the async pipeline."""
+    # Install SIGTERM handler so GitHub Actions cancellations exit cleanly
+    # instead of leaving zombie Chromium processes on the VPS.
+    def _handle_sigterm(signum, frame):
+        print("\n⚠️  SIGTERM received — shutting down gracefully", flush=True)
+        sys.exit(0)
+    signal.signal(signal.SIGTERM, _handle_sigterm)
+
     asyncio.run(run_async(tz_group, force=force, test_max=test_max))
 
 
