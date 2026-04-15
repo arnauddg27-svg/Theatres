@@ -841,8 +841,8 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 e for e in entries
                 if (parse_showtime_hour(e.get("showtime", "")) or 25) <= current_hour
             ]
-            if not started:
-                started = entries  # fallback: nothing started yet
+            if not started and current_hour < 18:
+                started = entries  # before shows start: use all (they haven't begun yet)
             seen = set()
             shows = []
             for e in sorted(started,
