@@ -834,15 +834,12 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         current_hour = tz_local.hour + tz_local.minute / 60
         check_time = datetime.now(timezone.utc).isoformat()
 
-        # Build evening_shows from saved Phase 1 links (all started shows)
+        # Build evening_shows from saved Phase 1 links.
+        # Phase 1 already selected the right shows at 5pm local — use all of them
+        # regardless of what time Phase 2 runs (avoids cross-midnight filter failures).
         movie_shows_map = {}
         for movie_title, entries in saved_movies.items():
-            started = [
-                e for e in entries
-                if (parse_showtime_hour(e.get("showtime", "")) or 25) <= current_hour
-            ]
-            if not started and 6 <= current_hour < 17:
-                started = entries  # daytime (6am-5pm): shows haven't started yet, include all
+            started = entries
             seen = set()
             shows = []
             for e in sorted(started,
