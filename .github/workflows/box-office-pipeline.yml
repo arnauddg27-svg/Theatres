@@ -161,8 +161,13 @@ jobs:
         if: steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
         run: |
-          FORCE_FLAG=""
-          if [ "${{ github.event.inputs.force }}" = "true" ]; then FORCE_FLAG="--force"; fi
+          # Scheduled runs always pass --force so a slightly delayed Phase 1
+          # (e.g. >12h gap) never silently aborts Phase 2.
+          # Manual dispatch can override force=false for safety testing.
+          FORCE_FLAG="--force"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.force }}" = "false" ]; then
+            FORCE_FLAG=""
+          fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
           python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }} || \

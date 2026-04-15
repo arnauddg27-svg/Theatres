@@ -902,17 +902,13 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         "occupancy": occ, "delta": delta_minutes,
                     })
                 else:
-                    issues.append(f"{theatre['name']}: No seat map for {movie_title} {fmt}")
+                    # Seat map unavailable — log to issues only, never write to CSV.
+                    # Writing empty rows pollutes downstream analysis and wastes dedup keys.
                     showtime_id = show.get("showtime_id", "")
-                    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
-                    csv_rows.append([
-                        weekend_of, run_id,
-                        today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
-                        tz, movie_title, market_urls.get(movie_title, ""),
-                        st, check_time, delta_minutes,
-                        "", fmt, "", "", "", "",
-                        amc_url, f"Seat map unavailable. {flags}. {reason}",
-                    ])
+                    issues.append(
+                        f"{theatre['name']}: No seat map for {movie_title} {fmt} @ {st} "
+                        f"(https://www.amctheatres.com/showtimes/{showtime_id}/seats)"
+                    )
     finally:
         await context.close()
 
@@ -1323,17 +1319,18 @@ def generate_weekend_summary():
 
 def run(tz_group="ALL", force=False, test_max=None):
     """Sync wrapper for the async pipeline."""
-    # Install SIGTERM handler so GitHub Actions cancellations exit cleanly
-    # instead of leaving zombie Chromium processes on the VPS.
+    asyncio.run(run_async(tz_group, force=force, test_max=test_max))
+
+
+if __name__ == "__main__":
+    # Install SIGTERM handler at the very top so it covers both Phase 1 and Phase 2.
+    # Without this, GitHub Actions job cancellations leave zombie Chromium processes
+    # on the VPS that block the runner from accepting the next job.
     def _handle_sigterm(signum, frame):
         print("\n⚠️  SIGTERM received — shutting down gracefully", flush=True)
         sys.exit(0)
     signal.signal(signal.SIGTERM, _handle_sigterm)
 
-    asyncio.run(run_async(tz_group, force=force, test_max=test_max))
-
-
-if __name__ == "__main__":
     args = sys.argv[1:]
     collect_links_mode = "--collect-links" in args
     force_mode = "--force" in args
