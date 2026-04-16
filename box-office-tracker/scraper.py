@@ -956,7 +956,7 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
 async def run_collect_links_async(tz_group="ALL"):
     """
     Phase 1 main: Visit all theatres, save showtime IDs to showtime-links.json.
-    Run at ~5-6pm ET before shows start.
+    Run in the local Phase 1 window before shows start.
     """
     print(f"{'='*60}")
     print(f"📋 Phase 1 — Collecting showtime links ({tz_group})")
@@ -1009,7 +1009,7 @@ async def run_collect_links_async(tz_group="ALL"):
             async with sem:
                 t_date = theatre.get("_date", today)
                 result = await _collect_links_theatre(browser, theatre, t_date, movie_titles)
-                return theatre["name"], theatre.get("_tz", ""), result
+                return theatre["name"], theatre.get("_tz", ""), t_date, result
 
         outcomes = await asyncio.gather(*[bounded(t) for t in all_theatres], return_exceptions=True)
 
@@ -1036,9 +1036,9 @@ async def run_collect_links_async(tz_group="ALL"):
     for outcome in outcomes:
         if isinstance(outcome, Exception):
             continue
-        name, tz, collected = outcome
+        name, tz, show_date, collected = outcome
         if collected:
-            links["theatres"][name] = {"tz": tz, "movies": collected}
+            links["theatres"][name] = {"tz": tz, "show_date": show_date, "movies": collected}
             total_links += sum(len(v) for v in collected.values())
 
     DATA_DIR.mkdir(exist_ok=True)
@@ -1135,10 +1135,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
     # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
+    links_meta = {}
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
                 links_data = json.load(f)
+            links_meta = links_data
             links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
             current_weekend = weekend
             collected_at_str = links_data.get("collected_at", "")
@@ -1205,8 +1207,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows
             async with sem:
-                t_date = theatre.get("_date", today)
-                theatre_saved = saved_links[theatre["name"]].get("movies")
+                saved_entry = saved_links[theatre["name"]]
+                t_date = (
+                    saved_entry.get("show_date")
+                    or links_meta.get("collected_local_date")
+                    or theatre.get("_date", today)
+                )
+                theatre_saved = saved_entry.get("movies")
                 outcome = await _scrape_theatre(
                     browser, theatre, t_date, movie_titles, market_urls,
                     weekend_of=weekend, run_id=run_id,
