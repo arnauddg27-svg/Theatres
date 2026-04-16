@@ -7287,3 +7287,404 @@ This log records each automated run of the seat-map tracking system.
 | AMC 84th Street 6 | You, Me & Tuscany | Laser at AMC | 9:45pm | 5.3% | -766 min |
 
 ---
+
+## 2026-04-16 03:51 — ET Group
+
+**Polymarket movies tracked:** You, Me & Tuscany, Lee Cronin's The Mummy
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Empire 25 | You, Me & Tuscany | Laser at AMC | 10:15pm | 22.7% | 49 min |
+| AMC Empire 25 | You, Me & Tuscany | Laser at AMC | 7:30pm | 67% | 214 min |
+| AMC Lincoln Square 13 | You, Me & Tuscany | Laser at AMC | 10:30pm | 10% | 34 min |
+| AMC Lincoln Square 13 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:45pm | 50% | 199 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 10:15pm | 0% | 49 min |
+| AMC Kips Bay 15 | You, Me & Tuscany | undefined | 9:25pm | 34.8% | 99 min |
+| AMC 84th Street 6 | You, Me & Tuscany | Laser at AMC | 9:45pm | 10.5% | 81 min |
+| AMC 84th Street 6 | You, Me & Tuscany | Laser at AMC | 6:45pm | 57.9% | 261 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 9:25pm | 34.8% | 101 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Laser at AMC | 8:00pm | 64.4% | 186 min |
+| AMC 34th Street 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:45pm | 69.6% | 261 min |
+| AMC Newport Centre 11 | You, Me & Tuscany | Laser at AMC | 9:45pm | 4.3% | 81 min |
+| AMC Newport Centre 11 | You, Me & Tuscany | Laser at AMC | 7:00pm | 25.7% | 246 min |
+| AMC Magic Johnson Harlem 9 | You, Me & Tuscany | Laser at AMC | 10:30pm | 5.3% | 36 min |
+| AMC Magic Johnson Harlem 9 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:45pm | 12.3% | 201 min |
+| AMC Assembly Row 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 9.1% | 67 min |
+| AMC Assembly Row 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 33.6% | 232 min |
+| AMC Boston Common 19 | You, Me & Tuscany | Laser at AMC | 7:30pm | 24.6% | 216 min |
+| AMC Framingham 16 | You, Me & Tuscany | Laser at AMC | 9:30pm | 3.4% | 97 min |
+| AMC Framingham 16 | You, Me & Tuscany | Laser at AMC | 6:45pm | 28.4% | 262 min |
+| AMC Braintree 10 | You, Me & Tuscany | Laser at AMC | 9:30pm | 14.3% | 97 min |
+| AMC Braintree 10 | You, Me & Tuscany | Laser at AMC | 6:45pm | 11.1% | 262 min |
+| AMC Burlington Cinema 10 | You, Me & Tuscany | Laser at AMC | 9:15pm | 5.6% | 112 min |
+| AMC Burlington Cinema 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 13.8% | 232 min |
+| AMC Methuen 20 | You, Me & Tuscany | Laser at AMC | 9:30pm | 7.4% | 97 min |
+| AMC Methuen 20 | You, Me & Tuscany | Laser at AMC | 6:30pm | 3.7% | 278 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 9:00pm | 12.6% | 127 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 7:45pm | 10.1% | 202 min |
+| AMC Aventura 24 | You, Me & Tuscany | Laser at AMC | 6:20pm | 9.2% | 288 min |
+| AMC DINE-IN Coral Ridge 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:45pm | 19.6% | 82 min |
+| AMC DINE-IN Coral Ridge 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 54.3% | 247 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 10:30pm | 0.7% | 37 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 9:30pm | 4.2% | 97 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 7:40pm | 2% | 207 min |
+| AMC Sunset Place 24 | You, Me & Tuscany | undefined | 6:40pm | 4.2% | 267 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 7:15pm | 42.1% | 233 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 9:45pm | 12.7% | 83 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 8:45pm | 16.3% | 143 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 7:00pm | 43.6% | 248 min |
+| AMC Pompano Beach 18 | You, Me & Tuscany | Laser at AMC | 6:00pm | 9.2% | 308 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 10:30pm | 0% | 38 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 9:45pm | 23.5% | 83 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 7:45pm | 50% | 203 min |
+| AMC Veterans 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 58.8% | 248 min |
+| AMC Sundial 12 | You, Me & Tuscany | Laser at AMC | 9:50pm | 26.2% | 80 min |
+| AMC Sundial 12 | You, Me & Tuscany | Laser at AMC | 7:10pm | 26.2% | 240 min |
+| AMC West Shore 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:30pm | 4.4% | 280 min |
+| AMC West Shore 14 | You, Me & Tuscany | undefined | 9:15pm | 1.5% | 115 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 6:45pm | 0.9% | 265 min |
+| AMC Bradenton 20 | You, Me & Tuscany | undefined | 6:00pm | 3% | 310 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Laser at AMC | 9:00pm | 10.1% | 130 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Laser at AMC | 6:15pm | 8.8% | 295 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 50.7% | 70 min |
+| AMC DINE-IN Disney Springs 24 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 76.8% | 235 min |
+| AMC Altamonte Mall 18 | You, Me & Tuscany | Laser at AMC | 10:25pm | 2.2% | 45 min |
+| AMC Altamonte Mall 18 | You, Me & Tuscany | Laser at AMC | 7:30pm | 30.1% | 221 min |
+| AMC Tysons Corner 16 | You, Me & Tuscany | Laser at AMC | 9:10pm | 1% | 120 min |
+| AMC Tysons Corner 16 | You, Me & Tuscany | Laser at AMC | 6:10pm | 7.7% | 300 min |
+| AMC Georgetown 14 | You, Me & Tuscany | Laser at AMC | 9:50pm | 31.1% | 81 min |
+| AMC Georgetown 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:10pm | 45.9% | 240 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 10:00pm | 6.7% | 71 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 9:00pm | 14.4% | 131 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 7:15pm | 18.3% | 236 min |
+| AMC Hoffman Center 22 | You, Me & Tuscany | Laser at AMC | 6:00pm | 12.5% | 311 min |
+| AMC Shirlington 7 | You, Me & Tuscany | Laser at AMC | 9:15pm | 31.4% | 116 min |
+| AMC Shirlington 7 | You, Me & Tuscany | Laser at AMC | 6:30pm | 31.4% | 281 min |
+| AMC Worldgate 9 | You, Me & Tuscany | undefined | 7:30pm | 3.1% | 221 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 8:45pm | 2.7% | 146 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 7:00pm | 5.1% | 251 min |
+| AMC Neshaminy 24 | You, Me & Tuscany | Laser at AMC | 5:45pm | 4.7% | 326 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 9:15pm | 3.9% | 116 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 7:30pm | 1.9% | 221 min |
+| AMC Cherry Hill 24 | You, Me & Tuscany | Laser at AMC | 6:30pm | 1.1% | 281 min |
+| AMC Voorhees 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:50pm | 0.5% | 202 min |
+| AMC Voorhees 16 | You, Me & Tuscany | undefined | 9:00pm | 0.7% | 132 min |
+| AMC Plymouth Meeting Mall 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 4.8% | 72 min |
+| AMC Plymouth Meeting Mall 12 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 9.6% | 237 min |
+| AMC DINE-IN Fashion District 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 5.3% | 57 min |
+| AMC DINE-IN Fashion District 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:20pm | 56.8% | 232 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 10:30pm | 5.7% | 42 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 9:15pm | 38.7% | 117 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 7:45pm | 50.5% | 207 min |
+| AMC Phipps Plaza 14 | You, Me & Tuscany | Laser at AMC | 6:30pm | 71% | 282 min |
+| AMC Northlake 14 | You, Me & Tuscany | undefined | 9:45pm | 12.9% | 89 min |
+| AMC Northlake 14 | You, Me & Tuscany | undefined | 7:10pm | 18.6% | 244 min |
+| AMC Sugarloaf Mills 18 | You, Me & Tuscany | Laser at AMC | 9:10pm | 3.5% | 123 min |
+| AMC Sugarloaf Mills 18 | You, Me & Tuscany | Laser at AMC | 6:20pm | 2.8% | 294 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 10:30pm | 5.8% | 44 min |
+| AMC Barrett Commons 24 | You, Me & Tuscany | Laser at AMC | 7:45pm | 38.4% | 209 min |
+| AMC DINE-IN North Point Mall 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 16% | 75 min |
+| AMC DINE-IN North Point Mall 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 27.2% | 255 min |
+| AMC Carolina Pavilion 22 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 9:00pm | 13.9% | 135 min |
+| AMC Carolina Pavilion 22 | You, Me & Tuscany | undefined | 7:45pm | 20.5% | 210 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 9:00pm | 1.7% | 134 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 7:30pm | 7.3% | 224 min |
+| AMC Camp Creek 14 | You, Me & Tuscany | undefined | 6:15pm | 7.8% | 299 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 9:45pm | 3.4% | 90 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 8:00pm | 25.8% | 195 min |
+| AMC Concord Mills 24 | You, Me & Tuscany | undefined | 7:00pm | 59.3% | 255 min |
+| AMC Star Great Lakes 25 | You, Me & Tuscany | undefined | 7:35pm | 6.2% | 221 min |
+| AMC Forum 30 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:05pm | 1.2% | 251 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 10:15pm | 2.9% | 60 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 9:45pm | 2.5% | 90 min |
+| AMC Forum 30 | You, Me & Tuscany | undefined | 8:05pm | 4.4% | 191 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 9:30pm | 0.9% | 105 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 7:45pm | 8.2% | 210 min |
+| AMC Livonia 20 | You, Me & Tuscany | undefined | 6:45pm | 0% | 270 min |
+| AMC John R 15 | You, Me & Tuscany | undefined | 9:30pm | 5.3% | 105 min |
+| AMC John R 15 | You, Me & Tuscany | undefined | 6:35pm | 3.5% | 281 min |
+| AMC Castleton Square 14 | You, Me & Tuscany | undefined | 10:00pm | 14.3% | 77 min |
+| AMC Thoroughbred 20 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 12.7% | 242 min |
+| AMC Thoroughbred 20 | You, Me & Tuscany | undefined | 10:15pm | 1.4% | 62 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 9:15pm | 0.3% | 122 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 7:45pm | 0% | 212 min |
+| AMC Perry Crossing 18 | You, Me & Tuscany | undefined | 6:30pm | 2.8% | 287 min |
+| AMC Bellevue 12 | You, Me & Tuscany | undefined | 7:15pm | 40.7% | 243 min |
+| AMC Easton Town Center 30 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 15.6% | 258 min |
+| AMC Easton Town Center 30 | You, Me & Tuscany | undefined | 9:45pm | 17.8% | 93 min |
+| AMC Dublin Village 18 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 5.6% | 258 min |
+| AMC Dublin Village 18 | You, Me & Tuscany | undefined | 9:45pm | 4.8% | 93 min |
+| AMC Grove City 14 | You, Me & Tuscany | undefined | 9:50pm | 1.6% | 88 min |
+| AMC Grove City 14 | You, Me & Tuscany | undefined | 6:45pm | 7.5% | 273 min |
+| AMC Newport On The Levee 20 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:10pm | 6.2% | 247 min |
+| AMC Newport On The Levee 20 | You, Me & Tuscany | undefined | 9:55pm | 4.9% | 82 min |
+| AMC West Chester 18 | You, Me & Tuscany | undefined | 9:30pm | 14.5% | 108 min |
+| AMC West Chester 18 | You, Me & Tuscany | undefined | 6:40pm | 19.7% | 278 min |
+| AMC Waterfront 22 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:40pm | 15.3% | 278 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 10:15pm | 10.9% | 63 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 9:15pm | 5.5% | 123 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 7:30pm | 38.2% | 229 min |
+| AMC Regency 24 | You, Me & Tuscany | undefined | 6:30pm | 13.7% | 289 min |
+| AMC Academy 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 23.8% | 259 min |
+| AMC Orange Park 24 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:15pm | 1.1% | 304 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 9:00pm | 12.2% | 139 min |
+| AMC Orange Park 24 | You, Me & Tuscany | undefined | 7:30pm | 6.5% | 229 min |
+| AMC Allegany 8 | You, Me & Tuscany | undefined | 9:15pm | 1.6% | 124 min |
+| AMC Allegany 8 | You, Me & Tuscany | undefined | 6:30pm | 6.5% | 289 min |
+| AMC Altoona 12 | You, Me & Tuscany | undefined | 7:45pm | 4.1% | 214 min |
+| AMC Annapolis Mall 11 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 10:00pm | 3.4% | 81 min |
+| AMC Annapolis Mall 11 | You, Me & Tuscany | undefined | 7:10pm | 23.7% | 251 min |
+| AMC Anderson Towne Center 9 | You, Me & Tuscany | undefined | 9:15pm | 4.7% | 126 min |
+| AMC Anderson Towne Center 9 | You, Me & Tuscany | undefined | 6:30pm | 14.1% | 291 min |
+| AMC Antioch 8 | You, Me & Tuscany | undefined | 9:00pm | 8.7% | 141 min |
+| AMC Antioch 8 | You, Me & Tuscany | undefined | 7:00pm | 18% | 261 min |
+| AMC Avenue Forsyth 12 | You, Me & Tuscany | Laser at AMC | 9:00pm | 0% | 141 min |
+| AMC Avenue Forsyth 12 | You, Me & Tuscany | Laser at AMC | 6:05pm | 4.3% | 316 min |
+| AMC Avenue 16 | You, Me & Tuscany | undefined | 9:40pm | 0.7% | 101 min |
+| AMC Avenue 16 | You, Me & Tuscany | undefined | 7:05pm | 3.7% | 256 min |
+| AMC Aviation 12 | You, Me & Tuscany | Laser at AMC | 10:00pm | 1.6% | 82 min |
+| AMC Aviation 12 | You, Me & Tuscany | Laser at AMC | 7:15pm | 9.7% | 247 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Laser at AMC | 10:15pm | 5.5% | 67 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Laser at AMC | 6:30pm | 37.3% | 292 min |
+| AMC Bay Plaza Cinema 13 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:30pm | 21.9% | 232 min |
+| AMC Bayou 15 | You, Me & Tuscany | undefined | 9:50pm | 3.7% | 92 min |
+| AMC Bayou 15 | You, Me & Tuscany | undefined | 7:10pm | 6.5% | 251 min |
+| AMC Boulevard 10 | You, Me & Tuscany | undefined | 10:00pm | 8.5% | 82 min |
+| AMC Boulevard 10 | You, Me & Tuscany | undefined | 7:15pm | 13.8% | 247 min |
+| AMC Bradley Square 12 | You, Me & Tuscany | undefined | 7:30pm | 2% | 232 min |
+| AMC Brick Plaza 10 | You, Me & Tuscany | Laser at AMC | 9:25pm | 19% | 117 min |
+| AMC Brick Plaza 10 | You, Me & Tuscany | Laser at AMC | 6:45pm | 27.6% | 278 min |
+| AMC Broadstreet 7 | You, Me & Tuscany | Laser at AMC | 9:30pm | 3.9% | 112 min |
+| AMC Broadstreet 7 | You, Me & Tuscany | Laser at AMC | 6:30pm | 35.8% | 293 min |
+| AMC Brunswick Square 13 | You, Me & Tuscany | undefined | 7:45pm | 6.3% | 217 min |
+| AMC Camp Hill 12 | You, Me & Tuscany | undefined | 7:30pm | 6.3% | 232 min |
+| AMC Chattanooga 18 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:40pm | 2.3% | 223 min |
+| AMC Cherry Blossom 14 | You, Me & Tuscany | undefined | 7:05pm | 1% | 259 min |
+| AMC Clifton Commons 16 | You, Me & Tuscany | Laser at AMC | 9:45pm | 6.8% | 98 min |
+| AMC Clifton Commons 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:45pm | 10.3% | 278 min |
+| AMC Columbia 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 11% | 263 min |
+| AMC Columbia 14 | You, Me & Tuscany | undefined | 9:50pm | 4.2% | 93 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 10:30pm | 7.7% | 53 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 9:00pm | 15.9% | 143 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 7:45pm | 32.3% | 218 min |
+| AMC Colonial 18 | You, Me & Tuscany | Laser at AMC | 6:15pm | 31.8% | 308 min |
+| AMC Columbus 10 | You, Me & Tuscany | undefined | 10:00pm | 7.7% | 83 min |
+| AMC Columbus 10 | You, Me & Tuscany | undefined | 7:15pm | 30.8% | 248 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 9:00pm | 3% | 145 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 7:15pm | 0% | 250 min |
+| AMC Columbus Park 15 | You, Me & Tuscany | undefined | 6:20pm | 2.4% | 305 min |
+| AMC Courthouse Plaza 8 | You, Me & Tuscany | Laser at AMC | 9:40pm | 6.6% | 105 min |
+| AMC Courthouse Plaza 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 42.1% | 265 min |
+| AMC Crystal Run 16 | You, Me & Tuscany | Laser at AMC | 9:45pm | 0% | 100 min |
+| AMC Crystal Run 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 26% | 265 min |
+| AMC DINE-IN Berkshire 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 4.9% | 71 min |
+| AMC DINE-IN Berkshire 8 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:30pm | 9.8% | 236 min |
+| AMC DINE-IN Bridgewater 7 | You, Me & Tuscany | Dine-In Delivery to Seat | 8:30pm | 17.2% | 176 min |
+| AMC DINE-IN Bridgewater 7 | You, Me & Tuscany | Dine-In Delivery to Seat | 5:45pm | 4.7% | 341 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 7% | 86 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 8:30pm | 19.7% | 176 min |
+| AMC DINE-IN Essex Green 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 28% | 251 min |
+| AMC DINE-IN Holly Springs 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:15pm | 2.2% | 71 min |
+| AMC DINE-IN Holly Springs 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:30pm | 25.8% | 236 min |
+| AMC DINE-IN Midlothian 10 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:30pm | 13.5% | 296 min |
+| AMC DINE-IN Menlo Park 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 10:00pm | 13.5% | 86 min |
+| AMC DINE-IN Menlo Park 12 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:15pm | 45.9% | 251 min |
+| AMC DINE-IN Painters Crossing 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 7:00pm | 8.3% | 266 min |
+| AMC DINE-IN Shops at Riverside 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 9:15pm | 30% | 131 min |
+| AMC DINE-IN Shops at Riverside 9 | You, Me & Tuscany | Dine-In Delivery to Seat | 6:15pm | 57.5% | 311 min |
+| AMC Dartmouth Mall 11 | You, Me & Tuscany | undefined | 7:00pm | 36% | 266 min |
+| AMC Danbury 16 | You, Me & Tuscany | Laser at AMC | 7:00pm | 3.7% | 266 min |
+| AMC Danbury 16 | You, Me & Tuscany | Laser at AMC | 6:00pm | 1.6% | 326 min |
+| AMC Danbury 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 9:45pm | 0% | 101 min |
+| AMC Deptford 8 | You, Me & Tuscany | Laser at AMC | 9:45pm | 14.3% | 102 min |
+| AMC Deptford 8 | You, Me & Tuscany | Laser at AMC | 7:05pm | 50% | 263 min |
+| AMC Destin Commons 14 | You, Me & Tuscany | undefined | 9:15pm | 2.5% | 132 min |
+| AMC Destin Commons 14 | You, Me & Tuscany | undefined | 6:30pm | 4.6% | 297 min |
+| AMC East Hanover 12 | You, Me & Tuscany | Laser at AMC | 9:40pm | 2.1% | 107 min |
+| AMC East Hanover 12 | You, Me & Tuscany | Laser at AMC | 7:00pm | 13.8% | 267 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 7:45pm | 8.7% | 222 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 6:45pm | 0% | 282 min |
+| AMC Evansville 16 | You, Me & Tuscany | undefined | 5:00pm | 8.7% | 387 min |
+| AMC Fayetteville 14 | You, Me & Tuscany | undefined | 9:15pm | 0.5% | 132 min |
+| AMC Fayetteville 14 | You, Me & Tuscany | undefined | 9:00pm | 1.5% | 147 min |
+| AMC Fayetteville 14 | You, Me & Tuscany | undefined | 6:30pm | 0% | 297 min |
+| AMC Fiesta Square 12 | You, Me & Tuscany | undefined | 10:15pm | 2.7% | 74 min |
+| AMC Fiesta Square 12 | You, Me & Tuscany | undefined | 7:30pm | 1.8% | 239 min |
+| AMC Fire Tower 12 | You, Me & Tuscany | undefined | 9:45pm | 12.4% | 104 min |
+| AMC Fire Tower 12 | You, Me & Tuscany | undefined | 7:00pm | 12.4% | 269 min |
+| AMC Foothills 12 | You, Me & Tuscany | undefined | 7:55pm | 0% | 214 min |
+| AMC Fleming Island 12 | You, Me & Tuscany | undefined | 9:30pm | 2.2% | 119 min |
+| AMC Fleming Island 12 | You, Me & Tuscany | undefined | 6:30pm | 9.2% | 299 min |
+| AMC Freehold 14 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | 90 min |
+| AMC Freehold 14 | You, Me & Tuscany | Laser at AMC | 7:15pm | 10.6% | 255 min |
+| AMC Garden State Plaza 16 | You, Me & Tuscany | Laser at AMC | 10:15pm | 3.5% | 75 min |
+| AMC Garden State Plaza 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:30pm | 7% | 240 min |
+| AMC Glen Cove 6 | You, Me & Tuscany | Laser at AMC | 8:00pm | 16.2% | 210 min |
+| AMC Grand Rapids 18 | You, Me & Tuscany | undefined | 7:30pm | 12.7% | 240 min |
+| AMC Hampton Towne Centre 24 | You, Me & Tuscany | undefined | 9:30pm | 21.3% | 120 min |
+| AMC Hampton Towne Centre 24 | You, Me & Tuscany | undefined | 6:45pm | 51.1% | 285 min |
+| AMC Hanes 12 | You, Me & Tuscany | undefined | 9:30pm | 7.4% | 120 min |
+| AMC Hanes 12 | You, Me & Tuscany | undefined | 6:45pm | 23.2% | 285 min |
+| AMC Harbison 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:45pm | 33.3% | 285 min |
+| AMC Harbison 14 | You, Me & Tuscany | undefined | 9:30pm | 37.5% | 120 min |
+| AMC Headquarters Plaza 10 | You, Me & Tuscany | Laser at AMC | 9:30pm | 4% | 120 min |
+| AMC Headquarters Plaza 10 | You, Me & Tuscany | Laser at AMC | 8:30pm | 9.8% | 180 min |
+| AMC Hialeah 12 | You, Me & Tuscany | undefined | 10:15pm | 2.6% | 77 min |
+| AMC Hialeah 12 | You, Me & Tuscany | English Spoken with Spanish Subtitles | 8:30pm | 9.1% | 182 min |
+| AMC Hialeah 12 | You, Me & Tuscany | undefined | 7:30pm | 2.6% | 242 min |
+| AMC Hickory 15 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 8:20pm | 10.8% | 192 min |
+| AMC Hickory 15 | You, Me & Tuscany | undefined | 6:30pm | 18.6% | 302 min |
+| AMC High Point 8 | You, Me & Tuscany | undefined | 7:00pm | 14.7% | 272 min |
+| AMC Highland 12 | You, Me & Tuscany | undefined | 7:30pm | 0% | 242 min |
+| AMC Holland 8 | You, Me & Tuscany | undefined | 8:30pm | 0% | 183 min |
+| AMC Holland 8 | You, Me & Tuscany | undefined | 5:55pm | 4.9% | 338 min |
+| AMC Huntington Square 12 | You, Me & Tuscany | Laser at AMC | 9:15pm | 16.4% | 138 min |
+| AMC Huntington Square 12 | You, Me & Tuscany | Laser at AMC | 6:30pm | 41% | 303 min |
+| AMC Indian Mound 9 | You, Me & Tuscany | undefined | 7:30pm | 10.8% | 243 min |
+| AMC Indianapolis 17 | You, Me & Tuscany | undefined | 9:45pm | 0% | 108 min |
+| AMC Indianapolis 17 | You, Me & Tuscany | undefined | 7:00pm | 12.5% | 273 min |
+| AMC Jefferson Point 18 | You, Me & Tuscany | undefined | 7:35pm | 6.4% | 239 min |
+| AMC Jersey Gardens 20 | You, Me & Tuscany | Laser at AMC | 10:15pm | 3.4% | 78 min |
+| AMC Jersey Gardens 20 | You, Me & Tuscany | Laser at AMC | 7:30pm | 6.7% | 244 min |
+| AMC Johnson City 14 | You, Me & Tuscany | undefined | 7:30pm | 40.4% | 244 min |
+| AMC Kalli 12 | You, Me & Tuscany | undefined | 10:00pm | 1.7% | 93 min |
+| AMC Kalli 12 | You, Me & Tuscany | undefined | 7:00pm | 1.3% | 274 min |
+| AMC Lake Square 12 | You, Me & Tuscany | undefined | 7:00pm | 13% | 274 min |
+| AMC Lakeshore 8 | You, Me & Tuscany | undefined | 9:15pm | 0% | 139 min |
+| AMC Lakeshore 8 | You, Me & Tuscany | undefined | 7:15pm | 9.3% | 259 min |
+| AMC Loudoun Station 11 | You, Me & Tuscany | undefined | 7:45pm | 14.8% | 229 min |
+| AMC Lynnhaven 18 | You, Me & Tuscany | undefined | 9:45pm | 4.9% | 109 min |
+| AMC Lynnhaven 18 | You, Me & Tuscany | undefined | 8:10pm | 3.7% | 204 min |
+| AMC Majestic 12 | You, Me & Tuscany | undefined | 7:20pm | 0% | 255 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 10:20pm | 17.4% | 75 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 7:30pm | 70.4% | 244 min |
+| AMC Madison Yards 8 | You, Me & Tuscany | Laser at AMC | 6:15pm | 34.1% | 319 min |
+| AMC Majestic 6 | You, Me & Tuscany | undefined | 10:00pm | 3.4% | 96 min |
+| AMC Majestic 6 | You, Me & Tuscany | undefined | 7:15pm | 25.8% | 261 min |
+| AMC Maple Ridge 8 | You, Me & Tuscany | undefined | 9:15pm | 24% | 141 min |
+| AMC Maple Ridge 8 | You, Me & Tuscany | undefined | 7:15pm | 32% | 261 min |
+| AMC Market Fair 15 | You, Me & Tuscany | undefined | 10:00pm | 4.3% | 96 min |
+| AMC Market Fair 15 | You, Me & Tuscany | undefined | 7:15pm | 51.1% | 261 min |
+| AMC MarketFair 10 | You, Me & Tuscany | undefined | 10:00pm | 10% | 96 min |
+| AMC MarketFair 10 | You, Me & Tuscany | undefined | 7:15pm | 30% | 261 min |
+| AMC Marlton 8 | You, Me & Tuscany | Laser at AMC | 10:00pm | 6.7% | 97 min |
+| AMC Marlton 8 | You, Me & Tuscany | Laser at AMC | 7:15pm | 25% | 262 min |
+| AMC Marple 10 | You, Me & Tuscany | Laser at AMC | 9:30pm | 21% | 127 min |
+| AMC Marple 10 | You, Me & Tuscany | Laser at AMC | 6:45pm | 56.5% | 292 min |
+| AMC Mobile 16 | You, Me & Tuscany | undefined | 6:30pm | 4.3% | 307 min |
+| AMC Marquis 16 | You, Me & Tuscany | undefined | 6:45pm | 40.2% | 292 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 8:45pm | 1.3% | 172 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 7:15pm | 6.8% | 262 min |
+| AMC Merchants Crossing 16 | You, Me & Tuscany | undefined | 5:50pm | 0.8% | 347 min |
+| AMC Monmouth Mall 15 | You, Me & Tuscany | Laser at AMC | 10:00pm | 4.3% | 97 min |
+| AMC Monmouth Mall 15 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 14% | 263 min |
+| AMC Morgantown 12 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:15pm | 3.2% | 323 min |
+| AMC Morgantown 12 | You, Me & Tuscany | undefined | 9:00pm | 8.1% | 157 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 10:00pm | 4.5% | 97 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 8:45pm | 18.2% | 172 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Laser at AMC | 6:00pm | 31.8% | 338 min |
+| AMC Montgomery 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 22.7% | 263 min |
+| AMC Mountainside 10 | You, Me & Tuscany | Laser at AMC | 9:45pm | 2.7% | 113 min |
+| AMC Mountainside 10 | You, Me & Tuscany | Laser at AMC | 7:00pm | 4% | 278 min |
+| AMC Muncie 12 | You, Me & Tuscany | undefined | 10:00pm | 23.8% | 98 min |
+| AMC Muncie 12 | You, Me & Tuscany | undefined | 7:15pm | 11.9% | 263 min |
+| AMC New Brunswick 18 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:20pm | 2.2% | 259 min |
+| AMC New Brunswick 18 | You, Me & Tuscany | undefined | 9:30pm | 3.1% | 128 min |
+| AMC North Dekalb 16 | You, Me & Tuscany | undefined | 10:15pm | 2.1% | 83 min |
+| AMC North Dekalb 16 | You, Me & Tuscany | undefined | 7:30pm | 16.4% | 248 min |
+| AMC Northgate 14 | You, Me & Tuscany | undefined | 7:10pm | 3.9% | 268 min |
+| AMC Palisades 21 | You, Me & Tuscany | Laser at AMC | 9:15pm | 13.1% | 145 min |
+| AMC Palisades 21 | You, Me & Tuscany | Laser at AMC | 6:30pm | 54.1% | 310 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 9:45pm | 1.8% | 115 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 8:35pm | 15.4% | 185 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 7:00pm | 28.1% | 280 min |
+| AMC Owings Mills 17 | You, Me & Tuscany | undefined | 5:45pm | 18.5% | 355 min |
+| AMC Park Place 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 3.7% | 280 min |
+| AMC Park Terrace 6 | You, Me & Tuscany | undefined | 10:15pm | 11.1% | 86 min |
+| AMC Park Terrace 6 | You, Me & Tuscany | undefined | 7:30pm | 44.4% | 251 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 9:30pm | 29.5% | 131 min |
+| AMC Parkway Pointe 15 | You, Me & Tuscany | Laser at AMC | 6:45pm | 61.5% | 296 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 10:00pm | 21.1% | 101 min |
+| AMC Pembroke Lakes 9 | You, Me & Tuscany | Laser at AMC | 7:15pm | 42.1% | 266 min |
+| AMC Plainville 20 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:10pm | 25.6% | 270 min |
+| AMC Plainville 20 | You, Me & Tuscany | undefined | 9:20pm | 8.5% | 141 min |
+| AMC Port Chester 14 | You, Me & Tuscany | Laser at AMC | 10:10pm | 1.5% | 90 min |
+| AMC Port Chester 14 | You, Me & Tuscany | Laser at AMC | 7:30pm | 2.3% | 251 min |
+| AMC Port St Lucie 14 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:00pm | 0% | 341 min |
+| AMC Port St Lucie 14 | You, Me & Tuscany | undefined | 9:00pm | 0% | 161 min |
+| AMC Ridge Park Square 8 | You, Me & Tuscany | undefined | 9:15pm | 3.5% | 146 min |
+| AMC Ridge Park Square 8 | You, Me & Tuscany | undefined | 6:30pm | 7.1% | 311 min |
+| AMC Potomac Mills 18 | You, Me & Tuscany | Laser at AMC | 9:45pm | 2.7% | 116 min |
+| AMC Potomac Mills 18 | You, Me & Tuscany | Laser at AMC | 7:00pm | 5.5% | 281 min |
+| AMC Ridgefield Park 12 | You, Me & Tuscany | undefined | 10:20pm | 10% | 82 min |
+| AMC Ridgefield Park 12 | You, Me & Tuscany | undefined | 7:45pm | 41.7% | 236 min |
+| AMC Ritz 13 | You, Me & Tuscany | undefined | 9:45pm | 4.1% | 117 min |
+| AMC Ritz 13 | You, Me & Tuscany | undefined | 8:35pm | 45.2% | 187 min |
+| AMC Ritz 13 | You, Me & Tuscany | undefined | 7:10pm | 5.5% | 272 min |
+| AMC River Hills 10 | You, Me & Tuscany | undefined | 8:00pm | 2.1% | 222 min |
+| AMC Rivertowne 12 | You, Me & Tuscany | Laser at AMC | 8:00pm | 24.5% | 222 min |
+| AMC Rivertowne 12 | You, Me & Tuscany | Laser at AMC | 6:00pm | 30.6% | 342 min |
+| AMC Riverview 14 | You, Me & Tuscany | undefined | 9:45pm | 16.7% | 117 min |
+| AMC Riverview 14 | You, Me & Tuscany | undefined | 7:00pm | 31.1% | 282 min |
+| AMC Rockaway 16 | You, Me & Tuscany | Laser at AMC | 9:30pm | 3.7% | 132 min |
+| AMC Rockaway 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:45pm | 3% | 297 min |
+| AMC Royale 6 | You, Me & Tuscany | undefined | 9:00pm | 0% | 162 min |
+| AMC Royale 6 | You, Me & Tuscany | undefined | 6:15pm | 3.4% | 327 min |
+| AMC Schererville 12 | You, Me & Tuscany | Laser at AMC | 6:45pm | 1.9% | 299 min |
+| AMC Saratoga Springs 11 | You, Me & Tuscany | undefined | 6:45pm | 2.9% | 299 min |
+| AMC Schererville 16 | You, Me & Tuscany | Laser at AMC | 10:00pm | 0% | 104 min |
+| AMC Schererville 16 | You, Me & Tuscany | Laser at AMC | 7:15pm | 8% | 269 min |
+| AMC SoNo8 | You, Me & Tuscany | undefined | 10:15pm | 0% | 89 min |
+| AMC SoNo8 | You, Me & Tuscany | undefined | 7:30pm | 25.9% | 254 min |
+| AMC South Bay Center 12 | You, Me & Tuscany | Laser at AMC | 9:30pm | 9.6% | 135 min |
+| AMC South Bay Center 12 | You, Me & Tuscany | Laser at AMC | 6:45pm | 25.4% | 300 min |
+| AMC Southington 12 | You, Me & Tuscany | undefined | 7:00pm | 50.9% | 285 min |
+| AMC Southpoint 17 | You, Me & Tuscany | undefined | 9:00pm | 26.1% | 165 min |
+| AMC Southpoint 17 | You, Me & Tuscany | undefined | 6:15pm | 50.7% | 330 min |
+| AMC Spring Hill 12 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:00pm | 3.3% | 285 min |
+| AMC Spring Hill 12 | You, Me & Tuscany | undefined | 9:00pm | 3.1% | 165 min |
+| AMC Star Gratiot 15 | You, Me & Tuscany | undefined | 7:40pm | 0% | 245 min |
+| AMC Staten Island 11 | You, Me & Tuscany | Laser at AMC | 10:00pm | 23.5% | 105 min |
+| AMC Staten Island 11 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 47.1% | 270 min |
+| AMC Stones River 9 | You, Me & Tuscany | undefined | 10:05pm | 8.5% | 101 min |
+| AMC Stones River 9 | You, Me & Tuscany | undefined | 7:15pm | 42.7% | 270 min |
+| AMC Sunrise 8 | You, Me & Tuscany | undefined | 8:15pm | 41.3% | 210 min |
+| AMC Stonybrook 20 | You, Me & Tuscany | undefined | 7:15pm | 3.4% | 270 min |
+| AMC Stonybrook 20 | You, Me & Tuscany | undefined | 5:45pm | 7.1% | 360 min |
+| AMC Tallahassee 20 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 6:00pm | 34.8% | 345 min |
+| AMC Tallahassee 20 | You, Me & Tuscany | undefined | 8:45pm | 39.1% | 180 min |
+| AMC Tamiami 18 | You, Me & Tuscany | Laser at AMC | 10:15pm | 17.4% | 92 min |
+| AMC Tamiami 18 | You, Me & Tuscany | Laser at AMC | 7:30pm | 63% | 257 min |
+| AMC Tiger 13 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 8:00pm | 2.1% | 227 min |
+| AMC Tiger 13 | You, Me & Tuscany | undefined | 7:30pm | 7.9% | 257 min |
+| AMC Tilghman Square 8 | You, Me & Tuscany | Laser at AMC | 9:45pm | 2.9% | 122 min |
+| AMC Tilghman Square 8 | You, Me & Tuscany | Laser at AMC | 7:00pm | 8.7% | 287 min |
+| AMC Traders Point 12 | You, Me & Tuscany | undefined | 9:45pm | 13.3% | 122 min |
+| AMC Traders Point 12 | You, Me & Tuscany | undefined | 7:45pm | 24% | 242 min |
+| AMC Tyngsboro 12 | You, Me & Tuscany | Laser at AMC | 9:30pm | 6.3% | 137 min |
+| AMC Tyngsboro 12 | You, Me & Tuscany | Laser at AMC | 6:45pm | 12.5% | 302 min |
+| AMC Vestal Town Square 9 | You, Me & Tuscany | undefined | 7:30pm | 20.3% | 258 min |
+| AMC Wayne 14 | You, Me & Tuscany | Laser at AMC | 10:30pm | 8% | 78 min |
+| AMC Wayne 14 | You, Me & Tuscany | Laser at AMC | 7:45pm | 14.9% | 243 min |
+| AMC Webster 12 | You, Me & Tuscany | undefined | 10:00pm | 9.4% | 108 min |
+| AMC Webster 12 | You, Me & Tuscany | undefined | 7:20pm | 20.3% | 268 min |
+| AMC Washington Square 12 | You, Me & Tuscany | undefined | 9:15pm | 4.4% | 153 min |
+| AMC West Melbourne 12 | You, Me & Tuscany | undefined | 10:00pm | 0% | 108 min |
+| AMC West Melbourne 12 | You, Me & Tuscany | undefined | 7:10pm | 8.2% | 278 min |
+| AMC Westmoreland 15 | You, Me & Tuscany | undefined | 7:00pm | 3.5% | 289 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 9:00pm | 6.4% | 169 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 7:00pm | 13.4% | 289 min |
+| AMC West Oaks 14 | You, Me & Tuscany | undefined | 6:15pm | 8.2% | 334 min |
+| AMC Weston 8 | You, Me & Tuscany | undefined | 7:45pm | 37.9% | 244 min |
+| AMC Westwood Town Center 6 | You, Me & Tuscany | undefined | 8:00pm | 6.3% | 229 min |
+| AMC Wheaton Mall 9 | You, Me & Tuscany | Laser at AMC | 9:15pm | 14.9% | 154 min |
+| AMC Wheaton Mall 9 | You, Me & Tuscany | Laser at AMC | 6:30pm | 29.8% | 319 min |
+| AMC White Marsh 16 | You, Me & Tuscany | Open Caption (On-screen Subtitles) | 7:15pm | 9.7% | 274 min |
+| AMC White Marsh 16 | You, Me & Tuscany | undefined | 10:00pm | 10.5% | 109 min |
+| AMC Woodhaven 10 | You, Me & Tuscany | Laser at AMC | 10:00pm | 2% | 109 min |
+| AMC Woodhaven 10 | You, Me & Tuscany | Laser at AMC | 7:15pm | 36% | 274 min |
+| AMC Yulee 10 | You, Me & Tuscany | undefined | 7:00pm | 3.3% | 289 min |
+
+**Issues:** AMC Kips Bay 15: No seat map for You, Me & Tuscany Open Caption (On-screen Subtitles) @ 6:45pm (https://www.amctheatres.com/showtimes/141364764/seats); AMC Boston Common 19: No seat map for You, Me & Tuscany Laser at AMC @ 10:30pm (https://www.amctheatres.com/showtimes/141323913/seats); AMC Pembroke Lakes 9: No seat map for You, Me & Tuscany Laser at AMC @ 10:00pm (https://www.amctheatres.com/showtimes/141523951/seats); AMC Castleton Square 14: No seat map for You, Me & Tuscany Open Caption (On-screen Subtitles) @ 7:20pm (https://www.amctheatres.com/showtimes/141492823/seats); AMC Waterfront 22: No seat map for You, Me & Tuscany Laser at AMC @ 9:20pm (https://www.amctheatres.com/showtimes/141338693/seats); AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC @ 9:30pm (https://www.amctheatres.com/showtimes/142195751/seats); AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC @ 8:15pm (https://www.amctheatres.com/showtimes/142195672/seats); AMC Highwoods 20: No seat map for You, Me & Tuscany Laser at AMC @ 7:15pm (https://www.amctheatres.com/showtimes/141337483/seats); AMC Marquis 16: No seat map for You, Me & Tuscany undefined @ 9:30pm (https://www.amctheatres.com/showtimes/141403660/seats); AMC Security Square 8: No seat map for You, Me & Tuscany Open Caption (On-screen Subtitles) @ 7:00pm (https://www.amctheatres.com/showtimes/141413790/seats); AMC Washington Square 12: No seat map for You, Me & Tuscany undefined @ 7:30pm (https://www.amctheatres.com/showtimes/141334428/seats)
+
+---
