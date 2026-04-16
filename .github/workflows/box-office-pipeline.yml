@@ -3,38 +3,38 @@ name: Box Office Pipeline
 on:
   schedule:
     # ── Phase 1: collect showtime links ─────────────────────────────────────
-    # Mon-Fri at ~5pm local; Sat-Sun at ~noon local
+    # ET runs at ~5pm weekdays / noon weekends; CT/MT/PT run one hour later
     # ET 5pm Mon-Fri = 21 UTC (EDT=UTC-4, days 1,2,3,4,5)
     - cron: '0 21 * * 1,2,3,4,5'
     # ET noon Sat/Sun = 16 UTC (days 6,0)
     - cron: '0 16 * * 6,0'
-    # CT 5pm Mon-Fri = 22 UTC (CDT=UTC-5, days 1,2,3,4,5)
-    - cron: '0 22 * * 1,2,3,4,5'
-    # CT noon Sat/Sun = 17 UTC (days 6,0)
-    - cron: '0 17 * * 6,0'
-    # MT 5pm Mon-Fri = 23 UTC (MDT=UTC-6, days 1,2,3,4,5)
+    # CT 6pm Mon-Fri = 23 UTC (CDT=UTC-5, days 1,2,3,4,5)
     - cron: '0 23 * * 1,2,3,4,5'
-    # MT noon Sat/Sun = 18 UTC (days 6,0)
+    # CT 1pm Sat/Sun = 18 UTC (days 6,0)
     - cron: '0 18 * * 6,0'
-    # PT 5pm Mon-Fri = midnight UTC next day (PDT=UTC-7, days 2,3,4,5,6)
+    # MT 6pm Mon-Fri = midnight UTC next day (MDT=UTC-6, days 2,3,4,5,6)
     - cron: '0 0 * * 2,3,4,5,6'
-    # PT noon Sat/Sun = 19 UTC (days 6,0)
+    # MT 1pm Sat/Sun = 19 UTC (days 6,0)
     - cron: '0 19 * * 6,0'
-    # ── Phase 2: fetch seat maps at ~11pm local every day ───────────────────
+    # PT 6pm Mon-Fri = 1am UTC next day (PDT=UTC-7, days 2,3,4,5,6)
+    - cron: '0 1 * * 2,3,4,5,6'
+    # PT 1pm Sat/Sun = 20 UTC (days 6,0)
+    - cron: '0 20 * * 6,0'
+    # ── Phase 2: fetch seat maps (ET ~11pm, CT/MT/PT ~midnight local) ──────
     # ET ~11pm = 3am UTC (EDT=UTC-4, every day)
     - cron: '0 3 * * *'
-    # CT ~11pm = 4am UTC (CDT=UTC-5, every day)
-    - cron: '0 4 * * *'
-    # MT ~11pm = 5am UTC (MDT=UTC-6, every day)
+    # CT ~midnight = 5am UTC (CDT=UTC-5, every day)
     - cron: '0 5 * * *'
-    # PT ~11pm = 6am UTC (PDT=UTC-7, every day)
+    # MT ~midnight = 6am UTC (MDT=UTC-6, every day)
     - cron: '0 6 * * *'
+    # PT ~midnight = 7am UTC (PDT=UTC-7, every day)
+    - cron: '0 7 * * *'
     # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
     - cron: '0 14 * * 2'
   workflow_dispatch:
     inputs:
       tz_group:
-        description: 'Timezone group to scrape (ET, CT, PT, or ALL)'
+        description: 'Timezone group to scrape (ET, CT, MT, PT, or ALL)'
         required: false
         default: 'ALL'
       phase:
@@ -102,15 +102,15 @@ jobs:
                 echo "group=ET" >> "$GITHUB_OUTPUT"
                 echo "phase=collect-links" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 22 * * 1,2,3,4,5'|'0 17 * * 6,0')
+              '0 23 * * 1,2,3,4,5'|'0 18 * * 6,0')
                 echo "group=CT" >> "$GITHUB_OUTPUT"
                 echo "phase=collect-links" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 23 * * 1,2,3,4,5'|'0 18 * * 6,0')
+              '0 0 * * 2,3,4,5,6'|'0 19 * * 6,0')
                 echo "group=MT" >> "$GITHUB_OUTPUT"
                 echo "phase=collect-links" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 0 * * 2,3,4,5,6'|'0 19 * * 6,0')
+              '0 1 * * 2,3,4,5,6'|'0 20 * * 6,0')
                 echo "group=PT" >> "$GITHUB_OUTPUT"
                 echo "phase=collect-links" >> "$GITHUB_OUTPUT"
                 ;;
@@ -118,15 +118,15 @@ jobs:
                 echo "group=ET" >> "$GITHUB_OUTPUT"
                 echo "phase=scrape" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 4 * * *')
+              '0 5 * * *')
                 echo "group=CT" >> "$GITHUB_OUTPUT"
                 echo "phase=scrape" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 5 * * *')
+              '0 6 * * *')
                 echo "group=MT" >> "$GITHUB_OUTPUT"
                 echo "phase=scrape" >> "$GITHUB_OUTPUT"
                 ;;
-              '0 6 * * *')
+              '0 7 * * *')
                 echo "group=PT" >> "$GITHUB_OUTPUT"
                 echo "phase=scrape" >> "$GITHUB_OUTPUT"
                 ;;
