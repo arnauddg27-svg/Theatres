@@ -149,10 +149,6 @@ jobs:
               emit "CT" "collect-links"
             elif matches_slot "America/Chicago" "13:00" "weekend"; then
               emit "CT" "collect-links"
-            elif matches_slot "America/Denver" "18:00" "weekday"; then
-              emit "MT" "collect-links"
-            elif matches_slot "America/Denver" "13:00" "weekend"; then
-              emit "MT" "collect-links"
             elif matches_slot "America/Los_Angeles" "18:00" "weekday"; then
               emit "PT" "collect-links"
             elif matches_slot "America/Los_Angeles" "13:00" "weekend"; then
@@ -161,8 +157,6 @@ jobs:
               emit "ET" "scrape"
             elif matches_slot "America/Chicago" "00:00" "daily"; then
               emit "CT" "scrape"
-            elif matches_slot "America/Denver" "00:00" "daily"; then
-              emit "MT" "scrape"
             elif matches_slot "America/Los_Angeles" "00:00" "daily"; then
               emit "PT" "scrape"
             else
