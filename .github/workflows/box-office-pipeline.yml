@@ -2,35 +2,33 @@ name: Box Office Pipeline
 
 on:
   schedule:
-    # ── Phase 1: collect showtime links ─────────────────────────────────────
-    # ET runs at ~5pm weekdays / noon weekends; CT/MT/PT run one hour later
-    # ET 5pm Mon-Fri = 21 UTC (EDT=UTC-4, days 1,2,3,4,5)
+    # ── DST-safe UTC trigger union ───────────────────────────────────────────
+    # We schedule the union of possible UTC slots, then resolve the real phase
+    # from each timezone's actual local wall clock inside the job.
+    # Phase 1 weekday windows (ET 5pm; CT/MT/PT 6pm local)
     - cron: '0 21 * * 1,2,3,4,5'
-    # ET noon Sat/Sun = 16 UTC (days 6,0)
-    - cron: '0 16 * * 6,0'
-    # CT 6pm Mon-Fri = 23 UTC (CDT=UTC-5, days 1,2,3,4,5)
+    - cron: '0 22 * * 1,2,3,4,5'
     - cron: '0 23 * * 1,2,3,4,5'
-    # CT 1pm Sat/Sun = 18 UTC (days 6,0)
-    - cron: '0 18 * * 6,0'
-    # MT 6pm Mon-Fri = midnight UTC next day (MDT=UTC-6, days 2,3,4,5,6)
     - cron: '0 0 * * 2,3,4,5,6'
-    # MT 1pm Sat/Sun = 19 UTC (days 6,0)
-    - cron: '0 19 * * 6,0'
-    # PT 6pm Mon-Fri = 1am UTC next day (PDT=UTC-7, days 2,3,4,5,6)
     - cron: '0 1 * * 2,3,4,5,6'
-    # PT 1pm Sat/Sun = 20 UTC (days 6,0)
+    - cron: '0 2 * * 2,3,4,5,6'
+    # Phase 1 weekend windows (ET noon; CT/MT/PT 1pm local)
+    - cron: '0 16 * * 6,0'
+    - cron: '0 17 * * 6,0'
+    - cron: '0 18 * * 6,0'
+    - cron: '0 19 * * 6,0'
     - cron: '0 20 * * 6,0'
-    # ── Phase 2: fetch seat maps (ET ~11pm, CT/MT/PT ~midnight local) ──────
-    # ET ~11pm = 3am UTC (EDT=UTC-4, every day)
+    - cron: '0 21 * * 6,0'
+    # Phase 2 nightly windows (ET 11pm; CT/MT/PT midnight local)
     - cron: '0 3 * * *'
-    # CT ~midnight = 5am UTC (CDT=UTC-5, every day)
+    - cron: '0 4 * * *'
     - cron: '0 5 * * *'
-    # MT ~midnight = 6am UTC (MDT=UTC-6, every day)
     - cron: '0 6 * * *'
-    # PT ~midnight = 7am UTC (PDT=UTC-7, every day)
     - cron: '0 7 * * *'
-    # Tuesday 10am ET = 2pm UTC — auto-calibrate after weekend numbers are public
+    - cron: '0 8 * * *'
+    # Tuesday 10am ET in either DST or standard time
     - cron: '0 14 * * 2'
+    - cron: '0 15 * * 2'
   workflow_dispatch:
     inputs:
       tz_group:
@@ -52,6 +50,13 @@ on:
 
 permissions:
   contents: write
+
+# Serialize runs of this workflow so concurrent jobs can't clobber each other's
+# commits (one self-hosted runner, append-only CSV). Queued jobs wait instead
+# of running in parallel.
+concurrency:
+  group: box-office-pipeline
+  cancel-in-progress: false
 
 jobs:
   collect:
@@ -84,65 +89,96 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: false   # preserve .env and other untracked files between runs
 
-      - name: Install dependencies
-        working-directory: box-office-tracker
+      - name: Sync to latest main
+        # checkout@v4 pins to the SHA that triggered the workflow, which can be
+        # stale if this job was queued behind another (e.g. ET scheduled at
+        # 03:00 UTC but runs after CT's 05:00 UTC job finished). Reset to the
+        # current tip of main so the scraper appends to the latest CSV.
+        # .env survives because it's untracked.
         run: |
-          pip3 install -r requirements.txt
-          python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
+          git fetch origin main
+          git reset --hard origin/main
 
       - name: Determine timezone group and phase
         id: tz
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "group=${{ github.event.inputs.tz_group || 'ALL' }}" >> "$GITHUB_OUTPUT"
-            echo "phase=${{ github.event.inputs.phase || 'scrape' }}" >> "$GITHUB_OUTPUT"
-          elif [ "${{ github.event_name }}" = "schedule" ]; then
-            case "${{ github.event.schedule }}" in
-              '0 21 * * 1,2,3,4,5'|'0 16 * * 6,0')
-                echo "group=ET" >> "$GITHUB_OUTPUT"
-                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 23 * * 1,2,3,4,5'|'0 18 * * 6,0')
-                echo "group=CT" >> "$GITHUB_OUTPUT"
-                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 0 * * 2,3,4,5,6'|'0 19 * * 6,0')
-                echo "group=MT" >> "$GITHUB_OUTPUT"
-                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 1 * * 2,3,4,5,6'|'0 20 * * 6,0')
-                echo "group=PT" >> "$GITHUB_OUTPUT"
-                echo "phase=collect-links" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 3 * * *')
-                echo "group=ET" >> "$GITHUB_OUTPUT"
-                echo "phase=scrape" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 5 * * *')
-                echo "group=CT" >> "$GITHUB_OUTPUT"
-                echo "phase=scrape" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 6 * * *')
-                echo "group=MT" >> "$GITHUB_OUTPUT"
-                echo "phase=scrape" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 7 * * *')
-                echo "group=PT" >> "$GITHUB_OUTPUT"
-                echo "phase=scrape" >> "$GITHUB_OUTPUT"
-                ;;
-              '0 14 * * 2')
-                echo "group=ALL" >> "$GITHUB_OUTPUT"
-                echo "phase=calibrate" >> "$GITHUB_OUTPUT"
-                ;;
-              *)
-                echo "Unexpected schedule: ${{ github.event.schedule }}" >&2
-                exit 1
-                ;;
+          emit() {
+            echo "group=$1" >> "$GITHUB_OUTPUT"
+            echo "phase=$2" >> "$GITHUB_OUTPUT"
+          }
+
+          local_hm() {
+            TZ="$1" date +%H:%M
+          }
+
+          local_wday() {
+            TZ="$1" date +%u
+          }
+
+          matches_slot() {
+            zone="$1"
+            target_hm="$2"
+            day_kind="$3"
+            current_hm="$(local_hm "$zone")"
+            current_day="$(local_wday "$zone")"
+            current_minutes=$((10#${current_hm%:*} * 60 + 10#${current_hm#*:}))
+            target_minutes=$((10#${target_hm%:*} * 60 + 10#${target_hm#*:}))
+            delta=$(( current_minutes - target_minutes ))
+            if [ "${delta#-}" -gt 20 ]; then
+              return 1
+            fi
+            case "$day_kind" in
+              weekday) [ "$current_day" -ge 1 ] && [ "$current_day" -le 5 ] ;;
+              weekend) [ "$current_day" -ge 6 ] ;;
+              daily) return 0 ;;
+              tuesday) [ "$current_day" -eq 2 ] ;;
+              *) return 1 ;;
             esac
+          }
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            emit "${{ github.event.inputs.tz_group || 'ALL' }}" "${{ github.event.inputs.phase || 'scrape' }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            if matches_slot "America/New_York" "10:00" "tuesday"; then
+              emit "ALL" "calibrate"
+            elif matches_slot "America/New_York" "17:00" "weekday"; then
+              emit "ET" "collect-links"
+            elif matches_slot "America/New_York" "12:00" "weekend"; then
+              emit "ET" "collect-links"
+            elif matches_slot "America/Chicago" "18:00" "weekday"; then
+              emit "CT" "collect-links"
+            elif matches_slot "America/Chicago" "13:00" "weekend"; then
+              emit "CT" "collect-links"
+            elif matches_slot "America/Denver" "18:00" "weekday"; then
+              emit "MT" "collect-links"
+            elif matches_slot "America/Denver" "13:00" "weekend"; then
+              emit "MT" "collect-links"
+            elif matches_slot "America/Los_Angeles" "18:00" "weekday"; then
+              emit "PT" "collect-links"
+            elif matches_slot "America/Los_Angeles" "13:00" "weekend"; then
+              emit "PT" "collect-links"
+            elif matches_slot "America/New_York" "23:00" "daily"; then
+              emit "ET" "scrape"
+            elif matches_slot "America/Chicago" "00:00" "daily"; then
+              emit "CT" "scrape"
+            elif matches_slot "America/Denver" "00:00" "daily"; then
+              emit "MT" "scrape"
+            elif matches_slot "America/Los_Angeles" "00:00" "daily"; then
+              emit "PT" "scrape"
+            else
+              emit "ALL" "skip"
+            fi
           else
             echo "Unsupported event type: ${{ github.event_name }}" >&2
             exit 1
           fi
+
+      - name: Install dependencies
+        if: steps.tz.outputs.phase != 'skip'
+        working-directory: box-office-tracker
+        run: |
+          pip3 install -r requirements.txt
+          python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
 
       - name: Auto-calibrate (Tuesday 10am ET only)
         if: steps.tz.outputs.phase == 'calibrate'
@@ -180,6 +216,7 @@ jobs:
         run: python3 predict.py
 
       - name: Commit updated data
+        if: steps.tz.outputs.phase != 'skip'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -191,8 +228,11 @@ jobs:
           git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            # -X theirs: on data-file conflicts, our freshly-scraped version wins
-            git pull --rebase -X theirs origin main && git push && break
+            # -X ours on rebase: prefer the remote base (= rows committed by
+            # other TZ runs while we were scraping). Our freshly-appended rows
+            # are new lines at EOF, so they don't conflict and still apply.
+            # Using -X theirs here previously dropped other TZs' rows.
+            git pull --rebase -X ours origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
