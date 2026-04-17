@@ -51,12 +51,12 @@ on:
 permissions:
   contents: write
 
-# Serialize runs of this workflow so concurrent jobs can't clobber each other's
-# commits (one self-hosted runner, append-only CSV). Queued jobs wait instead
-# of running in parallel.
-concurrency:
-  group: box-office-pipeline
-  cancel-in-progress: false
+# No workflow-level concurrency block: GitHub's concurrency caps the queue at
+# 1 running + 1 pending, so a third trigger cancels the older queued one.
+# With 4 TZ triggers firing within a 4-hour window, that would drop jobs.
+# Instead we rely on (a) the single self-hosted runner to naturally serialize
+# and (b) the "Sync to latest main" step to ensure each job starts from the
+# current tip — which is what actually prevents the data-loss race.
 
 jobs:
   collect:
