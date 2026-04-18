@@ -1,6 +1,6 @@
 # Weekend Box Office Summary — 2026-04-18
 
-Generated: 2026-04-18 08:33
+Generated: 2026-04-18 08:38
 
 ## Lee Cronin's The Mummy
 
