@@ -8454,3 +8454,14 @@ This log records each automated run of the seat-map tracking system.
 | AMC Burbank 16 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:40pm | 22.1% | -1268 min |
 
 ---
+
+## 2026-04-18 08:38 — PT Group
+
+**Polymarket movies tracked:** Lee Cronin's The Mummy
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Century City 15 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:45pm | 44.7% | -1268 min |
+| AMC The Grove 14 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 7:15pm | 78.8% | -1058 min |
+
+---
