@@ -68,7 +68,10 @@ jobs:
         run: |
           rm -rf /home/gha/actions-runner/_work/_update 2>/dev/null || true
           rm -rf /home/gha/actions-runner/_work/_temp/* 2>/dev/null || true
-          rm -f /home/gha/actions-runner/_diag/*.log 2>/dev/null || true
+          # Preserve the previous job's Worker_*.log (and other _diag logs) so we
+          # can diagnose failures post-mortem. Only rotate logs older than 7 days
+          # to keep the directory bounded without losing the last failure context.
+          find /home/gha/actions-runner/_diag -maxdepth 1 -type f -name '*.log' -mtime +7 -delete 2>/dev/null || true
           # Remove old runner versions — keep only what the current symlinks point to
           current_ext=$(readlink /home/gha/actions-runner/externals 2>/dev/null | xargs basename 2>/dev/null)
           current_bin=$(readlink /home/gha/actions-runner/bin 2>/dev/null | xargs basename 2>/dev/null)
@@ -182,14 +185,14 @@ jobs:
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
         if: steps.tz.outputs.phase == 'collect-links'
         working-directory: box-office-tracker
-        run: |
-          python3 scraper.py --collect-links ${{ steps.tz.outputs.group }} || \
-            (echo "Phase 1 attempt 1 failed, retrying in 15s..." && sleep 15 && \
-             python3 scraper.py --collect-links ${{ steps.tz.outputs.group }})
+        timeout-minutes: 60
+        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
+        id: phase2
         if: steps.tz.outputs.phase == 'scrape'
         working-directory: box-office-tracker
+        timeout-minutes: 75
         run: |
           # Scheduled runs always pass --force so a slightly delayed Phase 1
           # (e.g. >12h gap) never silently aborts Phase 2.
@@ -200,17 +203,22 @@ jobs:
           fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
-          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }} || \
-            (echo "Phase 2 attempt 1 failed, retrying in 15s..." && sleep 15 && \
-             python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }})
+          # The scraper already has internal per-theatre retries and timeouts.
+          # An outer retry used to double runtime when the VPS IP was stuck in
+          # AMC's queue-it redirect, so we rely on in-process recovery instead.
+          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }}
 
       - name: Generate predictions
-        if: steps.tz.outputs.phase == 'scrape'
+        if: steps.tz.outputs.phase == 'scrape' && steps.phase2.outcome == 'success'
         working-directory: box-office-tracker
         run: python3 predict.py
 
       - name: Commit updated data
-        if: steps.tz.outputs.phase != 'skip'
+        # Run whenever the job had work to do (phase != skip), even if the
+        # scrape or prediction step failed. The scraper flushes rows to CSV as
+        # each theatre completes, so a mid-run failure can still have partial
+        # data worth preserving.
+        if: always() && steps.tz.outputs.phase != 'skip' && steps.tz.outputs.phase != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

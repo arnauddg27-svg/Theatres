@@ -261,12 +261,15 @@ def auto_calibrate():
     already_done = {h["movie"] for h in cal["history"] if h.get("weekend_of") == last_fri}
 
     seat_data = load_seat_data(weekend_of=last_fri)
-    poly_data = load_polymarket_data()
+    poly_data = load_polymarket_data(weekend_of=last_fri)
 
     if not seat_data:
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
         return
 
+    # Predict everything from a frozen pre-calibration state so later movies do
+    # not benefit from actuals recorded earlier in the same Tuesday run.
+    pending = []
     for movie in seat_data:
         if movie in already_done:
             print(f"\n  {movie}: already calibrated, skipping")
@@ -301,10 +304,24 @@ def auto_calibrate():
         for day_name, details in pred.get("daily_details", {}).items():
             daily_predictions[day_name] = details.get("domestic_mid", 0) / 1_000_000
 
-        # Record and calibrate
+        pending.append({
+            "movie": movie,
+            "pred": pred,
+            "daily_actuals": daily_actuals,
+            "daily_predictions": daily_predictions,
+        })
+
+    for item in pending:
+        movie = item["movie"]
+        pred = item["pred"]
+        daily_actuals = item["daily_actuals"]
+        daily_predictions = item["daily_predictions"]
+
+        print(f"\n  Recording calibration for {movie}:")
+
         entry = record_result(
             cal, movie, last_fri,
-            predicted_mid=predicted,
+            predicted_mid=pred["blended_m"],
             predicted_low=pred["blend_low_m"],
             predicted_high=pred["blend_high_m"],
             daily_actuals=daily_actuals,
@@ -391,7 +408,7 @@ if __name__ == "__main__":
         from predict import load_seat_data, load_polymarket_data, predict_movie
         cal = load_calibration()
         seat_data = load_seat_data(weekend_of=_last_friday())
-        poly_data = load_polymarket_data()
+        poly_data = load_polymarket_data(weekend_of=_last_friday())
 
         pred = None
         for m in seat_data:

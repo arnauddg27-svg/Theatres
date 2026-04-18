@@ -76,6 +76,15 @@ FORMAT_PRIORITY = {
 MAX_CONCURRENT_TABS = 3
 MAX_CONCURRENT_TABS_PHASE1 = 2
 
+# Phase 2 runtime guards. A single hung Playwright navigation (typically caused
+# by AMC's Queue-It safety net redirecting the VPS IP) used to stall the whole
+# scrape for hours. The per-theatre timeout caps each tab; the overall deadline
+# stops launching new theatres early enough for in-flight work and the commit
+# step to finish inside the workflow's 75-minute step budget.
+PHASE1_THEATRE_TIMEOUT_SEC = 90
+PHASE2_THEATRE_TIMEOUT_SEC = 180
+PHASE2_DEADLINE_SEC = 60 * 60   # 60 min — leaves 15 min for commit + push
+
 # Rotate through realistic Chrome user agents to reduce rate-limiting.
 _USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
@@ -443,6 +452,17 @@ def fetch_bom_theatre_counts(movie_titles):
 
 # ─── AMC Playwright Scraper ─────────────────────────────────────────────────
 
+# AMC's Queue-It Global Safety Net — if the VPS IP gets flagged for bot traffic,
+# AMC redirects every request here. The redirect target never produces seat maps
+# or showtime sections, so further work on the page is wasted. Detect early and
+# bail so one theatre's queue doesn't stall the whole run.
+QUEUE_HOST = "queue.amctheatres.com"
+
+
+def _is_queue_url(url):
+    return bool(url) and QUEUE_HOST in url
+
+
 async def fetch_amc_showtimes_pw(page, theatre, date_str):
     """
     Fetch showtimes for a theatre using Playwright.
@@ -451,7 +471,8 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
     to appear (smart wait instead of fixed sleep). Falls back to a short
     sleep if sections never appear (empty showtime day).
 
-    Returns list of showtime dicts.
+    Returns list of showtime dicts. A dedicated empty-list is returned when the
+    request is redirected to AMC's queue so callers can treat it as a soft skip.
     """
     theatre_slug = theatre["slug"]
     url = f"https://www.amctheatres.com/showtimes/all/{date_str}/{theatre_slug}/all"
@@ -460,13 +481,19 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
 
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        if _is_queue_url(page.url):
+            print(f"    🚧 AMC queue redirect — {theatre['name']} skipped")
+            return []
         # Smart wait: watch for the actual showtime sections to render
         try:
             await page.wait_for_selector(
                 'section[aria-label^="Showtimes for"]', timeout=12000
             )
         except Exception:
-            # No sections appeared — page may be empty or slow
+            # No sections appeared — page may be empty, slow, or now in queue
+            if _is_queue_url(page.url):
+                print(f"    🚧 AMC queue redirect mid-load — {theatre['name']} skipped")
+                return []
             await asyncio.sleep(2)
     except Exception as e:
         print(f"    ❌ Navigation failed: {e}")
@@ -562,6 +589,9 @@ def _extract_seats_from_next_data(props, showtime_id):
     return None
 
 
+QUEUE_SENTINEL = {"__queue__": True}
+
+
 async def fetch_amc_seat_map_pw(page, showtime_id):
     """
     Navigate to /showtimes/{id}/seats and count seat inputs.
@@ -571,7 +601,8 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     them so the seat map (which IS server-rendered in the initial HTML for
     in-progress/imminent shows) can render without errors.
 
-    Returns dict with total_seats, seats_sold, seats_available, occupancy_pct.
+    Returns dict with total_seats, seats_sold, seats_available, occupancy_pct,
+    QUEUE_SENTINEL when AMC queues the VPS IP, or None otherwise.
     """
     if not showtime_id:
         return None
@@ -589,25 +620,46 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     await page.route("**/*", block_rsc)
 
     try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        try:
+            await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        except Exception as e:
+            print(f"      ⚠️  Goto failed: {str(e)[:120]}")
+            return None
         final_url = page.url
-        title = await page.title()
+        if _is_queue_url(final_url):
+            print(f"      🚧 AMC queue redirect on seat map — aborting theatre")
+            return QUEUE_SENTINEL
+        try:
+            title = await page.title()
+        except Exception:
+            title = ""
         print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
-        await page.wait_for_selector(
-            'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
-            timeout=12000,
-        )
-    except Exception as e:
-        body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
-        print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
-        return None
+        try:
+            await page.wait_for_selector(
+                'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
+                timeout=12000,
+            )
+        except Exception:
+            if _is_queue_url(page.url):
+                print(f"      🚧 AMC queue redirect mid-load — aborting theatre")
+                return QUEUE_SENTINEL
+            try:
+                body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
+            except Exception:
+                body_snippet = ""
+            print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
+            return None
     finally:
         try:
             await page.unroute("**/*")
         except Exception:
             pass
 
-    seat_data = await page.evaluate(COUNT_SEATS_JS)
+    try:
+        seat_data = await page.evaluate(COUNT_SEATS_JS)
+    except Exception as e:
+        print(f"      ⚠️  Seat count evaluate failed: {str(e)[:120]}")
+        return None
 
     if seat_data["total_seats"] == 0:
         return None
@@ -790,6 +842,12 @@ def log_run(tz_group, movies, results, issues):
         f.write("\n---\n")
 
 
+def fail_phase(message, exit_code=1):
+    """Abort the phase with a non-zero exit so Actions can retry or fail."""
+    print(message)
+    raise SystemExit(exit_code)
+
+
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
@@ -860,7 +918,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 shows = shows[:1]
             movie_shows_map[movie_title] = shows
 
+        queue_blocked = False
         for movie_title, evening_shows in movie_shows_map.items():
+            if queue_blocked:
+                break
             if not evening_shows:
                 continue
 
@@ -871,10 +932,18 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
 
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                if seat_data is QUEUE_SENTINEL:
+                    issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
+                    queue_blocked = True
+                    break
                 if seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                    if seat_data is QUEUE_SENTINEL:
+                        issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
+                        queue_blocked = True
+                        break
 
                 showtime_hour = parse_showtime_hour(st)
                 delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
@@ -910,7 +979,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         f"(https://www.amctheatres.com/showtimes/{showtime_id}/seats)"
                     )
     finally:
-        await context.close()
+        try:
+            await asyncio.wait_for(context.close(), timeout=10)
+        except Exception:
+            pass
 
     return results, issues, csv_rows
 
@@ -949,7 +1021,10 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     except Exception as e:
         print(f"  ⚠️  {theatre['name']}: {e}")
     finally:
-        await context.close()
+        try:
+            await asyncio.wait_for(context.close(), timeout=10)
+        except Exception:
+            pass
     return collected
 
 
@@ -975,8 +1050,7 @@ async def run_collect_links_async(tz_group="ALL"):
         poly_markets = load_movies_from_csv(current_weekend_check)
 
     if not poly_markets:
-        print("❌ No active Polymarket box office markets and no saved CSV fallback.")
-        return
+        fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
@@ -1008,7 +1082,17 @@ async def run_collect_links_async(tz_group="ALL"):
         async def bounded(theatre):
             async with sem:
                 t_date = theatre.get("_date", today)
-                result = await _collect_links_theatre(browser, theatre, t_date, movie_titles)
+                try:
+                    result = await asyncio.wait_for(
+                        _collect_links_theatre(browser, theatre, t_date, movie_titles),
+                        timeout=PHASE1_THEATRE_TIMEOUT_SEC,
+                    )
+                except asyncio.TimeoutError:
+                    print(f"  ⏱️  {theatre['name']}: Phase 1 timeout — skipping")
+                    result = {}
+                except Exception as e:
+                    print(f"  ❌ {theatre['name']}: {e}")
+                    result = {}
                 return theatre["name"], theatre.get("_tz", ""), t_date, result
 
         outcomes = await asyncio.gather(*[bounded(t) for t in all_theatres], return_exceptions=True)
@@ -1016,7 +1100,7 @@ async def run_collect_links_async(tz_group="ALL"):
         # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
         failed = [
             t for t, outcome in zip(all_theatres, outcomes)
-            if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[2])
+            if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[3])
         ]
         if failed:
             print(f"\n🔄 Retrying {len(failed)} theatres that returned 0 showtimes (5s delay)...")
@@ -1026,11 +1110,14 @@ async def run_collect_links_async(tz_group="ALL"):
             fi = 0
             outcomes = list(outcomes)
             for i, outcome in enumerate(outcomes):
-                if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[2]):
+                if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[3]):
                     outcomes[i] = retry_outcomes[fi]
                     fi += 1
 
-        await browser.close()
+        try:
+            await asyncio.wait_for(browser.close(), timeout=15)
+        except Exception:
+            pass
 
     total_links = 0
     for outcome in outcomes:
@@ -1118,9 +1205,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         poly_markets = load_movies_from_csv(weekend)
 
     if not poly_markets:
-        print("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
         log_run(tz_group, [], [], ["No active Polymarket box office markets found"])
-        return
+        fail_phase("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
@@ -1155,27 +1241,22 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     age_str = f" from {age_hours:.1f}h ago"
                     if age_hours > 12:
                         if not force:
-                            print(f"\n❌ showtime-links.json is stale ({age_hours:.1f}h old) — run Phase 1 first.")
-                            return
+                            fail_phase(f"\n❌ showtime-links.json is stale ({age_hours:.1f}h old) — run Phase 1 first.")
                         print(f"\n⚠️  showtime-links.json is stale ({age_hours:.1f}h old) — proceeding because --force was set.")
                 print(f"\n📂 Phase 1 links{age_str} ({len(saved_links)} theatres)")
             elif links_weekend:
-                print(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
-                return
+                fail_phase(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
             else:
                 # Old-format file: fall back to date comparison
                 if links_data.get("date") == today:
                     saved_links = links_data.get("theatres", {})
                     print(f"\n📂 Phase 1 links for today ({len(saved_links)} theatres)")
                 else:
-                    print(f"\n❌ showtime-links.json is from {links_data.get('date')}, not today — run Phase 1 first.")
-                    return
+                    fail_phase(f"\n❌ showtime-links.json is from {links_data.get('date')}, not today — run Phase 1 first.")
         except Exception as e:
-            print(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
-            return
+            fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
     else:
-        print(f"\n❌ showtime-links.json not found — run Phase 1 first.")
-        return
+        fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
@@ -1190,8 +1271,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     print(f"   Weekend: {weekend}  Run: {run_id}")
 
     if not all_theatres:
-        print("❌ No theatres found in saved links for this timezone group.")
-        return
+        fail_phase("❌ No theatres found in saved links for this timezone group.")
 
     # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
@@ -1201,30 +1281,51 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     written_rows = 0
     skipped_rows = 0
 
+    # Per-theatre and overall deadlines. The workflow's step timeout caps us at
+    # 75 min, but we stop accepting new work earlier so in-flight theatres can
+    # finish and commit. Per-theatre wait_for prevents one hung tab (usually
+    # from AMC's queue-it redirect) from stalling the whole run.
+    overall_deadline = asyncio.get_event_loop().time() + PHASE2_DEADLINE_SEC
+    theatre_timeout_sec = PHASE2_THEATRE_TIMEOUT_SEC
+
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows
+            name = theatre["name"]
+            if asyncio.get_event_loop().time() >= overall_deadline:
+                all_issues.append(f"{name}: overall deadline reached — skipped")
+                return
             async with sem:
-                saved_entry = saved_links[theatre["name"]]
+                if asyncio.get_event_loop().time() >= overall_deadline:
+                    all_issues.append(f"{name}: overall deadline reached — skipped")
+                    return
+                saved_entry = saved_links[name]
                 t_date = (
                     saved_entry.get("show_date")
                     or links_meta.get("collected_local_date")
                     or theatre.get("_date", today)
                 )
                 theatre_saved = saved_entry.get("movies")
-                outcome = await _scrape_theatre(
-                    browser, theatre, t_date, movie_titles, market_urls,
-                    weekend_of=weekend, run_id=run_id,
-                    saved_movies=theatre_saved,
-                    test_mode=bool(test_max),
-                )
-            if isinstance(outcome, Exception):
-                name = theatre["name"]
-                all_issues.append(f"{name}: {outcome}")
-                print(f"  ❌ {name}: {outcome}")
-                return
+                try:
+                    outcome = await asyncio.wait_for(
+                        _scrape_theatre(
+                            browser, theatre, t_date, movie_titles, market_urls,
+                            weekend_of=weekend, run_id=run_id,
+                            saved_movies=theatre_saved,
+                            test_mode=bool(test_max),
+                        ),
+                        timeout=theatre_timeout_sec,
+                    )
+                except asyncio.TimeoutError:
+                    all_issues.append(f"{name}: timeout after {theatre_timeout_sec}s — skipped")
+                    print(f"  ⏱️  {name}: timeout after {theatre_timeout_sec}s — moving on")
+                    return
+                except Exception as e:
+                    all_issues.append(f"{name}: {e}")
+                    print(f"  ❌ {name}: {e}")
+                    return
             results, issues, csv_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
@@ -1236,9 +1337,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     skipped_rows += s
 
         tasks = [bounded_scrape(t) for t in all_theatres]
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*tasks, return_exceptions=True)
 
-        await browser.close()
+        try:
+            await asyncio.wait_for(browser.close(), timeout=15)
+        except Exception:
+            pass
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
 
@@ -1335,7 +1439,10 @@ if __name__ == "__main__":
     # on the VPS that block the runner from accepting the next job.
     def _handle_sigterm(signum, frame):
         print("\n⚠️  SIGTERM received — shutting down gracefully", flush=True)
-        sys.exit(0)
+        # Standard SIGTERM exit code (128 + 15) so GitHub Actions and the
+        # workflow's step outcome clearly reflect an external cancellation
+        # rather than a normal success.
+        sys.exit(143)
     signal.signal(signal.SIGTERM, _handle_sigterm)
 
     args = sys.argv[1:]
