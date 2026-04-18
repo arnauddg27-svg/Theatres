@@ -8442,3 +8442,15 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC The Grove 14: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 10:45pm (https://www.amctheatres.com/showtimes/141850433/seats); AMC The Regency 20: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 9:15pm (https://www.amctheatres.com/showtimes/141841336/seats); AMC Puente Hills 20: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/141826668/seats); AMC Plaza Bonita 14: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/141735469/seats)
 
 ---
+
+## 2026-04-18 08:33 — PT Group
+
+**Polymarket movies tracked:** Lee Cronin's The Mummy
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC The Grove 14 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 7:15pm | 78.8% | -1063 min |
+| AMC Century City 15 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:45pm | 44.7% | -1273 min |
+| AMC Burbank 16 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:40pm | 22.1% | -1268 min |
+
+---
