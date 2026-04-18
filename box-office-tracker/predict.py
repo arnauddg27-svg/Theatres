@@ -317,10 +317,20 @@ def infer_format_rank(row):
     return 1  # standard/digital
 
 
+def _parse_numeric(value, default=0):
+    """Coerce CSV cells like '96.0' or '' to ints without crashing on floats."""
+    if value in (None, ""):
+        return default
+    try:
+        return int(float(value))
+    except (TypeError, ValueError):
+        return default
+
+
 def estimate_theatre_daily_revenue(row, cal):
     """Stage A: estimate one theatre's revenue for one day from a single row."""
-    total_seats = int(row.get("total_seats", 0) or 0)
-    seats_sold = int(row.get("seats_sold", 0) or 0)
+    total_seats = _parse_numeric(row.get("total_seats", 0))
+    seats_sold = _parse_numeric(row.get("seats_sold", 0))
 
     # Detect data format: new collect.py vs old scraper
     has_seat_map_field = row.get("has_seat_map", "")
@@ -328,7 +338,7 @@ def estimate_theatre_daily_revenue(row, cal):
 
     is_sold_out = row.get("is_sold_out", "").lower() in ("true", "1", "yes")
     is_almost_sold = row.get("is_almost_sold_out", "").lower() in ("true", "1", "yes")
-    total_showings = int(row.get("total_showings", 1) or 1)
+    total_showings = _parse_numeric(row.get("total_showings", 1), default=1)
     format_rank = infer_format_rank(row)
 
     # Ticket price — try multiple field names
