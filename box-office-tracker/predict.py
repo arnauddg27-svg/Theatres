@@ -119,6 +119,33 @@ def _current_weekend_friday():
     return (now - timedelta(days=5)).strftime("%Y-%m-%d")
 
 
+def _opening_weekend_for_date(date_str):
+    """Map a YYYY-MM-DD row date to its opening-weekend Friday anchor."""
+    try:
+        row_dt = datetime.strptime(date_str, "%Y-%m-%d")
+    except ValueError:
+        return ""
+
+    try:
+        from scraper import opening_weekend_friday
+        return opening_weekend_friday(row_dt)
+    except ImportError:
+        wd = row_dt.weekday()
+        if wd == 3:
+            return (row_dt + timedelta(days=1)).strftime("%Y-%m-%d")
+        if wd == 4:
+            return row_dt.strftime("%Y-%m-%d")
+        if wd == 5:
+            return (row_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+        if wd == 6:
+            return (row_dt - timedelta(days=2)).strftime("%Y-%m-%d")
+        if wd == 0:
+            return (row_dt - timedelta(days=3)).strftime("%Y-%m-%d")
+        if wd == 1:
+            return (row_dt - timedelta(days=4)).strftime("%Y-%m-%d")
+        return (row_dt - timedelta(days=5)).strftime("%Y-%m-%d")
+
+
 def load_seat_data(weekend_of=None):
     """Load seat-counts.csv and group by movie → date → list of theatre rows.
 
@@ -158,17 +185,47 @@ def load_seat_data(weekend_of=None):
     return data
 
 
-def load_polymarket_data():
-    """Load polymarket-markets.csv and group by movie title."""
+def load_polymarket_data(weekend_of=None):
+    """Load Polymarket bracket rows for one opening weekend, deduped by market.
+
+    The CSV is append-only and may contain multiple snapshots of the same
+    bracket market across several days. For prediction we want the latest
+    snapshot per market for the target weekend, not every historical row.
+    """
     if not os.path.exists(POLY_CSV):
         return {}
-    data = {}
+
+    rows = []
     with open(POLY_CSV, "r") as f:
-        for row in csv.DictReader(f):
+        for idx, row in enumerate(csv.DictReader(f)):
             movie = row.get("movie_title", "")
             if not movie:
                 continue
-            data.setdefault(movie, []).append(row)
+            date_str = row.get("date", "").strip()
+            row_weekend = _opening_weekend_for_date(date_str) if date_str else ""
+            rows.append((idx, row, row_weekend, date_str))
+
+    if weekend_of is None:
+        weekends = [row_weekend for _, _, row_weekend, _ in rows if row_weekend]
+        weekend_of = max(weekends) if weekends else _current_weekend_friday()
+
+    latest_rows = {}
+    for idx, row, row_weekend, date_str in rows:
+        if row_weekend and row_weekend != weekend_of:
+            continue
+        movie = row.get("movie_title", "")
+        market_key = row.get("market_id", "") or row.get("market_question", "")
+        if not movie or not market_key:
+            continue
+        dedupe_key = (movie, market_key)
+        sort_key = (date_str, idx)
+        prev = latest_rows.get(dedupe_key)
+        if not prev or sort_key >= prev[0]:
+            latest_rows[dedupe_key] = (sort_key, row)
+
+    data = {}
+    for _, row in latest_rows.values():
+        data.setdefault(row["movie_title"], []).append(row)
     return data
 
 
