@@ -213,6 +213,11 @@ jobs:
         working-directory: box-office-tracker
         run: python3 predict.py
 
+      - name: Refresh Excel workbook
+        if: steps.tz.outputs.phase == 'scrape' && steps.phase2.outcome == 'success'
+        working-directory: box-office-tracker
+        run: python3 export_seat_counts_xlsx.py
+
       - name: Commit updated data
         # Run whenever the job had work to do (phase != skip), even if the
         # scrape or prediction step failed. The scraper flushes rows to CSV as
