@@ -91,15 +91,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: false   # preserve .env and other untracked files between runs
+          # fetch-depth 50 so the Dedup guard step can grep today's commit
+          # history. Depth 1 (default) would only show the triggering SHA,
+          # hiding earlier scrape commits from the same day and defeating
+          # the dedup check.
+          fetch-depth: 50
 
       - name: Sync to latest main
         # checkout@v4 pins to the SHA that triggered the workflow, which can be
         # stale if this job was queued behind another (e.g. ET scheduled at
         # 03:00 UTC but runs after CT's 05:00 UTC job finished). Reset to the
         # current tip of main so the scraper appends to the latest CSV.
+        # --deepen keeps history from collapsing back to shallow on fetch.
         # .env survives because it's untracked.
         run: |
-          git fetch origin main
+          git fetch --deepen=50 origin main
           git reset --hard origin/main
 
       - name: Determine timezone group and phase
