@@ -127,7 +127,12 @@ jobs:
             current_minutes=$((10#${current_hm%:*} * 60 + 10#${current_hm#*:}))
             target_minutes=$((10#${target_hm%:*} * 60 + 10#${target_hm#*:}))
             delta=$(( current_minutes - target_minutes ))
-            if [ "${delta#-}" -gt 20 ]; then
+            # GH Actions cron runs 5–45 min late in practice, occasionally
+            # drops slots entirely. ±55 min window catches delays without
+            # colliding with neighboring targets (all targets are ≥1h apart
+            # in UTC per-zone). Without this, a 44-min-late CT scrape on
+            # 2026-04-20 was incorrectly skipped.
+            if [ "${delta#-}" -gt 55 ]; then
               return 1
             fi
             case "$day_kind" in
