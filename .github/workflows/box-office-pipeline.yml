@@ -175,8 +175,29 @@ jobs:
             exit 1
           fi
 
+      - name: Dedup guard — skip if today's phase already committed
+        id: dedup
+        if: steps.tz.outputs.phase == 'scrape' || steps.tz.outputs.phase == 'collect-links'
+        run: |
+          # The ±55 min matches_slot window can let two adjacent crons both
+          # resolve to the same phase/tz if one is badly delayed (e.g. the
+          # 02:00 UTC weekday cron firing at 02:30 hits ET Phase 2's window
+          # at ET 22:30, and 03:00 UTC on-time also hits it). Without a
+          # guard, that produces duplicate scrape rows with different
+          # check_times but the same showtime. Use the commit log as the
+          # cross-run source of truth.
+          today=$(date -u +%Y-%m-%d)
+          pattern="data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
+          if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
+            echo "Skipping — ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }} already ran today:"
+            git log --since="$today 00:00" --oneline --grep="$pattern"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Install dependencies
-        if: steps.tz.outputs.phase != 'skip'
+        if: steps.tz.outputs.phase != 'skip' && steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         run: |
           pip3 install -r requirements.txt
@@ -188,14 +209,14 @@ jobs:
         run: python3 calibrate.py
 
       - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
-        if: steps.tz.outputs.phase == 'collect-links'
+        if: steps.tz.outputs.phase == 'collect-links' && steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 60
         run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
 
       - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
         id: phase2
-        if: steps.tz.outputs.phase == 'scrape'
+        if: steps.tz.outputs.phase == 'scrape' && steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 75
         run: |
@@ -219,7 +240,10 @@ jobs:
         run: python3 predict.py
 
       - name: Refresh Excel workbook
-        if: steps.tz.outputs.phase == 'scrape' && steps.phase2.outcome == 'success'
+        # Rebuild from whatever's in the CSV, even if the scrape step
+        # partially failed. The commit step also uses `always()` so the
+        # xlsx stays in sync with partial CSV updates instead of drifting.
+        if: always() && steps.tz.outputs.phase == 'scrape' && steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         run: python3 export_seat_counts_xlsx.py
 

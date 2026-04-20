@@ -277,10 +277,10 @@ def time_multiplier(row):
     Negative = scraped before show started (still selling tickets).
     Zero or positive = scraped after show started (occupancy is near-final).
     """
-    try:
-        delta = int(row.get("minutes_after_showtime", 0) or 0)
-    except (ValueError, TypeError):
-        delta = 0
+    # Use _parse_numeric so float-formatted cells (e.g. "96.0" from Excel
+    # edits) don't silently fall back to delta=0 and misroute the row into
+    # the post-showtime bucket.
+    delta = _parse_numeric(row.get("minutes_after_showtime", 0), default=0)
 
     if delta < -120:
         return 1.6   # >2h before showtime — occupancy will grow significantly
