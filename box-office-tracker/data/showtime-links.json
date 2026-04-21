@@ -2,7 +2,7 @@
   "date": "2026-04-17",
   "weekend_of": "2026-04-17",
   "collected_local_date": "2026-04-21",
-  "collected_at": "2026-04-21T21:23:24.491667+00:00",
+  "collected_at": "2026-04-21T23:13:29.710924+00:00",
   "theatres": {
     "AMC Empire 25": {
       "tz": "ET",
@@ -4327,45 +4327,50 @@
     },
     "AMC River East 21": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:45pm",
-            "showtime_id": "142327192",
+            "showtime_id": "142329276",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141829883",
+            "showtime_id": "141829885",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:10pm",
-            "showtime_id": "141829866",
+            "showtime_id": "141829872",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141829864",
+            "showtime": "8:40pm",
+            "showtime_id": "142329261",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142329252",
+            "format": "Thrills & Chills"
           }
         ]
       }
     },
     "AMC Village Crossing 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:00pm",
-            "showtime_id": "141702451",
+            "showtime_id": "141702454",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141702508",
+            "showtime": "8:00pm",
+            "showtime_id": "141702504",
             "format": "Laser at AMC"
           }
         ]
@@ -4373,17 +4378,17 @@
     },
     "AMC DINE-IN Block 37": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "141710706",
+            "showtime_id": "141710709",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141710705",
+            "showtime_id": "141710708",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4391,27 +4396,27 @@
     },
     "AMC DINE-IN Rosemont 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:50pm",
-            "showtime_id": "142339951",
+            "showtime_id": "142339956",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "142339952",
+            "showtime_id": "142339957",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142339949",
+            "showtime": "6:10pm",
+            "showtime_id": "142339946",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "142339942",
+            "showtime": "9:30pm",
+            "showtime_id": "142339948",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4419,17 +4424,17 @@
     },
     "AMC 600 North Michigan 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141873270",
+            "showtime": "7:00pm",
+            "showtime_id": "141873268",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141873287",
+            "showtime_id": "141873284",
             "format": "Thrills & Chills"
           }
         ]
@@ -4437,27 +4442,27 @@
     },
     "AMC Roosevelt Collection 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141850646",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "142400953",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141850834",
-            "format": "Laser at AMC"
+            "showtime": "7:00pm",
+            "showtime_id": "141850650",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142400730",
+            "showtime_id": "141850647",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141850827",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142400794",
             "format": "Laser at AMC"
           }
         ]
@@ -4465,22 +4470,22 @@
     },
     "AMC South Barrington 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142047638",
+            "showtime": "10:00pm",
+            "showtime_id": "141705635",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142417094",
+            "showtime": "7:30pm",
+            "showtime_id": "142417091",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "142417093",
+            "showtime": "9:00pm",
+            "showtime_id": "142417090",
             "format": "Laser at AMC"
           }
         ]
@@ -4488,17 +4493,17 @@
     },
     "AMC Streets of Woodfield 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141808449",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141808454",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "142419442",
+            "showtime": "10:00pm",
+            "showtime_id": "142511950",
             "format": "Laser at AMC"
           }
         ]
@@ -4506,32 +4511,32 @@
     },
     "AMC Yorktown 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141853690",
+            "showtime_id": "141853692",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141853691",
+            "showtime_id": "141853693",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141853711",
+            "showtime_id": "141853714",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142300282",
+            "showtime_id": "142300279",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141853712",
+            "showtime_id": "141853715",
             "format": "Laser at AMC"
           }
         ]
@@ -4539,17 +4544,17 @@
     },
     "AMC Northbrook 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:10pm",
-            "showtime_id": "141806346",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141806348",
+            "format": "Thrills & Chills"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "142307338",
+            "showtime_id": "142307337",
             "format": "Thrills & Chills"
           }
         ]
@@ -4557,17 +4562,22 @@
     },
     "AMC Oakbrook Center 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:45pm",
-            "showtime_id": "141819491",
+            "showtime_id": "141819492",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142441474",
+            "showtime_id": "141819548",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142441342",
             "format": "Laser at AMC"
           }
         ]
@@ -4575,17 +4585,17 @@
     },
     "AMC Randhurst 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141876094",
+            "showtime_id": "141876095",
             "format": "XL at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141876078",
+            "showtime_id": "141876080",
             "format": "Laser at AMC"
           }
         ]
@@ -4593,17 +4603,17 @@
     },
     "AMC Ford City 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:50pm",
-            "showtime_id": "141822175",
+            "showtime_id": "141822173",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141822176",
+            "showtime_id": "141822174",
             "format": "Laser at AMC"
           }
         ]
@@ -4611,47 +4621,52 @@
     },
     "AMC DINE-IN Mesquite 30": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141854270",
+            "showtime": "10:30pm",
+            "showtime_id": "141854271",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "8:50pm",
+            "showtime_id": "141854404",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "9:35pm",
-            "showtime_id": "142306901",
+            "showtime_id": "141854195",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "142306948",
+            "showtime": "8:40pm",
+            "showtime_id": "141854276",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:40pm",
-            "showtime_id": "142306967",
+            "showtime_id": "142306970",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "5:40pm",
-            "showtime_id": "141854400",
+            "showtime_id": "141854403",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142522781",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:50pm",
-            "showtime_id": "142306968",
+            "showtime_id": "142306971",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "141854401",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "141854348",
+            "showtime": "9:00pm",
+            "showtime_id": "141854350",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -4659,45 +4674,55 @@
     },
     "AMC NorthPark 15": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141850380",
+            "showtime": "6:15pm",
+            "showtime_id": "142390291",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "141850381",
+            "showtime": "9:30pm",
+            "showtime_id": "142390292",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141850366",
+            "format": "XL at AMC"
           }
         ]
       }
     },
     "AMC Stonebriar 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "10:30pm",
+            "showtime_id": "141759911",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "6:05pm",
-            "showtime_id": "142014164",
+            "showtime_id": "142014166",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142014172",
+            "showtime_id": "142014165",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142331587",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "8:00pm",
+            "showtime_id": "141760066",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:10pm",
-            "showtime_id": "141760072",
+            "showtime": "10:00pm",
+            "showtime_id": "142331785",
             "format": "Laser at AMC"
           }
         ]
@@ -4705,22 +4730,32 @@
     },
     "AMC Grapevine Mills 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:00pm",
+            "showtime_id": "141872430",
+            "format": "IMAX at AMC"
+          },
+          {
             "showtime": "9:00pm",
-            "showtime_id": "141872438",
+            "showtime_id": "141872439",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "142350156",
+            "showtime": "6:15pm",
+            "showtime_id": "142350153",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142350266",
+            "showtime": "7:00pm",
+            "showtime_id": "141872458",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141872426",
             "format": "Thrills & Chills"
           }
         ]
@@ -4728,27 +4763,27 @@
     },
     "AMC Firewheel 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:00pm",
-            "showtime_id": "141715855",
+            "showtime_id": "141715858",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "6:15pm",
+            "showtime_id": "141715891",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "10:05pm",
-            "showtime_id": "142381712",
+            "showtime_id": "142381710",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141715894",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "9:30pm",
-            "showtime_id": "141715895",
+            "showtime_id": "141715892",
             "format": "Laser at AMC"
           }
         ]
@@ -4756,17 +4791,22 @@
     },
     "AMC Irving Mall 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141864334",
+            "showtime": "7:15pm",
+            "showtime_id": "142432765",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "141864249",
+            "showtime": "6:35pm",
+            "showtime_id": "142432763",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141864252",
             "format": "Laser at AMC"
           }
         ]
@@ -4774,40 +4814,35 @@
     },
     "AMC The Parks At Arlington 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:30pm",
-            "showtime_id": "141879778",
+            "showtime_id": "141879777",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141879747",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142412036",
-            "format": "XL at AMC"
+            "showtime_id": "141879745",
+            "format": "Laser at AMC"
           }
         ]
       }
     },
     "AMC Southlake 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142032188",
+            "showtime": "10:15pm",
+            "showtime_id": "142032187",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142425651",
+            "showtime": "8:30pm",
+            "showtime_id": "142425655",
             "format": "Laser at AMC"
           }
         ]
@@ -4815,47 +4850,57 @@
     },
     "AMC Gulf Pointe 30": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:00pm",
+            "showtime_id": "141844679",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "9:00pm",
-            "showtime_id": "141844671",
+            "showtime_id": "141844675",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141844722",
+            "showtime": "6:45pm",
+            "showtime_id": "141844726",
+            "format": "4DX at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141844727",
             "format": "4DX at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141844723",
-            "format": "4DX at AMC"
+            "showtime_id": "142416173",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "142416177",
+            "showtime": "6:00pm",
+            "showtime_id": "142416174",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141844703",
+            "showtime": "10:15pm",
+            "showtime_id": "142416201",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141844753",
+            "showtime_id": "141844779",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142416263",
+            "showtime_id": "142416260",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141844740",
+            "showtime_id": "141844731",
             "format": "Laser at AMC"
           }
         ]
@@ -4863,37 +4908,32 @@
     },
     "AMC Willowbrook 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141869265",
+            "showtime": "9:15pm",
+            "showtime_id": "142284446",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141869261",
+            "showtime": "10:30pm",
+            "showtime_id": "141869262",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141869254",
+            "showtime_id": "141869256",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:50pm",
-            "showtime_id": "142339572",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "8:00pm",
-            "showtime_id": "142339564",
+            "showtime_id": "142382799",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142339608",
+            "showtime": "9:50pm",
+            "showtime_id": "142382857",
             "format": "Laser at AMC"
           }
         ]
@@ -4901,32 +4941,32 @@
     },
     "AMC First Colony 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:15pm",
-            "showtime_id": "141866970",
+            "showtime_id": "142466588",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141866971",
+            "showtime_id": "141866981",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141866972",
+            "showtime_id": "141866982",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "142466499",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "142466495",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142466633",
+            "showtime_id": "142466632",
             "format": "Laser at AMC"
           }
         ]
@@ -4934,22 +4974,27 @@
     },
     "AMC Deerbrook 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:45pm",
-            "showtime_id": "142398391",
+            "showtime_id": "142398394",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "142398404",
+            "showtime": "6:15pm",
+            "showtime_id": "142398406",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142398361",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142398437",
+            "showtime_id": "142398435",
             "format": "Thrills & Chills"
           }
         ]
@@ -4957,32 +5002,32 @@
     },
     "AMC Katy Mills 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:00pm",
-            "showtime_id": "141846488",
+            "showtime_id": "141846489",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:35pm",
-            "showtime_id": "142521623",
+            "showtime": "8:30pm",
+            "showtime_id": "141846414",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142521067",
-            "format": "Spanish Language Dubbed with No Subtitles"
+            "showtime": "6:45pm",
+            "showtime_id": "142631826",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141846468",
+            "showtime_id": "141846459",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142400030",
+            "showtime_id": "142423497",
             "format": "Laser at AMC"
           }
         ]
@@ -4990,22 +5035,22 @@
     },
     "AMC Woodlands Square 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141854556",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "141854574",
+            "showtime_id": "141854573",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:20pm",
-            "showtime_id": "142414839",
+            "showtime": "8:30pm",
+            "showtime_id": "142414838",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "142414821",
             "format": "Laser at AMC"
           }
         ]
@@ -5013,22 +5058,27 @@
     },
     "AMC Fountains 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:05pm",
-            "showtime_id": "141800269",
+            "showtime": "7:00pm",
+            "showtime_id": "141800302",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141800273",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141800005",
+            "showtime": "8:00pm",
+            "showtime_id": "141800008",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "141800004",
+            "showtime": "10:30pm",
+            "showtime_id": "141800007",
             "format": "Laser at AMC"
           }
         ]
@@ -5036,12 +5086,12 @@
     },
     "AMC Houston 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:45pm",
-            "showtime_id": "141817592",
+            "showtime_id": "141817595",
             "format": "XL at AMC"
           }
         ]
@@ -5049,17 +5099,22 @@
     },
     "AMC Eden Prairie Mall 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141842083",
+            "showtime": "6:30pm",
+            "showtime_id": "141842066",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141842084",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "142431303",
+            "showtime": "8:15pm",
+            "showtime_id": "142431299",
             "format": "Thrills & Chills"
           }
         ]
@@ -5067,35 +5122,35 @@
     },
     "AMC Rosedale 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142393424",
+            "showtime_id": "142393427",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "142393425",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "9:00pm",
+            "showtime_id": "142393325",
+            "format": "Thrills & Chills"
           }
         ]
       }
     },
     "AMC Southdale 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141874590",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "10:15pm",
+            "showtime_id": "141874597",
+            "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141874591",
+            "showtime": "6:30pm",
+            "showtime_id": "141874587",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -5103,22 +5158,22 @@
     },
     "AMC Coon Rapids 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142521495",
+            "showtime": "6:00pm",
+            "showtime_id": "142521497",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "142362197",
+            "showtime_id": "142362195",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "141878591",
+            "showtime_id": "141878641",
             "format": "Thrills & Chills"
           }
         ]
@@ -5126,17 +5181,22 @@
     },
     "AMC Inver Grove 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141849508",
+            "showtime": "5:45pm",
+            "showtime_id": "142582128",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141849608",
+            "showtime": "7:45pm",
+            "showtime_id": "141849510",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141849604",
             "format": "Thrills & Chills"
           }
         ]
@@ -5144,17 +5204,12 @@
     },
     "AMC CLASSIC Mounds View 15": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "142397306",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "142397346",
+            "showtime": "7:15pm",
+            "showtime_id": "142397298",
             "format": "Thrills & Chills"
           }
         ]
@@ -5162,17 +5217,22 @@
     },
     "AMC Metropark Square 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:45pm",
-            "showtime_id": "142359338",
+            "showtime_id": "142359348",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "142359477",
+            "showtime_id": "142359473",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "142359442",
             "format": "Laser at AMC"
           }
         ]
@@ -5180,17 +5240,17 @@
     },
     "AMC Spring 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "142289640",
+            "showtime_id": "142289643",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "142289602",
+            "showtime_id": "142289604",
             "format": "Laser at AMC"
           }
         ]
@@ -5198,12 +5258,17 @@
     },
     "AMC Eastchase 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:00pm",
+            "showtime_id": "142423614",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
-            "showtime_id": "142423636",
+            "showtime_id": "142423633",
             "format": "Laser at AMC"
           }
         ]
@@ -5211,17 +5276,17 @@
     },
     "AMC CLASSIC Brazos Mall 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "142401043",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "142401141",
+            "format": "Thrills & Chills"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142038173",
+            "showtime_id": "142038175",
             "format": "Thrills & Chills"
           }
         ]
@@ -5229,22 +5294,27 @@
     },
     "AMC Rio Cinemas 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:15pm",
-            "showtime_id": "141847550",
+            "showtime_id": "142406755",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "141847490",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "7:00pm",
+            "showtime_id": "142562573",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141847502",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "142522531",
+            "showtime_id": "142562574",
             "format": "Laser at AMC"
           }
         ]
@@ -5252,22 +5322,22 @@
     },
     "AMC CLASSIC Forney 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "5:45pm",
-            "showtime_id": "142382392",
+            "showtime_id": "142382396",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141847756",
+            "showtime_id": "141847754",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141847747",
+            "showtime_id": "141847729",
             "format": "Thrills & Chills"
           }
         ]
@@ -5275,12 +5345,12 @@
     },
     "AMC Birchwood 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141707199",
+            "showtime": "7:15pm",
+            "showtime_id": "141707192",
             "format": "Thrills & Chills"
           }
         ]
@@ -5288,30 +5358,30 @@
     },
     "AMC CLASSIC Bloomington 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141870259",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141870266",
+            "format": "Thrills & Chills"
           }
         ]
       }
     },
     "AMC Causeway 13": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141737208",
+            "showtime_id": "141737268",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141737209",
+            "showtime_id": "141737212",
             "format": "Laser at AMC"
           }
         ]
@@ -5319,42 +5389,47 @@
     },
     "AMC Barrywoods 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:00pm",
-            "showtime_id": "141707726",
+            "showtime_id": "141707730",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "142371980",
+            "showtime_id": "142371974",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141707626",
+            "showtime_id": "141707630",
             "format": "4DX at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141707625",
+            "showtime_id": "141707629",
             "format": "4DX at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "142372064",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "142372056",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141707862",
+            "showtime_id": "142371931",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142371899",
+            "showtime_id": "142371893",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142372188",
             "format": "Laser at AMC"
           }
         ]
@@ -5362,22 +5437,22 @@
     },
     "AMC Independence Commons 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141825387",
+            "showtime": "9:30pm",
+            "showtime_id": "141825383",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141825309",
+            "showtime_id": "141825313",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141825335",
+            "showtime": "8:15pm",
+            "showtime_id": "141825331",
             "format": "Laser at AMC"
           }
         ]
@@ -5385,17 +5460,22 @@
     },
     "AMC Ward Parkway 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:25pm",
-            "showtime_id": "141881045",
+            "showtime": "9:15pm",
+            "showtime_id": "141881046",
             "format": "PRIME at AMC"
           },
           {
+            "showtime": "7:15pm",
+            "showtime_id": "142524843",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "141881064",
+            "showtime_id": "141881056",
             "format": "Laser at AMC"
           }
         ]
@@ -5403,22 +5483,22 @@
     },
     "AMC Town Center 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141709412",
+            "showtime": "10:00pm",
+            "showtime_id": "141709416",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141864979",
+            "showtime_id": "141864980",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142334612",
+            "showtime_id": "141709346",
             "format": "Laser at AMC"
           }
         ]
@@ -5426,17 +5506,17 @@
     },
     "AMC Legends 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141866588",
+            "showtime_id": "141866590",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141866587",
+            "showtime_id": "141866589",
             "format": "Laser at AMC"
           }
         ]
@@ -5444,12 +5524,12 @@
     },
     "AMC DINE-IN Prairiefire 17": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "141709832",
+            "showtime_id": "141709835",
             "format": "XL at AMC"
           }
         ]
@@ -5457,40 +5537,40 @@
     },
     "AMC Barton Creek Square 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141736721",
+            "showtime": "9:45pm",
+            "showtime_id": "141736717",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141736753",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "8:30pm",
+            "showtime_id": "141736759",
+            "format": "Thrills & Chills"
           }
         ]
       }
     },
     "AMC Baton Rouge 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:00pm",
-            "showtime_id": "141769818",
+            "showtime_id": "141769824",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141769785",
+            "showtime_id": "141769781",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142394692",
+            "showtime_id": "142394690",
             "format": "Thrills & Chills"
           }
         ]
@@ -5498,17 +5578,17 @@
     },
     "AMC Boerne 11": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:25pm",
-            "showtime_id": "142272182",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "6:30pm",
+            "showtime_id": "142272232",
+            "format": "Thrills & Chills"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "142272234",
+            "showtime": "7:25pm",
+            "showtime_id": "142272180",
             "format": "Thrills & Chills"
           }
         ]
@@ -5516,22 +5596,22 @@
     },
     "AMC Burleson 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141866932",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141866935",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142358111",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime_id": "142358108",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141866931",
+            "showtime_id": "141866934",
             "format": "Laser at AMC"
           }
         ]
@@ -5539,35 +5619,40 @@
     },
     "AMC Champaign 13": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "141880046",
+            "showtime_id": "141880064",
             "format": "BigD at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141880031",
-            "format": "Thrills & Chills"
+            "showtime_id": "141880029",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
     },
     "AMC Chantilly 13": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "142292480",
+            "showtime_id": "142326132",
             "format": "BigD at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141960743",
+            "showtime_id": "142326095",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142326123",
             "format": "Thrills & Chills"
           }
         ]
@@ -5575,17 +5660,17 @@
     },
     "AMC Chenal 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:30pm",
-            "showtime_id": "141744182",
+            "showtime_id": "142387362",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141744165",
+            "showtime_id": "142283099",
             "format": "Thrills & Chills"
           }
         ]
@@ -5593,40 +5678,40 @@
     },
     "AMC Council Bluffs 17": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141775402",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "7:00pm",
+            "showtime_id": "141775540",
+            "format": "IMAX at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142537230",
-            "format": "Thrills & Chills"
+            "showtime": "9:00pm",
+            "showtime_id": "141775410",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
     },
     "AMC Creve Coeur 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141852952",
+            "showtime_id": "141852951",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "142288112",
+            "showtime_id": "142288110",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141852950",
+            "showtime_id": "141852947",
             "format": "Thrills & Chills"
           }
         ]
@@ -5634,22 +5719,22 @@
     },
     "AMC DINE-IN Clearfork 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:15pm",
-            "showtime_id": "141844296",
+            "showtime_id": "141844267",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141844298",
+            "showtime_id": "141844308",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141844297",
+            "showtime_id": "141844307",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -5657,17 +5742,22 @@
     },
     "AMC DINE-IN Clearview Palace 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:15pm",
+            "showtime_id": "141707182",
+            "format": "IMAX at AMC"
+          },
+          {
             "showtime": "9:15pm",
-            "showtime_id": "141707118",
+            "showtime_id": "141707119",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "141707120",
+            "showtime_id": "141707137",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -5675,12 +5765,12 @@
     },
     "AMC DINE-IN Manhattan 13": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141864048",
+            "showtime_id": "141864050",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -5688,45 +5778,45 @@
     },
     "AMC DINE-IN Tech Ridge 10": {
       "tz": "CT",
-      "show_date": "2026-04-19",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141706813",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "142539775",
+            "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141706812",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "10:00pm",
+            "showtime_id": "142539774",
+            "format": "Dine-In Delivery to Seat"
           }
         ]
       }
     },
     "AMC DINE-IN Vestavia Hills 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:45pm",
-            "showtime_id": "141855484",
+            "showtime_id": "141855488",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "142329830",
+            "showtime_id": "142329838",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141855511",
+            "showtime_id": "141855515",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141855512",
+            "showtime_id": "141855516",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -5734,12 +5824,12 @@
     },
     "AMC Dakota Square 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "8:15pm",
-            "showtime_id": "141769379",
+            "showtime": "7:15pm",
+            "showtime_id": "141769382",
             "format": "Thrills & Chills"
           }
         ]
@@ -5747,22 +5837,22 @@
     },
     "AMC Decatur 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:40pm",
-            "showtime_id": "141881499",
+            "showtime_id": "141756574",
             "format": "BigD at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141756607",
+            "showtime_id": "141756597",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:55pm",
-            "showtime_id": "142264716",
+            "showtime_id": "142264713",
             "format": "Thrills & Chills"
           }
         ]
@@ -5770,27 +5860,32 @@
     },
     "AMC Edinburg 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:10pm",
+            "showtime_id": "141872100",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "9:45pm",
-            "showtime_id": "141872163",
+            "showtime_id": "141872164",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141872130",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "6:10pm",
+            "showtime_id": "141872126",
+            "format": "Thrills & Chills"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "141872129",
+            "showtime": "9:15pm",
+            "showtime_id": "141872127",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142427635",
+            "showtime_id": "142427632",
             "format": "Thrills & Chills"
           }
         ]
@@ -5798,17 +5893,17 @@
     },
     "AMC Edwardsville 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:00pm",
-            "showtime_id": "141856611",
+            "showtime_id": "141856612",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141856597",
+            "showtime_id": "141856599",
             "format": "Thrills & Chills"
           }
         ]
@@ -5816,27 +5911,37 @@
     },
     "AMC El Paso 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "5:05pm",
+            "showtime_id": "142330843",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "5:50pm",
-            "showtime_id": "142330710",
+            "showtime_id": "142330707",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141876644",
+            "showtime": "6:35pm",
+            "showtime_id": "142578274",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142330847",
+            "showtime": "7:35pm",
+            "showtime_id": "142330860",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142330708",
+            "showtime": "8:15pm",
+            "showtime_id": "142330844",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "142330725",
             "format": "Thrills & Chills"
           }
         ]
@@ -5844,27 +5949,27 @@
     },
     "AMC Elmwood Palace 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:30pm",
-            "showtime_id": "142448586",
+            "showtime_id": "142448324",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "142448581",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:40pm",
-            "showtime_id": "142448489",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "6:35pm",
-            "showtime_id": "141744349",
+            "showtime_id": "142448486",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141744350",
+            "showtime_id": "142448488",
             "format": "Thrills & Chills"
           }
         ]
@@ -5872,22 +5977,22 @@
     },
     "AMC Esquire 7": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141862116",
+            "showtime_id": "141862117",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "142355813",
+            "showtime_id": "142355810",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "10:05pm",
-            "showtime_id": "142355796",
+            "showtime_id": "142355795",
             "format": "Thrills & Chills"
           }
         ]
@@ -5895,17 +6000,17 @@
     },
     "AMC Evanston 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141865353",
+            "showtime": "7:10pm",
+            "showtime_id": "141865348",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "141865339",
+            "showtime": "8:30pm",
+            "showtime_id": "141865341",
             "format": "Laser at AMC"
           }
         ]
@@ -5913,22 +6018,27 @@
     },
     "AMC Festival Plaza 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "141732017",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142314367",
-            "format": "Thrills & Chills"
+            "showtime": "7:30pm",
+            "showtime_id": "141732111",
+            "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141732016",
+            "showtime_id": "141732014",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141732015",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141731953",
             "format": "Thrills & Chills"
           }
         ]
@@ -5936,35 +6046,35 @@
     },
     "AMC Fitchburg 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141718258",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime_id": "141718270",
+            "format": "Thrills & Chills"
           }
         ]
       }
     },
     "AMC Galaxy 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:40pm",
-            "showtime_id": "142302337",
+            "showtime_id": "142302334",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:40pm",
-            "showtime_id": "142302355",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "5:40pm",
+            "showtime_id": "142302300",
+            "format": "Thrills & Chills"
           },
           {
-            "showtime": "5:40pm",
-            "showtime_id": "142302302",
+            "showtime": "6:40pm",
+            "showtime_id": "142302353",
             "format": "Thrills & Chills"
           }
         ]
@@ -5972,12 +6082,17 @@
     },
     "AMC Grand Prairie 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:00pm",
+            "showtime_id": "142522902",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "141703437",
+            "showtime_id": "141703440",
             "format": "Thrills & Chills"
           }
         ]
@@ -5985,17 +6100,17 @@
     },
     "AMC Hammond Palace 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "141804870",
+            "showtime_id": "141804873",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141804907",
+            "showtime_id": "141804909",
             "format": "Thrills & Chills"
           }
         ]
@@ -6003,17 +6118,17 @@
     },
     "AMC Highland Village 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "141865886",
-            "format": "Laser at AMC"
+            "showtime": "9:00pm",
+            "showtime_id": "142408404",
+            "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "142393981",
+            "showtime": "7:40pm",
+            "showtime_id": "142408330",
             "format": "Laser at AMC"
           }
         ]
@@ -6021,12 +6136,12 @@
     },
     "AMC Houma Palace 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142032983",
+            "showtime_id": "142032985",
             "format": "Thrills & Chills"
           }
         ]
@@ -6034,17 +6149,17 @@
     },
     "AMC Lakeline 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142038591",
+            "showtime": "7:30pm",
+            "showtime_id": "142038593",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142419135",
+            "showtime_id": "142419126",
             "format": "Thrills & Chills"
           }
         ]
@@ -6052,22 +6167,22 @@
     },
     "AMC Longview 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "141801057",
+            "showtime_id": "142362010",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142360356",
+            "showtime": "7:50pm",
+            "showtime_id": "141801060",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "141801058",
+            "showtime": "9:30pm",
+            "showtime_id": "141801061",
             "format": "Thrills & Chills"
           }
         ]
@@ -6075,17 +6190,17 @@
     },
     "AMC Lufkin 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142382580",
+            "showtime_id": "142382573",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "141870030",
+            "showtime_id": "141870033",
             "format": "Thrills & Chills"
           }
         ]
@@ -6093,12 +6208,12 @@
     },
     "AMC Machesney Park 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141769111",
+            "showtime_id": "141769113",
             "format": "Thrills & Chills"
           }
         ]
@@ -6106,17 +6221,22 @@
     },
     "AMC Mall of Louisiana 15": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141839241",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141839252",
+            "format": "Thrills & Chills"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142359733",
+            "showtime_id": "142359731",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142524873",
             "format": "Thrills & Chills"
           }
         ]
@@ -6124,12 +6244,17 @@
     },
     "AMC Mayfair Mall 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "7:00pm",
+            "showtime_id": "141871151",
+            "format": "IMAX at AMC"
+          },
+          {
             "showtime": "7:50pm",
-            "showtime_id": "142386830",
+            "showtime_id": "142386834",
             "format": "Thrills & Chills"
           }
         ]
@@ -6137,17 +6262,22 @@
     },
     "AMC Norridge 6": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141883462",
+            "showtime": "6:45pm",
+            "showtime_id": "141883454",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141883461",
+            "showtime": "7:30pm",
+            "showtime_id": "142364196",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141883453",
             "format": "Laser at AMC"
           }
         ]
@@ -6155,22 +6285,22 @@
     },
     "AMC Northrock 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141713621",
+            "showtime_id": "142300660",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142300716",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "8:30pm",
+            "showtime_id": "142300714",
+            "format": "Thrills & Chills"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "142357930",
+            "showtime": "9:40pm",
+            "showtime_id": "142300733",
             "format": "Thrills & Chills"
           }
         ]
@@ -6178,12 +6308,12 @@
     },
     "AMC Oakbrook Center 4": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "142442966",
+            "showtime_id": "142442963",
             "format": "Laser at AMC"
           }
         ]
@@ -6191,22 +6321,22 @@
     },
     "AMC Palace 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141837146",
+            "showtime": "10:00pm",
+            "showtime_id": "141837147",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141837104",
+            "showtime_id": "141837100",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "141837097",
+            "showtime": "9:00pm",
+            "showtime_id": "141837099",
             "format": "Laser at AMC"
           }
         ]
@@ -6214,45 +6344,35 @@
     },
     "AMC Patriot 13": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "5:35pm",
-            "showtime_id": "141851191",
-            "format": "Thrills & Chills"
+            "showtime": "8:00pm",
+            "showtime_id": "141851201",
+            "format": "IMAX at AMC"
           },
           {
             "showtime": "6:55pm",
-            "showtime_id": "142271848",
-            "format": "Thrills & Chills"
+            "showtime_id": "142271845",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
     },
     "AMC Patton Creek 15": {
       "tz": "CT",
-      "show_date": "2026-04-19",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "10:20pm",
-            "showtime_id": "141852767",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142307634",
+            "showtime": "6:30pm",
+            "showtime_id": "142317105",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141852702",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141852707",
+            "showtime": "8:00pm",
+            "showtime_id": "141852692",
             "format": "Thrills & Chills"
           }
         ]
@@ -6260,22 +6380,22 @@
     },
     "AMC Penn Square 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142300069",
+            "showtime": "6:30pm",
+            "showtime_id": "142324861",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "141861204",
+            "showtime_id": "141861207",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142300085",
+            "showtime": "9:45pm",
+            "showtime_id": "142324862",
             "format": "Thrills & Chills"
           }
         ]
@@ -6283,32 +6403,37 @@
     },
     "AMC Quail Springs Mall 24": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:15pm",
-            "showtime_id": "141705372",
+            "showtime_id": "141705375",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "142387328",
+            "showtime_id": "141864630",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141705418",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142293366",
+            "showtime": "6:30pm",
+            "showtime_id": "141705421",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141705419",
+            "showtime": "7:15pm",
+            "showtime_id": "142498151",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142293363",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141705422",
             "format": "Thrills & Chills"
           }
         ]
@@ -6316,17 +6441,17 @@
     },
     "AMC Robinson Crossing 6": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141861646",
+            "showtime_id": "141861641",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141861610",
+            "showtime_id": "141861611",
             "format": "Thrills & Chills"
           }
         ]
@@ -6334,17 +6459,27 @@
     },
     "AMC Rockford 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "8:45pm",
+            "showtime_id": "141849714",
+            "format": "IMAX at AMC"
+          },
+          {
             "showtime": "7:50pm",
-            "showtime_id": "142451204",
+            "showtime_id": "142451201",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
+            "showtime": "6:00pm",
+            "showtime_id": "142524670",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "141849746",
+            "showtime_id": "141849742",
             "format": "Thrills & Chills"
           }
         ]
@@ -6352,12 +6487,17 @@
     },
     "AMC Sikes Senter 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "142425201",
+            "showtime": "6:30pm",
+            "showtime_id": "142425181",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142425200",
             "format": "Thrills & Chills"
           }
         ]
@@ -6365,12 +6505,12 @@
     },
     "AMC Southern Hills 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141750159",
+            "showtime": "7:00pm",
+            "showtime_id": "141750158",
             "format": "Thrills & Chills"
           }
         ]
@@ -6378,32 +6518,32 @@
     },
     "AMC Southroads 20": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141848757",
+            "showtime": "7:00pm",
+            "showtime_id": "141848768",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141848752",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141848668",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "142366667",
+            "showtime": "6:15pm",
+            "showtime_id": "141848777",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142366655",
+            "showtime": "8:00pm",
+            "showtime_id": "141848829",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141848680",
+            "showtime": "10:15pm",
+            "showtime_id": "142366633",
             "format": "Thrills & Chills"
           }
         ]
@@ -6411,22 +6551,22 @@
     },
     "AMC Springfield 11": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:30pm",
-            "showtime_id": "142027244",
+            "showtime_id": "142027245",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "142027203",
+            "showtime_id": "142027197",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142027202",
+            "showtime_id": "142027196",
             "format": "Thrills & Chills"
           }
         ]
@@ -6434,12 +6574,12 @@
     },
     "AMC Springfield 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142313919",
+            "showtime": "7:50pm",
+            "showtime_id": "142314055",
             "format": "Thrills & Chills"
           }
         ]
@@ -6447,17 +6587,17 @@
     },
     "AMC Springfield 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141834015",
+            "showtime": "7:00pm",
+            "showtime_id": "141834016",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142453446",
+            "showtime_id": "142453452",
             "format": "Thrills & Chills"
           }
         ]
@@ -6465,17 +6605,22 @@
     },
     "AMC Stillwater 10": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
+            "showtime": "6:45pm",
+            "showtime_id": "142287767",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "141856386",
+            "showtime_id": "141856385",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142287871",
+            "showtime_id": "142287869",
             "format": "Thrills & Chills"
           }
         ]
@@ -6483,22 +6628,22 @@
     },
     "AMC Streets Of St Charles 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141856916",
+            "showtime_id": "141856918",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "141856917",
+            "showtime_id": "141856919",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141856886",
+            "showtime_id": "141856889",
             "format": "Thrills & Chills"
           }
         ]
@@ -6506,32 +6651,27 @@
     },
     "AMC Studio 28": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:00pm",
-            "showtime_id": "141706299",
+            "showtime_id": "142396970",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142396894",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "142396898",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142396973",
+            "showtime_id": "142396979",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142397097",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "142487854",
+            "showtime": "8:30pm",
+            "showtime_id": "142397101",
             "format": "Laser at AMC"
           }
         ]
@@ -6539,17 +6679,17 @@
     },
     "AMC Summit 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141846798",
+            "showtime": "8:00pm",
+            "showtime_id": "141846801",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "141846809",
+            "showtime_id": "142287125",
             "format": "Thrills & Chills"
           }
         ]
@@ -6557,17 +6697,17 @@
     },
     "AMC Tulsa Hills 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "142325825",
+            "showtime_id": "142325831",
             "format": "BigD at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142325756",
+            "showtime_id": "142325753",
             "format": "Thrills & Chills"
           }
         ]
@@ -6575,32 +6715,27 @@
     },
     "AMC Tyler 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "10:00pm",
-            "showtime_id": "142277154",
+            "showtime_id": "142277151",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "8:10pm",
-            "showtime_id": "142277085",
+            "showtime_id": "142277082",
             "format": "BigD at AMC"
           },
           {
             "showtime": "6:55pm",
-            "showtime_id": "142276899",
+            "showtime_id": "142276895",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "5:50pm",
-            "showtime_id": "142276920",
-            "format": "Thrills & Chills"
-          },
-          {
             "showtime": "9:00pm",
-            "showtime_id": "142499467",
+            "showtime_id": "142499522",
             "format": "Thrills & Chills"
           }
         ]
@@ -6608,17 +6743,17 @@
     },
     "AMC University Place 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "141702650",
+            "showtime": "7:00pm",
+            "showtime_id": "141702652",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "142281804",
+            "showtime_id": "142281803",
             "format": "Thrills & Chills"
           }
         ]
@@ -6626,17 +6761,17 @@
     },
     "AMC Valley Bend 18": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "142357266",
+            "showtime_id": "142357264",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141852009",
+            "showtime_id": "141852011",
             "format": "Thrills & Chills"
           }
         ]
@@ -6644,17 +6779,17 @@
     },
     "AMC West End Pointe 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "141817809",
+            "showtime_id": "141817812",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141817810",
+            "showtime_id": "141817813",
             "format": "Thrills & Chills"
           }
         ]
@@ -6662,22 +6797,22 @@
     },
     "AMC Westbank Palace 16": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141844257",
+            "showtime_id": "141844258",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141844243",
+            "showtime_id": "141844246",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "142478961",
+            "showtime": "9:15pm",
+            "showtime_id": "141844178",
             "format": "Thrills & Chills"
           }
         ]
@@ -6685,17 +6820,17 @@
     },
     "AMC Westroads 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:40pm",
-            "showtime_id": "141786975",
+            "showtime_id": "141786978",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142335573",
+            "showtime_id": "142335571",
             "format": "Thrills & Chills"
           }
         ]
@@ -6703,12 +6838,12 @@
     },
     "Cinema Centre 8": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "8:15pm",
-            "showtime_id": "142339545",
+            "showtime_id": "142339543",
             "format": "Thrills & Chills"
           }
         ]
@@ -6716,12 +6851,12 @@
     },
     "AMC NEWCITY 14": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "141876677",
+            "showtime_id": "141876667",
             "format": "XL at AMC"
           }
         ]
@@ -6729,22 +6864,22 @@
     },
     "AMC Centerpoint 11": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "141759407",
+            "showtime_id": "141759409",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142415979",
+            "showtime": "8:15pm",
+            "showtime_id": "142423369",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141759406",
+            "showtime_id": "141759408",
             "format": "Laser at AMC"
           }
         ]
@@ -6752,22 +6887,22 @@
     },
     "AMC Village On The Parkway 9": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141865867",
+            "showtime_id": "141865869",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141865868",
+            "showtime_id": "141865870",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142362361",
+            "showtime_id": "142362363",
             "format": "Laser at AMC"
           }
         ]
@@ -6775,17 +6910,17 @@
     },
     "AMC Hawthorn 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "9:30pm",
-            "showtime_id": "141723773",
+            "showtime_id": "141723788",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141723772",
+            "showtime_id": "141723787",
             "format": "Laser at AMC"
           }
         ]
@@ -6793,17 +6928,17 @@
     },
     "AMC Rivercenter 11": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142241121",
+            "showtime": "6:30pm",
+            "showtime_id": "142241120",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "142241108",
+            "showtime_id": "142241107",
             "format": "Thrills & Chills"
           }
         ]
@@ -8327,12 +8462,12 @@
     },
     "AMC Niles 12": {
       "tz": "CT",
-      "show_date": "2026-04-20",
+      "show_date": "2026-04-21",
       "movies": {
         "Lee Cronin's The Mummy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "142332264",
+            "showtime_id": "142332261",
             "format": "Thrills & Chills"
           }
         ]
