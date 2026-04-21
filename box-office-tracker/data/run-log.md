@@ -10350,3 +10350,304 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC West Shore 14: No seat map for Lee Cronin's The Mummy Dolby Cinema at AMC @ 9:00pm (https://www.amctheatres.com/showtimes/141916289/seats); AMC Tysons Corner 16: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/141904481/seats); AMC Northlake 14: No seat map for Lee Cronin's The Mummy IMAX at AMC @ 6:15pm (https://www.amctheatres.com/showtimes/141872900/seats); AMC Allegany 8: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 9:55pm (https://www.amctheatres.com/showtimes/142319518/seats); AMC Fayetteville 14: No seat map for Lee Cronin's The Mummy IMAX with Laser at AMC @ 10:15pm (https://www.amctheatres.com/showtimes/142325511/seats); AMC Highwoods 20: No seat map for Lee Cronin's The Mummy Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/141865121/seats); AMC Highwoods 20: No seat map for Lee Cronin's The Mummy Open Caption (On-screen Subtitles) @ 7:45pm (https://www.amctheatres.com/showtimes/141865103/seats); AMC Morgantown 12: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 9:45pm (https://www.amctheatres.com/showtimes/141851676/seats); AMC Tallahassee 20: No seat map for Lee Cronin's The Mummy Dolby Cinema at AMC @ 10:00pm (https://www.amctheatres.com/showtimes/141827668/seats)
 
 ---
+
+## 2026-04-21 06:05 — CT Group
+
+**Polymarket movies tracked:** The Devil Wears Prada 2
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC NEWCITY 14 | Lee Cronin's The Mummy | XL at AMC | 6:15pm | 12.7% | -1064 min |
+| AMC Village Crossing 18 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 26.7% | -1229 min |
+| AMC Village Crossing 18 | Lee Cronin's The Mummy | Laser at AMC | 7:30pm | 6.3% | -1139 min |
+| AMC River East 21 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:45pm | 6.5% | -1334 min |
+| AMC River East 21 | Lee Cronin's The Mummy | PRIME at AMC | 7:00pm | 14.2% | -1109 min |
+| AMC River East 21 | Lee Cronin's The Mummy | Laser at AMC | 9:00pm | 26.5% | -1229 min |
+| AMC River East 21 | Lee Cronin's The Mummy | Laser at AMC | 6:10pm | 6.4% | -1059 min |
+| AMC DINE-IN Block 37 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 9:30pm | 59.5% | -1259 min |
+| AMC DINE-IN Block 37 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 6:15pm | 83.8% | -1064 min |
+| AMC 600 North Michigan 9 | Lee Cronin's The Mummy | Thrills & Chills | 10:00pm | 8.3% | -1288 min |
+| AMC 600 North Michigan 9 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 4.9% | -1123 min |
+| AMC DINE-IN Rosemont 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:10pm | 13% | -1299 min |
+| AMC DINE-IN Rosemont 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:50pm | 9% | -1099 min |
+| AMC DINE-IN Rosemont 12 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 9:30pm | 3.7% | -1259 min |
+| AMC DINE-IN Rosemont 12 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 6:10pm | 7.5% | -1059 min |
+| AMC Roosevelt Collection 16 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 18.6% | -1228 min |
+| AMC Roosevelt Collection 16 | Lee Cronin's The Mummy | Laser at AMC | 9:30pm | 10.8% | -1258 min |
+| AMC Roosevelt Collection 16 | Lee Cronin's The Mummy | Laser at AMC | 7:30pm | 42.3% | -1138 min |
+| AMC Roosevelt Collection 16 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 5:45pm | 10.5% | -1033 min |
+| AMC South Barrington 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 9% | -1228 min |
+| AMC South Barrington 24 | Lee Cronin's The Mummy | Laser at AMC | 8:50pm | 9.5% | -1217 min |
+| AMC South Barrington 24 | Lee Cronin's The Mummy | Laser at AMC | 5:30pm | 5.6% | -1017 min |
+| AMC Streets of Woodfield 20 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:30pm | 29.9% | -1138 min |
+| AMC Northbrook 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:10pm | 6.6% | -1117 min |
+| AMC Northbrook 14 | Lee Cronin's The Mummy | Thrills & Chills | 9:10pm | 0% | -1237 min |
+| AMC Yorktown 18 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:00pm | 7.9% | -1287 min |
+| AMC Yorktown 18 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 6:30pm | 9.4% | -1077 min |
+| AMC Yorktown 18 | Lee Cronin's The Mummy | Laser at AMC | 9:30pm | 6.4% | -1257 min |
+| AMC Yorktown 18 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 27.1% | -1197 min |
+| AMC Yorktown 18 | Lee Cronin's The Mummy | Laser at AMC | 6:00pm | 10.6% | -1047 min |
+| AMC Oakbrook Center 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:45pm | 4% | -1271 min |
+| AMC Oakbrook Center 12 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 11.1% | -1196 min |
+| AMC Randhurst 12 | Lee Cronin's The Mummy | XL at AMC | 7:30pm | 7.4% | -1136 min |
+| AMC Randhurst 12 | Lee Cronin's The Mummy | Laser at AMC | 6:00pm | 4.7% | -1046 min |
+| AMC Niles 12 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 2% | -1136 min |
+| AMC Ford City 14 | Lee Cronin's The Mummy | Laser at AMC | 10:00pm | 29.3% | -1286 min |
+| AMC Ford City 14 | Lee Cronin's The Mummy | Laser at AMC | 6:50pm | 14.7% | -1096 min |
+| AMC NorthPark 15 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:10pm | 11.6% | -1295 min |
+| AMC NorthPark 15 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:45pm | 22.3% | -1090 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:00pm | 8.7% | -1285 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | XL at AMC | 7:40pm | 14.9% | -1145 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 10:30pm | 13.3% | -1315 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | Spanish Language Dubbed with No Subtitles | 9:35pm | 73.2% | -1260 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 8:50pm | 26.7% | -1215 min |
+| AMC DINE-IN Mesquite 30 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 5:40pm | 6.7% | -1025 min |
+| AMC Stonebriar 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 11.3% | -1255 min |
+| AMC Stonebriar 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:05pm | 8.9% | -1050 min |
+| AMC Stonebriar 24 | Lee Cronin's The Mummy | Laser at AMC | 8:10pm | 12.3% | -1175 min |
+| AMC Stonebriar 24 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:00pm | 10.2% | -1105 min |
+| AMC Grapevine Mills 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 8.9% | -1224 min |
+| AMC Grapevine Mills 24 | Lee Cronin's The Mummy | Thrills & Chills | 8:30pm | 2.8% | -1194 min |
+| AMC Grapevine Mills 24 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 6:30pm | 9.8% | -1074 min |
+| AMC Irving Mall 14 | Lee Cronin's The Mummy | Laser at AMC | 7:40pm | 17.4% | -1144 min |
+| AMC Irving Mall 14 | Lee Cronin's The Mummy | Spanish Language Dubbed with No Subtitles | 6:00pm | 6.5% | -1044 min |
+| AMC Firewheel 18 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 6.8% | -1224 min |
+| AMC Firewheel 18 | Lee Cronin's The Mummy | XL at AMC | 10:05pm | 2.1% | -1288 min |
+| AMC Firewheel 18 | Lee Cronin's The Mummy | Laser at AMC | 9:30pm | 2.5% | -1254 min |
+| AMC Firewheel 18 | Lee Cronin's The Mummy | Laser at AMC | 6:15pm | 7.5% | -1059 min |
+| AMC The Parks At Arlington 18 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 21.9% | -1253 min |
+| AMC The Parks At Arlington 18 | Lee Cronin's The Mummy | XL at AMC | 5:30pm | 6.2% | -1013 min |
+| AMC The Parks At Arlington 18 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:30pm | 0% | -1073 min |
+| AMC Southlake 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 14.8% | -1253 min |
+| AMC Southlake 24 | Lee Cronin's The Mummy | Laser at AMC | 7:45pm | 64.6% | -1148 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 2.9% | -1223 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | XL at AMC | 10:00pm | 2.5% | -1283 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | Laser at AMC | 10:30pm | 3.1% | -1313 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 2.3% | -1163 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | Laser at AMC | 7:30pm | 12.3% | -1133 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | 4DX at AMC | 9:15pm | 13.2% | -1238 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | Spanish Language Dubbed with No Subtitles | 6:45pm | 8% | -1088 min |
+| AMC Gulf Pointe 30 | Lee Cronin's The Mummy | 4DX at AMC | 6:00pm | 11.9% | -1043 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:15pm | 11.8% | -1298 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 4.6% | -1253 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | PRIME at AMC | 7:00pm | 5.9% | -1103 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | Laser at AMC | 9:00pm | 10.6% | -1223 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 12.5% | -1163 min |
+| AMC Willowbrook 24 | Lee Cronin's The Mummy | Laser at AMC | 5:50pm | 13.6% | -1033 min |
+| AMC First Colony 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:15pm | 6.3% | -1297 min |
+| AMC First Colony 24 | Lee Cronin's The Mummy | PRIME at AMC | 9:45pm | 4.5% | -1267 min |
+| AMC First Colony 24 | Lee Cronin's The Mummy | PRIME at AMC | 6:30pm | 2.3% | -1072 min |
+| AMC First Colony 24 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 52.1% | -1192 min |
+| AMC First Colony 24 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:45pm | 38.9% | -1147 min |
+| AMC Deerbrook 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 8:45pm | 6.4% | -1206 min |
+| AMC Deerbrook 24 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 4.8% | -1131 min |
+| AMC Deerbrook 24 | Lee Cronin's The Mummy | Thrills & Chills | 6:30pm | 0.7% | -1071 min |
+| AMC Woodlands Square 20 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:30pm | 12% | -1071 min |
+| AMC Woodlands Square 20 | Lee Cronin's The Mummy | Laser at AMC | 8:20pm | 51.7% | -1181 min |
+| AMC Woodlands Square 20 | Lee Cronin's The Mummy | Laser at AMC | 7:30pm | 7.6% | -1131 min |
+| AMC Katy Mills 20 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:00pm | 0% | -1281 min |
+| AMC Katy Mills 20 | Lee Cronin's The Mummy | Laser at AMC | 9:15pm | 3.6% | -1236 min |
+| AMC Katy Mills 20 | Lee Cronin's The Mummy | Laser at AMC | 7:45pm | 9.4% | -1146 min |
+| AMC Katy Mills 20 | Lee Cronin's The Mummy | Spanish Language Dubbed with No Subtitles | 9:30pm | 4.9% | -1251 min |
+| AMC Katy Mills 20 | Lee Cronin's The Mummy | Spanish Language Dubbed with No Subtitles | 6:35pm | 21.5% | -1076 min |
+| AMC Fountains 18 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:05pm | 25.1% | -1226 min |
+| AMC Fountains 18 | Lee Cronin's The Mummy | Laser at AMC | 9:35pm | 15.8% | -1256 min |
+| AMC Fountains 18 | Lee Cronin's The Mummy | Laser at AMC | 6:15pm | 28.4% | -1056 min |
+| AMC Houston 8 | Lee Cronin's The Mummy | XL at AMC | 7:45pm | 16.7% | -1145 min |
+| AMC Eden Prairie Mall 18 | Lee Cronin's The Mummy | PRIME at AMC | 9:45pm | 13.2% | -1265 min |
+| AMC Eden Prairie Mall 18 | Lee Cronin's The Mummy | Thrills & Chills | 8:45pm | 8.3% | -1205 min |
+| AMC Rosedale 14 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:15pm | 10.1% | -1235 min |
+| AMC Rosedale 14 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:00pm | 15.4% | -1040 min |
+| AMC Southdale 16 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 7.8% | -1250 min |
+| AMC Southdale 16 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:15pm | 10.7% | -1055 min |
+| AMC Coon Rapids 16 | Lee Cronin's The Mummy | Thrills & Chills | 8:45pm | 4% | -1204 min |
+| AMC Coon Rapids 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 9.3% | -1114 min |
+| AMC Coon Rapids 16 | Lee Cronin's The Mummy | Thrills & Chills | 5:30pm | 10.7% | -1009 min |
+| AMC Inver Grove 16 | Lee Cronin's The Mummy | Thrills & Chills | 9:15pm | 11.7% | -1234 min |
+| AMC Inver Grove 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:45pm | 7.3% | -1144 min |
+| AMC Metropark Square 10 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:45pm | 10.3% | -1264 min |
+| AMC Metropark Square 10 | Lee Cronin's The Mummy | Laser at AMC | 7:10pm | 32.8% | -1109 min |
+| AMC Spring 10 | Lee Cronin's The Mummy | Laser at AMC | 8:45pm | 10.1% | -1204 min |
+| AMC Spring 10 | Lee Cronin's The Mummy | Laser at AMC | 7:00pm | 18% | -1099 min |
+| AMC Eastchase 9 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 17.5% | -1188 min |
+| AMC CLASSIC Brazos Mall 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:45pm | 2.4% | -1083 min |
+| AMC CLASSIC Brazos Mall 14 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 7.6% | -1128 min |
+| AMC Rio Cinemas 18 | Lee Cronin's The Mummy | PRIME at AMC | 9:15pm | 17.9% | -1233 min |
+| AMC Rio Cinemas 18 | Lee Cronin's The Mummy | Laser at AMC | 10:15pm | 12.4% | -1293 min |
+| AMC Rio Cinemas 18 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 8:15pm | 13.7% | -1173 min |
+| AMC Centerpoint 11 | Lee Cronin's The Mummy | Laser at AMC | 10:00pm | 7.8% | -1278 min |
+| AMC Centerpoint 11 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 33.3% | -1188 min |
+| AMC Centerpoint 11 | Lee Cronin's The Mummy | Laser at AMC | 6:45pm | 14.1% | -1083 min |
+| AMC Village On The Parkway 9 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:15pm | 8.1% | -1292 min |
+| AMC Village On The Parkway 9 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 7:00pm | 3.5% | -1097 min |
+| AMC Village On The Parkway 9 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 14.2% | -1157 min |
+| AMC Birchwood 10 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 0% | -1097 min |
+| AMC Causeway 13 | Lee Cronin's The Mummy | Laser at AMC | 9:30pm | 0% | -1246 min |
+| AMC Causeway 13 | Lee Cronin's The Mummy | Laser at AMC | 6:45pm | 16.8% | -1081 min |
+| AMC Independence Commons 20 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 9:15pm | 7.4% | -1231 min |
+| AMC Independence Commons 20 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 7.1% | -1156 min |
+| AMC Independence Commons 20 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 9:00pm | 3.6% | -1216 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 6.2% | -1216 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | PRIME at AMC | 7:00pm | 1.8% | -1096 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | Laser at AMC | 8:30pm | 0% | -1186 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | Laser at AMC | 7:45pm | 1% | -1141 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 5:45pm | 0% | -1021 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | 4DX at AMC | 9:45pm | 2.3% | -1261 min |
+| AMC Barrywoods 24 | Lee Cronin's The Mummy | 4DX at AMC | 6:30pm | 8.5% | -1066 min |
+| AMC Ward Parkway 14 | Lee Cronin's The Mummy | PRIME at AMC | 9:25pm | 5% | -1240 min |
+| AMC Ward Parkway 14 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 18% | -1155 min |
+| AMC Town Center 20 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 15.2% | -1215 min |
+| AMC Town Center 20 | Lee Cronin's The Mummy | PRIME at AMC | 7:15pm | 10.9% | -1110 min |
+| AMC Town Center 20 | Lee Cronin's The Mummy | Laser at AMC | 8:15pm | 18.6% | -1170 min |
+| AMC Legends 14 | Lee Cronin's The Mummy | Laser at AMC | 9:15pm | 9.7% | -1230 min |
+| AMC Legends 14 | Lee Cronin's The Mummy | Laser at AMC | 6:00pm | 10.4% | -1035 min |
+| AMC DINE-IN Prairiefire 17 | Lee Cronin's The Mummy | XL at AMC | 8:00pm | 1.1% | -1154 min |
+| AMC Boerne 11 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:25pm | 4.4% | -1119 min |
+| AMC Boerne 11 | Lee Cronin's The Mummy | Thrills & Chills | 6:30pm | 5.3% | -1064 min |
+| AMC Baton Rouge 16 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:00pm | 5.6% | -1274 min |
+| AMC Baton Rouge 16 | Lee Cronin's The Mummy | Thrills & Chills | 8:30pm | 11.9% | -1184 min |
+| AMC Baton Rouge 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 2.4% | -1094 min |
+| AMC Barton Creek Square 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 8:00pm | 18% | -1154 min |
+| AMC Burleson 14 | Lee Cronin's The Mummy | Laser at AMC | 9:15pm | 16.7% | -1228 min |
+| AMC Burleson 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:00pm | 3.3% | -1033 min |
+| AMC Burleson 14 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 8:15pm | 8.9% | -1168 min |
+| AMC Chantilly 13 | Lee Cronin's The Mummy | BigD at AMC | 7:00pm | 1.3% | -1093 min |
+| AMC Champaign 13 | Lee Cronin's The Mummy | BigD at AMC | 8:00pm | 2.4% | -1153 min |
+| AMC Champaign 13 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 3.2% | -1093 min |
+| AMC Chenal 9 | Lee Cronin's The Mummy | IMAX at AMC | 9:30pm | 4.6% | -1242 min |
+| AMC Chenal 9 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 8.4% | -1122 min |
+| AMC Council Bluffs 17 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 9.8% | -1212 min |
+| AMC Council Bluffs 17 | Lee Cronin's The Mummy | Thrills & Chills | 10:00pm | 0.9% | -1272 min |
+| AMC Creve Coeur 12 | Lee Cronin's The Mummy | Thrills & Chills | 9:15pm | 3.5% | -1227 min |
+| AMC Creve Coeur 12 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 5% | -1107 min |
+| AMC Creve Coeur 12 | Lee Cronin's The Mummy | Thrills & Chills | 6:00pm | 3.5% | -1032 min |
+| AMC DINE-IN Clearview Palace 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:15pm | 14.6% | -1226 min |
+| AMC DINE-IN Clearview Palace 12 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 8:15pm | 17.5% | -1166 min |
+| AMC DINE-IN Clearfork 8 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:15pm | 14.3% | -1287 min |
+| AMC DINE-IN Clearfork 8 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 9:15pm | 18.5% | -1227 min |
+| AMC DINE-IN Clearfork 8 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 6:00pm | 25% | -1032 min |
+| AMC DINE-IN Manhattan 13 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 7:15pm | 15.8% | -1106 min |
+| AMC Dakota Square 9 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 12.8% | -1166 min |
+| AMC DINE-IN Vestavia Hills 10 | Lee Cronin's The Mummy | PRIME at AMC | 9:45pm | 7.9% | -1256 min |
+| AMC DINE-IN Vestavia Hills 10 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 10:30pm | 11.8% | -1301 min |
+| AMC DINE-IN Vestavia Hills 10 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 7:15pm | 9.2% | -1106 min |
+| AMC DINE-IN Vestavia Hills 10 | Lee Cronin's The Mummy | Dine-In Delivery to Seat | 6:15pm | 8.6% | -1046 min |
+| AMC Decatur 12 | Lee Cronin's The Mummy | BigD at AMC | 8:40pm | 2.3% | -1190 min |
+| AMC Decatur 12 | Lee Cronin's The Mummy | Thrills & Chills | 7:55pm | 4.7% | -1145 min |
+| AMC Decatur 12 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 0.8% | -1090 min |
+| AMC Edwardsville 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 4.4% | -1209 min |
+| AMC Edwardsville 12 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 1.5% | -1149 min |
+| AMC Edinburg 18 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:45pm | 18.1% | -1255 min |
+| AMC Edinburg 18 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 9:15pm | 3.9% | -1225 min |
+| AMC Edinburg 18 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 18.3% | -1165 min |
+| AMC Edinburg 18 | Lee Cronin's The Mummy | Thrills & Chills | 6:10pm | 23.6% | -1040 min |
+| AMC El Paso 16 | Lee Cronin's The Mummy | Thrills & Chills | 9:00pm | 22.9% | -1209 min |
+| AMC El Paso 16 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 22.7% | -1149 min |
+| AMC El Paso 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 29.2% | -1089 min |
+| AMC El Paso 16 | Lee Cronin's The Mummy | Thrills & Chills | 5:50pm | 12.5% | -1018 min |
+| AMC Esquire 7 | Lee Cronin's The Mummy | Thrills & Chills | 10:05pm | 9.2% | -1273 min |
+| AMC Esquire 7 | Lee Cronin's The Mummy | Thrills & Chills | 8:45pm | 5.8% | -1194 min |
+| AMC Esquire 7 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 3.1% | -1089 min |
+| AMC Elmwood Palace 20 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 8:30pm | 8% | -1179 min |
+| AMC Elmwood Palace 20 | Lee Cronin's The Mummy | Thrills & Chills | 9:00pm | 1% | -1209 min |
+| AMC Elmwood Palace 20 | Lee Cronin's The Mummy | Thrills & Chills | 6:35pm | 1.7% | -1063 min |
+| AMC Elmwood Palace 20 | Lee Cronin's The Mummy | Thrills & Chills | 5:40pm | 0% | -1009 min |
+| AMC Evanston 12 | Lee Cronin's The Mummy | Laser at AMC | 8:45pm | 5.8% | -1193 min |
+| AMC Evanston 12 | Lee Cronin's The Mummy | Laser at AMC | 7:45pm | 3.4% | -1133 min |
+| AMC Fitchburg 18 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 7:30pm | 8.1% | -1118 min |
+| AMC Festival Plaza 16 | Lee Cronin's The Mummy | Thrills & Chills | 9:00pm | 10.2% | -1208 min |
+| AMC Festival Plaza 16 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 0.9% | -1163 min |
+| AMC Festival Plaza 16 | Lee Cronin's The Mummy | Thrills & Chills | 5:45pm | 11.3% | -1013 min |
+| AMC Galaxy 16 | Lee Cronin's The Mummy | IMAX at AMC | 7:40pm | 1% | -1127 min |
+| AMC Galaxy 16 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:40pm | 1.4% | -1067 min |
+| AMC Galaxy 16 | Lee Cronin's The Mummy | Thrills & Chills | 5:40pm | 0% | -1007 min |
+| AMC Grand Prairie 18 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 2.6% | -1147 min |
+| AMC Hammond Palace 10 | Lee Cronin's The Mummy | PRIME at AMC | 8:00pm | 5.6% | -1147 min |
+| AMC Hammond Palace 10 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 2.2% | -1102 min |
+| AMC Hawthorn 12 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:30pm | 7.5% | -1237 min |
+| AMC Hawthorn 12 | Lee Cronin's The Mummy | Laser at AMC | 6:00pm | 19.8% | -1027 min |
+| AMC Highland Village 12 | Lee Cronin's The Mummy | Laser at AMC | 8:50pm | 1.4% | -1196 min |
+| AMC Highland Village 12 | Lee Cronin's The Mummy | Laser at AMC | 7:40pm | 2.9% | -1126 min |
+| AMC Houma Palace 10 | Lee Cronin's The Mummy | Thrills & Chills | 6:00pm | 4.2% | -1026 min |
+| AMC Lakeline 9 | Lee Cronin's The Mummy | Thrills & Chills | 8:30pm | 34.9% | -1176 min |
+| AMC Lakeline 9 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 16.7% | -1101 min |
+| AMC Longview 10 | Lee Cronin's The Mummy | Thrills & Chills | 9:20pm | 10.2% | -1226 min |
+| AMC Longview 10 | Lee Cronin's The Mummy | Thrills & Chills | 9:00pm | 4% | -1206 min |
+| AMC Longview 10 | Lee Cronin's The Mummy | Thrills & Chills | 6:15pm | 8.2% | -1041 min |
+| AMC Lufkin 9 | Lee Cronin's The Mummy | Thrills & Chills | 7:40pm | 9% | -1126 min |
+| AMC Lufkin 9 | Lee Cronin's The Mummy | Thrills & Chills | 6:00pm | 1.7% | -1026 min |
+| AMC Machesney Park 14 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 3.1% | -1085 min |
+| AMC Mayfair Mall 18 | Lee Cronin's The Mummy | Thrills & Chills | 7:50pm | 2.1% | -1134 min |
+| AMC Mall of Louisiana 15 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:30pm | 1.4% | -1055 min |
+| AMC Mall of Louisiana 15 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 3% | -1115 min |
+| AMC Norridge 6 | Lee Cronin's The Mummy | Laser at AMC | 9:45pm | 16.3% | -1250 min |
+| AMC Norridge 6 | Lee Cronin's The Mummy | Laser at AMC | 7:30pm | 23% | -1115 min |
+| AMC Oakbrook Center 4 | Lee Cronin's The Mummy | Laser at AMC | 8:00pm | 6.8% | -1144 min |
+| AMC Northrock 14 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:45pm | 16.8% | -1069 min |
+| AMC Northrock 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 8:15pm | 21.2% | -1159 min |
+| AMC Northrock 14 | Lee Cronin's The Mummy | Thrills & Chills | 10:10pm | 7.5% | -1274 min |
+| AMC Palace 9 | Lee Cronin's The Mummy | PRIME at AMC | 9:45pm | 8.1% | -1249 min |
+| AMC Palace 9 | Lee Cronin's The Mummy | Laser at AMC | 9:10pm | 1.6% | -1214 min |
+| AMC Palace 9 | Lee Cronin's The Mummy | Laser at AMC | 6:00pm | 36.1% | -1024 min |
+| AMC Patriot 13 | Lee Cronin's The Mummy | Thrills & Chills | 6:55pm | 3.5% | -1079 min |
+| AMC Patriot 13 | Lee Cronin's The Mummy | Thrills & Chills | 5:35pm | 1.3% | -998 min |
+| AMC Penn Square 10 | Lee Cronin's The Mummy | Thrills & Chills | 10:00pm | 10.9% | -1263 min |
+| AMC Penn Square 10 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 9.5% | -1158 min |
+| AMC Penn Square 10 | Lee Cronin's The Mummy | Thrills & Chills | 6:00pm | 0% | -1023 min |
+| AMC Rivercenter 11 | Lee Cronin's The Mummy | IMAX at AMC | 8:15pm | 6.5% | -1157 min |
+| AMC Rivercenter 11 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 11.4% | -1097 min |
+| AMC Quail Springs Mall 24 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:15pm | 2.4% | -1278 min |
+| AMC Quail Springs Mall 24 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:00pm | 6.2% | -1023 min |
+| AMC Quail Springs Mall 24 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 7:15pm | 1.1% | -1098 min |
+| AMC Quail Springs Mall 24 | Lee Cronin's The Mummy | Thrills & Chills | 9:15pm | 2.6% | -1218 min |
+| AMC Quail Springs Mall 24 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 2.9% | -1158 min |
+| AMC Robinson Crossing 6 | Lee Cronin's The Mummy | Thrills & Chills | 9:30pm | 5.7% | -1231 min |
+| AMC Robinson Crossing 6 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 7% | -1081 min |
+| AMC Sikes Senter 10 | Lee Cronin's The Mummy | Thrills & Chills | 7:40pm | 0% | -1121 min |
+| AMC Rockford 16 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 7:50pm | 0% | -1130 min |
+| AMC Rockford 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 3.2% | -1096 min |
+| AMC Southroads 20 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 10:30pm | 2.4% | -1291 min |
+| AMC Southroads 20 | Lee Cronin's The Mummy | Thrills & Chills | 10:00pm | 6.3% | -1261 min |
+| AMC Southroads 20 | Lee Cronin's The Mummy | Thrills & Chills | 9:30pm | 9.4% | -1231 min |
+| AMC Southroads 20 | Lee Cronin's The Mummy | English Spoken with Spanish Subtitles | 8:30pm | 0% | -1171 min |
+| AMC Southroads 20 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 28.1% | -1096 min |
+| AMC Springfield 11 | Lee Cronin's The Mummy | IMAX with Laser at AMC | 10:30pm | 5.5% | -1290 min |
+| AMC Springfield 11 | Lee Cronin's The Mummy | Thrills & Chills | 9:30pm | 9.2% | -1230 min |
+| AMC Springfield 11 | Lee Cronin's The Mummy | Thrills & Chills | 6:15pm | 12.3% | -1035 min |
+| AMC Springfield 12 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 1% | -1140 min |
+| AMC Stillwater 10 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 2.2% | -1154 min |
+| AMC Stillwater 10 | Lee Cronin's The Mummy | Thrills & Chills | 7:15pm | 2.8% | -1094 min |
+| AMC Springfield 8 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 1% | -1139 min |
+| AMC Springfield 8 | Lee Cronin's The Mummy | Thrills & Chills | 6:30pm | 9.2% | -1049 min |
+| AMC Streets Of St Charles 8 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:55pm | 6.5% | -1254 min |
+| AMC Streets Of St Charles 8 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 6:30pm | 7% | -1049 min |
+| AMC Streets Of St Charles 8 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 13.6% | -1139 min |
+| AMC Summit 16 | Lee Cronin's The Mummy | Thrills & Chills | 9:50pm | 1.9% | -1249 min |
+| AMC Summit 16 | Lee Cronin's The Mummy | Thrills & Chills | 7:30pm | 22.2% | -1109 min |
+| AMC Tulsa Hills 12 | Lee Cronin's The Mummy | BigD at AMC | 7:30pm | 1% | -1108 min |
+| AMC Tulsa Hills 12 | Lee Cronin's The Mummy | Thrills & Chills | 6:30pm | 17.5% | -1048 min |
+| AMC Studio 28 | Lee Cronin's The Mummy | Dolby Cinema at AMC | 9:00pm | 1.2% | -1199 min |
+| AMC Studio 28 | Lee Cronin's The Mummy | XL at AMC | 8:00pm | 1.9% | -1139 min |
+| AMC Studio 28 | Lee Cronin's The Mummy | Laser at AMC | 7:15pm | 13.8% | -1094 min |
+| AMC Studio 28 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:30pm | 1.8% | -1049 min |
+| AMC University Place 8 | Lee Cronin's The Mummy | Thrills & Chills | 7:40pm | 11.8% | -1118 min |
+| AMC University Place 8 | Lee Cronin's The Mummy | Thrills & Chills | 6:45pm | 0% | -1063 min |
+| AMC Tyler 14 | Lee Cronin's The Mummy | IMAX at AMC | 10:00pm | 2.6% | -1258 min |
+| AMC Tyler 14 | Lee Cronin's The Mummy | Open Caption (On-screen Subtitles) | 6:55pm | 1.6% | -1073 min |
+| AMC Tyler 14 | Lee Cronin's The Mummy | Thrills & Chills | 9:00pm | 2.9% | -1198 min |
+| AMC Tyler 14 | Lee Cronin's The Mummy | BigD at AMC | 8:10pm | 2.9% | -1148 min |
+| AMC Tyler 14 | Lee Cronin's The Mummy | Thrills & Chills | 5:50pm | 1% | -1007 min |
+| AMC Valley Bend 18 | Lee Cronin's The Mummy | Thrills & Chills | 7:00pm | 2.1% | -1077 min |
+| AMC Valley Bend 18 | Lee Cronin's The Mummy | Thrills & Chills | 6:00pm | 0.4% | -1017 min |
+| AMC West End Pointe 8 | Lee Cronin's The Mummy | Thrills & Chills | 10:15pm | 4.1% | -1272 min |
+| AMC West End Pointe 8 | Lee Cronin's The Mummy | Thrills & Chills | 6:15pm | 19.4% | -1032 min |
+| AMC Westbank Palace 16 | Lee Cronin's The Mummy | PRIME at AMC | 6:45pm | 8.6% | -1062 min |
+| AMC Westbank Palace 16 | Lee Cronin's The Mummy | Thrills & Chills | 9:10pm | 16.7% | -1207 min |
+| AMC Westbank Palace 16 | Lee Cronin's The Mummy | Thrills & Chills | 8:00pm | 6.9% | -1137 min |
+| AMC Westroads 14 | Lee Cronin's The Mummy | IMAX at AMC | 7:40pm | 2.8% | -1116 min |
+| AMC Westroads 14 | Lee Cronin's The Mummy | Thrills & Chills | 6:30pm | 2.9% | -1046 min |
+| Cinema Centre 8 | Lee Cronin's The Mummy | Thrills & Chills | 8:15pm | 1.8% | -1151 min |
+
+**Issues:** AMC Streets of Woodfield 20: No seat map for Lee Cronin's The Mummy Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/142419442/seats); AMC CLASSIC Mounds View 15: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 7:30pm (https://www.amctheatres.com/showtimes/142397346/seats); AMC CLASSIC Mounds View 15: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 6:30pm (https://www.amctheatres.com/showtimes/142397306/seats); AMC CLASSIC Bloomington 12: No seat map for Lee Cronin's The Mummy Open Caption (On-screen Subtitles) @ 6:45pm (https://www.amctheatres.com/showtimes/141870259/seats); AMC CLASSIC Forney 12: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 9:00pm (https://www.amctheatres.com/showtimes/141847747/seats); AMC CLASSIC Forney 12: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 7:15pm (https://www.amctheatres.com/showtimes/141847756/seats); AMC CLASSIC Forney 12: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 5:45pm (https://www.amctheatres.com/showtimes/142382392/seats); AMC Barton Creek Square 14: No seat map for Lee Cronin's The Mummy Dolby Cinema at AMC @ 9:30pm (https://www.amctheatres.com/showtimes/141736721/seats); AMC Chantilly 13: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 8:00pm (https://www.amctheatres.com/showtimes/141960743/seats); AMC DINE-IN Tech Ridge 10: No seat map for Lee Cronin's The Mummy Dolby Cinema at AMC @ 10:15pm (https://www.amctheatres.com/showtimes/141706812/seats); AMC DINE-IN Tech Ridge 10: No seat map for Lee Cronin's The Mummy Dolby Cinema at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/141706813/seats); AMC Patton Creek 15: No seat map for Lee Cronin's The Mummy IMAX at AMC @ 10:20pm (https://www.amctheatres.com/showtimes/141852767/seats); AMC Patton Creek 15: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 9:00pm (https://www.amctheatres.com/showtimes/141852707/seats); AMC Patton Creek 15: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 7:30pm (https://www.amctheatres.com/showtimes/141852702/seats); AMC Patton Creek 15: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 6:00pm (https://www.amctheatres.com/showtimes/142307634/seats); AMC Southern Hills 12: No seat map for Lee Cronin's The Mummy Thrills & Chills @ 7:15pm (https://www.amctheatres.com/showtimes/141750159/seats); AMC Studio 28: No seat map for Lee Cronin's The Mummy Laser at AMC @ 9:40pm (https://www.amctheatres.com/showtimes/142487854/seats)
+
+---
