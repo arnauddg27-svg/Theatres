@@ -2,12 +2,14 @@ import csv
 import json
 import re
 from datetime import datetime
+from pathlib import Path
 import pandas as pd
 import xlsxwriter
 
-CSV_PATH = "./box-office-tracker/data/seat-counts.csv"
+DATA_DIR = Path(__file__).resolve().parent
+CSV_PATH = str(DATA_DIR / "seat-counts.csv")
 _today = datetime.now().strftime("%Y-%m-%d")
-OUT_PATH = f"./box-office-tracker/data/{_today}-box-office.xlsx"
+OUT_PATH = str(DATA_DIR / f"{_today}-box-office.xlsx")
 # TARGET_DATES: set to specific dates, or leave None to use the most recent weekend in the CSV
 TARGET_DATES = None
 
@@ -63,7 +65,7 @@ tz_order = {'ET': 0, 'CT': 1, 'MT': 2, 'PT': 3}
 df['_tz_order'] = df['timezone'].map(tz_order).fillna(9)
 
 # ── Load national theatre counts ──────────────────────────────────────────────
-THEATRE_COUNTS_PATH = "./box-office-tracker/data/theatre-counts.json"
+THEATRE_COUNTS_PATH = str(DATA_DIR / "theatre-counts.json")
 national_counts = {}
 try:
     with open(THEATRE_COUNTS_PATH) as f:
