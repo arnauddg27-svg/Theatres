@@ -18,3 +18,6 @@ box-office-tracker/data/trades.db
 .DS_Store
 SwissTony 2/
 output/
+
+# Claude Code working directory (may contain SSH commands, VPS IPs, private notes)
+.claude/

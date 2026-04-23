@@ -5,14 +5,16 @@ Filters seat-counts.csv to 2026-04-03 and 2026-04-04, requires total_seats.
 """
 
 import re
+from pathlib import Path
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.formatting.rule import CellIsRule
 from openpyxl.utils import get_column_letter
 
-OUTPUT = "./box-office-tracker/data/2026-04-05-box-office.xlsx"
-CSV = "./box-office-tracker/data/seat-counts.csv"
+DATA_DIR = Path(__file__).resolve().parent
+OUTPUT = str(DATA_DIR / "2026-04-05-box-office.xlsx")
+CSV = str(DATA_DIR / "seat-counts.csv")
 TARGET_DATES = {'2026-04-03', '2026-04-04'}
 
 # ── Load & filter ─────────────────────────────────────────────────────────────
