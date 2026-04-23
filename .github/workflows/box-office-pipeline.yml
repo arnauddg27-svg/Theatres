@@ -6,16 +6,23 @@ on:
   # with explicit tz_group + phase inputs. GitHub's own `schedule:`
   # trigger was dropping ~30% of slots entirely (notably all PT slots
   # on 2026-04-21), which no matches_slot tolerance can recover from.
-  # VPS cron fires within a second, every time — same self-hosted host
-  # that runs the scraper, so no extra reliability surface.
+  #
+  # Runner topology:
+  #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
+  #     state file showtime-links.json benefits from single-writer serialization.
+  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,MT,PT] —
+  #     each matrix leg gets a fresh Azure IP, escaping AMC's Queue-It
+  #     bot-blocker that had been zeroing out CT/PT on the VPS's flagged IP.
+  #   - finalize (predict + xlsx): GH-hosted, depends on scrape matrix.
+  #   - Calibrate: self-hosted VPS (weekly, unchanged).
   workflow_dispatch:
     inputs:
       tz_group:
-        description: 'Timezone group to scrape (ET, CT, MT, PT, or ALL)'
+        description: 'Timezone group (ET, CT, MT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to all four.'
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1) or scrape (Phase 2)'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -23,35 +30,37 @@ on:
         required: false
         default: 'false'
       test:
-        description: 'Test mode: run Phase 2 on N theatres only (e.g. 5). Empty = full run.'
+        description: 'Test mode: run Phase 2 on N theatres only per TZ (e.g. 5). Empty = full run.'
         required: false
         default: ''
 
 permissions:
   contents: write
 
-# No workflow-level concurrency block: GitHub's concurrency caps the queue at
-# 1 running + 1 pending, so a third trigger cancels the older queued one.
-# With 4 TZ triggers firing within a 4-hour window, that would drop jobs.
-# Instead we rely on (a) the single self-hosted runner to naturally serialize
-# and (b) the "Sync to latest main" step to ensure each job starts from the
-# current tip — which is what actually prevents the data-loss race.
+# No workflow-level concurrency block. For Phase 1 + calibrate (self-hosted), the
+# single VPS runner naturally serializes. For Phase 2 (ubuntu-latest matrix), the
+# four legs run truly in parallel — their only shared write surface is the final
+# `git push` of seat-counts.csv, which is protected by the per-leg rebase retry
+# loop below. A concurrency cap would cancel legs and drop data.
 
 jobs:
-  collect:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Phase 1 — collect showtime links. Runs on VPS because (a) it isn't
+  # Queue-It'd, so IP rotation buys nothing, and (b) showtime-links.json is
+  # shared state — parallel writers would conflict. VPS cron dispatches one
+  # TZ at a time (5pm/6pm local), so this job always sees a single TZ.
+  # ──────────────────────────────────────────────────────────────────────────
+  collect-links:
+    if: github.event.inputs.phase == 'collect-links'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 180
+    timeout-minutes: 90
 
     steps:
       - name: Free disk space
         run: |
           rm -rf /home/gha/actions-runner/_work/_update 2>/dev/null || true
           rm -rf /home/gha/actions-runner/_work/_temp/* 2>/dev/null || true
-          # Preserve the previous job's Worker_*.log (and other _diag logs) so we
-          # can diagnose failures post-mortem. Only rotate logs older than 7 days
-          # to keep the directory bounded without losing the last failure context.
           find /home/gha/actions-runner/_diag -maxdepth 1 -type f -name '*.log' -mtime +7 -delete 2>/dev/null || true
-          # Remove old runner versions — keep only what the current symlinks point to
           current_ext=$(readlink /home/gha/actions-runner/externals 2>/dev/null | xargs basename 2>/dev/null)
           current_bin=$(readlink /home/gha/actions-runner/bin 2>/dev/null | xargs basename 2>/dev/null)
           if [ -n "$current_ext" ] && [ -n "$current_bin" ]; then
@@ -70,50 +79,20 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: false   # preserve .env and other untracked files between runs
-          # fetch-depth 50 so the Dedup guard step can grep today's commit
-          # history. Depth 1 (default) would only show the triggering SHA,
-          # hiding earlier scrape commits from the same day and defeating
-          # the dedup check.
-          fetch-depth: 50
+          fetch-depth: 50   # dedup guard greps today's commits
 
       - name: Sync to latest main
-        # checkout@v4 pins to the SHA that triggered the workflow, which can be
-        # stale if this job was queued behind another (e.g. ET scheduled at
-        # 03:00 UTC but runs after CT's 05:00 UTC job finished). Reset to the
-        # current tip of main so the scraper appends to the latest CSV.
-        # --deepen keeps history from collapsing back to shallow on fetch.
-        # .env survives because it's untracked.
         run: |
           git fetch --deepen=50 origin main
           git reset --hard origin/main
 
-      - name: Determine timezone group and phase
-        id: tz
-        run: |
-          # Only workflow_dispatch triggers this workflow — the VPS cron
-          # dispatches with explicit tz_group + phase, so the old
-          # matches_slot DST-resolution logic is handled upstream by
-          # /root/box-office-dispatch/dispatch.sh on the runner host.
-          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "Unsupported event type: ${{ github.event_name }}" >&2
-            exit 1
-          fi
-          echo "group=${{ github.event.inputs.tz_group || 'ALL' }}" >> "$GITHUB_OUTPUT"
-          echo "phase=${{ github.event.inputs.phase || 'scrape' }}" >> "$GITHUB_OUTPUT"
-
-      - name: Dedup guard — skip if today's phase already committed
+      - name: Dedup guard — skip if today's collect-links already committed
         id: dedup
-        if: steps.tz.outputs.phase == 'scrape' || steps.tz.outputs.phase == 'collect-links'
         run: |
-          # Defense in depth against double-scrapes. With VPS-side dispatch
-          # the local-hour check in dispatch.sh should already prevent
-          # double-fires, but manual re-dispatches or a future cron edit
-          # could still queue two jobs for the same (tz, phase, day).
-          # Use the commit log as the cross-run source of truth.
           today=$(date -u +%Y-%m-%d)
-          pattern="data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
+          pattern="data: box office ${{ github.event.inputs.tz_group }} collect-links"
           if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
-            echo "Skipping — ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }} already ran today:"
+            echo "Skipping — ${{ github.event.inputs.tz_group }} collect-links already ran today:"
             git log --since="$today 00:00" --oneline --grep="$pattern"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
@@ -121,77 +100,31 @@ jobs:
           fi
 
       - name: Install dependencies
-        if: steps.tz.outputs.phase != 'skip' && steps.dedup.outputs.skip != 'true'
+        if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         run: |
           pip3 install -r requirements.txt
           python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
 
-      - name: Auto-calibrate (Tuesday 10am ET only)
-        if: steps.tz.outputs.phase == 'calibrate'
-        working-directory: box-office-tracker
-        run: python3 calibrate.py
-
-      - name: Phase 1 — collect showtime links (${{ steps.tz.outputs.group }})
-        if: steps.tz.outputs.phase == 'collect-links' && steps.dedup.outputs.skip != 'true'
+      - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
+        if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 60
-        run: python3 scraper.py --collect-links ${{ steps.tz.outputs.group }}
+        run: python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
 
-      - name: Phase 2 — collect seat data (${{ steps.tz.outputs.group }})
-        id: phase2
-        if: steps.tz.outputs.phase == 'scrape' && steps.dedup.outputs.skip != 'true'
-        working-directory: box-office-tracker
-        timeout-minutes: 75
-        run: |
-          # Scheduled runs always pass --force so a slightly delayed Phase 1
-          # (e.g. >12h gap) never silently aborts Phase 2.
-          # Manual dispatch can override force=false for safety testing.
-          FORCE_FLAG="--force"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.force }}" = "false" ]; then
-            FORCE_FLAG=""
-          fi
-          TEST_FLAG=""
-          if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
-          # The scraper already has internal per-theatre retries and timeouts.
-          # An outer retry used to double runtime when the VPS IP was stuck in
-          # AMC's queue-it redirect, so we rely on in-process recovery instead.
-          python3 scraper.py $FORCE_FLAG $TEST_FLAG ${{ steps.tz.outputs.group }}
-
-      - name: Generate predictions
-        if: steps.tz.outputs.phase == 'scrape' && steps.phase2.outcome == 'success'
-        working-directory: box-office-tracker
-        run: python3 predict.py
-
-      - name: Refresh Excel workbook
-        # Rebuild from whatever's in the CSV, even if the scrape step
-        # partially failed. The commit step also uses `always()` so the
-        # xlsx stays in sync with partial CSV updates instead of drifting.
-        if: always() && steps.tz.outputs.phase == 'scrape' && steps.dedup.outputs.skip != 'true'
-        working-directory: box-office-tracker
-        run: python3 export_seat_counts_xlsx.py
-
-      - name: Commit updated data
-        # Run whenever the job had work to do (phase != skip), even if the
-        # scrape or prediction step failed. The scraper flushes rows to CSV as
-        # each theatre completes, so a mid-run failure can still have partial
-        # data worth preserving.
-        if: always() && steps.tz.outputs.phase != 'skip' && steps.tz.outputs.phase != ''
+      - name: Commit showtime links
+        if: always() && steps.dedup.outputs.skip != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add box-office-tracker/
           if git diff --staged --quiet; then
-            echo "No data changes to commit (run produced no new output)."
+            echo "No data changes to commit."
             exit 0
           fi
-          git commit -m "data: box office ${{ steps.tz.outputs.group }} ${{ steps.tz.outputs.phase }}"
+          git commit -m "data: box office ${{ github.event.inputs.tz_group }} collect-links"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            # -X ours on rebase: prefer the remote base (= rows committed by
-            # other TZ runs while we were scraping). Our freshly-appended rows
-            # are new lines at EOF, so they don't conflict and still apply.
-            # Using -X theirs here previously dropped other TZs' rows.
             git pull --rebase -X ours origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
@@ -199,5 +132,222 @@ jobs:
               git rebase --abort 2>/dev/null || true
               exit 1
             fi
-            sleep $((i * 15))   # exponential backoff: 15s, 30s
+            sleep $((i * 15))
+          done
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Phase 2 — seat data scrape. Runs on ubuntu-latest matrix so each TZ gets
+  # a fresh Azure IP, defeating AMC's Queue-It IP-flagging that had been
+  # zeroing out CT/PT on the VPS IP. All four TZs run in parallel (~60 min
+  # wall-clock instead of the old staggered 3+ hours on one self-hosted box).
+  #
+  # Commit race: each matrix leg appends its TZ's rows to seat-counts.csv and
+  # pushes. The retry loop handles 4-way contention via rebase -X ours with
+  # jittered backoff (6 attempts, up to ~4 min total).
+  # ──────────────────────────────────────────────────────────────────────────
+  scrape:
+    if: github.event.inputs.phase == 'scrape'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
+      matrix:
+        tz: [ET, CT, MT, PT]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+
+      - name: Sync to latest main
+        # Matrix legs start ~simultaneously; by the time the last one begins
+        # earlier legs may have already pushed. Reset to current tip so each
+        # leg appends to the latest CSV rather than the commit-triggering SHA.
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+
+      - name: Dedup guard — skip if ${{ matrix.tz }} already scraped today
+        id: dedup
+        run: |
+          today=$(date -u +%Y-%m-%d)
+          pattern="data: box office ${{ matrix.tz }} scrape"
+          if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
+            echo "Skipping — ${{ matrix.tz }} scrape already ran today:"
+            git log --since="$today 00:00" --oneline --grep="$pattern"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
+
+      - name: Phase 2 — collect seat data (${{ matrix.tz }})
+        id: phase2
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        timeout-minutes: 75
+        run: |
+          FORCE_FLAG="--force"
+          if [ "${{ github.event.inputs.force }}" = "false" ]; then
+            FORCE_FLAG=""
+          fi
+          TEST_FLAG=""
+          if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
+          python scraper.py $FORCE_FLAG $TEST_FLAG ${{ matrix.tz }}
+
+      - name: Commit ${{ matrix.tz }} seat data
+        # always() so partial data from a crashed scrape still gets preserved.
+        # The scraper flushes per-theatre, so even a mid-run failure usually has
+        # rows worth committing.
+        if: always() && steps.dedup.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Only stage CSV-family files; matrix legs must not commit xlsx or
+          # predictions (those are regenerated once in the finalize job from
+          # the merged CSV).
+          git add box-office-tracker/data/seat-counts.csv \
+                  box-office-tracker/data/polymarket-markets.csv \
+                  box-office-tracker/data/run-log.md \
+                  box-office-tracker/data/theatre-counts.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No data changes to commit (run produced no new output)."
+            exit 0
+          fi
+          git commit -m "data: box office ${{ matrix.tz }} scrape"
+          # 6 attempts with jittered backoff handles 4-way push contention.
+          # Worst-case wait is ~4 min which still fits well under the 90 min
+          # job budget. -X ours keeps rows from peer TZs when rebasing.
+          for i in 1 2 3 4 5 6; do
+            git rebase --abort 2>/dev/null || true
+            git pull --rebase -X ours origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            if [ "$i" = "6" ]; then
+              echo "All 6 push attempts failed — data not committed."
+              git rebase --abort 2>/dev/null || true
+              exit 1
+            fi
+            # Jittered backoff: (i*8) base + 0-14s random = avoid thundering herd
+            sleep $((i * 8 + RANDOM % 15))
+          done
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Finalize — runs once after all matrix legs finish. Regenerates
+  # predictions and xlsx from the fully-merged CSV. A single writer here
+  # means no race on these derived artifacts.
+  # ──────────────────────────────────────────────────────────────────────────
+  finalize:
+    needs: scrape
+    # Run regardless of whether individual matrix legs succeeded (always()),
+    # but skip if scrape didn't run at all (phase != scrape) or was cancelled.
+    if: >
+      always() &&
+      github.event.inputs.phase == 'scrape' &&
+      (needs.scrape.result == 'success' || needs.scrape.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+
+      - name: Sync to latest main
+        # Must pick up all 4 matrix commits that just landed.
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          # No playwright needed here — predict.py and export_seat_counts_xlsx.py
+          # are pure-pandas. Skipping the chromium download saves ~2 min.
+
+      - name: Generate predictions
+        working-directory: box-office-tracker
+        run: python predict.py
+
+      - name: Refresh Excel workbook
+        working-directory: box-office-tracker
+        run: python export_seat_counts_xlsx.py
+
+      - name: Commit predictions + xlsx
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add box-office-tracker/
+          if git diff --staged --quiet; then
+            echo "No derived artifacts changed (nothing new from matrix, or regeneration is idempotent)."
+            exit 0
+          fi
+          git commit -m "data: box office predictions + xlsx"
+          for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            git pull --rebase -X ours origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            if [ "$i" = "3" ]; then
+              echo "All 3 push attempts failed — derived artifacts not committed."
+              git rebase --abort 2>/dev/null || true
+              exit 1
+            fi
+            sleep $((i * 15))
+          done
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Calibrate — Tuesday 10am ET only. Stays on VPS; doesn't hit AMC.
+  # ──────────────────────────────────────────────────────────────────────────
+  calibrate:
+    if: github.event.inputs.phase == 'calibrate'
+    runs-on: [self-hosted, vps]
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          clean: false
+          fetch-depth: 50
+
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: pip3 install -r requirements.txt
+
+      - name: Auto-calibrate
+        working-directory: box-office-tracker
+        run: python3 calibrate.py
+
+      - name: Commit calibration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add box-office-tracker/
+          if git diff --staged --quiet; then
+            echo "No calibration changes."
+            exit 0
+          fi
+          git commit -m "data: box office calibration"
+          for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            git pull --rebase -X ours origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            if [ "$i" = "3" ]; then exit 1; fi
+            sleep $((i * 15))
           done
