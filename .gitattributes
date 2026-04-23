@@ -1,0 +1,15 @@
+# Union-merge append-only data files so Phase 2 matrix legs don't lose each
+# other's rows during concurrent `git pull --rebase` retries.
+#
+# Without this, Git's default recursive merge with `-X ours` silently drops
+# the second-pushing leg's rows: Git's patch-similarity heuristic sees both
+# legs appending lines at the same file offset and marks the later patch as
+# "already upstream" — erasing real data. Union merge concatenates both
+# sides' hunks, which is exactly what we want for append-only logs/CSVs.
+#
+# Do NOT add JSON files here — union merge produces invalid JSON by
+# concatenating conflicting objects. Single-writer discipline (Phase 1 only,
+# self-hosted runner serializes) is how JSON files stay consistent.
+box-office-tracker/data/seat-counts.csv         merge=union
+box-office-tracker/data/polymarket-markets.csv  merge=union
+box-office-tracker/data/run-log.md              merge=union

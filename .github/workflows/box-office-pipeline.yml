@@ -40,9 +40,11 @@ permissions:
 
 # No workflow-level concurrency block. For Phase 1 + calibrate (self-hosted), the
 # single VPS runner naturally serializes. For Phase 2 (ubuntu-latest matrix), the
-# four legs run truly in parallel — their only shared write surface is the final
-# `git push` of seat-counts.csv, which is protected by the per-leg rebase retry
-# loop below. A concurrency cap would cancel legs and drop data.
+# three legs run truly in parallel — their only shared write surface is the
+# `git push` of seat-counts.csv, protected by the per-leg rebase retry loop
+# plus the `merge=union` .gitattributes rule that makes concurrent appends
+# commute instead of silently dropping the second pusher's rows. A concurrency
+# cap would cancel legs and drop data.
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
@@ -145,12 +147,15 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # Phase 2 — seat data scrape. Runs on ubuntu-latest matrix so each TZ gets
   # a fresh Azure IP, defeating AMC's Queue-It IP-flagging that had been
-  # zeroing out CT/PT on the VPS IP. All four TZs run in parallel (~60 min
+  # zeroing out CT/PT on the VPS IP. All three TZs run in parallel (~60 min
   # wall-clock instead of the old staggered 3+ hours on one self-hosted box).
   #
   # Commit race: each matrix leg appends its TZ's rows to seat-counts.csv and
-  # pushes. The retry loop handles 4-way contention via rebase -X ours with
-  # jittered backoff (6 attempts, up to ~4 min total).
+  # pushes. The retry loop handles 3-way contention via rebase with jittered
+  # backoff (6 attempts, up to ~4 min total). The append-only data files have
+  # `merge=union` in .gitattributes so concurrent appends don't silently drop
+  # each other — without that, `-X ours` would treat peer TZ additions as
+  # "patch already upstream" and erase them.
   # ──────────────────────────────────────────────────────────────────────────
   scrape:
     if: github.event.inputs.phase == 'scrape'
@@ -201,9 +206,13 @@ jobs:
         working-directory: box-office-tracker
         timeout-minutes: 75
         run: |
-          FORCE_FLAG="--force"
-          if [ "${{ github.event.inputs.force }}" = "false" ]; then
-            FORCE_FLAG=""
+          # Default-off: only pass --force when the input is explicitly "true".
+          # Matches the workflow_dispatch input default of 'false' and the VPS
+          # dispatch.sh default, so an empty/missing input can't silently
+          # bypass the 12h staleness guard on showtime-links.json.
+          FORCE_FLAG=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            FORCE_FLAG="--force"
           fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
@@ -217,13 +226,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Only stage CSV-family files; matrix legs must not commit xlsx or
-          # predictions (those are regenerated once in the finalize job from
-          # the merged CSV).
+          # Only stage files Phase 2 actually writes. Matrix legs must not
+          # commit xlsx or predictions (those are regenerated once in the
+          # finalize job from the merged CSV). theatre-counts.json is written
+          # only by Phase 1 (fetch_bom_theatre_counts in run_collect_links_async).
           git add box-office-tracker/data/seat-counts.csv \
                   box-office-tracker/data/polymarket-markets.csv \
-                  box-office-tracker/data/run-log.md \
-                  box-office-tracker/data/theatre-counts.json 2>/dev/null || true
+                  box-office-tracker/data/run-log.md 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit (run produced no new output)."
             exit 0
@@ -269,7 +278,7 @@ jobs:
           fetch-depth: 50
 
       - name: Sync to latest main
-        # Must pick up all 4 matrix commits that just landed.
+        # Must pick up all 3 matrix commits that just landed.
         run: |
           git fetch --deepen=50 origin main
           git reset --hard origin/main
@@ -347,7 +356,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add box-office-tracker/
+          # calibrate.py writes exactly one file. Explicit allow-list so a
+          # stray untracked file on the VPS runner (e.g. a playwright cache,
+          # a locally-edited .env) can't ride along into the commit.
+          git add box-office-tracker/data/calibration.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No calibration changes."
             exit 0
