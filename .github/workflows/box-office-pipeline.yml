@@ -38,13 +38,19 @@ on:
 permissions:
   contents: write
 
-# No workflow-level concurrency block. For Phase 1 + calibrate (self-hosted), the
-# single VPS runner naturally serializes. For Phase 2 (ubuntu-latest matrix), the
-# three legs run truly in parallel — their only shared write surface is the
-# `git push` of seat-counts.csv, protected by the per-leg rebase retry loop
-# plus the `merge=union` .gitattributes rule that makes concurrent appends
-# commute instead of silently dropping the second pusher's rows. A concurrency
-# cap would cancel legs and drop data.
+# Workflow-level concurrency keyed on phase. GitHub Actions concurrency groups
+# apply across workflow runs, not across matrix legs within one run — so this
+# queues a manual Phase 2 dispatch behind the 04:00 UTC scheduled scrape
+# (preventing two simultaneous AMC matrix fan-outs from the same account) while
+# leaving the three in-run matrix legs free to execute truly in parallel.
+#
+# Keying on `phase` means Phase 1 (collect-links) and Phase 2 (scrape) don't
+# block each other — they write different files and can safely overlap. Same
+# for calibrate. `cancel-in-progress: false` queues rather than cancels, so a
+# mid-run scrape never loses partial data to an incoming manual dispatch.
+concurrency:
+  group: box-office-pipeline-${{ github.event.inputs.phase }}
+  cancel-in-progress: false
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
