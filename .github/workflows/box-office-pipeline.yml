@@ -10,15 +10,16 @@ on:
   # Runner topology:
   #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
   #     state file showtime-links.json benefits from single-writer serialization.
-  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,MT,PT] —
+  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT] —
   #     each matrix leg gets a fresh Azure IP, escaping AMC's Queue-It
   #     bot-blocker that had been zeroing out CT/PT on the VPS's flagged IP.
+  #     (MT omitted — too few theatres to justify a separate Phase 1 schedule.)
   #   - finalize (predict + xlsx): GH-hosted, depends on scrape matrix.
   #   - Calibrate: self-hosted VPS (weekly, unchanged).
   workflow_dispatch:
     inputs:
       tz_group:
-        description: 'Timezone group (ET, CT, MT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to all four.'
+        description: 'Timezone group (ET, CT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to ET/CT/PT (MT intentionally omitted).'
         required: false
         default: 'ALL'
       phase:
@@ -117,7 +118,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add box-office-tracker/
+          # Only stage the files Phase 1 actually writes. A blanket
+          # `git add box-office-tracker/` would sweep up any stray untracked
+          # files (e.g. runner caches, locally-modified secrets).
+          git add box-office-tracker/data/showtime-links.json \
+                  box-office-tracker/data/theatre-counts.json \
+                  box-office-tracker/data/polymarket-markets.csv \
+                  box-office-tracker/data/run-log.md 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit."
             exit 0
@@ -152,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       matrix:
-        tz: [ET, CT, MT, PT]
+        tz: [ET, CT, PT]   # MT intentionally omitted — too few theatres to be worth the Phase 1 schedule
 
     steps:
       - name: Checkout repo
@@ -190,7 +197,6 @@ jobs:
           python -m playwright install chromium --with-deps
 
       - name: Phase 2 — collect seat data (${{ matrix.tz }})
-        id: phase2
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 75
@@ -287,7 +293,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add box-office-tracker/
+          # Scheduled finalize only writes seat-counts.xlsx — predict.py is
+          # read-only unless invoked with --actual. Explicit allow-list so
+          # we never accidentally commit untracked files from the runner.
+          git add box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No derived artifacts changed (nothing new from matrix, or regeneration is idempotent)."
             exit 0
