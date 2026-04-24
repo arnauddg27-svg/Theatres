@@ -2,7 +2,7 @@
   "date": "2026-04-24",
   "weekend_of": "2026-04-24",
   "collected_local_date": "2026-04-24",
-  "collected_at": "2026-04-24T21:17:24.305221+00:00",
+  "collected_at": "2026-04-24T23:11:56.323421+00:00",
   "theatres": {
     "AMC Empire 25": {
       "tz": "ET",
@@ -9025,27 +9025,42 @@
     },
     "AMC NEWCITY 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141682888",
+            "showtime_id": "141682907",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142613254",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141682889",
+            "showtime_id": "141682908",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142613253",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141682838",
+            "showtime_id": "141682841",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142665536",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141682839",
+            "showtime_id": "141682842",
             "format": "Laser at AMC"
           }
         ]
@@ -9053,28 +9068,38 @@
     },
     "AMC Village Crossing 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141530358",
+            "showtime_id": "141530346",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142509572",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141530210",
+            "showtime_id": "141530213",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "141530305",
+            "showtime": "6:15pm",
+            "showtime_id": "141530314",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141530304",
+            "showtime": "9:30pm",
+            "showtime_id": "141530313",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142550044",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -9144,32 +9169,52 @@
     },
     "AMC DINE-IN Rosemont 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141658705",
+            "showtime_id": "141658723",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "141658707",
+            "showtime_id": "141658725",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "5:40pm",
+            "showtime_id": "142560012",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "141658664",
+            "showtime_id": "141658667",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142663801",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142584436",
+            "showtime_id": "142559934",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142560013",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "141658663",
+            "showtime_id": "141658666",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142663268",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -9177,37 +9222,47 @@
     },
     "AMC 600 North Michigan 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:10pm",
-            "showtime_id": "141687380",
+            "showtime_id": "141687383",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:40pm",
-            "showtime_id": "142582524",
+            "showtime": "6:45pm",
+            "showtime_id": "142577964",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141687437",
+            "showtime": "7:00pm",
+            "showtime_id": "142662798",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "141687381",
+            "showtime": "7:15pm",
+            "showtime_id": "141687434",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "142582525",
+            "showtime": "9:00pm",
+            "showtime_id": "142662897",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141687448",
+            "showtime": "9:30pm",
+            "showtime_id": "141687392",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142577965",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141687447",
             "format": "AMC Artisan Films"
           }
         ]
@@ -9215,62 +9270,62 @@
     },
     "AMC Roosevelt Collection 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141664144",
+            "showtime": "7:30pm",
+            "showtime_id": "141664140",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141664143",
+            "showtime": "10:45pm",
+            "showtime_id": "141664141",
             "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "141664090",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "141664091",
-            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142637636",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "142637459",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "142637668",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141664200",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "142637481",
-            "format": "Laser at AMC"
+            "showtime_id": "141664093",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "142637458",
+            "showtime_id": "141664094",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142637626",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141664205",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142664275",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142637353",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142637627",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "142637665",
+            "showtime_id": "142662788",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142664276",
             "format": "Laser at AMC"
           }
         ]
@@ -9278,37 +9333,62 @@
     },
     "AMC South Barrington 24": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141533353",
+            "showtime_id": "141533350",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141533354",
+            "showtime_id": "141533351",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141533317",
+            "showtime_id": "141533320",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141533318",
+            "showtime_id": "141533321",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142227185",
+            "showtime_id": "142557075",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "142662174",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142557029",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141533288",
+            "showtime_id": "141533291",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142638888",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142557030",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141533278",
             "format": "Laser at AMC"
           }
         ]
@@ -9316,37 +9396,57 @@
     },
     "AMC Streets of Woodfield 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141660326",
+            "showtime_id": "141660328",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141660327",
+            "showtime_id": "141660329",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142564650",
+            "showtime": "7:10pm",
+            "showtime_id": "142662980",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141660354",
+            "showtime_id": "141660350",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "142662981",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142564660",
+            "showtime_id": "142564685",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141660391",
+            "showtime": "8:30pm",
+            "showtime_id": "142564643",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142663451",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142564614",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141660351",
             "format": "Laser at AMC"
           }
         ]
@@ -9354,42 +9454,62 @@
     },
     "AMC Yorktown 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141662941",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141662942",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "141662922",
+            "showtime_id": "141662935",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141662936",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142664433",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142597850",
+            "showtime": "6:30pm",
+            "showtime_id": "141662909",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142662662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142563908",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141662958",
+            "showtime_id": "141662947",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142597847",
+            "showtime": "9:30pm",
+            "showtime_id": "142662716",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142661229",
+            "showtime": "9:45pm",
+            "showtime_id": "141662911",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142563905",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142563909",
             "format": "Laser at AMC"
           }
         ]
@@ -9468,27 +9588,42 @@
     },
     "AMC Randhurst 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141583852",
+            "showtime": "7:15pm",
+            "showtime_id": "141583854",
             "format": "XL at AMC"
           },
           {
+            "showtime": "10:20pm",
+            "showtime_id": "141583857",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142555096",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "142560800",
+            "showtime_id": "142555160",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141583850",
+            "showtime": "8:30pm",
+            "showtime_id": "141583811",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142560785",
+            "showtime": "9:00pm",
+            "showtime_id": "142555095",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142555161",
             "format": "Laser at AMC"
           }
         ]
@@ -9519,37 +9654,52 @@
     },
     "AMC Ford City 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
+            "showtime": "6:00pm",
+            "showtime_id": "141662718",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "141662721",
+            "showtime_id": "141662781",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142604982",
+            "showtime_id": "142597961",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142604975",
+            "showtime": "7:40pm",
+            "showtime_id": "142665538",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142597883",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141662737",
+            "showtime_id": "141662733",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142604986",
+            "showtime_id": "142597931",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141662722",
+            "showtime": "10:00pm",
+            "showtime_id": "141662782",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142597947",
             "format": "Laser at AMC"
           }
         ]
@@ -9595,37 +9745,37 @@
     },
     "AMC NorthPark 15": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141657716",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "141657717",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "141657732",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "141657719",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141657731",
+            "showtime_id": "141657711",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141657727",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "141657797",
+            "showtime": "10:15pm",
+            "showtime_id": "141657736",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141657759",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142646328",
+            "showtime": "8:30pm",
+            "showtime_id": "142646326",
             "format": "Laser at AMC"
           }
         ]
@@ -9729,52 +9879,52 @@
     },
     "AMC Firewheel 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141660586",
+            "showtime_id": "141660583",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141660587",
+            "showtime_id": "141660584",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141660448",
+            "showtime_id": "141660455",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141660449",
+            "showtime_id": "141660456",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142531700",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime": "8:00pm",
+            "showtime_id": "141660527",
+            "format": "XL at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141660544",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141660545",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "142531687",
+            "showtime_id": "141660514",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141660519",
+            "showtime": "7:30pm",
+            "showtime_id": "142537818",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141660515",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142537816",
             "format": "Laser at AMC"
           }
         ]
@@ -9782,27 +9932,47 @@
     },
     "AMC Irving Mall 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:50pm",
-            "showtime_id": "142549067",
+            "showtime": "6:40pm",
+            "showtime_id": "141660887",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141660944",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141660895",
+            "showtime": "7:15pm",
+            "showtime_id": "141660896",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142275476",
+            "showtime": "8:15pm",
+            "showtime_id": "142554175",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:10pm",
-            "showtime_id": "142549061",
+            "showtime": "9:15pm",
+            "showtime_id": "141660943",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142554181",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142662547",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141660899",
             "format": "Laser at AMC"
           }
         ]
@@ -9810,52 +9980,42 @@
     },
     "AMC The Parks At Arlington 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141681939",
+            "showtime": "6:30pm",
+            "showtime_id": "141681940",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141682029",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141682031",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "9:45pm",
-            "showtime_id": "142656850",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime_id": "141681941",
+            "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141682023",
+            "showtime": "7:30pm",
+            "showtime_id": "141682035",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141682036",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141682022",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "142656857",
+            "showtime": "10:15pm",
+            "showtime_id": "141682021",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141682000",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "142656856",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142656827",
+            "showtime": "8:30pm",
+            "showtime_id": "141682002",
             "format": "Laser at AMC"
           }
         ]
@@ -9863,47 +10023,147 @@
     },
     "AMC Southlake 24": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141688561",
+            "showtime": "7:45pm",
+            "showtime_id": "141688569",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "141688562",
+            "showtime": "11:00pm",
+            "showtime_id": "141688570",
             "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "141688530",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141688451",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "141688509",
+            "showtime_id": "141688521",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "142662066",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142658282",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "142661869",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141688515",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "142662059",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142526056",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "142661866",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142526073",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "142661862",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142526087",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141688389",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142526099",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142661864",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142660429",
+            "showtime_id": "141688673",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141688581",
+            "showtime_id": "142658284",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "142588166",
+            "showtime_id": "141688578",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142662067",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142658283",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "142661870",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141688514",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "142662058",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142658281",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142662061",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142658280",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:50pm",
+            "showtime_id": "142661863",
             "format": "Laser at AMC"
           }
         ]
@@ -10113,57 +10373,62 @@
     },
     "AMC Katy Mills 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:40pm",
-            "showtime_id": "141536560",
+            "showtime": "7:10pm",
+            "showtime_id": "141536564",
             "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "141536561",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "141536646",
-            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141846497",
+            "showtime_id": "141536565",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141536644",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "9:50pm",
+            "showtime_id": "141536645",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "141536608",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142660796",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
             "showtime": "5:50pm",
-            "showtime_id": "141536604",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "142574202",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "142574200",
+            "showtime_id": "141536598",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:20pm",
-            "showtime_id": "141536602",
+            "showtime": "8:30pm",
+            "showtime_id": "142529864",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "141536605",
+            "showtime_id": "141536599",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "142574201",
+            "showtime": "9:20pm",
+            "showtime_id": "142663285",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142664224",
             "format": "Laser at AMC"
           }
         ]
@@ -10171,32 +10436,52 @@
     },
     "AMC Woodlands Square 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141666665",
+            "showtime": "7:00pm",
+            "showtime_id": "141666662",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141666655",
+            "showtime": "10:15pm",
+            "showtime_id": "141666663",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141666660",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142584393",
+            "showtime": "7:45pm",
+            "showtime_id": "141666717",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141666712",
+            "showtime_id": "141666621",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141666624",
+            "showtime": "9:45pm",
+            "showtime_id": "142602184",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142666242",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142662605",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142666243",
             "format": "Laser at AMC"
           }
         ]
@@ -10204,47 +10489,77 @@
     },
     "AMC Fountains 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "141522223",
+            "showtime_id": "141522227",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "141522224",
+            "showtime_id": "141522228",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141522187",
+            "showtime_id": "141522191",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141522188",
+            "showtime_id": "141522192",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141522174",
+            "showtime_id": "142662442",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141522172",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142666114",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142662560",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142360067",
+            "showtime_id": "142237806",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141522141",
+            "showtime_id": "141522144",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142662433",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "142662443",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141522175",
+            "showtime_id": "141522173",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "142662440",
             "format": "Laser at AMC"
           }
         ]
@@ -10252,22 +10567,37 @@
     },
     "AMC Houston 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141870683",
+            "showtime_id": "141870680",
             "format": "XL at AMC"
           },
           {
+            "showtime": "10:15pm",
+            "showtime_id": "142037033",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142662817",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "141562255",
+            "showtime_id": "142387050",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141562200",
+            "showtime_id": "141562199",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "142665782",
             "format": "Laser at AMC"
           }
         ]
@@ -10275,42 +10605,42 @@
     },
     "AMC Eden Prairie Mall 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141656565",
+            "showtime_id": "141656568",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141656566",
+            "showtime_id": "141656569",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141656595",
+            "showtime_id": "141656593",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142409406",
+            "showtime": "10:15pm",
+            "showtime_id": "142534045",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "142601696",
+            "showtime_id": "142601708",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141656596",
+            "showtime_id": "141656598",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142601697",
+            "showtime": "9:45pm",
+            "showtime_id": "142601709",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10318,32 +10648,47 @@
     },
     "AMC Rosedale 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141652577",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "141652578",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "7:15pm",
-            "showtime_id": "141652604",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "141652581",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "142393418",
+            "showtime_id": "141652582",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141652600",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "9:20pm",
+            "showtime_id": "141652601",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142662600",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "8:15pm",
-            "showtime_id": "141652620",
+            "showtime_id": "141652625",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142662209",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142662210",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10351,37 +10696,37 @@
     },
     "AMC Southdale 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141684278",
+            "showtime_id": "141684279",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141684276",
+            "showtime_id": "141684280",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141684272",
+            "showtime_id": "141684271",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141684273",
+            "showtime_id": "141684268",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "142592227",
+            "showtime_id": "142624843",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "141684230",
+            "showtime_id": "141684233",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10389,32 +10734,27 @@
     },
     "AMC Coon Rapids 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "141683332",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "142636564",
+            "showtime": "6:00pm",
+            "showtime_id": "141683329",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141683276",
+            "showtime_id": "141683279",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142636626",
+            "showtime": "8:30pm",
+            "showtime_id": "142636561",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141683333",
+            "showtime": "9:15pm",
+            "showtime_id": "141683330",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10422,32 +10762,42 @@
     },
     "AMC Inver Grove 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141684738",
+            "showtime_id": "141684710",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142582125",
+            "showtime": "6:55pm",
+            "showtime_id": "142661400",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141684677",
+            "showtime": "7:00pm",
+            "showtime_id": "141684736",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142582105",
+            "showtime": "8:15pm",
+            "showtime_id": "142582287",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141684737",
+            "showtime": "9:30pm",
+            "showtime_id": "141684739",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142582278",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "142665528",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10455,22 +10805,22 @@
     },
     "AMC CLASSIC Mounds View 15": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141687975",
+            "showtime": "6:00pm",
+            "showtime_id": "141687978",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142656723",
+            "showtime": "7:15pm",
+            "showtime_id": "142577360",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141687993",
+            "showtime_id": "141687991",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10511,37 +10861,52 @@
     },
     "AMC Spring 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141552508",
+            "showtime": "6:00pm",
+            "showtime_id": "141552459",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142659874",
+            "showtime": "6:30pm",
+            "showtime_id": "142548402",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141552503",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141552458",
+            "showtime_id": "142659876",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "142532942",
+            "showtime": "8:00pm",
+            "showtime_id": "142661955",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142532943",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141552462",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141552509",
+            "showtime_id": "142548403",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "142561404",
+            "showtime_id": "141552502",
             "format": "Laser at AMC"
           }
         ]
@@ -10549,27 +10914,37 @@
     },
     "AMC Eastchase 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:50pm",
-            "showtime_id": "141685866",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "6:00pm",
+            "showtime_id": "142535258",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "142547219",
+            "showtime_id": "142535233",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142547191",
+            "showtime": "7:50pm",
+            "showtime_id": "141685868",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141685865",
+            "showtime": "9:15pm",
+            "showtime_id": "142535269",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142535243",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141685867",
             "format": "Laser at AMC"
           }
         ]
@@ -10577,37 +10952,37 @@
     },
     "AMC CLASSIC Brazos Mall 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "5:45pm",
-            "showtime_id": "142528348",
+            "showtime_id": "142558175",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141657278",
+            "showtime": "6:45pm",
+            "showtime_id": "141657224",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141657272",
+            "showtime_id": "142558055",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142528316",
+            "showtime": "8:00pm",
+            "showtime_id": "141657279",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142528350",
+            "showtime": "8:45pm",
+            "showtime_id": "142558174",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "142401187",
+            "showtime": "10:00pm",
+            "showtime_id": "141657223",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10653,37 +11028,37 @@
     },
     "AMC Centerpoint 11": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "142644106",
+            "showtime": "5:15pm",
+            "showtime_id": "142616279",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141669724",
+            "showtime": "6:30pm",
+            "showtime_id": "141669725",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142644111",
+            "showtime": "7:15pm",
+            "showtime_id": "142616221",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142644105",
+            "showtime": "8:15pm",
+            "showtime_id": "142616278",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141669722",
+            "showtime": "9:30pm",
+            "showtime_id": "141669727",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142644110",
+            "showtime": "10:15pm",
+            "showtime_id": "142616222",
             "format": "Laser at AMC"
           }
         ]
@@ -10691,32 +11066,32 @@
     },
     "AMC Village On The Parkway 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141655509",
+            "showtime_id": "141655493",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141655510",
+            "showtime_id": "141655494",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "141655548",
+            "showtime_id": "141655543",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142544479",
+            "showtime_id": "142544477",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141655549",
+            "showtime_id": "141655544",
             "format": "Laser at AMC"
           }
         ]
@@ -10724,32 +11099,37 @@
     },
     "AMC CLASSIC Forney 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:40pm",
-            "showtime_id": "141686197",
+            "showtime": "6:10pm",
+            "showtime_id": "141686213",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "142569260",
+            "showtime_id": "142569257",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141686215",
+            "showtime": "7:45pm",
+            "showtime_id": "142569072",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142569089",
+            "showtime": "8:15pm",
+            "showtime_id": "141686198",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141686196",
+            "showtime": "9:15pm",
+            "showtime_id": "141686212",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142569258",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10757,17 +11137,32 @@
     },
     "AMC Birchwood 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141610902",
+            "showtime": "7:00pm",
+            "showtime_id": "141610903",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142537220",
+            "showtime": "7:45pm",
+            "showtime_id": "142585940",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "142585980",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "141610905",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142585959",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10775,22 +11170,32 @@
     },
     "AMC CLASSIC Bloomington 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142545610",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "7:00pm",
+            "showtime_id": "141690297",
+            "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142545645",
+            "showtime": "7:45pm",
+            "showtime_id": "142545625",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141690296",
+            "showtime_id": "142545642",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142545607",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141690299",
             "format": "AMC Artisan Films"
           }
         ]
@@ -10798,27 +11203,27 @@
     },
     "AMC Causeway 13": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "142576006",
+            "showtime_id": "141662580",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142575988",
+            "showtime_id": "142571546",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141662579",
+            "showtime_id": "142571509",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "142576007",
+            "showtime_id": "141662583",
             "format": "Laser at AMC"
           }
         ]
@@ -10826,47 +11231,52 @@
     },
     "AMC Barrywoods 24": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141542242",
+            "showtime_id": "141542230",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141542228",
+            "showtime_id": "141542231",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141542226",
+            "showtime_id": "141542224",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "142624196",
-            "format": "PRIME at AMC"
+            "showtime": "7:00pm",
+            "showtime_id": "141542182",
+            "format": "4DX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141542180",
+            "showtime": "10:15pm",
+            "showtime_id": "141542183",
             "format": "4DX at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141542341",
+            "showtime_id": "142624335",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141542315",
+            "showtime_id": "141542317",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "141542327",
+            "showtime_id": "142624334",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142666198",
             "format": "Laser at AMC"
           }
         ]
@@ -10874,32 +11284,72 @@
     },
     "AMC Independence Commons 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141554580",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141554581",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141554638",
+            "showtime": "5:45pm",
+            "showtime_id": "142664185",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141554545",
+            "showtime": "6:00pm",
+            "showtime_id": "142638440",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142662486",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "142662487",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141554548",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141554585",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "141554584",
+            "showtime_id": "142662488",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141554643",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142664186",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142664189",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "142664187",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142664188",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142662720",
             "format": "Laser at AMC"
           }
         ]
@@ -11168,27 +11618,37 @@
     },
     "AMC Burleson 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141680137",
+            "showtime": "8:45pm",
+            "showtime_id": "141680179",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142603527",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "142622745",
+            "showtime": "7:00pm",
+            "showtime_id": "141680140",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142622756",
+            "showtime": "8:00pm",
+            "showtime_id": "142603503",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141680136",
+            "showtime": "9:45pm",
+            "showtime_id": "142603526",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141680139",
             "format": "Laser at AMC"
           }
         ]
@@ -11196,27 +11656,42 @@
     },
     "AMC Champaign 13": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141541113",
+            "showtime": "7:00pm",
+            "showtime_id": "141541116",
             "format": "BigD at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141541089",
+            "showtime": "10:15pm",
+            "showtime_id": "141541117",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142651755",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142651762",
+            "showtime": "6:30pm",
+            "showtime_id": "142548683",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141541083",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142280282",
+            "showtime_id": "142548678",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141541068",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11224,27 +11699,42 @@
     },
     "AMC Chantilly 13": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141697762",
+            "showtime_id": "141697759",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141697755",
             "format": "BigD at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "141697803",
+            "showtime_id": "141697807",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142566728",
+            "showtime_id": "142541221",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141697747",
+            "showtime_id": "141697751",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141697808",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142541222",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11252,22 +11742,32 @@
     },
     "AMC Chenal 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "141541646",
+            "showtime_id": "141541639",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141541645",
+            "showtime_id": "141541638",
             "format": "IMAX at AMC"
           },
           {
+            "showtime": "6:45pm",
+            "showtime_id": "142661901",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "141541605",
+            "showtime_id": "141541608",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142539884",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11275,37 +11775,37 @@
     },
     "AMC Council Bluffs 17": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141606420",
+            "showtime": "7:00pm",
+            "showtime_id": "141606423",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141606421",
+            "showtime": "10:15pm",
+            "showtime_id": "141606424",
             "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141606386",
-            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "142596638",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "141606332",
-            "format": "AMC Artisan Films"
+            "showtime_id": "141606382",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142596639",
+            "showtime_id": "141606383",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142604860",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141606334",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11366,27 +11866,32 @@
     },
     "AMC DINE-IN Clearfork 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141567657",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141567658",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "7:20pm",
-            "showtime_id": "141567618",
-            "format": "Dine-In Delivery to Seat"
+            "showtime_id": "141567661",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141567617",
+            "showtime_id": "141567662",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141567621",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142588019",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "141567622",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -11394,42 +11899,42 @@
     },
     "AMC DINE-IN Clearview Palace 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141544053",
+            "showtime": "7:00pm",
+            "showtime_id": "141544056",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141543971",
+            "showtime": "10:15pm",
+            "showtime_id": "141544057",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141543974",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141543972",
+            "showtime": "9:15pm",
+            "showtime_id": "141543975",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141544041",
+            "showtime": "6:30pm",
+            "showtime_id": "142660083",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142607381",
+            "showtime": "7:45pm",
+            "showtime_id": "142533090",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142623242",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142623222",
+            "showtime": "8:15pm",
+            "showtime_id": "141544034",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -11437,22 +11942,37 @@
     },
     "AMC DINE-IN Manhattan 13": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141530600",
+            "showtime": "7:00pm",
+            "showtime_id": "141530603",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141530562",
+            "showtime": "10:15pm",
+            "showtime_id": "141530597",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142599456",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142623407",
+            "showtime": "7:45pm",
+            "showtime_id": "142599453",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141530565",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142599457",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -11460,37 +11980,42 @@
     },
     "AMC DINE-IN Tech Ridge 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141585483",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "141585484",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "142546714",
+            "showtime_id": "141585486",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141585487",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142553429",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141585519",
+            "showtime": "7:30pm",
+            "showtime_id": "142553447",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "142546720",
+            "showtime": "8:00pm",
+            "showtime_id": "141585516",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141585520",
+            "showtime_id": "142663909",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142553446",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -11498,42 +12023,67 @@
     },
     "AMC DINE-IN Vestavia Hills 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141608740",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "141608741",
-            "format": "PRIME at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "141608885",
+            "showtime_id": "141608742",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "141608745",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141608889",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142549766",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "142660352",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142656805",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142660353",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142516580",
+            "showtime_id": "142516577",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "142661290",
+            "showtime_id": "142552342",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "142595998",
+            "showtime": "9:30pm",
+            "showtime_id": "142662815",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "141608888",
+            "showtime": "9:45pm",
+            "showtime_id": "141608890",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142662816",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -11541,17 +12091,27 @@
     },
     "AMC Dakota Square 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141558371",
+            "showtime_id": "141558373",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141558412",
+            "showtime_id": "141558409",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142664350",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141558374",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11559,22 +12119,42 @@
     },
     "AMC Decatur 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141697156",
+            "showtime": "7:10pm",
+            "showtime_id": "141697162",
             "format": "BigD at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141697197",
+            "showtime": "10:20pm",
+            "showtime_id": "141697159",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "142528080",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142528060",
+            "showtime": "6:25pm",
+            "showtime_id": "142528101",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "141697190",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:50pm",
+            "showtime_id": "142528078",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "142528102",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11582,37 +12162,27 @@
     },
     "AMC Edinburg 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141691001",
+            "showtime_id": "141691218",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141691002",
+            "showtime_id": "141691219",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141691005",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141691006",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "141693476",
+            "showtime_id": "141693479",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141693477",
+            "showtime_id": "141693478",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11620,27 +12190,32 @@
     },
     "AMC Edwardsville 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141551907",
+            "showtime": "6:40pm",
+            "showtime_id": "141551910",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:40pm",
-            "showtime_id": "141551945",
+            "showtime": "7:40pm",
+            "showtime_id": "141551944",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "141551919",
+            "showtime": "8:10pm",
+            "showtime_id": "142535204",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142527206",
+            "showtime": "8:40pm",
+            "showtime_id": "141551927",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142663862",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11648,42 +12223,42 @@
     },
     "AMC El Paso 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "142520757",
+            "showtime": "5:05pm",
+            "showtime_id": "142578363",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "142578293",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:25pm",
-            "showtime_id": "142578326",
+            "showtime": "6:40pm",
+            "showtime_id": "142578321",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:05pm",
-            "showtime_id": "141686382",
+            "showtime_id": "141686380",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142578309",
+            "showtime": "9:00pm",
+            "showtime_id": "141686412",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142520756",
+            "showtime": "9:25pm",
+            "showtime_id": "142578291",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:55pm",
-            "showtime_id": "141686411",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "142578323",
+            "showtime": "9:55pm",
+            "showtime_id": "142578320",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11691,32 +12266,52 @@
     },
     "AMC Elmwood Palace 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141657947",
+            "showtime": "6:00pm",
+            "showtime_id": "141657950",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141658300",
+            "showtime": "9:15pm",
+            "showtime_id": "141657951",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141658297",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141658129",
+            "showtime": "10:15pm",
+            "showtime_id": "141658292",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141658131",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142616480",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "141658112",
+            "showtime_id": "141658097",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141658116",
+            "showtime": "8:45pm",
+            "showtime_id": "142616440",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141658128",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11757,27 +12352,37 @@
     },
     "AMC Evanston 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "5:45pm",
-            "showtime_id": "142605816",
+            "showtime_id": "142605813",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141671066",
+            "showtime": "7:15pm",
+            "showtime_id": "141671067",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142605858",
+            "showtime_id": "142605997",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142605924",
+            "showtime": "8:50pm",
+            "showtime_id": "142605814",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142605852",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "141671070",
             "format": "Laser at AMC"
           }
         ]
@@ -11785,22 +12390,37 @@
     },
     "AMC Festival Plaza 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "8:30pm",
-            "showtime_id": "141689331",
+            "showtime_id": "141680540",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141680447",
+            "showtime": "6:00pm",
+            "showtime_id": "141680449",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141680504",
+            "showtime": "6:45pm",
+            "showtime_id": "141680502",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142543490",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141680450",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141680500",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11808,27 +12428,42 @@
     },
     "AMC Fitchburg 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141680831",
+            "showtime_id": "141680834",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141680837",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142539544",
+            "showtime_id": "142539372",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141680803",
+            "showtime_id": "141680805",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142539568",
+            "showtime_id": "142539621",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141680774",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142539373",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11836,22 +12471,42 @@
     },
     "AMC Galaxy 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141689004",
+            "showtime_id": "141689006",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141688969",
+            "showtime": "10:20pm",
+            "showtime_id": "142579508",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "141688965",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141688991",
+            "showtime_id": "142579515",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142579499",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "142579435",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "142579473",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11859,27 +12514,42 @@
     },
     "AMC Grand Prairie 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141658594",
+            "showtime": "7:00pm",
+            "showtime_id": "141658595",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142625281",
+            "showtime": "10:10pm",
+            "showtime_id": "141658596",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142532457",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141658618",
+            "showtime_id": "142532461",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142625279",
+            "showtime_id": "141658636",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "141658616",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "142532460",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11887,32 +12557,37 @@
     },
     "AMC Hammond Palace 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141681562",
+            "showtime": "7:15pm",
+            "showtime_id": "141681564",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "141681563",
+            "showtime": "10:30pm",
+            "showtime_id": "141681565",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "141681623",
+            "showtime": "6:25pm",
+            "showtime_id": "142614710",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142614668",
+            "showtime": "8:15pm",
+            "showtime_id": "142614760",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "142614691",
+            "showtime_id": "141681620",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142614684",
             "format": "AMC Artisan Films"
           }
         ]
@@ -11920,27 +12595,37 @@
     },
     "AMC Hawthorn 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141634724",
+            "showtime": "7:30pm",
+            "showtime_id": "141634725",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141634780",
+            "showtime": "10:45pm",
+            "showtime_id": "141634726",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141634776",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "142534430",
+            "showtime": "8:30pm",
+            "showtime_id": "142536408",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141634779",
+            "showtime": "9:15pm",
+            "showtime_id": "141634777",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142665456",
             "format": "Laser at AMC"
           }
         ]
@@ -12027,32 +12712,47 @@
     },
     "AMC Longview 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141652819",
+            "showtime": "6:25pm",
+            "showtime_id": "141652815",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142664101",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "142527153",
+            "showtime_id": "141652990",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142036358",
+            "showtime": "7:20pm",
+            "showtime_id": "142661235",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "141652820",
+            "showtime": "8:40pm",
+            "showtime_id": "142528192",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "142527154",
+            "showtime": "9:10pm",
+            "showtime_id": "142664932",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141652816",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141652991",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12060,17 +12760,32 @@
     },
     "AMC Lufkin 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "142655719",
+            "showtime_id": "142655680",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142655778",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "141695645",
+            "showtime_id": "141684045",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142655681",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142655775",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12078,27 +12793,37 @@
     },
     "AMC Machesney Park 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142622990",
-            "format": "AMC Artisan Films"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "142622904",
+            "showtime_id": "141663845",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141663843",
+            "showtime": "7:20pm",
+            "showtime_id": "142622901",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "142622995",
+            "showtime": "8:00pm",
+            "showtime_id": "141663867",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142622994",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "142622934",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "141663836",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12106,22 +12831,32 @@
     },
     "AMC Mayfair Mall 18": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141684536",
+            "showtime": "7:00pm",
+            "showtime_id": "141684525",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:40pm",
-            "showtime_id": "142594900",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "10:10pm",
+            "showtime_id": "141684526",
+            "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141694920",
+            "showtime": "6:10pm",
+            "showtime_id": "141694905",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "142569291",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "141694904",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12129,22 +12864,32 @@
     },
     "AMC Norridge 6": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141640584",
+            "showtime": "6:00pm",
+            "showtime_id": "142605673",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142605684",
+            "showtime": "7:00pm",
+            "showtime_id": "141640585",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142605705",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142605674",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141640541",
+            "showtime_id": "141640543",
             "format": "Laser at AMC"
           }
         ]
@@ -12152,52 +12897,47 @@
     },
     "AMC Northrock 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141601866",
+            "showtime": "7:15pm",
+            "showtime_id": "141580031",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141580039",
+            "showtime": "10:30pm",
+            "showtime_id": "141580032",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "141580083",
+            "showtime": "5:45pm",
+            "showtime_id": "142550932",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141601867",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "141580090",
+            "showtime": "6:30pm",
+            "showtime_id": "141580101",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142553316",
+            "showtime_id": "141601869",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142553320",
+            "showtime": "9:00pm",
+            "showtime_id": "142550933",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "141601880",
+            "showtime": "9:45pm",
+            "showtime_id": "141580102",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "142553329",
+            "showtime_id": "142551007",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12205,17 +12945,27 @@
     },
     "AMC Oakbrook Center 4": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141674985",
+            "showtime_id": "141674987",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142660645",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142663129",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "142647291",
+            "showtime_id": "141674989",
             "format": "Laser at AMC"
           }
         ]
@@ -12223,27 +12973,32 @@
     },
     "AMC Palace 9": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "141675889",
+            "showtime_id": "141525249",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "141675890",
+            "showtime_id": "141636200",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141675885",
+            "showtime": "6:00pm",
+            "showtime_id": "141636162",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "141675849",
+            "showtime": "8:00pm",
+            "showtime_id": "141636094",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141636156",
             "format": "Laser at AMC"
           }
         ]
@@ -12251,17 +13006,27 @@
     },
     "AMC Patriot 13": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141602175",
+            "showtime": "6:30pm",
+            "showtime_id": "141602179",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "141602292",
+            "showtime": "9:45pm",
+            "showtime_id": "141602180",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142587083",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141602290",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12335,52 +13100,57 @@
     },
     "AMC Quail Springs Mall 24": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141612458",
+            "showtime_id": "141612450",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141612455",
+            "showtime_id": "141612452",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141612891",
+            "showtime_id": "141612914",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141612909",
+            "showtime_id": "141612912",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "142597487",
+            "showtime_id": "142558769",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "142597499",
+            "showtime": "7:00pm",
+            "showtime_id": "142558703",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141612415",
+            "showtime_id": "141612417",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "142597663",
+            "showtime_id": "142558758",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "142597485",
+            "showtime_id": "142558770",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142558704",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12388,17 +13158,32 @@
     },
     "AMC Rivercenter 11": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141687602",
+            "showtime_id": "141687599",
             "format": "IMAX at AMC"
           },
           {
+            "showtime": "9:45pm",
+            "showtime_id": "142608003",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142607902",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "141687548",
+            "showtime_id": "141687551",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142607814",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12434,37 +13219,57 @@
     },
     "AMC Rockford 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141670814",
+            "showtime": "7:00pm",
+            "showtime_id": "141689341",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "141670815",
+            "showtime": "10:15pm",
+            "showtime_id": "141689342",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "142552203",
+            "showtime_id": "141689415",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142552198",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142552167",
+            "showtime_id": "142552165",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141689375",
+            "showtime_id": "141689378",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141689401",
+            "showtime": "8:30pm",
+            "showtime_id": "142552176",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142663347",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141689400",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142552166",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12472,17 +13277,22 @@
     },
     "AMC Sikes Senter 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141678968",
+            "showtime": "6:10pm",
+            "showtime_id": "141678964",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142425176",
+            "showtime": "7:20pm",
+            "showtime_id": "141678933",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "141678965",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12518,52 +13328,57 @@
     },
     "AMC Southroads 20": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "141677965",
+            "showtime_id": "141677967",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "141677968",
+            "showtime_id": "141677973",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "141677955",
+            "showtime_id": "141677953",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141677956",
+            "showtime_id": "141677948",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "142632260",
+            "showtime_id": "142661339",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142608931",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "142632209",
+            "showtime_id": "142608870",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "141677898",
+            "showtime_id": "141677899",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "142632217",
+            "showtime": "9:00pm",
+            "showtime_id": "142661338",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141681826",
+            "showtime_id": "142608932",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12571,22 +13386,37 @@
     },
     "AMC Springfield 11": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141535407",
+            "showtime": "7:15pm",
+            "showtime_id": "141535419",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "142591359",
+            "showtime": "10:30pm",
+            "showtime_id": "141535420",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142605486",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "141535383",
+            "showtime": "8:30pm",
+            "showtime_id": "141535380",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142662793",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142605485",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12594,22 +13424,37 @@
     },
     "AMC Springfield 12": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "7:10pm",
-            "showtime_id": "141620948",
+            "showtime_id": "141620962",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:05pm",
-            "showtime_id": "142573368",
+            "showtime": "10:15pm",
+            "showtime_id": "141620958",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142573382",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "142573445",
+            "showtime_id": "142573366",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "141620907",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "142573383",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12617,22 +13462,42 @@
     },
     "AMC Springfield 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "142573120",
+            "showtime": "6:00pm",
+            "showtime_id": "142576410",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "142573111",
+            "showtime": "7:00pm",
+            "showtime_id": "141688208",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141688223",
+            "showtime": "7:40pm",
+            "showtime_id": "142576424",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142576406",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "142576413",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "141688210",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142665131",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12640,27 +13505,32 @@
     },
     "AMC Stillwater 10": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "142577280",
+            "showtime": "6:15pm",
+            "showtime_id": "142577289",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141691382",
+            "showtime": "7:15pm",
+            "showtime_id": "141691385",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "142577149",
+            "showtime": "8:15pm",
+            "showtime_id": "142577167",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "142577136",
+            "showtime": "9:30pm",
+            "showtime_id": "142577288",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142577108",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12668,32 +13538,37 @@
     },
     "AMC Streets Of St Charles 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141662864",
+            "showtime": "10:30pm",
+            "showtime_id": "141662867",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141662854",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142662682",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142596077",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142662681",
+            "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141662865",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "141662852",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:20pm",
-            "showtime_id": "142528210",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "142528209",
+            "showtime_id": "141662853",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12701,42 +13576,47 @@
     },
     "AMC Studio 28": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141538725",
+            "showtime_id": "141538728",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "142533233",
+            "showtime": "9:45pm",
+            "showtime_id": "141538729",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "141538764",
+            "showtime": "7:00pm",
+            "showtime_id": "141538767",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "141538761",
+            "showtime": "10:15pm",
+            "showtime_id": "141538780",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "141538857",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141538755",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141538863",
+            "showtime": "7:30pm",
+            "showtime_id": "141538687",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "141538684",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "142600502",
+            "showtime_id": "141538858",
             "format": "Laser at AMC"
           }
         ]
@@ -12744,42 +13624,72 @@
     },
     "AMC Summit 16": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "142549698",
+            "showtime": "6:00pm",
+            "showtime_id": "141679422",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "141679414",
+            "showtime_id": "142549611",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141679408",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "142549721",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141679348",
+            "showtime_id": "142662097",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "142549623",
+            "showtime": "8:15pm",
+            "showtime_id": "141679353",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "141679426",
+            "showtime": "8:45pm",
+            "showtime_id": "142549645",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "142549699",
+            "showtime": "9:15pm",
+            "showtime_id": "141679423",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "141679413",
+            "showtime": "9:55pm",
+            "showtime_id": "142662092",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141679409",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "142664600",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "142662091",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142549720",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12805,32 +13715,37 @@
     },
     "AMC Tyler 14": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "8:10pm",
-            "showtime_id": "141680945",
+            "showtime": "7:10pm",
+            "showtime_id": "141680948",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141680949",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:05pm",
-            "showtime_id": "141680943",
+            "showtime_id": "141680941",
             "format": "BigD at AMC"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "142615094",
+            "showtime_id": "142601309",
             "format": "BigD at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "141680975",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "8:10pm",
+            "showtime_id": "141680894",
+            "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141680891",
+            "showtime": "8:45pm",
+            "showtime_id": "141680976",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12838,22 +13753,32 @@
     },
     "AMC University Place 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "142567571",
+            "showtime": "6:15pm",
+            "showtime_id": "142567574",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141530943",
+            "showtime": "7:15pm",
+            "showtime_id": "141530946",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "142567577",
+            "showtime": "8:15pm",
+            "showtime_id": "142567582",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142567576",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142567540",
             "format": "AMC Artisan Films"
           }
         ]
@@ -12884,32 +13809,37 @@
     },
     "AMC West End Pointe 8": {
       "tz": "CT",
-      "show_date": "2026-04-23",
+      "show_date": "2026-04-24",
       "movies": {
         "Michael": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "141654288",
+            "showtime_id": "141654292",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "142630775",
+            "showtime_id": "142630772",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "142630718",
+            "showtime_id": "142630716",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141654289",
+            "showtime_id": "141654293",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "142630778",
+            "showtime": "10:15pm",
+            "showtime_id": "142663712",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142630773",
             "format": "AMC Artisan Films"
           }
         ]
@@ -15585,6 +16515,44 @@
           {
             "showtime": "10:00pm",
             "showtime_id": "142618359",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC Mall of Louisiana 15": {
+      "tz": "CT",
+      "show_date": "2026-04-24",
+      "movies": {
+        "Michael": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141678342",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141678341",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142642594",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142642512",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141678382",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141678390",
             "format": "AMC Artisan Films"
           }
         ]
