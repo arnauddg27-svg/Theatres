@@ -1150,8 +1150,25 @@ async def run_collect_links_async(tz_group="ALL"):
             print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
             existing = {}
 
-    merged_theatres = dict(existing.get("theatres", {}))
-    merged_theatres.update(links["theatres"])   # new entries win
+    # Drop stale same-TZ entries before merging. Theatres from OTHER TZ groups
+    # (i.e. ETs that ran 6h ago on this same Friday) are kept, but anything in
+    # the TZ group(s) we just refreshed is replaced wholesale — even theatres
+    # that returned no showtimes in this run get dropped.
+    #
+    # Why: Phase 1 yesterday (Thursday) collected Thursday-evening showtime IDs
+    # with show_date=2026-04-23. If today's Phase 1 fails to refresh some of
+    # those same-TZ theatres (rate-limit, timeout, 0 showtimes), the old
+    # Thursday entries would otherwise carry into showtime-links.json and
+    # Phase 2 would scrape Thursday's already-elapsed showtime IDs — yielding
+    # duplicate Thursday seat snapshots tagged with stale dates while skipping
+    # the Friday showtimes those theatres should have produced.
+    refreshed_tzs = set(groups)
+    merged_theatres = {
+        name: entry
+        for name, entry in existing.get("theatres", {}).items()
+        if entry.get("tz") not in refreshed_tzs
+    }
+    merged_theatres.update(links["theatres"])   # fresh same-TZ entries win
     links["theatres"] = merged_theatres
     if existing.get("weekend_of"):
         links["weekend_of"] = existing["weekend_of"]
