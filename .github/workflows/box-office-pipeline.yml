@@ -99,10 +99,11 @@ jobs:
         id: dedup
         run: |
           # Force-bypass: when the workflow is dispatched with force=true, skip
-          # the dedup check entirely. This mirrors Phase 2's force semantics and
-          # is the escape hatch for re-scraping after a stale/late commit (e.g.
-          # a queued run from yesterday committing today's data with last
-          # night's show_date — which would otherwise dedup-block today's slot).
+          # the workflow-level dedup check entirely. This is the escape hatch
+          # for re-scraping after a stale/late commit (e.g. a queued run from
+          # yesterday committing today's data with last night's show_date —
+          # which would otherwise dedup-block today's slot in 13 seconds).
+          # Phase 2 honors the same `force=true` here for symmetry.
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             echo "Force-running — bypassing dedup guard"
             echo "skip=false" >> "$GITHUB_OUTPUT"
@@ -200,6 +201,17 @@ jobs:
       - name: Dedup guard — skip if ${{ matrix.tz }} already scraped today
         id: dedup
         run: |
+          # Force-bypass: same escape hatch as Phase 1 — `force=true` skips the
+          # workflow-level dedup so a manual re-dispatch can re-scrape the same
+          # UTC day after a partial / aborted / stale-stamped Phase 2 commit.
+          # (Note: the `--force` flag passed to scraper.py below is a separate
+          # bypass for the in-Python 12h staleness check on showtime-links.json
+          # — both layers have to be unlocked to fully re-run a same-day scrape.)
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            echo "Force-running — bypassing dedup guard"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           today=$(date -u +%Y-%m-%d)
           pattern="data: box office ${{ matrix.tz }} scrape"
           if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
