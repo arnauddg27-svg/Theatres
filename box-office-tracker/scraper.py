@@ -1279,7 +1279,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
 
     # Per-theatre staleness guard: drop theatres whose Phase 1 entry's show_date
-    # doesn't match today's local date in that theatre's TZ.
+    # doesn't match the local date Phase 1 was last run for in that theatre's TZ.
     #
     # The file-level 12h `collected_at` check above gets refreshed by ANY
     # Phase 1 leg (e.g. ET ran 2h ago), so it can't catch the case where a
@@ -1288,12 +1288,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     # elapsed showtime IDs and stamp the resulting post-show seat snapshots
     # with yesterday's `show_date` — producing duplicate-day rows that
     # collide with yesterday's correctly-captured Phase 2 data.
+    #
+    # We compute `expected_date` as `local_now(tz) - 12h` rather than just
+    # `local_date_str(tz)` because at the 04:00 UTC Phase 2 schedule, ET has
+    # already rolled past local midnight (00:00 EDT) while CT/PT haven't —
+    # so a naive `local_date_str("ET")` returns *tomorrow*, never matching
+    # Phase 1's afternoon stamp. Subtracting 12h snaps each TZ back to the
+    # date Phase 1 ran for, robust to TZ rollover at the standard scrape time.
     fresh_theatres = []
     stale_skipped = []
     for t in all_theatres:
         entry = saved_links[t["name"]]
         entry_date = entry.get("show_date")
-        expected_date = local_date_str(t.get("_tz") or entry.get("tz") or "ET")
+        ref_tz = t.get("_tz") or entry.get("tz") or "ET"
+        expected_date = (local_now(ref_tz) - timedelta(hours=12)).strftime("%Y-%m-%d")
         if entry_date and entry_date != expected_date:
             stale_skipped.append(
                 f"{t['name']} ({t.get('_tz','?')}: show_date={entry_date}, expected={expected_date})"
