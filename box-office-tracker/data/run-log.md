@@ -17192,6 +17192,7 @@ This log records each automated run of the seat-map tracking system.
 
 ## 2026-04-26 03:19 — PT Group
 ## 2026-04-26 03:24 — CT Group
+## 2026-04-26 03:36 — ET Group
 
 **Polymarket movies tracked:** Michael, The Devil Wears Prada 2
 
@@ -18231,5 +18232,726 @@ This log records each automated run of the seat-map tracking system.
 | AMC West End Pointe 8 | Michael | AMC Artisan Films | 6:30pm | 78.9% | 232 min |
 
 **Issues:** AMC CLASSIC Mounds View 15: No seat map for Michael AMC Artisan Films @ 8:00pm (https://www.amctheatres.com/showtimes/141687991/seats); AMC CLASSIC Mounds View 15: No seat map for Michael AMC Artisan Films @ 7:15pm (https://www.amctheatres.com/showtimes/142577360/seats); AMC CLASSIC Mounds View 15: No seat map for Michael AMC Artisan Films @ 6:00pm (https://www.amctheatres.com/showtimes/141687978/seats); AMC CLASSIC Bloomington 12: No seat map for Michael AMC Artisan Films @ 10:15pm (https://www.amctheatres.com/showtimes/141690299/seats); AMC CLASSIC Bloomington 12: No seat map for Michael AMC Artisan Films @ 9:30pm (https://www.amctheatres.com/showtimes/142545607/seats); AMC CLASSIC Bloomington 12: No seat map for Michael AMC Artisan Films @ 8:30pm (https://www.amctheatres.com/showtimes/142545642/seats); AMC CLASSIC Bloomington 12: No seat map for Michael AMC Artisan Films @ 7:45pm (https://www.amctheatres.com/showtimes/142545625/seats); AMC CLASSIC Bloomington 12: No seat map for Michael AMC Artisan Films @ 7:00pm (https://www.amctheatres.com/showtimes/141690297/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 10:00pm (https://www.amctheatres.com/showtimes/142569258/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 9:15pm (https://www.amctheatres.com/showtimes/141686212/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 8:15pm (https://www.amctheatres.com/showtimes/141686198/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 7:45pm (https://www.amctheatres.com/showtimes/142569072/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 7:00pm (https://www.amctheatres.com/showtimes/142569257/seats); AMC CLASSIC Forney 12: No seat map for Michael AMC Artisan Films @ 6:10pm (https://www.amctheatres.com/showtimes/141686213/seats)
+| AMC Lincoln Square 13 | Michael | IMAX with Laser at AMC | 11:00pm | 56.9% | 4 min |
+| AMC Lincoln Square 13 | Michael | Dolby Cinema at AMC | 10:00pm | 68.7% | 64 min |
+| AMC Kips Bay 15 | Michael | IMAX with Laser at AMC | 10:45pm | 24.8% | 19 min |
+| AMC Kips Bay 15 | Michael | AMC Artisan Films | 10:15pm | 19% | 49 min |
+| AMC Kips Bay 15 | Michael | AMC Artisan Films | 9:45pm | 66.2% | 79 min |
+| AMC Empire 25 | Michael | IMAX with Laser at AMC | 10:30pm | 78.1% | 34 min |
+| AMC Empire 25 | Michael | Dolby Cinema at AMC | 11:00pm | 31.3% | 4 min |
+| AMC Empire 25 | Michael | Laser at AMC | 9:45pm | 22% | 79 min |
+| AMC Empire 25 | Michael | Laser at AMC | 9:30pm | 83.3% | 94 min |
+| AMC 84th Street 6 | Michael | Laser at AMC | 11:00pm | 52.2% | 6 min |
+| AMC 84th Street 6 | Michael | Laser at AMC | 10:30pm | 58.2% | 36 min |
+| AMC 84th Street 6 | Michael | Laser at AMC | 10:15pm | 53.5% | 51 min |
+| AMC 84th Street 6 | Michael | Laser at AMC | 9:30pm | 87.4% | 96 min |
+| AMC Magic Johnson Harlem 9 | Michael | Dolby Cinema at AMC | 10:30pm | 99.1% | 36 min |
+| AMC Magic Johnson Harlem 9 | Michael | Laser at AMC | 9:45pm | 35.4% | 81 min |
+| AMC Magic Johnson Harlem 9 | Michael | Laser at AMC | 8:45pm | 67.2% | 141 min |
+| AMC 34th Street 14 | Michael | IMAX with Laser at AMC | 9:00pm | 91.2% | 126 min |
+| AMC 34th Street 14 | Michael | Dolby Cinema at AMC | 10:00pm | 75.6% | 66 min |
+| AMC 34th Street 14 | Michael | Laser at AMC | 11:00pm | 33.9% | 6 min |
+| AMC 34th Street 14 | Michael | Laser at AMC | 10:30pm | 33.8% | 36 min |
+| AMC 34th Street 14 | Michael | Laser at AMC | 10:15pm | 59.3% | 51 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 11:00pm | 40% | 6 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 10:45pm | 40% | 21 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 10:30pm | 70% | 36 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 10:15pm | 68% | 51 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 10:00pm | 69.4% | 66 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 9:45pm | 78.1% | 81 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 9:30pm | 95.4% | 96 min |
+| AMC Newport Centre 11 | Michael | Laser at AMC | 9:15pm | 98.9% | 111 min |
+| AMC Boston Common 19 | Michael | IMAX with Laser at AMC | 10:30pm | 48.6% | 37 min |
+| AMC Boston Common 19 | Michael | Dolby Cinema at AMC | 9:30pm | 65.8% | 97 min |
+| AMC Boston Common 19 | Michael | Laser at AMC | 9:00pm | 18.7% | 127 min |
+| AMC Assembly Row 12 | Michael | IMAX with Laser at AMC | 10:15pm | 73.3% | 52 min |
+| AMC Assembly Row 12 | Michael | Dolby Cinema at AMC | 9:15pm | 78.7% | 112 min |
+| AMC Assembly Row 12 | Michael | Laser at AMC | 10:45pm | 55.9% | 22 min |
+| AMC Assembly Row 12 | Michael | Laser at AMC | 8:45pm | 76.5% | 142 min |
+| AMC Framingham 16 | Michael | PRIME at AMC | 10:30pm | 50.8% | 37 min |
+| AMC Framingham 16 | Michael | Laser at AMC | 10:15pm | 31.4% | 52 min |
+| AMC Framingham 16 | Michael | Laser at AMC | 9:45pm | 69.3% | 82 min |
+| AMC Braintree 10 | Michael | PRIME at AMC | 9:15pm | 93.9% | 112 min |
+| AMC Braintree 10 | Michael | Laser at AMC | 10:15pm | 63.8% | 52 min |
+| AMC Braintree 10 | Michael | Laser at AMC | 9:45pm | 89.7% | 82 min |
+| AMC Burlington Cinema 10 | Michael | Laser at AMC | 10:15pm | 54.3% | 52 min |
+| AMC Burlington Cinema 10 | Michael | Laser at AMC | 9:15pm | 94.7% | 112 min |
+| AMC Aventura 24 | Michael | IMAX with Laser at AMC | 9:45pm | 92.2% | 82 min |
+| AMC Aventura 24 | Michael | Dolby Cinema at AMC | 10:45pm | 75.1% | 22 min |
+| AMC Aventura 24 | Michael | Laser at AMC | 10:15pm | 66.7% | 52 min |
+| AMC Aventura 24 | Michael | Laser at AMC | 9:15pm | 32.9% | 112 min |
+| AMC Aventura 24 | Michael | Spanish Language Dubbed with No Subtitles | 11:00pm | 9.2% | 7 min |
+| AMC Aventura 24 | Michael | English Spoken with Spanish Subtitles | 10:15pm | 27.1% | 52 min |
+| AMC Sunset Place 24 | Michael | IMAX at AMC | 10:45pm | 16.8% | 22 min |
+| AMC Sunset Place 24 | Michael | Dolby Cinema at AMC | 9:45pm | 79.6% | 82 min |
+| AMC Sunset Place 24 | Michael | AMC Artisan Films | 10:15pm | 9.5% | 52 min |
+| AMC Sunset Place 24 | Michael | AMC Artisan Films | 9:15pm | 33.5% | 112 min |
+| AMC Sunset Place 24 | Michael | AMC Artisan Films | 8:45pm | 13.9% | 142 min |
+| AMC Methuen 20 | Michael | IMAX with Laser at AMC | 9:45pm | 42.6% | 82 min |
+| AMC Methuen 20 | Michael | Dolby Cinema at AMC | 8:45pm | 68.3% | 142 min |
+| AMC Methuen 20 | Michael | Laser at AMC | 9:55pm | 18% | 71 min |
+| AMC Methuen 20 | Michael | Spanish Language Dubbed with No Subtitles | 9:50pm | 40% | 77 min |
+| AMC Methuen 20 | Michael | English Spoken with Spanish Subtitles | 9:30pm | 40% | 97 min |
+| AMC DINE-IN Coral Ridge 10 | Michael | Dine-In Delivery to Seat | 11:00pm | 67.1% | 7 min |
+| AMC DINE-IN Coral Ridge 10 | Michael | Dine-In Delivery to Seat | 10:15pm | 88.4% | 52 min |
+| AMC DINE-IN Coral Ridge 10 | Michael | Dine-In Delivery to Seat | 9:45pm | 97.8% | 82 min |
+| AMC DINE-IN Coral Ridge 10 | Michael | Dine-In Delivery to Seat | 8:45pm | 100% | 142 min |
+| AMC Pembroke Lakes 9 | Michael | IMAX with Laser at AMC | 9:15pm | 96.6% | 112 min |
+| AMC Pembroke Lakes 9 | Michael | Dolby Cinema at AMC | 10:15pm | 95% | 52 min |
+| AMC Pembroke Lakes 9 | Michael | PRIME at AMC | 9:45pm | 80.2% | 82 min |
+| AMC Pembroke Lakes 9 | Michael | Laser at AMC | 11:00pm | 69.8% | 7 min |
+| AMC Pompano Beach 18 | Michael | PRIME at AMC | 9:45pm | 68.2% | 82 min |
+| AMC Pompano Beach 18 | Michael | Laser at AMC | 10:10pm | 29.1% | 57 min |
+| AMC Pompano Beach 18 | Michael | Laser at AMC | 10:00pm | 30.8% | 67 min |
+| AMC Pompano Beach 18 | Michael | Laser at AMC | 9:45pm | 27.1% | 82 min |
+| AMC Pompano Beach 18 | Michael | Laser at AMC | 9:00pm | 78.8% | 127 min |
+| AMC Sundial 12 | Michael | PRIME at AMC | 10:15pm | 15.8% | 53 min |
+| AMC Sundial 12 | Michael | Laser at AMC | 9:15pm | 21.1% | 113 min |
+| AMC Sundial 12 | Michael | Laser at AMC | 8:45pm | 37% | 143 min |
+| AMC West Shore 14 | Michael | Dolby Cinema at AMC | 10:15pm | 65.2% | 53 min |
+| AMC West Shore 14 | Michael | AMC Artisan Films | 10:25pm | 19.6% | 43 min |
+| AMC West Shore 14 | Michael | AMC Artisan Films | 9:45pm | 27.3% | 83 min |
+| AMC West Shore 14 | Michael | AMC Artisan Films | 9:00pm | 28.2% | 128 min |
+| AMC Veterans 24 | Michael | IMAX with Laser at AMC | 10:30pm | 64.1% | 37 min |
+| AMC Veterans 24 | Michael | Dolby Cinema at AMC | 9:30pm | 77.4% | 97 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:35pm | 73.3% | 33 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:25pm | 35.6% | 42 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:20pm | 25% | 48 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:15pm | 17.8% | 52 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:10pm | 15.6% | 57 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:05pm | 24.3% | 63 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 10:00pm | 53.9% | 67 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 9:15pm | 83.8% | 112 min |
+| AMC Veterans 24 | Michael | Laser at AMC | 9:00pm | 81.2% | 127 min |
+| AMC Bradenton 20 | Michael | AMC Artisan Films | 9:45pm | 17% | 83 min |
+| AMC Altamonte Mall 18 | Michael | IMAX with Laser at AMC | 9:30pm | 71.8% | 98 min |
+| AMC Altamonte Mall 18 | Michael | Dolby Cinema at AMC | 10:30pm | 63.6% | 38 min |
+| AMC Altamonte Mall 18 | Michael | Laser at AMC | 10:00pm | 11.7% | 68 min |
+| AMC Altamonte Mall 18 | Michael | Laser at AMC | 9:00pm | 15.7% | 128 min |
+| AMC Tysons Corner 16 | Michael | IMAX with Laser at AMC | 9:40pm | 68.3% | 88 min |
+| AMC Tysons Corner 16 | Michael | Laser at AMC | 11:00pm | 8.8% | 8 min |
+| AMC Tysons Corner 16 | Michael | Laser at AMC | 10:20pm | 14.7% | 48 min |
+| AMC Tysons Corner 16 | Michael | Laser at AMC | 9:10pm | 55.8% | 118 min |
+| AMC DINE-IN Disney Springs 24 | Michael | Dolby Cinema at AMC | 11:00pm | 78.6% | 8 min |
+| AMC DINE-IN Disney Springs 24 | Michael | XL at AMC | 9:15pm | 49.1% | 113 min |
+| AMC DINE-IN Disney Springs 24 | Michael | Laser at AMC | 9:45pm | 49.7% | 83 min |
+| AMC DINE-IN Disney Springs 24 | Michael | Laser at AMC | 8:45pm | 44.2% | 143 min |
+| AMC DINE-IN Disney Springs 24 | Michael | Dine-In Delivery to Seat | 10:15pm | 92.2% | 53 min |
+| AMC DINE-IN Disney Springs 24 | Michael | English Spoken with Spanish Subtitles | 9:00pm | 44.8% | 128 min |
+| AMC Shirlington 7 | Michael | Laser at AMC | 9:20pm | 90.2% | 110 min |
+| AMC Hoffman Center 22 | Michael | Dolby Cinema at AMC | 9:45pm | 79.1% | 85 min |
+| AMC Hoffman Center 22 | Michael | XL at AMC | 10:45pm | 11.5% | 25 min |
+| AMC Hoffman Center 22 | Michael | Laser at AMC | 10:15pm | 23% | 55 min |
+| AMC Hoffman Center 22 | Michael | Laser at AMC | 9:00pm | 65.5% | 130 min |
+| AMC Georgetown 14 | Michael | IMAX with Laser at AMC | 10:35pm | 57.3% | 35 min |
+| AMC Georgetown 14 | Michael | Dolby Cinema at AMC | 9:50pm | 76.4% | 80 min |
+| AMC Georgetown 14 | Michael | Laser at AMC | 10:45pm | 44.4% | 25 min |
+| AMC Georgetown 14 | Michael | Laser at AMC | 9:15pm | 70.3% | 115 min |
+| AMC Georgetown 14 | Michael | Laser at AMC | 9:00pm | 74.3% | 130 min |
+| AMC Worldgate 9 | Michael | AMC Artisan Films | 10:30pm | 17.6% | 40 min |
+| AMC Worldgate 9 | Michael | AMC Artisan Films | 9:30pm | 64.7% | 100 min |
+| AMC Neshaminy 24 | Michael | Dolby Cinema at AMC | 9:30pm | 66.2% | 100 min |
+| AMC Neshaminy 24 | Michael | Laser at AMC | 9:00pm | 13.8% | 130 min |
+| AMC Cherry Hill 24 | Michael | IMAX with Laser at AMC | 9:30pm | 98.4% | 100 min |
+| AMC Cherry Hill 24 | Michael | Laser at AMC | 10:00pm | 27.4% | 70 min |
+| AMC Cherry Hill 24 | Michael | Laser at AMC | 9:00pm | 76.2% | 130 min |
+| AMC Voorhees 16 | Michael | AMC Artisan Films | 10:20pm | 14.3% | 50 min |
+| AMC Voorhees 16 | Michael | AMC Artisan Films | 9:35pm | 28% | 95 min |
+| AMC Voorhees 16 | Michael | AMC Artisan Films | 9:00pm | 7.9% | 130 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 10:35pm | 47% | 36 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 10:30pm | 56.9% | 41 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 10:15pm | 66.1% | 56 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 9:45pm | 81% | 86 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 9:15pm | 80.2% | 116 min |
+| AMC Plymouth Meeting Mall 12 | Michael | Laser at AMC | 8:45pm | 83.3% | 146 min |
+| AMC DINE-IN Fashion District 8 | Michael | Dolby Cinema at AMC | 10:00pm | 98.6% | 71 min |
+| AMC DINE-IN Fashion District 8 | Michael | PRIME at AMC | 11:00pm | 87.9% | 11 min |
+| AMC DINE-IN Fashion District 8 | Michael | Dine-In Delivery to Seat | 9:35pm | 98% | 96 min |
+| AMC DINE-IN Fashion District 8 | Michael | Dine-In Delivery to Seat | 8:45pm | 100% | 146 min |
+| AMC Phipps Plaza 14 | Michael | Dolby Cinema at AMC | 11:00pm | 89.4% | 11 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 10:45pm | 60.5% | 26 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 10:30pm | 59% | 41 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 10:00pm | 69.8% | 71 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 9:30pm | 84.8% | 101 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 9:15pm | 90.1% | 116 min |
+| AMC Phipps Plaza 14 | Michael | Laser at AMC | 8:45pm | 98.8% | 146 min |
+| AMC Northlake 14 | Michael | IMAX at AMC | 8:45pm | 78.7% | 146 min |
+| AMC Northlake 14 | Michael | Dolby Cinema at AMC | 10:45pm | 71.2% | 26 min |
+| AMC Northlake 14 | Michael | AMC Artisan Films | 9:45pm | 72.9% | 86 min |
+| AMC Sugarloaf Mills 18 | Michael | Dolby Cinema at AMC | 10:30pm | 83.6% | 41 min |
+| AMC Sugarloaf Mills 18 | Michael | XL at AMC | 9:30pm | 25% | 101 min |
+| AMC Sugarloaf Mills 18 | Michael | Laser at AMC | 11:00pm | 9.5% | 11 min |
+| AMC Sugarloaf Mills 18 | Michael | Laser at AMC | 10:00pm | 13.6% | 71 min |
+| AMC Sugarloaf Mills 18 | Michael | English Spoken with Spanish Subtitles | 9:00pm | 75.5% | 131 min |
+| AMC Barrett Commons 24 | Michael | IMAX with Laser at AMC | 11:00pm | 89.1% | 11 min |
+| AMC Barrett Commons 24 | Michael | Dolby Cinema at AMC | 10:30pm | 66.7% | 41 min |
+| AMC Barrett Commons 24 | Michael | Laser at AMC | 9:30pm | 69.7% | 101 min |
+| AMC Barrett Commons 24 | Michael | Laser at AMC | 9:00pm | 59.9% | 131 min |
+| AMC DINE-IN North Point Mall 12 | Michael | Dolby Cinema at AMC | 10:45pm | 30.9% | 26 min |
+| AMC DINE-IN North Point Mall 12 | Michael | Dine-In Delivery to Seat | 10:30pm | 2.6% | 41 min |
+| AMC DINE-IN North Point Mall 12 | Michael | Dine-In Delivery to Seat | 10:15pm | 9.5% | 56 min |
+| AMC DINE-IN North Point Mall 12 | Michael | Dine-In Delivery to Seat | 9:45pm | 18.4% | 86 min |
+| AMC DINE-IN North Point Mall 12 | Michael | Dine-In Delivery to Seat | 9:15pm | 53.3% | 116 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 10:45pm | 30.7% | 26 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 10:15pm | 17.5% | 56 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 10:00pm | 17.6% | 71 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 9:45pm | 34.1% | 86 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 9:30pm | 38.3% | 101 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 9:15pm | 33.8% | 116 min |
+| AMC Camp Creek 14 | Michael | AMC Artisan Films | 8:45pm | 66.1% | 146 min |
+| AMC Forum 30 | Michael | IMAX at AMC | 9:15pm | 50.8% | 116 min |
+| AMC Forum 30 | Michael | Dolby Cinema at AMC | 10:15pm | 22.7% | 56 min |
+| AMC Forum 30 | Michael | AMC Artisan Films | 9:45pm | 5.3% | 86 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 10:45pm | 50% | 26 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 10:40pm | 37.5% | 31 min |
+| AMC Carolina Pavilion 22 | Michael | English Spoken with Spanish Subtitles | 10:30pm | 39.7% | 41 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 10:10pm | 60.7% | 61 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 9:40pm | 59.5% | 91 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 9:10pm | 93.1% | 121 min |
+| AMC Carolina Pavilion 22 | Michael | AMC Artisan Films | 9:00pm | 77.8% | 131 min |
+| AMC Carolina Pavilion 22 | Michael | English Spoken with Spanish Subtitles | 8:45pm | 91.3% | 146 min |
+| AMC Concord Mills 24 | Michael | IMAX with Laser at AMC | 9:45pm | 87.2% | 86 min |
+| AMC Concord Mills 24 | Michael | Dolby Cinema at AMC | 10:45pm | 79.7% | 26 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 11:00pm | 22.4% | 11 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 10:50pm | 10.3% | 22 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 10:30pm | 35.4% | 41 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 10:25pm | 35.8% | 46 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 10:15pm | 76.3% | 56 min |
+| AMC Concord Mills 24 | Michael | AMC Artisan Films | 9:00pm | 70.8% | 131 min |
+| AMC Star Great Lakes 25 | Michael | Dolby Cinema at AMC | 9:30pm | 38.6% | 101 min |
+| AMC Livonia 20 | Michael | IMAX at AMC | 10:15pm | 66.5% | 56 min |
+| AMC Livonia 20 | Michael | AMC Artisan Films | 9:45pm | 20.9% | 86 min |
+| AMC Livonia 20 | Michael | AMC Artisan Films | 9:15pm | 39.1% | 116 min |
+| AMC Castleton Square 14 | Michael | IMAX at AMC | 10:45pm | 91.8% | 27 min |
+| AMC Castleton Square 14 | Michael | Dolby Cinema at AMC | 9:45pm | 78.1% | 87 min |
+| AMC Castleton Square 14 | Michael | AMC Artisan Films | 10:00pm | 55.6% | 72 min |
+| AMC Castleton Square 14 | Michael | AMC Artisan Films | 9:00pm | 80.3% | 132 min |
+| AMC Perry Crossing 18 | Michael | Dolby Cinema at AMC | 10:30pm | 60.8% | 42 min |
+| AMC Perry Crossing 18 | Michael | AMC Artisan Films | 9:30pm | 15.7% | 102 min |
+| AMC Perry Crossing 18 | Michael | AMC Artisan Films | 9:00pm | 3.1% | 132 min |
+| AMC John R 15 | Michael | AMC Artisan Films | 10:30pm | 42.5% | 42 min |
+| AMC John R 15 | Michael | AMC Artisan Films | 10:10pm | 58.2% | 62 min |
+| AMC John R 15 | Michael | AMC Artisan Films | 9:45pm | 70.6% | 87 min |
+| AMC John R 15 | Michael | AMC Artisan Films | 9:30pm | 96.5% | 102 min |
+| AMC John R 15 | Michael | AMC Artisan Films | 9:00pm | 95% | 132 min |
+| AMC Bellevue 12 | Michael | Dolby Cinema at AMC | 9:45pm | 44.4% | 87 min |
+| AMC Bellevue 12 | Michael | AMC Artisan Films | 8:30pm | 19.8% | 162 min |
+| AMC Bellevue 12 | Michael | AMC Artisan Films | 8:00pm | 51.6% | 192 min |
+| AMC Thoroughbred 20 | Michael | IMAX with Laser at AMC | 10:45pm | 10.5% | 27 min |
+| AMC Thoroughbred 20 | Michael | Dolby Cinema at AMC | 9:45pm | 37.4% | 87 min |
+| AMC Thoroughbred 20 | Michael | AMC Artisan Films | 11:00pm | 0.4% | 12 min |
+| AMC Thoroughbred 20 | Michael | AMC Artisan Films | 10:15pm | 14.5% | 57 min |
+| AMC Thoroughbred 20 | Michael | AMC Artisan Films | 9:15pm | 41.9% | 117 min |
+| AMC Thoroughbred 20 | Michael | AMC Artisan Films | 8:30pm | 61.8% | 162 min |
+| AMC Thoroughbred 20 | Michael | AMC Artisan Films | 8:00pm | 9.9% | 192 min |
+| AMC Dublin Village 18 | Michael | AMC Artisan Films | 10:30pm | 50.4% | 44 min |
+| AMC Dublin Village 18 | Michael | AMC Artisan Films | 9:45pm | 64.6% | 89 min |
+| AMC Dublin Village 18 | Michael | AMC Artisan Films | 9:15pm | 78.3% | 119 min |
+| AMC Grove City 14 | Michael | IMAX at AMC | 10:15pm | 23.5% | 59 min |
+| AMC Grove City 14 | Michael | AMC Artisan Films | 9:30pm | 12.7% | 104 min |
+| AMC Easton Town Center 30 | Michael | IMAX with Laser at AMC | 9:30pm | 85.1% | 102 min |
+| AMC Easton Town Center 30 | Michael | Dolby Cinema at AMC | 10:30pm | 68.6% | 42 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 11:00pm | 14% | 12 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 10:45pm | 31.5% | 27 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 10:20pm | 15.4% | 52 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 10:15pm | 14.1% | 57 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 10:00pm | 21.6% | 72 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 9:45pm | 50% | 87 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 9:40pm | 56.5% | 92 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 9:00pm | 40.7% | 132 min |
+| AMC Easton Town Center 30 | Michael | AMC Artisan Films | 8:45pm | 63.6% | 147 min |
+| AMC Newport On The Levee 20 | Michael | IMAX at AMC | 10:30pm | 26.1% | 44 min |
+| AMC Newport On The Levee 20 | Michael | Dolby Cinema at AMC | 9:15pm | 33% | 119 min |
+| AMC Newport On The Levee 20 | Michael | AMC Artisan Films | 9:45pm | 14.8% | 89 min |
+| AMC Waterfront 22 | Michael | IMAX with Laser at AMC | 9:45pm | 32.1% | 89 min |
+| AMC Waterfront 22 | Michael | Dolby Cinema at AMC | 10:30pm | 23.3% | 44 min |
+| AMC Waterfront 22 | Michael | Laser at AMC | 10:15pm | 17.4% | 59 min |
+| AMC Waterfront 22 | Michael | Laser at AMC | 9:20pm | 29.2% | 114 min |
+| AMC West Chester 18 | Michael | IMAX at AMC | 9:30pm | 43.4% | 104 min |
+| AMC West Chester 18 | Michael | Dolby Cinema at AMC | 10:30pm | 54.8% | 44 min |
+| AMC West Chester 18 | Michael | AMC Artisan Films | 10:20pm | 43.8% | 54 min |
+| AMC West Chester 18 | Michael | AMC Artisan Films | 9:55pm | 39.5% | 78 min |
+| AMC West Chester 18 | Michael | AMC Artisan Films | 9:15pm | 44.9% | 119 min |
+| AMC Regency 24 | Michael | IMAX at AMC | 10:30pm | 34.2% | 44 min |
+| AMC Regency 24 | Michael | Dolby Cinema at AMC | 9:45pm | 50.8% | 89 min |
+| AMC Regency 24 | Michael | AMC Artisan Films | 9:15pm | 37% | 119 min |
+| AMC Regency 24 | Michael | AMC Artisan Films | 9:00pm | 61.4% | 134 min |
+| AMC Regency 24 | Michael | AMC Artisan Films | 8:45pm | 78.6% | 149 min |
+| AMC Academy 8 | Michael | Laser at AMC | 10:45pm | 47.7% | 30 min |
+| AMC Academy 8 | Michael | Laser at AMC | 10:30pm | 70.5% | 45 min |
+| AMC Academy 8 | Michael | Laser at AMC | 9:15pm | 89.3% | 120 min |
+| AMC Orange Park 24 | Michael | IMAX at AMC | 10:30pm | 11% | 45 min |
+| AMC Orange Park 24 | Michael | Dolby Cinema at AMC | 9:15pm | 39.6% | 120 min |
+| AMC Orange Park 24 | Michael | AMC Artisan Films | 10:15pm | 43.1% | 60 min |
+| AMC Orange Park 24 | Michael | AMC Artisan Films | 9:45pm | 11.8% | 90 min |
+| AMC Allegany 8 | Michael | AMC Artisan Films | 9:50pm | 17.7% | 85 min |
+| AMC Altoona 12 | Michael | BigD at AMC | 10:30pm | 10.4% | 45 min |
+| AMC Altoona 12 | Michael | AMC Artisan Films | 9:45pm | 3.4% | 90 min |
+| AMC Anderson Towne Center 9 | Michael | PRIME at AMC | 9:15pm | 31.8% | 120 min |
+| AMC Anderson Towne Center 9 | Michael | AMC Artisan Films | 10:00pm | 17.5% | 75 min |
+| AMC Annapolis Mall 11 | Michael | Dolby Cinema at AMC | 10:10pm | 75.5% | 64 min |
+| AMC Annapolis Mall 11 | Michael | AMC Artisan Films | 10:40pm | 25.3% | 34 min |
+| AMC Annapolis Mall 11 | Michael | AMC Artisan Films | 9:10pm | 64.9% | 124 min |
+| AMC Annapolis Mall 11 | Michael | AMC Artisan Films | 9:00pm | 60.2% | 135 min |
+| AMC Avenue 16 | Michael | BigD at AMC | 9:45pm | 16.3% | 90 min |
+| AMC Antioch 8 | Michael | AMC Artisan Films | 10:30pm | 39.3% | 45 min |
+| AMC Antioch 8 | Michael | AMC Artisan Films | 9:45pm | 42.9% | 90 min |
+| AMC Antioch 8 | Michael | AMC Artisan Films | 9:15pm | 37.1% | 120 min |
+| AMC Antioch 8 | Michael | AMC Artisan Films | 8:30pm | 83.6% | 165 min |
+| AMC Antioch 8 | Michael | AMC Artisan Films | 8:00pm | 82% | 195 min |
+| AMC Avenue Forsyth 12 | Michael | IMAX at AMC | 9:45pm | 23% | 90 min |
+| AMC Avenue Forsyth 12 | Michael | Dolby Cinema at AMC | 10:25pm | 17.9% | 50 min |
+| AMC Aviation 12 | Michael | IMAX at AMC | 9:15pm | 85.8% | 120 min |
+| AMC Aviation 12 | Michael | Dolby Cinema at AMC | 10:30pm | 75.2% | 45 min |
+| AMC Aviation 12 | Michael | XL at AMC | 9:45pm | 33.6% | 90 min |
+| AMC Aviation 12 | Michael | Laser at AMC | 10:45pm | 62.1% | 30 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 11:00pm | 48% | 15 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 10:45pm | 82.2% | 30 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 10:30pm | 87.3% | 45 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 10:05pm | 88.9% | 71 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 9:30pm | 95.4% | 105 min |
+| AMC Bay Plaza Cinema 13 | Michael | Laser at AMC | 9:15pm | 98.8% | 120 min |
+| AMC Bayou 15 | Michael | AMC Artisan Films | 10:15pm | 9.4% | 60 min |
+| AMC Bayou 15 | Michael | AMC Artisan Films | 9:10pm | 45.3% | 125 min |
+| AMC Bayou 15 | Michael | AMC Artisan Films | 8:15pm | 60.5% | 180 min |
+| AMC Boulevard 10 | Michael | AMC Artisan Films | 10:00pm | 3.8% | 75 min |
+| AMC Boulevard 10 | Michael | AMC Artisan Films | 9:00pm | 10.1% | 135 min |
+| AMC Boulevard 10 | Michael | BigD at AMC | 8:00pm | 13.6% | 195 min |
+| AMC Bradley Square 12 | Michael | BigD at AMC | 10:15pm | 2.2% | 60 min |
+| AMC Bradley Square 12 | Michael | AMC Artisan Films | 9:30pm | 1.7% | 105 min |
+| AMC Bradley Square 12 | Michael | AMC Artisan Films | 9:00pm | 12.5% | 135 min |
+| AMC Brunswick Square 13 | Michael | AMC Artisan Films | 10:15pm | 46.9% | 62 min |
+| AMC Brunswick Square 13 | Michael | AMC Artisan Films | 9:30pm | 54.4% | 107 min |
+| AMC Brunswick Square 13 | Michael | AMC Artisan Films | 9:15pm | 48.6% | 122 min |
+| AMC Brick Plaza 10 | Michael | Laser at AMC | 10:00pm | 31.6% | 77 min |
+| AMC Brick Plaza 10 | Michael | Laser at AMC | 9:50pm | 33.9% | 87 min |
+| AMC Brick Plaza 10 | Michael | Laser at AMC | 9:35pm | 50% | 102 min |
+| AMC Brick Plaza 10 | Michael | Laser at AMC | 9:00pm | 74.3% | 137 min |
+| AMC Brick Plaza 10 | Michael | Laser at AMC | 8:50pm | 79.3% | 147 min |
+| AMC Camp Hill 12 | Michael | AMC Artisan Films | 9:30pm | 24.4% | 107 min |
+| AMC Cherry Blossom 14 | Michael | IMAX at AMC | 9:45pm | 5.5% | 92 min |
+| AMC Chattanooga 18 | Michael | IMAX at AMC | 9:55pm | 23.8% | 82 min |
+| AMC Chattanooga 18 | Michael | AMC Artisan Films | 10:20pm | 12.1% | 57 min |
+| AMC Chattanooga 18 | Michael | AMC Artisan Films | 9:25pm | 8.6% | 112 min |
+| AMC Chattanooga 18 | Michael | AMC Artisan Films | 8:55pm | 6.6% | 142 min |
+| AMC Clifton Commons 16 | Michael | IMAX with Laser at AMC | 9:15pm | 89.5% | 122 min |
+| AMC Clifton Commons 16 | Michael | Dolby Cinema at AMC | 11:00pm | 71.9% | 17 min |
+| AMC Clifton Commons 16 | Michael | XL at AMC | 10:15pm | 28.9% | 62 min |
+| AMC Clifton Commons 16 | Michael | Laser at AMC | 10:00pm | 11.8% | 77 min |
+| AMC Clifton Commons 16 | Michael | Laser at AMC | 9:45pm | 77% | 92 min |
+| AMC Columbia 14 | Michael | IMAX with Laser at AMC | 10:15pm | 78% | 62 min |
+| AMC Columbia 14 | Michael | Dolby Cinema at AMC | 9:15pm | 89.6% | 122 min |
+| AMC Columbia 14 | Michael | AMC Artisan Films | 10:30pm | 16.6% | 47 min |
+| AMC Columbia 14 | Michael | AMC Artisan Films | 9:45pm | 50.2% | 92 min |
+| AMC Colonial 18 | Michael | PRIME at AMC | 10:15pm | 96.9% | 62 min |
+| AMC Colonial 18 | Michael | Laser at AMC | 10:40pm | 63.6% | 37 min |
+| AMC Colonial 18 | Michael | Laser at AMC | 10:30pm | 69.6% | 47 min |
+| AMC Colonial 18 | Michael | Laser at AMC | 9:45pm | 71.8% | 92 min |
+| AMC Colonial 18 | Michael | Laser at AMC | 9:30pm | 78.6% | 107 min |
+| AMC Colonial 18 | Michael | Laser at AMC | 9:15pm | 82.3% | 122 min |
+| AMC Colonial 18 | Michael | English Spoken with Spanish Subtitles | 10:45pm | 59% | 32 min |
+| AMC Columbus 10 | Michael | AMC Artisan Films | 10:30pm | 60.4% | 48 min |
+| AMC Columbus 10 | Michael | AMC Artisan Films | 9:30pm | 84.6% | 108 min |
+| AMC Courthouse Plaza 8 | Michael | Laser at AMC | 10:00pm | 56% | 78 min |
+| AMC Courthouse Plaza 8 | Michael | Laser at AMC | 9:00pm | 82.9% | 138 min |
+| AMC Columbus Park 15 | Michael | IMAX at AMC | 9:10pm | 36.2% | 127 min |
+| AMC Columbus Park 15 | Michael | AMC Artisan Films | 10:30pm | 17.7% | 48 min |
+| AMC Columbus Park 15 | Michael | BigD at AMC | 10:15pm | 15% | 63 min |
+| AMC Columbus Park 15 | Michael | AMC Artisan Films | 9:45pm | 8.8% | 93 min |
+| AMC DINE-IN Berkshire 8 | Michael | PRIME at AMC | 9:45pm | 73.1% | 93 min |
+| AMC DINE-IN Berkshire 8 | Michael | Dine-In Delivery to Seat | 10:30pm | 74.4% | 48 min |
+| AMC DINE-IN Bridgewater 7 | Michael | Dine-In Delivery to Seat | 9:45pm | 19.1% | 93 min |
+| AMC DINE-IN Bridgewater 7 | Michael | Dine-In Delivery to Seat | 9:00pm | 46.9% | 138 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 10:30pm | 45.3% | 48 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 10:15pm | 17.5% | 63 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 10:05pm | 22.5% | 73 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 10:00pm | 52.5% | 78 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 9:45pm | 57.1% | 93 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 9:40pm | 46.4% | 97 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 9:35pm | 44% | 103 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 9:15pm | 71.4% | 123 min |
+| AMC Crystal Run 16 | Michael | Laser at AMC | 9:00pm | 95.2% | 138 min |
+| AMC DINE-IN Essex Green 9 | Michael | Dine-In Delivery to Seat | 10:30pm | 97% | 48 min |
+| AMC DINE-IN Essex Green 9 | Michael | Dine-In Delivery to Seat | 9:30pm | 99% | 108 min |
+| AMC DINE-IN Holly Springs 9 | Michael | Dolby Cinema at AMC | 10:45pm | 32.2% | 33 min |
+| AMC DINE-IN Holly Springs 9 | Michael | Dine-In Delivery to Seat | 10:00pm | 56.2% | 78 min |
+| AMC DINE-IN Holly Springs 9 | Michael | Dine-In Delivery to Seat | 9:15pm | 72.9% | 123 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 10:45pm | 53% | 33 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 10:30pm | 55.7% | 48 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 10:25pm | 39.2% | 53 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 10:00pm | 79.7% | 78 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 9:45pm | 85% | 93 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 9:30pm | 89.8% | 108 min |
+| AMC DINE-IN Menlo Park 12 | Michael | Dine-In Delivery to Seat | 9:15pm | 96.4% | 123 min |
+| AMC DINE-IN Midlothian 10 | Michael | Dine-In Delivery to Seat | 10:15pm | 75.9% | 63 min |
+| AMC DINE-IN Midlothian 10 | Michael | Dine-In Delivery to Seat | 9:50pm | 78.4% | 89 min |
+| AMC DINE-IN Midlothian 10 | Michael | Dine-In Delivery to Seat | 9:20pm | 98.8% | 119 min |
+| AMC DINE-IN Painters Crossing 9 | Michael | Dine-In Delivery to Seat | 10:30pm | 83.3% | 48 min |
+| AMC DINE-IN Painters Crossing 9 | Michael | Dine-In Delivery to Seat | 9:30pm | 93.6% | 108 min |
+| AMC DINE-IN Shops at Riverside 9 | Michael | Dolby Cinema at AMC | 10:45pm | 81.4% | 33 min |
+| AMC DINE-IN Shops at Riverside 9 | Michael | Dine-In Delivery to Seat | 10:15pm | 74.2% | 63 min |
+| AMC DINE-IN Shops at Riverside 9 | Michael | Dine-In Delivery to Seat | 9:45pm | 85.6% | 93 min |
+| AMC Dartmouth Mall 11 | Michael | AMC Artisan Films | 10:15pm | 35.3% | 63 min |
+| AMC Dartmouth Mall 11 | Michael | AMC Artisan Films | 9:15pm | 76.8% | 123 min |
+| AMC Danbury 16 | Michael | IMAX at AMC | 10:45pm | 12.8% | 33 min |
+| AMC Danbury 16 | Michael | Dolby Cinema at AMC | 9:30pm | 73.2% | 108 min |
+| AMC Danbury 16 | Michael | Laser at AMC | 10:00pm | 11.2% | 78 min |
+| AMC Deptford 8 | Michael | Laser at AMC | 10:45pm | 64.7% | 34 min |
+| AMC Deptford 8 | Michael | Laser at AMC | 10:00pm | 77.5% | 79 min |
+| AMC Destin Commons 14 | Michael | IMAX at AMC | 8:30pm | 52.8% | 169 min |
+| AMC Destin Commons 14 | Michael | Dolby Cinema at AMC | 9:45pm | 44.8% | 94 min |
+| AMC Destin Commons 14 | Michael | AMC Artisan Films | 10:00pm | 6.8% | 79 min |
+| AMC East Hanover 12 | Michael | Laser at AMC | 10:15pm | 31.9% | 64 min |
+| AMC East Hanover 12 | Michael | Laser at AMC | 9:45pm | 69.7% | 94 min |
+| AMC East Hanover 12 | Michael | Laser at AMC | 9:15pm | 79.8% | 124 min |
+| AMC Evansville 16 | Michael | AMC Artisan Films | 11:00pm | 4.2% | 19 min |
+| AMC Evansville 16 | Michael | AMC Artisan Films | 10:15pm | 11.6% | 64 min |
+| AMC Evansville 16 | Michael | AMC Artisan Films | 9:45pm | 15.4% | 94 min |
+| AMC Evansville 16 | Michael | AMC Artisan Films | 9:15pm | 10.3% | 124 min |
+| AMC Evansville 16 | Michael | AMC Artisan Films | 8:45pm | 46.2% | 154 min |
+| AMC Fayetteville 14 | Michael | IMAX with Laser at AMC | 10:40pm | 23% | 39 min |
+| AMC Fayetteville 14 | Michael | Dolby Cinema at AMC | 9:45pm | 82.3% | 94 min |
+| AMC Fayetteville 14 | Michael | AMC Artisan Films | 9:00pm | 14.3% | 139 min |
+| AMC Fiesta Square 12 | Michael | AMC Artisan Films | 10:15pm | 26.9% | 64 min |
+| AMC Fiesta Square 12 | Michael | AMC Artisan Films | 9:15pm | 68.1% | 124 min |
+| AMC Fiesta Square 12 | Michael | AMC Artisan Films | 8:00pm | 75.7% | 199 min |
+| AMC Fire Tower 12 | Michael | AMC Artisan Films | 10:35pm | 96.7% | 46 min |
+| AMC Fire Tower 12 | Michael | AMC Artisan Films | 10:05pm | 84.5% | 76 min |
+| AMC Fire Tower 12 | Michael | AMC Artisan Films | 9:10pm | 97.8% | 131 min |
+| AMC Foothills 12 | Michael | BigD at AMC | 10:00pm | 4% | 81 min |
+| AMC Foothills 12 | Michael | AMC Artisan Films | 9:30pm | 3.1% | 111 min |
+| AMC Foothills 12 | Michael | AMC Artisan Films | 9:00pm | 2.2% | 141 min |
+| AMC Fleming Island 12 | Michael | AMC Artisan Films | 10:00pm | 10.8% | 81 min |
+| AMC Fleming Island 12 | Michael | AMC Artisan Films | 9:15pm | 19.1% | 126 min |
+| AMC Freehold 14 | Michael | Laser at AMC | 10:30pm | 34.3% | 51 min |
+| AMC Freehold 14 | Michael | Laser at AMC | 10:15pm | 20.4% | 66 min |
+| AMC Freehold 14 | Michael | Laser at AMC | 10:00pm | 37% | 81 min |
+| AMC Freehold 14 | Michael | Laser at AMC | 9:30pm | 76.7% | 111 min |
+| AMC Glen Cove 6 | Michael | Laser at AMC | 10:10pm | 26.6% | 71 min |
+| AMC Glen Cove 6 | Michael | Laser at AMC | 10:00pm | 17.4% | 81 min |
+| AMC Glen Cove 6 | Michael | Laser at AMC | 9:10pm | 72.5% | 131 min |
+| AMC Garden State Plaza 16 | Michael | IMAX with Laser at AMC | 10:15pm | 69.7% | 66 min |
+| AMC Garden State Plaza 16 | Michael | XL at AMC | 9:15pm | 38.9% | 126 min |
+| AMC Garden State Plaza 16 | Michael | Laser at AMC | 10:45pm | 12% | 36 min |
+| AMC Garden State Plaza 16 | Michael | Laser at AMC | 9:45pm | 45.8% | 96 min |
+| AMC Grand Rapids 18 | Michael | AMC Artisan Films | 11:00pm | 26.6% | 21 min |
+| AMC Grand Rapids 18 | Michael | AMC Artisan Films | 10:15pm | 12.2% | 66 min |
+| AMC Grand Rapids 18 | Michael | AMC Artisan Films | 9:45pm | 13.9% | 96 min |
+| AMC Grand Rapids 18 | Michael | AMC Artisan Films | 9:00pm | 41.6% | 141 min |
+| AMC Hampton Towne Centre 24 | Michael | IMAX with Laser at AMC | 10:30pm | 40.4% | 51 min |
+| AMC Hampton Towne Centre 24 | Michael | Dolby Cinema at AMC | 9:45pm | 59.3% | 96 min |
+| AMC Hampton Towne Centre 24 | Michael | AMC Artisan Films | 10:00pm | 50% | 81 min |
+| AMC Hampton Towne Centre 24 | Michael | AMC Artisan Films | 9:30pm | 44.7% | 111 min |
+| AMC Hampton Towne Centre 24 | Michael | AMC Artisan Films | 9:15pm | 32.7% | 126 min |
+| AMC Hanes 12 | Michael | AMC Artisan Films | 10:45pm | 32.2% | 36 min |
+| AMC Hanes 12 | Michael | AMC Artisan Films | 10:30pm | 10.5% | 51 min |
+| AMC Hanes 12 | Michael | AMC Artisan Films | 10:15pm | 40.8% | 66 min |
+| AMC Hanes 12 | Michael | AMC Artisan Films | 9:45pm | 78.8% | 96 min |
+| AMC Hanes 12 | Michael | AMC Artisan Films | 9:00pm | 83.2% | 141 min |
+| AMC Hialeah 12 | Michael | AMC Artisan Films | 10:15pm | 23.4% | 67 min |
+| AMC Hialeah 12 | Michael | English Spoken with Spanish Subtitles | 9:30pm | 38.4% | 112 min |
+| AMC Harbison 14 | Michael | PRIME at AMC | 10:15pm | 95.3% | 67 min |
+| AMC Harbison 14 | Michael | AMC Artisan Films | 10:15pm | 73% | 67 min |
+| AMC Harbison 14 | Michael | AMC Artisan Films | 10:10pm | 87.2% | 71 min |
+| AMC Harbison 14 | Michael | AMC Artisan Films | 9:35pm | 56.8% | 107 min |
+| AMC Harbison 14 | Michael | AMC Artisan Films | 9:30pm | 66.7% | 112 min |
+| AMC Harbison 14 | Michael | AMC Artisan Films | 9:15pm | 77.2% | 127 min |
+| AMC Headquarters Plaza 10 | Michael | Laser at AMC | 9:30pm | 28.2% | 112 min |
+| AMC Hickory 15 | Michael | Dolby Cinema at AMC | 10:30pm | 37.3% | 52 min |
+| AMC Hickory 15 | Michael | AMC Artisan Films | 10:40pm | 23.2% | 41 min |
+| AMC Hickory 15 | Michael | AMC Artisan Films | 9:40pm | 11.1% | 101 min |
+| AMC High Point 8 | Michael | AMC Artisan Films | 10:45pm | 45.5% | 37 min |
+| AMC High Point 8 | Michael | AMC Artisan Films | 10:30pm | 42.9% | 52 min |
+| AMC High Point 8 | Michael | AMC Artisan Films | 10:05pm | 59.1% | 77 min |
+| AMC High Point 8 | Michael | AMC Artisan Films | 9:45pm | 91.2% | 97 min |
+| AMC Highland 12 | Michael | AMC Artisan Films | 10:15pm | 9% | 67 min |
+| AMC Highland 12 | Michael | AMC Artisan Films | 9:15pm | 13.5% | 127 min |
+| AMC Highland 12 | Michael | AMC Artisan Films | 8:30pm | 8.8% | 172 min |
+| AMC Highland 12 | Michael | AMC Artisan Films | 8:00pm | 28% | 202 min |
+| AMC Holland 8 | Michael | AMC Artisan Films | 9:00pm | 41.1% | 142 min |
+| AMC Huntington Square 12 | Michael | Dolby Cinema at AMC | 10:15pm | 75.4% | 67 min |
+| AMC Huntington Square 12 | Michael | PRIME at AMC | 9:00pm | 84.6% | 142 min |
+| AMC Huntington Square 12 | Michael | Laser at AMC | 10:45pm | 23.9% | 37 min |
+| AMC Huntington Square 12 | Michael | Laser at AMC | 10:30pm | 29.6% | 52 min |
+| AMC Huntington Square 12 | Michael | Laser at AMC | 10:20pm | 51.2% | 63 min |
+| AMC Huntington Square 12 | Michael | Laser at AMC | 10:00pm | 51.4% | 82 min |
+| AMC Huntington Square 12 | Michael | Laser at AMC | 9:15pm | 76.6% | 127 min |
+| AMC Indian Mound 9 | Michael | AMC Artisan Films | 10:15pm | 21.1% | 67 min |
+| AMC Indian Mound 9 | Michael | AMC Artisan Films | 9:00pm | 26.2% | 142 min |
+| AMC Indianapolis 17 | Michael | IMAX at AMC | 10:30pm | 54.2% | 52 min |
+| AMC Indianapolis 17 | Michael | Dolby Cinema at AMC | 9:30pm | 75.8% | 112 min |
+| AMC Indianapolis 17 | Michael | AMC Artisan Films | 9:45pm | 34.1% | 97 min |
+| AMC Jefferson Point 18 | Michael | IMAX at AMC | 10:00pm | 22% | 82 min |
+| AMC Jefferson Point 18 | Michael | AMC Artisan Films | 9:00pm | 15.6% | 142 min |
+| AMC Johnson City 14 | Michael | AMC Artisan Films | 10:25pm | 24.6% | 58 min |
+| AMC Johnson City 14 | Michael | AMC Artisan Films | 9:50pm | 38% | 93 min |
+| AMC Johnson City 14 | Michael | AMC Artisan Films | 9:20pm | 62% | 123 min |
+| AMC Johnson City 14 | Michael | AMC Artisan Films | 8:55pm | 84.2% | 148 min |
+| AMC Jersey Gardens 20 | Michael | IMAX with Laser at AMC | 9:45pm | 92.1% | 98 min |
+| AMC Jersey Gardens 20 | Michael | Dolby Cinema at AMC | 10:45pm | 70.1% | 38 min |
+| AMC Jersey Gardens 20 | Michael | Laser at AMC | 10:50pm | 12.8% | 33 min |
+| AMC Jersey Gardens 20 | Michael | Laser at AMC | 10:15pm | 5% | 68 min |
+| AMC Jersey Gardens 20 | Michael | Laser at AMC | 9:15pm | 23.5% | 128 min |
+| AMC Kalli 12 | Michael | AMC Artisan Films | 10:10pm | 16.5% | 73 min |
+| AMC Kalli 12 | Michael | AMC Artisan Films | 9:30pm | 23.5% | 113 min |
+| AMC Lake Square 12 | Michael | AMC Artisan Films | 10:00pm | 20% | 83 min |
+| AMC Lake Square 12 | Michael | AMC Artisan Films | 9:45pm | 13.7% | 98 min |
+| AMC Lake Square 12 | Michael | English Spoken with Spanish Subtitles | 9:00pm | 20.6% | 143 min |
+| AMC Lakeshore 8 | Michael | AMC Artisan Films | 10:15pm | 22.6% | 70 min |
+| AMC Landmark 8 | Michael | AMC Artisan Films | 9:40pm | 40.4% | 105 min |
+| AMC Loudoun Station 11 | Michael | AMC Artisan Films | 10:15pm | 21.1% | 70 min |
+| AMC Loudoun Station 11 | Michael | AMC Artisan Films | 9:15pm | 44.4% | 130 min |
+| AMC Madison Yards 8 | Michael | Dolby Cinema at AMC | 10:45pm | 93.3% | 40 min |
+| AMC Madison Yards 8 | Michael | Laser at AMC | 10:10pm | 98% | 75 min |
+| AMC Madison Yards 8 | Michael | Laser at AMC | 9:20pm | 100% | 125 min |
+| AMC Lynnhaven 18 | Michael | IMAX with Laser at AMC | 10:30pm | 89.1% | 55 min |
+| AMC Lynnhaven 18 | Michael | Dolby Cinema at AMC | 9:45pm | 85.4% | 100 min |
+| AMC Lynnhaven 18 | Michael | AMC Artisan Films | 10:15pm | 35.3% | 70 min |
+| AMC Lynnhaven 18 | Michael | AMC Artisan Films | 9:20pm | 18.5% | 125 min |
+| AMC Lynnhaven 18 | Michael | AMC Artisan Films | 9:00pm | 13% | 145 min |
+| AMC Majestic 6 | Michael | PRIME at AMC | 10:15pm | 37.1% | 70 min |
+| AMC Maple Ridge 8 | Michael | AMC Artisan Films | 10:45pm | 81.5% | 40 min |
+| AMC Maple Ridge 8 | Michael | AMC Artisan Films | 10:30pm | 60.7% | 55 min |
+| AMC Maple Ridge 8 | Michael | AMC Artisan Films | 10:00pm | 79.3% | 85 min |
+| AMC Maple Ridge 8 | Michael | AMC Artisan Films | 9:30pm | 92.6% | 115 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 11:00pm | 61.7% | 26 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 10:45pm | 40.4% | 41 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 10:15pm | 65.3% | 71 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 9:45pm | 71.6% | 101 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 9:30pm | 79.4% | 116 min |
+| AMC Market Fair 15 | Michael | AMC Artisan Films | 9:00pm | 79.4% | 146 min |
+| AMC MarketFair 10 | Michael | AMC Artisan Films | 10:45pm | 41.2% | 41 min |
+| AMC MarketFair 10 | Michael | AMC Artisan Films | 10:40pm | 10% | 45 min |
+| AMC MarketFair 10 | Michael | AMC Artisan Films | 10:30pm | 61.5% | 56 min |
+| AMC MarketFair 10 | Michael | AMC Artisan Films | 10:00pm | 73% | 86 min |
+| AMC MarketFair 10 | Michael | AMC Artisan Films | 9:30pm | 92% | 116 min |
+| AMC Marlton 8 | Michael | PRIME at AMC | 10:30pm | 66.4% | 56 min |
+| AMC Marlton 8 | Michael | Laser at AMC | 10:50pm | 16.3% | 36 min |
+| AMC Marlton 8 | Michael | Laser at AMC | 10:05pm | 58.8% | 81 min |
+| AMC Marlton 8 | Michael | Laser at AMC | 9:30pm | 61.4% | 116 min |
+| AMC Marquis 16 | Michael | Dolby Cinema at AMC | 10:15pm | 86.1% | 71 min |
+| AMC Marquis 16 | Michael | AMC Artisan Films | 10:45pm | 24.7% | 41 min |
+| AMC Marquis 16 | Michael | AMC Artisan Films | 9:30pm | 63.2% | 116 min |
+| AMC Marquis 16 | Michael | AMC Artisan Films | 9:15pm | 66.2% | 131 min |
+| AMC Merchants Crossing 16 | Michael | AMC Artisan Films | 10:30pm | 11.2% | 56 min |
+| AMC Merchants Crossing 16 | Michael | AMC Artisan Films | 10:00pm | 14.9% | 86 min |
+| AMC Merchants Crossing 16 | Michael | AMC Artisan Films | 9:30pm | 30.7% | 116 min |
+| AMC Monmouth Mall 15 | Michael | IMAX at AMC | 10:15pm | 31.3% | 71 min |
+| AMC Monmouth Mall 15 | Michael | Dolby Cinema at AMC | 9:15pm | 81% | 131 min |
+| AMC Monmouth Mall 15 | Michael | Laser at AMC | 10:30pm | 27.2% | 56 min |
+| AMC Marple 10 | Michael | Laser at AMC | 10:00pm | 92% | 86 min |
+| AMC Marple 10 | Michael | Laser at AMC | 9:15pm | 99.2% | 131 min |
+| AMC Morgantown 12 | Michael | AMC Artisan Films | 10:00pm | 21.3% | 86 min |
+| AMC Morgantown 12 | Michael | AMC Artisan Films | 9:15pm | 37.1% | 131 min |
+| AMC Montgomery 16 | Michael | PRIME at AMC | 9:30pm | 61.9% | 116 min |
+| AMC Montgomery 16 | Michael | Laser at AMC | 10:20pm | 56.9% | 67 min |
+| AMC Montgomery 16 | Michael | Laser at AMC | 9:50pm | 43.2% | 97 min |
+| AMC Mobile 16 | Michael | AMC Artisan Films | 10:10pm | 42.7% | 76 min |
+| AMC Mobile 16 | Michael | AMC Artisan Films | 9:20pm | 72.3% | 127 min |
+| AMC Mobile 16 | Michael | AMC Artisan Films | 8:30pm | 75.4% | 176 min |
+| AMC Muncie 12 | Michael | IMAX at AMC | 9:45pm | 100% | 102 min |
+| AMC Muncie 12 | Michael | AMC Artisan Films | 10:45pm | 46.2% | 42 min |
+| AMC Muncie 12 | Michael | AMC Artisan Films | 10:15pm | 79.7% | 72 min |
+| AMC Mountainside 10 | Michael | XL at AMC | 10:15pm | 41.3% | 72 min |
+| AMC Mountainside 10 | Michael | Laser at AMC | 10:30pm | 14.7% | 57 min |
+| AMC Mountainside 10 | Michael | Laser at AMC | 9:30pm | 41.4% | 117 min |
+| AMC New Brunswick 18 | Michael | IMAX with Laser at AMC | 10:15pm | 38.6% | 72 min |
+| AMC New Brunswick 18 | Michael | Dolby Cinema at AMC | 9:30pm | 83.3% | 117 min |
+| AMC New Brunswick 18 | Michael | AMC Artisan Films | 9:00pm | 9.2% | 147 min |
+| AMC Northgate 14 | Michael | AMC Artisan Films | 10:10pm | 5.9% | 77 min |
+| AMC Northgate 14 | Michael | AMC Artisan Films | 9:00pm | 19.7% | 147 min |
+| AMC North Dekalb 16 | Michael | AMC Artisan Films | 10:45pm | 30.7% | 42 min |
+| AMC North Dekalb 16 | Michael | AMC Artisan Films | 10:15pm | 55.1% | 72 min |
+| AMC North Dekalb 16 | Michael | AMC Artisan Films | 9:45pm | 79.3% | 102 min |
+| AMC Owings Mills 17 | Michael | IMAX at AMC | 10:35pm | 92.8% | 52 min |
+| AMC Owings Mills 17 | Michael | PRIME at AMC | 9:35pm | 88.7% | 112 min |
+| AMC Owings Mills 17 | Michael | AMC Artisan Films | 10:45pm | 93.5% | 42 min |
+| AMC Owings Mills 17 | Michael | AMC Artisan Films | 10:05pm | 69.2% | 82 min |
+| AMC Owings Mills 17 | Michael | AMC Artisan Films | 9:50pm | 78.9% | 97 min |
+| AMC Owings Mills 17 | Michael | AMC Artisan Films | 9:05pm | 96.9% | 142 min |
+| AMC Park Place 16 | Michael | AMC Artisan Films | 9:40pm | 43.5% | 107 min |
+| AMC Palisades 21 | Michael | IMAX at AMC | 10:30pm | 45.9% | 57 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 10:45pm | 33.9% | 42 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 10:00pm | 37.9% | 87 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 9:45pm | 54.4% | 102 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 9:30pm | 75% | 117 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 9:15pm | 65% | 132 min |
+| AMC Palisades 21 | Michael | Laser at AMC | 9:00pm | 75.8% | 147 min |
+| AMC Park Terrace 6 | Michael | AMC Artisan Films | 10:30pm | 97.4% | 59 min |
+| AMC Park Terrace 6 | Michael | AMC Artisan Films | 10:15pm | 92.8% | 74 min |
+| AMC Parkway Pointe 15 | Michael | Dolby Cinema at AMC | 10:30pm | 94.4% | 59 min |
+| AMC Parkway Pointe 15 | Michael | Laser at AMC | 11:00pm | 63.1% | 29 min |
+| AMC Parkway Pointe 15 | Michael | Laser at AMC | 10:45pm | 65.4% | 44 min |
+| AMC Parkway Pointe 15 | Michael | Laser at AMC | 10:00pm | 64.1% | 89 min |
+| AMC Parkway Pointe 15 | Michael | Laser at AMC | 9:45pm | 84.5% | 104 min |
+| AMC Parkway Pointe 15 | Michael | Laser at AMC | 9:00pm | 90% | 149 min |
+| AMC Pembroke Lakes 9 | Michael | IMAX with Laser at AMC | 9:15pm | 96.6% | 134 min |
+| AMC Pembroke Lakes 9 | Michael | Dolby Cinema at AMC | 10:15pm | 95% | 74 min |
+| AMC Pembroke Lakes 9 | Michael | PRIME at AMC | 9:45pm | 80.2% | 104 min |
+| AMC Pembroke Lakes 9 | Michael | Laser at AMC | 11:00pm | 69.8% | 29 min |
+| AMC Plainville 20 | Michael | IMAX with Laser at AMC | 9:30pm | 48.2% | 119 min |
+| AMC Plainville 20 | Michael | Dolby Cinema at AMC | 10:30pm | 38.2% | 59 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 10:30pm | 10.4% | 59 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 10:25pm | 25% | 63 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 10:00pm | 7.1% | 89 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 9:55pm | 0% | 93 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 9:45pm | 40% | 104 min |
+| AMC Plainville 20 | Michael | AMC Artisan Films | 9:00pm | 65.1% | 149 min |
+| AMC Port Chester 14 | Michael | IMAX with Laser at AMC | 10:30pm | 52.4% | 59 min |
+| AMC Port Chester 14 | Michael | Dolby Cinema at AMC | 9:15pm | 67.3% | 134 min |
+| AMC Port Chester 14 | Michael | Laser at AMC | 9:40pm | 16.2% | 108 min |
+| AMC Port St Lucie 14 | Michael | AMC Artisan Films | 10:05pm | 13.5% | 84 min |
+| AMC Port St Lucie 14 | Michael | AMC Artisan Films | 9:20pm | 56.7% | 129 min |
+| AMC Potomac Mills 18 | Michael | IMAX with Laser at AMC | 9:45pm | 56% | 105 min |
+| AMC Potomac Mills 18 | Michael | Dolby Cinema at AMC | 10:45pm | 61.2% | 45 min |
+| AMC Potomac Mills 18 | Michael | XL at AMC | 10:15pm | 8.3% | 75 min |
+| AMC Potomac Mills 18 | Michael | Laser at AMC | 9:00pm | 58.3% | 150 min |
+| AMC Ridge Park Square 8 | Michael | AMC Artisan Films | 10:15pm | 31.7% | 75 min |
+| AMC Ridge Park Square 8 | Michael | AMC Artisan Films | 10:00pm | 61.9% | 90 min |
+| AMC Ridge Park Square 8 | Michael | AMC Artisan Films | 9:40pm | 90.3% | 109 min |
+| AMC Ridgefield Park 12 | Michael | AMC Artisan Films | 11:00pm | 45.3% | 30 min |
+| AMC Ridgefield Park 12 | Michael | AMC Artisan Films | 10:30pm | 60.2% | 60 min |
+| AMC Ridgefield Park 12 | Michael | AMC Artisan Films | 10:00pm | 65.9% | 90 min |
+| AMC Ridgefield Park 12 | Michael | AMC Artisan Films | 9:30pm | 72.1% | 120 min |
+| AMC Ridgefield Park 12 | Michael | AMC Artisan Films | 9:00pm | 72.2% | 150 min |
+| AMC Ritz 13 | Michael | AMC Artisan Films | 10:10pm | 10.7% | 79 min |
+| AMC Ritz 13 | Michael | AMC Artisan Films | 9:20pm | 37.1% | 130 min |
+| AMC River Hills 10 | Michael | AMC Artisan Films | 9:45pm | 18.9% | 105 min |
+| AMC Rivertowne 12 | Michael | Laser at AMC | 10:50pm | 48% | 40 min |
+| AMC Rivertowne 12 | Michael | Laser at AMC | 10:10pm | 82% | 79 min |
+| AMC Rivertowne 12 | Michael | Laser at AMC | 9:45pm | 81.1% | 105 min |
+| AMC Rivertowne 12 | Michael | Laser at AMC | 9:30pm | 84.3% | 120 min |
+| AMC Rockaway 16 | Michael | IMAX with Laser at AMC | 10:30pm | 26.5% | 60 min |
+| AMC Rockaway 16 | Michael | Dolby Cinema at AMC | 9:30pm | 64.3% | 120 min |
+| AMC Rockaway 16 | Michael | Laser at AMC | 10:00pm | 5.5% | 90 min |
+| AMC Riverview 14 | Michael | GDX | 10:45pm | 68.2% | 45 min |
+| AMC Riverview 14 | Michael | AMC Artisan Films | 10:15pm | 62.8% | 75 min |
+| AMC Riverview 14 | Michael | AMC Artisan Films | 9:45pm | 69.7% | 105 min |
+| AMC Riverview 14 | Michael | AMC Artisan Films | 9:15pm | 83% | 135 min |
+| AMC Royale 6 | Michael | AMC Artisan Films | 10:10pm | 23.3% | 80 min |
+| AMC Royale 6 | Michael | AMC Artisan Films | 9:10pm | 57% | 140 min |
+| AMC Saratoga Springs 11 | Michael | XL at AMC | 10:15pm | 6.3% | 75 min |
+| AMC Saratoga Springs 11 | Michael | AMC Artisan Films | 9:00pm | 10.2% | 150 min |
+| AMC Schererville 12 | Michael | XL at AMC | 9:30pm | 28.2% | 120 min |
+| AMC Schererville 12 | Michael | Laser at AMC | 8:30pm | 22.1% | 180 min |
+| AMC Schererville 12 | Michael | Laser at AMC | 8:15pm | 17.4% | 195 min |
+| AMC SoNo8 | Michael | AMC Artisan Films | 10:15pm | 22.8% | 75 min |
+| AMC SoNo8 | Michael | AMC Artisan Films | 9:15pm | 62.8% | 135 min |
+| AMC Security Square 8 | Michael | AMC Artisan Films | 10:45pm | 39.3% | 45 min |
+| AMC Security Square 8 | Michael | AMC Artisan Films | 9:45pm | 51.5% | 105 min |
+| AMC Security Square 8 | Michael | AMC Artisan Films | 9:20pm | 62.1% | 131 min |
+| AMC Schererville 16 | Michael | IMAX at AMC | 10:00pm | 44.1% | 90 min |
+| AMC Schererville 16 | Michael | XL at AMC | 8:00pm | 26% | 210 min |
+| AMC Schererville 16 | Michael | Laser at AMC | 10:30pm | 15.7% | 60 min |
+| AMC Schererville 16 | Michael | Laser at AMC | 9:15pm | 42.9% | 135 min |
+| AMC Schererville 16 | Michael | Laser at AMC | 9:00pm | 16.2% | 150 min |
+| AMC Schererville 16 | Michael | Laser at AMC | 8:35pm | 32.6% | 176 min |
+| AMC Schererville 16 | Michael | Laser at AMC | 8:15pm | 35.1% | 195 min |
+| AMC Southington 12 | Michael | AMC Artisan Films | 9:45pm | 6.2% | 107 min |
+| AMC Southington 12 | Michael | AMC Artisan Films | 9:15pm | 31.7% | 137 min |
+| AMC South Bay Center 12 | Michael | IMAX at AMC | 10:45pm | 31.9% | 47 min |
+| AMC South Bay Center 12 | Michael | Dolby Cinema at AMC | 9:45pm | 50.6% | 107 min |
+| AMC South Bay Center 12 | Michael | Laser at AMC | 10:30pm | 0% | 62 min |
+| AMC South Bay Center 12 | Michael | Laser at AMC | 10:15pm | 21.7% | 77 min |
+| AMC South Bay Center 12 | Michael | Laser at AMC | 9:00pm | 45.1% | 152 min |
+| AMC Southpoint 17 | Michael | IMAX with Laser at AMC | 10:45pm | 60.1% | 47 min |
+| AMC Southpoint 17 | Michael | Dolby Cinema at AMC | 9:15pm | 86.5% | 137 min |
+| AMC Southpoint 17 | Michael | Open Caption (On-screen Subtitles) | 10:00pm | 14.3% | 92 min |
+| AMC Southpoint 17 | Michael | AMC Artisan Films | 10:15pm | 29% | 77 min |
+| AMC Southpoint 17 | Michael | AMC Artisan Films | 9:40pm | 75% | 112 min |
+| AMC Southpoint 17 | Michael | AMC Artisan Films | 9:25pm | 72.9% | 127 min |
+| AMC Spring Hill 12 | Michael | BigD at AMC | 10:15pm | 5.5% | 77 min |
+| AMC Spring Hill 12 | Michael | AMC Artisan Films | 9:45pm | 13.8% | 107 min |
+| AMC Spring Hill 12 | Michael | AMC Artisan Films | 9:00pm | 7.5% | 152 min |
+| AMC Spring Hill 12 | Michael | AMC Artisan Films | 8:30pm | 9% | 182 min |
+| AMC Star Gratiot 15 | Michael | Dolby Cinema at AMC | 10:30pm | 78.1% | 62 min |
+| AMC Star Gratiot 15 | Michael | AMC Artisan Films | 10:30pm | 64% | 62 min |
+| AMC Star Gratiot 15 | Michael | AMC Artisan Films | 9:45pm | 45.7% | 107 min |
+| AMC Star Gratiot 15 | Michael | AMC Artisan Films | 9:15pm | 48.1% | 137 min |
+| AMC Staten Island 11 | Michael | IMAX with Laser at AMC | 10:30pm | 53.5% | 62 min |
+| AMC Staten Island 11 | Michael | Dolby Cinema at AMC | 9:15pm | 73.7% | 137 min |
+| AMC Staten Island 11 | Michael | Laser at AMC | 11:00pm | 61.3% | 32 min |
+| AMC Staten Island 11 | Michael | Laser at AMC | 10:00pm | 68.8% | 92 min |
+| AMC Staten Island 11 | Michael | Laser at AMC | 9:45pm | 55.7% | 107 min |
+| AMC Stonybrook 20 | Michael | IMAX at AMC | 10:15pm | 46.4% | 77 min |
+| AMC Stonybrook 20 | Michael | AMC Artisan Films | 9:30pm | 32.4% | 122 min |
+| AMC Stones River 9 | Michael | Dolby Cinema at AMC | 10:15pm | 80.6% | 77 min |
+| AMC Stones River 9 | Michael | AMC Artisan Films | 10:45pm | 61.8% | 47 min |
+| AMC Stones River 9 | Michael | AMC Artisan Films | 9:45pm | 77.1% | 107 min |
+| AMC Stones River 9 | Michael | AMC Artisan Films | 8:05pm | 96.3% | 207 min |
+| AMC Sunrise 8 | Michael | AMC Artisan Films | 11:00pm | 64% | 33 min |
+| AMC Sunrise 8 | Michael | AMC Artisan Films | 10:45pm | 93.4% | 48 min |
+| AMC Sunrise 8 | Michael | AMC Artisan Films | 9:30pm | 99.2% | 123 min |
+| AMC Tallahassee 20 | Michael | IMAX at AMC | 10:30pm | 38% | 63 min |
+| AMC Tallahassee 20 | Michael | Dolby Cinema at AMC | 9:15pm | 71.7% | 138 min |
+| AMC Tallahassee 20 | Michael | AMC Artisan Films | 10:15pm | 56.5% | 78 min |
+| AMC Tallahassee 20 | Michael | AMC Artisan Films | 10:00pm | 38.9% | 93 min |
+| AMC Tallahassee 20 | Michael | AMC Artisan Films | 9:50pm | 55.6% | 103 min |
+| AMC Tallahassee 20 | Michael | AMC Artisan Films | 9:10pm | 61.1% | 142 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 11:00pm | 37.1% | 33 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 10:50pm | 56.5% | 43 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 10:40pm | 59.3% | 52 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 10:35pm | 60% | 58 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 9:55pm | 76.1% | 97 min |
+| AMC Tamiami 18 | Michael | Laser at AMC | 9:35pm | 81.2% | 118 min |
+| AMC Tamiami 18 | Michael | English Spoken with Spanish Subtitles | 10:10pm | 93.5% | 82 min |
+| AMC Tiger 13 | Michael | AMC Artisan Films | 9:45pm | 20.8% | 108 min |
+| AMC Tiger 13 | Michael | AMC Artisan Films | 9:00pm | 31.3% | 153 min |
+| AMC Tiger 13 | Michael | BigD at AMC | 8:00pm | 56.1% | 213 min |
+| AMC Tilghman Square 8 | Michael | Laser at AMC | 10:20pm | 23.1% | 73 min |
+| AMC Tilghman Square 8 | Michael | Laser at AMC | 9:55pm | 60.9% | 97 min |
+| AMC Tyngsboro 12 | Michael | Laser at AMC | 10:15pm | 30.5% | 78 min |
+| AMC Tyngsboro 12 | Michael | Laser at AMC | 9:30pm | 38.6% | 123 min |
+| AMC Tyngsboro 12 | Michael | Laser at AMC | 9:15pm | 47.4% | 138 min |
+| AMC Traders Point 12 | Michael | IMAX at AMC | 11:00pm | 38% | 33 min |
+| AMC Traders Point 12 | Michael | AMC Artisan Films | 10:45pm | 61.9% | 48 min |
+| AMC Traders Point 12 | Michael | AMC Artisan Films | 9:40pm | 74.4% | 112 min |
+| AMC Traders Point 12 | Michael | AMC Artisan Films | 9:10pm | 76.9% | 142 min |
+| AMC Vestal Town Square 9 | Michael | AMC Artisan Films | 10:20pm | 33.7% | 74 min |
+| AMC Vestal Town Square 9 | Michael | AMC Artisan Films | 9:20pm | 30.2% | 134 min |
+| AMC Wayne 14 | Michael | PRIME at AMC | 10:45pm | 69.2% | 48 min |
+| AMC Wayne 14 | Michael | Laser at AMC | 10:20pm | 18.4% | 74 min |
+| AMC Wayne 14 | Michael | Laser at AMC | 10:00pm | 64.1% | 93 min |
+| AMC Wayne 14 | Michael | Laser at AMC | 9:15pm | 85.9% | 139 min |
+| AMC Washington Square 12 | Michael | AMC Artisan Films | 10:45pm | 27.4% | 48 min |
+| AMC Washington Square 12 | Michael | AMC Artisan Films | 10:15pm | 35% | 78 min |
+| AMC Washington Square 12 | Michael | AMC Artisan Films | 10:00pm | 40.5% | 93 min |
+| AMC Washington Square 12 | Michael | AMC Artisan Films | 9:45pm | 60% | 108 min |
+| AMC Washington Square 12 | Michael | AMC Artisan Films | 9:15pm | 75.6% | 139 min |
+| AMC Webster 12 | Michael | AMC Artisan Films | 10:05pm | 55.1% | 89 min |
+| AMC Webster 12 | Michael | AMC Artisan Films | 9:30pm | 55.4% | 123 min |
+| AMC Webster 12 | Michael | AMC Artisan Films | 9:05pm | 81.5% | 149 min |
+| AMC West Melbourne 12 | Michael | IMAX at AMC | 10:30pm | 37.1% | 63 min |
+| AMC West Melbourne 12 | Michael | AMC Artisan Films | 9:30pm | 12.1% | 123 min |
+| AMC Westmoreland 15 | Michael | AMC Artisan Films | 9:40pm | 18.4% | 113 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 10:30pm | 5.6% | 63 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 10:20pm | 14.9% | 74 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 10:00pm | 15.5% | 93 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 9:50pm | 33.3% | 104 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 9:30pm | 71.8% | 123 min |
+| AMC West Oaks 14 | Michael | AMC Artisan Films | 9:20pm | 55.6% | 134 min |
+| AMC Weston 8 | Michael | AMC Artisan Films | 10:45pm | 60.3% | 49 min |
+| AMC Weston 8 | Michael | AMC Artisan Films | 10:15pm | 71.3% | 79 min |
+| AMC Weston 8 | Michael | AMC Artisan Films | 9:50pm | 74.1% | 105 min |
+| AMC Westwood Town Center 6 | Michael | AMC Artisan Films | 10:05pm | 24.4% | 90 min |
+| AMC Westwood Town Center 6 | Michael | AMC Artisan Films | 9:15pm | 53.6% | 139 min |
+| AMC Wheaton Mall 9 | Michael | Laser at AMC | 9:45pm | 73.9% | 109 min |
+| AMC Yulee 10 | Michael | BigD at AMC | 10:15pm | 7.3% | 79 min |
+| AMC Yulee 10 | Michael | AMC Artisan Films | 9:00pm | 18.4% | 154 min |
+| AMC White Marsh 16 | Michael | IMAX with Laser at AMC | 10:30pm | 82.5% | 64 min |
+| AMC White Marsh 16 | Michael | Dolby Cinema at AMC | 9:45pm | 90.7% | 109 min |
+| AMC White Marsh 16 | Michael | AMC Artisan Films | 11:00pm | 28.8% | 34 min |
+| AMC White Marsh 16 | Michael | AMC Artisan Films | 10:45pm | 34% | 49 min |
+| AMC White Marsh 16 | Michael | AMC Artisan Films | 10:15pm | 76.9% | 79 min |
+| AMC White Marsh 16 | Michael | AMC Artisan Films | 9:30pm | 76.3% | 124 min |
+| AMC White Marsh 16 | Michael | AMC Artisan Films | 9:15pm | 83.1% | 139 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 11:00pm | 55.4% | 34 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 10:35pm | 58.8% | 60 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 10:20pm | 36.7% | 75 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 10:05pm | 70.5% | 90 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 9:30pm | 98.7% | 124 min |
+| AMC Woodhaven 10 | Michael | Laser at AMC | 9:05pm | 84.3% | 150 min |
+
+**Issues:** AMC Headquarters Plaza 10: No seat map for Michael Laser at AMC @ 10:30pm (https://www.amctheatres.com/showtimes/141610486/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 10:45pm (https://www.amctheatres.com/showtimes/142635213/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 10:20pm (https://www.amctheatres.com/showtimes/142526480/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/142664087/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 9:20pm (https://www.amctheatres.com/showtimes/141622405/seats); AMC Majestic 12: No seat map for Michael BigD at AMC @ 10:15pm (https://www.amctheatres.com/showtimes/141690939/seats); AMC Majestic 12: No seat map for Michael AMC Artisan Films @ 9:15pm (https://www.amctheatres.com/showtimes/141690980/seats); AMC Marple 10: No seat map for Michael Laser at AMC @ 10:35pm (https://www.amctheatres.com/showtimes/142667931/seats); AMC Marple 10: No seat map for Michael Laser at AMC @ 10:30pm (https://www.amctheatres.com/showtimes/141681541/seats); AMC Mobile 16: No seat map for Michael AMC Artisan Films @ 8:10pm (https://www.amctheatres.com/showtimes/142667528/seats)
 
 ---
