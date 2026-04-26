@@ -1278,6 +1278,37 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
 
+    # Per-theatre staleness guard: drop theatres whose Phase 1 entry's show_date
+    # doesn't match today's local date in that theatre's TZ.
+    #
+    # The file-level 12h `collected_at` check above gets refreshed by ANY
+    # Phase 1 leg (e.g. ET ran 2h ago), so it can't catch the case where a
+    # specific TZ's Phase 1 didn't fire today and that TZ's entries are >24h
+    # old. Without this guard, Phase 2 would scrape yesterday's already-
+    # elapsed showtime IDs and stamp the resulting post-show seat snapshots
+    # with yesterday's `show_date` — producing duplicate-day rows that
+    # collide with yesterday's correctly-captured Phase 2 data.
+    fresh_theatres = []
+    stale_skipped = []
+    for t in all_theatres:
+        entry = saved_links[t["name"]]
+        entry_date = entry.get("show_date")
+        expected_date = local_date_str(t.get("_tz") or entry.get("tz") or "ET")
+        if entry_date and entry_date != expected_date:
+            stale_skipped.append(
+                f"{t['name']} ({t.get('_tz','?')}: show_date={entry_date}, expected={expected_date})"
+            )
+            continue
+        fresh_theatres.append(t)
+    if stale_skipped:
+        print(f"\n⚠️  Skipping {len(stale_skipped)} theatres with stale Phase 1 entries "
+              f"(Phase 1 didn't refresh this TZ today):")
+        for s in stale_skipped[:5]:
+            print(f"    {s}")
+        if len(stale_skipped) > 5:
+            print(f"    ... and {len(stale_skipped)-5} more")
+    all_theatres = fresh_theatres
+
     # Test mode: cap to N theatres
     if test_max:
         all_theatres = all_theatres[:test_max]
