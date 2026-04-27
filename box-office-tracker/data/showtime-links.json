@@ -2,7 +2,7 @@
   "date": "2026-04-24",
   "weekend_of": "2026-04-24",
   "collected_local_date": "2026-04-26",
-  "collected_at": "2026-04-26T23:09:03.388746+00:00",
+  "collected_at": "2026-04-27T01:11:37.759101+00:00",
   "theatres": {
     "AMC River East 21": {
       "tz": "CT",
@@ -19027,11 +19027,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142219828",
-            "format": "PRIME at AMC"
-          },
-          {
             "showtime": "8:30pm",
             "showtime_id": "142219827",
             "format": "PRIME at AMC"
@@ -19072,11 +19067,6 @@
             "showtime": "8:00pm",
             "showtime_id": "141677172",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142219828",
-            "format": "PRIME at AMC"
           },
           {
             "showtime": "8:30pm",
@@ -19142,11 +19132,6 @@
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141684608",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "141684605",
             "format": "XL at AMC"
@@ -19192,11 +19177,6 @@
             "showtime": "10:30pm",
             "showtime_id": "142205964",
             "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "141684608",
-            "format": "XL at AMC"
           },
           {
             "showtime": "8:45pm",
@@ -19262,11 +19242,6 @@
             "format": "SCREENX at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142637168",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:30pm",
             "showtime_id": "142637167",
             "format": "XL at AMC"
@@ -19312,11 +19287,6 @@
             "showtime": "10:00pm",
             "showtime_id": "141685078",
             "format": "SCREENX at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142637168",
-            "format": "XL at AMC"
           },
           {
             "showtime": "8:30pm",
@@ -19372,11 +19342,6 @@
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141682986",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141682987",
             "format": "Laser at AMC"
@@ -19422,11 +19387,6 @@
             "showtime": "9:15pm",
             "showtime_id": "141683065",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141682986",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -19502,46 +19462,16 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "141571945",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:10pm",
             "showtime_id": "141571915",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141571956",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:25pm",
-            "showtime_id": "141571900",
-            "format": "Laser at AMC"
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "141571945",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:10pm",
             "showtime_id": "141571915",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "141571956",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:25pm",
-            "showtime_id": "141571900",
-            "format": "Laser at AMC"
           }
         ]
       }
@@ -19551,11 +19481,6 @@
       "show_date": "2026-04-26",
       "movies": {
         "Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141651195",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:15pm",
             "showtime_id": "141651163",
@@ -19583,11 +19508,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141651195",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:15pm",
             "showtime_id": "141651163",
@@ -19622,11 +19542,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141677336",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "142550586",
             "format": "Dine-In Delivery to Seat"
@@ -19658,11 +19573,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141677336",
-            "format": "Dine-In Delivery to Seat"
-          },
           {
             "showtime": "6:00pm",
             "showtime_id": "142550586",
@@ -19712,19 +19622,9 @@
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141671628",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:00pm",
             "showtime_id": "141671627",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142626195",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -19749,19 +19649,9 @@
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141671628",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:00pm",
             "showtime_id": "141671627",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142626195",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -19812,11 +19702,6 @@
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142646874",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
             "showtime_id": "141586049",
             "format": "Laser at AMC"
@@ -19869,11 +19754,6 @@
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142646874",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
             "showtime_id": "141586049",
             "format": "Laser at AMC"
@@ -19922,19 +19802,9 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141526150",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:25pm",
             "showtime_id": "141526151",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142543124",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
@@ -19984,19 +19854,9 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141526150",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:25pm",
             "showtime_id": "141526151",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142543124",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
@@ -20142,11 +20002,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141673066",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:45pm",
             "showtime_id": "142556438",
             "format": "Laser at AMC"
@@ -20222,11 +20077,6 @@
             "showtime": "10:45pm",
             "showtime_id": "141673110",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141673066",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "5:45pm",
@@ -20317,11 +20167,6 @@
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141689266",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "142670272",
             "format": "Laser at AMC"
@@ -20397,11 +20242,6 @@
             "showtime": "6:00pm",
             "showtime_id": "141689294",
             "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "141689266",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
@@ -20522,11 +20362,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142525283",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:50pm",
             "showtime_id": "142669688",
             "format": "Laser at AMC"
@@ -20558,11 +20393,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142525283",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "5:50pm",
             "showtime_id": "142669688",
@@ -20672,11 +20502,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141657481",
-            "format": "SCREENX at AMC"
-          },
-          {
             "showtime": "8:30pm",
             "showtime_id": "141657482",
             "format": "SCREENX at AMC"
@@ -20707,11 +20532,6 @@
             "showtime": "10:45pm",
             "showtime_id": "141657474",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141657481",
-            "format": "SCREENX at AMC"
           },
           {
             "showtime": "8:30pm",
@@ -20927,11 +20747,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142620903",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "141668598",
             "format": "Laser at AMC"
@@ -20962,11 +20777,6 @@
             "showtime": "10:15pm",
             "showtime_id": "141668644",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142620903",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
@@ -21002,19 +20812,9 @@
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141572281",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141572280",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142513348",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
@@ -21034,19 +20834,9 @@
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141572281",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141572280",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142513348",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
@@ -21080,11 +20870,6 @@
             "showtime": "6:30pm",
             "showtime_id": "141689478",
             "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142630998",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
@@ -21122,11 +20907,6 @@
             "showtime": "6:30pm",
             "showtime_id": "141689478",
             "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142630998",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
@@ -21172,11 +20952,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141644309",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
             "showtime_id": "142618247",
             "format": "Laser at AMC"
@@ -21207,11 +20982,6 @@
             "showtime": "9:45pm",
             "showtime_id": "141644294",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141644309",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -21292,11 +21062,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141671534",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:30pm",
             "showtime_id": "142541651",
             "format": "Laser at AMC"
@@ -21349,11 +21114,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141671534",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:30pm",
             "showtime_id": "142541651",
             "format": "Laser at AMC"
@@ -21392,11 +21152,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:25pm",
-            "showtime_id": "141696196",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:55pm",
             "showtime_id": "142617630",
             "format": "Laser at AMC"
@@ -21428,11 +21183,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:25pm",
-            "showtime_id": "141696196",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "5:55pm",
             "showtime_id": "142617630",
@@ -21492,19 +21242,9 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141669152",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141669153",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142668740",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
@@ -21549,19 +21289,9 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141669152",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141669153",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142668740",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
@@ -21591,11 +21321,6 @@
       "show_date": "2026-04-26",
       "movies": {
         "Michael": [
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142645669",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:15pm",
             "showtime_id": "142645569",
@@ -21628,11 +21353,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142645669",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:15pm",
             "showtime_id": "142645569",
@@ -21671,11 +21391,6 @@
       "show_date": "2026-04-26",
       "movies": {
         "Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142535489",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:45pm",
             "showtime_id": "142535392",
@@ -21718,11 +21433,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142535489",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:45pm",
             "showtime_id": "142535392",
@@ -21832,11 +21542,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141564382",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "141564383",
             "format": "IMAX with Laser at AMC"
@@ -21860,11 +21565,6 @@
             "showtime": "7:45pm",
             "showtime_id": "141564422",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142668425",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
@@ -21884,11 +21584,6 @@
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141564382",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "141564383",
             "format": "IMAX with Laser at AMC"
@@ -21912,11 +21607,6 @@
             "showtime": "7:45pm",
             "showtime_id": "141564422",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142668425",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
@@ -21941,11 +21631,6 @@
       "show_date": "2026-04-26",
       "movies": {
         "Michael": [
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142570849",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:00pm",
             "showtime_id": "141570968",
@@ -21973,11 +21658,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142570849",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:00pm",
             "showtime_id": "141570968",
@@ -22032,11 +21712,6 @@
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141667833",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "7:00pm",
             "showtime_id": "142630389",
             "format": "Laser at AMC"
@@ -22077,11 +21752,6 @@
             "showtime": "9:45pm",
             "showtime_id": "142630293",
             "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141667833",
-            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:00pm",
@@ -22197,11 +21867,6 @@
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142615038",
-            "format": "AMC Artisan Films"
-          },
-          {
             "showtime": "6:45pm",
             "showtime_id": "141661282",
             "format": "AMC Artisan Films"
@@ -22217,11 +21882,6 @@
             "showtime": "9:30pm",
             "showtime_id": "142043842",
             "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142615038",
-            "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
@@ -22262,11 +21922,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141593298",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
             "showtime_id": "142579926",
             "format": "Laser at AMC"
@@ -22302,11 +21957,6 @@
             "showtime": "9:00pm",
             "showtime_id": "141593245",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141593298",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
@@ -22367,11 +22017,6 @@
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142666680",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "8:00pm",
             "showtime_id": "142628980",
             "format": "Laser at AMC"
@@ -22417,11 +22062,6 @@
             "showtime": "10:15pm",
             "showtime_id": "141615677",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142666680",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
@@ -22502,11 +22142,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "141560671",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "6:15pm",
             "showtime_id": "142590265",
             "format": "Laser at AMC"
@@ -22532,11 +22167,6 @@
             "showtime": "10:45pm",
             "showtime_id": "141560692",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:20pm",
-            "showtime_id": "141560671",
-            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "6:15pm",
@@ -22565,11 +22195,6 @@
             "showtime": "6:00pm",
             "showtime_id": "142621578",
             "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142621778",
-            "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
@@ -22607,11 +22232,6 @@
             "showtime": "6:00pm",
             "showtime_id": "142621578",
             "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142621778",
-            "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
@@ -22672,11 +22292,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142650503",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:45pm",
             "showtime_id": "142650528",
             "format": "Laser at AMC"
@@ -22719,11 +22334,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142650503",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:45pm",
             "showtime_id": "142650528",
             "format": "Laser at AMC"
@@ -22751,11 +22361,6 @@
       "show_date": "2026-04-26",
       "movies": {
         "Michael": [
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "141692802",
-            "format": "IMAX with Laser at AMC"
-          },
           {
             "showtime": "8:45pm",
             "showtime_id": "141692803",
@@ -22798,11 +22403,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "141692802",
-            "format": "IMAX with Laser at AMC"
-          },
           {
             "showtime": "8:45pm",
             "showtime_id": "141692803",
@@ -22862,11 +22462,6 @@
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141687085",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:50pm",
             "showtime_id": "141687130",
             "format": "Laser at AMC"
@@ -22917,11 +22512,6 @@
             "showtime": "10:00pm",
             "showtime_id": "141696963",
             "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141687085",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "5:50pm",
@@ -22987,11 +22577,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141573798",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141573795",
             "format": "XL at AMC"
@@ -23027,11 +22612,6 @@
             "showtime": "7:15pm",
             "showtime_id": "141573645",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141573798",
-            "format": "XL at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -23072,29 +22652,14 @@
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141684775",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "9:30pm",
             "showtime_id": "141684776",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141684812",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "6:40pm",
             "showtime_id": "141684817",
             "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "5:20pm",
-            "showtime_id": "141684866",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -23139,29 +22704,14 @@
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141684775",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "9:30pm",
             "showtime_id": "141684776",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141684812",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "6:40pm",
             "showtime_id": "141684817",
             "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "5:20pm",
-            "showtime_id": "141684866",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -23202,11 +22752,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141665522",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:30pm",
             "showtime_id": "141665521",
             "format": "IMAX with Laser at AMC"
@@ -23220,11 +22765,6 @@
             "showtime": "10:30pm",
             "showtime_id": "141665539",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:10pm",
-            "showtime_id": "141665479",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
@@ -23234,11 +22774,6 @@
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "141665522",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:30pm",
             "showtime_id": "141665521",
             "format": "IMAX with Laser at AMC"
@@ -23252,11 +22787,6 @@
             "showtime": "10:30pm",
             "showtime_id": "141665539",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:10pm",
-            "showtime_id": "141665479",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
@@ -23272,11 +22802,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141687772",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:40pm",
             "showtime_id": "141687775",
             "format": "IMAX with Laser at AMC"
@@ -23290,16 +22815,6 @@
             "showtime": "10:30pm",
             "showtime_id": "141687738",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141687728",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142624954",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -23319,11 +22834,6 @@
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141687772",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "9:40pm",
             "showtime_id": "141687775",
             "format": "IMAX with Laser at AMC"
@@ -23337,16 +22847,6 @@
             "showtime": "10:30pm",
             "showtime_id": "141687738",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141687728",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "142624954",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -23372,19 +22872,9 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141606325",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "9:00pm",
             "showtime_id": "141606313",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142574616",
-            "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:15pm",
@@ -23404,19 +22894,9 @@
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "141606325",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "9:00pm",
             "showtime_id": "141606313",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142574616",
-            "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:15pm",
@@ -23442,29 +22922,14 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141688742",
-            "format": "IMAX at AMC"
-          },
-          {
             "showtime": "9:45pm",
             "showtime_id": "141688741",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141688800",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "141688799",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142630642",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
@@ -23479,29 +22944,14 @@
         ],
         "The Devil Wears Prada 2 vs. Michael": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "141688742",
-            "format": "IMAX at AMC"
-          },
-          {
             "showtime": "9:45pm",
             "showtime_id": "141688741",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "141688800",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "141688799",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142630642",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
@@ -23642,11 +23092,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141685003",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:15pm",
             "showtime_id": "141685032",
             "format": "Laser at AMC"
@@ -23668,11 +23113,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141685003",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:15pm",
             "showtime_id": "141685032",
@@ -23842,11 +23282,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "142621307",
-            "format": "AMC Artisan Films"
-          },
-          {
             "showtime": "6:25pm",
             "showtime_id": "141562576",
             "format": "AMC Artisan Films"
@@ -23877,11 +23312,6 @@
             "showtime": "9:00pm",
             "showtime_id": "141562617",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "142621307",
-            "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:25pm",
@@ -23972,11 +23402,6 @@
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "142570397",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
             "showtime_id": "141696395",
             "format": "Laser at AMC"
@@ -24027,11 +23452,6 @@
             "showtime": "9:35pm",
             "showtime_id": "142570283",
             "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142570397",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
@@ -24112,11 +23532,6 @@
       "movies": {
         "Michael": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "142619815",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "142619805",
             "format": "Laser at AMC"
@@ -24153,11 +23568,6 @@
           }
         ],
         "The Devil Wears Prada 2 vs. Michael": [
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "142619815",
-            "format": "Laser at AMC"
-          },
           {
             "showtime": "6:00pm",
             "showtime_id": "142619805",
@@ -24227,11 +23637,6 @@
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142568327",
-            "format": "AMC Artisan Films"
-          },
-          {
             "showtime": "8:45pm",
             "showtime_id": "142568161",
             "format": "AMC Artisan Films"
@@ -24262,11 +23667,6 @@
             "showtime": "8:00pm",
             "showtime_id": "141572430",
             "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142568327",
-            "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:45pm",
@@ -24302,11 +23702,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "141534334",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141534335",
             "format": "XL at AMC"
@@ -24337,11 +23732,6 @@
             "showtime": "9:30pm",
             "showtime_id": "141534329",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "141534334",
-            "format": "XL at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -24375,11 +23765,6 @@
             "showtime": "10:15pm",
             "showtime_id": "141565732",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142537590",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
@@ -24422,11 +23807,6 @@
             "showtime": "10:15pm",
             "showtime_id": "141565732",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142537590",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
@@ -24482,11 +23862,6 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141774002",
-            "format": "SCREENX at AMC"
-          },
-          {
             "showtime": "8:15pm",
             "showtime_id": "141774003",
             "format": "SCREENX at AMC"
@@ -24532,11 +23907,6 @@
             "showtime": "9:45pm",
             "showtime_id": "141773963",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "141774002",
-            "format": "SCREENX at AMC"
           },
           {
             "showtime": "8:15pm",
@@ -24712,11 +24082,6 @@
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "142548799",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
             "showtime_id": "142669744",
             "format": "Laser at AMC"
@@ -24752,11 +24117,6 @@
             "showtime": "9:30pm",
             "showtime_id": "141692620",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "142548799",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
