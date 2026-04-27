@@ -18955,3 +18955,894 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC Headquarters Plaza 10: No seat map for Michael Laser at AMC @ 10:30pm (https://www.amctheatres.com/showtimes/141610486/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 10:45pm (https://www.amctheatres.com/showtimes/142635213/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 10:20pm (https://www.amctheatres.com/showtimes/142526480/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 9:45pm (https://www.amctheatres.com/showtimes/142664087/seats); AMC Highwoods 20: No seat map for Michael Laser at AMC @ 9:20pm (https://www.amctheatres.com/showtimes/141622405/seats); AMC Majestic 12: No seat map for Michael BigD at AMC @ 10:15pm (https://www.amctheatres.com/showtimes/141690939/seats); AMC Majestic 12: No seat map for Michael AMC Artisan Films @ 9:15pm (https://www.amctheatres.com/showtimes/141690980/seats); AMC Marple 10: No seat map for Michael Laser at AMC @ 10:35pm (https://www.amctheatres.com/showtimes/142667931/seats); AMC Marple 10: No seat map for Michael Laser at AMC @ 10:30pm (https://www.amctheatres.com/showtimes/141681541/seats); AMC Mobile 16: No seat map for Michael AMC Artisan Films @ 8:10pm (https://www.amctheatres.com/showtimes/142667528/seats)
 
 ---
+
+## 2026-04-27 04:20 — PT Group
+
+**Polymarket movies tracked:** Michael, The Devil Wears Prada 2, The Devil Wears Prada 2 vs. Michael
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC The Grove 14 | Michael | IMAX with Laser at AMC | 10:15pm | 57.6% | -75 min |
+| AMC The Grove 14 | Michael | IMAX with Laser at AMC | 7:00pm | 91.1% | 120 min |
+| AMC The Grove 14 | Michael | Dolby Cinema at AMC | 8:00pm | 89.3% | 60 min |
+| AMC The Grove 14 | Michael | PRIME at AMC | 8:30pm | 86.7% | 30 min |
+| AMC The Grove 14 | Michael | XL at AMC | 9:45pm | 11.1% | -45 min |
+| AMC The Grove 14 | Michael | XL at AMC | 6:30pm | 73.4% | 150 min |
+| AMC The Grove 14 | Michael | Laser at AMC | 9:15pm | 35.6% | -15 min |
+| AMC The Grove 14 | Michael | Laser at AMC | 6:00pm | 53.9% | 180 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:15pm | 57.6% | -75 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:00pm | 91.1% | 120 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 8:00pm | 89.3% | 60 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 8:30pm | 86.7% | 30 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 9:45pm | 11.1% | -45 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 6:30pm | 73.4% | 150 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 35.6% | -15 min |
+| AMC The Grove 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 53.9% | 180 min |
+| AMC Century City 15 | Michael | IMAX with Laser at AMC | 11:00pm | 11.6% | -120 min |
+| AMC Century City 15 | Michael | IMAX with Laser at AMC | 7:45pm | 92.5% | 75 min |
+| AMC Century City 15 | Michael | Dolby Cinema at AMC | 10:15pm | 37.3% | -75 min |
+| AMC Century City 15 | Michael | Dolby Cinema at AMC | 7:00pm | 85.4% | 120 min |
+| AMC Century City 15 | Michael | PRIME at AMC | 10:30pm | 3.9% | -90 min |
+| AMC Century City 15 | Michael | PRIME at AMC | 7:15pm | 77.3% | 105 min |
+| AMC Century City 15 | Michael | XL at AMC | 8:45pm | 48.2% | 15 min |
+| AMC Century City 15 | Michael | Laser at AMC | 9:30pm | 6% | -30 min |
+| AMC Century City 15 | Michael | Laser at AMC | 6:15pm | 42.1% | 165 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 11:00pm | 11.6% | -120 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:45pm | 92.5% | 75 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 37.3% | -75 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 85.4% | 120 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 10:30pm | 3.9% | -90 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 7:15pm | 77.3% | 105 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:45pm | 48.2% | 15 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 6% | -30 min |
+| AMC Century City 15 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 42.1% | 165 min |
+| AMC Burbank 16 | Michael | IMAX with Laser at AMC | 10:30pm | 11.8% | -90 min |
+| AMC Burbank 16 | Michael | IMAX with Laser at AMC | 7:30pm | 77% | 90 min |
+| AMC Burbank 16 | Michael | Dolby Cinema at AMC | 9:30pm | 59.8% | -30 min |
+| AMC Burbank 16 | Michael | Dolby Cinema at AMC | 6:30pm | 77% | 150 min |
+| AMC Burbank 16 | Michael | PRIME at AMC | 9:00pm | 51.6% | 0 min |
+| AMC Burbank 16 | Michael | PRIME at AMC | 6:00pm | 72.8% | 180 min |
+| AMC Burbank 16 | Michael | XL at AMC | 8:30pm | 43% | 30 min |
+| AMC Burbank 16 | Michael | SCREENX at AMC | 10:00pm | 8.4% | -60 min |
+| AMC Burbank 16 | Michael | SCREENX at AMC | 7:00pm | 59% | 120 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 11.8% | -90 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:30pm | 77% | 90 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:30pm | 59.8% | -30 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 77% | 150 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 9:00pm | 51.6% | 0 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 6:00pm | 72.8% | 180 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:30pm | 43% | 30 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | SCREENX at AMC | 10:00pm | 8.4% | -60 min |
+| AMC Burbank 16 | The Devil Wears Prada 2 vs. Michael | SCREENX at AMC | 7:00pm | 59% | 120 min |
+| AMC The Regency 20 | Michael | Dolby Cinema at AMC | 9:10pm | 50% | -7 min |
+| AMC The Regency 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:10pm | 50% | -7 min |
+| AMC Santa Monica 7 | Michael | Laser at AMC | 10:10pm | 12.3% | -69 min |
+| AMC Santa Monica 7 | Michael | Laser at AMC | 9:15pm | 24.4% | -14 min |
+| AMC Santa Monica 7 | Michael | Laser at AMC | 7:40pm | 70.8% | 80 min |
+| AMC Santa Monica 7 | Michael | Laser at AMC | 7:00pm | 74.1% | 120 min |
+| AMC Santa Monica 7 | Michael | Laser at AMC | 6:00pm | 74.4% | 180 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:10pm | 12.3% | -69 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 24.4% | -14 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:40pm | 70.8% | 80 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 74.1% | 120 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 74.4% | 180 min |
+| AMC The Americana at Brand 18 | Michael | IMAX with Laser at AMC | 11:00pm | 11.1% | -119 min |
+| AMC The Americana at Brand 18 | Michael | IMAX with Laser at AMC | 7:45pm | 96.3% | 75 min |
+| AMC The Americana at Brand 18 | Michael | Dolby Cinema at AMC | 10:30pm | 28.8% | -89 min |
+| AMC The Americana at Brand 18 | Michael | Dolby Cinema at AMC | 7:15pm | 81.8% | 105 min |
+| AMC The Americana at Brand 18 | Michael | PRIME at AMC | 9:45pm | 23.9% | -44 min |
+| AMC The Americana at Brand 18 | Michael | PRIME at AMC | 6:30pm | 67.9% | 150 min |
+| AMC The Americana at Brand 18 | Michael | XL at AMC | 9:15pm | 18.3% | -14 min |
+| AMC The Americana at Brand 18 | Michael | XL at AMC | 6:00pm | 49% | 180 min |
+| AMC The Americana at Brand 18 | Michael | Laser at AMC | 8:15pm | 66.1% | 45 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 11:00pm | 11.1% | -119 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:45pm | 96.3% | 75 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:30pm | 28.8% | -89 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:15pm | 81.8% | 105 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 9:45pm | 23.9% | -44 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 6:30pm | 67.9% | 150 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 9:15pm | 18.3% | -14 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 6:00pm | 49% | 180 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 66.1% | 45 min |
+| AMC Lakewood Mall 12 | Michael | Laser at AMC | 10:00pm | 8.7% | -57 min |
+| AMC Lakewood Mall 12 | Michael | Laser at AMC | 9:30pm | 33% | -27 min |
+| AMC Lakewood Mall 12 | Michael | Laser at AMC | 8:15pm | 72.2% | 47 min |
+| AMC Lakewood Mall 12 | Michael | Laser at AMC | 7:15pm | 75.6% | 107 min |
+| AMC Lakewood Mall 12 | Michael | Laser at AMC | 6:15pm | 63.7% | 167 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 8.7% | -57 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 33% | -27 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 72.2% | 47 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 75.6% | 107 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 63.7% | 167 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 11:00pm | 8.6% | -117 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 10:15pm | 23.4% | -72 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 9:05pm | 79.3% | -2 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 8:00pm | 81% | 62 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 7:00pm | 95.7% | 122 min |
+| AMC DINE-IN Marina 6 | Michael | Dine-In Delivery to Seat | 6:00pm | 96.6% | 182 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 11:00pm | 8.6% | -117 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 10:15pm | 23.4% | -72 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 9:05pm | 79.3% | -2 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 8:00pm | 81% | 62 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 7:00pm | 95.7% | 122 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 6:00pm | 96.6% | 182 min |
+| AMC Brentwood 14 | Michael | IMAX at AMC | 9:00pm | 22.9% | 2 min |
+| AMC Brentwood 14 | Michael | IMAX at AMC | 6:00pm | 56.5% | 182 min |
+| AMC Brentwood 14 | Michael | Dolby Cinema at AMC | 8:00pm | 70.9% | 62 min |
+| AMC Brentwood 14 | Michael | Laser at AMC | 8:30pm | 14.2% | 32 min |
+| AMC Brentwood 14 | Michael | Laser at AMC | 7:00pm | 16.7% | 122 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 vs. Michael | IMAX at AMC | 9:00pm | 22.9% | 2 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 vs. Michael | IMAX at AMC | 6:00pm | 56.5% | 182 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 8:00pm | 70.9% | 62 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 14.2% | 32 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 16.7% | 122 min |
+| AMC DINE-IN Fullerton 20 | Michael | Laser at AMC | 10:15pm | 7.8% | -71 min |
+| AMC DINE-IN Fullerton 20 | Michael | Laser at AMC | 8:30pm | 61.2% | 33 min |
+| AMC DINE-IN Fullerton 20 | Michael | Laser at AMC | 7:30pm | 70% | 93 min |
+| AMC DINE-IN Fullerton 20 | Michael | Laser at AMC | 7:00pm | 67.2% | 123 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 10:30pm | 1.4% | -86 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 10:05pm | 25% | -61 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 9:45pm | 19% | -41 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 9:15pm | 56.5% | -11 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 6:15pm | 78.6% | 168 min |
+| AMC DINE-IN Fullerton 20 | Michael | Dine-In Delivery to Seat | 6:00pm | 87% | 183 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 7.8% | -71 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 61.2% | 33 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 70% | 93 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 67.2% | 123 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 10:30pm | 1.4% | -86 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 10:05pm | 25% | -61 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 9:45pm | 19% | -41 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 9:15pm | 56.5% | -11 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 6:15pm | 78.6% | 168 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 6:00pm | 87% | 183 min |
+| AMC Orange 30 | Michael | IMAX with Laser at AMC | 11:00pm | 3.3% | -116 min |
+| AMC Orange 30 | Michael | IMAX with Laser at AMC | 7:35pm | 81.1% | 88 min |
+| AMC Orange 30 | Michael | Dolby Cinema at AMC | 10:15pm | 23.9% | -71 min |
+| AMC Orange 30 | Michael | Dolby Cinema at AMC | 6:45pm | 77.9% | 138 min |
+| AMC Orange 30 | Michael | XL at AMC | 8:25pm | 20.4% | 37 min |
+| AMC Orange 30 | Michael | Laser at AMC | 10:30pm | 4% | -86 min |
+| AMC Orange 30 | Michael | Laser at AMC | 9:30pm | 5.3% | -26 min |
+| AMC Orange 30 | Michael | Laser at AMC | 8:45pm | 47.7% | 18 min |
+| AMC Orange 30 | Michael | Laser at AMC | 7:10pm | 70.8% | 112 min |
+| AMC Orange 30 | Michael | Laser at AMC | 6:00pm | 18.3% | 183 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 11:00pm | 3.3% | -116 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:35pm | 81.1% | 88 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 23.9% | -71 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:45pm | 77.9% | 138 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:25pm | 20.4% | 37 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 4% | -86 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 5.3% | -26 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 47.7% | 18 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:10pm | 70.8% | 112 min |
+| AMC Orange 30 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 18.3% | 183 min |
+| AMC Tustin 14 @ The District | Michael | IMAX with Laser at AMC | 10:30pm | 25.7% | -86 min |
+| AMC Tustin 14 @ The District | Michael | IMAX with Laser at AMC | 7:15pm | 84% | 108 min |
+| AMC Tustin 14 @ The District | Michael | Dolby Cinema at AMC | 8:00pm | 74.7% | 63 min |
+| AMC Tustin 14 @ The District | Michael | PRIME at AMC | 10:15pm | 2.6% | -71 min |
+| AMC Tustin 14 @ The District | Michael | Laser at AMC | 9:45pm | 18.7% | -41 min |
+| AMC Tustin 14 @ The District | Michael | Laser at AMC | 9:00pm | 53.2% | 3 min |
+| AMC Tustin 14 @ The District | Michael | Laser at AMC | 6:30pm | 72.7% | 153 min |
+| AMC Tustin 14 @ The District | Michael | Laser at AMC | 5:45pm | 76.2% | 198 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 26.4% | -86 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:15pm | 84% | 108 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 8:00pm | 74.7% | 63 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 10:15pm | 2.6% | -71 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:45pm | 18.7% | -41 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 53.2% | 3 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:30pm | 72.7% | 153 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 76.2% | 198 min |
+| AMC Marina Pacifica 12 | Michael | Laser at AMC | 10:00pm | 12.8% | -56 min |
+| AMC Marina Pacifica 12 | Michael | Laser at AMC | 9:15pm | 66.7% | -11 min |
+| AMC Marina Pacifica 12 | Michael | Laser at AMC | 8:00pm | 81.3% | 63 min |
+| AMC Marina Pacifica 12 | Michael | Laser at AMC | 7:00pm | 87.9% | 123 min |
+| AMC Marina Pacifica 12 | Michael | Laser at AMC | 6:25pm | 86.3% | 158 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 12.8% | -56 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 66.7% | -11 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 81.3% | 63 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 87.9% | 123 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:25pm | 86.3% | 158 min |
+| AMC Puente Hills 20 | Michael | IMAX with Laser at AMC | 9:45pm | 47.2% | -41 min |
+| AMC Puente Hills 20 | Michael | IMAX with Laser at AMC | 6:30pm | 72.2% | 154 min |
+| AMC Puente Hills 20 | Michael | Dolby Cinema at AMC | 10:45pm | 15.9% | -101 min |
+| AMC Puente Hills 20 | Michael | Dolby Cinema at AMC | 7:30pm | 73.8% | 93 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 10:30pm | 4.4% | -86 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 10:15pm | 0% | -71 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 10:00pm | 0% | -56 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 9:00pm | 25.1% | 3 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 8:30pm | 53.2% | 33 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 7:45pm | 63.5% | 78 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 7:00pm | 53.3% | 123 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 6:55pm | 44% | 128 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 6:50pm | 40% | 134 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 6:45pm | 53.3% | 139 min |
+| AMC Puente Hills 20 | Michael | Laser at AMC | 5:45pm | 57.8% | 199 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:45pm | 47.2% | -41 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:30pm | 72.2% | 154 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:45pm | 15.9% | -101 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:30pm | 73.8% | 93 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 4.4% | -86 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 0% | -71 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 0% | -56 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 25.1% | 3 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 53.2% | 33 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 63.5% | 78 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 53.3% | 123 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:55pm | 44% | 128 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:50pm | 40% | 134 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:45pm | 53.3% | 139 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 57.8% | 199 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 10:15pm | 26.5% | -70 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 9:30pm | 76% | -25 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 8:45pm | 82.9% | 19 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 7:00pm | 89.5% | 124 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 6:15pm | 78.8% | 169 min |
+| AMC Montebello 10 | Michael | Laser at AMC | 5:50pm | 77% | 195 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 26.5% | -70 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 76% | -25 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 82.9% | 19 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 89.5% | 124 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 78.8% | 169 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:50pm | 77% | 195 min |
+| AMC Norwalk 20 | Michael | IMAX at AMC | 10:45pm | 9.7% | -101 min |
+| AMC Norwalk 20 | Michael | IMAX at AMC | 7:30pm | 73.6% | 93 min |
+| AMC Norwalk 20 | Michael | Dolby Cinema at AMC | 9:45pm | 34.7% | -41 min |
+| AMC Norwalk 20 | Michael | Dolby Cinema at AMC | 6:30pm | 78.2% | 154 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 10:40pm | 16.7% | -96 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 10:15pm | 2.4% | -71 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 10:10pm | 27.8% | -66 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 9:55pm | 19% | -51 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 9:15pm | 45.9% | -11 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 8:45pm | 62.9% | 18 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 8:00pm | 74.1% | 63 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 7:30pm | 91.9% | 93 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 6:35pm | 80% | 149 min |
+| AMC Norwalk 20 | Michael | Laser at AMC | 6:00pm | 73% | 184 min |
+| AMC Norwalk 20 | Michael | English Spoken with Spanish Subtitles | 6:00pm | 72.9% | 184 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | IMAX at AMC | 10:45pm | 9.7% | -101 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | IMAX at AMC | 7:30pm | 73.6% | 93 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 35.9% | -41 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 78.2% | 154 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:40pm | 16.7% | -96 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 2.4% | -71 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:10pm | 27.8% | -66 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:55pm | 19% | -51 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 45.9% | -11 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 62.9% | 18 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 74.1% | 63 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 91.9% | 93 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:35pm | 80% | 149 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 73% | 184 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 6:00pm | 72.9% | 184 min |
+| AMC La Mirada 7 | Michael | Laser at AMC | 10:00pm | 3.4% | -55 min |
+| AMC La Mirada 7 | Michael | Laser at AMC | 9:00pm | 31.9% | 4 min |
+| AMC La Mirada 7 | Michael | Laser at AMC | 7:00pm | 81% | 124 min |
+| AMC La Mirada 7 | Michael | Laser at AMC | 6:00pm | 62.8% | 184 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 3.4% | -55 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 31.9% | 4 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 81% | 124 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 62.8% | 184 min |
+| AMC Metreon 16 | Michael | IMAX with Laser at AMC | 9:45pm | 10.3% | -40 min |
+| AMC Metreon 16 | Michael | IMAX with Laser at AMC | 6:30pm | 35.1% | 154 min |
+| AMC Metreon 16 | Michael | Dolby Cinema at AMC | 10:45pm | 8.7% | -100 min |
+| AMC Metreon 16 | Michael | Dolby Cinema at AMC | 7:30pm | 58.4% | 94 min |
+| AMC Metreon 16 | Michael | Laser at AMC | 6:00pm | 17.1% | 184 min |
+| AMC Metreon 16 | Michael | SCREENX at AMC | 8:30pm | 22% | 34 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:45pm | 10.3% | -40 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:30pm | 35.1% | 154 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:45pm | 8.7% | -100 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:30pm | 58.4% | 94 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 17.1% | 184 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 vs. Michael | SCREENX at AMC | 8:30pm | 22% | 34 min |
+| AMC Bay Street 16 | Michael | IMAX with Laser at AMC | 9:45pm | 24.7% | -38 min |
+| AMC Bay Street 16 | Michael | IMAX with Laser at AMC | 6:40pm | 73.3% | 146 min |
+| AMC Bay Street 16 | Michael | Dolby Cinema at AMC | 10:30pm | 9.7% | -83 min |
+| AMC Bay Street 16 | Michael | Dolby Cinema at AMC | 7:20pm | 81.1% | 106 min |
+| AMC Bay Street 16 | Michael | XL at AMC | 8:00pm | 23.3% | 66 min |
+| AMC Bay Street 16 | Michael | Laser at AMC | 7:45pm | 46.6% | 81 min |
+| AMC Bay Street 16 | Michael | Laser at AMC | 5:45pm | 35.3% | 201 min |
+| AMC Bay Street 16 | Michael | English Spoken with Spanish Subtitles | 9:00pm | 3.9% | 6 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:45pm | 25.5% | -38 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:40pm | 73.3% | 146 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:30pm | 9.7% | -83 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:20pm | 81.1% | 106 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:00pm | 23.3% | 66 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 46.6% | 81 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 35.3% | 201 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 9:00pm | 3.9% | 6 min |
+| AMC Mercado 20 | Michael | IMAX with Laser at AMC | 9:00pm | 23.2% | 6 min |
+| AMC Mercado 20 | Michael | IMAX with Laser at AMC | 5:45pm | 53.1% | 201 min |
+| AMC Mercado 20 | Michael | Dolby Cinema at AMC | 10:00pm | 4.5% | -53 min |
+| AMC Mercado 20 | Michael | Dolby Cinema at AMC | 6:45pm | 47.7% | 141 min |
+| AMC Mercado 20 | Michael | Laser at AMC | 9:30pm | 16.3% | -23 min |
+| AMC Mercado 20 | Michael | Laser at AMC | 8:00pm | 62.8% | 66 min |
+| AMC Mercado 20 | Michael | Laser at AMC | 7:15pm | 64.2% | 111 min |
+| AMC Mercado 20 | Michael | Open Caption (On-screen Subtitles) | 10:30pm | 2.8% | -83 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:00pm | 24.1% | 6 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 5:45pm | 53.1% | 201 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:00pm | 4.5% | -53 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:45pm | 47.7% | 141 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 16.3% | -23 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 62.8% | 66 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 64.2% | 111 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 10:30pm | 2.8% | -83 min |
+| AMC Saratoga 14 | Michael | IMAX with Laser at AMC | 9:15pm | 5.7% | -8 min |
+| AMC Saratoga 14 | Michael | IMAX with Laser at AMC | 6:00pm | 30.4% | 186 min |
+| AMC Saratoga 14 | Michael | Dolby Cinema at AMC | 8:15pm | 16.7% | 51 min |
+| AMC Saratoga 14 | Michael | Laser at AMC | 8:45pm | 1.9% | 21 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:15pm | 5.7% | -8 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:00pm | 30.4% | 186 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 8:15pm | 16.7% | 51 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 1.9% | 21 min |
+| AMC Eastridge 15 | Michael | IMAX with Laser at AMC | 8:00pm | 46.3% | 66 min |
+| AMC Eastridge 15 | Michael | Dolby Cinema at AMC | 10:15pm | 15.9% | -68 min |
+| AMC Eastridge 15 | Michael | Dolby Cinema at AMC | 7:00pm | 60% | 126 min |
+| AMC Eastridge 15 | Michael | Laser at AMC | 9:15pm | 3.8% | -8 min |
+| AMC Eastridge 15 | Michael | Laser at AMC | 8:45pm | 13.2% | 21 min |
+| AMC Eastridge 15 | Michael | Laser at AMC | 6:00pm | 19.8% | 186 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 8:00pm | 46.3% | 66 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 15.9% | -68 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 60% | 126 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 3.8% | -8 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 13.2% | 21 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 19.8% | 186 min |
+| AMC Kabuki 8 | Michael | Laser at AMC | 9:00pm | 28.4% | 7 min |
+| AMC Kabuki 8 | Michael | Laser at AMC | 7:15pm | 8.9% | 112 min |
+| AMC Kabuki 8 | Michael | Laser at AMC | 6:00pm | 37.6% | 187 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 28.4% | 7 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 8.9% | 112 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 37.6% | 187 min |
+| AMC NewPark 12 | Michael | IMAX with Laser at AMC | 9:30pm | 15.8% | -22 min |
+| AMC NewPark 12 | Michael | IMAX with Laser at AMC | 6:00pm | 48.1% | 187 min |
+| AMC NewPark 12 | Michael | Dolby Cinema at AMC | 7:00pm | 44.2% | 127 min |
+| AMC NewPark 12 | Michael | Laser at AMC | 10:00pm | 7% | -52 min |
+| AMC NewPark 12 | Michael | Laser at AMC | 9:00pm | 23.5% | 7 min |
+| AMC NewPark 12 | Michael | Laser at AMC | 8:00pm | 42.5% | 67 min |
+| AMC NewPark 12 | Michael | Open Caption (On-screen Subtitles) | 6:30pm | 28.4% | 157 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:30pm | 15.8% | -22 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:00pm | 48.1% | 187 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 44.2% | 127 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 7% | -52 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 23.5% | 7 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 42.5% | 67 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 6:30pm | 28.4% | 157 min |
+| AMC Sunnyvale 12 | Michael | IMAX with Laser at AMC | 10:45pm | 15.5% | -97 min |
+| AMC Sunnyvale 12 | Michael | IMAX with Laser at AMC | 7:30pm | 62.1% | 97 min |
+| AMC Sunnyvale 12 | Michael | Dolby Cinema at AMC | 9:45pm | 10.3% | -37 min |
+| AMC Sunnyvale 12 | Michael | Dolby Cinema at AMC | 6:30pm | 56.1% | 157 min |
+| AMC Sunnyvale 12 | Michael | Laser at AMC | 8:30pm | 39.3% | 37 min |
+| AMC Sunnyvale 12 | Michael | Laser at AMC | 7:00pm | 33.3% | 127 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:45pm | 15.5% | -97 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:30pm | 62.1% | 97 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 10.3% | -37 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 56.1% | 157 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 39.3% | 37 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 33.3% | 127 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 9:00pm | 19.8% | 7 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 8:30pm | 24% | 37 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 8:15pm | 59.2% | 52 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 7:30pm | 71.8% | 97 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 7:00pm | 72.8% | 127 min |
+| AMC Fashion Valley 18 | Michael | Laser at AMC | 5:55pm | 62.8% | 192 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 23.3% | 7 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 24% | 37 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 59.2% | 52 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 71.8% | 97 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 72.8% | 127 min |
+| AMC Fashion Valley 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:55pm | 62.8% | 192 min |
+| AMC Mission Valley 20 | Michael | IMAX with Laser at AMC | 9:15pm | 26.4% | -7 min |
+| AMC Mission Valley 20 | Michael | IMAX with Laser at AMC | 6:00pm | 67% | 187 min |
+| AMC Mission Valley 20 | Michael | Dolby Cinema at AMC | 10:15pm | 31.7% | -67 min |
+| AMC Mission Valley 20 | Michael | Dolby Cinema at AMC | 7:00pm | 87.8% | 127 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 10:30pm | 5.6% | -82 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 9:45pm | 3.1% | -37 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 8:30pm | 28.6% | 37 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 8:15pm | 12.5% | 52 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 7:30pm | 34.7% | 97 min |
+| AMC Mission Valley 20 | Michael | Laser at AMC | 6:30pm | 20.1% | 157 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:15pm | 26.4% | -7 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:00pm | 67% | 187 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 31.7% | -67 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 87.8% | 127 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 5.6% | -82 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:45pm | 3.1% | -37 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 28.6% | 37 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 12.5% | 52 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 34.7% | 97 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:30pm | 20.1% | 157 min |
+| AMC La Jolla 12 | Michael | Laser at AMC | 10:00pm | 1.4% | -52 min |
+| AMC La Jolla 12 | Michael | Laser at AMC | 9:30pm | 2.3% | -22 min |
+| AMC La Jolla 12 | Michael | Laser at AMC | 8:30pm | 31.9% | 37 min |
+| AMC La Jolla 12 | Michael | Laser at AMC | 7:30pm | 51% | 97 min |
+| AMC La Jolla 12 | Michael | Laser at AMC | 6:15pm | 69.8% | 172 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 1.4% | -52 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 2.3% | -22 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 31.9% | 37 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 51% | 97 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 69.8% | 172 min |
+| AMC Palm Promenade 24 | Michael | IMAX with Laser at AMC | 10:30pm | 7.4% | -82 min |
+| AMC Palm Promenade 24 | Michael | IMAX with Laser at AMC | 7:15pm | 72.7% | 112 min |
+| AMC Palm Promenade 24 | Michael | Dolby Cinema at AMC | 9:15pm | 34.8% | -7 min |
+| AMC Palm Promenade 24 | Michael | Dolby Cinema at AMC | 6:00pm | 76.8% | 187 min |
+| AMC Palm Promenade 24 | Michael | XL at AMC | 8:15pm | 27.6% | 52 min |
+| AMC Palm Promenade 24 | Michael | Laser at AMC | 10:00pm | 0% | -52 min |
+| AMC Palm Promenade 24 | Michael | Laser at AMC | 7:45pm | 54.5% | 82 min |
+| AMC Palm Promenade 24 | Michael | Laser at AMC | 7:30pm | 61.3% | 97 min |
+| AMC Palm Promenade 24 | Michael | Laser at AMC | 6:30pm | 71.2% | 157 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 7.4% | -82 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:15pm | 72.7% | 112 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:15pm | 34.8% | -7 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:00pm | 76.8% | 187 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:15pm | 27.6% | 52 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 0% | -52 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 54.5% | 82 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 61.3% | 97 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:30pm | 71.2% | 157 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 10:30pm | 13.8% | -81 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 9:45pm | 51.2% | -36 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 8:10pm | 80.5% | 58 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 7:40pm | 82.1% | 88 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 7:15pm | 84.6% | 113 min |
+| AMC Chula Vista 10 | Michael | Laser at AMC | 6:45pm | 83.7% | 143 min |
+| AMC Chula Vista 10 | Michael | AMC Artisan Films | 9:15pm | 17.9% | -6 min |
+| AMC Chula Vista 10 | Michael | AMC Artisan Films | 6:00pm | 58.5% | 188 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 13.8% | -81 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:45pm | 51.2% | -36 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:10pm | 80.5% | 58 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:40pm | 82.1% | 88 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 84.6% | 113 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:45pm | 83.7% | 143 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 9:15pm | 17.9% | -6 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 6:00pm | 58.5% | 188 min |
+| AMC Otay Ranch 12 | Michael | Dolby Cinema at AMC | 9:00pm | 36.6% | 8 min |
+| AMC Otay Ranch 12 | Michael | Dolby Cinema at AMC | 5:45pm | 74% | 203 min |
+| AMC Otay Ranch 12 | Michael | XL at AMC | 7:45pm | 13.8% | 83 min |
+| AMC Otay Ranch 12 | Michael | Laser at AMC | 8:30pm | 12.8% | 38 min |
+| AMC Otay Ranch 12 | Michael | Laser at AMC | 6:45pm | 26.8% | 143 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:00pm | 36.6% | 8 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 5:45pm | 74% | 203 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 7:45pm | 13.8% | 83 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 12.8% | 38 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:45pm | 26.8% | 143 min |
+| AMC Plaza Bonita 14 | Michael | IMAX with Laser at AMC | 8:45pm | 15.6% | 23 min |
+| AMC Plaza Bonita 14 | Michael | Dolby Cinema at AMC | 10:00pm | 25.6% | -51 min |
+| AMC Plaza Bonita 14 | Michael | Dolby Cinema at AMC | 6:45pm | 75.9% | 143 min |
+| AMC Plaza Bonita 14 | Michael | XL at AMC | 7:45pm | 13.2% | 83 min |
+| AMC Plaza Bonita 14 | Michael | Laser at AMC | 8:15pm | 9.9% | 53 min |
+| AMC Plaza Bonita 14 | Michael | Laser at AMC | 7:15pm | 31.7% | 113 min |
+| AMC Plaza Bonita 14 | Michael | Laser at AMC | 6:15pm | 21.4% | 173 min |
+| AMC Plaza Bonita 14 | Michael | English Spoken with Spanish Subtitles | 9:30pm | 2.1% | -21 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 8:45pm | 15.6% | 23 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:00pm | 25.6% | -51 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:45pm | 75.9% | 143 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 7:45pm | 13.2% | 83 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 9.9% | 53 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 31.7% | 113 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 21.4% | 173 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 9:30pm | 2.1% | -21 min |
+| AMC Poway 10 | Michael | Laser at AMC | 9:15pm | 10.7% | -4 min |
+| AMC Poway 10 | Michael | Laser at AMC | 8:30pm | 65.8% | 40 min |
+| AMC Poway 10 | Michael | Laser at AMC | 7:30pm | 67.7% | 100 min |
+| AMC Poway 10 | Michael | Laser at AMC | 6:30pm | 54.5% | 160 min |
+| AMC Poway 10 | Michael | Laser at AMC | 6:00pm | 59% | 190 min |
+| AMC Poway 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 10.7% | -4 min |
+| AMC Poway 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 65.8% | 40 min |
+| AMC Poway 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 67.7% | 100 min |
+| AMC Poway 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:30pm | 54.5% | 160 min |
+| AMC Poway 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 59% | 190 min |
+| AMC Pacific Place 11 | Michael | Open Caption (On-screen Subtitles) | 9:30pm | 8.2% | -19 min |
+| AMC Pacific Place 11 | Michael | AMC Artisan Films | 8:15pm | 9% | 55 min |
+| AMC Pacific Place 11 | Michael | AMC Artisan Films | 6:45pm | 11% | 145 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 9:30pm | 8.2% | -19 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:15pm | 9% | 55 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 6:45pm | 11% | 145 min |
+| AMC UTC 14 | Michael | Dolby Cinema at AMC | 10:45pm | 3.7% | -94 min |
+| AMC UTC 14 | Michael | Dolby Cinema at AMC | 7:30pm | 77.1% | 100 min |
+| AMC UTC 14 | Michael | PRIME at AMC | 9:45pm | 7.3% | -34 min |
+| AMC UTC 14 | Michael | PRIME at AMC | 6:30pm | 57.3% | 160 min |
+| AMC UTC 14 | Michael | Laser at AMC | 10:15pm | 6% | -64 min |
+| AMC UTC 14 | Michael | Laser at AMC | 9:00pm | 13.9% | 10 min |
+| AMC UTC 14 | Michael | Laser at AMC | 8:30pm | 25.3% | 40 min |
+| AMC UTC 14 | Michael | Laser at AMC | 7:00pm | 42.9% | 130 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:45pm | 3.7% | -94 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:30pm | 77.1% | 100 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 9:45pm | 7.3% | -34 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 6:30pm | 57.3% | 160 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 6% | -64 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 13.9% | 10 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 25.3% | 40 min |
+| AMC UTC 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 42.9% | 130 min |
+| AMC Southcenter 16 | Michael | IMAX with Laser at AMC | 10:40pm | 6.5% | -90 min |
+| AMC Southcenter 16 | Michael | IMAX with Laser at AMC | 7:40pm | 67.5% | 90 min |
+| AMC Southcenter 16 | Michael | Dolby Cinema at AMC | 9:45pm | 23.8% | -34 min |
+| AMC Southcenter 16 | Michael | Dolby Cinema at AMC | 6:30pm | 72.8% | 160 min |
+| AMC Southcenter 16 | Michael | XL at AMC | 8:45pm | 10.2% | 25 min |
+| AMC Southcenter 16 | Michael | XL at AMC | 5:40pm | 10.5% | 210 min |
+| AMC Southcenter 16 | Michael | Laser at AMC | 10:15pm | 0% | -64 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:40pm | 6.5% | -90 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:40pm | 67.5% | 90 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 23.8% | -34 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 72.8% | 160 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:45pm | 10.2% | 25 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 5:40pm | 10.5% | 210 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 0% | -64 min |
+| AMC Kent Station 14 | Michael | IMAX with Laser at AMC | 10:00pm | 3.4% | -48 min |
+| AMC Kent Station 14 | Michael | IMAX with Laser at AMC | 7:00pm | 40.6% | 131 min |
+| AMC Kent Station 14 | Michael | Dolby Cinema at AMC | 9:00pm | 32.9% | 11 min |
+| AMC Kent Station 14 | Michael | Dolby Cinema at AMC | 6:00pm | 66.4% | 191 min |
+| AMC Kent Station 14 | Michael | Laser at AMC | 10:30pm | 9.2% | -78 min |
+| AMC Kent Station 14 | Michael | Laser at AMC | 8:00pm | 35% | 71 min |
+| AMC Kent Station 14 | Michael | Laser at AMC | 7:30pm | 55.4% | 101 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:00pm | 3.4% | -48 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:00pm | 40.6% | 131 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:00pm | 32.9% | 11 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:00pm | 66.4% | 191 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 9.2% | -78 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 35% | 71 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 55.4% | 101 min |
+| AMC Factoria 8 | Michael | Laser at AMC | 10:30pm | 2.5% | -78 min |
+| AMC Factoria 8 | Michael | Laser at AMC | 9:30pm | 22.2% | -18 min |
+| AMC Factoria 8 | Michael | Laser at AMC | 7:15pm | 30.2% | 116 min |
+| AMC Factoria 8 | Michael | Laser at AMC | 6:15pm | 40.5% | 176 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:30pm | 2.5% | -78 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 22.2% | -18 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 30.2% | 116 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 40.5% | 176 min |
+| AMC Alderwood Mall 16 | Michael | IMAX with Laser at AMC | 10:45pm | 2.7% | -93 min |
+| AMC Alderwood Mall 16 | Michael | IMAX with Laser at AMC | 7:30pm | 47.7% | 101 min |
+| AMC Alderwood Mall 16 | Michael | Dolby Cinema at AMC | 9:45pm | 15.2% | -33 min |
+| AMC Alderwood Mall 16 | Michael | Dolby Cinema at AMC | 6:30pm | 48.5% | 161 min |
+| AMC Alderwood Mall 16 | Michael | XL at AMC | 10:15pm | 0.3% | -63 min |
+| AMC Alderwood Mall 16 | Michael | XL at AMC | 7:00pm | 4.3% | 131 min |
+| AMC Alderwood Mall 16 | Michael | Laser at AMC | 8:30pm | 11.4% | 41 min |
+| AMC Alderwood Mall 16 | Michael | Laser at AMC | 8:00pm | 8.9% | 71 min |
+| AMC Alderwood Mall 16 | Michael | Open Caption (On-screen Subtitles) | 9:15pm | 2.8% | -3 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:45pm | 2.7% | -93 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:30pm | 47.7% | 101 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 15.2% | -33 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 48.5% | 161 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 10:15pm | 0.3% | -63 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 7:00pm | 4.3% | 131 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 11.4% | 41 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 8.9% | 71 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 9:15pm | 2.8% | -3 min |
+| AMC Woodinville 12 | Michael | Dolby Cinema at AMC | 10:45pm | 4% | -93 min |
+| AMC Woodinville 12 | Michael | Dolby Cinema at AMC | 7:30pm | 71.2% | 101 min |
+| AMC Woodinville 12 | Michael | Laser at AMC | 9:30pm | 10.1% | -18 min |
+| AMC Woodinville 12 | Michael | Laser at AMC | 8:30pm | 13.5% | 41 min |
+| AMC Woodinville 12 | Michael | Laser at AMC | 6:15pm | 29.2% | 176 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:45pm | 4% | -93 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:30pm | 71.2% | 101 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 10.1% | -18 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 13.5% | 41 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 29.2% | 176 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 10:00pm | 9.1% | -48 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 9:15pm | 5.4% | -3 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 8:30pm | 8.6% | 41 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 8:00pm | 4.6% | 71 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 7:30pm | 10.9% | 101 min |
+| AMC Arizona Center 24 | Michael | AMC Artisan Films | 6:45pm | 37.4% | 146 min |
+| AMC Arizona Center 24 | Michael | English Spoken with Spanish Subtitles | 6:00pm | 4.8% | 191 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 10:00pm | 9.1% | -48 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 9:15pm | 5.4% | -3 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:30pm | 8.6% | 41 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:00pm | 4.6% | 71 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 7:30pm | 10.9% | 101 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 6:45pm | 37.4% | 146 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 6:00pm | 4.8% | 191 min |
+| AMC Desert Ridge 18 | Michael | IMAX with Laser at AMC | 9:30pm | 3.7% | -18 min |
+| AMC Desert Ridge 18 | Michael | IMAX with Laser at AMC | 6:15pm | 32.5% | 176 min |
+| AMC Desert Ridge 18 | Michael | Dolby Cinema at AMC | 10:00pm | 1.5% | -48 min |
+| AMC Desert Ridge 18 | Michael | Dolby Cinema at AMC | 6:45pm | 65.2% | 146 min |
+| AMC Desert Ridge 18 | Michael | Laser at AMC | 8:45pm | 34.5% | 26 min |
+| AMC Desert Ridge 18 | Michael | Laser at AMC | 8:15pm | 23.7% | 56 min |
+| AMC Desert Ridge 18 | Michael | Laser at AMC | 7:45pm | 55.9% | 86 min |
+| AMC Desert Ridge 18 | Michael | Laser at AMC | 5:45pm | 42.9% | 206 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:30pm | 3.7% | -18 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 6:15pm | 32.5% | 176 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:00pm | 1.5% | -48 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:45pm | 65.2% | 146 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 34.5% | 26 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 23.7% | 56 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 55.9% | 86 min |
+| AMC Desert Ridge 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 42.9% | 206 min |
+| AMC Deer Valley 17 | Michael | IMAX with Laser at AMC | 8:45pm | 13.9% | 26 min |
+| AMC Deer Valley 17 | Michael | Dolby Cinema at AMC | 9:45pm | 9.8% | -33 min |
+| AMC Deer Valley 17 | Michael | Dolby Cinema at AMC | 6:30pm | 41.3% | 161 min |
+| AMC Deer Valley 17 | Michael | Laser at AMC | 9:15pm | 6.5% | -3 min |
+| AMC Deer Valley 17 | Michael | Laser at AMC | 7:45pm | 20.3% | 86 min |
+| AMC Deer Valley 17 | Michael | Laser at AMC | 7:00pm | 40.9% | 131 min |
+| AMC Deer Valley 17 | Michael | Laser at AMC | 6:00pm | 13.7% | 191 min |
+| AMC Deer Valley 17 | Michael | English Spoken with Spanish Subtitles | 10:00pm | 9.1% | -48 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 8:45pm | 13.9% | 26 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 9.8% | -33 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 41.3% | 161 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 6.5% | -3 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 20.3% | 86 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 40.9% | 131 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 13.7% | 191 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 10:00pm | 9.1% | -48 min |
+| AMC Westgate 20 | Michael | IMAX with Laser at AMC | 9:00pm | 9.1% | 12 min |
+| AMC Westgate 20 | Michael | IMAX with Laser at AMC | 5:45pm | 33% | 207 min |
+| AMC Westgate 20 | Michael | Dolby Cinema at AMC | 7:15pm | 70.1% | 117 min |
+| AMC Westgate 20 | Michael | XL at AMC | 8:15pm | 20.7% | 57 min |
+| AMC Westgate 20 | Michael | Laser at AMC | 9:45pm | 2.6% | -32 min |
+| AMC Westgate 20 | Michael | Laser at AMC | 7:45pm | 10.6% | 87 min |
+| AMC Westgate 20 | Michael | Laser at AMC | 6:30pm | 9.6% | 162 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:00pm | 9.1% | 12 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 5:45pm | 33% | 207 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:15pm | 70.1% | 117 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:15pm | 20.7% | 57 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:45pm | 2.6% | -32 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 10.6% | 87 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:30pm | 9.6% | 162 min |
+| AMC Ahwatukee 24 | Michael | PRIME at AMC | 10:00pm | 20.4% | -47 min |
+| AMC Ahwatukee 24 | Michael | PRIME at AMC | 6:45pm | 81.7% | 147 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 9:30pm | 16.7% | -17 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 9:00pm | 22% | 12 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 8:20pm | 52.7% | 52 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 7:45pm | 17.7% | 87 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 7:15pm | 71.9% | 117 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 6:15pm | 55.2% | 177 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 6:00pm | 29.7% | 192 min |
+| AMC Ahwatukee 24 | Michael | Laser at AMC | 5:50pm | 8.8% | 202 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 10:00pm | 20.4% | -47 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 6:45pm | 81.7% | 147 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 16.7% | -17 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 22% | 12 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:20pm | 52.7% | 52 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 17.7% | 87 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 71.9% | 117 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 55.2% | 177 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 29.7% | 192 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:50pm | 8.8% | 202 min |
+| AMC Westminster Promenade 24 | Michael | IMAX with Laser at AMC | 10:30pm | 8.7% | -77 min |
+| AMC Westminster Promenade 24 | Michael | IMAX with Laser at AMC | 7:20pm | 50.3% | 112 min |
+| AMC Westminster Promenade 24 | Michael | Dolby Cinema at AMC | 9:30pm | 20.7% | -17 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 10:00pm | 12.8% | -47 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 9:00pm | 21.7% | 12 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 8:30pm | 46.7% | 42 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 8:00pm | 32.3% | 72 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 7:40pm | 75% | 92 min |
+| AMC Westminster Promenade 24 | Michael | Laser at AMC | 7:00pm | 55.6% | 132 min |
+| AMC Westminster Promenade 24 | Michael | English Spoken with Spanish Subtitles | 6:40pm | 50% | 152 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 8.7% | -77 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:20pm | 50.3% | 112 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:30pm | 20.7% | -17 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 12.8% | -47 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 21.7% | 12 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:30pm | 46.7% | 42 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 32.3% | 72 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:40pm | 75% | 92 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 55.6% | 132 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 vs. Michael | English Spoken with Spanish Subtitles | 6:40pm | 50% | 152 min |
+| AMC Flatiron Crossing 14 | Michael | IMAX with Laser at AMC | 9:30pm | 8.6% | -15 min |
+| AMC Flatiron Crossing 14 | Michael | Dolby Cinema at AMC | 10:30pm | 3.8% | -75 min |
+| AMC Flatiron Crossing 14 | Michael | Dolby Cinema at AMC | 7:20pm | 31.5% | 114 min |
+| AMC Flatiron Crossing 14 | Michael | Laser at AMC | 8:20pm | 11.3% | 54 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:30pm | 8.6% | -15 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:30pm | 3.8% | -75 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:20pm | 31.5% | 114 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:20pm | 11.3% | 54 min |
+| AMC DINE-IN Southlands 16 | Michael | Dolby Cinema at AMC | 9:00pm | 29.7% | 14 min |
+| AMC DINE-IN Southlands 16 | Michael | Dine-In Delivery to Seat | 8:45pm | 31.1% | 29 min |
+| AMC DINE-IN Southlands 16 | Michael | Dine-In Delivery to Seat | 8:05pm | 32.2% | 69 min |
+| AMC DINE-IN Southlands 16 | Michael | Dine-In Delivery to Seat | 7:15pm | 62.9% | 119 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:00pm | 29.7% | 14 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 8:45pm | 31.1% | 29 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 8:05pm | 32.2% | 69 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 vs. Michael | Dine-In Delivery to Seat | 7:15pm | 62.9% | 119 min |
+| AMC Arapahoe Crossing 16 | Michael | IMAX at AMC | 9:45pm | 5.9% | -30 min |
+| AMC Arapahoe Crossing 16 | Michael | Dolby Cinema at AMC | 8:45pm | 34.4% | 30 min |
+| AMC Arapahoe Crossing 16 | Michael | Laser at AMC | 8:15pm | 24.2% | 60 min |
+| AMC Arapahoe Crossing 16 | Michael | Laser at AMC | 7:30pm | 44.1% | 105 min |
+| AMC Arapahoe Crossing 16 | The Devil Wears Prada 2 vs. Michael | IMAX at AMC | 9:45pm | 5.9% | -30 min |
+| AMC Arapahoe Crossing 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 8:45pm | 34.4% | 30 min |
+| AMC Arapahoe Crossing 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 24.2% | 60 min |
+| AMC Arapahoe Crossing 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 44.1% | 105 min |
+| AMC Highlands Ranch 24 | Michael | IMAX with Laser at AMC | 9:40pm | 12.7% | -26 min |
+| AMC Highlands Ranch 24 | Michael | Dolby Cinema at AMC | 10:30pm | 2.9% | -75 min |
+| AMC Highlands Ranch 24 | Michael | Dolby Cinema at AMC | 7:20pm | 61% | 114 min |
+| AMC Highlands Ranch 24 | Michael | Laser at AMC | 10:10pm | 0% | -56 min |
+| AMC Highlands Ranch 24 | Michael | Laser at AMC | 9:00pm | 48.1% | 14 min |
+| AMC Highlands Ranch 24 | Michael | Laser at AMC | 8:15pm | 44.7% | 59 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 9:40pm | 12.7% | -26 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:30pm | 2.9% | -75 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:20pm | 61% | 114 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:10pm | 0% | -56 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 48.1% | 14 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 44.7% | 59 min |
+| AMC Bakersfield 6 | Michael | AMC Artisan Films | 10:15pm | 6.3% | -60 min |
+| AMC Bakersfield 6 | Michael | AMC Artisan Films | 9:30pm | 42.2% | -15 min |
+| AMC Bakersfield 6 | Michael | AMC Artisan Films | 7:00pm | 66.4% | 135 min |
+| AMC Bakersfield 6 | Michael | AMC Artisan Films | 6:30pm | 100% | 165 min |
+| AMC Bakersfield 6 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 10:15pm | 6.3% | -60 min |
+| AMC Bakersfield 6 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 9:30pm | 42.2% | -15 min |
+| AMC Bakersfield 6 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 7:00pm | 66.4% | 135 min |
+| AMC Bakersfield 6 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 6:30pm | 100% | 165 min |
+| AMC Burbank Town Center 8 | Michael | Laser at AMC | 9:50pm | 4% | -34 min |
+| AMC Burbank Town Center 8 | Michael | Laser at AMC | 9:15pm | 34.4% | 0 min |
+| AMC Burbank Town Center 8 | Michael | Laser at AMC | 8:00pm | 75.5% | 75 min |
+| AMC Burbank Town Center 8 | Michael | Laser at AMC | 6:15pm | 68.8% | 180 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:50pm | 4% | -34 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 34.4% | 0 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 75.5% | 75 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 68.8% | 180 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 10:00pm | 3.8% | -45 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 9:45pm | 10% | -30 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 9:00pm | 57.9% | 15 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 7:00pm | 55.6% | 135 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 6:45pm | 52% | 150 min |
+| AMC Anaheim GardenWalk 6 | Michael | Laser at AMC | 6:00pm | 67.1% | 195 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 3.8% | -45 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:45pm | 10% | -30 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 57.9% | 15 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 55.6% | 135 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:45pm | 52% | 150 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 67.1% | 195 min |
+| AMC Kitsap 8 | Michael | Laser at AMC | 9:15pm | 39.2% | 0 min |
+| AMC Kitsap 8 | Michael | Laser at AMC | 7:00pm | 44.6% | 135 min |
+| AMC Kitsap 8 | Michael | Laser at AMC | 6:10pm | 48.6% | 185 min |
+| AMC Kitsap 8 | Michael | Laser at AMC | 5:45pm | 45.7% | 210 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 39.2% | 0 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 44.6% | 135 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:10pm | 48.6% | 185 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 45.7% | 210 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 10:45pm | 11.7% | -89 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 10:15pm | 11.5% | -59 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 9:00pm | 60% | 15 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 8:00pm | 71.1% | 75 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 7:25pm | 74.7% | 110 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 7:00pm | 75.4% | 135 min |
+| AMC Fallbrook 7 | Michael | Laser at AMC | 5:45pm | 75.9% | 210 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:45pm | 11.7% | -89 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:15pm | 11.5% | -59 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:00pm | 60% | 15 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 71.1% | 75 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:25pm | 74.7% | 110 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 75.4% | 135 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 75.9% | 210 min |
+| AMC Manteca 16 | Michael | Dolby Cinema at AMC | 9:00pm | 71.5% | 15 min |
+| AMC Manteca 16 | Michael | Dolby Cinema at AMC | 5:45pm | 90.5% | 210 min |
+| AMC Manteca 16 | Michael | AMC Artisan Films | 8:25pm | 10.7% | 50 min |
+| AMC Manteca 16 | Michael | AMC Artisan Films | 7:45pm | 10.4% | 90 min |
+| AMC Manteca 16 | Michael | AMC Artisan Films | 7:00pm | 20.6% | 135 min |
+| AMC Manteca 16 | Michael | AMC Artisan Films | 6:25pm | 27% | 170 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:00pm | 71.5% | 15 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 5:45pm | 90.5% | 210 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:25pm | 10.7% | 50 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 7:45pm | 10.4% | 90 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 7:00pm | 20.6% | 135 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 6:25pm | 27% | 170 min |
+| AMC Oak Tree 6 | Michael | Laser at AMC | 7:45pm | 19.2% | 90 min |
+| AMC Oak Tree 6 | Michael | Laser at AMC | 6:15pm | 18.9% | 180 min |
+| AMC Oak Tree 6 | Michael | Open Caption (On-screen Subtitles) | 9:30pm | 6.6% | -14 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 19.2% | 90 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 18.9% | 180 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 9:30pm | 6.6% | -14 min |
+| AMC Progress Ridge 13 | Michael | GXL | 9:30pm | 2.2% | -12 min |
+| AMC Progress Ridge 13 | Michael | GXL | 6:30pm | 13.7% | 167 min |
+| AMC Progress Ridge 13 | Michael | AMC Artisan Films | 8:00pm | 8.2% | 77 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 vs. Michael | GXL | 9:30pm | 2.2% | -12 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 vs. Michael | GXL | 6:30pm | 13.7% | 167 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:00pm | 8.2% | 77 min |
+| AMC Porter Ranch 9 | Michael | Dolby Cinema at AMC | 10:35pm | 58.6% | -78 min |
+| AMC Porter Ranch 9 | Michael | Dolby Cinema at AMC | 7:30pm | 91.7% | 105 min |
+| AMC Porter Ranch 9 | Michael | PRIME at AMC | 9:35pm | 73% | -18 min |
+| AMC Porter Ranch 9 | Michael | PRIME at AMC | 6:30pm | 80.3% | 165 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 11:00pm | 10.9% | -104 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 10:05pm | 50% | -48 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 8:10pm | 79.8% | 65 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 7:50pm | 73.4% | 86 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 7:15pm | 65.6% | 120 min |
+| AMC Porter Ranch 9 | Michael | Laser at AMC | 7:00pm | 66.3% | 135 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:35pm | 58.6% | -78 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:30pm | 91.7% | 105 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 9:35pm | 73% | -18 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | PRIME at AMC | 6:30pm | 80.3% | 165 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 11:00pm | 10.9% | -104 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:05pm | 50% | -48 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:10pm | 79.8% | 65 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:50pm | 73.4% | 86 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:15pm | 65.6% | 120 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 66.3% | 135 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 10:40pm | 6.1% | -82 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 10:00pm | 16.6% | -42 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 9:15pm | 44.4% | 2 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 8:15pm | 58.3% | 62 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 7:30pm | 60.6% | 107 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 7:00pm | 64.2% | 137 min |
+| AMC Rainbow Promenade 10 | Michael | Laser at AMC | 6:00pm | 83.9% | 197 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:40pm | 6.1% | -82 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:00pm | 17.9% | -42 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:15pm | 44.4% | 2 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:15pm | 58.3% | 62 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 60.6% | 107 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:00pm | 64.2% | 137 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:00pm | 83.9% | 197 min |
+| AMC River Park Square 20 | Michael | IMAX with Laser at AMC | 10:30pm | 4.3% | -72 min |
+| AMC River Park Square 20 | Michael | IMAX with Laser at AMC | 7:15pm | 21.5% | 122 min |
+| AMC River Park Square 20 | Michael | Dolby Cinema at AMC | 9:45pm | 15.2% | -27 min |
+| AMC River Park Square 20 | Michael | Dolby Cinema at AMC | 6:30pm | 51.7% | 167 min |
+| AMC River Park Square 20 | Michael | Open Caption (On-screen Subtitles) | 8:00pm | 7.9% | 77 min |
+| AMC River Park Square 20 | Michael | AMC Artisan Films | 8:45pm | 56.3% | 32 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 4.3% | -72 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:15pm | 21.5% | 122 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 15.2% | -27 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:30pm | 51.7% | 167 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | Open Caption (On-screen Subtitles) | 8:00pm | 7.9% | 77 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:45pm | 56.3% | 32 min |
+| AMC Santa Anita 16 | Michael | IMAX with Laser at AMC | 10:30pm | 20% | -71 min |
+| AMC Santa Anita 16 | Michael | IMAX with Laser at AMC | 7:15pm | 79.1% | 123 min |
+| AMC Santa Anita 16 | Michael | Dolby Cinema at AMC | 9:30pm | 69.7% | -11 min |
+| AMC Santa Anita 16 | Michael | Dolby Cinema at AMC | 6:15pm | 73% | 183 min |
+| AMC Santa Anita 16 | Michael | XL at AMC | 8:15pm | 22.7% | 63 min |
+| AMC Santa Anita 16 | Michael | Laser at AMC | 7:45pm | 52.7% | 93 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 20% | -71 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:15pm | 79.1% | 123 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:30pm | 69.7% | -11 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:15pm | 73% | 183 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 8:15pm | 22.7% | 63 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:45pm | 52.7% | 93 min |
+| AMC Topanga 12 | Michael | IMAX with Laser at AMC | 8:00pm | 81.3% | 78 min |
+| AMC Topanga 12 | Michael | Dolby Cinema at AMC | 10:15pm | 27.4% | -56 min |
+| AMC Topanga 12 | Michael | Dolby Cinema at AMC | 7:00pm | 78.8% | 138 min |
+| AMC Topanga 12 | Michael | Laser at AMC | 10:40pm | 10.8% | -82 min |
+| AMC Topanga 12 | Michael | Laser at AMC | 9:30pm | 50% | -11 min |
+| AMC Topanga 12 | Michael | Laser at AMC | 8:40pm | 76.6% | 37 min |
+| AMC Topanga 12 | Michael | Laser at AMC | 8:00pm | 72.9% | 78 min |
+| AMC Topanga 12 | Michael | Laser at AMC | 6:15pm | 72.2% | 183 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 8:00pm | 81.3% | 78 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 27.4% | -56 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 78.8% | 138 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 10:40pm | 10.8% | -82 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:30pm | 50% | -11 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:40pm | 76.6% | 37 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 72.9% | 78 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 72.2% | 183 min |
+| AMC Town Square 18 | Michael | IMAX with Laser at AMC | 10:30pm | 17.9% | -71 min |
+| AMC Town Square 18 | Michael | IMAX with Laser at AMC | 7:30pm | 79.4% | 108 min |
+| AMC Town Square 18 | Michael | Dolby Cinema at AMC | 9:45pm | 36.9% | -26 min |
+| AMC Town Square 18 | Michael | Dolby Cinema at AMC | 6:45pm | 62.6% | 153 min |
+| AMC Town Square 18 | Michael | Laser at AMC | 9:20pm | 2% | -1 min |
+| AMC Town Square 18 | Michael | Laser at AMC | 8:50pm | 18.2% | 28 min |
+| AMC Town Square 18 | Michael | Laser at AMC | 6:15pm | 14.4% | 183 min |
+| AMC Town Square 18 | Michael | Laser at AMC | 5:45pm | 22.7% | 213 min |
+| AMC Town Square 18 | Michael | SCREENX at AMC | 8:15pm | 29.2% | 63 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 10:30pm | 17.9% | -71 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | IMAX with Laser at AMC | 7:30pm | 79.4% | 108 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 9:45pm | 36.9% | -26 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 6:45pm | 62.6% | 153 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 9:20pm | 2% | -1 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:50pm | 18.2% | 28 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 6:15pm | 14.4% | 183 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 5:45pm | 22.7% | 213 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 vs. Michael | SCREENX at AMC | 8:15pm | 29.2% | 63 min |
+| AMC Vancouver Mall 23 | Michael | Dolby Cinema at AMC | 10:15pm | 3.2% | -56 min |
+| AMC Vancouver Mall 23 | Michael | Dolby Cinema at AMC | 7:00pm | 51.6% | 138 min |
+| AMC Vancouver Mall 23 | Michael | GXL | 9:45pm | 7.1% | -26 min |
+| AMC Vancouver Mall 23 | Michael | GXL | 6:30pm | 21.4% | 168 min |
+| AMC Vancouver Mall 23 | Michael | AMC Artisan Films | 10:00pm | 0% | -41 min |
+| AMC Vancouver Mall 23 | Michael | AMC Artisan Films | 8:00pm | 16.7% | 78 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:15pm | 3.2% | -56 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:00pm | 51.6% | 138 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | GXL | 9:45pm | 7.1% | -26 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | GXL | 6:30pm | 21.4% | 168 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 10:00pm | 0% | -41 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 vs. Michael | AMC Artisan Films | 8:00pm | 16.7% | 78 min |
+| AMC Victoria Gardens 12 | Michael | Dolby Cinema at AMC | 10:30pm | 34.2% | -71 min |
+| AMC Victoria Gardens 12 | Michael | Dolby Cinema at AMC | 7:15pm | 82.9% | 123 min |
+| AMC Victoria Gardens 12 | Michael | XL at AMC | 9:30pm | 11.2% | -11 min |
+| AMC Victoria Gardens 12 | Michael | XL at AMC | 6:15pm | 55.1% | 184 min |
+| AMC Victoria Gardens 12 | Michael | Laser at AMC | 8:45pm | 39.8% | 33 min |
+| AMC Victoria Gardens 12 | Michael | Laser at AMC | 8:00pm | 51.4% | 78 min |
+| AMC Victoria Gardens 12 | Michael | Laser at AMC | 7:30pm | 56.4% | 108 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 10:30pm | 34.2% | -71 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | Dolby Cinema at AMC | 7:15pm | 82.9% | 123 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 9:30pm | 11.2% | -11 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | XL at AMC | 6:15pm | 55.1% | 184 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:45pm | 39.8% | 33 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 8:00pm | 51.4% | 78 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 vs. Michael | Laser at AMC | 7:30pm | 56.4% | 108 min |
+
+---
