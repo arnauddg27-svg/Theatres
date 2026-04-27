@@ -13,6 +13,7 @@ Usage:
     python3 calibrate.py --history                 # Show past predictions vs actuals
 """
 
+import html
 import json
 import os
 import re
@@ -72,13 +73,24 @@ def fetch_daily_chart(date_str):
     The Numbers publishes daily data by the next morning — reliable by Tuesday.
     """
     url = f"https://www.the-numbers.com/box-office-chart/daily/{date_str.replace('-', '/')}"
-    try:
-        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"}, timeout=10)
-        if resp.status_code != 200:
-            print(f"  ⚠️  The Numbers returned HTTP {resp.status_code} for {date_str}")
+    # The Numbers can be slow on cold cache hits; the previous 10s timeout
+    # caused intermittent day drops that silently understated weekend totals
+    # (e.g. weekend of 2026-04-24 lost Friday's $39.5M, recording $57.5M
+    # instead of $97M). 30s + one retry covers the common case.
+    resp = None
+    for attempt in range(2):
+        try:
+            resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"}, timeout=30)
+            if resp.status_code != 200:
+                print(f"  ⚠️  The Numbers returned HTTP {resp.status_code} for {date_str}")
+                return {}
+            break
+        except Exception as e:
+            if attempt == 0:
+                continue
+            print(f"  ⚠️  The Numbers fetch failed for {date_str} after retry: {e}")
             return {}
-    except Exception as e:
-        print(f"  ⚠️  The Numbers fetch failed for {date_str}: {e}")
+    if resp is None:
         return {}
 
     results = {}
@@ -108,7 +120,19 @@ def fetch_opening_weekend_daily(movie_title, friday_date):
         friday_date: The Friday of opening weekend (YYYY-MM-DD)
 
     Returns dict of {day_name: gross_in_millions} or None.
+
+    Strategy: try the per-movie page first because it separates Thursday
+    PREVIEWS (rank "P", not in the regular daily top-chart) from Friday's
+    pure opening-day gross. The Numbers' top-chart endpoint hides preview
+    rows, which silently zeros Thursday for any wide-release with previews
+    and inflates Friday's apparent share of the weekend in our day_weights
+    calibration. If the movie page lookup fails, fall back to the daily
+    chart for each date (legacy behavior).
     """
+    movie_daily = fetch_movie_daily_history(movie_title, friday_date)
+    if movie_daily:
+        return movie_daily
+
     friday = datetime.strptime(friday_date, "%Y-%m-%d")
     dates = [
         ("Thursday", (friday - timedelta(days=1)).strftime("%Y-%m-%d")),
@@ -138,6 +162,85 @@ def fetch_opening_weekend_daily(movie_title, friday_date):
             daily[day_name] = best_gross
 
     return daily if daily else None
+
+
+def fetch_movie_daily_history(movie_title, friday_date):
+    """Scrape the per-movie daily-history table from The Numbers.
+
+    Unlike the daily top-chart, this table includes a separate Thursday
+    PREVIEWS row (rank "P") so we can distinguish preview revenue from
+    pure-Friday gross. Preview rows have rank "P" and theatre count 0;
+    they're returned under the "Thursday" key as preview-only revenue.
+
+    Returns dict of {day_name: gross_in_millions} or None on failure.
+    """
+    friday = datetime.strptime(friday_date, "%Y-%m-%d")
+    year = friday.year
+
+    # Try common URL patterns with year suffix to disambiguate remakes
+    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', movie_title).strip().replace(' ', '-')
+    candidates = [
+        f"https://www.the-numbers.com/movie/{slug}-({year})",
+        f"https://www.the-numbers.com/movie/{slug}-({year - 1})",
+        f"https://www.the-numbers.com/movie/{slug}",
+    ]
+
+    for url in candidates:
+        try:
+            resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"},
+                                timeout=30, allow_redirects=True)
+            if resp.status_code != 200:
+                continue
+        except Exception:
+            continue
+
+        # Locate the Daily Box Office Performance section
+        section_match = re.search(r'Daily Box Office Performance.*?</table>', resp.text, re.DOTALL)
+        if not section_match:
+            continue
+
+        # Build {date_str -> (rank, gross_millions)} from the daily rows
+        rows = re.findall(r'<tr[^>]*>(.*?)</tr>', section_match.group(0), re.DOTALL)
+        date_grosses = {}
+        for row in rows:
+            cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
+            # Decode HTML entities (&nbsp; etc.) BEFORE collapsing whitespace,
+            # otherwise the date column ends up as 'Apr&nbsp;23,&nbsp;2026'
+            # and strptime silently fails for every row.
+            clean = [html.unescape(re.sub(r'<[^>]+>', ' ', c)).replace('\xa0', ' ').strip() for c in cells]
+            clean = [re.sub(r'\s+', ' ', c) for c in clean]
+            if len(clean) < 3:
+                continue
+            date_raw = clean[0]
+            rank = clean[1]
+            gross_str = clean[2].replace('$', '').replace(',', '')
+            try:
+                date_dt = datetime.strptime(date_raw, "%b %d, %Y")
+            except ValueError:
+                continue
+            try:
+                gross_m = float(gross_str) / 1_000_000
+            except ValueError:
+                continue
+            date_grosses[date_dt.strftime("%Y-%m-%d")] = (rank, gross_m)
+
+        if not date_grosses:
+            continue
+
+        # Map to weekend day labels. Thursday picks up the Preview row even
+        # though "regular" daily-chart Thursday would be 0 for this movie.
+        thursday = (friday - timedelta(days=1)).strftime("%Y-%m-%d")
+        daily = {}
+        for day_name, days_offset in [
+            ("Thursday", -1), ("Friday", 0), ("Saturday", 1), ("Sunday", 2)
+        ]:
+            d = (friday + timedelta(days=days_offset)).strftime("%Y-%m-%d")
+            if d in date_grosses:
+                rank, gross = date_grosses[d]
+                daily[day_name] = gross
+        return daily if daily else None
+
+    return None
 
 
 # ── Calibration Logic ───────────────────────────────────────────────────────
