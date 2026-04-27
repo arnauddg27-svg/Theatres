@@ -1,16 +1,55 @@
 {
-  "history": [],
+  "history": [
+    {
+      "movie": "Michael",
+      "weekend_of": "2026-04-24",
+      "date": "2026-04-27",
+      "predicted_mid": 17.15,
+      "predicted_low": 16.46,
+      "predicted_high": 18.01,
+      "actual_total": 109.6,
+      "daily_actuals": {
+        "Thursday": 12.6,
+        "Friday": 39.5,
+        "Saturday": 32.5,
+        "Sunday": 25.0
+      },
+      "daily_predictions": {
+        "Thursday": 3.23,
+        "Friday": 5.81,
+        "Saturday": 2.67,
+        "Sunday": 5.44
+      },
+      "error_pct": -84.4,
+      "n_theatres": 378,
+      "n_days": 4
+    }
+  ],
   "calibration_factors": {
     "amc_market_share": 0.25,
-    "overall_scale_factor": 1.0,
+    "overall_scale_factor": 1.4,
     "day_weights": {
-      "Thursday": 0.12,
-      "Friday": 0.32,
-      "Saturday": 0.33,
-      "Sunday": 0.23
+      "Thursday": 0.115,
+      "Friday": 0.3604,
+      "Saturday": 0.2965,
+      "Sunday": 0.2281
     },
     "format_scale_factors": {},
-    "historical_accuracy": [],
-    "last_updated": null
+    "historical_accuracy": [
+      {
+        "movie": "Michael",
+        "weekend_of": "2026-04-24",
+        "abs_error_pct": 84.4,
+        "n_theatres": 378,
+        "n_days": 4,
+        "daily_errors": {
+          "Thursday": 74.4,
+          "Friday": 85.3,
+          "Saturday": 91.8,
+          "Sunday": 78.2
+        }
+      }
+    ],
+    "last_updated": "2026-04-27"
   }
 }
