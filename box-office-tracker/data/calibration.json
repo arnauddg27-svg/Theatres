@@ -4,49 +4,85 @@
       "movie": "Michael",
       "weekend_of": "2026-04-24",
       "date": "2026-04-27",
-      "predicted_mid": 17.15,
-      "predicted_low": 16.46,
-      "predicted_high": 18.01,
-      "actual_total": 109.6,
+      "predicted_mid": 93.37,
+      "predicted_low": 89.64,
+      "predicted_high": 98.04,
+      "actual_total": 97.0,
       "daily_actuals": {
         "Thursday": 12.6,
-        "Friday": 39.5,
+        "Friday": 26.9,
         "Saturday": 32.5,
         "Sunday": 25.0
       },
       "daily_predictions": {
-        "Thursday": 3.23,
-        "Friday": 5.81,
-        "Saturday": 2.67,
-        "Sunday": 5.44
+        "Thursday": 12.14,
+        "Friday": 39.19,
+        "Saturday": 18.71,
+        "Sunday": 23.41
       },
-      "error_pct": -84.4,
+      "raw_daily_predictions": {
+        "Thursday": 10.63,
+        "Friday": 37.35,
+        "Saturday": 17.84,
+        "Sunday": 27.55
+      },
+      "error_pct": -3.7,
       "n_theatres": 378,
-      "n_days": 4
+      "n_days": 4,
+      "daily_theatre_counts": {
+        "Thursday": 375,
+        "Friday": 261,
+        "Saturday": 260,
+        "Sunday": 376
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.997,
+        "Friday": 0.694,
+        "Saturday": 0.691,
+        "Sunday": 1.0
+      },
+      "coverage_ratio": 0.846,
+      "calibration_excluded_days": [
+        "Friday",
+        "Saturday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.25,
-    "overall_scale_factor": 1.4,
+    "amc_market_share": 0.205,
+    "overall_scale_factor": 0.9958,
     "day_weights": {
-      "Thursday": 0.115,
-      "Friday": 0.3604,
-      "Saturday": 0.2965,
-      "Sunday": 0.2281
+      "Thursday": 0.1299,
+      "Friday": 0.2773,
+      "Saturday": 0.3351,
+      "Sunday": 0.2577
+    },
+    "day_scale_factors": {
+      "Thursday": 1.0739,
+      "Friday": 1.0,
+      "Saturday": 1.0,
+      "Sunday": 0.963
     },
     "format_scale_factors": {},
     "historical_accuracy": [
       {
         "movie": "Michael",
         "weekend_of": "2026-04-24",
-        "abs_error_pct": 84.4,
+        "abs_error_pct": 3.7,
         "n_theatres": 378,
         "n_days": 4,
+        "coverage_ratio": 0.846,
+        "daily_coverage_ratios": {
+          "Thursday": 0.997,
+          "Friday": 0.694,
+          "Saturday": 0.691,
+          "Sunday": 1.0
+        },
         "daily_errors": {
-          "Thursday": 74.4,
-          "Friday": 85.3,
-          "Saturday": 91.8,
-          "Sunday": 78.2
+          "Thursday": 3.7,
+          "Friday": 45.7,
+          "Saturday": 42.4,
+          "Sunday": 6.4
         }
       }
     ],

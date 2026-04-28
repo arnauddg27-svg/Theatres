@@ -24,7 +24,8 @@ Usage:
 import json, csv, os, sys, re, statistics
 from datetime import datetime, timedelta
 from math import sqrt
-from model_calibration import sanitize_calibration, recalibrate_scale_factor
+from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
+                               sanitize_calibration, recalibrate_scale_factor)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -36,32 +37,107 @@ THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 # ── Default Constants ────────────────────────────────────────────────────────
 DEFAULT_AMC_MARKET_SHARE = 0.25
 
-FORMAT_DEFLATORS = {
-    8: 0.65, 7: 0.65,   # IMAX with Laser
-    6: 0.65,             # IMAX / IMAX 3D
-    5: 0.70,             # Dolby
-    4: 0.80, 3: 0.80,   # Prime / XL
-    2: 0.85,             # Laser
-    1: 0.90, 0: 0.90,   # Standard / Digital
+# Per-format AMC evening ticket prices (2026 dollars). Premium formats charge a
+# real surcharge — averaging them away with one DEFAULT_TICKET_PRICE × discount
+# throws away signal we already have in `auditorium_type`. These are realized
+# evening prices (not advertised), already net of typical loyalty discounts,
+# which is why they're a touch below AMC's headline rates.
+FORMAT_TICKET_PRICES = {
+    8: 19.00, 7: 19.00,   # IMAX with Laser
+    6: 18.00,             # IMAX / IMAX 3D
+    5: 17.00,             # Dolby Cinema
+    4: 15.00, 3: 14.00,   # Prime / XL
+    2: 14.00,             # Laser
+    1: 13.00, 0: 13.00,   # Standard / Digital
 }
 
-SEAT_DEFLATORS = {
-    8: 0.70, 7: 0.70, 6: 0.70,  # IMAX rooms are bigger
-    5: 0.70,                      # Dolby rooms are bigger
-    4: 0.85, 3: 0.85,            # Prime/XL moderate
-    2: 0.90, 1: 1.0, 0: 1.0,    # Standard = baseline
+# Evening-sample (5pm–11pm) → full-day revenue multipliers, *per day of week*.
+# Most days have full daytime business (matinees) we don't scrape, so 1.7×
+# extrapolates 6 captured evening showings to ~10–14 full-day showings.
+#
+# Thursday is structurally different: a wide release that opens Friday has NO
+# Thursday daytime showings — only evening preview screenings. What we capture
+# IS the full Thursday business, so the multiplier is 1.0. Using 1.7× on
+# Thursday inflates our preview-night estimate by ~70%, which is what was
+# producing Thursday over-predictions on calibration runs.
+#
+# Industry convention complicates this: trades often roll Thursday previews
+# into "Friday opening" totals. The Numbers' per-movie page (which calibrate.py
+# uses) keeps them separate via the rank-"P" preview row. Make sure both sides
+# of the comparison use the same convention.
+DEFAULT_EVENING_TO_DAILY = 1.70   # Fri/Sat/Sun fallback
+DAY_EVENING_TO_DAILY_DEFAULT = {
+    "Thursday":  1.00,   # preview-only, no matinee
+    "Friday":    1.70,
+    "Saturday":  1.70,
+    "Sunday":    1.70,
 }
 
+# Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
+# only — adding Mon-Wed entries here would silently shrink Thu-Sun weights when
+# `normalize_day_weights` re-normalizes, causing `days_to_weekend` to overshoot
+# by 1/(Thu+Fri+Sat+Sun). The model only predicts opening weekend, so Mon-Wed
+# don't belong in this distribution. Defaults match calibrate.py's DEFAULT_CALIBRATION
+# so a fresh install agrees with a freshly calibrated install.
 DAY_WEIGHTS_DEFAULT = {
-    "Thursday":  0.10,
-    "Friday":    0.27,
-    "Saturday":  0.28,
-    "Sunday":    0.19,
-    # Mon-Wed are tail days; small weights used for daily revenue estimation
-    "Monday":    0.08,
-    "Tuesday":   0.05,
-    "Wednesday": 0.03,
+    "Thursday":  0.12,
+    "Friday":    0.32,
+    "Saturday":  0.33,
+    "Sunday":    0.23,
 }
+
+
+def get_evening_to_daily_multiplier(cal, day_name=None):
+    """Read the per-day evening→daily multiplier from calibration.
+
+    Falls through, in order:
+      1. calibration_factors.day_evening_to_daily[day_name]
+      2. calibration_factors.evening_to_daily_multiplier (legacy global)
+      3. DAY_EVENING_TO_DAILY_DEFAULT[day_name]
+      4. DEFAULT_EVENING_TO_DAILY (1.70)
+    """
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    if day_name:
+        per_day = factors.get("day_evening_to_daily") if cal else None
+        if isinstance(per_day, dict) and day_name in per_day:
+            try:
+                return float(per_day[day_name])
+            except (TypeError, ValueError):
+                pass
+    legacy_global = factors.get("evening_to_daily_multiplier") if cal else None
+    if legacy_global is not None:
+        try:
+            return float(legacy_global)
+        except (TypeError, ValueError):
+            pass
+    if day_name and day_name in DAY_EVENING_TO_DAILY_DEFAULT:
+        return DAY_EVENING_TO_DAILY_DEFAULT[day_name]
+    return DEFAULT_EVENING_TO_DAILY
+
+
+def get_day_scale(cal, day_name):
+    """Per-day calibration scale factor (default 1.0).
+
+    Calibration trains one scale per day from EMA over historical
+    actual/predicted ratios for that day. The total weekend prediction is the
+    sum of (raw_daily × day_scale[day]) — no global scale factor applied on
+    top, so calibration adds up to a total day-by-day instead of inflating a
+    single number.
+    """
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    per_day = factors.get("day_scale_factors") if cal else None
+    if isinstance(per_day, dict) and day_name in per_day:
+        try:
+            return float(per_day[day_name])
+        except (TypeError, ValueError):
+            pass
+    # Fall back to legacy overall_scale_factor only when no per-day calibration
+    # exists — keeps a fresh install or an old calibration.json working.
+    legacy = factors.get("overall_scale_factor", 1.0) if cal else 1.0
+    try:
+        return float(legacy)
+    except (TypeError, ValueError):
+        return 1.0
 
 
 def get_day_weights(cal):
@@ -83,6 +159,7 @@ DAY_CONFIDENCE = {
     6: (0.98, 1.03),   # 6 days
     7: (0.99, 1.02),   # full week
 }
+OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 
 DEFAULT_TICKET_PRICE = 14.50
 PRICE_DISCOUNT_FACTOR = 0.85   # avg effective price vs adult price
@@ -223,9 +300,26 @@ def load_polymarket_data(weekend_of=None):
         if not prev or sort_key >= prev[0]:
             latest_rows[dedupe_key] = (sort_key, row)
 
+    event_groups = {}
+    for sort_key, row in latest_rows.values():
+        movie = row["movie_title"]
+        event_url = row.get("market_url", "")
+        event_groups.setdefault(movie, {}).setdefault(event_url, []).append((sort_key, row))
+
     data = {}
-    for _, row in latest_rows.values():
-        data.setdefault(row["movie_title"], []).append(row)
+    for movie, groups in event_groups.items():
+        # Polymarket can replace an event with a new strike ladder mid-weekend
+        # (for example, a higher-strikes event after the first ladder gets blown
+        # through). Use one coherent event set per movie: latest snapshot wins,
+        # with bracket count and volume as tie-breakers.
+        def group_score(item):
+            _, group_rows = item
+            latest_sort = max(sort_key for sort_key, _ in group_rows)
+            total_volume = sum(float(row.get("volume", 0) or 0) for _, row in group_rows)
+            return latest_sort, len(group_rows), total_volume
+
+        _, best_rows = max(groups.items(), key=group_score)
+        data[movie] = [row for _, row in sorted(best_rows)]
     return data
 
 
@@ -267,6 +361,17 @@ def load_theatre_counts():
             data = json.load(f)
         return {k: v for k, v in data.items() if not k.startswith("_")}
     return {}
+
+
+def national_theatre_count_for_movie(movie, theatre_counts):
+    """Find the BOM theatre count for a movie, allowing simple fuzzy matches."""
+    nat_count = theatre_counts.get(movie)
+    if nat_count:
+        return nat_count
+    for tc_movie, count in theatre_counts.items():
+        if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
+            return count
+    return None
 
 
 # ── Stage A: Per-Theatre Daily Revenue ───────────────────────────────────────
@@ -328,7 +433,22 @@ def _parse_numeric(value, default=0):
 
 
 def estimate_theatre_daily_revenue(row, cal):
-    """Stage A: estimate one theatre's revenue for one day from a single row."""
+    """Stage A: revenue for ONE captured evening showtime (one CSV row).
+
+    A CSV row = a single (theatre, movie, format, showtime) snapshot. This
+    returns the *actual* revenue of THAT specific show:
+
+        revenue = projected_occupancy × auditorium_seats × format_ticket_price
+
+    No deflators. The row is real data — observed seats sold at observed
+    showtime — so we don't deflate it toward a hypothetical day-average.
+    `time_multiplier` projects pre-showtime occupancy forward to showtime,
+    which IS legitimate (tickets keep selling until lights down).
+
+    The caller (predict_movie) sums these per-row revenues per (theatre,
+    day), then multiplies by the evening→daily multiplier to extrapolate
+    from our 5pm–11pm sample to a full-day theatre estimate.
+    """
     total_seats = _parse_numeric(row.get("total_seats", 0))
     seats_sold = _parse_numeric(row.get("seats_sold", 0))
 
@@ -338,16 +458,16 @@ def estimate_theatre_daily_revenue(row, cal):
 
     is_sold_out = row.get("is_sold_out", "").lower() in ("true", "1", "yes")
     is_almost_sold = row.get("is_almost_sold_out", "").lower() in ("true", "1", "yes")
-    total_showings = _parse_numeric(row.get("total_showings", 1), default=1)
     format_rank = infer_format_rank(row)
 
-    # Ticket price — try multiple field names
+    # Ticket price — explicit per-row override wins; otherwise format-aware.
     raw_price = row.get("adult_ticket_price", "") or row.get("ticket_price_estimate", "")
     try:
-        ticket_price = float(raw_price) if raw_price else DEFAULT_TICKET_PRICE
+        ticket_price = float(raw_price) if raw_price else None
     except (ValueError, TypeError):
-        ticket_price = DEFAULT_TICKET_PRICE
-    effective_price = ticket_price * PRICE_DISCOUNT_FACTOR
+        ticket_price = None
+    if ticket_price is None:
+        ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(0))
 
     # Occupancy
     if has_seat_map and total_seats > 0:
@@ -364,32 +484,21 @@ def estimate_theatre_daily_revenue(row, cal):
     else:
         return None  # can't estimate without data
 
-    # Adjust for time (pre-showtime occupancy will increase)
+    # Project pre-showtime occupancy forward to showtime (tickets keep
+    # selling). Negative delta = scraped before show; positive = after.
     time_mult = time_multiplier(row)
     projected_occ = min(1.0, observed_occ * time_mult)
 
-    # Format deflator: premium evening shows fill more than average across all showings
-    fmt_deflator = FORMAT_DEFLATORS.get(format_rank, 0.85)
-    avg_occupancy = projected_occ * fmt_deflator
-
-    # Seat deflator: premium rooms are bigger than average auditorium
-    seat_deflator = SEAT_DEFLATORS.get(format_rank, 1.0)
-    avg_seats = total_seats * seat_deflator
-
-    # Revenue = avg occupancy × avg seats × showings × price
-    revenue = avg_occupancy * avg_seats * total_showings * effective_price
+    revenue_per_showtime = projected_occ * total_seats * ticket_price
 
     return {
-        "revenue": revenue,
-        "avg_occupancy": avg_occupancy,
+        "revenue": revenue_per_showtime,
         "projected_occ": projected_occ,
         "observed_occ": observed_occ,
         "time_mult": time_mult,
-        "fmt_deflator": fmt_deflator,
         "total_seats": total_seats,
-        "avg_seats": avg_seats,
-        "total_showings": total_showings,
-        "effective_price": effective_price,
+        "ticket_price": ticket_price,
+        "format_rank": format_rank,
         "theatre_name": row.get("theatre_name", "?"),
         "format": row.get("format", "") or row.get("auditorium_type", "") or row.get("auditorium_name", "") or "?",
         "has_seat_map": has_seat_map,
@@ -434,29 +543,57 @@ def amc_to_domestic(amc_revenue, cal):
 
 # ── Stage D: Partial Days → Full Weekend ─────────────────────────────────────
 
-def days_to_weekend(daily_estimates, cal):
-    """Stage D: project partial-weekend data to full weekend.
+def calibrated_daily_estimates(daily_estimates, cal):
+    """Return per-day calibrated estimates from raw daily domestic estimates."""
+    return {
+        day: {
+            "raw_mid": est,
+            "scale": get_day_scale(cal, day),
+            "mid": est * get_day_scale(cal, day),
+        }
+        for day, est in daily_estimates.items()
+    }
 
-    daily_estimates: dict of {day_name: domestic_daily_mid}
-    Uses calibrated day weights (learned from actual results) to project
-    partial data to a full Thu-Sun weekend.
-    Returns (mid, low, high).
+
+def days_to_weekend(daily_estimates, cal):
+    """Stage D: per-day calibrated daily estimates summed to a weekend total.
+
+    daily_estimates: dict of {day_name: raw_domestic_daily_mid}
+    Each captured day is multiplied by its own calibration scale factor
+    (`day_scale_factors[day]`, default 1.0). The weekend total is the SUM of
+    those calibrated daily values, so calibration adds up to a total
+    day-by-day instead of being applied as one global multiplier on the sum.
+
+    For partial-weekend coverage (e.g. only Thu+Fri scraped so far), the
+    missing Thu-Sun days are extrapolated from the calibrated days using the
+    learned `day_weights` distribution: total = collected_sum / collected_share.
+
+    Returns (mid, low, high, calibrated_daily).
     """
     if not daily_estimates:
-        return 0, 0, 0
+        return 0, 0, 0, {}
 
     day_weights = get_day_weights(cal)
-    collected_sum = sum(daily_estimates.values())
-    collected_weight = sum(day_weights.get(day, 0) for day in daily_estimates)
 
-    if collected_weight <= 0:
-        return collected_sum, collected_sum * 0.5, collected_sum * 2.0
+    # Apply per-day scale factors first; the sum is the calibrated subtotal
+    # of the days we actually have.
+    calibrated_daily = calibrated_daily_estimates(daily_estimates, cal)
+    collected_sum = sum(d["mid"] for d in calibrated_daily.values())
+    collected_share = sum(day_weights.get(day, 0) for day in calibrated_daily)
 
-    weekend_mid = collected_sum / collected_weight
-
-    # Apply calibration scale factor
-    scale = cal["calibration_factors"].get("overall_scale_factor", 1.0)
-    weekend_mid *= scale
+    # If we have substantially the full weekend (Thu-Sun ≈ 1.0), the sum IS
+    # the prediction — no extrapolation needed. The 0.99 threshold leaves a
+    # rounding cushion for day_weights that sum to e.g. 0.9999.
+    if collected_share >= 0.99:
+        weekend_mid = collected_sum
+    elif collected_share > 0:
+        # Partial weekend: scale collected_sum up to the full weekend share.
+        # E.g. Thu+Fri share = 0.12+0.32=0.44, so weekend ≈ collected/0.44.
+        weekend_mid = collected_sum / collected_share
+    else:
+        # Day_weights misconfigured for this set of days — fall back to a
+        # wide bracket around the raw sum so we never silently zero out.
+        return collected_sum, collected_sum * 0.5, collected_sum * 2.0, calibrated_daily
 
     # Confidence based on how many days we have
     n_days = len(daily_estimates)
@@ -464,7 +601,7 @@ def days_to_weekend(daily_estimates, cal):
     weekend_low = weekend_mid * conf_low
     weekend_high = weekend_mid * conf_high
 
-    return weekend_mid, weekend_low, weekend_high
+    return weekend_mid, weekend_low, weekend_high, calibrated_daily
 
 
 # ── Stage E: Polymarket Expected Value ───────────────────────────────────────
@@ -483,12 +620,16 @@ def extract_bracket_range(question):
         amounts = re.findall(r'\$(\d+(?:\.\d+)?)', question)
         # Filter to likely millions (> 10)
         amounts = [a for a in amounts if float(a) >= 10]
+    if not amounts:
+        # Polymarket often writes brackets as "between 75m and 80m" without "$".
+        amounts = re.findall(r'(?<![\w.])(\d+(?:\.\d+)?)\s*(?:m|million|mil)\b', q)
+        amounts = [a for a in amounts if float(a) >= 10]
 
     if len(amounts) >= 2:
         return float(amounts[0]), float(amounts[1])
     elif len(amounts) == 1:
         val = float(amounts[0])
-        if any(w in q for w in ["over", "above", "more than", "higher than", "exceed"]):
+        if any(w in q for w in ["over", "above", "more than", "higher than", "greater than", "exceed"]):
             return val, val + 30
         elif any(w in q for w in ["under", "below", "less than", "lower than"]):
             return max(0, val - 30), val
@@ -593,7 +734,9 @@ def blend_predictions(seat_est, seat_low, seat_high,
 # ── Calibration ──────────────────────────────────────────────────────────────
 
 def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
-                  seat_raw, poly_ev, actual, n_theatres, days_collected):
+                  seat_raw, poly_ev, actual, n_theatres, days_collected,
+                  daily_theatre_counts=None, daily_coverage_ratios=None,
+                  daily_predictions=None, raw_daily_predictions=None):
     """Record a predicted-vs-actual result and update calibration factors."""
     entry = {
         "movie": movie,
@@ -607,6 +750,27 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         "n_theatres": n_theatres,
         "days_collected": days_collected,
     }
+    if daily_predictions:
+        entry["daily_predictions"] = {
+            k: round(v, 2) for k, v in daily_predictions.items()
+        }
+    if raw_daily_predictions:
+        entry["raw_daily_predictions"] = {
+            k: round(v, 2) for k, v in raw_daily_predictions.items()
+        }
+    if daily_theatre_counts:
+        entry["daily_theatre_counts"] = daily_theatre_counts
+    if daily_coverage_ratios:
+        entry["daily_coverage_ratios"] = daily_coverage_ratios
+        vals = [v for v in daily_coverage_ratios.values() if v is not None]
+        if vals:
+            entry["coverage_ratio"] = round(sum(vals) / len(vals), 3)
+        excluded_days = [
+            day for day, ratio in daily_coverage_ratios.items()
+            if ratio < MIN_DAILY_CALIBRATION_COVERAGE
+        ]
+        if excluded_days:
+            entry["calibration_excluded_days"] = sorted(excluded_days)
     cal["history"].append(entry)
 
     # Update scale factor using the same bounded logic as calibrate.py.
@@ -637,16 +801,43 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
 
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_theatre_count=None):
     """Run full prediction pipeline for a single movie."""
-    # Identify opening weekend dates (Thu-Sun)
+    # Identify opening weekend dates. The scraper may continue collecting
+    # Mon-Wed rows for calibration research, but Polymarket brackets settle on
+    # the opening weekend only, so prediction totals must stay Thu-Sun.
     all_dates = sorted(seat_data.keys())
     if not all_dates:
+        return None
+    opening_dates = []
+    ignored_dates = {}
+    for date_str in all_dates:
+        rows = seat_data[date_str]
+        csv_day = rows[0].get("day_of_week", "") if rows else ""
+        day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+        if day_name in OPENING_WEEKEND_DAYS:
+            opening_dates.append(date_str)
+        else:
+            ignored_dates[date_str] = day_name
+
+    if not opening_dates:
         return None
 
     # Group by day of week
     daily_estimates = {}
     daily_details = {}
+    expected_amc_theatres = max(
+        (
+            len({
+                row.get("theatre_name", "")
+                for row in rows
+                if row.get("theatre_name", "")
+            })
+            for date_str, rows in seat_data.items()
+            if date_str in opening_dates
+        ),
+        default=0,
+    )
 
-    for date_str in all_dates:
+    for date_str in opening_dates:
         rows = seat_data[date_str]
         # Use day_of_week from CSV if available, else compute from date
         csv_day = rows[0].get("day_of_week", "") if rows else ""
@@ -666,25 +857,56 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             if not prev or sort_key > prev.get("_sort_key", ""):
                 rows_by_theatre_fmt_show[key] = {**row, "_sort_key": sort_key}
 
-        # Stage A: per-showtime revenue, then sum per theatre-format
-        theatre_results = []
+        # Stage A: per-showtime revenue (one row = one captured evening
+        # showing). Aggregate per theatre, then scale the evening sample to
+        # a full-day estimate via the calibrated evening→daily multiplier.
+        per_showtime_results = []
         no_data_count = 0
-        showings_by_theatre = {}
+        captured_by_theatre = {}        # {theatre: [per_showtime_result, ...]}
         for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
-                theatre_results.append(result)
-                t_name = row.get("theatre_name", "?")
-                showings_by_theatre[t_name] = showings_by_theatre.get(t_name, 0) + 1
+                per_showtime_results.append(result)
+                t_name = result["theatre_name"]
+                captured_by_theatre.setdefault(t_name, []).append(result)
             else:
                 no_data_count += 1
 
-        if not theatre_results:
+        if not per_showtime_results:
             continue
+
+        # Per-theatre full-day revenue:
+        #   captured_revenue  = sum of per-showtime revenues across captured
+        #                       evening shows at this theatre
+        #   theatre_day_rev   = captured_revenue × evening_to_daily_multiplier
+        #
+        # The multiplier defaults to 1.7 for Fri/Sat/Sun (we capture ~6 of
+        # ~10 daily showings; matinees fill at roughly 60% of evening
+        # occupancy) and 1.0 for Thursday (preview-only night, no matinees
+        # exist for this movie that day, so what we scrape IS the full day).
+        # Calibration EMA can tune this per day from actuals over time.
+        ev_to_daily = get_evening_to_daily_multiplier(cal, day_name=day_name)
+        theatre_results = []
+        showings_by_theatre = {}
+        for t_name, captured_rows in captured_by_theatre.items():
+            captured_rev = sum(r["revenue"] for r in captured_rows)
+            theatre_day_rev = captured_rev * ev_to_daily
+            theatre_results.append({
+                "revenue": theatre_day_rev,
+                "theatre_name": t_name,
+                "n_captured_showings": len(captured_rows),
+                "captured_revenue": captured_rev,
+                "evening_to_daily": ev_to_daily,
+            })
+            showings_by_theatre[t_name] = len(captured_rows)
 
         # Stage B: sum all AMC
         amc_total, amc_stats = sum_amc_theatres(theatre_results)
         n_amc_theatres = amc_stats.get("n_theatres", 0)
+        coverage_ratio = (
+            min(1.0, n_amc_theatres / expected_amc_theatres)
+            if expected_amc_theatres else None
+        )
         avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
                         if showings_by_theatre else 0)
 
@@ -709,8 +931,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             "domestic_low": domestic_low,
             "domestic_high": domestic_high,
             "n_theatres": n_amc_theatres,
+            "expected_theatres": expected_amc_theatres,
+            "coverage_ratio": coverage_ratio,
             "n_no_data": no_data_count,
             "avg_showings_per_cinema": round(avg_showings, 1),
+            "evening_to_daily": ev_to_daily,
             "mean_revenue": amc_stats.get("mean_revenue", 0),
             "median_revenue": amc_stats.get("median_revenue", 0),
             "theatre_results": theatre_results if verbose else [],
@@ -719,8 +944,23 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     if not daily_estimates:
         return None
 
-    # Stage D: partial days → weekend
-    seat_mid, seat_low, seat_high = days_to_weekend(daily_estimates, cal)
+    # Stage D: day-by-day calibration → weekend sum.
+    seat_mid, seat_low, seat_high, calibrated_daily = days_to_weekend(daily_estimates, cal)
+    for day_name, calibrated in calibrated_daily.items():
+        details = daily_details.get(day_name)
+        if not details:
+            continue
+        raw_mid = details["domestic_mid"]
+        raw_low = details["domestic_low"]
+        raw_high = details["domestic_high"]
+        day_scale = calibrated["scale"]
+        details["raw_domestic_mid"] = raw_mid
+        details["raw_domestic_low"] = raw_low
+        details["raw_domestic_high"] = raw_high
+        details["day_scale"] = day_scale
+        details["domestic_mid"] = calibrated["mid"]
+        details["domestic_low"] = raw_low * day_scale
+        details["domestic_high"] = raw_high * day_scale
 
     # Convert to millions for display
     seat_mid_m = seat_mid / 1_000_000
@@ -736,7 +976,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     # Count unique theatres across all days (a theatre that appears on both
     # Thursday and Friday should count as 1, not 2).
     all_theatre_names: set[str] = set()
-    for date_str in all_dates:
+    for date_str in opening_dates:
         rows = seat_data[date_str]
         for row in rows:
             t_name = row.get("theatre_name", "")
@@ -776,12 +1016,29 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         "w_seat": w_seat,
         "w_poly": w_poly,
         "daily_details": daily_details,
-        "daily_estimates": daily_estimates,
+        "daily_estimates": {
+            day: details["domestic_mid"]
+            for day, details in daily_details.items()
+        },
+        "raw_daily_estimates": daily_estimates,
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
+        "expected_amc_theatres": expected_amc_theatres,
+        "ignored_post_weekend_dates": ignored_dates,
+        "coverage_ratio": round(
+            sum(
+                d.get("coverage_ratio", 0)
+                for d in daily_details.values()
+                if d.get("coverage_ratio") is not None
+            ) / len([
+                d for d in daily_details.values()
+                if d.get("coverage_ratio") is not None
+            ]),
+            3,
+        ) if any(d.get("coverage_ratio") is not None for d in daily_details.values()) else None,
         "national_theatre_count": national_theatre_count,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
-        "amc_total_weekend": seat_mid * cal["calibration_factors"].get("amc_market_share", DEFAULT_AMC_MARKET_SHARE),
+        "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
 
 
@@ -803,7 +1060,10 @@ def print_prediction(pred, verbose=False):
     print(f"  {'─' * len(movie)}")
 
     # Seat-based
-    days_str = ", ".join(sorted(pred["daily_estimates"].keys()))
+    days_str = ", ".join(
+        day for day in OPENING_WEEKEND_DAYS
+        if day in pred["daily_estimates"]
+    )
     n_th = pred["n_theatres_total"]
     nat = pred.get("national_theatre_count")
     nat_str = f", {nat:,} national" if nat else ""
@@ -816,11 +1076,21 @@ def print_prediction(pred, verbose=False):
     for day, details in sorted(pred["daily_details"].items(),
                                 key=lambda x: x[1]["date"]):
         amc_m = details["amc_total"] / 1_000_000
+        raw_dom_m = details.get("raw_domestic_mid", details["domestic_mid"]) / 1_000_000
         dom_m = details["domestic_mid"] / 1_000_000
+        day_scale = details.get("day_scale", 1.0)
         spd = details.get("avg_showings_per_cinema", 0)
+        coverage = details.get("coverage_ratio")
+        coverage_str = (
+            f", {coverage:.0%} sample coverage"
+            if coverage is not None and coverage < 0.95 else ""
+        )
+        day_model = fmt_m(dom_m)
+        if abs(day_scale - 1.0) >= 0.005:
+            day_model = f"{fmt_m(raw_dom_m)} × {day_scale:.3f} = {fmt_m(dom_m)}"
         print(f"    {day} ({details['date']}): "
-              f"AMC {fmt_m(amc_m)} → domestic {fmt_m(dom_m)} "
-              f"[{details['n_theatres']} theatres, {spd:.1f} showings/cinema"
+              f"AMC {fmt_m(amc_m)} → day {day_model} "
+              f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
     # Polymarket
@@ -855,9 +1125,16 @@ def print_prediction(pred, verbose=False):
         all_theatres.sort(key=lambda t: t["revenue"], reverse=True)
         for t in all_theatres[:20]:
             rev_k = t["revenue"] / 1000
-            print(f"    {t['theatre_name'][:35]:<35} {t['day']:<10} "
-                  f"{t['format']:<15} occ:{t['observed_occ']:.0%}→{t['avg_occupancy']:.0%} "
-                  f"${rev_k:,.0f}K  ({t['total_showings']} shows)")
+            if "n_captured_showings" in t:
+                captured_k = t.get("captured_revenue", 0) / 1000
+                print(f"    {t['theatre_name'][:35]:<35} {t['day']:<10} "
+                      f"${rev_k:,.0f}K daily  "
+                      f"({t['n_captured_showings']} captured, ${captured_k:,.0f}K evening)")
+            else:
+                print(f"    {t['theatre_name'][:35]:<35} {t['day']:<10} "
+                      f"{t.get('format', '?'):<15} "
+                      f"occ:{t.get('observed_occ', 0):.0%}→{t.get('avg_occupancy', 0):.0%} "
+                      f"${rev_k:,.0f}K  ({t.get('total_showings', 0)} shows)")
 
 
 def print_history(cal):
@@ -873,10 +1150,14 @@ def print_history(cal):
     print(f"  {'Movie':<30} {'Predicted':>10} {'Actual':>10} {'Error':>8}")
     print(f"  {'─'*30} {'─'*10} {'─'*10} {'─'*8}")
     for h in history:
-        pred_str = fmt_m(h["predicted_mid"])
-        actual_str = fmt_m(h["actual"]) if h.get("actual") else "—"
-        if h.get("actual") and h["predicted_mid"] > 0:
-            err = (h["actual"] - h["predicted_mid"]) / h["predicted_mid"]
+        predicted = h.get("predicted_mid", 0)
+        actual = h.get("actual", h.get("actual_total"))
+        pred_str = fmt_m(predicted)
+        actual_str = fmt_m(actual) if actual else "—"
+        if h.get("error_pct") is not None:
+            err_str = f"{h['error_pct']:+.1f}%"
+        elif actual and predicted > 0:
+            err = (actual - predicted) / predicted
             err_str = f"{err:+.0%}"
         else:
             err_str = "—"
@@ -887,10 +1168,33 @@ def print_history(cal):
           f"AMC share={factors.get('amc_market_share', DEFAULT_AMC_MARKET_SHARE):.2%}")
 
 
+def print_usage():
+    """Print CLI usage without running a prediction."""
+    print("""Usage:
+  python3 predict.py
+  python3 predict.py --movie "Movie Name"
+  python3 predict.py --actual "Movie Name" 125.3
+  python3 predict.py --history
+  python3 predict.py --verbose
+
+Options:
+  --movie NAME       Predict one movie from the loaded seat-count data
+  --actual NAME GROSS_M
+                     Record an actual opening-weekend result in millions
+  --history          Show stored prediction-vs-actual history
+  --verbose, -v      Include per-theatre prediction details
+  --help, -h         Show this help text
+""")
+
+
 # ── CLI ──────────────────────────────────────────────────────────────────────
 
 def main():
     args = sys.argv[1:]
+    if "--help" in args or "-h" in args:
+        print_usage()
+        return
+
     verbose = "--verbose" in args or "-v" in args
     cal = load_calibration()
 
@@ -903,43 +1207,75 @@ def main():
     if "--actual" in args:
         idx = args.index("--actual")
         if idx + 2 >= len(args):
-            print("Usage: --actual \"Movie Name\" 125.3")
+            print_usage()
+            return
+        if args[idx + 1].startswith("--") or args[idx + 2].startswith("--"):
+            print_usage()
             return
         movie_name = args[idx + 1]
-        actual_val = float(args[idx + 2])
+        try:
+            actual_val = float(args[idx + 2])
+        except ValueError:
+            print_usage()
+            return
 
         # Try to find the last prediction for this movie
         seat_data = load_seat_data()
         poly_data = load_polymarket_data()
+        theatre_counts = load_theatre_counts()
         movie_match = None
         for m in seat_data:
             if movie_name.lower() in m.lower():
                 movie_match = m
                 break
 
-        pred_mid = 0
-        pred_low = 0
-        pred_high = 0
-        seat_raw = 0
-        poly_ev = 0
-        n_th = 0
-        days = []
+        if not movie_match:
+            print(f"No seat-count prediction found for {movie_name!r}; not recording actual.")
+            return
 
-        if movie_match:
-            pred = predict_movie(movie_match, seat_data[movie_match],
-                                poly_data.get(movie_match, []), cal)
-            if pred:
-                pred_mid = pred["blended_m"]
-                pred_low = pred["blend_low_m"]
-                pred_high = pred["blend_high_m"]
-                seat_raw = pred["amc_total_weekend"] / 1_000_000
-                poly_ev = pred["poly_result"]["ev"] if pred["poly_result"] else 0
-                n_th = pred["n_theatres_total"]
-                days = list(pred["daily_estimates"].keys())
+        nat_count = national_theatre_count_for_movie(movie_match, theatre_counts)
+        pred = predict_movie(movie_match, seat_data[movie_match],
+                            poly_data.get(movie_match, []), cal,
+                            national_theatre_count=nat_count)
+        if not pred:
+            print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
+            return
 
-        record_actual(cal, movie_name, pred_mid, pred_low, pred_high,
-                     seat_raw, poly_ev, actual_val, n_th, days)
-        print(f"Recorded: {movie_name} actual = ${actual_val}M")
+        pred_mid = pred["blended_m"]
+        pred_low = pred["blend_low_m"]
+        pred_high = pred["blend_high_m"]
+        seat_raw = pred["amc_total_weekend"] / 1_000_000
+        poly_ev = pred["poly_result"]["ev"] if pred["poly_result"] else 0
+        n_th = pred["n_theatres_total"]
+        days = list(pred["daily_estimates"].keys())
+        daily_predictions = {
+            day: details.get("domestic_mid", 0) / 1_000_000
+            for day, details in pred.get("daily_details", {}).items()
+        }
+        raw_daily_predictions = {
+            day: details.get(
+                "raw_domestic_mid",
+                details.get("domestic_mid", 0),
+            ) / 1_000_000
+            for day, details in pred.get("daily_details", {}).items()
+        }
+        daily_theatre_counts = {
+            day: details.get("n_theatres", 0)
+            for day, details in pred.get("daily_details", {}).items()
+        }
+        daily_coverage_ratios = {
+            day: round(details["coverage_ratio"], 3)
+            for day, details in pred.get("daily_details", {}).items()
+            if details.get("coverage_ratio") is not None
+        }
+
+        record_actual(cal, movie_match, pred_mid, pred_low, pred_high,
+                     seat_raw, poly_ev, actual_val, n_th, days,
+                     daily_theatre_counts=daily_theatre_counts,
+                     daily_coverage_ratios=daily_coverage_ratios,
+                     daily_predictions=daily_predictions,
+                     raw_daily_predictions=raw_daily_predictions)
+        print(f"Recorded: {movie_match} actual = ${actual_val}M")
         print(f"Calibration updated → scale={cal['calibration_factors']['overall_scale_factor']:.4f}, "
               f"AMC share={cal['calibration_factors']['amc_market_share']:.2%}")
         return
@@ -957,8 +1293,14 @@ def main():
     movie_filter = None
     if "--movie" in args:
         idx = args.index("--movie")
-        if idx + 1 < len(args):
-            movie_filter = args[idx + 1].lower()
+        if idx + 1 >= len(args) or args[idx + 1].startswith("--"):
+            print_usage()
+            return
+        movie_filter = args[idx + 1].lower()
+    movies_to_predict = [
+        movie for movie in sorted(seat_data.keys())
+        if not movie_filter or movie_filter in movie.lower()
+    ]
 
     print(f"\n{'='*70}")
     print(f"  Opening Weekend Box Office Predictions")
@@ -967,21 +1309,18 @@ def main():
     print(f"  Calibration: scale={factors.get('overall_scale_factor', 1.0):.3f}, "
           f"AMC share={factors.get('amc_market_share', DEFAULT_AMC_MARKET_SHARE):.1%}")
     if theatre_counts:
-        print(f"  National theatre counts: {', '.join(f'{m}: {c:,}' for m, c in theatre_counts.items())}")
+        relevant_counts = {
+            movie: national_theatre_count_for_movie(movie, theatre_counts)
+            for movie in movies_to_predict
+        }
+        relevant_counts = {m: c for m, c in relevant_counts.items() if c}
+        if relevant_counts:
+            print("  National theatre counts: "
+                  f"{', '.join(f'{m}: {c:,}' for m, c in relevant_counts.items())}")
     print(f"{'='*70}")
 
-    for movie in sorted(seat_data.keys()):
-        if movie_filter and movie_filter not in movie.lower():
-            continue
-
-        # Fuzzy match movie name to theatre_counts keys
-        nat_count = theatre_counts.get(movie)
-        if not nat_count:
-            for tc_movie, count in theatre_counts.items():
-                if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
-                    nat_count = count
-                    break
-
+    for movie in movies_to_predict:
+        nat_count = national_theatre_count_for_movie(movie, theatre_counts)
         pred = predict_movie(movie, seat_data[movie],
                             poly_data.get(movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count)
