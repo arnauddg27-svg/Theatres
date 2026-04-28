@@ -84,6 +84,15 @@ MAX_CONCURRENT_TABS_PHASE1 = 2
 PHASE1_THEATRE_TIMEOUT_SEC = 90
 PHASE2_THEATRE_TIMEOUT_SEC = 180
 PHASE2_DEADLINE_SEC = 60 * 60   # 60 min — leaves 15 min for commit + push
+try:
+    PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
+except ValueError:
+    PHASE1_MIN_FRESH_LINK_RATIO = 0.80
+
+# After the opening weekend closes, we still collect Mon-Wed seat maps for the
+# same tracked title. Those weekday curves are calibration data; they should not
+# be displaced by whatever future box-office market Polymarket surfaces next.
+POST_WEEKEND_COLLECTION_WEEKDAYS = {0, 1, 2}  # Mon, Tue, Wed
 
 # Rotate through realistic Chrome user agents to reduce rate-limiting.
 _USER_AGENTS = [
@@ -146,6 +155,11 @@ def local_date_str(tz_group):
     return local_now(tz_group).strftime("%Y-%m-%d")
 
 
+def phase1_expected_date(tz_group):
+    """Return the show date Phase 2 expects Phase 1 to have collected."""
+    return (local_now(tz_group) - timedelta(hours=12)).strftime("%Y-%m-%d")
+
+
 def opening_weekend_friday(dt=None):
     """Return the Friday that anchors this opening weekend.
 
@@ -173,6 +187,41 @@ def opening_weekend_friday(dt=None):
 
 
 # ─── Polymarket Scraper ─────────────────────────────────────────────────────
+
+def _market_question_ceiling(question):
+    """Approximate the highest bracket endpoint in a market question."""
+    q = (question or "").lower()
+    amounts = re.findall(r'\$(\d+(?:\.\d+)?)', q)
+    if not amounts:
+        amounts = re.findall(r'(?<![\w.])(\d+(?:\.\d+)?)\s*(?:m|million|mil)\b', q)
+    amounts = [float(a) for a in amounts if float(a) >= 10]
+    if not amounts:
+        return 0.0
+
+    if len(amounts) >= 2:
+        return max(amounts)
+
+    val = amounts[0]
+    if any(w in q for w in ("over", "above", "more than", "higher than", "greater than", "exceed")):
+        return val + 30.0
+    return val
+
+
+def _polymarket_event_score(market):
+    """Score duplicate active events for the same movie."""
+    bracket_markets = market.get("bracket_markets", [])
+    max_ceiling = max(
+        (_market_question_ceiling(b.get("market_question", "")) for b in bracket_markets),
+        default=0.0,
+    )
+    is_ladder = len(bracket_markets) >= 3
+    return (
+        is_ladder,
+        max_ceiling,
+        len(bracket_markets),
+        float(market.get("volume", 0) or 0),
+    )
+
 
 def fetch_polymarket_box_office():
     """
@@ -204,8 +253,7 @@ def fetch_polymarket_box_office():
         print(f"  ❌ Polymarket API error: {e}")
         return []
 
-    markets_found = []
-    seen_movies = set()
+    candidates_by_movie = {}
 
     for event in events:
         title = event.get("title", "")
@@ -213,6 +261,9 @@ def fetch_polymarket_box_office():
 
         # Same filter as trade.py: must have BOTH keywords
         if "opening weekend" not in title_lower or "box office" not in title_lower:
+            continue
+        if is_comparison_box_office_market(title):
+            print(f"    ↷ Skipping comparison market: {title}")
             continue
 
         # Extract movie name from quoted title (e.g. "Thunderbolts" Opening Weekend...)
@@ -225,10 +276,6 @@ def fetch_polymarket_box_office():
 
         if not movie_name:
             movie_name = extract_movie_title(title)
-
-        if movie_name in seen_movies:
-            continue
-        seen_movies.add(movie_name)
 
         slug = event.get("slug", "")
         event_url = f"https://polymarket.com/event/{slug}"
@@ -246,7 +293,7 @@ def fetch_polymarket_box_office():
                 "market_id": str(m.get("id", "")),
             })
 
-        markets_found.append({
+        market = {
             "movie_title": movie_name,
             "market_url": event_url,
             "question": title,
@@ -254,7 +301,19 @@ def fetch_polymarket_box_office():
             "volume": total_volume,
             "market_id": str(event.get("id", "")),
             "bracket_markets": bracket_markets,
-        })
+        }
+        candidates_by_movie.setdefault(movie_name, []).append(market)
+
+    markets_found = []
+    for movie_name, candidates in candidates_by_movie.items():
+        best = max(candidates, key=_polymarket_event_score)
+        skipped = [c for c in candidates if c is not best]
+        if skipped:
+            print(
+                f"    ↷ {movie_name}: selected {best['market_url'].rsplit('/', 1)[-1]} "
+                f"over {len(skipped)} older/alternate event(s)"
+            )
+        markets_found.append(best)
 
     print(f"  Found {len(markets_found)} box office movie(s)")
     for m in markets_found:
@@ -283,7 +342,10 @@ def load_movies_from_csv(weekend_of):
             date_str = row.get("date", "").strip()
             title    = row.get("movie_title", "").strip()
             url      = row.get("market_url", "").strip()
+            question = row.get("market_question", "").strip()
             if not title or not date_str:
+                continue
+            if is_comparison_box_office_market(question or title):
                 continue
             try:
                 row_dt = datetime.strptime(date_str, "%Y-%m-%d")
@@ -305,6 +367,132 @@ def load_movies_from_csv(weekend_of):
     return markets
 
 
+def latest_market_urls_from_csv():
+    """Return latest known Polymarket event URL per movie title."""
+    urls = {}
+    if not POLY_CSV.exists():
+        return urls
+    with open(POLY_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            title = row.get("movie_title", "").strip()
+            url = row.get("market_url", "").strip()
+            question = row.get("market_question", "").strip()
+            if not title or is_comparison_box_office_market(question or title):
+                continue
+            urls[title] = url
+    return urls
+
+
+def unique_preserving_order(values):
+    seen = set()
+    ordered = []
+    for value in values:
+        cleaned = (value or "").strip()
+        key = cleaned.lower()
+        if not cleaned or key in seen:
+            continue
+        seen.add(key)
+        ordered.append(cleaned)
+    return ordered
+
+
+def tracked_movie_titles_from_state(weekend_of):
+    """Load the current collection-window movie list from durable state.
+
+    The Polymarket CSV date is the date we observed a market, not the movie's
+    release weekend. Persisted Phase 1 links and theatre-count metadata are the
+    reliable source for "what title are we still collecting this week?"
+    """
+    titles = []
+
+    if LINKS_JSON.exists():
+        try:
+            with open(LINKS_JSON) as f:
+                links_data = json.load(f)
+            links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
+            if links_weekend == weekend_of:
+                for entry in links_data.get("theatres", {}).values():
+                    titles.extend((entry.get("movies") or {}).keys())
+        except Exception as e:
+            print(f"  ⚠️  Could not read tracked movies from showtime links: {e}")
+
+    if THEATRE_COUNTS_JSON.exists():
+        try:
+            with open(THEATRE_COUNTS_JSON) as f:
+                counts_data = json.load(f)
+            updated = counts_data.get("_updated", "")
+            updated_weekend = ""
+            if updated:
+                updated_dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                updated_weekend = opening_weekend_friday(updated_dt)
+            if updated_weekend == weekend_of:
+                titles.extend(counts_data.get("_requested_movies") or [])
+        except Exception as e:
+            print(f"  ⚠️  Could not read tracked movies from theatre counts: {e}")
+
+    return unique_preserving_order(titles)
+
+
+def markets_for_tracked_titles(movie_titles, live_markets=None):
+    """Build market records for tracked titles, reusing live bracket data when available."""
+    live_by_title = {
+        m.get("movie_title", "").lower(): m
+        for m in (live_markets or [])
+        if m.get("movie_title")
+    }
+    latest_urls = latest_market_urls_from_csv()
+    markets = []
+    for title in unique_preserving_order(movie_titles):
+        live_market = live_by_title.get(title.lower())
+        if live_market:
+            markets.append(live_market)
+            continue
+        markets.append({
+            "movie_title": title,
+            "market_url": latest_urls.get(title, ""),
+            "question": "",
+            "current_odds": "N/A",
+            "volume": 0,
+            "market_id": "",
+            "bracket_markets": [],
+        })
+    return markets
+
+
+def select_collection_markets(live_markets, ref_dt, phase_label):
+    """Choose which movie markets drive the data-collection run."""
+    weekend = opening_weekend_friday(ref_dt)
+    tracked_titles = tracked_movie_titles_from_state(weekend)
+
+    if ref_dt.weekday() in POST_WEEKEND_COLLECTION_WEEKDAYS and tracked_titles:
+        markets = markets_for_tracked_titles(tracked_titles, live_markets)
+        live_titles = unique_preserving_order(m.get("movie_title", "") for m in live_markets)
+        if live_titles and set(t.lower() for t in live_titles) != set(t.lower() for t in tracked_titles):
+            print(
+                f"  ↩️  {phase_label}: continuing tracked collection title(s) "
+                f"{', '.join(tracked_titles)} for weekend {weekend}; "
+                f"ignoring live future/other market(s): {', '.join(live_titles)}"
+            )
+        else:
+            print(
+                f"  ↩️  {phase_label}: continuing tracked collection title(s) "
+                f"{', '.join(tracked_titles)} for weekend {weekend}"
+            )
+        return markets
+
+    if live_markets:
+        return live_markets
+
+    if tracked_titles:
+        print(
+            f"  ↩️  {phase_label}: no live Polymarket event; continuing tracked "
+            f"title(s) {', '.join(tracked_titles)} for weekend {weekend}"
+        )
+        return markets_for_tracked_titles(tracked_titles)
+
+    return load_movies_from_csv(weekend)
+
+
 def extract_movie_title(question):
     """Extract a movie title from a Polymarket question."""
     quoted = re.findall(r'[\'"\u201c\u201d]([^\'"\u201c\u201d]+)[\'"\u201c\u201d]', question)
@@ -321,6 +509,35 @@ def extract_movie_title(question):
             return match.group(1).strip()
 
     return question[:60]
+
+
+def is_comparison_box_office_market(title):
+    """Return True for head-to-head box-office markets, not movie brackets.
+
+    We only want real per-movie opening-weekend bracket markets for data
+    collection. A comparison market like "A vs. B Opening Weekend Box Office"
+    does not name an actual film playing at AMC, but the previous fallback title
+    parser treated the whole comparison as a movie and caused Phase 1/2 to
+    collect duplicate seat rows under that fake title.
+    """
+    if not title:
+        return False
+    normalized = title.replace("\u201c", '"').replace("\u201d", '"')
+    lowered = normalized.lower()
+    if "opening weekend" not in lowered or "box office" not in lowered:
+        return False
+
+    # A normal per-movie market is often quoted:
+    #   "Michael" Opening Weekend Box Office
+    # A comparison can also be quoted:
+    #   "Movie A" vs. "Movie B" Opening Weekend Box Office
+    # Strip quoted spans before looking for a joiner, so a title like
+    # "Alien vs. Predator" does not get mistaken for a comparison market.
+    quoted_spans = re.findall(r'"[^"]+"', normalized)
+    outside_quotes = re.sub(r'"[^"]+"', " ", normalized).lower()
+    if re.search(r"\bvs\.?\b", outside_quotes):
+        return True
+    return len(quoted_spans) >= 2 and bool(re.search(r"\bvs\.?\b", lowered))
 
 
 def save_polymarket_data(markets):
@@ -432,7 +649,9 @@ def fetch_bom_theatre_counts(movie_titles):
     except Exception as e:
         print(f"  ❌ BOM fetch failed: {e}")
 
-    # Save / merge with existing
+    # Save only the movies in this collection window. Keeping stale counts for
+    # prior weekends makes theatre-counts.json look like active metadata and
+    # can feed an old exact/fuzzy match into future predictions if BOM is down.
     existing = {}
     if THEATRE_COUNTS_JSON.exists():
         try:
@@ -441,12 +660,18 @@ def fetch_bom_theatre_counts(movie_titles):
         except Exception as e:
             print(f"  ⚠️  Could not load existing theatre-counts.json ({e}) — will overwrite")
 
-    existing.update(counts)
-    existing["_updated"] = datetime.now().isoformat()
+    current_counts = {
+        movie: counts.get(movie, existing.get(movie))
+        for movie in movie_titles
+        if counts.get(movie, existing.get(movie)) is not None
+    }
+    current_counts["_requested_movies"] = movie_titles
+    current_counts["_updated"] = datetime.now().isoformat()
     with open(THEATRE_COUNTS_JSON, "w") as f:
-        json.dump(existing, f, indent=2)
+        json.dump(current_counts, f, indent=2)
 
-    print(f"  Saved theatre counts for {len(counts)} movies → {THEATRE_COUNTS_JSON}")
+    saved_count = len([k for k in current_counts if not k.startswith("_")])
+    print(f"  Saved theatre counts for {saved_count} movies → {THEATRE_COUNTS_JSON}")
     return counts
 
 
@@ -848,6 +1073,113 @@ def fail_phase(message, exit_code=1):
     raise SystemExit(exit_code)
 
 
+def phase1_groups(tz_group):
+    return [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
+
+
+def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates):
+    """Count fresh Phase 1 theatre entries against the configured theatre universe."""
+    expected_total = 0
+    fresh_names = []
+    stale_entries = []
+    missing_entries = []
+
+    for group in groups:
+        expected_date = expected_dates.get(group)
+        for theatre in theatres_map.get(group, []):
+            expected_total += 1
+            name = theatre["name"]
+            entry = saved_links.get(name)
+            if not entry:
+                missing_entries.append(f"{name} ({group}: missing)")
+                continue
+            entry_date = entry.get("show_date")
+            if entry_date == expected_date and entry.get("movies"):
+                fresh_names.append(name)
+            else:
+                stale_entries.append(
+                    f"{name} ({group}: show_date={entry_date or '?'}, expected={expected_date})"
+                )
+
+    ratio = (len(fresh_names) / expected_total) if expected_total else 1.0
+    return {
+        "expected_total": expected_total,
+        "fresh_count": len(fresh_names),
+        "missing_count": len(missing_entries),
+        "stale_count": len(stale_entries),
+        "fresh_names": fresh_names,
+        "missing_entries": missing_entries,
+        "stale_entries": stale_entries,
+        "ratio": ratio,
+    }
+
+
+def print_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
+    expected = report["expected_total"]
+    fresh = report["fresh_count"]
+    ratio = report["ratio"]
+    print(f"\n🧯 {label}: {fresh}/{expected} fresh theatres ({ratio:.1%}); minimum {min_ratio:.0%}")
+    samples = report["stale_entries"][:3] + report["missing_entries"][:3]
+    if samples:
+        print("   Sample gaps:")
+        for sample in samples[:5]:
+            print(f"    - {sample}")
+
+
+def require_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
+    print_phase1_coverage(report, label, min_ratio=min_ratio)
+    if report["expected_total"] and report["ratio"] < min_ratio:
+        fail_phase(
+            f"❌ {label} below reliability threshold: "
+            f"{report['fresh_count']}/{report['expected_total']} fresh theatres "
+            f"({report['ratio']:.1%}, need {min_ratio:.0%})."
+        )
+
+
+def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None):
+    counts = {}
+    for entry in saved_links.values():
+        tz = entry.get("tz")
+        if groups is not None and tz not in groups:
+            continue
+        if expected_dates is not None:
+            expected_date = expected_dates.get(tz)
+            if expected_date and entry.get("show_date") != expected_date:
+                continue
+        for movie, shows in (entry.get("movies") or {}).items():
+            if shows:
+                counts[movie] = counts.get(movie, 0) + 1
+    return counts
+
+
+def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
+                                     groups=None, expected_dates=None):
+    """Drop Polymarket markets that have no fresh AMC Phase 1 links."""
+    if not poly_markets:
+        return []
+
+    linked_counts = phase1_movie_link_counts(
+        saved_links,
+        groups=groups,
+        expected_dates=expected_dates,
+    )
+    filtered = []
+    skipped = []
+    for market in poly_markets:
+        title = market.get("movie_title", "")
+        count = linked_counts.get(title, 0)
+        if count >= min_theatres:
+            filtered.append(market)
+        else:
+            skipped.append(title or market.get("question", "unknown market"))
+
+    if skipped:
+        print("\n↷ Skipping Polymarket market(s) with no current AMC Phase 1 links:")
+        for title in skipped:
+            print(f"    - {title}")
+    return filtered
+
+
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
@@ -887,17 +1219,32 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     day_of_week = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
     try:
-        # current_hour must be in LOCAL time for this theatre's timezone.
-        # GitHub Actions runs on UTC; AMC showtimes are local time.
+        # current_hour must be in LOCAL time for this theatre's timezone and
+        # relative to the show date. Some Phase 2 runs happen after local
+        # midnight (especially ET Sunday night), while the showtime IDs still
+        # belong to the previous calendar day. Without the day offset, a
+        # Monday 00:50 scrape of a Sunday 19:45 show looks like -18.9 hours
+        # before showtime instead of +5.1 hours after showtime.
         tz_local = local_now(tz)
-        current_hour = tz_local.hour + tz_local.minute / 60
+        try:
+            show_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            day_offset = (tz_local.date() - show_date).days
+        except ValueError:
+            day_offset = 0
+        current_hour = tz_local.hour + tz_local.minute / 60 + day_offset * 24
         check_time = datetime.now(timezone.utc).isoformat()
 
         # Build evening_shows from saved Phase 1 links.
         # Phase 1 already selected the right shows at 5pm local — use all of them
         # regardless of what time Phase 2 runs (avoids cross-midnight filter failures).
+        # Only use titles from the current discovery/fallback list. The saved
+        # links file is merged across runs, so stale bad titles should not be
+        # re-scraped just because they are still present in showtime-links.json.
         movie_shows_map = {}
-        for movie_title, entries in saved_movies.items():
+        for movie_title in movie_titles:
+            entries = saved_movies.get(movie_title, [])
+            if not entries:
+                continue
             started = entries
             seen = set()
             shows = []
@@ -1028,39 +1375,43 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     return collected
 
 
-async def run_collect_links_async(tz_group="ALL"):
+async def run_collect_links_async(tz_group="ALL", target_date=None):
     """
     Phase 1 main: Visit all theatres, save showtime IDs to showtime-links.json.
     Run in the local Phase 1 window before shows start.
     """
     print(f"{'='*60}")
     print(f"📋 Phase 1 — Collecting showtime links ({tz_group})")
+    if target_date:
+        print(f"   Target show date: {target_date}")
     print(f"   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}")
 
     theatres_map = load_theatres()
     ref_tz = tz_group if tz_group != "ALL" else "ET"
     ref_local = local_now(ref_tz)
-    poly_markets = fetch_polymarket_box_office()
-    save_polymarket_data(poly_markets)
-
-    if not poly_markets:
-        # Mon-Wed: market has closed, fall back to saved CSV for this weekend
-        current_weekend_check = opening_weekend_friday(ref_local)
-        poly_markets = load_movies_from_csv(current_weekend_check)
+    if target_date:
+        try:
+            target_ref_dt = datetime.strptime(target_date, "%Y-%m-%d")
+        except ValueError:
+            fail_phase(f"❌ Invalid Phase 1 target date: {target_date}")
+    else:
+        target_ref_dt = ref_local
+    live_markets = fetch_polymarket_box_office()
+    poly_markets = select_collection_markets(live_markets, target_ref_dt, "Phase 1")
 
     if not poly_markets:
         fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
-    fetch_bom_theatre_counts(movie_titles)
-    today = ref_local.strftime("%Y-%m-%d")
-    current_weekend = opening_weekend_friday(ref_local)
-    groups = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
+    today = target_date or ref_local.strftime("%Y-%m-%d")
+    current_weekend = opening_weekend_friday(target_ref_dt)
+    groups = phase1_groups(tz_group)
+    expected_dates = {group: (target_date or local_date_str(group)) for group in groups}
     all_theatres = []
     for group in groups:
         for t in theatres_map.get(group, []):
-            all_theatres.append({**t, "_tz": group, "_date": local_date_str(group)})
+            all_theatres.append({**t, "_tz": group, "_date": expected_dates[group]})
 
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
 
@@ -1128,12 +1479,27 @@ async def run_collect_links_async(tz_group="ALL"):
             links["theatres"][name] = {"tz": tz, "show_date": show_date, "movies": collected}
             total_links += sum(len(v) for v in collected.values())
 
+    fresh_report = phase1_link_coverage(links["theatres"], theatres_map, groups, expected_dates)
+    require_phase1_coverage(fresh_report, f"Phase 1 collected links for {tz_group}")
+
+    poly_markets = filter_markets_with_phase1_links(
+        poly_markets,
+        links["theatres"],
+        groups=groups,
+        expected_dates=expected_dates,
+    )
+    if not poly_markets:
+        fail_phase("❌ No active Polymarket box office markets have current AMC showtime links.")
+    movie_titles = [m["movie_title"] for m in poly_markets]
+    fetch_bom_theatre_counts(movie_titles)
+    save_polymarket_data(poly_markets)
+
     DATA_DIR.mkdir(exist_ok=True)
 
     # Merge into existing file so ET/CT/PT Phase 1 runs accumulate in the same file.
     # Each TZ group runs Phase 1 separately and would otherwise overwrite the others.
-    # We keep collected_at from the FIRST run of the day (oldest), and update
-    # individual theatre entries. Theatres from previous weekends are replaced.
+    # We keep the latest successful collected_at timestamp and update individual
+    # theatre entries. Theatres from previous weekends are replaced.
     existing = {}
     if LINKS_JSON.exists():
         try:
@@ -1185,6 +1551,49 @@ async def run_collect_links_async(tz_group="ALL"):
     print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}")
 
 
+async def ensure_phase1_links_async(tz_group="ALL"):
+    """Self-heal Phase 1 links for the Phase 2 show date when coverage is low."""
+    if tz_group == "ALL":
+        for group in phase1_groups(tz_group):
+            await ensure_phase1_links_async(group)
+        return
+
+    theatres_map = load_theatres()
+    target_date = phase1_expected_date(tz_group)
+    expected_dates = {tz_group: target_date}
+    target_weekend = opening_weekend_friday(datetime.strptime(target_date, "%Y-%m-%d"))
+    saved_links = {}
+
+    if LINKS_JSON.exists():
+        try:
+            with open(LINKS_JSON) as f:
+                links_data = json.load(f)
+            links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
+            if links_weekend == target_weekend:
+                saved_links = links_data.get("theatres", {})
+            elif links_weekend:
+                print(
+                    f"\n⚠️  Phase 1 links are from weekend {links_weekend}, "
+                    f"but {tz_group} needs {target_weekend}."
+                )
+        except Exception as e:
+            print(f"\n⚠️  Could not inspect Phase 1 links before scrape: {e}")
+
+    report = phase1_link_coverage(saved_links, theatres_map, [tz_group], expected_dates)
+    if not report["expected_total"] or report["ratio"] >= PHASE1_MIN_FRESH_LINK_RATIO:
+        print_phase1_coverage(report, f"Phase 1 preflight for {tz_group}")
+        return
+
+    print_phase1_coverage(report, f"Phase 1 preflight for {tz_group}")
+    print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
+    await run_collect_links_async(tz_group, target_date=target_date)
+
+    with open(LINKS_JSON) as f:
+        repaired_links = json.load(f).get("theatres", {})
+    repaired_report = phase1_link_coverage(repaired_links, theatres_map, [tz_group], expected_dates)
+    require_phase1_coverage(repaired_report, f"Phase 1 repaired links for {tz_group}")
+
+
 async def run_async(tz_group="ALL", force=False, test_max=None):
     """
     Main entry point (async).
@@ -1200,7 +1609,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
 
     # Use tz-adjusted local date (server clock is UTC; runs after midnight UTC
     # would otherwise stamp tomorrow's date on tonight's data).
-    groups_to_check = [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
+    groups_to_check = phase1_groups(tz_group)
     # For mixed-TZ runs use ET as the reference (most conservative, first to tick over)
     ref_tz = tz_group if tz_group != "ALL" else "ET"
     local = local_now(ref_tz)
@@ -1211,22 +1620,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     theatres_map = load_theatres()
 
     # Step 1: Get Polymarket movies
-    poly_markets = fetch_polymarket_box_office()
-    save_polymarket_data(poly_markets)
-
     # Step 2: Build flat list of theatres to scrape
     weekend = opening_weekend_friday(local)
-
-    if not poly_markets:
-        # Mon-Wed: market may have closed — fall back to saved CSV for this weekend
-        poly_markets = load_movies_from_csv(weekend)
+    live_markets = fetch_polymarket_box_office()
+    poly_markets = select_collection_markets(live_markets, local, "Phase 2")
 
     if not poly_markets:
         log_run(tz_group, [], [], ["No active Polymarket box office markets found"])
         fail_phase("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
 
-    movie_titles = [m["movie_title"] for m in poly_markets]
-    market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
     run_id = local.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
 
     all_theatres = []
@@ -1275,6 +1677,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
+    expected_dates = {group: phase1_expected_date(group) for group in groups_to_check}
+    poly_markets = filter_markets_with_phase1_links(
+        poly_markets,
+        saved_links,
+        groups=groups_to_check,
+        expected_dates=expected_dates,
+    )
+    if not poly_markets:
+        log_run(tz_group, [], [], ["No active Polymarket markets have current Phase 1 links"])
+        fail_phase("\n❌ No active box office markets have current AMC Phase 1 links.")
+    save_polymarket_data(poly_markets)
+
+    movie_titles = [m["movie_title"] for m in poly_markets]
+    market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
+
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
 
@@ -1301,7 +1718,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         entry = saved_links[t["name"]]
         entry_date = entry.get("show_date")
         ref_tz = t.get("_tz") or entry.get("tz") or "ET"
-        expected_date = (local_now(ref_tz) - timedelta(hours=12)).strftime("%Y-%m-%d")
+        expected_date = phase1_expected_date(ref_tz)
         if entry_date and entry_date != expected_date:
             stale_skipped.append(
                 f"{t['name']} ({t.get('_tz','?')}: show_date={entry_date}, expected={expected_date})"
@@ -1316,6 +1733,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         if len(stale_skipped) > 5:
             print(f"    ... and {len(stale_skipped)-5} more")
     all_theatres = fresh_theatres
+
+    coverage_report = phase1_link_coverage(saved_links, theatres_map, groups_to_check, expected_dates)
+    if not test_max:
+        require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
 
     # Test mode: cap to N theatres
     if test_max:
@@ -1484,9 +1905,20 @@ def generate_weekend_summary():
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
-def run(tz_group="ALL", force=False, test_max=None):
+async def run_with_preflight_async(tz_group="ALL", force=False, test_max=None, ensure_links=False):
+    if ensure_links and not test_max:
+        await ensure_phase1_links_async(tz_group)
+    await run_async(tz_group, force=force, test_max=test_max)
+
+
+def run(tz_group="ALL", force=False, test_max=None, ensure_links=False):
     """Sync wrapper for the async pipeline."""
-    asyncio.run(run_async(tz_group, force=force, test_max=test_max))
+    asyncio.run(run_with_preflight_async(
+        tz_group,
+        force=force,
+        test_max=test_max,
+        ensure_links=ensure_links,
+    ))
 
 
 if __name__ == "__main__":
@@ -1504,6 +1936,7 @@ if __name__ == "__main__":
     args = sys.argv[1:]
     collect_links_mode = "--collect-links" in args
     force_mode = "--force" in args
+    ensure_links_mode = "--ensure-links" in args
 
     # --test N  →  run Phase 2 on N theatres only, bypass time filter
     test_max = None
@@ -1517,13 +1950,14 @@ if __name__ == "__main__":
             sys.exit(1)
         force_mode = True  # --test implies --force
 
-    args = [a for a in args if a not in ("--collect-links", "--force")]
+    args = [a for a in args if a not in ("--collect-links", "--force", "--ensure-links")]
 
     tz = args[0].upper() if args else "ALL"
 
     if tz not in ("ET", "CT", "MT", "PT", "ALL"):
-        print(f"Usage: python scraper.py [--collect-links] [--force] [--test N] [ET|CT|MT|PT|ALL]")
+        print(f"Usage: python scraper.py [--collect-links] [--ensure-links] [--force] [--test N] [ET|CT|MT|PT|ALL]")
         print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
+        print(f"  --ensure-links   Phase 2: repair missing/stale Phase 1 links for this TZ before scraping")
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
         print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
         print(f"  ET               Eastern theatres only")
@@ -1536,4 +1970,4 @@ if __name__ == "__main__":
     if collect_links_mode:
         asyncio.run(run_collect_links_async(tz))
     else:
-        run(tz, force=force_mode, test_max=test_max)
+        run(tz, force=force_mode, test_max=test_max, ensure_links=ensure_links_mode)

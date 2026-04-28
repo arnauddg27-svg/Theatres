@@ -133,7 +133,10 @@ jobs:
         run: python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
 
       - name: Commit showtime links
-        if: always() && steps.dedup.outputs.skip != 'true'
+        # Only commit a successful Phase 1. The scraper now validates fresh
+        # link coverage before writing showtime-links.json; if coverage is low,
+        # preserve the last good file and let Phase 2 repair/fail loudly.
+        if: success() && steps.dedup.outputs.skip != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -244,7 +247,7 @@ jobs:
           fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
-          python scraper.py $FORCE_FLAG $TEST_FLAG ${{ matrix.tz }}
+          python scraper.py --ensure-links $FORCE_FLAG $TEST_FLAG ${{ matrix.tz }}
 
       - name: Commit ${{ matrix.tz }} seat data
         # always() so partial data from a crashed scrape still gets preserved.
@@ -263,6 +266,10 @@ jobs:
                   box-office-tracker/data/run-log.md 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit (run produced no new output)."
+            exit 0
+          fi
+          if git diff --staged --quiet -- box-office-tracker/data/seat-counts.csv; then
+            echo "No seat-count rows changed; not creating a scrape commit that would block retry."
             exit 0
           fi
           git commit -m "data: box office ${{ matrix.tz }} scrape"
