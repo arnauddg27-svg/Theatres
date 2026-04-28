@@ -20,6 +20,7 @@ import random
 import re
 import signal
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import uuid
@@ -76,13 +77,17 @@ FORMAT_PRIORITY = {
 MAX_CONCURRENT_TABS = 3
 MAX_CONCURRENT_TABS_PHASE1 = 2
 
-# Phase 2 runtime guards. A single hung Playwright navigation (typically caused
+# Runtime guards. A single hung Playwright navigation (typically caused
 # by AMC's Queue-It safety net redirecting the VPS IP) used to stall the whole
 # scrape for hours. The per-theatre timeout caps each tab; the overall deadline
 # stops launching new theatres early enough for in-flight work and the commit
 # step to finish inside the workflow's 75-minute step budget.
 PHASE1_THEATRE_TIMEOUT_SEC = 90
 PHASE2_THEATRE_TIMEOUT_SEC = 180
+try:
+    PHASE1_DEADLINE_SEC = int(os.getenv("PHASE1_DEADLINE_SEC", str(45 * 60)))
+except ValueError:
+    PHASE1_DEADLINE_SEC = 45 * 60
 PHASE2_DEADLINE_SEC = 60 * 60   # 60 min — leaves 15 min for commit + push
 try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
@@ -1426,6 +1431,16 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
         "theatres": {},
     }
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
+    deadline_at = time.monotonic() + PHASE1_DEADLINE_SEC
+
+    def theatre_key(theatre):
+        return (
+            theatre["name"],
+            theatre.get("_tz", ""),
+            theatre.get("_date", today),
+        )
+
+    theatre_by_key = {theatre_key(t): t for t in all_theatres}
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
@@ -1446,24 +1461,70 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
                     result = {}
                 return theatre["name"], theatre.get("_tz", ""), t_date, result
 
-        outcomes = await asyncio.gather(*[bounded(t) for t in all_theatres], return_exceptions=True)
+        async def collect_with_deadline(theatres, label, budget_sec):
+            if not theatres or budget_sec <= 0:
+                return []
+
+            tasks = [asyncio.create_task(bounded(t)) for t in theatres]
+            done, pending = await asyncio.wait(tasks, timeout=budget_sec)
+            if pending:
+                elapsed = PHASE1_DEADLINE_SEC - max(0, int(deadline_at - time.monotonic()))
+                print(
+                    f"\n⏱️  Phase 1 {label} deadline after {elapsed}s — "
+                    f"cancelling {len(pending)} pending theatres"
+                )
+                for task in pending:
+                    task.cancel()
+                await asyncio.gather(*pending, return_exceptions=True)
+
+            results = []
+            for task in done:
+                try:
+                    results.append(task.result())
+                except Exception as e:
+                    results.append(e)
+            return results
+
+        outcomes = await collect_with_deadline(
+            all_theatres,
+            "initial pass",
+            PHASE1_DEADLINE_SEC,
+        )
+        outcome_by_key = {}
+        for outcome in outcomes:
+            if isinstance(outcome, Exception):
+                continue
+            name, tz, show_date, _ = outcome
+            outcome_by_key[(name, tz, show_date)] = outcome
 
         # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
         failed = [
-            t for t, outcome in zip(all_theatres, outcomes)
-            if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[3])
+            theatre_by_key[key]
+            for key, outcome in outcome_by_key.items()
+            if not outcome[3]
         ]
         if failed:
-            print(f"\n🔄 Retrying {len(failed)} theatres that returned 0 showtimes (5s delay)...")
-            await asyncio.sleep(5)
-            retry_outcomes = await asyncio.gather(*[bounded(t) for t in failed], return_exceptions=True)
-            # Splice retry results back in place of the failed slots
-            fi = 0
-            outcomes = list(outcomes)
-            for i, outcome in enumerate(outcomes):
-                if isinstance(outcome, Exception) or (not isinstance(outcome, Exception) and not outcome[3]):
-                    outcomes[i] = retry_outcomes[fi]
-                    fi += 1
+            retry_budget = max(0, int(deadline_at - time.monotonic()))
+            if retry_budget > 30:
+                print(f"\n🔄 Retrying {len(failed)} theatres that returned 0 showtimes (5s delay)...")
+                await asyncio.sleep(5)
+                retry_outcomes = await collect_with_deadline(
+                    failed,
+                    "retry pass",
+                    max(0, int(deadline_at - time.monotonic())),
+                )
+                for outcome in retry_outcomes:
+                    if isinstance(outcome, Exception):
+                        continue
+                    name, tz, show_date, _ = outcome
+                    outcome_by_key[(name, tz, show_date)] = outcome
+            else:
+                print(f"\n⏱️  Skipping retry for {len(failed)} theatres — Phase 1 deadline is near")
+
+        skipped = len(theatre_by_key) - len(outcome_by_key)
+        if skipped > 0:
+            print(f"  ⏱️  Phase 1 skipped {skipped} theatres before coverage validation")
+        outcomes = list(outcome_by_key.values())
 
         try:
             await asyncio.wait_for(browser.close(), timeout=15)
