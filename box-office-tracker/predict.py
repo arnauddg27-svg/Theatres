@@ -37,6 +37,10 @@ THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 # ── Default Constants ────────────────────────────────────────────────────────
 DEFAULT_AMC_MARKET_SHARE = 0.25
 
+# Samples more than six hours before showtime are outside the intended
+# collection window and usually indicate stale link/date metadata.
+MAX_REASONABLE_PRE_SHOW_MINUTES = 360
+
 # Per-format AMC evening ticket prices (2026 dollars). Premium formats charge a
 # real surcharge — averaging them away with one DEFAULT_TICKET_PRICE × discount
 # throws away signal we already have in `auditorium_type`. These are realized
@@ -387,7 +391,9 @@ def time_multiplier(row):
     # the post-showtime bucket.
     delta = _parse_numeric(row.get("minutes_after_showtime", 0), default=0)
 
-    if delta < -120:
+    if delta < -MAX_REASONABLE_PRE_SHOW_MINUTES:
+        return 1.0
+    elif delta < -120:
         return 1.6   # >2h before showtime — occupancy will grow significantly
     elif delta < -60:
         return 1.3
