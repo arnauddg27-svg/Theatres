@@ -38,18 +38,25 @@ on:
 permissions:
   contents: write
 
-# Workflow-level concurrency keyed on phase. GitHub Actions concurrency groups
-# apply across workflow runs, not across matrix legs within one run — so this
-# queues a manual Phase 2 dispatch behind the 04:00 UTC scheduled scrape
-# (preventing two simultaneous AMC matrix fan-outs from the same account) while
-# leaving the three in-run matrix legs free to execute truly in parallel.
+# Workflow-level concurrency keyed on phase, with one important wrinkle:
+# collect-links also includes tz_group. GitHub Actions keeps at most one pending
+# run per concurrency group, so a single shared collect-links group can cancel an
+# earlier queued ET/CT/PT slot when the VPS runner is busy. Per-TZ collect groups
+# preserve all timezone slots; the single self-hosted VPS runner still serializes
+# actual execution and avoids parallel writes to showtime-links.json.
 #
-# Keying on `phase` means Phase 1 (collect-links) and Phase 2 (scrape) don't
-# block each other — they write different files and can safely overlap. Same
-# for calibrate. `cancel-in-progress: false` queues rather than cancels, so a
-# mid-run scrape never loses partial data to an incoming manual dispatch.
+# For Phase 2, GitHub Actions concurrency groups apply across workflow runs, not
+# across matrix legs within one run — so this queues a manual Phase 2 dispatch
+# behind the 04:00 UTC scheduled scrape (preventing two simultaneous AMC matrix
+# fan-outs from the same account) while leaving the three in-run matrix legs free
+# to execute truly in parallel.
+#
+# The shared suffix keeps non-collect phases serialized by phase. `cancel-
+# in-progress: false` queues rather than killing a running job; the per-TZ
+# collect suffix avoids GitHub replacing an older pending timezone with a newer
+# one.
 concurrency:
-  group: box-office-pipeline-${{ github.event.inputs.phase }}
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || 'shared' }}
   cancel-in-progress: false
 
 jobs:
