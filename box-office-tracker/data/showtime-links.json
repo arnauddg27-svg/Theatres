@@ -2,7 +2,7 @@
   "date": "2026-05-01",
   "weekend_of": "2026-05-01",
   "collected_local_date": "2026-04-30",
-  "collected_at": "2026-04-30T21:27:32.637690+00:00",
+  "collected_at": "2026-04-30T23:18:07.376734+00:00",
   "theatres": {
     "AMC Kips Bay 15": {
       "tz": "ET",
@@ -10162,6 +10162,5439 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "142594000",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Creve Coeur 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141348348",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142617705",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142690550",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141348349",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Deerbrook 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319399",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141494599",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142755165",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142755171",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142755152",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "141494551",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142755135",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142755172",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142755153",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "142755136",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142722330",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142722264",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141397243",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142722162",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Clearfork 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319374",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141325029",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142669333",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141324959",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142669332",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Eastchase 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142772819",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141510864",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142772820",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141409137",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "142715390",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC First Colony 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141319419",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141487763",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142699742",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142699743",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142780288",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142780314",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141487736",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141487695",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142780315",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Clearview Palace 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319534",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141338435",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142740824",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142740822",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141338494",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Stillwater 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142727367",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142727431",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141483432",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142727368",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Manhattan 13": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141414940",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "142749319",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141414951",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141414902",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142749408",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Fountains 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319504",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141432631",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142360063",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142528619",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142360010",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142429846",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141432559",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142360064",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "142691404",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142360011",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141432563",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142691359",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Streets Of St Charles 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319362",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141442174",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141442165",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Tech Ridge 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319395",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141509283",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142658039",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141509323",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142561724",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142561725",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141509324",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Gulf Pointe 30": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141327285",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141327311",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141327243",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141327242",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Studio 28": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319543",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141334572",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141334551",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142660723",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141334672",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141334658",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142746136",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141334673",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Vestavia Hills 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141512808",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "141512809",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141512864",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142670752",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142787166",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142787137",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141512865",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142787286",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Houston 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141509601",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141509600",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142387055",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142702212",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142529061",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Summit 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142755839",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142216454",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142658465",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "142828165",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "141423371",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142755975",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142755838",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142216453",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142755734",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Dakota Square 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142525069",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141320973",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142525070",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Katy Mills 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319389",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141328066",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142685927",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142685925",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142685929",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141328065",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142685926",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142830062",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142828932",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142685930",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Tulsa Hills 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141500338",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142772405",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142649628",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141500244",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Decatur 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141322079",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142740217",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141322125",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142740283",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Metropark Square 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141506285",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142659414",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "142770490",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141506336",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142770482",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142659415",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Tyler 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141514567",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141514536",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141516710",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Edinburg 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319432",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141503823",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "142052047",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141503847",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "142702163",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142772486",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141503848",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rio Cinemas 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141504761",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141504762",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141504697",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142747751",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142747743",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142747749",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142747755",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC University Place 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142694148",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141322364",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142587458",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142694149",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142587460",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Grand Prairie 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142763227",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142763238",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141330905",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142763246",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Spring 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142688918",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141418589",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142688924",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141418495",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142688921",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Valley Bend 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142679519",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:25pm",
+            "showtime_id": "142688238",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "142679514",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "141381955",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:55pm",
+            "showtime_id": "142679517",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142540703",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Willowbrook 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319392",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141322636",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142522149",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142522150",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142734390",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142734474",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142734537",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142734478",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141322639",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:50pm",
+            "showtime_id": "142734472",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142734475",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141322747",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Edwardsville 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319931",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "142535171",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142682429",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "142682434",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:25pm",
+            "showtime_id": "142253091",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142682430",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142682438",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC West End Pointe 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142788431",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141487157",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142788432",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141487159",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC El Paso 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142683306",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141509779",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142596570",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142596552",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142596580",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141509780",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Woodlands Square 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141492490",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141492499",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "142829105",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142228413",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141492525",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142735788",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142228416",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142735797",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141492500",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Westbank Palace 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141477297",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141477218",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141477236",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142691327",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Elmwood Palace 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319533",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142729729",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141658124",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142729717",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "141373251",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142729689",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Barrywoods 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319383",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141434702",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142691293",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141434782",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142691281",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141434661",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142691294",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141434784",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Westroads 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142599963",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141442498",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142738893",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142596245",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142738900",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Esquire 7": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141496444",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142754322",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "142605207",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Prairiefire 17": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142746401",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141325202",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142746402",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141325287",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141325288",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142828317",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142746405",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142531887",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "Cinema Centre 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142739523",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141499435",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Barton Creek Square 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319616",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142615667",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142689897",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142615700",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142689918",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141480517",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142689896",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142689911",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142615701",
+            "format": "undefined"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142615668",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Evanston 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142655014",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142803680",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141431262",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142803677",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142655015",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142803675",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141491929",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Independence Commons 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141422060",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142821889",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141422128",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142821888",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141421946",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141422061",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142821890",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC 600 North Michigan 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142148429",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142521069",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141380999",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142685301",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142226430",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142829149",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142611343",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141381000",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142829147",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Festival Plaza 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141373004",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142801991",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Legends 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141489234",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141489355",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141489262",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142805237",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141489233",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141489354",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Block 37": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142520244",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142671912",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141322025",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141682262",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141861389",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142520245",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142828185",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141322026",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141682264",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142562837",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Fitchburg 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142682440",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141364199",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142682475",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141364147",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Town Center 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319478",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141333474",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142042864",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142042866",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142824845",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142824847",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142588004",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141333451",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142588007",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142734913",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142824846",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142734872",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Rosemont 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319476",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141335808",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142702161",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142702158",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141341686",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142702146",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142702159",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Galaxy 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141510155",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Ward Parkway 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141503329",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141503330",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142695142",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141503473",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141503374",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Ford City 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141469062",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142775503",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141469063",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142775504",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Hammond Palace 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141524305",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141524306",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142764432",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141511991",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Birchwood 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141335865",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142689577",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:50pm",
+            "showtime_id": "142689548",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC NEWCITY 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141467186",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142613111",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142829215",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142613088",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142818559",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141467308",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141467307",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Hawthorn 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319386",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141321037",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141321102",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142564440",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142552263",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Bloomington 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141414278",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142718107",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142718113",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142718193",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142718158",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Niles 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142665083",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141366283",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142710232",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142545715",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Highland Village 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142718895",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142624474",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "141367891",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:05pm",
+            "showtime_id": "142718896",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142624476",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Mounds View 15": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142802684",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141522596",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142802686",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Northbrook 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142719550",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141384861",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142617968",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142617970",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142719549",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142719555",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Houma Palace 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142726940",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141509436",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Coon Rapids 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142780075",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141497889",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142779972",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142779993",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141497827",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Oakbrook Center 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141484208",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142646065",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141484084",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142646146",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141484086",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142646147",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Lakeline 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141520247",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141520197",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141520232",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Eden Prairie Mall 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141486898",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141486899",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142784413",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141486934",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142784402",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142784449",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142784412",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Randhurst 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "141368794",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "141368778",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142713155",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142713093",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141368777",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Longview 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142739607",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142829221",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141394321",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142739598",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142739608",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141394320",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Inver Grove 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141466212",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142701499",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141466169",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142701502",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141466211",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC River East 21": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319385",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141478535",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "142705920",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142510419",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142235934",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141478497",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "142830151",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "141945538",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142830152",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142235932",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142510420",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142723625",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141478564",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "142685784",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142510418",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Lufkin 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:50pm",
+            "showtime_id": "142746855",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141331077",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:55pm",
+            "showtime_id": "142746856",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "142746812",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rosedale 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319449",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142635795",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142783966",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141329152",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142667383",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142783968",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142784021",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142783997",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Roosevelt Collection 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319443",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141486761",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142802652",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141486893",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "142830127",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142802580",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142802451",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142802601",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141486894",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Machesney Park 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142697435",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142697426",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142697425",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141365508",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142697436",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142697427",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142715334",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southdale 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319547",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141495600",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142809425",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142809424",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142809418",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142809416",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141495530",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142809415",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142809429",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142809427",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142809423",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142809421",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142809417",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142809412",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC South Barrington 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319436",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141332448",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142662386",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142227186",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142675509",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141332380",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142675533",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142662387",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142227187",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Mall of Louisiana 15": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142828180",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142828179",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141339397",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Streets of Woodfield 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142719164",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142613844",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142828447",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141614115",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141365069",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141365124",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142719167",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Mayfair Mall 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142771763",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142771775",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141522741",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142771762",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Village Crossing 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319468",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142531580",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141340061",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142224975",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141340031",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142531581",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Norridge 6": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142758837",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141494048",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142758824",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141494049",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Yorktown 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142601575",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142712662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142601574",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141408043",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142601576",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142712664",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141408040",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Northrock 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319382",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141366376",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141366743",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141366538",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142709490",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141366741",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Forney 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142716175",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141507750",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142716178",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141507769",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Oakbrook Center 4": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141484028",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142747896",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Mesquite 30": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319417",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141409196",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142803130",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "142803259",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141409192",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "141409194",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141409336",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142819874",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "142803132",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Palace 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141489856",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141489857",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141489744",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142726731",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141489745",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Firewheel 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319475",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141444293",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142796174",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142713192",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142796198",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142796076",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141444387",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142796197",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "141444388",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Patriot 13": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "141403166",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141403206",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142751654",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142586962",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Grapevine Mills 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319398",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141508431",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "141501506",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:25pm",
+            "showtime_id": "141501465",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "142765794",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Patton Creek 15": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142538073",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142689175",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141332145",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142689170",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142538074",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142689167",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142538077",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Irving Mall 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142714899",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141323700",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142714904",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Penn Square 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141466301",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142716617",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142716532",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141466302",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142716618",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC NorthPark 15": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319391",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141509020",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141509001",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142457577",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142726080",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142726115",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142726079",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Quail Springs Mall 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319388",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141521147",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142712490",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141462209",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142657894",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141462528",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142712491",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142712456",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Baton Rouge 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319528",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141322452",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141322428",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142748610",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141322427",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southlake 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141340564",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142787993",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141340555",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142674370",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142787994",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Rivercenter 11": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141507562",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142829482",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142523123",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142523121",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Boerne 11": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142694584",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142694581",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "141322796",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142694582",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Stonebriar 24": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319418",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "141466599",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142695209",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142695206",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142695177",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "141466559",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141466452",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142695178",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Robinson Crossing 6": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142685792",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141505663",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142685793",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141505688",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Burleson 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142785477",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141470807",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141470723",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC The Parks At Arlington 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319390",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141883600",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142819961",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141494018",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142819971",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142819948",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141493979",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142819968",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142819947",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142819982",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142819977",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142819978",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Rockford 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142778164",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142778055",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141488347",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142778217",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142778165",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Champaign 13": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141523649",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142548676",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142280328",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141523613",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142651763",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Village On The Parkway 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319394",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "141496793",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141496870",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142765483",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142765478",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141496871",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Sikes Senter 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141495930",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chantilly 13": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "141513928",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142590816",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "141513904",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Brazos Mall 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142401311",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142558039",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141470053",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142702734",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "141470046",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142401031",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Southern Hills 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142728167",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141388119",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142728063",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "142728168",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chenal 9": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142700126",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142700159",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141327474",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142700125",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "142539865",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Causeway 13": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141388652",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142227947",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "141388653",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Southroads 20": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319387",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141419974",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142702552",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142702636",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142665218",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141419983",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "142758917",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142702517",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142702553",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "142702637",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142702421",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142702565",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "141419981",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Council Bluffs 17": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319420",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141606377",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142694164",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142694162",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141447617",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Centerpoint 11": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "141475275",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142808427",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142810941",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141475276",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142808428",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142810942",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Springfield 11": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "core",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "142742325",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141457828",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142742335",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141457700",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142742324",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141457824",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Peru Mall 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142692351",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141361007",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142692340",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142692350",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Sauk Valley 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142703195",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141367187",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Decatur 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142741169",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142741186",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142741128",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Kokomo 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142569709",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142706254",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141320013",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142706259",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142648376",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Lake In The Hills 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142629208",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142757555",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142757542",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141455954",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142629207",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Quarry Cinemas 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142715012",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141326612",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142714962",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141326611",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Galewood Crossings 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "142799996",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141430453",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142799990",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Naperville 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141319423",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141332886",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142712405",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141332976",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141332904",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Crestwood 18": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141332778",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142388495",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142828373",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142524840",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "142829219",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142388420",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141332690",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "141332695",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142388496",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "142388421",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142779276",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Rio Grande 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142744460",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142744461",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Galesburg 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141468155",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "142678735",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Manitowoc 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141416852",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "141416851",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142682326",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141416942",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Quincy 6": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142723620",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141513100",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142805892",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Normal 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142745449",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142745371",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141428921",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142745362",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Lake Worth 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142758183",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142758201",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141405105",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142828925",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142758184",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "142758202",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Crawfordsville 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141508219",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Market Square 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142770041",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142770023",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141444100",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142770042",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142626050",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC New Lenox 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142696770",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142630069",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142696765",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141371601",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142603241",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Ardmore 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:05pm",
+            "showtime_id": "141519067",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Desert Star 15": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141443662",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142798273",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142798291",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141443604",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Mount Vernon 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "141451768",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142737602",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chicago Ridge 6": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141509535",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142743930",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141509540",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Pittsburg 8": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142039739",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142702704",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Owasso 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141353922",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142693359",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Michigan City 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:25pm",
+            "showtime_id": "142727677",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "142727603",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "142727714",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "142727741",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Cicero 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141372028",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "141371834",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "142791864",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "142791846",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Hulen 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142785213",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "141509875",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "141509914",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "142785079",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Hobart 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142707541",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142707657",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141480403",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Dubuque 14": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142601443",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141342751",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "142689751",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Corpus Christi 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141508471",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "142779010",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC South Bend 16": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142754237",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141394940",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142754248",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142668039",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Terre Haute 12": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "142697597",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141391378",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "142697636",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "142597038",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC CLASSIC Sunnyland 10": {
+      "tz": "CT",
+      "show_date": "2026-04-30",
+      "cohort": "expansion",
+      "movies": {
+        "The Devil Wears Prada 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "142757055",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "142757084",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "141435725",
             "format": "undefined"
           }
         ]
