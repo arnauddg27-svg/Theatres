@@ -59,6 +59,37 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertAlmostEqual(120.0, estimate.mid_m, places=6)
 
+    def test_estimate_projects_reported_opening_weekend_daily_shape(self):
+        target = TargetMetadata(
+            movie="Michael",
+            genre="music_biopic",
+            audience_type="broad_legacy",
+            franchise_type="biopic",
+            rating="PG-13",
+        )
+        comps = [
+            HistoricalComp(
+                "Daily Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+                friday_m=45.0,
+                saturday_m=35.0,
+                sunday_m=20.0,
+            ),
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(12.0, target, comps)
+
+        self.assertAlmostEqual(120.0, estimate.mid_m, places=6)
+        self.assertAlmostEqual(0.45, estimate.daily_shares["Friday"], places=6)
+        self.assertAlmostEqual(54.0, estimate.daily_projection_m["Friday"], places=6)
+        self.assertAlmostEqual(42.0, estimate.daily_projection_m["Saturday"], places=6)
+        self.assertAlmostEqual(24.0, estimate.daily_projection_m["Sunday"], places=6)
+
     def test_baseline_share_shrinks_sparse_comp_estimate(self):
         target = TargetMetadata(
             movie="Michael",
@@ -90,6 +121,10 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertGreaterEqual(len(comps), 70)
         self.assertGreaterEqual(len(post_covid), 60)
+        self.assertGreaterEqual(
+            sum(1 for comp in comps if comp.has_daily_breakdown),
+            5,
+        )
         self.assertNotIn("michael", names)
         self.assertTrue(all(comp.thursday_preview_m > 0 for comp in comps))
         self.assertTrue(all(comp.opening_weekend_m > 0 for comp in comps))

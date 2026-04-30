@@ -29,9 +29,14 @@ class HistoricalComp:
     rating: str
     thursday_preview_m: float
     opening_weekend_m: float
+    friday_m: float = 0.0
+    saturday_m: float = 0.0
+    sunday_m: float = 0.0
     source_url: str = ""
     notes: str = ""
     release_year: int | None = None
+    daily_source_url: str = ""
+    daily_notes: str = ""
 
     @property
     def thursday_share(self) -> float:
@@ -42,6 +47,20 @@ class HistoricalComp:
     @property
     def is_post_covid(self) -> bool:
         return self.release_year is not None and self.release_year >= 2021
+
+    @property
+    def has_daily_breakdown(self) -> bool:
+        return self.friday_m > 0 and self.saturday_m > 0 and self.sunday_m > 0
+
+    @property
+    def daily_shares(self) -> dict[str, float]:
+        if self.opening_weekend_m <= 0 or not self.has_daily_breakdown:
+            return {}
+        return {
+            "Friday": self.friday_m / self.opening_weekend_m,
+            "Saturday": self.saturday_m / self.opening_weekend_m,
+            "Sunday": self.sunday_m / self.opening_weekend_m,
+        }
 
 
 @dataclass(frozen=True)
@@ -65,6 +84,8 @@ class CompEstimate:
     weighted_thursday_share: float
     low_share: float
     high_share: float
+    daily_shares: dict[str, float]
+    daily_projection_m: dict[str, float]
     comps: list[HistoricalComp]
     weights: dict[str, float]
     baseline_thursday_share: float | None = None
@@ -102,9 +123,14 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 rating=(row.get("rating") or "").strip().upper(),
                 thursday_preview_m=_float(row, "thursday_preview_m"),
                 opening_weekend_m=_float(row, "opening_weekend_m"),
+                friday_m=_float(row, "friday_m"),
+                saturday_m=_float(row, "saturday_m"),
+                sunday_m=_float(row, "sunday_m"),
                 source_url=(row.get("source_url") or "").strip(),
                 notes=(row.get("notes") or "").strip(),
                 release_year=_int(row, "release_year"),
+                daily_source_url=(row.get("daily_source_url") or "").strip(),
+                daily_notes=(row.get("daily_notes") or "").strip(),
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)
@@ -188,6 +214,18 @@ def _weighted_quantile(values: list[tuple[float, float]], quantile: float) -> fl
     return ordered[-1][0]
 
 
+def _weighted_daily_shares(selected: list[tuple[HistoricalComp, float]]) -> dict[str, float]:
+    daily_values = {"Friday": [], "Saturday": [], "Sunday": []}
+    for comp, weight in selected:
+        for day, share in comp.daily_shares.items():
+            daily_values[day].append((share, weight))
+    return {
+        day: _weighted_average(values)
+        for day, values in daily_values.items()
+        if values
+    }
+
+
 def estimate_opening_weekend_from_thursday(
     thursday_gross_m: float,
     target: TargetMetadata,
@@ -216,6 +254,11 @@ def estimate_opening_weekend_from_thursday(
     mid = thursday_gross_m / weighted_share if weighted_share else 0.0
     low = thursday_gross_m / low_share if low_share else mid
     high = thursday_gross_m / high_share if high_share else mid
+    daily_shares = _weighted_daily_shares(selected)
+    daily_projection = {
+        day: mid * share
+        for day, share in daily_shares.items()
+    }
 
     adjusted_share = None
     adjusted_mid = None
@@ -237,6 +280,8 @@ def estimate_opening_weekend_from_thursday(
         weighted_thursday_share=weighted_share,
         low_share=min(low_share, high_share),
         high_share=max(low_share, high_share),
+        daily_shares=daily_shares,
+        daily_projection_m=daily_projection,
         comps=[comp for comp, _ in selected],
         weights={comp.movie: weight for comp, weight in selected},
         baseline_thursday_share=baseline_thursday_share,

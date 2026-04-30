@@ -136,6 +136,15 @@ def main(argv: list[str] | None = None) -> int:
         )
     print(f"Thursday gross:    {_fmt_m(comp_estimate.thursday_gross_m)}")
     print(f"Comp Thu share:    {comp_estimate.weighted_thursday_share:.1%}")
+    if comp_estimate.daily_projection_m:
+        print("Reported F/S/S:    ", end="")
+        daily_parts = []
+        for day in ("Friday", "Saturday", "Sunday"):
+            projected = comp_estimate.daily_projection_m.get(day)
+            share = comp_estimate.daily_shares.get(day)
+            if projected is not None and share is not None:
+                daily_parts.append(f"{day[:3]} {_fmt_m(projected)} ({share:.0%})")
+        print(", ".join(daily_parts))
     if args.actual:
         adjusted_mid = (
             comp_estimate.adjusted_mid_m
@@ -153,6 +162,7 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"  {comp.movie:<32} "
             f"Thu share={comp.thursday_share:>5.1%} "
+            f"daily={'yes' if comp.has_daily_breakdown else ' no'} "
             f"weight={weight:>4.2f}"
         )
     print("=" * 70)
