@@ -50,6 +50,8 @@ EXPANSION_COHORT = "expansion"
 DEFAULT_MODEL_COHORTS = (CORE_COHORT,)
 KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT}
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
+LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
+MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -1223,7 +1225,25 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     except (KeyError, TypeError, ValueError):
         return None
 
-    model = _seat_comp_model_from_available_days(pred, estimate)
+    local_share = learned_local_thursday_share(cal, exclude_movie=pred.get("movie", ""))
+    external_thursday_share = estimate.weighted_thursday_share
+    thursday_share = external_thursday_share
+    local_weight = 0.0
+    if local_share:
+        local_weight = min(
+            MAX_LOCAL_THURSDAY_SHARE_WEIGHT,
+            local_share["n"] / (local_share["n"] + LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES),
+        )
+        thursday_share = (
+            external_thursday_share * (1 - local_weight)
+            + local_share["share"] * local_weight
+        )
+
+    model = _seat_comp_model_from_available_days(
+        pred,
+        estimate,
+        thursday_share=thursday_share,
+    )
 
     pred["seat_comp_mid_m"] = model["mid_m"]
     pred["seat_comp_low_m"] = model["low_m"]
@@ -1232,7 +1252,12 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_evidence_m"] = model["evidence_m"]
     pred["seat_comp_evidence_share"] = model["evidence_share"]
     pred["seat_comp_thursday_gross_m"] = estimate.thursday_gross_m
-    pred["seat_comp_thursday_share"] = estimate.weighted_thursday_share
+    pred["seat_comp_thursday_share"] = thursday_share
+    pred["seat_comp_external_thursday_share"] = external_thursday_share
+    if local_share:
+        pred["seat_comp_local_thursday_share"] = local_share["share"]
+        pred["seat_comp_local_thursday_n"] = local_share["n"]
+        pred["seat_comp_local_thursday_weight"] = local_weight
     pred["seat_comp_daily_shares"] = estimate.daily_shares
     pred["seat_comp_daily_m"] = {
         day: model["mid_m"] * share
@@ -1248,6 +1273,50 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         for comp in estimate.comps[:5]
     ]
     return estimate
+
+
+def _movie_matches(a, b):
+    a = (a or "").strip().lower()
+    b = (b or "").strip().lower()
+    if not a or not b:
+        return False
+    return a in b or b in a
+
+
+def learned_local_thursday_share(cal, exclude_movie=""):
+    """Estimate Thursday/weekend share from settled local seat predictions.
+
+    Uses our own recorded Thursday seat-implied grosses divided by the settled
+    actual opening weekend. The target movie is excluded to prevent replay
+    leakage after actuals have been recorded.
+    """
+    values = []
+    for item in (cal or {}).get("history", []):
+        if _movie_matches(exclude_movie, item.get("movie", "")):
+            continue
+        actual = item.get("actual_total") or item.get("actual")
+        daily_predictions = item.get("daily_predictions") or {}
+        thursday = daily_predictions.get("Thursday")
+        if not thursday:
+            raw_daily = item.get("raw_daily_predictions") or {}
+            thursday = raw_daily.get("Thursday")
+        try:
+            actual = float(actual or 0)
+            thursday = float(thursday or 0)
+        except (TypeError, ValueError):
+            continue
+        if actual <= 0 or thursday <= 0:
+            continue
+        share = thursday / actual
+        if 0.02 <= share <= 0.35:
+            values.append(share)
+
+    if not values:
+        return None
+    return {
+        "share": statistics.median(values),
+        "n": len(values),
+    }
 
 
 def _weighted_quantile_pairs(values, quantile):
@@ -1266,7 +1335,7 @@ def _weighted_quantile_pairs(values, quantile):
     return ordered[-1][0]
 
 
-def _seat_comp_model_from_available_days(pred, estimate):
+def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None):
     """Project weekend from the latest observed seat data plus comp shape.
 
     Public daily grosses report Friday as Friday+previews, so once Friday seat
@@ -1281,7 +1350,7 @@ def _seat_comp_model_from_available_days(pred, estimate):
             "high_m": estimate.high_m,
             "basis": "Thursday",
             "evidence_m": estimate.thursday_gross_m,
-            "evidence_share": estimate.weighted_thursday_share,
+            "evidence_share": thursday_share or estimate.weighted_thursday_share,
         }
 
     evidence_m = details["Thursday"]["domestic_mid"] / 1_000_000
@@ -1291,7 +1360,7 @@ def _seat_comp_model_from_available_days(pred, estimate):
         for comp in estimate.comps
         if comp.thursday_share > 0
     ]
-    evidence_share = estimate.weighted_thursday_share
+    evidence_share = thursday_share or estimate.weighted_thursday_share
 
     if "Friday" in details and estimate.daily_shares.get("Friday"):
         evidence_m = (
@@ -1345,7 +1414,7 @@ def _seat_comp_model_from_available_days(pred, estimate):
             "high_m": estimate.high_m,
             "basis": "Thursday",
             "evidence_m": estimate.thursday_gross_m,
-            "evidence_share": estimate.weighted_thursday_share,
+            "evidence_share": thursday_share or estimate.weighted_thursday_share,
         }
 
     mid_m = evidence_m / evidence_share
@@ -1409,8 +1478,16 @@ def print_prediction(pred, verbose=False):
               f"({fmt_m(pred['seat_comp_low_m'])} - {fmt_m(pred['seat_comp_high_m'])})")
         print(f"    Basis: {pred['seat_comp_basis']} "
               f"{fmt_m(pred['seat_comp_evidence_m'])} / {pred['seat_comp_evidence_share']:.1%}")
+        share_bits = [f"external comps {pred['seat_comp_external_thursday_share']:.1%}"]
+        if pred.get("seat_comp_local_thursday_share") is not None:
+            share_bits.append(
+                f"local seat history {pred['seat_comp_local_thursday_share']:.1%} "
+                f"n={pred['seat_comp_local_thursday_n']} "
+                f"w={pred['seat_comp_local_thursday_weight']:.0%}"
+            )
         print(f"    Seat-implied Thu: {fmt_m(pred['seat_comp_thursday_gross_m'])}; "
-              f"comp Thu share: {pred['seat_comp_thursday_share']:.1%}")
+              f"Thu share used: {pred['seat_comp_thursday_share']:.1%} "
+              f"({'; '.join(share_bits)})")
         daily = pred.get("seat_comp_daily_m") or {}
         shares = pred.get("seat_comp_daily_shares") or {}
         if daily:

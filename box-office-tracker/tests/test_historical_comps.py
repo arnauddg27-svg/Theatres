@@ -12,7 +12,7 @@ from historical_comps import (
     estimate_opening_weekend_from_thursday,
     load_historical_comps,
 )
-from predict import attach_comp_model_prediction
+from predict import attach_comp_model_prediction, learned_local_thursday_share
 
 
 class HistoricalCompsTest(unittest.TestCase):
@@ -215,6 +215,79 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("reported full weekend", prediction["seat_comp_basis"])
         self.assertAlmostEqual(80.0, prediction["seat_comp_evidence_m"], places=6)
         self.assertAlmostEqual(80.0, prediction["seat_comp_mid_m"], places=6)
+
+    def test_learned_local_thursday_share_excludes_target_movie(self):
+        cal = {
+            "history": [
+                {
+                    "movie": "Michael",
+                    "actual_total": 100.0,
+                    "daily_predictions": {"Thursday": 20.0},
+                },
+                {
+                    "movie": "Other Movie",
+                    "actual_total": 80.0,
+                    "daily_predictions": {"Thursday": 8.0},
+                },
+            ],
+        }
+
+        learned = learned_local_thursday_share(cal, exclude_movie="Michael")
+
+        self.assertEqual(1, learned["n"])
+        self.assertAlmostEqual(0.10, learned["share"], places=6)
+
+    def test_prediction_blends_external_comps_with_local_seat_history(self):
+        prediction = {
+            "movie": "Future Biopic",
+            "seat_mid_m": 90.0,
+            "seat_low_m": 85.0,
+            "seat_high_m": 95.0,
+            "daily_details": {
+                "Thursday": {"domestic_mid": 10_000_000},
+            },
+        }
+        metadata = {
+            "future biopic": TargetMetadata(
+                movie="Future Biopic",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+            ),
+        ]
+        cal = {
+            "history": [
+                {
+                    "movie": "Settled Movie 1",
+                    "actual_total": 100.0,
+                    "daily_predictions": {"Thursday": 20.0},
+                },
+                {
+                    "movie": "Settled Movie 2",
+                    "actual_total": 100.0,
+                    "daily_predictions": {"Thursday": 10.0},
+                },
+            ],
+        }
+
+        attach_comp_model_prediction(prediction, cal, metadata=metadata, comps=comps)
+
+        self.assertAlmostEqual(0.11, prediction["seat_comp_thursday_share"], places=6)
+        self.assertAlmostEqual(90.909090909, prediction["seat_comp_mid_m"], places=6)
+        self.assertEqual(2, prediction["seat_comp_local_thursday_n"])
+        self.assertAlmostEqual(0.20, prediction["seat_comp_local_thursday_weight"], places=6)
 
 
 if __name__ == "__main__":
