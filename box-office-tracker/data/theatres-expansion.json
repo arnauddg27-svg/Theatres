@@ -1,6 +1,450 @@
 {
   "_description": "Best-effort AMC expansion cohort. Scraper collects these after the core cohort, but predict.py excludes them unless THEATRE_MODEL_COHORTS includes expansion or --include-expansion is passed.",
+  "_source_note": "Expanded from official AMC theatre/participating-theatre pages. Entries are advisory expansion only; core collection and model defaults stay isolated.",
   "_added": "2026-04-30",
+  "_expanded": "2026-04-30",
+  "ET": [
+    {
+      "name": "AMC 19th St. East 6",
+      "slug": "amc-19th-st-east-6",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Bay Terrace 6",
+      "slug": "amc-bay-terrace-6",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Fantasy 5",
+      "slug": "amc-fantasy-5",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Fresh Meadows 7",
+      "slug": "amc-fresh-meadows-7",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Levittown 10",
+      "slug": "amc-levittown-10",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Orpheum 7",
+      "slug": "amc-orpheum-7",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Raceway 10",
+      "slug": "amc-raceway-10",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Roosevelt Field 8",
+      "slug": "amc-roosevelt-field-8",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Stony Brook 17",
+      "slug": "amc-stony-brook-17",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Village 7",
+      "slug": "amc-village-7",
+      "dma": "New York",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Center Park 8",
+      "slug": "amc-center-park-8",
+      "dma": "Washington DC",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Magic Johnson Capital Center 12",
+      "slug": "amc-magic-johnson-capital-center-12",
+      "dma": "Washington DC",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC St. Charles Town Ctr 9",
+      "slug": "amc-st-charles-town-center-9",
+      "dma": "Washington DC",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Liberty Tree Mall 20",
+      "slug": "amc-liberty-tree-mall-20",
+      "dma": "Boston",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Indian River 24",
+      "slug": "amc-classic-indian-river-24",
+      "dma": "Vero Beach",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC New Smyrna 12",
+      "slug": "amc-classic-new-smyrna-12",
+      "dma": "Orlando",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Palm Harbor 10",
+      "slug": "amc-classic-palm-harbor-10",
+      "dma": "Tampa",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Pensacola 18",
+      "slug": "amc-classic-pensacola-18",
+      "dma": "Pensacola",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Bethlehem 12",
+      "slug": "amc-bethlehem-12",
+      "dma": "Atlanta",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Albany 16",
+      "slug": "amc-classic-albany-16",
+      "dma": "Albany - GA",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Battlefield 10",
+      "slug": "amc-classic-battlefield-10",
+      "dma": "Chattanooga",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Cartersville 12",
+      "slug": "amc-classic-cartersville-12",
+      "dma": "Atlanta",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC LaGrange 10 - Georgia",
+      "slug": "amc-classic-lagrange-10-georgia",
+      "dma": "Atlanta",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Riverstone 15",
+      "slug": "amc-classic-riverstone-15",
+      "dma": "Atlanta",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Savannah 11",
+      "slug": "amc-classic-savannah-11",
+      "dma": "Savannah",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Statesboro 12",
+      "slug": "amc-classic-statesboro-12",
+      "dma": "Savannah",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Walnut Square 12",
+      "slug": "amc-classic-walnut-square-12",
+      "dma": "Chattanooga",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Hiram 14",
+      "slug": "amc-hiram-14",
+      "dma": "Atlanta",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Havelock 6",
+      "slug": "amc-classic-havelock-6",
+      "dma": "Greenville - NC",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Jacksonville 16",
+      "slug": "amc-classic-jacksonville-16",
+      "dma": "Greenville - NC",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Shelby 10",
+      "slug": "amc-classic-shelby-10",
+      "dma": "Charlotte",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Wilson 10",
+      "slug": "amc-classic-wilson-10",
+      "dma": "Raleigh - Durham",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC 309 Cinema 9",
+      "slug": "amc-309-cinema-9",
+      "dma": "Philadelphia",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Center Valley 16",
+      "slug": "amc-center-valley-16",
+      "dma": "Allentown",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC South Hills Village 10",
+      "slug": "amc-classic-south-hills-village-10",
+      "dma": "Pittsburgh",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Pottsgrove 12",
+      "slug": "amc-pottsgrove-12",
+      "dma": "Philadelphia",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Fairgrounds 10",
+      "slug": "amc-fairgrounds-10",
+      "dma": "Reading",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Myrtle Beach 12",
+      "slug": "amc-classic-myrtle-beach-12",
+      "dma": "Myrtle Beach",
+      "cohort": "expansion"
+    }
+  ],
+  "CT": [
+    {
+      "name": "AMC Naperville 16",
+      "slug": "amc-naperville-16",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Dubuque 14",
+      "slug": "amc-classic-dubuque-14",
+      "dma": "Dubuque",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Sunnyland 10",
+      "slug": "amc-classic-sunnyland-10",
+      "dma": "Peoria",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Galesburg 8",
+      "slug": "amc-classic-galesburg-8",
+      "dma": "Peoria",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Normal 14",
+      "slug": "amc-classic-normal-14",
+      "dma": "Bloomington - IL",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Quincy 6",
+      "slug": "amc-classic-quincy-6",
+      "dma": "Quincy",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Sauk Valley 8",
+      "slug": "amc-classic-sauk-valley-8",
+      "dma": "Sterling",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Michigan City 14",
+      "slug": "amc-classic-michigan-city-14",
+      "dma": "Gary",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC South Bend 16",
+      "slug": "amc-classic-south-bend-16",
+      "dma": "South Bend",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Terre Haute 12",
+      "slug": "amc-classic-terre-haute-12",
+      "dma": "Terre Haute",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Chicago Ridge 6",
+      "slug": "amc-chicago-ridge-6",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Cicero 14",
+      "slug": "amc-cicero-14",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Decatur 10",
+      "slug": "amc-classic-decatur-10",
+      "dma": "Decatur - IL",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Mount Vernon 8",
+      "slug": "amc-classic-mount-vernon-8",
+      "dma": "Mount Vernon",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Crestwood 18",
+      "slug": "amc-crestwood-18",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Galewood Crossings 14",
+      "slug": "amc-galewood-crossings-14",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Lake In The Hills 12",
+      "slug": "amc-lake-in-the-hills-12",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Market Square 10",
+      "slug": "amc-market-square-10",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC New Lenox 14",
+      "slug": "amc-new-lenox-14",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Peru Mall 8",
+      "slug": "amc-peru-mall-8",
+      "dma": "Peoria",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Quarry Cinemas 14",
+      "slug": "amc-quarry-cinemas-14",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Corpus Christi 16",
+      "slug": "amc-classic-corpus-christi-16",
+      "dma": "Corpus Christi",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Rio Grande 10",
+      "slug": "amc-classic-rio-grande-10",
+      "dma": "Brownsville",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Hulen 10",
+      "slug": "amc-hulen-10",
+      "dma": "Dallas",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Lake Worth 14",
+      "slug": "amc-lake-worth-14",
+      "dma": "Dallas",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Columbus 12",
+      "slug": "amc-classic-columbus-12",
+      "dma": "Columbus - IN",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Crawfordsville 8",
+      "slug": "amc-classic-crawfordsville-8",
+      "dma": "Indianapolis",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Hobart 12",
+      "slug": "amc-classic-hobart-12",
+      "dma": "Gary",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Kokomo 12",
+      "slug": "amc-classic-kokomo-12",
+      "dma": "Indianapolis",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Pittsburg 8",
+      "slug": "amc-classic-pittsburg-8",
+      "dma": "Joplin",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Salina 10",
+      "slug": "amc-classic-salina-10",
+      "dma": "Salina",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Ardmore 8",
+      "slug": "amc-classic-ardmore-8",
+      "dma": "Oklahoma City",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Owasso 12",
+      "slug": "amc-classic-owasso-12",
+      "dma": "Tulsa",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Desert Star 15",
+      "slug": "amc-classic-desert-star-15",
+      "dma": "Madison",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Manitowoc 10",
+      "slug": "amc-classic-manitowoc-10",
+      "dma": "Green Bay",
+      "cohort": "expansion"
+    }
+  ],
   "PT": [
     {
       "name": "AMC Atlantic Times Square 14",
@@ -73,67 +517,71 @@
       "slug": "amc-tyler-galleria-16",
       "dma": "Los Angeles",
       "cohort": "expansion"
-    }
-  ],
-  "CT": [
+    },
     {
-      "name": "AMC Naperville 16",
-      "slug": "amc-naperville-16",
-      "dma": "Chicago",
+      "name": "AMC Burbank Town Center 6",
+      "slug": "amc-burbank-town-center-6",
+      "dma": "Los Angeles",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Dubuque 14",
-      "slug": "amc-classic-dubuque-14",
-      "dma": "Dubuque",
+      "name": "AMC Northridge 10",
+      "slug": "amc-northridge-10",
+      "dma": "Los Angeles",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Sunnyland 10",
-      "slug": "amc-classic-sunnyland-10",
-      "dma": "Peoria",
+      "name": "AMC Woodbridge 5",
+      "slug": "amc-woodbridge-5",
+      "dma": "Los Angeles",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Galesburg 8",
-      "slug": "amc-classic-galesburg-8",
-      "dma": "Peoria",
+      "name": "Universal Cinema AMC at CityWalk Hollywood",
+      "slug": "universal-cinema-amc-at-citywalk-hollywood",
+      "dma": "Los Angeles",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Normal 14",
-      "slug": "amc-classic-normal-14",
-      "dma": "Bloomington - IL",
+      "name": "AMC CLASSIC Cascade Mall 14",
+      "slug": "amc-classic-cascade-mall-14",
+      "dma": "Seattle",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Quincy 6",
-      "slug": "amc-classic-quincy-6",
-      "dma": "Quincy",
+      "name": "AMC CLASSIC Kennewick 12",
+      "slug": "amc-classic-kennewick-12",
+      "dma": "Yakima",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Sauk Valley 8",
-      "slug": "amc-classic-sauk-valley-8",
-      "dma": "Sterling",
+      "name": "AMC CLASSIC Mill Plain 8",
+      "slug": "amc-classic-mill-plain-8",
+      "dma": "Portland",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Michigan City 14",
-      "slug": "amc-classic-michigan-city-14",
-      "dma": "Gary",
+      "name": "AMC Bowles Crossing 12",
+      "slug": "amc-bowles-crossing-12",
+      "dma": "Denver",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC South Bend 16",
-      "slug": "amc-classic-south-bend-16",
-      "dma": "South Bend",
+      "name": "AMC DINE-IN Cherry Creek 8",
+      "slug": "amc-dine-in-cherry-creek-8",
+      "dma": "Denver",
       "cohort": "expansion"
     },
     {
-      "name": "AMC CLASSIC Terre Haute 12",
-      "slug": "amc-classic-terre-haute-12",
-      "dma": "Terre Haute",
+      "name": "AMC Surprise Pointe 14",
+      "slug": "amc-surprise-pointe-14",
+      "dma": "Phoenix",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Corvallis 12",
+      "slug": "amc-classic-corvallis-12",
+      "dma": "Portland",
       "cohort": "expansion"
     }
   ]
