@@ -31,12 +31,17 @@ class HistoricalComp:
     opening_weekend_m: float
     source_url: str = ""
     notes: str = ""
+    release_year: int | None = None
 
     @property
     def thursday_share(self) -> float:
         if self.opening_weekend_m <= 0:
             return 0.0
         return self.thursday_preview_m / self.opening_weekend_m
+
+    @property
+    def is_post_covid(self) -> bool:
+        return self.release_year is not None and self.release_year >= 2021
 
 
 @dataclass(frozen=True)
@@ -77,6 +82,11 @@ def _float(row: dict, key: str) -> float:
     return float(raw) if raw else 0.0
 
 
+def _int(row: dict, key: str) -> int | None:
+    raw = (row.get(key) or "").strip()
+    return int(raw) if raw else None
+
+
 def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[HistoricalComp]:
     path = Path(path)
     if not path.exists():
@@ -94,6 +104,7 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 opening_weekend_m=_float(row, "opening_weekend_m"),
                 source_url=(row.get("source_url") or "").strip(),
                 notes=(row.get("notes") or "").strip(),
+                release_year=_int(row, "release_year"),
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)

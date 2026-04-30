@@ -5,10 +5,12 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from historical_comps import (
+    DEFAULT_COMPS_CSV,
     HistoricalComp,
     TargetMetadata,
     estimate_from_prediction,
     estimate_opening_weekend_from_thursday,
+    load_historical_comps,
 )
 
 
@@ -80,6 +82,17 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertIsNotNone(estimate.adjusted_mid_m)
         self.assertLess(estimate.adjusted_mid_m, estimate.mid_m)
         self.assertAlmostEqual(1 / 21, estimate.comp_influence, places=6)
+
+    def test_default_database_has_post_covid_depth_without_michael_leakage(self):
+        comps = load_historical_comps(DEFAULT_COMPS_CSV)
+        names = {comp.movie.lower() for comp in comps}
+        post_covid = [comp for comp in comps if comp.is_post_covid]
+
+        self.assertGreaterEqual(len(comps), 70)
+        self.assertGreaterEqual(len(post_covid), 60)
+        self.assertNotIn("michael", names)
+        self.assertTrue(all(comp.thursday_preview_m > 0 for comp in comps))
+        self.assertTrue(all(comp.opening_weekend_m > 0 for comp in comps))
 
 
 if __name__ == "__main__":
