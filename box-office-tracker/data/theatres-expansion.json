@@ -1,0 +1,140 @@
+{
+  "_description": "Best-effort AMC expansion cohort. Scraper collects these after the core cohort, but predict.py excludes them unless THEATRE_MODEL_COHORTS includes expansion or --include-expansion is passed.",
+  "_added": "2026-04-30",
+  "PT": [
+    {
+      "name": "AMC Atlantic Times Square 14",
+      "slug": "amc-atlantic-times-square-14",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Covina 17",
+      "slug": "amc-covina-17",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Del Amo 18",
+      "slug": "amc-del-amo-18",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Glendora 12 @ 210/57",
+      "slug": "amc-glendora-12",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Marina Marketplace 6",
+      "slug": "amc-marina-marketplace-6",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Montclair Place 12",
+      "slug": "amc-dine-in-montclair-place-12",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Ontario Mills 30",
+      "slug": "amc-dine-in-ontario-mills-30",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Rolling Hills 20",
+      "slug": "amc-rolling-hills-20",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC South Bay Galleria 16",
+      "slug": "amc-south-bay-galleria-16",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Temecula 10",
+      "slug": "amc-temecula-10",
+      "dma": "San Diego",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Thousand Oaks 14",
+      "slug": "amc-dine-in-thousand-oaks-14",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC Tyler Galleria 16",
+      "slug": "amc-tyler-galleria-16",
+      "dma": "Los Angeles",
+      "cohort": "expansion"
+    }
+  ],
+  "CT": [
+    {
+      "name": "AMC Naperville 16",
+      "slug": "amc-naperville-16",
+      "dma": "Chicago",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Dubuque 14",
+      "slug": "amc-classic-dubuque-14",
+      "dma": "Dubuque",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Sunnyland 10",
+      "slug": "amc-classic-sunnyland-10",
+      "dma": "Peoria",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Galesburg 8",
+      "slug": "amc-classic-galesburg-8",
+      "dma": "Peoria",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Normal 14",
+      "slug": "amc-classic-normal-14",
+      "dma": "Bloomington - IL",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Quincy 6",
+      "slug": "amc-classic-quincy-6",
+      "dma": "Quincy",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Sauk Valley 8",
+      "slug": "amc-classic-sauk-valley-8",
+      "dma": "Sterling",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Michigan City 14",
+      "slug": "amc-classic-michigan-city-14",
+      "dma": "Gary",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC South Bend 16",
+      "slug": "amc-classic-south-bend-16",
+      "dma": "South Bend",
+      "cohort": "expansion"
+    },
+    {
+      "name": "AMC CLASSIC Terre Haute 12",
+      "slug": "amc-classic-terre-haute-12",
+      "dma": "Terre Haute",
+      "cohort": "expansion"
+    }
+  ]
+}

@@ -33,9 +33,16 @@ SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
+THEATRES_JSON       = os.path.join(DATA_DIR, "theatres-all.json")
+THEATRES_EXPANSION_JSON = os.path.join(DATA_DIR, "theatres-expansion.json")
 
 # ── Default Constants ────────────────────────────────────────────────────────
 DEFAULT_AMC_MARKET_SHARE = 0.25
+CORE_COHORT = "core"
+EXPANSION_COHORT = "expansion"
+DEFAULT_MODEL_COHORTS = (CORE_COHORT,)
+KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT}
+URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -227,6 +234,76 @@ def _opening_weekend_for_date(date_str):
         return (row_dt - timedelta(days=5)).strftime("%Y-%m-%d")
 
 
+def _parse_cohorts(raw, default=DEFAULT_MODEL_COHORTS):
+    value = raw if raw is not None else ",".join(default)
+    cohorts = [part.strip().lower() for part in value.split(",") if part.strip()]
+    if not cohorts:
+        return set(default)
+    if "all" in cohorts or "*" in cohorts:
+        return set(KNOWN_THEATRE_COHORTS)
+    selected = set(cohorts) & KNOWN_THEATRE_COHORTS
+    return selected or set(default)
+
+
+def active_model_cohorts():
+    """Theatre cohorts allowed to feed prediction/calibration."""
+    return _parse_cohorts(os.getenv("THEATRE_MODEL_COHORTS"), DEFAULT_MODEL_COHORTS)
+
+
+def use_url_showtime_identity():
+    """Opt in to URL-level screen identity without changing the default model."""
+    return os.getenv("THEATRE_MODEL_SHOWTIME_IDENTITY", "").strip().lower() in URL_SHOWTIME_IDENTITY_VALUES
+
+
+def _add_theatre_cohorts(cohort_sets, path, default_cohort):
+    if not os.path.exists(path):
+        return
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+    except Exception:
+        return
+    for group, theatres in data.items():
+        if group.startswith("_"):
+            continue
+        for theatre in theatres:
+            name = (theatre.get("name") or "").strip()
+            if not name:
+                continue
+            cohort = (theatre.get("cohort") or default_cohort).strip().lower()
+            cohort_sets.setdefault(cohort, set()).add(name)
+
+
+def load_theatre_cohort_sets():
+    """Return {cohort: theatre_names} from core + expansion config files."""
+    cohort_sets = {CORE_COHORT: set(), EXPANSION_COHORT: set()}
+    _add_theatre_cohorts(cohort_sets, THEATRES_JSON, CORE_COHORT)
+    _add_theatre_cohorts(cohort_sets, THEATRES_EXPANSION_JSON, EXPANSION_COHORT)
+    cohort_sets[EXPANSION_COHORT] -= cohort_sets[CORE_COHORT]
+    return cohort_sets
+
+
+def model_allows_theatre(theatre_name, cohort_sets=None, model_cohorts=None):
+    """True when a row's theatre belongs to an enabled model cohort.
+
+    Unknown theatres are allowed so old/manual rows do not disappear just
+    because the theatre config changed. Expansion theatres are known and are
+    therefore excluded unless explicitly enabled.
+    """
+    name = (theatre_name or "").strip()
+    if not name:
+        return True
+    cohort_sets = cohort_sets if cohort_sets is not None else load_theatre_cohort_sets()
+    model_cohorts = model_cohorts if model_cohorts is not None else active_model_cohorts()
+    known_names = set().union(*cohort_sets.values()) if cohort_sets else set()
+    if name not in known_names:
+        return True
+    allowed_names = set()
+    for cohort in model_cohorts:
+        allowed_names.update(cohort_sets.get(cohort, set()))
+    return name in allowed_names
+
+
 def load_seat_data(weekend_of=None):
     """Load seat-counts.csv and group by movie → date → list of theatre rows.
 
@@ -246,11 +323,19 @@ def load_seat_data(weekend_of=None):
 
     data = {}
     rows = []
+    cohort_sets = load_theatre_cohort_sets()
+    model_cohorts = active_model_cohorts()
     with open(SEAT_CSV, "r") as f:
         for row in csv.DictReader(f):
             movie = row.get("movie_title", "")
             date = row.get("date", "")
             if not movie or not date:
+                continue
+            if not model_allows_theatre(
+                row.get("theatre_name", ""),
+                cohort_sets=cohort_sets,
+                model_cohorts=model_cohorts,
+            ):
                 continue
             rows.append(row)
 
@@ -857,7 +942,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             t_id = row.get("theatre_name", "")
             fmt = (row.get("auditorium_type", "") or row.get("auditorium_name", "") or "Standard")
             showtime = row.get("showtime", "")
-            key = f"{t_id}|{fmt}|{showtime}"
+            showtime_identity = ""
+            if use_url_showtime_identity():
+                showtime_identity = row.get("amc_seat_map_url", "").strip()
+            key = f"{t_id}|{showtime_identity or f'{fmt}|{showtime}'}"
             sort_key = row.get("run_id", "") or row.get("check_time", "")
             prev = rows_by_theatre_fmt_show.get(key)
             if not prev or sort_key > prev.get("_sort_key", ""):
@@ -1188,6 +1276,8 @@ Options:
   --actual NAME GROSS_M
                      Record an actual opening-weekend result in millions
   --history          Show stored prediction-vs-actual history
+  --include-expansion
+                     Include best-effort expansion theatres in prediction
   --verbose, -v      Include per-theatre prediction details
   --help, -h         Show this help text
 """)
@@ -1202,6 +1292,9 @@ def main():
         return
 
     verbose = "--verbose" in args or "-v" in args
+    if "--include-expansion" in args:
+        os.environ["THEATRE_MODEL_COHORTS"] = "core,expansion"
+        args = [arg for arg in args if arg != "--include-expansion"]
     cal = load_calibration()
 
     # --history
@@ -1314,6 +1407,7 @@ def main():
     factors = cal["calibration_factors"]
     print(f"  Calibration: scale={factors.get('overall_scale_factor', 1.0):.3f}, "
           f"AMC share={factors.get('amc_market_share', DEFAULT_AMC_MARKET_SHARE):.1%}")
+    print(f"  Theatre cohorts: {', '.join(sorted(active_model_cohorts()))}")
     if theatre_counts:
         relevant_counts = {
             movie: national_theatre_count_for_movie(movie, theatre_counts)

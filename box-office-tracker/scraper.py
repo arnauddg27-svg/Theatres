@@ -37,24 +37,121 @@ POLY_CSV = DATA_DIR / "polymarket-markets.csv"
 RUN_LOG  = DATA_DIR / "run-log.md"
 
 THEATRES_JSON    = DATA_DIR / "theatres-all.json"
+THEATRES_EXPANSION_JSON = DATA_DIR / "theatres-expansion.json"
 LINKS_JSON       = DATA_DIR / "showtime-links.json"   # Phase 1 output / Phase 2 input
 THEATRE_COUNTS_JSON = DATA_DIR / "theatre-counts.json"  # National theatre counts from BOM
 
 
-def load_theatres():
-    """Load theatre list from JSON. Falls back to a minimal default."""
+CORE_COHORT = "core"
+EXPANSION_COHORT = "expansion"
+DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
+KNOWN_THEATRE_COHORTS = set(DEFAULT_COLLECTION_COHORTS)
+REQUIRED_PHASE1_COHORTS = (CORE_COHORT,)
+
+
+def _parse_cohorts(value, default):
+    raw = value if value is not None else ",".join(default)
+    cohorts = [part.strip().lower() for part in raw.split(",") if part.strip()]
+    if not cohorts or "all" in cohorts or "*" in cohorts:
+        return set(default)
+    selected = set(cohorts) & KNOWN_THEATRE_COHORTS
+    return selected or set(default)
+
+
+def _theatre_cohort(theatre):
+    return (theatre.get("cohort") or CORE_COHORT).strip().lower()
+
+
+def _copy_theatre(theatre, cohort):
+    copied = dict(theatre)
+    copied["cohort"] = (copied.get("cohort") or cohort).strip().lower()
+    return copied
+
+
+def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohorts):
+    target.setdefault(group, [])
+    existing_names = {
+        t["name"]
+        for group_theatres in target.values()
+        for t in group_theatres
+        if t.get("name")
+    }
+    for theatre in theatres:
+        if not theatre.get("name") or not theatre.get("slug"):
+            continue
+        copied = _copy_theatre(theatre, default_cohort)
+        if _theatre_cohort(copied) not in allowed_cohorts:
+            continue
+        # Names are the durable key in showtime-links.json; never let an
+        # expansion theatre shadow a core theatre with the same display name.
+        if copied["name"] in existing_names:
+            continue
+        target[group].append(copied)
+        existing_names.add(copied["name"])
+
+
+def load_theatres(cohorts=None):
+    """Load the theatre universe.
+
+    The historical list is the core model cohort. theatres-expansion.json is
+    collected after core theatres and is excluded from prediction unless it is
+    explicitly promoted.
+    """
+    allowed_cohorts = _parse_cohorts(
+        cohorts if cohorts is not None else os.getenv("THEATRE_COLLECTION_COHORTS"),
+        DEFAULT_COLLECTION_COHORTS,
+    )
+
     if THEATRES_JSON.exists():
         with open(THEATRES_JSON, "r") as f:
             data = json.load(f)
-        # Strip metadata keys
-        return {k: v for k, v in data.items() if not k.startswith("_")}
+        theatres = {}
+        for group, group_theatres in data.items():
+            if group.startswith("_"):
+                continue
+            theatres[group] = []
+            _merge_theatre_group(
+                theatres, group, group_theatres,
+                default_cohort=CORE_COHORT,
+                allowed_cohorts=allowed_cohorts,
+            )
+        if THEATRES_EXPANSION_JSON.exists():
+            with open(THEATRES_EXPANSION_JSON, "r") as f:
+                expansion = json.load(f)
+            for group, group_theatres in expansion.items():
+                if group.startswith("_"):
+                    continue
+                _merge_theatre_group(
+                    theatres, group, group_theatres,
+                    default_cohort=EXPANSION_COHORT,
+                    allowed_cohorts=allowed_cohorts,
+                )
+        return theatres
     # Fallback: minimal set if JSON is missing
     return {
-        "ET": [{"name": "AMC Empire 25", "slug": "amc-empire-25"}],
-        "CT": [{"name": "AMC River East 21", "slug": "amc-river-east-21"}],
-        "MT": [{"name": "AMC Westminster 24", "slug": "amc-westminster-24"}],
-        "PT": [{"name": "AMC The Grove 14", "slug": "amc-the-grove-14"}],
+        "ET": [{"name": "AMC Empire 25", "slug": "amc-empire-25", "cohort": CORE_COHORT}],
+        "CT": [{"name": "AMC River East 21", "slug": "amc-river-east-21", "cohort": CORE_COHORT}],
+        "MT": [{"name": "AMC Westminster 24", "slug": "amc-westminster-24", "cohort": CORE_COHORT}],
+        "PT": [{"name": "AMC The Grove 14", "slug": "amc-the-grove-14", "cohort": CORE_COHORT}],
     }
+
+
+def _theatre_sort_key(theatre):
+    # Core first. Expansion is best-effort and should be the first work dropped
+    # if a Phase 1/2 deadline is approaching.
+    return (
+        1 if _theatre_cohort(theatre) == EXPANSION_COHORT else 0,
+        theatre.get("dma", ""),
+        theatre.get("name", ""),
+    )
+
+
+def _cohort_counts(theatres):
+    counts = {}
+    for theatre in theatres:
+        cohort = _theatre_cohort(theatre)
+        counts[cohort] = counts.get(cohort, 0) + 1
+    return counts
 
 # AMC format priority (higher = bigger room, more important)
 FORMAT_PRIORITY = {
@@ -1082,8 +1179,10 @@ def phase1_groups(tz_group):
     return [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
 
 
-def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates):
+def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
+                         required_cohorts=REQUIRED_PHASE1_COHORTS):
     """Count fresh Phase 1 theatre entries against the configured theatre universe."""
+    required_cohorts = set(required_cohorts or [])
     expected_total = 0
     fresh_names = []
     stale_entries = []
@@ -1092,6 +1191,8 @@ def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates):
     for group in groups:
         expected_date = expected_dates.get(group)
         for theatre in theatres_map.get(group, []):
+            if required_cohorts and _theatre_cohort(theatre) not in required_cohorts:
+                continue
             expected_total += 1
             name = theatre["name"]
             entry = saved_links.get(name)
@@ -1141,9 +1242,15 @@ def require_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO
         )
 
 
-def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None):
+def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None,
+                             required_cohorts=REQUIRED_PHASE1_COHORTS):
     counts = {}
+    required_cohorts = set(required_cohorts or [])
     for entry in saved_links.values():
+        if required_cohorts:
+            cohort = (entry.get("cohort") or CORE_COHORT).strip().lower()
+            if cohort not in required_cohorts:
+                continue
         tz = entry.get("tz")
         if groups is not None and tz not in groups:
             continue
@@ -1158,7 +1265,8 @@ def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None):
 
 
 def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
-                                     groups=None, expected_dates=None):
+                                     groups=None, expected_dates=None,
+                                     required_cohorts=REQUIRED_PHASE1_COHORTS):
     """Drop Polymarket markets that have no fresh AMC Phase 1 links."""
     if not poly_markets:
         return []
@@ -1167,6 +1275,7 @@ def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
         saved_links,
         groups=groups,
         expected_dates=expected_dates,
+        required_cohorts=required_cohorts,
     )
     filtered = []
     skipped = []
@@ -1255,7 +1364,8 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
             shows = []
             for e in sorted(started,
                             key=lambda x: -(parse_showtime_hour(x.get("showtime", "")) or 0)):
-                key = (e.get("format", "Standard"), e.get("showtime", "?"))
+                showtime_id = str(e.get("showtime_id", "") or "").strip()
+                key = showtime_id or (e.get("format", "Standard"), e.get("showtime", "?"))
                 if key in seen:
                     continue
                 seen.add(key)
@@ -1307,6 +1417,9 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
 
                     showtime_id = show.get("showtime_id", "")
                     amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
+                    note = f"{flags}. {reason}" if flags else reason
+                    if _theatre_cohort(theatre) == EXPANSION_COHORT:
+                        note = f"{note}; cohort=expansion"
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
@@ -1315,7 +1428,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         "", fmt,
                         seat_data["total_seats"], seat_data["seats_sold"],
                         seat_data["seats_available"], occ,
-                        amc_url, f"{flags}. {reason}" if flags else reason,
+                        amc_url, note,
                     ])
                     results.append({
                         "theatre": theatre["name"], "movie": movie_title,
@@ -1417,8 +1530,10 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
     for group in groups:
         for t in theatres_map.get(group, []):
             all_theatres.append({**t, "_tz": group, "_date": expected_dates[group]})
+    all_theatres.sort(key=_theatre_sort_key)
 
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
+    print(f"   Cohorts: {_cohort_counts(all_theatres)}")
 
     # Store the opening-weekend Friday anchor, not the calendar day. Thursday
     # Phase 1 runs collect links for Friday's opening weekend and must merge
@@ -1485,41 +1600,77 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
                     results.append(e)
             return results
 
-        outcomes = await collect_with_deadline(
-            all_theatres,
-            "initial pass",
-            PHASE1_DEADLINE_SEC,
-        )
         outcome_by_key = {}
-        for outcome in outcomes:
-            if isinstance(outcome, Exception):
-                continue
-            name, tz, show_date, _ = outcome
-            outcome_by_key[(name, tz, show_date)] = outcome
+
+        def merge_outcomes(batch_outcomes):
+            for outcome in batch_outcomes:
+                if isinstance(outcome, Exception):
+                    continue
+                name, tz, show_date, _ = outcome
+                outcome_by_key[(name, tz, show_date)] = outcome
+
+        async def collect_and_merge(theatres, label):
+            if not theatres:
+                return
+            budget = max(0, int(deadline_at - time.monotonic()))
+            if budget <= 0:
+                print(f"\n⏱️  Skipping Phase 1 {label} — deadline is exhausted")
+                return
+            merge_outcomes(await collect_with_deadline(theatres, label, budget))
+
+        core_theatres = [
+            t for t in all_theatres
+            if _theatre_cohort(t) != EXPANSION_COHORT
+        ]
+        expansion_theatres = [
+            t for t in all_theatres
+            if _theatre_cohort(t) == EXPANSION_COHORT
+        ]
+
+        await collect_and_merge(core_theatres, "core initial pass")
 
         # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
-        failed = [
-            theatre_by_key[key]
-            for key, outcome in outcome_by_key.items()
-            if not outcome[3]
+        failed_core = [
+            theatre
+            for theatre in core_theatres
+            if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
         ]
-        if failed:
+        if failed_core:
             retry_budget = max(0, int(deadline_at - time.monotonic()))
             if retry_budget > 30:
-                print(f"\n🔄 Retrying {len(failed)} theatres that returned 0 showtimes (5s delay)...")
+                print(f"\n🔄 Retrying {len(failed_core)} core theatres that returned 0 showtimes (5s delay)...")
                 await asyncio.sleep(5)
-                retry_outcomes = await collect_with_deadline(
-                    failed,
-                    "retry pass",
-                    max(0, int(deadline_at - time.monotonic())),
+                merge_outcomes(
+                    await collect_with_deadline(
+                        failed_core,
+                        "core retry pass",
+                        max(0, int(deadline_at - time.monotonic())),
+                    )
                 )
-                for outcome in retry_outcomes:
-                    if isinstance(outcome, Exception):
-                        continue
-                    name, tz, show_date, _ = outcome
-                    outcome_by_key[(name, tz, show_date)] = outcome
             else:
-                print(f"\n⏱️  Skipping retry for {len(failed)} theatres — Phase 1 deadline is near")
+                print(f"\n⏱️  Skipping retry for {len(failed_core)} core theatres — Phase 1 deadline is near")
+
+        await collect_and_merge(expansion_theatres, "expansion pass")
+
+        failed_expansion = [
+            theatre
+            for theatre in expansion_theatres
+            if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
+        ]
+        if failed_expansion:
+            retry_budget = max(0, int(deadline_at - time.monotonic()))
+            if retry_budget > 60:
+                print(f"\n🔄 Retrying {len(failed_expansion)} expansion theatres that returned 0 showtimes (5s delay)...")
+                await asyncio.sleep(5)
+                merge_outcomes(
+                    await collect_with_deadline(
+                        failed_expansion,
+                        "expansion retry pass",
+                        max(0, int(deadline_at - time.monotonic())),
+                    )
+                )
+            else:
+                print(f"\n⏱️  Skipping retry for {len(failed_expansion)} expansion theatres — Phase 1 deadline is near")
 
         skipped = len(theatre_by_key) - len(outcome_by_key)
         if skipped > 0:
@@ -1537,11 +1688,27 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
             continue
         name, tz, show_date, collected = outcome
         if collected:
-            links["theatres"][name] = {"tz": tz, "show_date": show_date, "movies": collected}
+            theatre = theatre_by_key.get((name, tz, show_date), {})
+            links["theatres"][name] = {
+                "tz": tz,
+                "show_date": show_date,
+                "cohort": _theatre_cohort(theatre),
+                "movies": collected,
+            }
             total_links += sum(len(v) for v in collected.values())
 
     fresh_report = phase1_link_coverage(links["theatres"], theatres_map, groups, expected_dates)
     require_phase1_coverage(fresh_report, f"Phase 1 collected links for {tz_group}")
+    expansion_report = phase1_link_coverage(
+        links["theatres"], theatres_map, groups, expected_dates,
+        required_cohorts=(EXPANSION_COHORT,),
+    )
+    if expansion_report["expected_total"]:
+        print_phase1_coverage(
+            expansion_report,
+            f"Phase 1 expansion links for {tz_group}",
+            min_ratio=0.0,
+        )
 
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
@@ -1697,6 +1864,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         # Each group uses its own local date for the AMC showtime URL
         for theatre in theatres_map.get(group, []):
             all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
+    all_theatres.sort(key=_theatre_sort_key)
 
     # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
     # weekend, or older than 12 hours unless explicitly forced.
@@ -1798,6 +1966,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     coverage_report = phase1_link_coverage(saved_links, theatres_map, groups_to_check, expected_dates)
     if not test_max:
         require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
+        expansion_report = phase1_link_coverage(
+            saved_links, theatres_map, groups_to_check, expected_dates,
+            required_cohorts=(EXPANSION_COHORT,),
+        )
+        if expansion_report["expected_total"]:
+            print_phase1_coverage(
+                expansion_report,
+                f"Phase 1 expansion preflight for {tz_group}",
+                min_ratio=0.0,
+            )
 
     # Test mode: cap to N theatres
     if test_max:
@@ -1806,6 +1984,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
 
     print(f"\n🏛️  Scraping {len(all_theatres)} theatres with saved links "
           f"(across {len(groups_to_check)} timezone(s))...")
+    print(f"   Cohorts: {_cohort_counts(all_theatres)}")
     print(f"   Weekend: {weekend}  Run: {run_id}")
 
     if not all_theatres:
@@ -1874,8 +2053,29 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     written_rows += w
                     skipped_rows += s
 
-        tasks = [bounded_scrape(t) for t in all_theatres]
-        await asyncio.gather(*tasks, return_exceptions=True)
+        async def run_scrape_batch(theatres, label):
+            if not theatres:
+                return
+            if asyncio.get_event_loop().time() >= overall_deadline:
+                all_issues.extend(
+                    f"{t['name']}: overall deadline reached before {label} batch — skipped"
+                    for t in theatres
+                )
+                return
+            print(f"\n▶ {label} cohort batch: {len(theatres)} theatre(s)")
+            tasks = [bounded_scrape(t) for t in theatres]
+            await asyncio.gather(*tasks, return_exceptions=True)
+
+        core_theatres = [
+            t for t in all_theatres
+            if _theatre_cohort(t) != EXPANSION_COHORT
+        ]
+        expansion_theatres = [
+            t for t in all_theatres
+            if _theatre_cohort(t) == EXPANSION_COHORT
+        ]
+        await run_scrape_batch(core_theatres, CORE_COHORT)
+        await run_scrape_batch(expansion_theatres, EXPANSION_COHORT)
 
         try:
             await asyncio.wait_for(browser.close(), timeout=15)
