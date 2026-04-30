@@ -12,6 +12,7 @@ from historical_comps import (
     estimate_opening_weekend_from_thursday,
     load_historical_comps,
 )
+from predict import attach_comp_model_prediction
 
 
 class HistoricalCompsTest(unittest.TestCase):
@@ -128,6 +129,92 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertNotIn("michael", names)
         self.assertTrue(all(comp.thursday_preview_m > 0 for comp in comps))
         self.assertTrue(all(comp.opening_weekend_m > 0 for comp in comps))
+
+    def test_prediction_can_attach_seat_comp_model(self):
+        prediction = {
+            "movie": "Michael",
+            "seat_mid_m": 88.6,
+            "seat_low_m": 84.0,
+            "seat_high_m": 93.0,
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 10_600_000,
+                }
+            },
+        }
+        metadata = {
+            "michael": TargetMetadata(
+                movie="Michael",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                11.0,
+                100.0,
+                friday_m=40.0,
+                saturday_m=30.0,
+                sunday_m=30.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertAlmostEqual(96.363636, prediction["seat_comp_mid_m"], places=6)
+        self.assertEqual("Thursday", prediction["seat_comp_basis"])
+        self.assertEqual("Comp", prediction["seat_comp_top_comps"][0]["movie"])
+        self.assertAlmostEqual(38.545454545, prediction["seat_comp_daily_m"]["Friday"], places=6)
+
+    def test_prediction_seat_comp_model_uses_latest_available_daily_basis(self):
+        prediction = {
+            "movie": "Michael",
+            "seat_mid_m": 80.0,
+            "seat_low_m": 76.0,
+            "seat_high_m": 84.0,
+            "daily_details": {
+                "Thursday": {"domestic_mid": 20_000_000},
+                "Friday": {"domestic_mid": 30_000_000},
+                "Saturday": {"domestic_mid": 20_000_000},
+                "Sunday": {"domestic_mid": 10_000_000},
+            },
+        }
+        metadata = {
+            "michael": TargetMetadata(
+                movie="Michael",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+                friday_m=50.0,
+                saturday_m=30.0,
+                sunday_m=20.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertEqual("reported full weekend", prediction["seat_comp_basis"])
+        self.assertAlmostEqual(80.0, prediction["seat_comp_evidence_m"], places=6)
+        self.assertAlmostEqual(80.0, prediction["seat_comp_mid_m"], places=6)
 
 
 if __name__ == "__main__":

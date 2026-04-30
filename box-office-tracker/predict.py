@@ -27,6 +27,10 @@ from math import sqrt
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
+from historical_comps import (estimate_from_prediction,
+                              load_historical_comps,
+                              load_movie_metadata,
+                              metadata_for_movie)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                sanitize_calibration, recalibrate_scale_factor)
 
@@ -1144,7 +1148,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         len(daily_details) if daily_details else 0
     )
 
-    return {
+    result = {
         "movie": movie,
         "seat_mid_m": seat_mid_m,
         "seat_low_m": seat_low_m,
@@ -1180,6 +1184,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
+    attach_comp_model_prediction(result, cal)
+    return result
 
 
 # ── Output ───────────────────────────────────────────────────────────────────
@@ -1191,6 +1197,170 @@ def fmt_m(val):
     elif val > 0:
         return f"${val * 1000:,.0f}K"
     return "$0"
+
+
+def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
+    """Attach the automated seat+historical-comp model to a prediction.
+
+    This is intentionally additive: if metadata or comps are missing, the
+    seat-only and Polymarket paths continue unchanged.
+    """
+    metadata = metadata if metadata is not None else load_movie_metadata()
+    comps = comps if comps is not None else load_historical_comps()
+    target = metadata_for_movie(pred.get("movie", ""), metadata)
+    if not target or not comps:
+        return None
+
+    try:
+        day_weights = get_day_weights(cal)
+        baseline_thursday_share = float(day_weights.get("Thursday", 0) or 0)
+        estimate = estimate_from_prediction(
+            pred,
+            target,
+            comps,
+            baseline_thursday_share=baseline_thursday_share,
+        )
+    except (KeyError, TypeError, ValueError):
+        return None
+
+    model = _seat_comp_model_from_available_days(pred, estimate)
+
+    pred["seat_comp_mid_m"] = model["mid_m"]
+    pred["seat_comp_low_m"] = model["low_m"]
+    pred["seat_comp_high_m"] = model["high_m"]
+    pred["seat_comp_basis"] = model["basis"]
+    pred["seat_comp_evidence_m"] = model["evidence_m"]
+    pred["seat_comp_evidence_share"] = model["evidence_share"]
+    pred["seat_comp_thursday_gross_m"] = estimate.thursday_gross_m
+    pred["seat_comp_thursday_share"] = estimate.weighted_thursday_share
+    pred["seat_comp_daily_shares"] = estimate.daily_shares
+    pred["seat_comp_daily_m"] = {
+        day: model["mid_m"] * share
+        for day, share in estimate.daily_shares.items()
+    }
+    pred["seat_comp_top_comps"] = [
+        {
+            "movie": comp.movie,
+            "thursday_share": comp.thursday_share,
+            "has_daily_breakdown": comp.has_daily_breakdown,
+            "weight": estimate.weights.get(comp.movie, 0),
+        }
+        for comp in estimate.comps[:5]
+    ]
+    return estimate
+
+
+def _weighted_quantile_pairs(values, quantile):
+    if not values:
+        return 0.0
+    ordered = sorted(values, key=lambda item: item[0])
+    total_weight = sum(weight for _, weight in ordered)
+    if total_weight <= 0:
+        return ordered[len(ordered) // 2][0]
+    threshold = total_weight * quantile
+    running = 0.0
+    for value, weight in ordered:
+        running += weight
+        if running >= threshold:
+            return value
+    return ordered[-1][0]
+
+
+def _seat_comp_model_from_available_days(pred, estimate):
+    """Project weekend from the latest observed seat data plus comp shape.
+
+    Public daily grosses report Friday as Friday+previews, so once Friday seat
+    data exists this uses (Thursday + Friday) against the comp's reported
+    Friday share. Saturday and Sunday are added as they become available.
+    """
+    details = pred.get("daily_details", {})
+    if "Thursday" not in details:
+        return {
+            "mid_m": estimate.mid_m,
+            "low_m": estimate.low_m,
+            "high_m": estimate.high_m,
+            "basis": "Thursday",
+            "evidence_m": estimate.thursday_gross_m,
+            "evidence_share": estimate.weighted_thursday_share,
+        }
+
+    evidence_m = details["Thursday"]["domestic_mid"] / 1_000_000
+    basis = "Thursday"
+    share_values = [
+        (comp.thursday_share, estimate.weights.get(comp.movie, 0))
+        for comp in estimate.comps
+        if comp.thursday_share > 0
+    ]
+    evidence_share = estimate.weighted_thursday_share
+
+    if "Friday" in details and estimate.daily_shares.get("Friday"):
+        evidence_m = (
+            details["Thursday"]["domestic_mid"]
+            + details["Friday"]["domestic_mid"]
+        ) / 1_000_000
+        basis = "reported Friday"
+        share_values = [
+            (comp.daily_shares["Friday"], estimate.weights.get(comp.movie, 0))
+            for comp in estimate.comps
+            if comp.daily_shares.get("Friday")
+        ]
+        evidence_share = estimate.daily_shares["Friday"]
+
+    if "Saturday" in details and estimate.daily_shares.get("Saturday"):
+        evidence_m = (
+            details["Thursday"]["domestic_mid"]
+            + details.get("Friday", {}).get("domestic_mid", 0)
+            + details["Saturday"]["domestic_mid"]
+        ) / 1_000_000
+        basis = "reported Friday+Saturday"
+        share_values = [
+            (
+                comp.daily_shares["Friday"] + comp.daily_shares["Saturday"],
+                estimate.weights.get(comp.movie, 0),
+            )
+            for comp in estimate.comps
+            if comp.daily_shares.get("Friday") and comp.daily_shares.get("Saturday")
+        ]
+        evidence_share = estimate.daily_shares["Friday"] + estimate.daily_shares["Saturday"]
+
+    if "Sunday" in details and estimate.daily_shares.get("Sunday"):
+        evidence_m = (
+            details["Thursday"]["domestic_mid"]
+            + details.get("Friday", {}).get("domestic_mid", 0)
+            + details.get("Saturday", {}).get("domestic_mid", 0)
+            + details["Sunday"]["domestic_mid"]
+        ) / 1_000_000
+        basis = "reported full weekend"
+        share_values = [
+            (sum(comp.daily_shares.values()), estimate.weights.get(comp.movie, 0))
+            for comp in estimate.comps
+            if comp.has_daily_breakdown
+        ]
+        evidence_share = sum(estimate.daily_shares.values())
+
+    if not share_values or evidence_share <= 0:
+        return {
+            "mid_m": estimate.mid_m,
+            "low_m": estimate.low_m,
+            "high_m": estimate.high_m,
+            "basis": "Thursday",
+            "evidence_m": estimate.thursday_gross_m,
+            "evidence_share": estimate.weighted_thursday_share,
+        }
+
+    mid_m = evidence_m / evidence_share
+    low_share = _weighted_quantile_pairs(share_values, 0.75)
+    high_share = _weighted_quantile_pairs(share_values, 0.25)
+    low_m = evidence_m / low_share if low_share else mid_m
+    high_m = evidence_m / high_share if high_share else mid_m
+    return {
+        "mid_m": mid_m,
+        "low_m": min(low_m, high_m),
+        "high_m": max(low_m, high_m),
+        "basis": basis,
+        "evidence_m": evidence_m,
+        "evidence_share": evidence_share,
+    }
 
 
 def print_prediction(pred, verbose=False):
@@ -1208,7 +1378,7 @@ def print_prediction(pred, verbose=False):
     nat = pred.get("national_theatre_count")
     nat_str = f", {nat:,} national" if nat else ""
     shows_str = f", ~{pred.get('avg_showings_per_cinema', 0):.1f} showings/cinema" if pred.get('avg_showings_per_cinema') else ""
-    print(f"  Seat-based:    {fmt_m(pred['seat_mid_m']):>10}  "
+    print(f"  Model 1 seat-only: {fmt_m(pred['seat_mid_m']):>7}  "
           f"({fmt_m(pred['seat_low_m'])} - {fmt_m(pred['seat_high_m'])})")
     print(f"    Data: {n_th} AMC theatres{nat_str}, {pred['n_days']} day(s) [{days_str}]{shows_str}")
 
@@ -1232,6 +1402,27 @@ def print_prediction(pred, verbose=False):
               f"AMC {fmt_m(amc_m)} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
+
+    # Seat + historical comps
+    if pred.get("seat_comp_mid_m") is not None:
+        print(f"  Model 2 seat+comp: {fmt_m(pred['seat_comp_mid_m']):>7}  "
+              f"({fmt_m(pred['seat_comp_low_m'])} - {fmt_m(pred['seat_comp_high_m'])})")
+        print(f"    Basis: {pred['seat_comp_basis']} "
+              f"{fmt_m(pred['seat_comp_evidence_m'])} / {pred['seat_comp_evidence_share']:.1%}")
+        print(f"    Seat-implied Thu: {fmt_m(pred['seat_comp_thursday_gross_m'])}; "
+              f"comp Thu share: {pred['seat_comp_thursday_share']:.1%}")
+        daily = pred.get("seat_comp_daily_m") or {}
+        shares = pred.get("seat_comp_daily_shares") or {}
+        if daily:
+            parts = []
+            for day in ("Friday", "Saturday", "Sunday"):
+                if day in daily and day in shares:
+                    parts.append(f"{day[:3]} {fmt_m(daily[day])} ({shares[day]:.0%})")
+            if parts:
+                print(f"    Comp F/S/S shape: {', '.join(parts)}")
+        top_comps = pred.get("seat_comp_top_comps") or []
+        if top_comps:
+            print("    Top comps: " + ", ".join(comp["movie"] for comp in top_comps))
 
     # Polymarket
     poly = pred["poly_result"]
