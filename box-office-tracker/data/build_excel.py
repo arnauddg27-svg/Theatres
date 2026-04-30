@@ -38,8 +38,24 @@ df = df[df['total_seats'].notna()].copy()
 for col in ['total_seats', 'seats_sold', 'seats_available', 'occupancy_pct']:
     df[col] = pd.to_numeric(df[col], errors='coerce')
 
-# Dedup: keep best valid row per showtime (prefer has-URL, then highest occupancy)
-df['_key'] = df['theatre_name'].str.strip() + '|' + df['auditorium_type'].str.strip() + '|' + df['showtime'].str.strip()
+# Dedup: keep best valid row per exact showtime snapshot. Include date/movie so
+# separate weekend days do not collapse, and include the AMC URL when present so
+# same-time duplicate screens remain visible in the workbook.
+for col in ['weekend_of', 'date', 'movie_title', 'theatre_name', 'auditorium_type',
+            'showtime', 'amc_seat_map_url']:
+    if col not in df.columns:
+        df[col] = ''
+    df[col] = df[col].fillna('').astype(str)
+base_key = (
+    df['weekend_of'].str.strip() + '|' +
+    df['date'].str.strip() + '|' +
+    df['movie_title'].str.strip() + '|' +
+    df['theatre_name'].str.strip() + '|' +
+    df['auditorium_type'].str.strip() + '|' +
+    df['showtime'].str.strip()
+)
+url_key = df['amc_seat_map_url'].str.strip()
+df['_key'] = base_key + '|' + url_key.where(url_key.ne(''), '__no_url__')
 df['_has_url'] = df['amc_seat_map_url'].str.strip().ne('').astype(int)
 df = df.sort_values(['_key', '_has_url', 'occupancy_pct'], ascending=[True, False, False])
 df = df.drop_duplicates(subset='_key', keep='first').drop(columns=['_key', '_has_url'])
