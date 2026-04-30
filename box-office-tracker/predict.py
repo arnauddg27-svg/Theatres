@@ -24,6 +24,9 @@ Usage:
 import json, csv, os, sys, re, statistics
 from datetime import datetime, timedelta
 from math import sqrt
+from calibration_freeze import (calibration_has_weekend,
+                                load_calibration_freeze,
+                                save_calibration_freeze)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                sanitize_calibration, recalibrate_scale_factor)
 
@@ -351,12 +354,40 @@ def load_seat_data(weekend_of=None):
     return data
 
 
-def load_polymarket_data(weekend_of=None):
+def seat_data_weekend_of(movie_seat_data):
+    """Infer the opening-weekend key from one movie's loaded seat rows."""
+    weekends = sorted({
+        row.get("weekend_of", "")
+        for rows in movie_seat_data.values()
+        for row in rows
+        if row.get("weekend_of")
+    })
+    return weekends[-1] if weekends else _current_weekend_friday()
+
+
+def filter_seat_data_through(seat_data, through_date=None):
+    """Drop seat rows after through_date for clean historical replay."""
+    if not through_date:
+        return seat_data
+    filtered = {}
+    for movie, dates in seat_data.items():
+        kept_dates = {
+            date: rows
+            for date, rows in dates.items()
+            if date <= through_date
+        }
+        if kept_dates:
+            filtered[movie] = kept_dates
+    return filtered
+
+
+def load_polymarket_data(weekend_of=None, through_date=None):
     """Load Polymarket bracket rows for one opening weekend, deduped by market.
 
     The CSV is append-only and may contain multiple snapshots of the same
     bracket market across several days. For prediction we want the latest
     snapshot per market for the target weekend, not every historical row.
+    If through_date is set, ignore snapshots after that date for replay.
     """
     if not os.path.exists(POLY_CSV):
         return {}
@@ -368,6 +399,8 @@ def load_polymarket_data(weekend_of=None):
             if not movie:
                 continue
             date_str = row.get("date", "").strip()
+            if through_date and date_str and date_str > through_date:
+                continue
             row_weekend = _opening_weekend_for_date(date_str) if date_str else ""
             rows.append((idx, row, row_weekend, date_str))
 
@@ -429,6 +462,16 @@ def load_calibration():
             "last_updated": None,
         }
         }
+    return sanitize_calibration(
+        cal,
+        day_weights_default=DAY_WEIGHTS_DEFAULT,
+        default_market_share=DEFAULT_AMC_MARKET_SHARE,
+    )
+
+
+def load_frozen_calibration(weekend_of):
+    """Load a pre-actual calibration freeze for live-model replay."""
+    cal = load_calibration_freeze(DATA_DIR, weekend_of)
     return sanitize_calibration(
         cal,
         day_weights_default=DAY_WEIGHTS_DEFAULT,
@@ -827,7 +870,8 @@ def blend_predictions(seat_est, seat_low, seat_high,
 def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   seat_raw, poly_ev, actual, n_theatres, days_collected,
                   daily_theatre_counts=None, daily_coverage_ratios=None,
-                  daily_predictions=None, raw_daily_predictions=None):
+                  daily_predictions=None, raw_daily_predictions=None,
+                  weekend_of=None):
     """Record a predicted-vs-actual result and update calibration factors."""
     entry = {
         "movie": movie,
@@ -841,6 +885,8 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         "n_theatres": n_theatres,
         "days_collected": days_collected,
     }
+    if weekend_of:
+        entry["weekend_of"] = weekend_of
     if daily_predictions:
         entry["daily_predictions"] = {
             k: round(v, 2) for k, v in daily_predictions.items()
@@ -1270,12 +1316,17 @@ def print_usage():
   python3 predict.py --actual "Movie Name" 125.3
   python3 predict.py --history
   python3 predict.py --verbose
+  python3 predict.py --movie "Movie Name" --calibration-freeze 2026-04-24 --through-date 2026-04-23
 
 Options:
   --movie NAME       Predict one movie from the loaded seat-count data
   --actual NAME GROSS_M
                      Record an actual opening-weekend result in millions
   --history          Show stored prediction-vs-actual history
+  --calibration-freeze WEEKEND_OF
+                     Use a pre-actual calibration snapshot for live replay
+  --through-date YYYY-MM-DD
+                     Ignore seat/Polymarket rows after this date for replay
   --include-expansion
                      Include best-effort expansion theatres in prediction
   --verbose, -v      Include per-theatre prediction details
@@ -1292,10 +1343,38 @@ def main():
         return
 
     verbose = "--verbose" in args or "-v" in args
+    calibration_freeze_weekend = None
+    through_date = None
+    if "--calibration-freeze" in args:
+        idx = args.index("--calibration-freeze")
+        if idx + 1 >= len(args) or args[idx + 1].startswith("--"):
+            print_usage()
+            return
+        calibration_freeze_weekend = args[idx + 1]
+        args = args[:idx] + args[idx + 2:]
+    if "--through-date" in args:
+        idx = args.index("--through-date")
+        if idx + 1 >= len(args) or args[idx + 1].startswith("--"):
+            print_usage()
+            return
+        through_date = args[idx + 1]
+        try:
+            datetime.strptime(through_date, "%Y-%m-%d")
+        except ValueError:
+            print_usage()
+            return
+        args = args[:idx] + args[idx + 2:]
     if "--include-expansion" in args:
         os.environ["THEATRE_MODEL_COHORTS"] = "core,expansion"
         args = [arg for arg in args if arg != "--include-expansion"]
-    cal = load_calibration()
+    if calibration_freeze_weekend:
+        try:
+            cal = load_frozen_calibration(calibration_freeze_weekend)
+        except FileNotFoundError:
+            print(f"No calibration freeze found for {calibration_freeze_weekend}.")
+            return
+    else:
+        cal = load_calibration()
 
     # --history
     if "--history" in args:
@@ -1304,6 +1383,12 @@ def main():
 
     # --actual "Movie Name" 125.3
     if "--actual" in args:
+        if calibration_freeze_weekend:
+            print("--actual cannot be combined with --calibration-freeze.")
+            return
+        if through_date:
+            print("--actual cannot be combined with --through-date.")
+            return
         idx = args.index("--actual")
         if idx + 2 >= len(args):
             print_usage()
@@ -1339,6 +1424,18 @@ def main():
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
+        weekend_of = seat_data_weekend_of(seat_data[movie_match])
+        freeze_path = save_calibration_freeze(
+            DATA_DIR,
+            weekend_of,
+            cal,
+            source="predict.py --actual",
+            movies=[movie_match],
+        )
+        if freeze_path:
+            print(f"Pre-actual calibration freeze: {os.path.relpath(freeze_path, os.getcwd())}")
+        elif calibration_has_weekend(cal, weekend_of):
+            print("Calibration already contains this weekend; not freezing contaminated state.")
 
         pred_mid = pred["blended_m"]
         pred_low = pred["blend_low_m"]
@@ -1373,15 +1470,20 @@ def main():
                      daily_theatre_counts=daily_theatre_counts,
                      daily_coverage_ratios=daily_coverage_ratios,
                      daily_predictions=daily_predictions,
-                     raw_daily_predictions=raw_daily_predictions)
+                     raw_daily_predictions=raw_daily_predictions,
+                     weekend_of=weekend_of)
         print(f"Recorded: {movie_match} actual = ${actual_val}M")
         print(f"Calibration updated → scale={cal['calibration_factors']['overall_scale_factor']:.4f}, "
               f"AMC share={cal['calibration_factors']['amc_market_share']:.2%}")
         return
 
-    # Default: predict all movies
-    seat_data = load_seat_data()
-    poly_data = load_polymarket_data()
+    # Default: predict all movies. When replaying against a calibration freeze,
+    # use the same opening-weekend key for seat and market data so future CSV
+    # rows do not make older freezes point at the newest weekend.
+    replay_weekend = calibration_freeze_weekend
+    seat_data = load_seat_data(weekend_of=replay_weekend)
+    seat_data = filter_seat_data_through(seat_data, through_date)
+    poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
     theatre_counts = load_theatre_counts()
 
     if not seat_data:
@@ -1407,6 +1509,10 @@ def main():
     factors = cal["calibration_factors"]
     print(f"  Calibration: scale={factors.get('overall_scale_factor', 1.0):.3f}, "
           f"AMC share={factors.get('amc_market_share', DEFAULT_AMC_MARKET_SHARE):.1%}")
+    if calibration_freeze_weekend:
+        print(f"  Calibration freeze: {calibration_freeze_weekend}")
+    if through_date:
+        print(f"  Data through: {through_date}")
     print(f"  Theatre cohorts: {', '.join(sorted(active_model_cohorts()))}")
     if theatre_counts:
         relevant_counts = {

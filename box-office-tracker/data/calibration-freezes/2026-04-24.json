@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "description": "Pre-actual calibration snapshot for clean live-model replays. Reconstructed from the clean pre-actual calibration state in commit 1576de9.",
+  "weekend_of": "2026-04-24",
+  "frozen_at": "2026-04-30T09:30:00",
+  "source": "reconstructed from commit 1576de9 data: wipe pre-04-24 rows -- unusable for calibration",
+  "movies": [
+    "Michael"
+  ],
+  "calibration": {
+    "history": [],
+    "calibration_factors": {
+      "amc_market_share": 0.25,
+      "overall_scale_factor": 1.0,
+      "day_weights": {
+        "Thursday": 0.12,
+        "Friday": 0.32,
+        "Saturday": 0.33,
+        "Sunday": 0.23
+      },
+      "format_scale_factors": {},
+      "historical_accuracy": [],
+      "last_updated": null
+    }
+  }
+}

@@ -22,6 +22,8 @@ import sys
 from datetime import datetime, timedelta
 
 import requests
+from calibration_freeze import (calibration_has_weekend,
+                                save_calibration_freeze)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                excluded_calibration_days,
                                sanitize_calibration, recalibrate_scale_factor,
@@ -419,6 +421,20 @@ def auto_calibrate():
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
         return
 
+    eligible_movies = [movie for movie in seat_data if movie not in already_done]
+    if eligible_movies:
+        freeze_path = save_calibration_freeze(
+            DATA_DIR,
+            last_fri,
+            cal,
+            source="calibrate.py auto_calibrate",
+            movies=eligible_movies,
+        )
+        if freeze_path:
+            print(f"\n  Pre-actual calibration freeze: {os.path.relpath(freeze_path, os.getcwd())}")
+        elif calibration_has_weekend(cal, last_fri):
+            print("\n  ⚠️  Calibration already contains this weekend; not freezing contaminated state.")
+
     # Predict everything from a frozen pre-calibration state so later movies do
     # not benefit from actuals recorded earlier in the same Tuesday run.
     pending = []
@@ -631,6 +647,19 @@ if __name__ == "__main__":
             print(f"No seat-count prediction found for {movie_name!r}; not recording actual.")
             sys.exit(1)
 
+        weekend_of = _last_friday()
+        freeze_path = save_calibration_freeze(
+            DATA_DIR,
+            weekend_of,
+            cal,
+            source="calibrate.py --actual",
+            movies=[matched_movie],
+        )
+        if freeze_path:
+            print(f"Pre-actual calibration freeze: {os.path.relpath(freeze_path, os.getcwd())}")
+        elif calibration_has_weekend(cal, weekend_of):
+            print("Calibration already contains this weekend; not freezing contaminated state.")
+
         daily_predictions = {}
         raw_daily_predictions = {}
         daily_theatre_counts = {}
@@ -651,7 +680,7 @@ if __name__ == "__main__":
             daily_actuals = {"Weekend": actual_val}
 
         record_result(
-            cal, matched_movie, _last_friday(),
+            cal, matched_movie, weekend_of,
             predicted_mid=pred["blended_m"],
             predicted_low=pred["blend_low_m"],
             predicted_high=pred["blend_high_m"],

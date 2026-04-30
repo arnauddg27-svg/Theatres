@@ -398,10 +398,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # calibrate.py writes exactly one file. Explicit allow-list so a
+          # calibrate.py writes calibration.json plus pre-actual calibration
+          # freezes used for clean historical replay. Explicit allow-list so a
           # stray untracked file on the VPS runner (e.g. a playwright cache,
           # a locally-edited .env) can't ride along into the commit.
-          git add box-office-tracker/data/calibration.json 2>/dev/null || true
+          git add box-office-tracker/data/calibration.json \
+                  box-office-tracker/data/calibration-freezes/*.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No calibration changes."
             exit 0
