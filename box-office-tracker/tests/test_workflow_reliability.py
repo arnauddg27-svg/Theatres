@@ -51,7 +51,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
         start = scrape_block.index("      - name: Snapshot capacity guard")
-        end = scrape_block.index("      - name: Install dependencies", start)
+        end = scrape_block.index("      - name: Phase 2", start)
         block = scrape_block[start:end]
 
         self.assertIn("github.event.inputs.snapshots_only == 'true'", block)
@@ -68,6 +68,18 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("box office collect-links", block)
         self.assertIn("CURRENT_RUN_ID", block)
         self.assertIn("sleep \"$sleep_seconds\"", block)
+
+    def test_snapshot_capacity_guard_runs_after_dependency_install(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+
+        install_pos = scrape_block.index("      - name: Install dependencies")
+        guard_pos = scrape_block.index("      - name: Snapshot capacity guard")
+        phase2_pos = scrape_block.index("      - name: Phase 2")
+
+        self.assertLess(install_pos, guard_pos)
+        self.assertLess(guard_pos, phase2_pos)
 
     def test_snapshot_only_does_not_repair_phase1_links(self):
         scrape_start = self.workflow.index("  scrape:")

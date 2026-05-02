@@ -251,6 +251,13 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install dependencies
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
+
       - name: Snapshot capacity guard
         if: steps.dedup.outputs.skip != 'true' && github.event.inputs.snapshots_only == 'true'
         timeout-minutes: 300
@@ -328,13 +335,6 @@ jobs:
 
           echo "Snapshot capacity guard: Phase 1 / regular scrape capacity did not clear in time."
           exit 1
-
-      - name: Install dependencies
-        if: steps.dedup.outputs.skip != 'true'
-        working-directory: box-office-tracker
-        run: |
-          pip install -r requirements.txt
-          python -m playwright install chromium --with-deps
 
       - name: Phase 2 — collect seat data (${{ matrix.tz }})
         if: steps.dedup.outputs.skip != 'true'
