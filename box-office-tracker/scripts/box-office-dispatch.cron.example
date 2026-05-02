@@ -18,11 +18,9 @@ DISPATCH=$REPO_DIR/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
 0 23 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
 0 1 * * 0,1,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
 
-# Pre-reservation snapshot probes before the final post-show scrape.
+# Pre-reservation snapshot probe before Phase 1 / final post-show scrape.
 # Dispatcher mode: snapshot -> phase=scrape, pre_reservation_snapshots=true, snapshots_only=true
 30 18 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
-30 22 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
-30 2 * * 0,1,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
 
 # Model-driving post-show scrape. Keep this clear of snapshot probes.
 # Dispatcher mode: scrape -> phase=scrape, snapshots_only=false

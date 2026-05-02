@@ -59,12 +59,30 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("SNAPSHOT_LAST_SAFE_START_MINUTES", block)
         self.assertIn("REGULAR_WINDOW_START_MINUTES", block)
         self.assertIn("REGULAR_WINDOW_END_MINUTES", block)
+        self.assertIn("SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES", block)
         self.assertIn('"$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES"', block)
+        self.assertIn('"$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES"', block)
         self.assertIn('"$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES"', block)
         self.assertIn("gh run list", block)
         self.assertIn("box office scrape regular", block)
+        self.assertIn("box office collect-links", block)
         self.assertIn("CURRENT_RUN_ID", block)
         self.assertIn("sleep \"$sleep_seconds\"", block)
+
+    def test_snapshot_only_does_not_repair_phase1_links(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+        start = scrape_block.index("      - name: Phase 2")
+        end = scrape_block.index("      - name: Write scrape manifest", start)
+        block = scrape_block[start:end]
+
+        self.assertIn("ENSURE_LINKS_FLAG", block)
+        self.assertIn('github.event.inputs.snapshots_only', block)
+        self.assertIn('ENSURE_LINKS_FLAG=""', block)
+        self.assertIn('ENSURE_LINKS_FLAG="--ensure-links"', block)
+        self.assertIn("python scraper.py $ENSURE_LINKS_FLAG", block)
+        self.assertNotIn("python scraper.py --ensure-links", block)
 
     def test_scrape_matrix_uploads_artifacts_instead_of_pushing(self):
         start = self.workflow.index("  scrape:")
@@ -130,6 +148,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("snapshots_only=true", dispatcher)
         self.assertIn("snapshot", cron)
         self.assertIn('"$DISPATCH" snapshot', cron)
+        self.assertIn("30 18", cron)
+        self.assertNotIn("30 22", cron)
+        self.assertNotIn("30 2", cron)
         self.assertIn("phase=scrape", cron)
         self.assertIn("phase=collect-links", cron)
         self.assertNotIn(" MT ", cron)

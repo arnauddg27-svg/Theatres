@@ -257,20 +257,37 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           CURRENT_RUN_ID: ${{ github.run_id }}
+          SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES: "1140"  # 19:00 UTC; delayed snapshots wait instead of running into Phase 1.
           SNAPSHOT_LAST_SAFE_START_MINUTES: "165"  # 02:45 UTC; delayed 02:30 snapshots wait instead of running into scrape.
           REGULAR_WINDOW_START_MINUTES: "315"  # 05:15 UTC, before the 07:00 UTC model scrape.
           REGULAR_WINDOW_END_MINUTES: "585"    # 09:45 UTC, after normal scrape timeout cushion.
         run: |
           set -euo pipefail
 
-          utc_minutes=$((10#$(date -u +%H) * 60 + 10#$(date -u +%M)))
-          if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES" ] && [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
-            sleep_seconds=$(((REGULAR_WINDOW_END_MINUTES - utc_minutes) * 60))
-            echo "Snapshot capacity guard: too close to regular scrape capacity window; waiting ${sleep_seconds}s"
-            sleep "$sleep_seconds"
-          fi
+          wait_out_protected_window() {
+            utc_minutes=$((10#$(date -u +%H) * 60 + 10#$(date -u +%M)))
+            in_phase1_window=false
+            if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES" ] || [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
+              in_phase1_window=true
+            fi
+            in_regular_window=false
+            if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES" ] && [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
+              in_regular_window=true
+            fi
+            if [ "$in_phase1_window" = "true" ] || [ "$in_regular_window" = "true" ]; then
+              if [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
+                sleep_seconds=$(((REGULAR_WINDOW_END_MINUTES - utc_minutes) * 60))
+              else
+                sleep_seconds=$((((24 * 60 - utc_minutes) + REGULAR_WINDOW_END_MINUTES) * 60))
+              fi
+              echo "Snapshot capacity guard: too close to Phase 1 / regular scrape capacity window; waiting ${sleep_seconds}s"
+              sleep "$sleep_seconds"
+            fi
+          }
 
-          regular_runs() {
+          wait_out_protected_window
+
+          blocking_runs() {
             {
               gh run list --workflow box-office-pipeline.yml --status queued --limit 50 --json databaseId,displayTitle,status
               gh run list --workflow box-office-pipeline.yml --status in_progress --limit 50 --json databaseId,displayTitle,status
@@ -290,25 +307,26 @@ jobs:
                   title = run.get("displayTitle") or ""
                   if run_id == current or run_id in seen:
                       continue
-                  if "box office scrape regular" in title:
+                  if "box office scrape regular" in title or "box office collect-links" in title:
                       print(f"{run_id} {run.get('status')} {title}")
                       seen.add(run_id)
           '
           }
 
           for attempt in $(seq 1 120); do
-            blocking_runs="$(regular_runs)"
-            if [ -z "$blocking_runs" ]; then
-              echo "Snapshot capacity guard: no queued/running regular scrape found."
+            active_blockers="$(blocking_runs)"
+            if [ -z "$active_blockers" ]; then
+              wait_out_protected_window
+              echo "Snapshot capacity guard: no queued/running Phase 1 or regular scrape found."
               exit 0
             fi
-            echo "Snapshot capacity guard: regular scrape still owns capacity:"
-            echo "$blocking_runs"
+            echo "Snapshot capacity guard: Phase 1 / regular scrape still owns capacity:"
+            echo "$active_blockers"
             echo "Waiting 60s before retry ${attempt}/120..."
             sleep 60
           done
 
-          echo "Snapshot capacity guard: regular scrape capacity did not clear in time."
+          echo "Snapshot capacity guard: Phase 1 / regular scrape capacity did not clear in time."
           exit 1
 
       - name: Install dependencies
@@ -344,6 +362,10 @@ jobs:
           if [ "${{ github.event.inputs.force }}" = "true" ]; then
             FORCE_FLAG="--force"
           fi
+          ENSURE_LINKS_FLAG="--ensure-links"
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            ENSURE_LINKS_FLAG=""
+          fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
           SNAPSHOT_FLAG=""
@@ -353,7 +375,7 @@ jobs:
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             SNAPSHOT_FLAG="$SNAPSHOT_FLAG --snapshots-only"
           fi
-          python scraper.py --ensure-links $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG ${{ matrix.tz }}
+          python scraper.py $ENSURE_LINKS_FLAG $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG ${{ matrix.tz }}
 
       - name: Write scrape manifest
         if: always()
