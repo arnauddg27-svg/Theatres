@@ -30630,3 +30630,636 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC Highwoods 20: timeout after 180s — skipped; AMC Majestic 12: No seat map for The Devil Wears Prada 2 BigD at AMC @ 8:00pm (https://www.amctheatres.com/showtimes/141321834/seats); AMC Majestic 12: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141321883/seats); AMC Majestic 12: No seat map for The Devil Wears Prada 2 BigD at AMC @ 5:00pm (https://www.amctheatres.com/showtimes/141321833/seats); AMC West Melbourne 12: No seat map for The Devil Wears Prada 2 undefined @ 10:10pm (https://www.amctheatres.com/showtimes/142317395/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142130124/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141508727/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142747902/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142130125/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 10:30pm (https://www.amctheatres.com/showtimes/142784986/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 10:00pm (https://www.amctheatres.com/showtimes/142784973/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/141470352/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 7:35pm (https://www.amctheatres.com/showtimes/142784984/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/141470351/seats); AMC CLASSIC Albany 16: No seat map for The Devil Wears Prada 2 undefined @ 5:30pm (https://www.amctheatres.com/showtimes/142784999/seats); AMC CLASSIC Cartersville 12: No seat map for The Devil Wears Prada 2 Laser at AMC @ 8:45pm (https://www.amctheatres.com/showtimes/142717660/seats); AMC CLASSIC Cartersville 12: No seat map for The Devil Wears Prada 2 Laser at AMC @ 7:15pm (https://www.amctheatres.com/showtimes/142717616/seats); AMC CLASSIC Cartersville 12: No seat map for The Devil Wears Prada 2 Laser at AMC @ 6:00pm (https://www.amctheatres.com/showtimes/142717632/seats); AMC CLASSIC Cartersville 12: No seat map for The Devil Wears Prada 2 Laser at AMC @ 5:15pm (https://www.amctheatres.com/showtimes/141498451/seats); AMC CLASSIC Cartersville 12: No seat map for The Devil Wears Prada 2 English Spoken with Spanish Subtitles @ 8:00pm (https://www.amctheatres.com/showtimes/141498452/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 Laser at AMC @ 5:15pm (https://www.amctheatres.com/showtimes/141506735/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 BigD at AMC @ 7:30pm (https://www.amctheatres.com/showtimes/141506785/seats); AMC CLASSIC Battlefield 10: No seat map for The Devil Wears Prada 2 undefined @ 7:50pm (https://www.amctheatres.com/showtimes/141414757/seats); AMC CLASSIC Walnut Square 12: No seat map for The Devil Wears Prada 2 undefined @ 8:10pm (https://www.amctheatres.com/showtimes/142147027/seats); AMC CLASSIC Walnut Square 12: No seat map for The Devil Wears Prada 2 undefined @ 5:05pm (https://www.amctheatres.com/showtimes/141519833/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 Open Caption (On-screen Subtitles) @ 5:00pm (https://www.amctheatres.com/showtimes/141451142/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/141451143/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 7:30pm (https://www.amctheatres.com/showtimes/142748244/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 6:30pm (https://www.amctheatres.com/showtimes/142748284/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141498155/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142703267/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142703210/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142662166/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141513124/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142692387/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/141495756/seats); AMC 19th St. East 6: No seat map for The Devil Wears Prada 2 Laser at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/142216060/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 Open Caption (On-screen Subtitles) @ 5:30pm (https://www.amctheatres.com/showtimes/142737484/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142583674/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 8:30pm (https://www.amctheatres.com/showtimes/142737483/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 7:45pm (https://www.amctheatres.com/showtimes/141415090/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142737522/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 8:15pm (https://www.amctheatres.com/showtimes/142734832/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 7:30pm (https://www.amctheatres.com/showtimes/141427603/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 6:45pm (https://www.amctheatres.com/showtimes/142734825/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142591659/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/141427602/seats); AMC CLASSIC Pensacola 18: timeout after 180s — skipped; AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142737962/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/141327115/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/142738071/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/141327114/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 8:45pm (https://www.amctheatres.com/showtimes/142696343/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/141332217/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 5:50pm (https://www.amctheatres.com/showtimes/142696342/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/141332216/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142776201/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 BigD at AMC @ 8:00pm (https://www.amctheatres.com/showtimes/141510279/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141510238/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 BigD at AMC @ 5:00pm (https://www.amctheatres.com/showtimes/141510278/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142740469/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141439143/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142740432/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142740470/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 10:00pm (https://www.amctheatres.com/showtimes/142701211/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142701216/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 8:30pm (https://www.amctheatres.com/showtimes/141343879/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/142701210/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 5:45pm (https://www.amctheatres.com/showtimes/142701215/seats); AMC CLASSIC Statesboro 12: No seat map for The Devil Wears Prada 2 undefined @ 5:15pm (https://www.amctheatres.com/showtimes/141343878/seats)
 
 ---
+
+## 2026-05-02 03:24 — PT Group
+
+**Polymarket movies tracked:** The Devil Wears Prada 2
+
+| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |
+|---------|-------|--------|----------|-----------|-------------|
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 | Laser at AMC | 10:20pm | 54% | -135 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 65.6% | -100 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 79.6% | -10 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 | Laser at AMC | 7:25pm | 82% | 39 min |
+| AMC Burbank Town Center 8 | The Devil Wears Prada 2 | Laser at AMC | 6:50pm | 82.8% | 75 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 30% | -130 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 43.6% | -115 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 64% | -55 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 72.2% | 4 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 71.4% | 64 min |
+| AMC Anaheim GardenWalk 6 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 62.7% | 124 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 3.3% | -160 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 33.8% | -130 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 58.2% | -85 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 73.8% | -40 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 81.8% | 19 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 77.9% | 64 min |
+| AMC Fallbrook 7 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 69.4% | 109 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 15.1% | -113 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 18.9% | -53 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 | Laser at AMC | 8:25pm | 55.9% | -18 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 87.1% | 66 min |
+| AMC Kitsap 8 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 68.9% | 126 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 7.5% | -113 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 50.8% | -53 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 65.1% | 36 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 72.9% | 66 min |
+| AMC Oak Tree 6 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 61.7% | 126 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 42.3% | -113 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 85.4% | 66 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 9:30pm | 2.1% | -83 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 9:00pm | 3.5% | -53 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 8:15pm | 11.8% | -8 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 7:30pm | 20.6% | 36 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 6:30pm | 10.4% | 96 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 6:00pm | 19.7% | 126 min |
+| AMC Manteca 16 | The Devil Wears Prada 2 | undefined | 5:45pm | 11.5% | 141 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 75.2% | -113 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 93.8% | 66 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | PRIME at AMC | 10:30pm | 69.3% | -143 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | PRIME at AMC | 7:30pm | 89.1% | 36 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 26.9% | -173 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 60.7% | -98 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 74.8% | -83 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 80.8% | 6 min |
+| AMC Porter Ranch 9 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 80.2% | 96 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | GXL | 10:30pm | 3.5% | -143 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | GXL | 7:30pm | 52.1% | 36 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | undefined | 9:30pm | 3.2% | -83 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | undefined | 8:30pm | 18.9% | -23 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | undefined | 6:45pm | 26.7% | 81 min |
+| AMC Progress Ridge 13 | The Devil Wears Prada 2 | undefined | 6:30pm | 14.5% | 96 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 17.2% | -127 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 43.2% | -82 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 68.9% | -7 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 71.7% | 52 min |
+| AMC Rainbow Promenade 10 | The Devil Wears Prada 2 | Laser at AMC | 6:20pm | 70.5% | 107 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 17.9% | -142 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:20pm | 86.8% | 47 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 9:40pm | 26.7% | -93 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 9:10pm | 58.1% | -63 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 8:30pm | 82.1% | -22 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 8:00pm | 74.6% | 7 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 7:30pm | 78.3% | 37 min |
+| AMC River Park Square 20 | The Devil Wears Prada 2 | undefined | 6:30pm | 83.2% | 97 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 11:00pm | 59.9% | -172 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:45pm | 86.8% | 22 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | XL at AMC | 8:45pm | 64.8% | -37 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 10:40pm | 0% | -153 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 4.5% | -127 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 7% | -112 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 44.9% | -97 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 62.9% | -7 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 65.5% | 67 min |
+| AMC Santa Anita 16 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 62.2% | 97 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 74.9% | -127 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 95.5% | 52 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 17.8% | -172 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 10:40pm | 50% | -153 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 53.3% | -112 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 67.5% | -82 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 75.3% | -52 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 86.9% | 7 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 7:40pm | 87.2% | 26 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 73% | 97 min |
+| AMC Topanga 12 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 73% | 127 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:45pm | 44.2% | -157 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 85.9% | 37 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 0.7% | -112 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 1.4% | -52 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 12.6% | -22 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 18.6% | 7 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 23.4% | 82 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 9.1% | 142 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | SCREENX at AMC | 9:30pm | 17.5% | -82 min |
+| AMC Town Square 18 | The Devil Wears Prada 2 | SCREENX at AMC | 6:15pm | 39.3% | 112 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 54.8% | -127 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 28.8% | -127 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 96.8% | 67 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 80.4% | 67 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 9:00pm | 55.3% | -52 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 9:00pm | 0.9% | -52 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 7:15pm | 90.5% | 52 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 7:15pm | 9.3% | 52 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 6:00pm | 57.4% | 127 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | GXL | 6:00pm | 4.7% | 127 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | undefined | 8:00pm | 50% | 7 min |
+| AMC Vancouver Mall 23 | The Devil Wears Prada 2 | undefined | 8:00pm | 11.9% | 7 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 65.1% | -112 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 77.4% | 67 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | XL at AMC | 9:00pm | 36.5% | -52 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | XL at AMC | 6:00pm | 60.7% | 127 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | Laser at AMC | 8:35pm | 52.4% | -26 min |
+| AMC Victoria Gardens 12 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 60.8% | 7 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:00pm | 66.3% | -52 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 4.3% | -142 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 6.7% | -112 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 45.9% | -82 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 72.1% | 7 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 79.3% | 37 min |
+| AMC DINE-IN Southlands 16 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 67.8% | 67 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 7.7% | -141 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 77.7% | 38 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 2.8% | -111 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 31.3% | -81 min |
+| AMC Flatiron Crossing 14 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 59.2% | 68 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 23.8% | -141 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:35pm | 88.6% | 33 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 1.9% | -156 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 5.9% | -111 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 23.9% | -81 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 34.1% | -51 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 69% | -21 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 65.9% | -6 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 80.8% | 23 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 64.1% | 53 min |
+| AMC Highlands Ranch 24 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 63.5% | 68 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 27.2% | -111 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 83.9% | 68 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | PRIME at AMC | 10:30pm | 2.7% | -141 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | PRIME at AMC | 7:30pm | 81.3% | 38 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 26.8% | -81 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 60% | -51 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 64.1% | -21 min |
+| AMC Westminster Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 79.1% | 8 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 38.3% | -141 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 91.3% | 38 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 6.4% | -81 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 4.2% | -51 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 47.8% | -21 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 36.5% | 98 min |
+| AMC Brentwood 14 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 15% | 128 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 17.2% | -141 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 27.5% | -126 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 35.3% | -111 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 81% | -6 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 77.3% | 38 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 75.9% | 68 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 9:30pm | 75.9% | -81 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 9:00pm | 71.4% | -51 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 6:30pm | 90.7% | 98 min |
+| AMC DINE-IN Fullerton 20 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 6:00pm | 90% | 128 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 85.4% | -141 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 100% | 38 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | PRIME at AMC | 10:00pm | 77.3% | -111 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | PRIME at AMC | 7:00pm | 100% | 68 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | XL at AMC | 8:15pm | 97.2% | -6 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 10% | -156 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 10:35pm | 24.8% | -146 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 69.1% | -96 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 78.6% | -81 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 70.9% | -66 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 86% | -51 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 88.4% | 98 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 81.8% | 113 min |
+| AMC Century City 15 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 82.8% | 128 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 11:00pm | 53.4% | -169 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 10:00pm | 79.8% | -109 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 9:15pm | 96.6% | -64 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 8:30pm | 100% | -19 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 8:00pm | 96.6% | 10 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 7:00pm | 98.9% | 70 min |
+| AMC DINE-IN Marina 6 | The Devil Wears Prada 2 | Dine-In Delivery to Seat | 6:15pm | 96.6% | 115 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 0% | -139 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 22.4% | -109 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 66.4% | -49 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 75% | 10 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 82.8% | 70 min |
+| AMC La Mirada 7 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 69.9% | 130 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 10:40pm | 2.8% | -150 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 17.2% | -109 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 9:35pm | 35.2% | -84 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 71.2% | -34 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 7:40pm | 88.9% | 30 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 84.5% | 70 min |
+| AMC Lakewood Mall 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 81.3% | 100 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 50% | -139 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 71.8% | -94 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 9:20pm | 69.7% | -69 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 81.1% | -49 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 90.1% | 10 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 92.2% | 55 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 6:50pm | 71.2% | 80 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 6:40pm | 92% | 90 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 83.8% | 100 min |
+| AMC Marina Pacifica 12 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 74.4% | 145 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 54.1% | -139 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 59% | -108 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 9:40pm | 63.5% | -89 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 9:10pm | 76.2% | -59 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 8:25pm | 90.1% | -14 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 86.5% | 41 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 83.8% | 71 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 76% | 101 min |
+| AMC Montebello 10 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 65.2% | 131 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:30pm | 74.1% | -78 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:30pm | 79.4% | 101 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 21.2% | -154 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 23% | -139 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 61.1% | -123 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 62.4% | -108 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 82.2% | -18 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 74.1% | 26 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 74.7% | 41 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 77.4% | 131 min |
+| AMC Norwalk 20 | The Devil Wears Prada 2 | English Spoken with Spanish Subtitles | 7:00pm | 70.6% | 71 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 63.8% | -139 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 77.9% | 56 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | XL at AMC | 8:00pm | 63.9% | 11 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 5.6% | -108 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 20.7% | -63 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 37.9% | -33 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 65.6% | 41 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 36.7% | 86 min |
+| AMC Orange 30 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 26.4% | 131 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 53.7% | -108 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 76.6% | 71 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 4.3% | -169 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 24.3% | -139 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 34.8% | -123 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 58.3% | -78 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 68.3% | -48 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 75.4% | 11 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 7:35pm | 80% | 36 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 66.2% | 41 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 77.8% | 56 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 72.6% | 101 min |
+| AMC Puente Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 59.7% | 131 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 10:50pm | 13.9% | -158 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 30.1% | -139 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 72.7% | -108 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 77.8% | -78 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 79.2% | -48 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 8:05pm | 85.3% | 6 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 94.9% | 41 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 84.1% | 71 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 6:25pm | 86.1% | 105 min |
+| AMC Santa Monica 7 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 86.8% | 131 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 11:00pm | 65.9% | -168 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 8:00pm | 99.2% | 11 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | PRIME at AMC | 10:30pm | 75.4% | -138 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | PRIME at AMC | 7:30pm | 95.5% | 41 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | XL at AMC | 10:15pm | 8.2% | -123 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | XL at AMC | 10:00pm | 51.5% | -108 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | XL at AMC | 7:00pm | 83.7% | 71 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 9:40pm | 54.5% | -88 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 65.6% | -78 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 71.3% | -48 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 86.3% | -3 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 7:35pm | 81.7% | 37 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 72.8% | 56 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 75.3% | 86 min |
+| AMC The Americana at Brand 18 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 78.2% | 131 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:45pm | 56% | -153 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 88% | 41 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | PRIME at AMC | 10:00pm | 55.2% | -108 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | PRIME at AMC | 6:45pm | 78.6% | 86 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 77.7% | -63 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 75.6% | -33 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 84.1% | -3 min |
+| AMC Tustin 14 @ The District | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 72.7% | 131 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 10:30pm | 2% | -138 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 9:30pm | 2% | -78 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 9:00pm | 4.6% | -48 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 8:00pm | 18.2% | 11 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 7:30pm | 46.3% | 41 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | English Spoken with Spanish Subtitles | 6:30pm | 16.2% | 101 min |
+| AMC Arizona Center 24 | The Devil Wears Prada 2 | undefined | 6:00pm | 12.7% | 131 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | PRIME at AMC | 9:00pm | 72% | -48 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | PRIME at AMC | 6:00pm | 87.1% | 131 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 8.3% | -138 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 7.7% | -108 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 17.2% | -78 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 45.1% | -18 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 48.6% | -3 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 68.8% | 11 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 87.5% | 41 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 60% | 56 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 65.9% | 71 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 35.1% | 86 min |
+| AMC Ahwatukee 24 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 69% | 101 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:30pm | 23.6% | -77 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:30pm | 68.9% | 102 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 0% | -167 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 0% | -137 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 13% | -47 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 53.3% | 12 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 44.4% | 42 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 63% | 72 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 39.4% | 132 min |
+| AMC Deer Valley 17 | The Devil Wears Prada 2 | English Spoken with Spanish Subtitles | 10:00pm | 3.7% | -107 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 27.7% | -137 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 10:10pm | 16.1% | -117 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 9:50pm | 58.9% | -97 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 83.7% | -77 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 90.7% | -17 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 90% | 42 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 96.5% | 102 min |
+| AMC Chula Vista 10 | The Devil Wears Prada 2 | undefined | 7:00pm | 82.9% | 72 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 10.7% | -137 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 73.6% | 42 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | XL at AMC | 7:00pm | 5.7% | 72 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 0% | -167 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 0% | -92 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 0% | -77 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 3.5% | -47 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 15.9% | -17 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 18.7% | 12 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 13.5% | 87 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 0% | 102 min |
+| AMC Westgate 20 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 5.3% | 132 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 23% | -107 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 44.2% | -77 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 69.4% | -62 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 83.3% | -32 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 93.3% | 27 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 100% | 72 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 76.7% | 102 min |
+| AMC La Jolla 12 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 68.8% | 147 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 56.8% | -135 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 96.4% | 44 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 0.8% | -165 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 2.4% | -105 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 8.4% | -75 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 9.6% | -45 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 30.6% | -15 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 64% | 14 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 56.9% | 74 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 50.5% | 104 min |
+| AMC Mission Valley 20 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 25.9% | 134 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 14.5% | -135 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 93.1% | 44 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | XL at AMC | 9:30pm | 10.2% | -75 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | XL at AMC | 6:30pm | 61.1% | 104 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 7.7% | -45 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 29.6% | -15 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 68.1% | 14 min |
+| AMC Otay Ranch 12 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 33.9% | 134 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 26.3% | -120 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 81.3% | 74 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | XL at AMC | 8:45pm | 41.8% | -30 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 0% | -150 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 29.5% | -90 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 18.1% | -60 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 60.4% | 29 min |
+| AMC Palm Promenade 24 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 37.5% | 134 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 40.6% | -105 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 87.2% | 74 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | XL at AMC | 9:00pm | 15.1% | -45 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | XL at AMC | 6:00pm | 26.5% | 134 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 30.9% | -15 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 27.5% | 14 min |
+| AMC Plaza Bonita 14 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 43.9% | 44 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 17.2% | -105 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 57.4% | -60 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 76.3% | -15 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 75% | 30 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 81.1% | 75 min |
+| AMC Poway 10 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 76.5% | 120 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 68.8% | -105 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 89% | 75 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | PRIME at AMC | 11:00pm | 13.4% | -165 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | PRIME at AMC | 8:00pm | 85.4% | 15 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 11.9% | -135 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 41.8% | -75 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 54.3% | -60 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 64.8% | -45 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 96.4% | 45 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 74.7% | 105 min |
+| AMC UTC 14 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 81.3% | 135 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 50% | -135 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:20pm | 94.7% | 55 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | XL at AMC | 8:00pm | 80.5% | 15 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 5.1% | -120 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 7% | -90 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 42% | -60 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 64.1% | -30 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 62.5% | 90 min |
+| AMC Bay Street 16 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 53% | 135 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 26.1% | -120 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 67.4% | -90 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 85.4% | -75 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 98.7% | -15 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 95.6% | 60 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 94.4% | 75 min |
+| AMC Kabuki 8 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 88.4% | 105 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 40.7% | -105 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 73.8% | 75 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 0% | -135 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 1.5% | -75 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 22.1% | -30 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 53.5% | 15 min |
+| AMC Eastridge 15 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 12.7% | 120 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 70.9% | -104 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 85% | 75 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | PRIME at AMC | 11:00pm | 21% | -164 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | PRIME at AMC | 8:00pm | 89.2% | 15 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 36.6% | -134 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 71.7% | -74 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 84% | -44 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 85.4% | 45 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 77.4% | 105 min |
+| AMC Mercado 20 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 70.8% | 135 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 72.3% | -134 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 100% | 45 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 25.8% | -149 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 80.9% | -74 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 78.7% | -44 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 90.2% | -14 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 86.2% | 105 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 73.4% | 135 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | SCREENX at AMC | 10:00pm | 65% | -104 min |
+| AMC Metreon 16 | The Devil Wears Prada 2 | SCREENX at AMC | 7:00pm | 91% | 75 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 46% | -104 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:30pm | 60.7% | 105 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 39.1% | -134 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 51.1% | -74 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 62.8% | -44 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 81.6% | 45 min |
+| AMC NewPark 12 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 61.8% | 75 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 24.2% | -119 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 86.4% | 60 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | XL at AMC | 9:15pm | 15.5% | -59 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | XL at AMC | 6:15pm | 25.3% | 120 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 0% | -89 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 52.4% | -29 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 68.1% | 0 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 63.4% | 90 min |
+| AMC Saratoga 14 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 32.1% | 150 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 73.5% | -132 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:30pm | 91% | 47 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 6.9% | -162 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 13.3% | -147 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 28.9% | -117 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 56.5% | -102 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 69% | -72 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 85.9% | -27 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 82.4% | 17 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 76.5% | 77 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 63.1% | 107 min |
+| AMC Sunnyvale 12 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 60% | 152 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 10:50pm | 7.2% | -152 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 11.9% | -102 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 55.2% | -57 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 65.9% | 17 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 73% | 77 min |
+| AMC Factoria 8 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 56.5% | 122 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 30.9% | -102 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 86.8% | 77 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | XL at AMC | 7:30pm | 39.3% | 47 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 2.6% | -162 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 0% | -72 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 1.8% | -42 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 24.6% | 17 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 11.8% | 107 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 8.5% | 137 min |
+| AMC Alderwood Mall 16 | The Devil Wears Prada 2 | undefined | 10:30pm | 0.3% | -132 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:30pm | 47.3% | -72 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:45pm | 78.8% | 92 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 12.4% | -102 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 61.8% | -12 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 60.5% | 32 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 67.4% | 62 min |
+| AMC Kent Station 14 | The Devil Wears Prada 2 | Laser at AMC | 5:45pm | 55.3% | 152 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 44.2% | -102 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 85.7% | 77 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | XL at AMC | 6:15pm | 14.4% | 122 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 26.7% | -12 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 36.2% | 32 min |
+| AMC Southcenter 16 | The Devil Wears Prada 2 | Open Caption (On-screen Subtitles) | 9:30pm | 5.2% | -72 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 10:15pm | 5.3% | -117 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 9:15pm | 25% | -57 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 8:30pm | 47.1% | -12 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 8:00pm | 32.2% | 17 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 7:15pm | 66.8% | 62 min |
+| AMC Pacific Place 11 | The Devil Wears Prada 2 | undefined | 6:30pm | 48% | 107 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 45.6% | -101 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 94.4% | 78 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 11.7% | -131 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 77.6% | -56 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 66.7% | -11 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 77.5% | 33 min |
+| AMC Woodinville 12 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 76.1% | 123 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 56% | -131 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 9:50pm | 61.7% | -90 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 77.2% | -41 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 83.5% | 48 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 77.7% | 78 min |
+| AMC Burbank Town Center 6 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 67.4% | 139 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | XL at AMC | 10:30pm | 2.8% | -131 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | XL at AMC | 7:30pm | 48% | 48 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 4.4% | -86 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 8.3% | -41 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | Laser at AMC | 8:15pm | 47.4% | 3 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | Laser at AMC | 6:45pm | 20.5% | 93 min |
+| AMC Covina 17 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 17.2% | 139 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 57.7% | -131 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 88.1% | 63 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | XL at AMC | 8:15pm | 67.5% | 3 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 4.5% | -146 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 8.7% | -71 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 53.1% | -26 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 59.4% | 48 min |
+| AMC Del Amo 18 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 51.3% | 123 min |
+| AMC Marina Marketplace 6 | The Devil Wears Prada 2 | undefined | 10:30pm | 9.8% | -131 min |
+| AMC Marina Marketplace 6 | The Devil Wears Prada 2 | undefined | 7:30pm | 85.8% | 48 min |
+| AMC Marina Marketplace 6 | The Devil Wears Prada 2 | undefined | 6:45pm | 85% | 93 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 67.1% | -101 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 86% | 78 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 0% | -161 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 1.3% | -131 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 30% | -41 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 59.1% | 18 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 58.3% | 48 min |
+| AMC Glendora 12 @ 210/57 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 46.3% | 139 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:30pm | 58% | -131 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 92.7% | 63 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 22.1% | -161 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 57.8% | -86 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 64.8% | -56 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 75.6% | -11 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 68.1% | 108 min |
+| AMC Montclair Place 12 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 69.7% | 139 min |
+| AMC Northridge 10 | The Devil Wears Prada 2 | undefined | 10:00pm | 11.1% | -101 min |
+| AMC Northridge 10 | The Devil Wears Prada 2 | undefined | 9:00pm | 23.9% | -41 min |
+| AMC Northridge 10 | The Devil Wears Prada 2 | undefined | 7:00pm | 64.2% | 78 min |
+| AMC Northridge 10 | The Devil Wears Prada 2 | undefined | 6:00pm | 18.2% | 139 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:00pm | 50.5% | -100 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:00pm | 82.9% | 79 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | XL at AMC | 9:00pm | 24.6% | -40 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | XL at AMC | 6:00pm | 17.6% | 139 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 6.3% | -70 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 36.9% | 19 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 25% | 49 min |
+| AMC Rolling Hills 20 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 14% | 109 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 10:15pm | 46.2% | -115 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 7:15pm | 90.4% | 64 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 3.2% | -160 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 50% | -85 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 50.9% | -70 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 55.9% | -40 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 64.4% | -10 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 61.6% | -10 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 72.6% | 19 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 69.6% | 109 min |
+| AMC South Bay Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 64.7% | 139 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:45pm | 73.3% | -85 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:30pm | 89.5% | 109 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 43.6% | -130 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 9:15pm | 75.7% | -55 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 82.7% | -25 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 84.6% | 19 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 76.8% | 34 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 65.8% | 49 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 82.7% | 64 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 6:15pm | 70% | 124 min |
+| AMC Ontario Mills 30 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 78.6% | 139 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:00pm | 77.8% | -40 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:00pm | 85.6% | 139 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 10:30pm | 1.5% | -130 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 18.1% | -100 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 9:45pm | 50.9% | -85 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 9:40pm | 33.3% | -80 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 78.6% | -10 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 7:30pm | 76.5% | 49 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 63.8% | 79 min |
+| AMC Thousand Oaks 14 | The Devil Wears Prada 2 | Laser at AMC | 6:35pm | 70.8% | 105 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 9:30pm | 68.6% | -68 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | Dolby Cinema at AMC | 6:30pm | 81.4% | 111 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | XL at AMC | 10:00pm | 9.3% | -98 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | XL at AMC | 7:00pm | 59.2% | 81 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 33.3% | -38 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 51.9% | 21 min |
+| AMC Tyler Galleria 16 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 42.9% | 141 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | PRIME at AMC | 11:00pm | 55.8% | -158 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | PRIME at AMC | 8:00pm | 97% | 21 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | XL at AMC | 9:00pm | 94.4% | -38 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | XL at AMC | 6:00pm | 81.5% | 141 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 11:00pm | 46.2% | -158 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 10:45pm | 64.1% | -143 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 10:15pm | 70.3% | -113 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 88.2% | -68 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 8:45pm | 98.7% | -23 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 7:45pm | 98.7% | 36 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 7:15pm | 100% | 66 min |
+| Universal Cinema AMC at CityWalk Hollywood | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 87.3% | 111 min |
+| AMC CLASSIC Mill Plain 8 | The Devil Wears Prada 2 | undefined | 8:45pm | 5.6% | -23 min |
+| AMC CLASSIC Mill Plain 8 | The Devil Wears Prada 2 | undefined | 7:30pm | 46.8% | 51 min |
+| AMC CLASSIC Mill Plain 8 | The Devil Wears Prada 2 | undefined | 5:50pm | 8.3% | 151 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 27.8% | -98 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 56.1% | -38 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 8:30pm | 66.7% | -8 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 84.3% | 21 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 7:00pm | 83.5% | 81 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 72.2% | 111 min |
+| AMC Temecula 10 | The Devil Wears Prada 2 | Laser at AMC | 6:00pm | 64% | 141 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 10:00pm | 0% | -97 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 9:30pm | 0% | -67 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 9:00pm | 5.5% | -37 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 8:00pm | 16.9% | 22 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 7:10pm | 33.7% | 71 min |
+| AMC CLASSIC Cascade Mall 14 | The Devil Wears Prada 2 | Laser at AMC | 6:30pm | 56.4% | 112 min |
+
+**Issues:** AMC CLASSIC Corvallis 12: No seat map for The Devil Wears Prada 2 undefined @ 10:15pm (https://www.amctheatres.com/showtimes/141433816/seats); AMC CLASSIC Corvallis 12: No seat map for The Devil Wears Prada 2 undefined @ 9:15pm (https://www.amctheatres.com/showtimes/142665325/seats); AMC CLASSIC Corvallis 12: No seat map for The Devil Wears Prada 2 undefined @ 8:15pm (https://www.amctheatres.com/showtimes/142679077/seats); AMC CLASSIC Corvallis 12: No seat map for The Devil Wears Prada 2 undefined @ 7:15pm (https://www.amctheatres.com/showtimes/141433815/seats); AMC CLASSIC Corvallis 12: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142665324/seats); AMC CLASSIC Kennewick 12: No seat map for The Devil Wears Prada 2 undefined @ 9:15pm (https://www.amctheatres.com/showtimes/142810725/seats); AMC CLASSIC Kennewick 12: No seat map for The Devil Wears Prada 2 undefined @ 8:15pm (https://www.amctheatres.com/showtimes/142810806/seats); AMC CLASSIC Kennewick 12: No seat map for The Devil Wears Prada 2 undefined @ 7:15pm (https://www.amctheatres.com/showtimes/141475523/seats); AMC CLASSIC Kennewick 12: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142810724/seats)
+
+---
