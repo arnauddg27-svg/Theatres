@@ -30,6 +30,7 @@ from predict import (
     load_theatre_counts,
     national_theatre_count_for_movie,
     predict_movie,
+    regression_prediction_values,
 )
 
 
@@ -122,8 +123,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Data through: {args.through_date}")
     print(f"Theatre cohorts: {', '.join(sorted(active_model_cohorts()))}")
     print()
-    print(f"Current model:     {_fmt_m(prediction['blended_m'])}")
+    regression_mid, _, _ = regression_prediction_values(prediction)
+    print(f"Current model:     {_fmt_m(regression_mid)}")
     print(f"Seat-only model:   {_fmt_m(prediction['seat_mid_m'])}")
+    if prediction.get("poly_result"):
+        print(f"Market blend:      {_fmt_m(prediction['blended_m'])}")
     print(
         f"Comp-only model:   {_fmt_m(comp_estimate.mid_m)} "
         f"({_fmt_m(comp_estimate.low_m)} - {_fmt_m(comp_estimate.high_m)})"
@@ -152,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
             else comp_estimate.mid_m
         )
         print(f"Actual:            {_fmt_m(args.actual)}")
-        print(f"Current error:     {prediction['blended_m'] - args.actual:+.1f}M")
+        print(f"Current error:     {regression_mid - args.actual:+.1f}M")
         print(f"Comp-only error:   {comp_estimate.mid_m - args.actual:+.1f}M")
         print(f"Adjusted error:    {adjusted_mid - args.actual:+.1f}M")
     print()

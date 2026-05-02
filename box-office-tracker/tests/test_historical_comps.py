@@ -1,5 +1,6 @@
 import unittest
 from pathlib import Path
+import os
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -11,8 +12,15 @@ from historical_comps import (
     estimate_from_prediction,
     estimate_opening_weekend_from_thursday,
     load_historical_comps,
+    load_movie_metadata,
 )
-from predict import attach_comp_model_prediction, learned_local_thursday_share
+from predict import (
+    CORE_COHORT,
+    EXPANSION_COHORT,
+    active_model_cohorts,
+    attach_comp_model_prediction,
+    learned_local_thursday_share,
+)
 
 
 class HistoricalCompsTest(unittest.TestCase):
@@ -130,6 +138,89 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertTrue(all(comp.thursday_preview_m > 0 for comp in comps))
         self.assertTrue(all(comp.opening_weekend_m > 0 for comp in comps))
 
+    def test_post_covid_comp_database_has_daily_breakdowns(self):
+        comps = load_historical_comps(DEFAULT_COMPS_CSV)
+        self.assertTrue(comps)
+        self.assertTrue(all(comp.is_post_covid for comp in comps))
+        missing = [
+            comp.movie
+            for comp in comps
+            if not comp.has_daily_breakdown
+        ]
+        self.assertEqual([], missing)
+
+    def test_comp_database_has_audience_score_references(self):
+        comps = load_historical_comps(DEFAULT_COMPS_CSV)
+        self.assertTrue(comps)
+        missing = [
+            comp.movie
+            for comp in comps
+            if (
+                comp.imdb_rating <= 0
+                or comp.imdb_votes <= 0
+                or not comp.imdb_url.startswith("https://www.imdb.com/title/tt")
+                or comp.rt_audience_score <= 0
+                or not comp.rt_url.startswith("https://www.rottentomatoes.com/m/")
+            )
+        ]
+        self.assertEqual([], missing)
+
+    def test_audience_regression_uses_imdb_and_rt_audience_scores(self):
+        target = TargetMetadata(
+            movie="High Audience Sequel",
+            genre="comedy",
+            audience_type="female_skewing",
+            franchise_type="sequel",
+            rating="PG-13",
+            imdb_rating=8.0,
+            rt_audience_score=95,
+        )
+        comps = [
+            HistoricalComp("Low 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 70.0,
+                           imdb_rating=5.5, imdb_votes=20_000, rt_audience_score=50),
+            HistoricalComp("Low 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 75.0,
+                           imdb_rating=5.8, imdb_votes=25_000, rt_audience_score=58),
+            HistoricalComp("Mid 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 100.0,
+                           imdb_rating=6.6, imdb_votes=35_000, rt_audience_score=76),
+            HistoricalComp("Mid 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 105.0,
+                           imdb_rating=6.8, imdb_votes=40_000, rt_audience_score=80),
+            HistoricalComp("High 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 130.0,
+                           imdb_rating=8.0, imdb_votes=50_000, rt_audience_score=94),
+            HistoricalComp("High 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 135.0,
+                           imdb_rating=8.2, imdb_votes=55_000, rt_audience_score=97),
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(10.0, target, comps, max_comps=6)
+
+        self.assertGreater(estimate.audience_regression_factor, 1.05)
+        self.assertGreater(estimate.audience_adjusted_mid_m, estimate.mid_m)
+        self.assertLess(estimate.audience_adjusted_thursday_share, estimate.weighted_thursday_share)
+        self.assertEqual(6, estimate.audience_regression_n)
+        self.assertGreaterEqual(estimate.audience_regression_r2, 0.0)
+        self.assertIn("imdb_rating", estimate.audience_regression_features)
+        self.assertIn("rt_audience_score", estimate.audience_regression_features)
+
+    def test_movie_metadata_loads_optional_audience_scores(self):
+        with self.subTest("temporary metadata csv"):
+            path = Path(__file__).with_name("tmp-metadata-audience.csv")
+            try:
+                path.write_text(
+                    "movie,weekend_of,genre,audience_type,franchise_type,rating,notes,"
+                    "imdb_rating,imdb_votes,rt_audience_score,rt_audience_score_type\n"
+                    "Future Movie,2026-05-08,comedy,female_skewing,sequel,PG-13,,"
+                    "7.8,1000,94,VERIFIED\n"
+                )
+
+                metadata = load_movie_metadata(path)
+            finally:
+                path.unlink(missing_ok=True)
+
+        target = metadata["future movie"]
+        self.assertAlmostEqual(7.8, target.imdb_rating)
+        self.assertEqual(1000, target.imdb_votes)
+        self.assertEqual(94, target.rt_audience_score)
+        self.assertEqual("VERIFIED", target.rt_audience_score_type)
+
     def test_prediction_can_attach_seat_comp_model(self):
         prediction = {
             "movie": "Michael",
@@ -172,6 +263,172 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("Thursday", prediction["seat_comp_basis"])
         self.assertEqual("Comp", prediction["seat_comp_top_comps"][0]["movie"])
         self.assertAlmostEqual(38.545454545, prediction["seat_comp_daily_m"]["Friday"], places=6)
+
+    def test_prediction_attaches_blended_comp_model_when_polymarket_exists(self):
+        prediction = {
+            "movie": "Michael",
+            "seat_mid_m": 88.6,
+            "seat_low_m": 84.0,
+            "seat_high_m": 93.0,
+            "n_theatres_total": 100,
+            "n_days": 1,
+            "poly_result": {
+                "ev": 80.0,
+                "low": 70.0,
+                "high": 90.0,
+                "total_volume": 500_000,
+            },
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 10_000_000,
+                }
+            },
+        }
+        metadata = {
+            "michael": TargetMetadata(
+                movie="Michael",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertAlmostEqual(100.0, prediction["seat_comp_mid_m"], places=6)
+        self.assertAlmostEqual(95.2, prediction["comp_blended_m"], places=6)
+        self.assertAlmostEqual(0.76, prediction["comp_w_model"], places=6)
+        self.assertAlmostEqual(0.24, prediction["comp_w_poly"], places=6)
+        self.assertAlmostEqual(70.0, prediction["comp_blend_low_m"], places=6)
+        self.assertAlmostEqual(100.0, prediction["comp_blend_high_m"], places=6)
+
+    def test_model_prediction_uses_regression_not_market_blend(self):
+        prediction = {
+            "movie": "Michael",
+            "seat_mid_m": 88.6,
+            "seat_low_m": 84.0,
+            "seat_high_m": 93.0,
+            "n_theatres_total": 400,
+            "n_days": 1,
+            "coverage_ratio": 1.0,
+            "poly_result": {
+                "ev": 60.0,
+                "low": 50.0,
+                "high": 70.0,
+                "total_volume": 1_000_000,
+            },
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 10_000_000,
+                }
+            },
+        }
+        metadata = {
+            "michael": TargetMetadata(
+                movie="Michael",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertAlmostEqual(100.0, prediction["regression_mid_m"], places=6)
+        self.assertAlmostEqual(100.0, prediction["model_forecast_mid_m"], places=6)
+        self.assertEqual("seat+comp-regression", prediction["regression_source"])
+        self.assertFalse(prediction["regression_uses_polymarket"])
+        self.assertNotIn("headline_mid_m", prediction)
+        self.assertNotAlmostEqual(
+            prediction["model_forecast_mid_m"],
+            prediction["comp_blended_m"],
+            places=6,
+        )
+
+    def test_comp_model_reanchors_final_prediction_as_seat_primary(self):
+        prediction = {
+            "movie": "Michael",
+            "seat_mid_m": 60.0,
+            "seat_low_m": 50.0,
+            "seat_high_m": 70.0,
+            "blended_m": 55.0,
+            "blend_low_m": 40.0,
+            "blend_high_m": 80.0,
+            "n_theatres_total": 400,
+            "n_days": 1,
+            "coverage_ratio": 1.0,
+            "poly_result": {
+                "ev": 40.0,
+                "low": 35.0,
+                "high": 45.0,
+                "total_volume": 1_000_000,
+            },
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 10_000_000,
+                }
+            },
+        }
+        metadata = {
+            "michael": TargetMetadata(
+                movie="Michael",
+                genre="music_biopic",
+                audience_type="broad_legacy",
+                franchise_type="biopic",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp",
+                "music_biopic",
+                "broad_legacy",
+                "biopic",
+                "PG-13",
+                10.0,
+                100.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertAlmostEqual(88.0, prediction["seat_primary_mid_m"], places=6)
+        self.assertAlmostEqual(0.70, prediction["seat_primary_w_comp"], places=6)
+        self.assertGreater(prediction["blended_m"], 75.0)
+        self.assertGreaterEqual(prediction["w_seat"], 0.75)
+
+    def test_default_metadata_includes_current_prada_release(self):
+        metadata = load_movie_metadata()
+
+        self.assertIn("the devil wears prada 2", metadata)
+        target = metadata["the devil wears prada 2"]
+        self.assertEqual("comedy", target.genre)
+        self.assertEqual("female_skewing", target.audience_type)
+        self.assertEqual("sequel", target.franchise_type)
 
     def test_prediction_seat_comp_model_uses_latest_available_daily_basis(self):
         prediction = {
@@ -288,6 +545,71 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertAlmostEqual(90.909090909, prediction["seat_comp_mid_m"], places=6)
         self.assertEqual(2, prediction["seat_comp_local_thursday_n"])
         self.assertAlmostEqual(0.20, prediction["seat_comp_local_thursday_weight"], places=6)
+
+    def test_prediction_exposes_audience_regression_adjustment(self):
+        prediction = {
+            "movie": "High Audience Sequel",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 95.0,
+            "seat_high_m": 105.0,
+            "daily_details": {
+                "Thursday": {"domestic_mid": 10_000_000},
+            },
+        }
+        metadata = {
+            "high audience sequel": TargetMetadata(
+                movie="High Audience Sequel",
+                genre="comedy",
+                audience_type="female_skewing",
+                franchise_type="sequel",
+                rating="PG-13",
+                imdb_rating=8.0,
+                rt_audience_score=95,
+            )
+        }
+        comps = [
+            HistoricalComp("Low 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 70.0,
+                           imdb_rating=5.5, imdb_votes=20_000, rt_audience_score=50),
+            HistoricalComp("Low 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 75.0,
+                           imdb_rating=5.8, imdb_votes=25_000, rt_audience_score=58),
+            HistoricalComp("Mid 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 100.0,
+                           imdb_rating=6.6, imdb_votes=35_000, rt_audience_score=76),
+            HistoricalComp("Mid 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 105.0,
+                           imdb_rating=6.8, imdb_votes=40_000, rt_audience_score=80),
+            HistoricalComp("High 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 130.0,
+                           imdb_rating=8.0, imdb_votes=50_000, rt_audience_score=94),
+            HistoricalComp("High 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 135.0,
+                           imdb_rating=8.2, imdb_votes=55_000, rt_audience_score=97),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertGreater(prediction["seat_comp_audience_factor"], 1.05)
+        self.assertGreater(prediction["seat_comp_mid_m"], 102.5)
+        self.assertEqual(6, prediction["seat_comp_audience_regression_n"])
+        self.assertIn("RT audience", prediction["seat_comp_audience_features"])
+
+    def test_default_model_cohorts_include_expansion_data(self):
+        old_value = os.environ.pop("THEATRE_MODEL_COHORTS", None)
+        try:
+            self.assertEqual(
+                {CORE_COHORT, EXPANSION_COHORT},
+                active_model_cohorts(),
+            )
+        finally:
+            if old_value is not None:
+                os.environ["THEATRE_MODEL_COHORTS"] = old_value
+
+    def test_model_cohorts_can_still_force_core_only(self):
+        old_value = os.environ.get("THEATRE_MODEL_COHORTS")
+        os.environ["THEATRE_MODEL_COHORTS"] = CORE_COHORT
+        try:
+            self.assertEqual({CORE_COHORT}, active_model_cohorts())
+        finally:
+            if old_value is None:
+                os.environ.pop("THEATRE_MODEL_COHORTS", None)
+            else:
+                os.environ["THEATRE_MODEL_COHORTS"] = old_value
 
 
 if __name__ == "__main__":

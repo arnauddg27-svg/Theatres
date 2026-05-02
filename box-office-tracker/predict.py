@@ -12,6 +12,7 @@ Pipeline:
   D. Partial days → full weekend (day weights)
   E. Polymarket expected value (bracket parsing)
   F. Blended prediction (seat + Polymarket weighted)
+  G. Historical-comp prediction and comp + Polymarket blend when metadata exists
 
 Usage:
     python3 predict.py                              # All movies this weekend
@@ -47,11 +48,13 @@ THEATRES_EXPANSION_JSON = os.path.join(DATA_DIR, "theatres-expansion.json")
 DEFAULT_AMC_MARKET_SHARE = 0.25
 CORE_COHORT = "core"
 EXPANSION_COHORT = "expansion"
-DEFAULT_MODEL_COHORTS = (CORE_COHORT,)
+DEFAULT_MODEL_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
 KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT}
+MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
+MODEL_VERSION = "seat-regression-v3"
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -259,6 +262,26 @@ def active_model_cohorts():
     return _parse_cohorts(os.getenv("THEATRE_MODEL_COHORTS"), DEFAULT_MODEL_COHORTS)
 
 
+def normalize_model_cohort_key(cohorts):
+    """Stable identity for the theatre cohort set behind a prediction."""
+    if cohorts is None:
+        return ""
+    if isinstance(cohorts, str):
+        raw = cohorts.split(",")
+    else:
+        raw = cohorts
+    normalized = []
+    for cohort in raw:
+        value = str(cohort).strip().lower()
+        if value:
+            normalized.append(value)
+    return ",".join(sorted(set(normalized)))
+
+
+def active_model_cohort_key():
+    return normalize_model_cohort_key(active_model_cohorts())
+
+
 def use_url_showtime_identity():
     """Opt in to URL-level screen identity without changing the default model."""
     return os.getenv("THEATRE_MODEL_SHOWTIME_IDENTITY", "").strip().lower() in URL_SHOWTIME_IDENTITY_VALUES
@@ -283,6 +306,36 @@ def _add_theatre_cohorts(cohort_sets, path, default_cohort):
             cohort_sets.setdefault(cohort, set()).add(name)
 
 
+def _theatre_cohort(theatre, default_cohort):
+    return (theatre.get("cohort") or default_cohort).strip().lower()
+
+
+def _add_theatre_timezone_reference(name_to_tz, tz_counts, path, default_cohort,
+                                    allowed_cohorts):
+    if not os.path.exists(path):
+        return
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+    except Exception:
+        return
+    for group, theatres in data.items():
+        if group not in MODEL_TIMEZONE_GROUPS:
+            continue
+        for theatre in theatres:
+            name = (theatre.get("name") or "").strip()
+            if not name:
+                continue
+            cohort = _theatre_cohort(theatre, default_cohort)
+            if cohort not in allowed_cohorts:
+                continue
+            # Core wins over expansion when the same AMC appears twice.
+            if name in name_to_tz:
+                continue
+            name_to_tz[name] = group
+            tz_counts[group] = tz_counts.get(group, 0) + 1
+
+
 def load_theatre_cohort_sets():
     """Return {cohort: theatre_names} from core + expansion config files."""
     cohort_sets = {CORE_COHORT: set(), EXPANSION_COHORT: set()}
@@ -292,12 +345,39 @@ def load_theatre_cohort_sets():
     return cohort_sets
 
 
+def load_theatre_timezone_reference(model_cohorts=None):
+    """Return ({theatre_name: tz_group}, {tz_group: configured_count}).
+
+    MT is intentionally omitted because the production workflow currently
+    schedules ET/CT/PT only. The output is used for model confidence and sample
+    normalization, not for scraping.
+    """
+    allowed = model_cohorts if model_cohorts is not None else active_model_cohorts()
+    name_to_tz = {}
+    tz_counts = {}
+    _add_theatre_timezone_reference(
+        name_to_tz,
+        tz_counts,
+        THEATRES_JSON,
+        CORE_COHORT,
+        allowed,
+    )
+    _add_theatre_timezone_reference(
+        name_to_tz,
+        tz_counts,
+        THEATRES_EXPANSION_JSON,
+        EXPANSION_COHORT,
+        allowed,
+    )
+    return name_to_tz, tz_counts
+
+
 def model_allows_theatre(theatre_name, cohort_sets=None, model_cohorts=None):
     """True when a row's theatre belongs to an enabled model cohort.
 
     Unknown theatres are allowed so old/manual rows do not disappear just
-    because the theatre config changed. Expansion theatres are known and are
-    therefore excluded unless explicitly enabled.
+    because the theatre config changed. Core and expansion theatres are included
+    by default; THEATRE_MODEL_COHORTS can still narrow the active cohorts.
     """
     name = (theatre_name or "").strip()
     if not name:
@@ -665,6 +745,300 @@ def sum_amc_theatres(theatre_results):
     }
 
 
+def _positive_float(value):
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if number > 0 else None
+
+
+def _clamp(value, low, high):
+    return max(low, min(high, value))
+
+
+def _coverage_average(daily_coverage_ratios):
+    if not daily_coverage_ratios:
+        return None
+    values = []
+    for value in daily_coverage_ratios.values():
+        if value is None:
+            continue
+        try:
+            values.append(_clamp(float(value), 0.0, 1.0))
+        except (TypeError, ValueError):
+            continue
+    return sum(values) / len(values) if values else None
+
+
+def _coverage_value(value, default=0.0):
+    try:
+        return _clamp(float(value), 0.0, 1.0)
+    except (TypeError, ValueError):
+        return default
+
+
+def reference_amc_theatre_count(cal, fallback=0, model_cohort_key=None):
+    """The stable sample size that AMC-share calibration was trained against."""
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    cohort_key = normalize_model_cohort_key(model_cohort_key)
+    refs_by_cohort = factors.get("reference_amc_theatres_by_cohort") or {}
+    if cohort_key and isinstance(refs_by_cohort, dict):
+        for key, value in refs_by_cohort.items():
+            if normalize_model_cohort_key(key) != cohort_key:
+                continue
+            explicit_cohort = _positive_float(value)
+            if explicit_cohort:
+                return int(round(explicit_cohort))
+
+    explicit = _positive_float(factors.get("reference_amc_theatres"))
+    if explicit and (not cohort_key or cohort_key == CORE_COHORT):
+        return int(round(explicit))
+
+    reference_candidates = []
+    observed_candidates = []
+    for entry in (cal or {}).get("history", []):
+        entry_key = normalize_model_cohort_key(entry.get("model_cohort_key"))
+        if cohort_key:
+            if entry_key and entry_key != cohort_key:
+                continue
+            if not entry_key and cohort_key != CORE_COHORT:
+                continue
+        ref = _positive_float(entry.get("reference_amc_theatres"))
+        if ref:
+            reference_candidates.append(ref)
+            continue
+        daily_counts = entry.get("daily_theatre_counts") or {}
+        daily_coverage = entry.get("daily_coverage_ratios") or {}
+        for day, count in daily_counts.items():
+            n_theatres = _positive_float(count)
+            if not n_theatres:
+                continue
+            coverage = _positive_float(daily_coverage.get(day))
+            if coverage is None or coverage >= MIN_DAILY_CALIBRATION_COVERAGE:
+                observed_candidates.append(n_theatres)
+        if not daily_counts:
+            n_theatres = _positive_float(entry.get("n_theatres"))
+            if n_theatres:
+                observed_candidates.append(n_theatres)
+
+    if reference_candidates:
+        return int(round(statistics.median(reference_candidates)))
+    if observed_candidates:
+        return int(round(statistics.median(observed_candidates)))
+
+    fallback_count = _positive_float(fallback)
+    return int(round(fallback_count)) if fallback_count else 0
+
+
+def remember_reference_amc_theatres(cal, reference_amc_theatres, model_cohort_key=None):
+    """Persist the denominator used for a prediction without moving other cohorts."""
+    reference = _positive_float(reference_amc_theatres)
+    if not reference:
+        return None
+
+    ref = int(round(reference))
+    factors = cal.setdefault("calibration_factors", {})
+    cohort_key = normalize_model_cohort_key(model_cohort_key)
+    if cohort_key:
+        factors.setdefault("reference_amc_theatres_by_cohort", {})[cohort_key] = ref
+        if cohort_key == CORE_COHORT:
+            factors.setdefault("reference_amc_theatres", ref)
+    else:
+        factors.setdefault("reference_amc_theatres", ref)
+    return ref
+
+
+def normalize_amc_sample(amc_total, observed_theatres, reference_theatres,
+                         representativeness=1.0):
+    """Normalize sampled AMC revenue to the calibration reference sample size."""
+    observed = _positive_float(observed_theatres)
+    reference = _positive_float(reference_theatres)
+    if not observed or not reference:
+        return amc_total, 1.0
+    factor = reference / observed
+    if factor > 1.0:
+        rep_value = _positive_float(representativeness)
+        rep = 1.0 if rep_value is None else _clamp(rep_value, 0.0, 1.0)
+        factor = 1.0 + (factor - 1.0) * rep
+    return amc_total * factor, factor
+
+
+def _row_timezone(row, theatre_timezone_map=None):
+    raw = (row.get("timezone") or "").strip().upper()
+    if raw in MODEL_TIMEZONE_GROUPS:
+        return raw
+    theatre_name = (row.get("theatre_name") or "").strip()
+    if theatre_name and theatre_timezone_map:
+        return theatre_timezone_map.get(theatre_name)
+    return None
+
+
+def timezone_coverage_profile(rows, expected_timezone_counts=None,
+                              theatre_timezone_map=None):
+    """Measure whether a day is missing an entire expected TZ bucket.
+
+    Missing a whole timezone is not the same as randomly missing theatres. When
+    a bucket is absent, only part of the sample-size normalization is trusted.
+    """
+    observed = sorted({
+        tz for tz in (
+            _row_timezone(row, theatre_timezone_map=theatre_timezone_map)
+            for row in rows
+        )
+        if tz in MODEL_TIMEZONE_GROUPS
+    })
+    if not observed:
+        return {
+            "observed_timezones": [],
+            "expected_timezones": [],
+            "missing_timezones": [],
+            "coverage_factor": 1.0,
+        }
+
+    expected_counts = {
+        tz: count for tz, count in (expected_timezone_counts or {}).items()
+        if tz in MODEL_TIMEZONE_GROUPS and _positive_float(count)
+    }
+    if not expected_counts:
+        expected_counts = {tz: 1 for tz in observed}
+
+    expected = sorted(expected_counts)
+    missing = sorted(set(expected) - set(observed))
+    if not missing:
+        factor = 1.0
+    else:
+        total_weight = sum(expected_counts.values())
+        observed_weight = sum(
+            expected_counts.get(tz, 0)
+            for tz in observed
+            if tz in expected_counts
+        )
+        factor = observed_weight / total_weight if total_weight else 1.0
+        factor = _clamp(factor, 0.0, 1.0)
+
+    return {
+        "observed_timezones": observed,
+        "expected_timezones": expected,
+        "missing_timezones": missing,
+        "coverage_factor": factor,
+    }
+
+
+def seat_data_quality(n_theatres, n_days, coverage_ratio=None):
+    """0-1 quality score for how much the seat model should influence blends."""
+    if coverage_ratio is None:
+        return min(1.0, (n_theatres / 100) * 0.6 + (n_days / 3) * 0.4)
+    theatre_component = _coverage_value(coverage_ratio)
+    day_component = _clamp(n_days / len(OPENING_WEEKEND_DAYS), 0.0, 1.0)
+    return _clamp(0.70 * theatre_component + 0.30 * day_component, 0.0, 1.0)
+
+
+def confidence_interval_factors(n_days, coverage_ratio=None):
+    """Low/high multipliers for seat-only intervals, adjusted for coverage."""
+    low, high = DAY_CONFIDENCE.get(n_days, (0.70, 1.40))
+    if coverage_ratio is None:
+        return low, high
+    coverage = _coverage_value(coverage_ratio)
+    missing = 1.0 - coverage
+    low *= 1.0 - 0.35 * missing
+    high *= 1.0 + 0.55 * missing
+    return max(0.25, low), max(high, low)
+
+
+def polymarket_weight_cap(seat_quality):
+    """Maximum market influence when real seat data exists."""
+    # High-quality seat data should dominate. Sparse seat data can lean a bit
+    # more on the market, but Polymarket never becomes the main driver.
+    return _clamp(0.35 - 0.15 * _coverage_value(seat_quality), 0.20, 0.35)
+
+
+def comp_component_weight(n_days):
+    """How much the comp-translated seat signal should affect the seat model."""
+    if n_days <= 1:
+        return 0.70
+    if n_days == 2:
+        return 0.45
+    if n_days == 3:
+        return 0.25
+    return 0.10
+
+
+def seat_primary_ensemble(pred):
+    """Blend direct seat totals with the comp-translated seat signal."""
+    comp_mid = pred.get("seat_comp_mid_m")
+    if comp_mid is None:
+        return None
+
+    w_comp = comp_component_weight(pred.get("n_days", 0))
+    w_direct = 1.0 - w_comp
+    direct_mid = pred["seat_mid_m"]
+    direct_low = pred["seat_low_m"]
+    direct_high = pred["seat_high_m"]
+    comp_low = pred["seat_comp_low_m"]
+    comp_high = pred["seat_comp_high_m"]
+
+    mid = direct_mid * w_direct + comp_mid * w_comp
+    low = direct_low * w_direct + comp_low * w_comp
+    high = direct_high * w_direct + comp_high * w_comp
+
+    # If direct day-weight extrapolation and comp shape disagree, widen the
+    # band instead of hiding model disagreement in a precise-looking midpoint.
+    disagreement = abs(comp_mid - direct_mid)
+    low = max(0.0, low - disagreement * 0.25)
+    high = high + disagreement * 0.25
+    return {
+        "mid_m": mid,
+        "low_m": min(low, high),
+        "high_m": max(low, high),
+        "w_direct": w_direct,
+        "w_comp": w_comp,
+        "disagreement_m": disagreement,
+    }
+
+
+def select_regression_prediction(pred):
+    """Attach the model-driven regression forecast.
+
+    Polymarket and published trade estimates remain context only. Calibration,
+    strategy, and reporting use the actual-predictive regression line. Prefer
+    the seat+comp regression when available; fall back to the direct seat model.
+    """
+    if pred.get("seat_comp_mid_m") is not None:
+        source = "seat+comp-regression"
+        mid = pred["seat_comp_mid_m"]
+        low = pred["seat_comp_low_m"]
+        high = pred["seat_comp_high_m"]
+        basis = pred.get("seat_comp_basis")
+    else:
+        source = "seat-only-regression"
+        mid = pred["seat_mid_m"]
+        low = pred["seat_low_m"]
+        high = pred["seat_high_m"]
+        basis = "seat-only"
+
+    pred["regression_mid_m"] = mid
+    pred["regression_low_m"] = low
+    pred["regression_high_m"] = high
+    pred["regression_source"] = source
+    pred["regression_basis"] = basis
+    pred["regression_uses_polymarket"] = False
+    pred["model_forecast_mid_m"] = mid
+    pred["model_forecast_low_m"] = low
+    pred["model_forecast_high_m"] = high
+    pred["model_forecast_source"] = source
+    pred["model_forecast_basis"] = basis
+    pred["model_forecast_uses_polymarket"] = False
+    return pred
+
+
+def regression_prediction_values(pred):
+    """Return the point/range used for actual-focused model reporting."""
+    if pred.get("regression_mid_m") is None:
+        select_regression_prediction(pred)
+    return pred["regression_mid_m"], pred["regression_low_m"], pred["regression_high_m"]
+
+
 # ── Stage C: AMC → Total Domestic ────────────────────────────────────────────
 
 def amc_to_domestic(amc_revenue, cal):
@@ -695,7 +1069,7 @@ def calibrated_daily_estimates(daily_estimates, cal):
     }
 
 
-def days_to_weekend(daily_estimates, cal):
+def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None):
     """Stage D: per-day calibrated daily estimates summed to a weekend total.
 
     daily_estimates: dict of {day_name: raw_domestic_daily_mid}
@@ -735,9 +1109,13 @@ def days_to_weekend(daily_estimates, cal):
         # wide bracket around the raw sum so we never silently zero out.
         return collected_sum, collected_sum * 0.5, collected_sum * 2.0, calibrated_daily
 
-    # Confidence based on how many days we have
+    # Confidence based on how many days and how complete the scraped sample was.
     n_days = len(daily_estimates)
-    conf_low, conf_high = DAY_CONFIDENCE.get(n_days, (0.70, 1.40))
+    coverage_ratio = _coverage_average(daily_coverage_ratios)
+    conf_low, conf_high = confidence_interval_factors(
+        n_days,
+        coverage_ratio=coverage_ratio,
+    )
     weekend_low = weekend_mid * conf_low
     weekend_high = weekend_mid * conf_high
 
@@ -796,9 +1174,9 @@ def polymarket_expected_value(markets_for_movie):
         try:
             if prices_raw.startswith("["):
                 prices = json.loads(prices_raw)
-                p_yes = float(prices[0])
+                p_yes = _clamp(float(prices[0]), 0.0, 1.0)
             else:
-                p_yes = float(prices_raw) if prices_raw else 0
+                p_yes = _clamp(float(prices_raw), 0.0, 1.0) if prices_raw else 0
         except (json.JSONDecodeError, ValueError, IndexError):
             continue
 
@@ -812,18 +1190,27 @@ def polymarket_expected_value(markets_for_movie):
     if not brackets:
         return None
 
-    # Expected value
-    ev = sum(b["midpoint"] * b["p_yes"] for b in brackets)
+    raw_probability_sum = sum(b["p_yes"] for b in brackets)
+    if raw_probability_sum > 0:
+        for bracket in brackets:
+            bracket["p_norm"] = bracket["p_yes"] / raw_probability_sum
+    else:
+        uniform = 1.0 / len(brackets)
+        for bracket in brackets:
+            bracket["p_norm"] = uniform
+
+    # Expected value from no-vig normalized interval probabilities.
+    ev = sum(b["midpoint"] * b["p_norm"] for b in brackets)
 
     # Weighted standard deviation
     if ev > 0:
-        variance = sum(b["p_yes"] * (b["midpoint"] - ev) ** 2 for b in brackets)
+        variance = sum(b["p_norm"] * (b["midpoint"] - ev) ** 2 for b in brackets)
         std = sqrt(variance) if variance > 0 else ev * 0.2
     else:
         std = 0
 
     # Highest probability bracket
-    best_bracket = max(brackets, key=lambda b: b["p_yes"])
+    best_bracket = max(brackets, key=lambda b: b["p_norm"])
 
     return {
         "ev": ev,
@@ -833,13 +1220,14 @@ def polymarket_expected_value(markets_for_movie):
         "brackets": brackets,
         "best_bracket": best_bracket,
         "total_volume": total_volume,
+        "raw_probability_sum": raw_probability_sum,
     }
 
 
 # ── Stage F: Blended Prediction ──────────────────────────────────────────────
 
 def blend_predictions(seat_est, seat_low, seat_high,
-                      poly_result, n_theatres, n_days):
+                      poly_result, n_theatres, n_days, coverage_ratio=None):
     """Stage F: weighted blend of seat-based and Polymarket estimates."""
     if poly_result is None:
         return seat_est, seat_low, seat_high, 1.0, 0.0
@@ -847,8 +1235,14 @@ def blend_predictions(seat_est, seat_low, seat_high,
     poly_ev = poly_result["ev"]
     poly_volume = poly_result["total_volume"]
 
-    # Seat data quality (0-1)
-    seat_quality = min(1.0, (n_theatres / 100) * 0.6 + (n_days / 3) * 0.4)
+    # Seat data quality (0-1). If coverage is known, trust the data set's
+    # coverage ratio rather than an absolute theatre count so different
+    # collection universes can be compared fairly.
+    seat_quality = seat_data_quality(
+        n_theatres,
+        n_days,
+        coverage_ratio=coverage_ratio,
+    )
 
     # Polymarket quality (0-1)
     poly_quality = min(1.0, poly_volume / 500_000)
@@ -863,6 +1257,11 @@ def blend_predictions(seat_est, seat_low, seat_high,
 
     w_seat_norm = w_seat / total_w
     w_poly_norm = w_poly / total_w
+    if n_theatres > 0 and n_days > 0:
+        max_poly_weight = polymarket_weight_cap(seat_quality)
+        if w_poly_norm > max_poly_weight:
+            w_poly_norm = max_poly_weight
+            w_seat_norm = 1.0 - w_poly_norm
 
     blended = seat_est * w_seat_norm + poly_ev * w_poly_norm
     blended_low = min(seat_low, poly_result["low"])
@@ -877,8 +1276,13 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   seat_raw, poly_ev, actual, n_theatres, days_collected,
                   daily_theatre_counts=None, daily_coverage_ratios=None,
                   daily_predictions=None, raw_daily_predictions=None,
-                  weekend_of=None):
+                  weekend_of=None, reference_amc_theatres=None,
+                  model_cohort_key=None):
     """Record a predicted-vs-actual result and update calibration factors."""
+    if isinstance(days_collected, (list, tuple, set, dict)):
+        n_days = len(days_collected)
+    else:
+        n_days = int(_positive_float(days_collected) or 0)
     entry = {
         "movie": movie,
         "date": datetime.now().strftime("%Y-%m-%d"),
@@ -889,10 +1293,22 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         "polymarket_ev": round(poly_ev, 1) if poly_ev else None,
         "actual": actual,
         "n_theatres": n_theatres,
-        "days_collected": days_collected,
+        "days_collected": n_days,
+        "n_days": n_days,
+        "model_version": MODEL_VERSION,
     }
+    cohort_key = normalize_model_cohort_key(model_cohort_key)
+    if cohort_key:
+        entry["model_cohort_key"] = cohort_key
     if weekend_of:
         entry["weekend_of"] = weekend_of
+    reference = remember_reference_amc_theatres(
+        cal,
+        reference_amc_theatres,
+        model_cohort_key=cohort_key,
+    )
+    if reference:
+        entry["reference_amc_theatres"] = reference
     if daily_predictions:
         entry["daily_predictions"] = {
             k: round(v, 2) for k, v in daily_predictions.items()
@@ -964,10 +1380,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     if not opening_dates:
         return None
 
+    model_cohorts = active_model_cohorts()
+    model_cohort_key = normalize_model_cohort_key(model_cohorts)
+    theatre_timezone_map, expected_timezone_counts = load_theatre_timezone_reference(
+        model_cohorts=model_cohorts,
+    )
+
     # Group by day of week
     daily_estimates = {}
     daily_details = {}
-    expected_amc_theatres = max(
+    observed_max_theatres = max(
         (
             len({
                 row.get("theatre_name", "")
@@ -978,6 +1400,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             if date_str in opening_dates
         ),
         default=0,
+    )
+    expected_amc_theatres = reference_amc_theatre_count(
+        cal,
+        fallback=observed_max_theatres,
+        model_cohort_key=model_cohort_key,
     )
 
     for date_str in opening_dates:
@@ -1047,12 +1474,26 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             showings_by_theatre[t_name] = len(captured_rows)
 
         # Stage B: sum all AMC
-        amc_total, amc_stats = sum_amc_theatres(theatre_results)
+        sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
         n_amc_theatres = amc_stats.get("n_theatres", 0)
+        tz_profile = timezone_coverage_profile(
+            rows,
+            expected_timezone_counts=expected_timezone_counts,
+            theatre_timezone_map=theatre_timezone_map,
+        )
+        amc_total, sample_norm_factor = normalize_amc_sample(
+            sampled_amc_total,
+            n_amc_theatres,
+            expected_amc_theatres,
+            representativeness=tz_profile["coverage_factor"],
+        )
         coverage_ratio = (
             min(1.0, n_amc_theatres / expected_amc_theatres)
             if expected_amc_theatres else None
         )
+        effective_coverage_ratio = coverage_ratio
+        if coverage_ratio is not None and tz_profile["missing_timezones"]:
+            effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
         avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
                         if showings_by_theatre else 0)
 
@@ -1073,12 +1514,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         daily_details[day_name] = {
             "date": date_str,
             "amc_total": amc_total,
+            "sampled_amc_total": sampled_amc_total,
+            "sample_normalization_factor": sample_norm_factor,
             "domestic_mid": domestic_mid,
             "domestic_low": domestic_low,
             "domestic_high": domestic_high,
             "n_theatres": n_amc_theatres,
             "expected_theatres": expected_amc_theatres,
             "coverage_ratio": coverage_ratio,
+            "effective_coverage_ratio": effective_coverage_ratio,
+            "observed_timezones": tz_profile["observed_timezones"],
+            "expected_timezones": tz_profile["expected_timezones"],
+            "missing_timezones": tz_profile["missing_timezones"],
+            "timezone_coverage_factor": tz_profile["coverage_factor"],
             "n_no_data": no_data_count,
             "avg_showings_per_cinema": round(avg_showings, 1),
             "evening_to_daily": ev_to_daily,
@@ -1090,8 +1538,25 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     if not daily_estimates:
         return None
 
+    daily_raw_coverage_ratios = {
+        day: details["coverage_ratio"]
+        for day, details in daily_details.items()
+        if details.get("coverage_ratio") is not None
+    }
+    daily_coverage_ratios = {
+        day: details.get("effective_coverage_ratio", details["coverage_ratio"])
+        for day, details in daily_details.items()
+        if details.get("coverage_ratio") is not None
+    }
+    coverage_ratio = _coverage_average(daily_coverage_ratios)
+    raw_coverage_ratio = _coverage_average(daily_raw_coverage_ratios)
+
     # Stage D: day-by-day calibration → weekend sum.
-    seat_mid, seat_low, seat_high, calibrated_daily = days_to_weekend(daily_estimates, cal)
+    seat_mid, seat_low, seat_high, calibrated_daily = days_to_weekend(
+        daily_estimates,
+        cal,
+        daily_coverage_ratios=daily_coverage_ratios,
+    )
     for day_name, calibrated in calibrated_daily.items():
         details = daily_details.get(day_name)
         if not details:
@@ -1137,7 +1602,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         # Polymarket EV is already in millions
         blended_m, blend_low_m, blend_high_m, w_seat, w_poly = blend_predictions(
             seat_mid_m, seat_low_m, seat_high_m,
-            poly_result, n_theatres_total, n_days
+            poly_result, n_theatres_total, n_days,
+            coverage_ratio=coverage_ratio,
         )
     else:
         blended_m = seat_mid_m
@@ -1152,6 +1618,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
 
     result = {
         "movie": movie,
+        "model_version": MODEL_VERSION,
+        "model_cohorts": sorted(model_cohorts),
+        "model_cohort_key": model_cohort_key,
         "seat_mid_m": seat_mid_m,
         "seat_low_m": seat_low_m,
         "seat_high_m": seat_high_m,
@@ -1170,23 +1639,35 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
         "expected_amc_theatres": expected_amc_theatres,
+        "reference_amc_theatres": expected_amc_theatres,
         "ignored_post_weekend_dates": ignored_dates,
-        "coverage_ratio": round(
-            sum(
-                d.get("coverage_ratio", 0)
-                for d in daily_details.values()
-                if d.get("coverage_ratio") is not None
-            ) / len([
-                d for d in daily_details.values()
-                if d.get("coverage_ratio") is not None
-            ]),
+        "coverage_ratio": round(coverage_ratio, 3) if coverage_ratio is not None else None,
+        "raw_coverage_ratio": (
+            round(raw_coverage_ratio, 3)
+            if raw_coverage_ratio is not None else None
+        ),
+        "seat_data_quality": round(
+            seat_data_quality(
+                n_theatres_total,
+                n_days,
+                coverage_ratio=coverage_ratio,
+            ),
             3,
-        ) if any(d.get("coverage_ratio") is not None for d in daily_details.values()) else None,
+        ),
+        "seat_confidence_low_factor": confidence_interval_factors(
+            n_days,
+            coverage_ratio=coverage_ratio,
+        )[0],
+        "seat_confidence_high_factor": confidence_interval_factors(
+            n_days,
+            coverage_ratio=coverage_ratio,
+        )[1],
         "national_theatre_count": national_theatre_count,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
     attach_comp_model_prediction(result, cal)
+    select_regression_prediction(result)
     return result
 
 
@@ -1226,7 +1707,10 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         return None
 
     local_share = learned_local_thursday_share(cal, exclude_movie=pred.get("movie", ""))
-    external_thursday_share = estimate.weighted_thursday_share
+    external_thursday_share = (
+        estimate.audience_adjusted_thursday_share
+        or estimate.weighted_thursday_share
+    )
     thursday_share = external_thursday_share
     local_weight = 0.0
     if local_share:
@@ -1243,6 +1727,7 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         pred,
         estimate,
         thursday_share=thursday_share,
+        audience_factor=estimate.audience_regression_factor,
     )
 
     pred["seat_comp_mid_m"] = model["mid_m"]
@@ -1254,6 +1739,18 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_thursday_gross_m"] = estimate.thursday_gross_m
     pred["seat_comp_thursday_share"] = thursday_share
     pred["seat_comp_external_thursday_share"] = external_thursday_share
+    pred["seat_comp_raw_external_thursday_share"] = estimate.weighted_thursday_share
+    if estimate.audience_regression_n:
+        features = estimate.audience_regression_features or {}
+        feature_parts = []
+        if features.get("imdb_rating"):
+            feature_parts.append(f"IMDb {features['imdb_rating']:.1f}")
+        if features.get("rt_audience_score"):
+            feature_parts.append(f"RT audience {features['rt_audience_score']:.0f}%")
+        pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
+        pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
+        pred["seat_comp_audience_regression_r2"] = estimate.audience_regression_r2
+        pred["seat_comp_audience_features"] = ", ".join(feature_parts)
     if local_share:
         pred["seat_comp_local_thursday_share"] = local_share["share"]
         pred["seat_comp_local_thursday_n"] = local_share["n"]
@@ -1272,6 +1769,59 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         }
         for comp in estimate.comps[:5]
     ]
+
+    poly_result = pred.get("poly_result")
+    if poly_result:
+        blended_m, blend_low_m, blend_high_m, w_model, w_poly = blend_predictions(
+            pred["seat_comp_mid_m"],
+            pred["seat_comp_low_m"],
+            pred["seat_comp_high_m"],
+            poly_result,
+            pred.get("n_theatres_total", 0),
+            pred.get("n_days", 0),
+            coverage_ratio=pred.get("coverage_ratio"),
+        )
+    else:
+        blended_m = pred["seat_comp_mid_m"]
+        blend_low_m = pred["seat_comp_low_m"]
+        blend_high_m = pred["seat_comp_high_m"]
+        w_model, w_poly = 1.0, 0.0
+
+    pred["comp_blended_m"] = blended_m
+    pred["comp_blend_low_m"] = blend_low_m
+    pred["comp_blend_high_m"] = blend_high_m
+    pred["comp_w_model"] = w_model
+    pred["comp_w_poly"] = w_poly
+
+    primary = seat_primary_ensemble(pred)
+    if primary:
+        pred["seat_primary_mid_m"] = primary["mid_m"]
+        pred["seat_primary_low_m"] = primary["low_m"]
+        pred["seat_primary_high_m"] = primary["high_m"]
+        pred["seat_primary_w_direct"] = primary["w_direct"]
+        pred["seat_primary_w_comp"] = primary["w_comp"]
+        pred["seat_primary_disagreement_m"] = primary["disagreement_m"]
+        if poly_result:
+            final_m, final_low_m, final_high_m, w_seat, w_poly = blend_predictions(
+                primary["mid_m"],
+                primary["low_m"],
+                primary["high_m"],
+                poly_result,
+                pred.get("n_theatres_total", 0),
+                pred.get("n_days", 0),
+                coverage_ratio=pred.get("coverage_ratio"),
+            )
+        else:
+            final_m = primary["mid_m"]
+            final_low_m = primary["low_m"]
+            final_high_m = primary["high_m"]
+            w_seat, w_poly = 1.0, 0.0
+        pred["blended_m"] = final_m
+        pred["blend_low_m"] = final_low_m
+        pred["blend_high_m"] = final_high_m
+        pred["w_seat"] = w_seat
+        pred["w_poly"] = w_poly
+    select_regression_prediction(pred)
     return estimate
 
 
@@ -1335,7 +1885,7 @@ def _weighted_quantile_pairs(values, quantile):
     return ordered[-1][0]
 
 
-def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None):
+def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, audience_factor=1.0):
     """Project weekend from the latest observed seat data plus comp shape.
 
     Public daily grosses report Friday as Friday+previews, so once Friday seat
@@ -1345,9 +1895,9 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None):
     details = pred.get("daily_details", {})
     if "Thursday" not in details:
         return {
-            "mid_m": estimate.mid_m,
-            "low_m": estimate.low_m,
-            "high_m": estimate.high_m,
+            "mid_m": estimate.audience_adjusted_mid_m or estimate.mid_m,
+            "low_m": estimate.low_m * audience_factor,
+            "high_m": estimate.high_m * audience_factor,
             "basis": "Thursday",
             "evidence_m": estimate.thursday_gross_m,
             "evidence_share": thursday_share or estimate.weighted_thursday_share,
@@ -1420,8 +1970,8 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None):
     mid_m = evidence_m / evidence_share
     low_share = _weighted_quantile_pairs(share_values, 0.75)
     high_share = _weighted_quantile_pairs(share_values, 0.25)
-    low_m = evidence_m / low_share if low_share else mid_m
-    high_m = evidence_m / high_share if high_share else mid_m
+    low_m = (evidence_m / low_share) * audience_factor if low_share else mid_m
+    high_m = (evidence_m / high_share) * audience_factor if high_share else mid_m
     return {
         "mid_m": mid_m,
         "low_m": min(low_m, high_m),
@@ -1446,30 +1996,55 @@ def print_prediction(pred, verbose=False):
     n_th = pred["n_theatres_total"]
     nat = pred.get("national_theatre_count")
     nat_str = f", {nat:,} national" if nat else ""
+    ref = pred.get("expected_amc_theatres")
+    quality = pred.get("seat_data_quality")
+    model_quality_str = (
+        f" (ref {ref}, quality {quality:.0%})"
+        if ref and quality is not None else ""
+    )
     shows_str = f", ~{pred.get('avg_showings_per_cinema', 0):.1f} showings/cinema" if pred.get('avg_showings_per_cinema') else ""
     print(f"  Model 1 seat-only: {fmt_m(pred['seat_mid_m']):>7}  "
           f"({fmt_m(pred['seat_low_m'])} - {fmt_m(pred['seat_high_m'])})")
-    print(f"    Data: {n_th} AMC theatres{nat_str}, {pred['n_days']} day(s) [{days_str}]{shows_str}")
+    print(f"    Data: {n_th} AMC theatres{model_quality_str}{nat_str}, "
+          f"{pred['n_days']} day(s) [{days_str}]{shows_str}")
 
     # Per-day breakdown
     for day, details in sorted(pred["daily_details"].items(),
                                 key=lambda x: x[1]["date"]):
         amc_m = details["amc_total"] / 1_000_000
+        sampled_amc_m = details.get("sampled_amc_total", details["amc_total"]) / 1_000_000
+        sample_norm = details.get("sample_normalization_factor", 1.0)
         raw_dom_m = details.get("raw_domestic_mid", details["domestic_mid"]) / 1_000_000
         dom_m = details["domestic_mid"] / 1_000_000
         day_scale = details.get("day_scale", 1.0)
         spd = details.get("avg_showings_per_cinema", 0)
         coverage = details.get("coverage_ratio")
+        effective_coverage = details.get("effective_coverage_ratio")
         coverage_str = (
             f", {coverage:.0%} sample coverage"
             if coverage is not None and coverage < 0.95 else ""
         )
+        if (
+            effective_coverage is not None
+            and coverage is not None
+            and effective_coverage < coverage - 0.005
+        ):
+            coverage_str += f", {effective_coverage:.0%} effective"
+        missing_tz = details.get("missing_timezones") or []
+        missing_tz_str = f", missing TZ {'/'.join(missing_tz)}" if missing_tz else ""
         day_model = fmt_m(dom_m)
         if abs(day_scale - 1.0) >= 0.005:
             day_model = f"{fmt_m(raw_dom_m)} × {day_scale:.3f} = {fmt_m(dom_m)}"
+        amc_input = f"AMC {fmt_m(amc_m)}"
+        if abs(sample_norm - 1.0) >= 0.005:
+            amc_input = (
+                f"sample AMC {fmt_m(sampled_amc_m)} × {sample_norm:.3f} "
+                f"= AMC {fmt_m(amc_m)}"
+            )
         print(f"    {day} ({details['date']}): "
-              f"AMC {fmt_m(amc_m)} → day {day_model} "
+              f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
+              f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
     # Seat + historical comps
@@ -1488,6 +2063,12 @@ def print_prediction(pred, verbose=False):
         print(f"    Seat-implied Thu: {fmt_m(pred['seat_comp_thursday_gross_m'])}; "
               f"Thu share used: {pred['seat_comp_thursday_share']:.1%} "
               f"({'; '.join(share_bits)})")
+        if pred.get("seat_comp_audience_factor"):
+            r2 = pred.get("seat_comp_audience_regression_r2")
+            r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
+            print(f"    Audience regression: x{pred['seat_comp_audience_factor']:.3f} "
+                  f"from {pred.get('seat_comp_audience_features', 'audience scores')} "
+                  f"(n={pred['seat_comp_audience_regression_n']}{r2_str})")
         daily = pred.get("seat_comp_daily_m") or {}
         shares = pred.get("seat_comp_daily_shares") or {}
         if daily:
@@ -1501,6 +2082,19 @@ def print_prediction(pred, verbose=False):
         if top_comps:
             print("    Top comps: " + ", ".join(comp["movie"] for comp in top_comps))
 
+        if pred.get("comp_blended_m") is not None:
+            print(f"  Comp blend:       {fmt_m(pred['comp_blended_m']):>7}  "
+                  f"({fmt_m(pred['comp_blend_low_m'])} - {fmt_m(pred['comp_blend_high_m'])})")
+            if pred.get("poly_result"):
+                print(f"    Weights: {pred['comp_w_model']:.0%} comp / "
+                      f"{pred['comp_w_poly']:.0%} Polymarket")
+
+        if pred.get("seat_primary_mid_m") is not None:
+            print(f"  Seat primary:     {fmt_m(pred['seat_primary_mid_m']):>7}  "
+                  f"({fmt_m(pred['seat_primary_low_m'])} - {fmt_m(pred['seat_primary_high_m'])})")
+            print(f"    Weights: {pred['seat_primary_w_direct']:.0%} direct seats / "
+                  f"{pred['seat_primary_w_comp']:.0%} seat+comp")
+
     # Polymarket
     poly = pred["poly_result"]
     if poly:
@@ -1509,17 +2103,27 @@ def print_prediction(pred, verbose=False):
         bb = poly["best_bracket"]
         vol_str = f"${poly['total_volume']:,.0f}" if poly['total_volume'] else "—"
         print(f"    Brackets: {len(poly['brackets'])}, vol {vol_str}")
+        if poly.get("raw_probability_sum") is not None:
+            print(f"    No-vig normalized from raw sum {poly['raw_probability_sum']:.1%}")
         print(f"    Highest-prob: ${bb['low']:.0f}M-${bb['high']:.0f}M "
-              f"({bb['p_yes']:.0%})")
+              f"({bb.get('p_norm', bb['p_yes']):.0%})")
 
-    # Blended
-    print(f"  PREDICTION:    {fmt_m(pred['blended_m']):>10}  "
-          f"({fmt_m(pred['blend_low_m'])} - {fmt_m(pred['blend_high_m'])})")
+    # Headline model prediction
+    regression_mid, regression_low, regression_high = regression_prediction_values(pred)
+    print(f"  PREDICTION:    {fmt_m(regression_mid):>10}  "
+          f"({fmt_m(regression_low)} - {fmt_m(regression_high)})")
+    source = pred.get("regression_source")
+    basis = pred.get("regression_basis")
+    if source:
+        label = source.replace("-", " ")
+        basis_str = f", basis {basis}" if basis else ""
+        print(f"    Source: {label}{basis_str}; Polymarket context only")
     if poly:
         w_s = pred["w_seat"]
         w_p = pred["w_poly"]
-        print(f"    Weights: {w_s:.0%} seat / {w_p:.0%} Polymarket")
-        diff = pred["blended_m"] - poly["ev"]
+        print(f"    Market blend: {fmt_m(pred['blended_m'])} "
+              f"({w_s:.0%} seat / {w_p:.0%} Polymarket)")
+        diff = regression_mid - poly["ev"]
         direction = "higher" if diff > 0 else "lower"
         print(f"    vs Polymarket: {'+' if diff > 0 else ''}{diff:,.1f}M {direction}")
 
@@ -1596,7 +2200,7 @@ Options:
   --through-date YYYY-MM-DD
                      Ignore seat/Polymarket rows after this date for replay
   --include-expansion
-                     Include best-effort expansion theatres in prediction
+                     Kept for compatibility; expansion is now on by default
   --verbose, -v      Include per-theatre prediction details
   --help, -h         Show this help text
 """)
@@ -1705,9 +2309,7 @@ def main():
         elif calibration_has_weekend(cal, weekend_of):
             print("Calibration already contains this weekend; not freezing contaminated state.")
 
-        pred_mid = pred["blended_m"]
-        pred_low = pred["blend_low_m"]
-        pred_high = pred["blend_high_m"]
+        pred_mid, pred_low, pred_high = regression_prediction_values(pred)
         seat_raw = pred["amc_total_weekend"] / 1_000_000
         poly_ev = pred["poly_result"]["ev"] if pred["poly_result"] else 0
         n_th = pred["n_theatres_total"]
@@ -1728,7 +2330,10 @@ def main():
             for day, details in pred.get("daily_details", {}).items()
         }
         daily_coverage_ratios = {
-            day: round(details["coverage_ratio"], 3)
+            day: round(
+                details.get("effective_coverage_ratio", details["coverage_ratio"]),
+                3,
+            )
             for day, details in pred.get("daily_details", {}).items()
             if details.get("coverage_ratio") is not None
         }
@@ -1739,7 +2344,9 @@ def main():
                      daily_coverage_ratios=daily_coverage_ratios,
                      daily_predictions=daily_predictions,
                      raw_daily_predictions=raw_daily_predictions,
-                     weekend_of=weekend_of)
+                     weekend_of=weekend_of,
+                     reference_amc_theatres=pred.get("reference_amc_theatres"),
+                     model_cohort_key=pred.get("model_cohort_key"))
         print(f"Recorded: {movie_match} actual = ${actual_val}M")
         print(f"Calibration updated → scale={cal['calibration_factors']['overall_scale_factor']:.4f}, "
               f"AMC share={cal['calibration_factors']['amc_market_share']:.2%}")

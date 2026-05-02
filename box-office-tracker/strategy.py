@@ -127,6 +127,21 @@ def kelly_fraction(our_prob: float, market_price: float) -> float:
     return max(0.0, f)
 
 
+def model_prediction_values(prediction: dict) -> tuple[float, float, float]:
+    """Return the actual-predictive model forecast, not the market blend."""
+    mid = prediction.get("regression_mid_m", prediction.get("model_forecast_mid_m"))
+    low = prediction.get("regression_low_m", prediction.get("model_forecast_low_m"))
+    high = prediction.get("regression_high_m", prediction.get("model_forecast_high_m"))
+
+    if mid is None:
+        mid = prediction.get("blended_m", 0)
+    if low is None:
+        low = prediction.get("blend_low_m", mid)
+    if high is None:
+        high = prediction.get("blend_high_m", mid)
+    return float(mid or 0), float(low or 0), float(high or 0)
+
+
 # ── Confidence Scoring ──────────────────────────────────────────────────────
 
 def prediction_confidence(prediction: dict,
@@ -135,7 +150,8 @@ def prediction_confidence(prediction: dict,
 
     Factors:
     - Days collected: 1 day = 0.3, 2 = 0.6, 3 = 0.85, 4 = 0.95
-    - Theatre count: more theatres = tighter estimate
+    - Seat-data quality: coverage-adjusted reliability from predict.py, with
+      raw theatre count as a legacy fallback
     - Seat vs Polymarket weight: higher seat weight = we have real data
     - CI width relative to midpoint: tighter = more confident
     - Historical accuracy: if past predictions were accurate, boost confidence
@@ -146,21 +162,32 @@ def prediction_confidence(prediction: dict,
     we dampen confidence → smaller bets.
     """
     n_days = prediction.get("n_days", 0)
-    n_theatres = prediction.get("n_theatres_total", 0)
-    w_seat = prediction.get("w_seat", 0)
-    mid = prediction.get("blended_m", 0)
-    low = prediction.get("blend_low_m", 0)
-    high = prediction.get("blend_high_m", 0)
+    mid, low, high = model_prediction_values(prediction)
 
     # Day factor: 1→0.30, 2→0.60, 3→0.85, 4→0.95
     day_scores = {0: 0.0, 1: 0.30, 2: 0.60, 3: 0.85, 4: 0.95}
     day_factor = day_scores.get(n_days, 0.95)
 
-    # Theatre factor: 0→0.0, 50→0.5, 200→0.8, 500+→1.0
-    theatre_factor = min(1.0, n_theatres / 500) if n_theatres > 0 else 0.0
+    # Seat sample factor: prefer predict.py's coverage-adjusted quality score.
+    # Raw theatre count is only a legacy fallback because different collection
+    # universes can have very different "complete" theatre counts.
+    seat_quality = prediction.get("seat_data_quality")
+    if seat_quality is not None:
+        try:
+            theatre_factor = max(0.0, min(1.0, float(seat_quality)))
+        except (TypeError, ValueError):
+            theatre_factor = 0.0
+    else:
+        n_theatres = prediction.get("n_theatres_total", 0)
+        theatre_factor = min(1.0, n_theatres / 500) if n_theatres > 0 else 0.0
 
-    # Data source factor: seat data is our edge, polymarket-only is no edge
-    data_factor = w_seat  # 0.0 (all polymarket) to 1.0 (all seat data)
+    # Data source factor: seat/regression data is our edge, market-only is not.
+    if "regression_uses_polymarket" in prediction:
+        data_factor = 0.0 if prediction.get("regression_uses_polymarket") else 1.0
+    elif "model_forecast_uses_polymarket" in prediction:
+        data_factor = 0.0 if prediction.get("model_forecast_uses_polymarket") else 1.0
+    else:
+        data_factor = prediction.get("w_seat", 0)
 
     # CI tightness: if CI is ±50% of mid, confidence is low
     if mid > 0:
@@ -266,13 +293,11 @@ def analyze_distribution(movie: str, prediction: dict,
     This is the foundation — before deciding what to trade, we need to see
     the full picture of where we agree and disagree with the market.
     """
-    mid = prediction["blended_m"]
-    low = prediction["blend_low_m"]
-    high = prediction["blend_high_m"]
+    mid, low, high = model_prediction_values(prediction)
 
     # NOTE: do NOT re-apply overall_scale_factor here.
     # predict_movie() already applies it inside days_to_weekend(), so
-    # blended_m / blend_low_m / blend_high_m are fully calibrated.
+    # the model forecast/range fields are fully calibrated.
     # Re-applying would double-count the factor (e.g. 0.9 × 0.9 = 0.81×).
 
     # Std from CI width. The CI comes from DAY_CONFIDENCE in predict.py:

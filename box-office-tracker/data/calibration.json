@@ -29,6 +29,8 @@
       "error_pct": -3.7,
       "n_theatres": 378,
       "n_days": 4,
+      "model_cohort_key": "core",
+      "reference_amc_theatres": 376,
       "daily_theatre_counts": {
         "Thursday": 375,
         "Friday": 261,
@@ -50,6 +52,11 @@
   ],
   "calibration_factors": {
     "amc_market_share": 0.205,
+    "reference_amc_theatres": 376,
+    "reference_amc_theatres_by_cohort": {
+      "core": 376,
+      "core,expansion": 425
+    },
     "overall_scale_factor": 0.9958,
     "day_weights": {
       "Thursday": 0.1299,
@@ -71,6 +78,8 @@
         "abs_error_pct": 3.7,
         "n_theatres": 378,
         "n_days": 4,
+        "model_cohort_key": "core",
+        "reference_amc_theatres": 376,
         "coverage_ratio": 0.846,
         "daily_coverage_ratios": {
           "Thursday": 0.997,

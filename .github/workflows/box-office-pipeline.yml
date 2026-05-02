@@ -1,4 +1,6 @@
 name: Box Office Pipeline
+run-name: >-
+  box office ${{ github.event.inputs.phase == 'scrape' && (github.event.inputs.snapshots_only == 'true' && 'scrape snapshot' || 'scrape regular') || format('{0} {1}', github.event.inputs.phase || 'scrape', github.event.inputs.tz_group || 'ALL') }}
 
 on:
   # Scheduling is driven by a system cron on the self-hosted VPS
@@ -10,11 +12,11 @@ on:
   # Runner topology:
   #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
   #     state file showtime-links.json benefits from single-writer serialization.
-  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT] —
-  #     each matrix leg gets a fresh Azure IP, escaping AMC's Queue-It
-  #     bot-blocker that had been zeroing out CT/PT on the VPS's flagged IP.
-  #     (MT omitted — too few theatres to justify a separate Phase 1 schedule.)
-  #   - finalize (predict + xlsx): GH-hosted, depends on scrape matrix.
+  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT].
+  #     Each leg gets a fresh Azure IP, then uploads a data artifact instead of
+  #     pushing to main. This keeps any collected rows durable even if a leg
+  #     fails after scraping.
+  #   - finalize (artifact merge + predict + xlsx): GH-hosted, single writer.
   #   - Calibrate: self-hosted VPS (weekly, unchanged).
   workflow_dispatch:
     inputs:
@@ -34,9 +36,18 @@ on:
         description: 'Test mode: run Phase 2 on N theatres only per TZ (e.g. 5). Empty = full run.'
         required: false
         default: ''
+      pre_reservation_snapshots:
+        description: 'Also write reserved-seat snapshot rows to pre-reservation-snapshots.csv. Default off.'
+        required: false
+        default: 'false'
+      snapshots_only:
+        description: 'Write pre-reservation snapshots without appending prediction seat-count rows. Default off.'
+        required: false
+        default: 'false'
 
 permissions:
   contents: write
+  actions: read
 
 # Workflow-level concurrency keyed on phase, with one important wrinkle:
 # collect-links also includes tz_group. GitHub Actions keeps at most one pending
@@ -51,12 +62,11 @@ permissions:
 # fan-outs from the same account) while leaving the three in-run matrix legs free
 # to execute truly in parallel.
 #
-# The shared suffix keeps non-collect phases serialized by phase. `cancel-
-# in-progress: false` queues rather than killing a running job; the per-TZ
-# collect suffix avoids GitHub replacing an older pending timezone with a newer
-# one.
+# Scrape runs split into regular vs snapshot lanes. GitHub keeps only one
+# pending run per concurrency group, so pre-reservation probes must not share
+# the same pending slot as the model-driving post-show scrape.
 concurrency:
-  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || 'shared' }}
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && 'snapshot' || 'regular') }}
   cancel-in-progress: false
 
 jobs:
@@ -137,6 +147,9 @@ jobs:
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 60
+        env:
+          PHASE1_FULL_WEEKEND_LINKS: 'true'
+          PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
         run: python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
 
       - name: Commit showtime links
@@ -152,8 +165,7 @@ jobs:
           # files (e.g. runner caches, locally-modified secrets).
           git add box-office-tracker/data/showtime-links.json \
                   box-office-tracker/data/theatre-counts.json \
-                  box-office-tracker/data/polymarket-markets.csv \
-                  box-office-tracker/data/run-log.md 2>/dev/null || true
+                  box-office-tracker/data/polymarket-markets.csv 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No data changes to commit."
             exit 0
@@ -161,7 +173,7 @@ jobs:
           git commit -m "data: box office ${{ github.event.inputs.tz_group }} collect-links"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase -X ours origin main && git push && break
+            git pull --rebase --autostash -X ours origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
@@ -177,17 +189,16 @@ jobs:
   # zeroing out CT/PT on the VPS IP. All three TZs run in parallel (~60 min
   # wall-clock instead of the old staggered 3+ hours on one self-hosted box).
   #
-  # Commit race: each matrix leg appends its TZ's rows to seat-counts.csv and
-  # pushes. The retry loop handles 3-way contention via rebase with jittered
-  # backoff (6 attempts, up to ~4 min total). The append-only data files have
-  # `merge=union` in .gitattributes so concurrent appends don't silently drop
-  # each other — without that, `-X ours` would treat peer TZ additions as
-  # "patch already upstream" and erase them.
+  # Each matrix leg uploads its local CSV/log snapshot as an artifact and never
+  # pushes to main. The finalize job is the only Phase 2 writer; it downloads all
+  # scrape artifacts, dedupes rows, regenerates derived files, and commits once.
+  # This removes the race that can strand rows behind a dirty worktree or failed
+  # rebase while preserving partial data from crashed scrape legs.
   # ──────────────────────────────────────────────────────────────────────────
   scrape:
     if: github.event.inputs.phase == 'scrape'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 390
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       matrix:
@@ -201,9 +212,9 @@ jobs:
           fetch-depth: 50
 
       - name: Sync to latest main
-        # Matrix legs start ~simultaneously; by the time the last one begins
-        # earlier legs may have already pushed. Reset to current tip so each
-        # leg appends to the latest CSV rather than the commit-triggering SHA.
+        # Reset to current main before scraping so each artifact starts from the
+        # newest committed baseline. The finalizer will dedupe any overlapping
+        # rows from parallel legs.
         run: |
           git fetch --deepen=50 origin main
           git reset --hard origin/main
@@ -222,6 +233,14 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # Snapshot-only runs are pre-reservation probes, not final post-show
+          # scrape runs. They must be allowed even if last night's real scrape
+          # committed on the same UTC day.
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            echo "Snapshot-only run — bypassing normal scrape dedup guard"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           today=$(date -u +%Y-%m-%d)
           pattern="data: box office ${{ matrix.tz }} scrape"
           if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
@@ -231,6 +250,66 @@ jobs:
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Snapshot capacity guard
+        if: steps.dedup.outputs.skip != 'true' && github.event.inputs.snapshots_only == 'true'
+        timeout-minutes: 300
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          SNAPSHOT_LAST_SAFE_START_MINUTES: "165"  # 02:45 UTC; delayed 02:30 snapshots wait instead of running into scrape.
+          REGULAR_WINDOW_START_MINUTES: "315"  # 05:15 UTC, before the 07:00 UTC model scrape.
+          REGULAR_WINDOW_END_MINUTES: "585"    # 09:45 UTC, after normal scrape timeout cushion.
+        run: |
+          set -euo pipefail
+
+          utc_minutes=$((10#$(date -u +%H) * 60 + 10#$(date -u +%M)))
+          if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES" ] && [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
+            sleep_seconds=$(((REGULAR_WINDOW_END_MINUTES - utc_minutes) * 60))
+            echo "Snapshot capacity guard: too close to regular scrape capacity window; waiting ${sleep_seconds}s"
+            sleep "$sleep_seconds"
+          fi
+
+          regular_runs() {
+            {
+              gh run list --workflow box-office-pipeline.yml --status queued --limit 50 --json databaseId,displayTitle,status
+              gh run list --workflow box-office-pipeline.yml --status in_progress --limit 50 --json databaseId,displayTitle,status
+            } | python3 -c '
+          import json
+          import os
+          import sys
+
+          current = str(os.environ["CURRENT_RUN_ID"])
+          seen = set()
+          for payload in sys.stdin:
+              payload = payload.strip()
+              if not payload:
+                  continue
+              for run in json.loads(payload):
+                  run_id = str(run.get("databaseId", ""))
+                  title = run.get("displayTitle") or ""
+                  if run_id == current or run_id in seen:
+                      continue
+                  if "box office scrape regular" in title:
+                      print(f"{run_id} {run.get('status')} {title}")
+                      seen.add(run_id)
+          '
+          }
+
+          for attempt in $(seq 1 120); do
+            blocking_runs="$(regular_runs)"
+            if [ -z "$blocking_runs" ]; then
+              echo "Snapshot capacity guard: no queued/running regular scrape found."
+              exit 0
+            fi
+            echo "Snapshot capacity guard: regular scrape still owns capacity:"
+            echo "$blocking_runs"
+            echo "Waiting 60s before retry ${attempt}/120..."
+            sleep 60
+          done
+
+          echo "Snapshot capacity guard: regular scrape capacity did not clear in time."
+          exit 1
 
       - name: Install dependencies
         if: steps.dedup.outputs.skip != 'true'
@@ -244,6 +323,19 @@ jobs:
         working-directory: box-office-tracker
         timeout-minutes: 75
         run: |
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            export SNAPSHOT_MAX_CONCURRENT_TABS=1
+            SNAPSHOT_DELAY_SECONDS=0
+            case "${{ matrix.tz }}" in
+              ET) SNAPSHOT_DELAY_SECONDS=0 ;;
+              CT) SNAPSHOT_DELAY_SECONDS=300 ;;
+              PT) SNAPSHOT_DELAY_SECONDS=600 ;;
+            esac
+            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS delay=${SNAPSHOT_DELAY_SECONDS}s"
+            if [ "$SNAPSHOT_DELAY_SECONDS" -gt 0 ]; then
+              sleep "$SNAPSHOT_DELAY_SECONDS"
+            fi
+          fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
           # dispatch.sh default, so an empty/missing input can't silently
@@ -254,47 +346,45 @@ jobs:
           fi
           TEST_FLAG=""
           if [ -n "${{ github.event.inputs.test }}" ]; then TEST_FLAG="--test ${{ github.event.inputs.test }}"; fi
-          python scraper.py --ensure-links $FORCE_FLAG $TEST_FLAG ${{ matrix.tz }}
+          SNAPSHOT_FLAG=""
+          if [ "${{ github.event.inputs.pre_reservation_snapshots }}" = "true" ]; then
+            SNAPSHOT_FLAG="--pre-reservation-snapshots"
+          fi
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            SNAPSHOT_FLAG="$SNAPSHOT_FLAG --snapshots-only"
+          fi
+          python scraper.py --ensure-links $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG ${{ matrix.tz }}
 
-      - name: Commit ${{ matrix.tz }} seat data
-        # always() so partial data from a crashed scrape still gets preserved.
-        # The scraper flushes per-theatre, so even a mid-run failure usually has
-        # rows worth committing.
-        if: always() && steps.dedup.outputs.skip != 'true'
+      - name: Write scrape manifest
+        if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Only stage files Phase 2 actually writes. Matrix legs must not
-          # commit xlsx or predictions (those are regenerated once in the
-          # finalize job from the merged CSV). theatre-counts.json is written
-          # only by Phase 1 (fetch_bom_theatre_counts in run_collect_links_async).
-          git add box-office-tracker/data/seat-counts.csv \
-                  box-office-tracker/data/polymarket-markets.csv \
-                  box-office-tracker/data/run-log.md 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No data changes to commit (run produced no new output)."
-            exit 0
-          fi
-          if git diff --staged --quiet -- box-office-tracker/data/seat-counts.csv; then
-            echo "No seat-count rows changed; not creating a scrape commit that would block retry."
-            exit 0
-          fi
-          git commit -m "data: box office ${{ matrix.tz }} scrape"
-          # 6 attempts with jittered backoff handles 4-way push contention.
-          # Worst-case wait is ~4 min which still fits well under the 90 min
-          # job budget. -X ours keeps rows from peer TZs when rebasing.
-          for i in 1 2 3 4 5 6; do
-            git rebase --abort 2>/dev/null || true
-            git pull --rebase -X ours origin main && git push && break
-            echo "Push attempt $i failed, retrying..."
-            if [ "$i" = "6" ]; then
-              echo "All 6 push attempts failed — data not committed."
-              git rebase --abort 2>/dev/null || true
-              exit 1
-            fi
-            # Jittered backoff: (i*8) base + 0-14s random = avoid thundering herd
-            sleep $((i * 8 + RANDOM % 15))
-          done
+          mkdir -p box-office-tracker/data/scrape-manifest
+          {
+            echo "timezone=${{ matrix.tz }}"
+            echo "dedup_skip=${{ steps.dedup.outputs.skip }}"
+            echo "workflow_run_id=${{ github.run_id }}"
+            echo "workflow_run_attempt=${{ github.run_attempt }}"
+            echo "workflow_job_status=${{ job.status }}"
+          } > box-office-tracker/data/scrape-manifest/${{ matrix.tz }}.env
+
+      - name: Upload scrape artifact
+        # always() so partial data from a crashed scrape still reaches the
+        # single-writer finalizer. The scraper flushes per-theatre, so even a
+        # mid-run failure can have rows worth merging.
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-${{ matrix.tz }}-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            box-office-tracker/data/scrape-manifest/${{ matrix.tz }}.env
+            box-office-tracker/data/seat-counts.csv
+            box-office-tracker/data/pre-reservation-snapshots.csv
+            box-office-tracker/data/polymarket-markets.csv
+            box-office-tracker/data/run-logs/
+            box-office-tracker/data/showtime-links.json
+            box-office-tracker/data/theatre-counts.json
 
   # ──────────────────────────────────────────────────────────────────────────
   # Finalize — runs once after all matrix legs finish. Regenerates
@@ -320,12 +410,55 @@ jobs:
           fetch-depth: 50
 
       - name: Sync to latest main
-        # Must pick up all 3 matrix commits that just landed.
+        # Finalize is the single Phase 2 writer. Start from current main, then
+        # merge the downloaded matrix artifacts into canonical data files.
         run: |
           git fetch --deepen=50 origin main
           git reset --hard origin/main
 
+      - name: Download scrape artifacts
+        id: download_scrape_artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: scrape-*
+          path: box-office-tracker/data/scrape-artifacts
+
+      - name: Merge scrape artifacts
+        working-directory: box-office-tracker
+        run: python scripts/merge_scrape_artifacts.py data/scrape-artifacts --marker-file /tmp/box-office-scrape-markers.txt
+
+      - name: Finalize guard — skip if latest scrape already has derived artifacts
+        id: finalize_guard
+        run: |
+          if [ -n "$(git status --short -- \
+            box-office-tracker/data/seat-counts.csv \
+            box-office-tracker/data/pre-reservation-snapshots.csv \
+            box-office-tracker/data/polymarket-markets.csv \
+            box-office-tracker/data/run-logs)" ]; then
+            echo "Merged scrape artifacts changed canonical data; finalize required."
+            echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          latest_scrape=$(git log --format=%H --grep='data: box office .* scrape' -n 1 || true)
+          latest_finalize=$(git log --format=%H \
+            --grep='data: box office scrape merge + predictions' \
+            --grep='data: box office predictions + xlsx' \
+            -n 1 || true)
+          if [ -z "$latest_scrape" ]; then
+            echo "No scrape marker or artifact changes found; skipping finalize."
+            echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -n "$latest_finalize" ] && git merge-base --is-ancestor "$latest_scrape" "$latest_finalize"; then
+            echo "Latest scrape $latest_scrape is already covered by finalize $latest_finalize; skipping duplicate finalize."
+            echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Latest scrape $latest_scrape is not finalized yet."
+          echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         run: |
           pip install -r requirements.txt
@@ -333,29 +466,42 @@ jobs:
           # are pure-pandas. Skipping the chromium download saves ~2 min.
 
       - name: Generate predictions
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         run: python predict.py
 
       - name: Refresh Excel workbook
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         run: python export_seat_counts_xlsx.py
 
-      - name: Commit predictions + xlsx
+      - name: Commit merged scrape data + predictions
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Scheduled finalize only writes seat-counts.xlsx — predict.py is
-          # read-only unless invoked with --actual. Explicit allow-list so
-          # we never accidentally commit untracked files from the runner.
-          git add box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true
+          # Explicit allow-list: commit canonical merged data and derived files,
+          # never the downloaded artifact staging directory.
+          git add box-office-tracker/data/seat-counts.csv \
+                  box-office-tracker/data/pre-reservation-snapshots.csv \
+                  box-office-tracker/data/polymarket-markets.csv \
+                  box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true
+          if [ -d box-office-tracker/data/run-logs ]; then
+            git add box-office-tracker/data/run-logs/ 2>/dev/null || true
+          fi
           if git diff --staged --quiet; then
-            echo "No derived artifacts changed (nothing new from matrix, or regeneration is idempotent)."
+            echo "No canonical data or derived artifacts changed."
             exit 0
           fi
-          git commit -m "data: box office predictions + xlsx"
+          commit_msg=/tmp/box-office-finalize-commit.txt
+          printf "data: box office scrape merge + predictions\n\n" > "$commit_msg"
+          if [ -s /tmp/box-office-scrape-markers.txt ]; then
+            cat /tmp/box-office-scrape-markers.txt >> "$commit_msg"
+          fi
+          git commit -F "$commit_msg"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase -X ours origin main && git push && break
+            git pull --rebase --autostash -X ours origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — derived artifacts not committed."
@@ -411,7 +557,7 @@ jobs:
           git commit -m "data: box office calibration"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase -X ours origin main && git push && break
+            git pull --rebase --autostash -X ours origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then exit 1; fi
             sleep $((i * 15))

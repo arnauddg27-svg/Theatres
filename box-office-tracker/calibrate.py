@@ -50,6 +50,46 @@ DEFAULT_CALIBRATION = {
 }
 
 
+def _positive_float(value):
+    try:
+        f = float(value)
+    except (TypeError, ValueError):
+        return None
+    return f if f > 0 else None
+
+
+def _normalize_model_cohort_key(cohorts):
+    if cohorts is None:
+        return ""
+    if isinstance(cohorts, str):
+        raw = cohorts.split(",")
+    else:
+        raw = cohorts
+    normalized = []
+    for cohort in raw:
+        value = str(cohort).strip().lower()
+        if value:
+            normalized.append(value)
+    return ",".join(sorted(set(normalized)))
+
+
+def _remember_reference_amc_theatres(cal, reference_amc_theatres, model_cohort_key=None):
+    reference = _positive_float(reference_amc_theatres)
+    if not reference:
+        return None
+
+    ref = int(round(reference))
+    factors = cal.setdefault("calibration_factors", {})
+    cohort_key = _normalize_model_cohort_key(model_cohort_key)
+    if cohort_key:
+        factors.setdefault("reference_amc_theatres_by_cohort", {})[cohort_key] = ref
+        if cohort_key == "core":
+            factors.setdefault("reference_amc_theatres", ref)
+    else:
+        factors.setdefault("reference_amc_theatres", ref)
+    return ref
+
+
 def load_calibration():
     if os.path.exists(CALIBRATION_JSON):
         with open(CALIBRATION_JSON, "r") as f:
@@ -264,7 +304,8 @@ def fetch_movie_daily_history(movie_title, friday_date):
 def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   predicted_high, daily_actuals, daily_predictions,
                   n_theatres, n_days, daily_theatre_counts=None,
-                  daily_coverage_ratios=None, raw_daily_predictions=None):
+                  daily_coverage_ratios=None, raw_daily_predictions=None,
+                  reference_amc_theatres=None, model_cohort_key=None):
     """Record daily predicted-vs-actual and update all calibration factors."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
@@ -286,6 +327,16 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         "n_theatres": n_theatres,
         "n_days": n_days,
     }
+    cohort_key = _normalize_model_cohort_key(model_cohort_key)
+    if cohort_key:
+        entry["model_cohort_key"] = cohort_key
+    reference = _remember_reference_amc_theatres(
+        cal,
+        reference_amc_theatres,
+        model_cohort_key=cohort_key,
+    )
+    if reference:
+        entry["reference_amc_theatres"] = reference
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
@@ -365,7 +416,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     # 5. Update historical accuracy (drives trading confidence)
     if total_actual > 0 and total_predicted > 0:
         abs_error = abs(total_predicted - total_actual) / total_actual
-        factors["historical_accuracy"].append({
+        accuracy_entry = {
             "movie": movie,
             "weekend_of": weekend_of,
             "abs_error_pct": round(abs_error * 100, 1),
@@ -379,7 +430,12 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                 for day in daily_actuals
                 if daily_actuals[day] > 0 and day in daily_predictions
             },
-        })
+        }
+        if entry.get("model_cohort_key"):
+            accuracy_entry["model_cohort_key"] = entry["model_cohort_key"]
+        if entry.get("reference_amc_theatres"):
+            accuracy_entry["reference_amc_theatres"] = entry["reference_amc_theatres"]
+        factors["historical_accuracy"].append(accuracy_entry)
         factors["historical_accuracy"] = factors["historical_accuracy"][-20:]
 
     factors["last_updated"] = datetime.now().strftime("%Y-%m-%d")
@@ -397,8 +453,9 @@ def _last_friday():
 
 def auto_calibrate():
     """Fetch actual daily results and calibrate against our predictions."""
-    from predict import (load_seat_data, load_polymarket_data,
-                         load_theatre_counts, predict_movie)
+    from predict import (regression_prediction_values, load_seat_data,
+                         load_polymarket_data, load_theatre_counts,
+                         predict_movie)
 
     cal = load_calibration()
     last_fri = _last_friday()
@@ -461,8 +518,8 @@ def auto_calibrate():
             print(f"    No prediction possible")
             continue
 
-        predicted = pred["blended_m"]
-        print(f"    Our prediction: ${predicted:.1f}M")
+        predicted, predicted_low, predicted_high = regression_prediction_values(pred)
+        print(f"    Our regression prediction: ${predicted:.1f}M")
 
         # Fetch actual daily breakdown
         daily_actuals = fetch_opening_weekend_daily(movie, last_fri)
@@ -490,11 +547,15 @@ def auto_calibrate():
             ) / 1_000_000
             daily_theatre_counts[day_name] = details.get("n_theatres", 0)
             if details.get("coverage_ratio") is not None:
-                daily_coverage_ratios[day_name] = round(details["coverage_ratio"], 3)
+                daily_coverage_ratios[day_name] = round(
+                    details.get("effective_coverage_ratio", details["coverage_ratio"]),
+                    3,
+                )
 
         pending.append({
             "movie": movie,
             "pred": pred,
+            "regression_prediction": (predicted, predicted_low, predicted_high),
             "daily_actuals": daily_actuals,
             "daily_predictions": daily_predictions,
             "raw_daily_predictions": raw_daily_predictions,
@@ -505,6 +566,7 @@ def auto_calibrate():
     for item in pending:
         movie = item["movie"]
         pred = item["pred"]
+        predicted, predicted_low, predicted_high = item["regression_prediction"]
         daily_actuals = item["daily_actuals"]
         daily_predictions = item["daily_predictions"]
         raw_daily_predictions = item["raw_daily_predictions"]
@@ -515,9 +577,9 @@ def auto_calibrate():
 
         entry = record_result(
             cal, movie, last_fri,
-            predicted_mid=pred["blended_m"],
-            predicted_low=pred["blend_low_m"],
-            predicted_high=pred["blend_high_m"],
+            predicted_mid=predicted,
+            predicted_low=predicted_low,
+            predicted_high=predicted_high,
             daily_actuals=daily_actuals,
             daily_predictions=daily_predictions,
             n_theatres=pred["n_theatres_total"],
@@ -525,6 +587,8 @@ def auto_calibrate():
             daily_theatre_counts=daily_theatre_counts,
             daily_coverage_ratios=daily_coverage_ratios,
             raw_daily_predictions=raw_daily_predictions,
+            reference_amc_theatres=pred.get("reference_amc_theatres"),
+            model_cohort_key=pred.get("model_cohort_key"),
         )
 
         error = entry["error_pct"]
@@ -620,8 +684,9 @@ if __name__ == "__main__":
             print("Usage: --actual \"Movie Name\" 85.3")
             sys.exit(1)
 
-        from predict import (load_seat_data, load_polymarket_data,
-                             load_theatre_counts, predict_movie)
+        from predict import (regression_prediction_values, load_seat_data,
+                             load_polymarket_data, load_theatre_counts,
+                             predict_movie)
         cal = load_calibration()
         seat_data = load_seat_data(weekend_of=_last_friday())
         poly_data = load_polymarket_data(weekend_of=_last_friday())
@@ -672,18 +737,23 @@ if __name__ == "__main__":
             ) / 1_000_000
             daily_theatre_counts[day_name] = details.get("n_theatres", 0)
             if details.get("coverage_ratio") is not None:
-                daily_coverage_ratios[day_name] = round(details["coverage_ratio"], 3)
+                daily_coverage_ratios[day_name] = round(
+                    details.get("effective_coverage_ratio", details["coverage_ratio"]),
+                    3,
+                )
 
         # Try fetching daily breakdown, fall back to total-only
         daily_actuals = fetch_opening_weekend_daily(matched_movie, _last_friday())
         if not daily_actuals:
             daily_actuals = {"Weekend": actual_val}
 
+        predicted_mid, predicted_low, predicted_high = regression_prediction_values(pred)
+
         record_result(
             cal, matched_movie, weekend_of,
-            predicted_mid=pred["blended_m"],
-            predicted_low=pred["blend_low_m"],
-            predicted_high=pred["blend_high_m"],
+            predicted_mid=predicted_mid,
+            predicted_low=predicted_low,
+            predicted_high=predicted_high,
             daily_actuals=daily_actuals,
             daily_predictions=daily_predictions,
             n_theatres=pred["n_theatres_total"],
@@ -691,6 +761,8 @@ if __name__ == "__main__":
             daily_theatre_counts=daily_theatre_counts,
             daily_coverage_ratios=daily_coverage_ratios,
             raw_daily_predictions=raw_daily_predictions,
+            reference_amc_theatres=pred.get("reference_amc_theatres"),
+            model_cohort_key=pred.get("model_cohort_key"),
         )
         print(f"Recorded: {matched_movie} actual=${actual_val}M")
     else:

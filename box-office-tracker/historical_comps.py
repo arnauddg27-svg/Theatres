@@ -10,6 +10,7 @@ historical films with similar genre/audience metadata.
 from __future__ import annotations
 
 import csv
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -37,6 +38,12 @@ class HistoricalComp:
     release_year: int | None = None
     daily_source_url: str = ""
     daily_notes: str = ""
+    imdb_rating: float = 0.0
+    imdb_votes: int = 0
+    imdb_url: str = ""
+    rt_audience_score: int = 0
+    rt_audience_score_type: str = ""
+    rt_url: str = ""
 
     @property
     def thursday_share(self) -> float:
@@ -72,6 +79,10 @@ class TargetMetadata:
     rating: str
     weekend_of: str = ""
     notes: str = ""
+    imdb_rating: float = 0.0
+    imdb_votes: int = 0
+    rt_audience_score: int = 0
+    rt_audience_score_type: str = ""
 
 
 @dataclass(frozen=True)
@@ -92,6 +103,12 @@ class CompEstimate:
     adjusted_thursday_share: float | None = None
     adjusted_mid_m: float | None = None
     comp_influence: float = 1.0
+    audience_adjusted_thursday_share: float | None = None
+    audience_adjusted_mid_m: float | None = None
+    audience_regression_factor: float = 1.0
+    audience_regression_n: int = 0
+    audience_regression_r2: float | None = None
+    audience_regression_features: dict[str, float] | None = None
 
 
 def _clean(value: str | None) -> str:
@@ -131,6 +148,12 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 release_year=_int(row, "release_year"),
                 daily_source_url=(row.get("daily_source_url") or "").strip(),
                 daily_notes=(row.get("daily_notes") or "").strip(),
+                imdb_rating=_float(row, "imdb_rating"),
+                imdb_votes=_int(row, "imdb_votes") or 0,
+                imdb_url=(row.get("imdb_url") or "").strip(),
+                rt_audience_score=_int(row, "rt_audience_score") or 0,
+                rt_audience_score_type=(row.get("rt_audience_score_type") or "").strip(),
+                rt_url=(row.get("rt_url") or "").strip(),
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)
@@ -155,6 +178,10 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 franchise_type=_clean(row.get("franchise_type")),
                 rating=(row.get("rating") or "").strip().upper(),
                 notes=(row.get("notes") or "").strip(),
+                imdb_rating=_float(row, "imdb_rating"),
+                imdb_votes=_int(row, "imdb_votes") or 0,
+                rt_audience_score=_int(row, "rt_audience_score") or 0,
+                rt_audience_score_type=(row.get("rt_audience_score_type") or "").strip(),
             )
             metadata[movie.lower()] = item
     return metadata
@@ -189,6 +216,158 @@ def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
     if target.rating and target.rating == comp.rating:
         score += 0.75
     return score
+
+
+def _audience_feature_values(item) -> dict[str, float]:
+    values = {}
+    imdb_rating = float(getattr(item, "imdb_rating", 0) or 0)
+    rt_audience_score = int(getattr(item, "rt_audience_score", 0) or 0)
+    if imdb_rating > 0:
+        values["imdb_rating"] = imdb_rating
+    if rt_audience_score > 0:
+        # RT critic scores are intentionally not modeled; this is audience only.
+        values["rt_audience_score"] = rt_audience_score / 10.0
+    return values
+
+
+def _solve_linear_system(matrix: list[list[float]], vector: list[float]) -> list[float] | None:
+    n = len(vector)
+    aug = [row[:] + [vector[idx]] for idx, row in enumerate(matrix)]
+    for col in range(n):
+        pivot = max(range(col, n), key=lambda row: abs(aug[row][col]))
+        if abs(aug[pivot][col]) < 1e-12:
+            return None
+        if pivot != col:
+            aug[col], aug[pivot] = aug[pivot], aug[col]
+        pivot_val = aug[col][col]
+        aug[col] = [value / pivot_val for value in aug[col]]
+        for row in range(n):
+            if row == col:
+                continue
+            factor = aug[row][col]
+            if factor:
+                aug[row] = [
+                    aug[row][idx] - factor * aug[col][idx]
+                    for idx in range(n + 1)
+                ]
+    return [aug[row][-1] for row in range(n)]
+
+
+def _weighted_ridge_regression(rows, feature_names, ridge=1.0):
+    if len(rows) < max(5, len(feature_names) + 3):
+        return None
+
+    raw_features = [
+        [features[name] for name in feature_names]
+        for features, _, _ in rows
+    ]
+    means = [
+        sum(values[col] for values in raw_features) / len(raw_features)
+        for col in range(len(feature_names))
+    ]
+    stds = []
+    for col, mean in enumerate(means):
+        var = sum((values[col] - mean) ** 2 for values in raw_features) / len(raw_features)
+        stds.append(math.sqrt(var) or 1.0)
+
+    design = []
+    y_values = []
+    weights = []
+    for features, y, weight in rows:
+        design.append(
+            [1.0]
+            + [
+                (features[name] - means[idx]) / stds[idx]
+                for idx, name in enumerate(feature_names)
+            ]
+        )
+        y_values.append(y)
+        weights.append(max(float(weight or 0), 0.01))
+
+    n_features = len(feature_names) + 1
+    xtwx = [[0.0 for _ in range(n_features)] for _ in range(n_features)]
+    xtwy = [0.0 for _ in range(n_features)]
+    for row, y, weight in zip(design, y_values, weights):
+        for i in range(n_features):
+            xtwy[i] += row[i] * y * weight
+            for j in range(n_features):
+                xtwx[i][j] += row[i] * row[j] * weight
+
+    # Penalize score coefficients, not the intercept.
+    for idx in range(1, n_features):
+        xtwx[idx][idx] += ridge
+
+    coefficients = _solve_linear_system(xtwx, xtwy)
+    if coefficients is None:
+        return None
+
+    def predict(features):
+        return coefficients[0] + sum(
+            coefficients[idx + 1] * ((features[name] - means[idx]) / stds[idx])
+            for idx, name in enumerate(feature_names)
+        )
+
+    y_mean = _weighted_average(list(zip(y_values, weights)))
+    ss_tot = sum(weight * (y - y_mean) ** 2 for y, weight in zip(y_values, weights))
+    ss_res = sum(
+        weight * (y - predict(features)) ** 2
+        for features, y, weight in rows
+    )
+    r2 = 0.0 if ss_tot <= 0 else max(0.0, min(1.0, 1 - ss_res / ss_tot))
+    return predict, r2
+
+
+def _audience_regression_adjustment(
+    target: TargetMetadata,
+    eligible: list[tuple[HistoricalComp, float]],
+    selected: list[tuple[HistoricalComp, float]],
+):
+    target_features = _audience_feature_values(target)
+    if not target_features:
+        return None
+
+    feature_names = [
+        name for name in ("imdb_rating", "rt_audience_score")
+        if name in target_features
+    ]
+    rows = []
+    for comp, weight in eligible:
+        comp_features = _audience_feature_values(comp)
+        if not all(name in comp_features for name in feature_names):
+            continue
+        if comp.thursday_preview_m <= 0 or comp.opening_weekend_m <= 0:
+            continue
+        weekend_multiple = comp.opening_weekend_m / comp.thursday_preview_m
+        if weekend_multiple <= 0:
+            continue
+        rows.append((comp_features, math.log(weekend_multiple), weight))
+
+    model = _weighted_ridge_regression(rows, feature_names, ridge=1.0)
+    if model is None:
+        return None
+    predict, r2 = model
+    selected_predictions = []
+    for comp, weight in selected:
+        comp_features = _audience_feature_values(comp)
+        if all(name in comp_features for name in feature_names):
+            selected_predictions.append((predict(comp_features), weight))
+    if not selected_predictions:
+        return None
+
+    target_log_multiple = predict(target_features)
+    baseline_log_multiple = _weighted_average(selected_predictions)
+    raw_factor = math.exp(target_log_multiple - baseline_log_multiple)
+    factor = max(0.85, min(1.20, raw_factor))
+    return {
+        "factor": factor,
+        "raw_factor": raw_factor,
+        "n": len(rows),
+        "r2": r2,
+        "features": {
+            "imdb_rating": float(getattr(target, "imdb_rating", 0) or 0),
+            "rt_audience_score": float(getattr(target, "rt_audience_score", 0) or 0),
+        },
+    }
 
 
 def _weighted_average(values: list[tuple[float, float]]) -> float:
@@ -271,6 +450,24 @@ def estimate_opening_weekend_from_thursday(
         )
         adjusted_mid = thursday_gross_m / adjusted_share if adjusted_share else None
 
+    audience_adjustment = _audience_regression_adjustment(target, eligible, selected)
+    audience_adjusted_share = None
+    audience_adjusted_mid = None
+    audience_factor = 1.0
+    audience_n = 0
+    audience_r2 = None
+    audience_features = None
+    if audience_adjustment:
+        audience_factor = audience_adjustment["factor"]
+        audience_adjusted_share = weighted_share / audience_factor if weighted_share else None
+        audience_adjusted_mid = (
+            thursday_gross_m / audience_adjusted_share
+            if audience_adjusted_share else None
+        )
+        audience_n = audience_adjustment["n"]
+        audience_r2 = audience_adjustment["r2"]
+        audience_features = audience_adjustment["features"]
+
     return CompEstimate(
         movie=target.movie,
         thursday_gross_m=thursday_gross_m,
@@ -288,6 +485,12 @@ def estimate_opening_weekend_from_thursday(
         adjusted_thursday_share=adjusted_share,
         adjusted_mid_m=adjusted_mid,
         comp_influence=comp_influence,
+        audience_adjusted_thursday_share=audience_adjusted_share,
+        audience_adjusted_mid_m=audience_adjusted_mid,
+        audience_regression_factor=audience_factor,
+        audience_regression_n=audience_n,
+        audience_regression_r2=audience_r2,
+        audience_regression_features=audience_features,
     )
 
 

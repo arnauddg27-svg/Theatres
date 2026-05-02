@@ -33,8 +33,10 @@ from playwright.async_api import async_playwright
 BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
 SEAT_CSV = DATA_DIR / "seat-counts.csv"
+PRE_RESERVATION_CSV = DATA_DIR / "pre-reservation-snapshots.csv"
 POLY_CSV = DATA_DIR / "polymarket-markets.csv"
 RUN_LOG  = DATA_DIR / "run-log.md"
+RUN_LOG_DIR = DATA_DIR / "run-logs"
 
 THEATRES_JSON    = DATA_DIR / "theatres-all.json"
 THEATRES_EXPANSION_JSON = DATA_DIR / "theatres-expansion.json"
@@ -47,6 +49,27 @@ EXPANSION_COHORT = "expansion"
 DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
 KNOWN_THEATRE_COHORTS = set(DEFAULT_COLLECTION_COHORTS)
 REQUIRED_PHASE1_COHORTS = (CORE_COHORT,)
+
+
+def _env_bool(name, default=False):
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_int(name, default, minimum=None):
+    raw = os.getenv(name)
+    if raw is None:
+        value = default
+    else:
+        try:
+            value = int(raw)
+        except ValueError:
+            value = default
+    if minimum is not None:
+        value = max(minimum, value)
+    return value
 
 
 def _parse_cohorts(value, default):
@@ -93,9 +116,9 @@ def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohort
 def load_theatres(cohorts=None):
     """Load the theatre universe.
 
-    The historical list is the core model cohort. theatres-expansion.json is
-    collected after core theatres and is excluded from prediction unless it is
-    explicitly promoted.
+    The historical list is the core cohort. theatres-expansion.json is collected
+    after core theatres so runtime pressure leaves the original sample intact;
+    prediction normalizes the active sample back to its calibration reference.
     """
     allowed_cohorts = _parse_cohorts(
         cohorts if cohorts is not None else os.getenv("THEATRE_COLLECTION_COHORTS"),
@@ -173,6 +196,17 @@ FORMAT_PRIORITY = {
 # Concurrency — 3 tabs on the 2GB VPS (Chromium base ~150MB + 3×75MB = ~375MB, well within limits).
 MAX_CONCURRENT_TABS = 3
 MAX_CONCURRENT_TABS_PHASE1 = 2
+SNAPSHOT_MAX_CONCURRENT_TABS = 1
+
+
+def phase2_max_concurrent_tabs(snapshots_only=False):
+    if snapshots_only:
+        return _env_int(
+            "SNAPSHOT_MAX_CONCURRENT_TABS",
+            SNAPSHOT_MAX_CONCURRENT_TABS,
+            minimum=1,
+        )
+    return _env_int("SCRAPER_MAX_CONCURRENT_TABS", MAX_CONCURRENT_TABS, minimum=1)
 
 # Runtime guards. A single hung Playwright navigation (typically caused
 # by AMC's Queue-It safety net redirecting the VPS IP) used to stall the whole
@@ -190,6 +224,16 @@ try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
 except ValueError:
     PHASE1_MIN_FRESH_LINK_RATIO = 0.80
+PHASE1_FULL_WEEKEND_LINKS = _env_bool("PHASE1_FULL_WEEKEND_LINKS", True)
+try:
+    PHASE1_MAX_THEATRE_DATE_VISITS = int(os.getenv("PHASE1_MAX_THEATRE_DATE_VISITS", "2000"))
+except ValueError:
+    PHASE1_MAX_THEATRE_DATE_VISITS = 2000
+try:
+    PRE_RESERVATION_BUCKET_MINUTES = int(os.getenv("PRE_RESERVATION_BUCKET_MINUTES", "60"))
+except ValueError:
+    PRE_RESERVATION_BUCKET_MINUTES = 60
+ENABLE_PRERESERVATION_SNAPSHOTS = _env_bool("ENABLE_PRERESERVATION_SNAPSHOTS", False)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
 # same tracked title. Those weekday curves are calibration data; they should not
@@ -286,6 +330,34 @@ def opening_weekend_friday(dt=None):
     else:               # Wednesday
         friday = dt - timedelta(days=5)
     return friday.strftime("%Y-%m-%d")
+
+
+def opening_weekend_show_dates(weekend_of):
+    """Return Thu/Fri/Sat/Sun dates for an opening-weekend Friday key."""
+    friday = datetime.strptime(weekend_of, "%Y-%m-%d")
+    return [
+        (friday + timedelta(days=offset)).strftime("%Y-%m-%d")
+        for offset in (-1, 0, 1, 2)
+    ]
+
+
+def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
+                            full_weekend=False):
+    """Dates Phase 1 should visit for one timezone.
+
+    Full-weekend expansion is intentionally Thursday-only by default. That lets
+    Thursday collect a forward cache for Fri/Sat/Sun while normal daily repairs
+    stay narrow and cheap.
+    """
+    if target_date:
+        base_dt = datetime.strptime(target_date, "%Y-%m-%d")
+    else:
+        base_dt = ref_dt or local_now(tz_group)
+
+    current_date = target_date or base_dt.strftime("%Y-%m-%d")
+    if full_weekend and base_dt.weekday() == 3:
+        return opening_weekend_show_dates(opening_weekend_friday(base_dt))
+    return [current_date]
 
 
 # ─── Polymarket Scraper ─────────────────────────────────────────────────────
@@ -515,6 +587,8 @@ def tracked_movie_titles_from_state(weekend_of):
             if links_weekend == weekend_of:
                 for entry in links_data.get("theatres", {}).values():
                     titles.extend((entry.get("movies") or {}).keys())
+                    for date_entry in (entry.get("dates") or {}).values():
+                        titles.extend((date_entry.get("movies") or {}).keys())
         except Exception as e:
             print(f"  ⚠️  Could not read tracked movies from showtime links: {e}")
 
@@ -1098,6 +1172,27 @@ SEAT_DEDUPE_FIELDS = (
     "seats_available",
 )
 
+PRE_RESERVATION_FIELDS = [
+    "weekend_of", "run_id",
+    "snapshot_time", "snapshot_bucket",
+    "show_date", "day_of_week", "theatre_name", "theatre_city",
+    "timezone", "movie_title", "showtime", "showtime_id",
+    "minutes_until_showtime", "auditorium_name", "auditorium_type",
+    "total_seats", "reserved_seats", "available_seats",
+    "occupancy_pct", "delta_reserved_since_previous",
+    "amc_seat_map_url", "notes",
+]
+
+PRE_RESERVATION_DEDUPE_FIELDS = (
+    "weekend_of",
+    "snapshot_bucket",
+    "show_date",
+    "theatre_name",
+    "movie_title",
+    "showtime_id",
+    "auditorium_type",
+)
+
 
 def ensure_csv_header():
     """Create seat-counts.csv with header if it doesn't exist."""
@@ -1108,6 +1203,15 @@ def ensure_csv_header():
             writer.writerow(SEAT_FIELDS)
 
 
+def ensure_pre_reservation_header():
+    """Create pre-reservation-snapshots.csv with header if needed."""
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if not PRE_RESERVATION_CSV.exists():
+        with open(PRE_RESERVATION_CSV, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(PRE_RESERVATION_FIELDS)
+
+
 def _seat_row_dict(row_data):
     return dict(zip(SEAT_FIELDS, row_data))
 
@@ -1116,6 +1220,96 @@ def _seat_row_key(row):
     if isinstance(row, list):
         row = _seat_row_dict(row)
     return tuple(str(row.get(field, "") or "") for field in SEAT_DEDUPE_FIELDS)
+
+
+def _pre_reservation_row_key(row):
+    return tuple(str(row.get(field, "") or "") for field in PRE_RESERVATION_DEDUPE_FIELDS)
+
+
+def snapshot_bucket(check_time, minutes=PRE_RESERVATION_BUCKET_MINUTES):
+    """Round snapshot timestamps down to a stable time bucket."""
+    try:
+        dt = datetime.fromisoformat(str(check_time).replace("Z", "+00:00"))
+    except ValueError:
+        dt = datetime.now(timezone.utc)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    dt = dt.astimezone(timezone.utc)
+    bucket_minutes = max(1, int(minutes or 60))
+    floored_minute = (dt.minute // bucket_minutes) * bucket_minutes
+    bucketed = dt.replace(minute=floored_minute, second=0, microsecond=0)
+    return bucketed.strftime("%Y-%m-%dT%H:%MZ")
+
+
+def _previous_reserved_count(row):
+    if not PRE_RESERVATION_CSV.exists():
+        return None
+    identity_fields = (
+        "weekend_of", "show_date", "theatre_name", "movie_title",
+        "showtime_id", "auditorium_type",
+    )
+    identity = tuple(str(row.get(field, "") or "") for field in identity_fields)
+    current_bucket = str(row.get("snapshot_bucket", "") or "")
+    previous = []
+    try:
+        with open(PRE_RESERVATION_CSV, "r", newline="") as f:
+            for existing in csv.DictReader(f):
+                existing_identity = tuple(str(existing.get(field, "") or "") for field in identity_fields)
+                if existing_identity != identity:
+                    continue
+                bucket = str(existing.get("snapshot_bucket", "") or "")
+                if bucket >= current_bucket:
+                    continue
+                try:
+                    reserved = int(float(existing.get("reserved_seats", 0) or 0))
+                except (TypeError, ValueError):
+                    continue
+                previous.append((bucket, reserved))
+    except Exception:
+        return None
+    if not previous:
+        return None
+    return sorted(previous)[-1][1]
+
+
+def append_unique_pre_reservation_rows(rows):
+    """Append pre-reservation snapshots without double-counting a time bucket."""
+    if not rows:
+        return 0, 0
+
+    ensure_pre_reservation_header()
+    existing_keys = set()
+    with open(PRE_RESERVATION_CSV, "r", newline="") as f:
+        for row in csv.DictReader(f):
+            existing_keys.add(_pre_reservation_row_key(row))
+
+    pending = []
+    seen_keys = set(existing_keys)
+    skipped = 0
+    for row in rows:
+        normalized = {field: str(row.get(field, "") or "") for field in PRE_RESERVATION_FIELDS}
+        if not normalized.get("delta_reserved_since_previous"):
+            previous = _previous_reserved_count(normalized)
+            if previous is not None:
+                try:
+                    normalized["delta_reserved_since_previous"] = str(
+                        int(float(normalized.get("reserved_seats", 0) or 0)) - previous
+                    )
+                except (TypeError, ValueError):
+                    normalized["delta_reserved_since_previous"] = ""
+        key = _pre_reservation_row_key(normalized)
+        if key in seen_keys:
+            skipped += 1
+            continue
+        pending.append(normalized)
+        seen_keys.add(key)
+
+    if pending:
+        with open(PRE_RESERVATION_CSV, "a", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=PRE_RESERVATION_FIELDS)
+            writer.writerows(pending)
+
+    return len(pending), skipped
 
 
 def append_unique_seat_rows(rows):
@@ -1148,25 +1342,88 @@ def append_unique_seat_rows(rows):
     return len(pending), skipped
 
 
-def log_run(tz_group, movies, results, issues):
-    """Append to the run log."""
-    now = datetime.now()
+def build_pre_reservation_row(theatre, tz, movie_title, show, seat_data,
+                              weekend_of, run_id, show_date, day_of_week,
+                              check_time, delta_minutes, market_url="", note=""):
+    showtime_id = show.get("showtime_id", "")
+    amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
+    return {
+        "weekend_of": weekend_of,
+        "run_id": run_id,
+        "snapshot_time": check_time,
+        "snapshot_bucket": snapshot_bucket(check_time),
+        "show_date": show_date,
+        "day_of_week": day_of_week,
+        "theatre_name": theatre["name"],
+        "theatre_city": theatre.get("city", theatre.get("dma", "")),
+        "timezone": tz,
+        "movie_title": movie_title,
+        "showtime": show.get("showtime", ""),
+        "showtime_id": showtime_id,
+        "minutes_until_showtime": str(max(0, -int(delta_minutes))),
+        "auditorium_name": "",
+        "auditorium_type": show.get("format", "Standard"),
+        "total_seats": str(seat_data["total_seats"]),
+        "reserved_seats": str(seat_data["seats_sold"]),
+        "available_seats": str(seat_data["seats_available"]),
+        "occupancy_pct": str(seat_data["occupancy_pct"]),
+        "delta_reserved_since_previous": "",
+        "amc_seat_map_url": amc_url,
+        "notes": note,
+    }
 
-    with open(RUN_LOG, "a") as f:
-        f.write(f"\n## {now.strftime('%Y-%m-%d %H:%M')} — {tz_group} Group\n\n")
-        f.write(f"**Polymarket movies tracked:** {', '.join(movies) if movies else 'None found'}\n\n")
+
+def _log_slug(value):
+    return re.sub(r"[^A-Za-z0-9_.-]+", "-", str(value or "")).strip("-") or "run"
+
+
+def run_log_file_path(tz_group, run_id=None, now=None):
+    now = now or datetime.now()
+    run_part = _log_slug(run_id or uuid.uuid4().hex[:8])
+    tz_part = _log_slug(tz_group)
+    return (
+        RUN_LOG_DIR
+        / now.strftime("%Y-%m-%d")
+        / f"{now.strftime('%Y%m%d-%H%M%S')}-{run_part}-{tz_part}.md"
+    )
+
+
+def log_run(tz_group, movies, results, issues, run_id=None, now=None):
+    """Write a stable per-run log file.
+
+    Phase 2 runs ET/CT/PT in parallel. A single append-only Markdown file is
+    hard to merge cleanly across matrix pushes, so each leg writes an immutable
+    log file and the workflow commits the directory.
+    """
+    now = now or datetime.now()
+    log_path = run_log_file_path(tz_group, run_id=run_id, now=now)
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(log_path, "w") as f:
+        f.write(f"# {now.strftime('%Y-%m-%d %H:%M')} - {tz_group} Group\n\n")
+        f.write(f"- **Run ID:** {run_id or 'unknown'}\n")
+        f.write(f"- **Polymarket movies tracked:** {', '.join(movies) if movies else 'None found'}\n")
+        f.write(f"- **Rows:** {len(results)}\n")
+        f.write(f"- **Issues:** {len(issues)}\n\n")
 
         if results:
+            f.write("## Seat Rows\n\n")
             f.write("| Theatre | Movie | Format | Showtime | Occupancy | Check Delta |\n")
             f.write("|---------|-------|--------|----------|-----------|-------------|\n")
             for r in results:
                 f.write(f"| {r['theatre']} | {r['movie']} | {r['format']} | "
-                       f"{r['showtime']} | {r['occupancy']}% | {r['delta']} min |\n")
+                        f"{r['showtime']} | {r['occupancy']}% | {r['delta']} min |\n")
+            f.write("\n")
 
         if issues:
-            f.write(f"\n**Issues:** {'; '.join(issues)}\n")
+            f.write("## Issues\n\n")
+            for issue in issues:
+                f.write(f"- {issue}\n")
+            f.write("\n")
 
-        f.write("\n---\n")
+        f.write("---\n")
+
+    return log_path
 
 
 def fail_phase(message, exit_code=1):
@@ -1177,6 +1434,53 @@ def fail_phase(message, exit_code=1):
 
 def phase1_groups(tz_group):
     return [tz_group] if tz_group != "ALL" else ["ET", "CT", "MT", "PT"]
+
+
+def phase1_date_entry(entry, expected_date):
+    """Return the link payload for expected_date from old or multi-date schema."""
+    if not entry:
+        return None
+    dates = entry.get("dates") or {}
+    if expected_date and isinstance(dates, dict):
+        date_entry = dates.get(expected_date)
+        if date_entry and date_entry.get("movies"):
+            return date_entry
+    if expected_date and entry.get("show_date") != expected_date:
+        return None
+    if entry.get("movies"):
+        return entry
+    return None
+
+
+def phase1_entry_movies(entry, expected_date):
+    date_entry = phase1_date_entry(entry, expected_date)
+    return (date_entry or {}).get("movies") or {}
+
+
+def _phase1_entry_has_any_movies(entry):
+    if entry.get("movies"):
+        return True
+    for date_entry in (entry.get("dates") or {}).values():
+        if date_entry.get("movies"):
+            return True
+    return False
+
+
+def merge_phase1_entries(old_entry, new_entry):
+    """Merge multi-date Phase 1 entries without dropping unrefreshed dates."""
+    if not old_entry:
+        return new_entry
+    merged = dict(old_entry)
+    merged["tz"] = new_entry.get("tz", merged.get("tz"))
+    merged["cohort"] = new_entry.get("cohort", merged.get("cohort"))
+    merged_dates = dict(old_entry.get("dates") or {})
+    merged_dates.update(new_entry.get("dates") or {})
+    if merged_dates:
+        merged["dates"] = merged_dates
+    if new_entry.get("show_date"):
+        merged["show_date"] = new_entry["show_date"]
+        merged["movies"] = new_entry.get("movies", {})
+    return merged
 
 
 def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
@@ -1200,7 +1504,7 @@ def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
                 missing_entries.append(f"{name} ({group}: missing)")
                 continue
             entry_date = entry.get("show_date")
-            if entry_date == expected_date and entry.get("movies"):
+            if phase1_date_entry(entry, expected_date):
                 fresh_names.append(name)
             else:
                 stale_entries.append(
@@ -1242,6 +1546,19 @@ def require_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO
         )
 
 
+def phase1_forward_cache_is_usable(saved_links, theatres_map, groups,
+                                   expected_dates,
+                                   min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
+    """True when an older full-weekend link file still covers the target date."""
+    report = phase1_link_coverage(
+        saved_links,
+        theatres_map,
+        groups,
+        expected_dates,
+    )
+    return bool(report["expected_total"] and report["ratio"] >= min_ratio)
+
+
 def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None,
                              required_cohorts=REQUIRED_PHASE1_COHORTS):
     counts = {}
@@ -1256,9 +1573,19 @@ def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None,
             continue
         if expected_dates is not None:
             expected_date = expected_dates.get(tz)
-            if expected_date and entry.get("show_date") != expected_date:
+            if expected_date and not phase1_date_entry(entry, expected_date):
                 continue
-        for movie, shows in (entry.get("movies") or {}).items():
+        expected_date = expected_dates.get(tz) if expected_dates is not None else None
+        movies = phase1_entry_movies(entry, expected_date) if expected_date else (
+            entry.get("movies") or {}
+        )
+        if not movies and expected_dates is None:
+            for date_entry in (entry.get("dates") or {}).values():
+                for movie, shows in (date_entry.get("movies") or {}).items():
+                    if shows:
+                        counts[movie] = counts.get(movie, 0) + 1
+            continue
+        for movie, shows in movies.items():
             if shows:
                 counts[movie] = counts.get(movie, 0) + 1
     return counts
@@ -1297,7 +1624,8 @@ def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
-                          weekend_of="", run_id="", saved_movies=None, test_mode=False):
+                          weekend_of="", run_id="", saved_movies=None, test_mode=False,
+                          capture_pre_reservations=False):
     """
     Scrape one theatre's seat maps using pre-collected Phase 1 showtime IDs.
 
@@ -1305,10 +1633,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                   collected during Phase 1 (collect-links run).
                   If None the theatre is skipped (Phase 1 must run first).
 
-    Returns (results_list, issues_list, csv_rows_list).
+    Returns (results_list, issues_list, csv_rows_list, pre_reservation_rows_list).
     """
     if saved_movies is None:
-        return [], [f"{theatre['name']}: no Phase 1 links — skipped"], []
+        return [], [f"{theatre['name']}: no Phase 1 links — skipped"], [], []
 
     tz = theatre.get("_tz", "")
     context = await browser.new_context(
@@ -1328,6 +1656,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     results = []
     issues = []
     csv_rows = []
+    pre_reservation_rows = []
     # Use the passed date_str (already adjusted to local TZ) as the CSV date stamp
     today = date_str
     day_of_week = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
@@ -1420,6 +1749,16 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     note = f"{flags}. {reason}" if flags else reason
                     if _theatre_cohort(theatre) == EXPANSION_COHORT:
                         note = f"{note}; cohort=expansion"
+                    if capture_pre_reservations:
+                        pre_reservation_rows.append(
+                            build_pre_reservation_row(
+                                theatre, tz, movie_title, show, seat_data,
+                                weekend_of, run_id, today, day_of_week,
+                                check_time, delta_minutes,
+                                market_url=market_urls.get(movie_title, ""),
+                                note=note,
+                            )
+                        )
                     csv_rows.append([
                         weekend_of, run_id,
                         today, day_of_week, theatre["name"], theatre.get("city", theatre.get("dma", "")),
@@ -1449,7 +1788,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         except Exception:
             pass
 
-    return results, issues, csv_rows
+    return results, issues, csv_rows, pre_reservation_rows
 
 
 async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
@@ -1493,7 +1832,57 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     return collected
 
 
-async def run_collect_links_async(tz_group="ALL", target_date=None):
+def _cap_phase1_visits(all_theatres, expected_dates, max_visits):
+    """Keep Phase 1 inside a predictable browser-work budget."""
+    total = len(all_theatres)
+    if not max_visits or total <= max_visits:
+        return all_theatres, []
+
+    required = [
+        theatre for theatre in all_theatres
+        if theatre.get("_date") == expected_dates.get(theatre.get("_tz"))
+    ]
+    optional = [
+        theatre for theatre in all_theatres
+        if theatre.get("_date") != expected_dates.get(theatre.get("_tz"))
+    ]
+    if len(required) > max_visits:
+        fail_phase(
+            f"❌ Phase 1 capacity cap {max_visits} is below required same-day "
+            f"theatre visits ({len(required)}). Increase PHASE1_MAX_THEATRE_DATE_VISITS."
+        )
+    kept_optional = optional[:max(0, max_visits - len(required))]
+    skipped = optional[len(kept_optional):]
+    return required + kept_optional, skipped
+
+
+def phase1_collection_batches(all_theatres, expected_dates):
+    """Order Phase 1 work so today's showtime links cannot starve behind future cache work."""
+    buckets = [
+        ("core current-day pass", []),
+        ("expansion current-day pass", []),
+        ("core forward-cache pass", []),
+        ("expansion forward-cache pass", []),
+    ]
+    by_label = dict(buckets)
+
+    for theatre in all_theatres:
+        is_current_day = theatre.get("_date") == expected_dates.get(theatre.get("_tz"))
+        is_expansion = _theatre_cohort(theatre) == EXPANSION_COHORT
+        if is_current_day and is_expansion:
+            by_label["expansion current-day pass"].append(theatre)
+        elif is_current_day:
+            by_label["core current-day pass"].append(theatre)
+        elif is_expansion:
+            by_label["expansion forward-cache pass"].append(theatre)
+        else:
+            by_label["core forward-cache pass"].append(theatre)
+
+    return [(label, rows) for label, rows in buckets if rows]
+
+
+async def run_collect_links_async(tz_group="ALL", target_date=None,
+                                  full_weekend=None):
     """
     Phase 1 main: Visit all theatres, save showtime IDs to showtime-links.json.
     Run in the local Phase 1 window before shows start.
@@ -1508,6 +1897,8 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
     theatres_map = load_theatres()
     ref_tz = tz_group if tz_group != "ALL" else "ET"
     ref_local = local_now(ref_tz)
+    if full_weekend is None:
+        full_weekend = PHASE1_FULL_WEEKEND_LINKS
     if target_date:
         try:
             target_ref_dt = datetime.strptime(target_date, "%Y-%m-%d")
@@ -1525,15 +1916,37 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
     today = target_date or ref_local.strftime("%Y-%m-%d")
     current_weekend = opening_weekend_friday(target_ref_dt)
     groups = phase1_groups(tz_group)
-    expected_dates = {group: (target_date or local_date_str(group)) for group in groups}
+    collection_dates_by_group = {
+        group: phase1_collection_dates(
+            group,
+            target_date=target_date,
+            ref_dt=target_ref_dt if target_date else local_now(group),
+            full_weekend=full_weekend,
+        )
+        for group in groups
+    }
+    expected_dates = {group: dates[0] for group, dates in collection_dates_by_group.items()}
     all_theatres = []
     for group in groups:
-        for t in theatres_map.get(group, []):
-            all_theatres.append({**t, "_tz": group, "_date": expected_dates[group]})
+        for date_str in collection_dates_by_group[group]:
+            for t in theatres_map.get(group, []):
+                all_theatres.append({**t, "_tz": group, "_date": date_str})
     all_theatres.sort(key=_theatre_sort_key)
+    all_theatres, capacity_skipped = _cap_phase1_visits(
+        all_theatres,
+        expected_dates,
+        PHASE1_MAX_THEATRE_DATE_VISITS,
+    )
 
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
     print(f"   Cohorts: {_cohort_counts(all_theatres)}")
+    total_requested_visits = len(all_theatres) + len(capacity_skipped)
+    print(f"   Theatre-date visits: {len(all_theatres)}/{total_requested_visits} "
+          f"planned; cap {PHASE1_MAX_THEATRE_DATE_VISITS}")
+    if any(len(v) > 1 for v in collection_dates_by_group.values()):
+        print("   Full-weekend link cache enabled for Thursday run")
+    if capacity_skipped:
+        print(f"   ⚠️  Capacity cap skipped {len(capacity_skipped)} optional future-date theatre visits")
 
     # Store the opening-weekend Friday anchor, not the calendar day. Thursday
     # Phase 1 runs collect links for Friday's opening weekend and must merge
@@ -1618,59 +2031,34 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
                 return
             merge_outcomes(await collect_with_deadline(theatres, label, budget))
 
-        core_theatres = [
-            t for t in all_theatres
-            if _theatre_cohort(t) != EXPANSION_COHORT
-        ]
-        expansion_theatres = [
-            t for t in all_theatres
-            if _theatre_cohort(t) == EXPANSION_COHORT
-        ]
+        async def collect_batch_with_retry(theatres, label):
+            await collect_and_merge(theatres, label)
 
-        await collect_and_merge(core_theatres, "core initial pass")
-
-        # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
-        failed_core = [
-            theatre
-            for theatre in core_theatres
-            if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
-        ]
-        if failed_core:
+            # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
+            failed = [
+                theatre
+                for theatre in theatres
+                if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
+            ]
+            if not failed:
+                return
             retry_budget = max(0, int(deadline_at - time.monotonic()))
-            if retry_budget > 30:
-                print(f"\n🔄 Retrying {len(failed_core)} core theatres that returned 0 showtimes (5s delay)...")
+            min_retry_budget = 60 if "forward-cache" in label else 30
+            if retry_budget > min_retry_budget:
+                print(f"\n🔄 Retrying {len(failed)} {label} theatres that returned 0 showtimes (5s delay)...")
                 await asyncio.sleep(5)
                 merge_outcomes(
                     await collect_with_deadline(
-                        failed_core,
-                        "core retry pass",
+                        failed,
+                        f"{label} retry",
                         max(0, int(deadline_at - time.monotonic())),
                     )
                 )
             else:
-                print(f"\n⏱️  Skipping retry for {len(failed_core)} core theatres — Phase 1 deadline is near")
+                print(f"\n⏱️  Skipping retry for {len(failed)} {label} theatres — Phase 1 deadline is near")
 
-        await collect_and_merge(expansion_theatres, "expansion pass")
-
-        failed_expansion = [
-            theatre
-            for theatre in expansion_theatres
-            if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
-        ]
-        if failed_expansion:
-            retry_budget = max(0, int(deadline_at - time.monotonic()))
-            if retry_budget > 60:
-                print(f"\n🔄 Retrying {len(failed_expansion)} expansion theatres that returned 0 showtimes (5s delay)...")
-                await asyncio.sleep(5)
-                merge_outcomes(
-                    await collect_with_deadline(
-                        failed_expansion,
-                        "expansion retry pass",
-                        max(0, int(deadline_at - time.monotonic())),
-                    )
-                )
-            else:
-                print(f"\n⏱️  Skipping retry for {len(failed_expansion)} expansion theatres — Phase 1 deadline is near")
+        for label, batch_theatres in phase1_collection_batches(all_theatres, expected_dates):
+            await collect_batch_with_retry(batch_theatres, label)
 
         skipped = len(theatre_by_key) - len(outcome_by_key)
         if skipped > 0:
@@ -1689,12 +2077,20 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
         name, tz, show_date, collected = outcome
         if collected:
             theatre = theatre_by_key.get((name, tz, show_date), {})
-            links["theatres"][name] = {
+            entry = links["theatres"].setdefault(name, {
                 "tz": tz,
-                "show_date": show_date,
                 "cohort": _theatre_cohort(theatre),
+                "dates": {},
+            })
+            entry["tz"] = tz
+            entry["cohort"] = _theatre_cohort(theatre)
+            entry.setdefault("dates", {})[show_date] = {
                 "movies": collected,
+                "collected_at": datetime.now(timezone.utc).isoformat(),
             }
+            if show_date == expected_dates.get(tz) or not entry.get("movies"):
+                entry["show_date"] = show_date
+                entry["movies"] = collected
             total_links += sum(len(v) for v in collected.values())
 
     fresh_report = phase1_link_coverage(links["theatres"], theatres_map, groups, expected_dates)
@@ -1709,6 +2105,19 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
             f"Phase 1 expansion links for {tz_group}",
             min_ratio=0.0,
         )
+    for group, dates in collection_dates_by_group.items():
+        for show_date in dates[1:]:
+            future_report = phase1_link_coverage(
+                links["theatres"],
+                theatres_map,
+                [group],
+                {group: show_date},
+            )
+            print_phase1_coverage(
+                future_report,
+                f"Phase 1 forward-cache links for {group} {show_date}",
+                min_ratio=0.0,
+            )
 
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
@@ -1756,13 +2165,31 @@ async def run_collect_links_async(tz_group="ALL", target_date=None):
     # Phase 2 would scrape Thursday's already-elapsed showtime IDs — yielding
     # duplicate Thursday seat snapshots tagged with stale dates while skipping
     # the Friday showtimes those theatres should have produced.
-    refreshed_tzs = set(groups)
-    merged_theatres = {
-        name: entry
-        for name, entry in existing.get("theatres", {}).items()
-        if entry.get("tz") not in refreshed_tzs
+    refreshed_dates_by_tz = {
+        group: set(dates)
+        for group, dates in collection_dates_by_group.items()
     }
-    merged_theatres.update(links["theatres"])   # fresh same-TZ entries win
+    merged_theatres = {}
+    for name, entry in existing.get("theatres", {}).items():
+        tz = entry.get("tz")
+        refreshed_dates = refreshed_dates_by_tz.get(tz)
+        if not refreshed_dates:
+            merged_theatres[name] = entry
+            continue
+        dates = dict(entry.get("dates") or {})
+        for refreshed_date in refreshed_dates:
+            dates.pop(refreshed_date, None)
+        if dates:
+            kept = dict(entry)
+            kept["dates"] = dates
+            if kept.get("show_date") in refreshed_dates:
+                kept.pop("show_date", None)
+                kept.pop("movies", None)
+            merged_theatres[name] = kept
+        elif entry.get("show_date") not in refreshed_dates:
+            merged_theatres[name] = entry
+    for name, new_entry in links["theatres"].items():
+        merged_theatres[name] = merge_phase1_entries(merged_theatres.get(name), new_entry)
     links["theatres"] = merged_theatres
     if existing.get("weekend_of"):
         links["weekend_of"] = existing["weekend_of"]
@@ -1822,18 +2249,26 @@ async def ensure_phase1_links_async(tz_group="ALL"):
     require_phase1_coverage(repaired_report, f"Phase 1 repaired links for {tz_group}")
 
 
-async def run_async(tz_group="ALL", force=False, test_max=None):
+async def run_async(tz_group="ALL", force=False, test_max=None,
+                    capture_pre_reservations=False, snapshots_only=False):
     """
     Main entry point (async).
-    Parallelizes across MAX_CONCURRENT_TABS browser tabs using a semaphore.
+    Parallelizes browser tabs using a semaphore. Snapshot-only probes default
+    lower so they can coexist with the model-driving scrape without stampeding
+    AMC seat-map requests.
     """
+    max_concurrent_tabs = phase2_max_concurrent_tabs(snapshots_only=snapshots_only)
     print(f"{'='*60}")
     print(f"🎬 Box Office Tracker (Playwright) — {tz_group} Group")
     print(f"   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"   Concurrency: {MAX_CONCURRENT_TABS} tabs")
+    print(f"   Concurrency: {max_concurrent_tabs} tabs")
+    if snapshots_only:
+        print("   Snapshot-only: on (seat-counts.csv will not be appended)")
     print(f"{'='*60}")
 
     ensure_csv_header()
+    if capture_pre_reservations:
+        ensure_pre_reservation_header()
 
     # Use tz-adjusted local date (server clock is UTC; runs after midnight UTC
     # would otherwise stamp tomorrow's date on tonight's data).
@@ -1870,6 +2305,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
     links_meta = {}
+    expected_dates = {group: phase1_expected_date(group) for group in groups_to_check}
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
@@ -1888,9 +2324,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
                     age_str = f" from {age_hours:.1f}h ago"
                     if age_hours > 12:
-                        if not force:
+                        has_forward_cache = phase1_forward_cache_is_usable(
+                            saved_links,
+                            theatres_map,
+                            groups_to_check,
+                            expected_dates,
+                        )
+                        if not force and not has_forward_cache:
                             fail_phase(f"\n❌ showtime-links.json is stale ({age_hours:.1f}h old) — run Phase 1 first.")
-                        print(f"\n⚠️  showtime-links.json is stale ({age_hours:.1f}h old) — proceeding because --force was set.")
+                        reason = "--force was set" if force else "forward-cache links cover this show date"
+                        print(f"\n⚠️  showtime-links.json is stale ({age_hours:.1f}h old) — proceeding because {reason}.")
                 print(f"\n📂 Phase 1 links{age_str} ({len(saved_links)} theatres)")
             elif links_weekend:
                 fail_phase(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
@@ -1906,7 +2349,6 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
-    expected_dates = {group: phase1_expected_date(group) for group in groups_to_check}
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
         saved_links,
@@ -1945,10 +2387,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     stale_skipped = []
     for t in all_theatres:
         entry = saved_links[t["name"]]
-        entry_date = entry.get("show_date")
         ref_tz = t.get("_tz") or entry.get("tz") or "ET"
         expected_date = phase1_expected_date(ref_tz)
-        if entry_date and entry_date != expected_date:
+        if not phase1_date_entry(entry, expected_date):
+            entry_date = entry.get("show_date")
             stale_skipped.append(
                 f"{t['name']} ({t.get('_tz','?')}: show_date={entry_date}, expected={expected_date})"
             )
@@ -1993,10 +2435,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
     # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
     all_issues = []
-    sem = asyncio.Semaphore(MAX_CONCURRENT_TABS)
+    sem = asyncio.Semaphore(max_concurrent_tabs)
     write_lock = asyncio.Lock()
+    snapshot_write_lock = asyncio.Lock()
     written_rows = 0
     skipped_rows = 0
+    snapshot_rows_written = 0
+    snapshot_rows_skipped = 0
 
     # Per-theatre and overall deadlines. The workflow's step timeout caps us at
     # 75 min, but we stop accepting new work earlier so in-flight theatres can
@@ -2009,7 +2454,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded_scrape(theatre):
-            nonlocal written_rows, skipped_rows
+            nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
@@ -2019,12 +2464,17 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     all_issues.append(f"{name}: overall deadline reached — skipped")
                     return
                 saved_entry = saved_links[name]
+                expected_show_date = phase1_expected_date(theatre.get("_tz", "ET"))
                 t_date = (
-                    saved_entry.get("show_date")
-                    or links_meta.get("collected_local_date")
-                    or theatre.get("_date", today)
+                    expected_show_date
+                    if phase1_date_entry(saved_entry, expected_show_date)
+                    else (
+                        saved_entry.get("show_date")
+                        or links_meta.get("collected_local_date")
+                        or theatre.get("_date", today)
+                    )
                 )
-                theatre_saved = saved_entry.get("movies")
+                theatre_saved = phase1_entry_movies(saved_entry, t_date)
                 try:
                     outcome = await asyncio.wait_for(
                         _scrape_theatre(
@@ -2032,6 +2482,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                             weekend_of=weekend, run_id=run_id,
                             saved_movies=theatre_saved,
                             test_mode=bool(test_max),
+                            capture_pre_reservations=capture_pre_reservations,
                         ),
                         timeout=theatre_timeout_sec,
                     )
@@ -2043,11 +2494,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
                     all_issues.append(f"{name}: {e}")
                     print(f"  ❌ {name}: {e}")
                     return
-            results, issues, csv_rows = outcome
+            results, issues, csv_rows, snapshot_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
+            if snapshot_rows:
+                async with snapshot_write_lock:
+                    w, s = append_unique_pre_reservation_rows(snapshot_rows)
+                    snapshot_rows_written += w
+                    snapshot_rows_skipped += s
             # Flush to disk immediately so data survives a mid-run kill
-            if csv_rows:
+            if csv_rows and not snapshots_only:
                 async with write_lock:
                     w, s = append_unique_seat_rows(csv_rows)
                     written_rows += w
@@ -2083,9 +2539,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
             pass
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
+    if snapshot_rows_skipped:
+        print(f"↺ Skipped {snapshot_rows_skipped} duplicate pre-reservation snapshot row(s)")
 
     # Step 5: Log and summarize
-    log_run(tz_group, movie_titles, all_results, all_issues)
+    log_run(tz_group, movie_titles, all_results, all_issues, run_id=run_id)
 
     # Use local time for the day check — PT phase 2 runs at 7am UTC which is
     # already "Sunday" UTC, but still "Saturday" PT local time.
@@ -2095,7 +2553,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None):
         generate_weekend_summary()
 
     print(f"\n{'='*60}")
-    print(f"✅ Run complete — {written_rows} seat counts logged, {len(all_issues)} issues")
+    snapshot_msg = (
+        f", {snapshot_rows_written} pre-reservation snapshots"
+        if capture_pre_reservations else ""
+    )
+    print(f"✅ Run complete — {written_rows} seat counts logged{snapshot_msg}, {len(all_issues)} issues")
     print(f"{'='*60}")
 
 
@@ -2166,19 +2628,31 @@ def generate_weekend_summary():
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
-async def run_with_preflight_async(tz_group="ALL", force=False, test_max=None, ensure_links=False):
+async def run_with_preflight_async(tz_group="ALL", force=False, test_max=None,
+                                   ensure_links=False,
+                                   capture_pre_reservations=False,
+                                   snapshots_only=False):
     if ensure_links and not test_max:
         await ensure_phase1_links_async(tz_group)
-    await run_async(tz_group, force=force, test_max=test_max)
+    await run_async(
+        tz_group,
+        force=force,
+        test_max=test_max,
+        capture_pre_reservations=capture_pre_reservations,
+        snapshots_only=snapshots_only,
+    )
 
 
-def run(tz_group="ALL", force=False, test_max=None, ensure_links=False):
+def run(tz_group="ALL", force=False, test_max=None, ensure_links=False,
+        capture_pre_reservations=False, snapshots_only=False):
     """Sync wrapper for the async pipeline."""
     asyncio.run(run_with_preflight_async(
         tz_group,
         force=force,
         test_max=test_max,
         ensure_links=ensure_links,
+        capture_pre_reservations=capture_pre_reservations,
+        snapshots_only=snapshots_only,
     ))
 
 
@@ -2198,6 +2672,14 @@ if __name__ == "__main__":
     collect_links_mode = "--collect-links" in args
     force_mode = "--force" in args
     ensure_links_mode = "--ensure-links" in args
+    full_weekend_links_mode = "--full-weekend-links" in args
+    pre_reservation_mode = (
+        "--pre-reservation-snapshots" in args
+        or ENABLE_PRERESERVATION_SNAPSHOTS
+    )
+    snapshots_only_mode = "--snapshots-only" in args
+    if snapshots_only_mode:
+        pre_reservation_mode = True
 
     # --test N  →  run Phase 2 on N theatres only, bypass time filter
     test_max = None
@@ -2211,16 +2693,26 @@ if __name__ == "__main__":
             sys.exit(1)
         force_mode = True  # --test implies --force
 
-    args = [a for a in args if a not in ("--collect-links", "--force", "--ensure-links")]
+    args = [
+        a for a in args
+        if a not in (
+            "--collect-links", "--force", "--ensure-links",
+            "--full-weekend-links", "--pre-reservation-snapshots",
+            "--snapshots-only",
+        )
+    ]
 
     tz = args[0].upper() if args else "ALL"
 
     if tz not in ("ET", "CT", "MT", "PT", "ALL"):
-        print(f"Usage: python scraper.py [--collect-links] [--ensure-links] [--force] [--test N] [ET|CT|MT|PT|ALL]")
+        print(f"Usage: python scraper.py [--collect-links] [--full-weekend-links] [--ensure-links] [--force] [--test N] [--pre-reservation-snapshots] [--snapshots-only] [ET|CT|MT|PT|ALL]")
         print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
+        print(f"  --full-weekend-links  Phase 1: on Thursday, collect Thu-Sun showtime links")
         print(f"  --ensure-links   Phase 2: repair missing/stale Phase 1 links for this TZ before scraping")
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
         print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
+        print(f"  --pre-reservation-snapshots  Also write time-bucketed reserved-seat snapshots")
+        print(f"  --snapshots-only Write snapshots without appending prediction seat-count rows")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")
         print(f"  MT               Mountain theatres only")
@@ -2229,6 +2721,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if collect_links_mode:
-        asyncio.run(run_collect_links_async(tz))
+        asyncio.run(run_collect_links_async(tz, full_weekend=full_weekend_links_mode or PHASE1_FULL_WEEKEND_LINKS))
     else:
-        run(tz, force=force_mode, test_max=test_max, ensure_links=ensure_links_mode)
+        run(
+            tz,
+            force=force_mode,
+            test_max=test_max,
+            ensure_links=ensure_links_mode,
+            capture_pre_reservations=pre_reservation_mode,
+            snapshots_only=snapshots_only_mode,
+        )
