@@ -13,7 +13,9 @@ PATH=/usr/local/bin:/usr/bin:/bin
 REPO_DIR=/opt/box-office-tracker
 GH_REPO=arnauddg27-svg/Theatres
 GH_TOKEN_FILE=/root/box-office-dispatch/.env
-DISPATCH=$REPO_DIR/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
+# /etc/cron.d variable assignments do not expand other variables, so keep this
+# path absolute instead of using $REPO_DIR here.
+DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
 
 # Phase 1 link collection, roughly 5pm local for each included timezone.
 # Dispatcher mode: collect-links -> phase=collect-links

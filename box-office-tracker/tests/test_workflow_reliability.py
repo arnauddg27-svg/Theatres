@@ -33,14 +33,21 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
-        start = scrape_block.index("      - name: Phase 2")
-        end = scrape_block.index("      - name: Write scrape manifest", start)
-        block = scrape_block[start:end]
 
-        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", block)
-        self.assertIn("SNAPSHOT_DELAY_SECONDS", block)
-        self.assertIn("${{ matrix.tz }}", block)
-        self.assertIn('sleep "$SNAPSHOT_DELAY_SECONDS"', block)
+        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", scrape_block)
+        self.assertIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
+        self.assertIn("${{ matrix.tz }}", scrape_block)
+        self.assertIn('sleep "$SNAPSHOT_DELAY_SECONDS"', scrape_block)
+
+    def test_snapshot_stagger_does_not_hold_amc_lock_while_idle(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+
+        stagger_pos = scrape_block.index("      - name: Stagger snapshot-only matrix leg")
+        lock_pos = scrape_block.index("      - name: Acquire AMC lock")
+
+        self.assertLess(stagger_pos, lock_pos)
 
     def test_snapshot_scrapes_wait_for_regular_capacity_window(self):
         self.assertIn("run-name:", self.workflow)
@@ -174,6 +181,28 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("retrying once under the same AMC lock", phase_block)
         self.assertEqual(2, phase_block.count("python3 scraper.py --collect-links"))
 
+    def test_amc_lock_wait_budget_fits_job_timeouts(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        finalize_start = self.workflow.index("  finalize:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        scrape_block = self.workflow[scrape_start:finalize_start]
+
+        self.assertIn("timeout-minutes: 500", collect_block)
+        self.assertIn("timeout-minutes: 500", scrape_block)
+
+    def test_calibration_commit_stages_required_file_before_optional_freezes(self):
+        start = self.workflow.index("  calibrate:")
+        block = self.workflow[start:]
+
+        self.assertIn("git add box-office-tracker/data/calibration.json", block)
+        self.assertIn('compgen -G "box-office-tracker/data/calibration-freezes/*.json"', block)
+        self.assertNotIn(
+            "git add box-office-tracker/data/calibration.json \\\n"
+            "                  box-office-tracker/data/calibration-freezes/*.json",
+            block,
+        )
+
     def test_repo_contains_vps_dispatcher_for_snapshot_schedule(self):
         dispatcher = DISPATCHER.read_text()
         cron = CRON_EXAMPLE.read_text()
@@ -185,6 +214,11 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("snapshots_only=true", dispatcher)
         self.assertIn("snapshot", cron)
         self.assertIn('"$DISPATCH" snapshot', cron)
+        self.assertIn(
+            "DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_pipeline.sh",
+            cron,
+        )
+        self.assertNotIn("DISPATCH=$REPO_DIR", cron)
         self.assertIn("GH_TOKEN_FILE=/root/box-office-dispatch/.env", cron)
         self.assertIn("git -C \"$REPO_DIR\" pull --ff-only origin main", cron)
         self.assertIn("30 18", cron)

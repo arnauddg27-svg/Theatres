@@ -10,6 +10,7 @@ updates day weights, scale factors, and feeds accuracy into trading confidence.
 Usage:
     python3 calibrate.py                          # Auto-calibrate last weekend
     python3 calibrate.py --actual "Movie" 85.3    # Manual total override
+    python3 calibrate.py --actual "Movie" 85.3 --daily-actuals Thursday=10,Friday=22,Saturday=26,Sunday=27
     python3 calibrate.py --history                 # Show past predictions vs actuals
 """
 
@@ -21,8 +22,12 @@ import statistics
 import sys
 from datetime import datetime, timedelta
 
-import requests
+try:
+    import requests
+except ModuleNotFoundError:
+    requests = None
 from calibration_freeze import (calibration_has_weekend,
+                                load_calibration_freeze,
                                 save_calibration_freeze)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                excluded_calibration_days,
@@ -49,6 +54,8 @@ DEFAULT_CALIBRATION = {
     },
 }
 
+OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
+
 
 def _positive_float(value):
     try:
@@ -71,6 +78,52 @@ def _normalize_model_cohort_key(cohorts):
         if value:
             normalized.append(value)
     return ",".join(sorted(set(normalized)))
+
+
+def parse_daily_actuals_arg(raw):
+    """Parse --daily-actuals values like Thursday=10.0,Friday=22.5."""
+    if not raw:
+        return {}
+
+    canonical = {day.lower(): day for day in OPENING_WEEKEND_DAYS}
+    parsed = {}
+    for chunk in raw.split(","):
+        part = chunk.strip()
+        if not part:
+            continue
+        if "=" not in part:
+            raise ValueError(f"Daily actual must be Day=value, got {part!r}")
+        day_raw, value_raw = part.split("=", 1)
+        day_key = day_raw.strip().lower()
+        if day_key not in canonical:
+            raise ValueError(f"Unknown opening-weekend day {day_raw!r}")
+        day = canonical[day_key]
+        if day in parsed:
+            raise ValueError(f"Duplicate daily actual for {day}")
+        try:
+            value = float(value_raw.strip())
+        except ValueError as exc:
+            raise ValueError(f"Invalid gross for {day}: {value_raw!r}") from exc
+        if value <= 0:
+            raise ValueError(f"Gross for {day} must be positive")
+        parsed[day] = value
+
+    return {day: parsed[day] for day in OPENING_WEEKEND_DAYS if day in parsed}
+
+
+def actual_status_is_final(entry):
+    """Legacy calibration rows without status are treated as final actuals."""
+    return (entry.get("actual_status") or "final") != "provisional"
+
+
+def final_calibrated_movies(cal, weekend_of):
+    """Movies with final actuals already recorded for a weekend."""
+    return {
+        h["movie"] for h in cal.get("history", [])
+        if h.get("weekend_of") == weekend_of
+        and h.get("movie")
+        and actual_status_is_final(h)
+    }
 
 
 def _remember_reference_amc_theatres(cal, reference_amc_theatres, model_cohort_key=None):
@@ -103,10 +156,83 @@ def load_calibration():
     )
 
 
+def load_prediction_calibration(weekend_of, fallback_cal, require_freeze=False):
+    """Use the pre-actual freeze when recording/replacing actuals for a weekend."""
+    try:
+        frozen = load_calibration_freeze(DATA_DIR, weekend_of)
+    except FileNotFoundError:
+        if require_freeze:
+            raise FileNotFoundError(
+                f"Missing pre-actual calibration freeze for {weekend_of}; "
+                "refusing to record actuals from live calibration."
+            )
+        return fallback_cal
+    return sanitize_calibration(
+        frozen,
+        day_weights_default=DEFAULT_CALIBRATION["calibration_factors"]["day_weights"],
+        default_market_share=DEFAULT_CALIBRATION["calibration_factors"]["amc_market_share"],
+    )
+
+
+def reset_calibration_factors_to_prediction_baseline(cal, prediction_cal):
+    """Anchor actual recording to the clean pre-actual calibration baseline."""
+    factors = prediction_cal.get("calibration_factors")
+    if isinstance(factors, dict):
+        cal["calibration_factors"] = json.loads(json.dumps(factors))
+        cal["calibration_factors"].setdefault("historical_accuracy", [])
+
+
+def accuracy_entry_from_history(entry):
+    """Build the historical_accuracy row implied by one calibration history row."""
+    total_actual = _positive_float(entry.get("actual_total", entry.get("actual")))
+    total_predicted = _positive_float(entry.get("predicted_mid"))
+    if not total_actual or not total_predicted:
+        return None
+
+    daily_actuals = entry.get("daily_actuals", {}) or {}
+    daily_predictions = entry.get("daily_predictions", {}) or {}
+    accuracy_entry = {
+        "movie": entry.get("movie"),
+        "weekend_of": entry.get("weekend_of"),
+        "abs_error_pct": round(abs(total_predicted - total_actual) / total_actual * 100, 1),
+        "n_theatres": entry.get("n_theatres", 0),
+        "n_days": entry.get("n_days", entry.get("days_collected", 0)),
+        "coverage_ratio": entry.get("coverage_ratio"),
+        "daily_coverage_ratios": entry.get("daily_coverage_ratios", {}),
+        "daily_errors": {
+            day: round(abs(daily_predictions.get(day, 0) - daily_actuals.get(day, 0))
+                       / daily_actuals[day] * 100, 1)
+            for day in daily_actuals
+            if daily_actuals[day] > 0 and day in daily_predictions
+        },
+    }
+    if entry.get("model_cohort_key"):
+        accuracy_entry["model_cohort_key"] = entry["model_cohort_key"]
+    if entry.get("reference_amc_theatres"):
+        accuracy_entry["reference_amc_theatres"] = entry["reference_amc_theatres"]
+    return accuracy_entry
+
+
+def rebuild_historical_accuracy(cal):
+    """Recreate confidence-tracking accuracy rows from retained history."""
+    factors = cal.setdefault("calibration_factors", {})
+    rebuilt = [
+        accuracy
+        for accuracy in (
+            accuracy_entry_from_history(entry)
+            for entry in cal.get("history", [])[-20:]
+        )
+        if accuracy
+    ]
+    factors["historical_accuracy"] = rebuilt[-20:]
+    return factors["historical_accuracy"]
+
+
 def save_calibration(cal):
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(CALIBRATION_JSON, "w") as f:
         json.dump(cal, f, indent=2)
+        f.write("\n")
 
 
 # ── Fetch Daily Actuals from The Numbers ────────────────────────────────────
@@ -117,6 +243,10 @@ def fetch_daily_chart(date_str):
     Returns dict of {movie_title: gross_in_millions}.
     The Numbers publishes daily data by the next morning — reliable by Tuesday.
     """
+    if requests is None:
+        print(f"  ⚠️  requests is not installed; cannot fetch The Numbers for {date_str}")
+        return {}
+
     url = f"https://www.the-numbers.com/box-office-chart/daily/{date_str.replace('-', '/')}"
     # The Numbers can be slow on cold cache hits; the previous 10s timeout
     # caused intermittent day drops that silently understated weekend totals
@@ -219,6 +349,9 @@ def fetch_movie_daily_history(movie_title, friday_date):
 
     Returns dict of {day_name: gross_in_millions} or None on failure.
     """
+    if requests is None:
+        return None
+
     friday = datetime.strptime(friday_date, "%Y-%m-%d")
     year = friday.year
 
@@ -305,7 +438,9 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   predicted_high, daily_actuals, daily_predictions,
                   n_theatres, n_days, daily_theatre_counts=None,
                   daily_coverage_ratios=None, raw_daily_predictions=None,
-                  reference_amc_theatres=None, model_cohort_key=None):
+                  reference_amc_theatres=None, model_cohort_key=None,
+                  actual_source=None, actual_status="final",
+                  replace_existing=False):
     """Record daily predicted-vs-actual and update all calibration factors."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
@@ -337,6 +472,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     )
     if reference:
         entry["reference_amc_theatres"] = reference
+    if actual_source:
+        entry["actual_source"] = actual_source
+    if actual_status:
+        entry["actual_status"] = actual_status
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
@@ -354,9 +493,25 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         ]
         if excluded_days:
             entry["calibration_excluded_days"] = sorted(excluded_days)
-    cal["history"].append(entry)
-
     factors = cal["calibration_factors"]
+    if replace_existing:
+        movie_key = movie.strip().lower()
+        cal["history"] = [
+            h for h in cal["history"]
+            if not (
+                (h.get("movie") or "").strip().lower() == movie_key
+                and h.get("weekend_of") == weekend_of
+            )
+        ]
+        factors["historical_accuracy"] = [
+            h for h in factors.get("historical_accuracy", [])
+            if not (
+                (h.get("movie") or "").strip().lower() == movie_key
+                and h.get("weekend_of") == weekend_of
+            )
+        ]
+
+    cal["history"].append(entry)
 
     # 1a. Update overall scale factor (EMA) — kept as a fallback for movies
     #     with no per-day history yet, but predict.py now prefers the per-day
@@ -443,6 +598,70 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     return entry
 
 
+def _movie_weekend_key(movie, weekend_of):
+    return ((movie or "").strip().lower(), weekend_of)
+
+
+def _drop_existing_pending_entries(cal, weekend_of, pending):
+    """Remove provisional/final rows that this pending batch will replace."""
+    keys = {
+        _movie_weekend_key(item.get("movie"), weekend_of)
+        for item in pending
+        if item.get("movie")
+    }
+    if not keys:
+        return
+
+    cal["history"] = [
+        h for h in cal.get("history", [])
+        if _movie_weekend_key(h.get("movie"), h.get("weekend_of")) not in keys
+    ]
+
+    factors = cal.setdefault("calibration_factors", {})
+    factors["historical_accuracy"] = [
+        h for h in factors.get("historical_accuracy", [])
+        if _movie_weekend_key(h.get("movie"), h.get("weekend_of")) not in keys
+    ]
+
+
+def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
+                                actual_source="The Numbers auto-calibrate",
+                                actual_status="final"):
+    """Record a batch of actuals against one clean pre-actual baseline."""
+    if not pending:
+        return []
+
+    _drop_existing_pending_entries(cal, weekend_of, pending)
+    reset_calibration_factors_to_prediction_baseline(cal, prediction_cal)
+    rebuild_historical_accuracy(cal)
+
+    entries = []
+    for item in pending:
+        pred = item["pred"]
+        predicted, predicted_low, predicted_high = item["regression_prediction"]
+        entry = record_result(
+            cal, item["movie"], weekend_of,
+            predicted_mid=predicted,
+            predicted_low=predicted_low,
+            predicted_high=predicted_high,
+            daily_actuals=item["daily_actuals"],
+            daily_predictions=item["daily_predictions"],
+            n_theatres=pred["n_theatres_total"],
+            n_days=pred["n_days"],
+            daily_theatre_counts=item.get("daily_theatre_counts"),
+            daily_coverage_ratios=item.get("daily_coverage_ratios"),
+            raw_daily_predictions=item.get("raw_daily_predictions"),
+            reference_amc_theatres=pred.get("reference_amc_theatres"),
+            model_cohort_key=pred.get("model_cohort_key"),
+            actual_source=actual_source,
+            actual_status=actual_status,
+            replace_existing=True,
+        )
+        entries.append(entry)
+
+    return entries
+
+
 # ── Auto-Calibration Pipeline ──────────────────────────────────────────────
 
 def _last_friday():
@@ -464,7 +683,7 @@ def auto_calibrate():
     print(f"  Auto-Calibration — weekend of {last_fri}")
     print(f"{'='*60}")
 
-    already_done = {h["movie"] for h in cal["history"] if h.get("weekend_of") == last_fri}
+    already_done = final_calibrated_movies(cal, last_fri)
 
     seat_data = load_seat_data(weekend_of=last_fri)
     poly_data = load_polymarket_data(weekend_of=last_fri)
@@ -491,6 +710,11 @@ def auto_calibrate():
             print(f"\n  Pre-actual calibration freeze: {os.path.relpath(freeze_path, os.getcwd())}")
         elif calibration_has_weekend(cal, last_fri):
             print("\n  ⚠️  Calibration already contains this weekend; not freezing contaminated state.")
+    prediction_cal = load_prediction_calibration(
+        last_fri,
+        cal,
+        require_freeze=bool(eligible_movies),
+    )
 
     # Predict everything from a frozen pre-calibration state so later movies do
     # not benefit from actuals recorded earlier in the same Tuesday run.
@@ -512,7 +736,7 @@ def auto_calibrate():
                     break
 
         # Our prediction
-        pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), cal,
+        pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), prediction_cal,
                              national_theatre_count=nat_count)
         if not pred:
             print(f"    No prediction possible")
@@ -563,33 +787,12 @@ def auto_calibrate():
             "daily_coverage_ratios": daily_coverage_ratios,
         })
 
-    for item in pending:
+    entries = record_pending_calibrations(cal, prediction_cal, last_fri, pending)
+
+    for item, entry in zip(pending, entries):
         movie = item["movie"]
-        pred = item["pred"]
-        predicted, predicted_low, predicted_high = item["regression_prediction"]
-        daily_actuals = item["daily_actuals"]
-        daily_predictions = item["daily_predictions"]
-        raw_daily_predictions = item["raw_daily_predictions"]
-        daily_theatre_counts = item["daily_theatre_counts"]
-        daily_coverage_ratios = item["daily_coverage_ratios"]
 
         print(f"\n  Recording calibration for {movie}:")
-
-        entry = record_result(
-            cal, movie, last_fri,
-            predicted_mid=predicted,
-            predicted_low=predicted_low,
-            predicted_high=predicted_high,
-            daily_actuals=daily_actuals,
-            daily_predictions=daily_predictions,
-            n_theatres=pred["n_theatres_total"],
-            n_days=pred["n_days"],
-            daily_theatre_counts=daily_theatre_counts,
-            daily_coverage_ratios=daily_coverage_ratios,
-            raw_daily_predictions=raw_daily_predictions,
-            reference_amc_theatres=pred.get("reference_amc_theatres"),
-            model_cohort_key=pred.get("model_cohort_key"),
-        )
 
         error = entry["error_pct"]
         direction = "over" if error and error > 0 else "under"
@@ -675,25 +878,54 @@ if __name__ == "__main__":
     elif "--actual" in args:
         idx = args.index("--actual")
         if idx + 2 >= len(args):
-            print("Usage: --actual \"Movie Name\" 85.3")
+            print("Usage: --actual \"Movie Name\" 85.3 [--daily-actuals Thursday=10,Friday=22,Saturday=26,Sunday=27]")
             sys.exit(1)
         movie_name = args[idx + 1]
         try:
             actual_val = float(args[idx + 2])
         except ValueError:
-            print("Usage: --actual \"Movie Name\" 85.3")
+            print("Usage: --actual \"Movie Name\" 85.3 [--daily-actuals Thursday=10,Friday=22,Saturday=26,Sunday=27]")
             sys.exit(1)
+
+        manual_daily_actuals = None
+        if "--daily-actuals" in args:
+            daily_idx = args.index("--daily-actuals")
+            if daily_idx + 1 >= len(args):
+                print("Usage: --daily-actuals Thursday=10,Friday=22,Saturday=26,Sunday=27")
+                sys.exit(1)
+            try:
+                manual_daily_actuals = parse_daily_actuals_arg(args[daily_idx + 1])
+            except ValueError as exc:
+                print(f"Invalid --daily-actuals: {exc}")
+                sys.exit(1)
+            manual_total = sum(manual_daily_actuals.values())
+            tolerance = max(0.1, actual_val * 0.01)
+            if abs(manual_total - actual_val) > tolerance:
+                print(
+                    f"--daily-actuals sum ${manual_total:.1f}M does not match "
+                    f"--actual ${actual_val:.1f}M"
+                )
+                sys.exit(1)
+
+        actual_source = None
+        if "--actual-source" in args:
+            source_idx = args.index("--actual-source")
+            if source_idx + 1 >= len(args):
+                print("Usage: --actual-source \"Source note\"")
+                sys.exit(1)
+            actual_source = args[source_idx + 1]
 
         from predict import (regression_prediction_values, load_seat_data,
                              load_polymarket_data, load_theatre_counts,
                              predict_movie)
         cal = load_calibration()
-        seat_data = load_seat_data(weekend_of=_last_friday())
-        poly_data = load_polymarket_data(weekend_of=_last_friday())
+        weekend_of = _last_friday()
+        seat_data = load_seat_data(weekend_of=weekend_of)
+        poly_data = load_polymarket_data(weekend_of=weekend_of)
         theatre_counts = load_theatre_counts()
 
-        pred = None
         matched_movie = None
+        nat_count = None
         for m in seat_data:
             if movie_name.lower() in m.lower():
                 matched_movie = m
@@ -704,15 +936,12 @@ if __name__ == "__main__":
                         if tc_movie.lower() in m.lower() or m.lower() in tc_movie.lower():
                             nat_count = count
                             break
-                pred = predict_movie(m, seat_data[m], poly_data.get(m, []), cal,
-                                     national_theatre_count=nat_count)
                 break
 
-        if not matched_movie or not pred:
+        if not matched_movie:
             print(f"No seat-count prediction found for {movie_name!r}; not recording actual.")
             sys.exit(1)
 
-        weekend_of = _last_friday()
         freeze_path = save_calibration_freeze(
             DATA_DIR,
             weekend_of,
@@ -724,6 +953,22 @@ if __name__ == "__main__":
             print(f"Pre-actual calibration freeze: {os.path.relpath(freeze_path, os.getcwd())}")
         elif calibration_has_weekend(cal, weekend_of):
             print("Calibration already contains this weekend; not freezing contaminated state.")
+
+        prediction_cal = load_prediction_calibration(
+            weekend_of,
+            cal,
+            require_freeze=True,
+        )
+        pred = predict_movie(
+            matched_movie,
+            seat_data[matched_movie],
+            poly_data.get(matched_movie, []),
+            prediction_cal,
+            national_theatre_count=nat_count,
+        )
+        if not pred:
+            print(f"No prediction found for {matched_movie!r}; not recording actual.")
+            sys.exit(1)
 
         daily_predictions = {}
         raw_daily_predictions = {}
@@ -742,12 +987,23 @@ if __name__ == "__main__":
                     3,
                 )
 
-        # Try fetching daily breakdown, fall back to total-only
-        daily_actuals = fetch_opening_weekend_daily(matched_movie, _last_friday())
-        if not daily_actuals:
-            daily_actuals = {"Weekend": actual_val}
+        if manual_daily_actuals:
+            daily_actuals = manual_daily_actuals
+            if not actual_source:
+                actual_source = "manual daily actuals"
+            actual_status = "provisional"
+        else:
+            # Try fetching daily breakdown, fall back to total-only
+            daily_actuals = fetch_opening_weekend_daily(matched_movie, _last_friday())
+            if not daily_actuals:
+                daily_actuals = {"Weekend": actual_val}
+                actual_status = "provisional"
+            else:
+                actual_status = "final"
 
         predicted_mid, predicted_low, predicted_high = regression_prediction_values(pred)
+        reset_calibration_factors_to_prediction_baseline(cal, prediction_cal)
+        rebuild_historical_accuracy(cal)
 
         record_result(
             cal, matched_movie, weekend_of,
@@ -763,6 +1019,9 @@ if __name__ == "__main__":
             raw_daily_predictions=raw_daily_predictions,
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
+            actual_source=actual_source,
+            actual_status=actual_status,
+            replace_existing=True,
         )
         print(f"Recorded: {matched_movie} actual=${actual_val}M")
     else:

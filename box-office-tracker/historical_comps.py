@@ -115,6 +115,10 @@ def _clean(value: str | None) -> str:
     return (value or "").strip().lower().replace(" ", "_")
 
 
+def _movie_key(value: str | None) -> str:
+    return "".join(ch for ch in (value or "").lower() if ch.isalnum())
+
+
 def _float(row: dict, key: str) -> float:
     raw = (row.get(key) or "").strip()
     return float(raw) if raw else 0.0
@@ -415,10 +419,12 @@ def estimate_opening_weekend_from_thursday(
     baseline_prior_comps: float = 20.0,
 ) -> CompEstimate:
     """Estimate opening weekend from Thursday gross and historical comps."""
+    target_key = _movie_key(target.movie)
     eligible = [
         (comp, score_comp(target, comp))
         for comp in comps
         if comp.thursday_share > 0
+        and _movie_key(comp.movie) != target_key
     ]
     eligible.sort(key=lambda item: item[1], reverse=True)
     selected = eligible[:max_comps]

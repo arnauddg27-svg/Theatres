@@ -38,6 +38,19 @@ def _fmt_m(value: float) -> str:
     return f"${value:.1f}M"
 
 
+def model_context_line(prediction: dict) -> tuple[str, float] | None:
+    """Return the optional non-primary model line for the backtest report."""
+    if prediction.get("seat_primary_mid_m") is not None:
+        return "Seat primary", float(prediction["seat_primary_mid_m"])
+
+    blended = prediction.get("blended_m")
+    seat_only = prediction.get("seat_mid_m")
+    if blended is not None and blended != seat_only:
+        return "Model blend", float(blended)
+
+    return None
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Compare live prediction output with a historical-comp Thursday estimate.",
@@ -126,8 +139,10 @@ def main(argv: list[str] | None = None) -> int:
     regression_mid, _, _ = regression_prediction_values(prediction)
     print(f"Current model:     {_fmt_m(regression_mid)}")
     print(f"Seat-only model:   {_fmt_m(prediction['seat_mid_m'])}")
-    if prediction.get("poly_result"):
-        print(f"Market blend:      {_fmt_m(prediction['blended_m'])}")
+    context_line = model_context_line(prediction)
+    if context_line:
+        label, value = context_line
+        print(f"{label + ':':<19}{_fmt_m(value)}")
     print(
         f"Comp-only model:   {_fmt_m(comp_estimate.mid_m)} "
         f"({_fmt_m(comp_estimate.low_m)} - {_fmt_m(comp_estimate.high_m)})"

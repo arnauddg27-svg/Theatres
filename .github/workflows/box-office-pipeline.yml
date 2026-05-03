@@ -78,7 +78,7 @@ jobs:
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 420
+    timeout-minutes: 500
 
     steps:
       - name: Free disk space
@@ -226,7 +226,7 @@ jobs:
   scrape:
     if: github.event.inputs.phase == 'scrape'
     runs-on: ubuntu-latest
-    timeout-minutes: 450
+    timeout-minutes: 500
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       max-parallel: 1
@@ -264,6 +264,20 @@ jobs:
           pip install -r requirements.txt
           python -m playwright install chromium --with-deps
 
+      - name: Stagger snapshot-only matrix leg
+        if: steps.dedup.outputs.skip != 'true' && github.event.inputs.snapshots_only == 'true'
+        run: |
+          SNAPSHOT_DELAY_SECONDS=0
+          case "${{ matrix.tz }}" in
+            ET) SNAPSHOT_DELAY_SECONDS=0 ;;
+            CT) SNAPSHOT_DELAY_SECONDS=300 ;;
+            PT) SNAPSHOT_DELAY_SECONDS=600 ;;
+          esac
+          echo "Snapshot lane delay=${SNAPSHOT_DELAY_SECONDS}s before acquiring AMC lock"
+          if [ "$SNAPSHOT_DELAY_SECONDS" -gt 0 ]; then
+            sleep "$SNAPSHOT_DELAY_SECONDS"
+          fi
+
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
@@ -288,16 +302,7 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             export SNAPSHOT_MAX_CONCURRENT_TABS=1
-            SNAPSHOT_DELAY_SECONDS=0
-            case "${{ matrix.tz }}" in
-              ET) SNAPSHOT_DELAY_SECONDS=0 ;;
-              CT) SNAPSHOT_DELAY_SECONDS=300 ;;
-              PT) SNAPSHOT_DELAY_SECONDS=600 ;;
-            esac
-            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS delay=${SNAPSHOT_DELAY_SECONDS}s"
-            if [ "$SNAPSHOT_DELAY_SECONDS" -gt 0 ]; then
-              sleep "$SNAPSHOT_DELAY_SECONDS"
-            fi
+            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
@@ -520,8 +525,12 @@ jobs:
           # freezes used for clean historical replay. Explicit allow-list so a
           # stray untracked file on the VPS runner (e.g. a playwright cache,
           # a locally-edited .env) can't ride along into the commit.
-          git add box-office-tracker/data/calibration.json \
-                  box-office-tracker/data/calibration-freezes/*.json 2>/dev/null || true
+          git add box-office-tracker/data/calibration.json
+          if compgen -G "box-office-tracker/data/calibration-freezes/*.json" > /dev/null; then
+            git add box-office-tracker/data/calibration-freezes/*.json
+          else
+            echo "No calibration freeze files to stage."
+          fi
           if git diff --staged --quiet; then
             echo "No calibration changes."
             exit 0

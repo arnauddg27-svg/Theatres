@@ -2,8 +2,8 @@
 """
 Opening Weekend Box Office Predictor
 =====================================
-Predicts North American opening-weekend gross from AMC seat occupancy data
-and Polymarket betting odds.
+Predicts North American opening-weekend gross from AMC seat occupancy data.
+Polymarket odds are parsed for market context only, not forecast math.
 
 Pipeline:
   A. Per-theatre daily revenue (occupancy × seats × showings × price)
@@ -11,8 +11,8 @@ Pipeline:
   C. AMC → total domestic (÷ market share)
   D. Partial days → full weekend (day weights)
   E. Polymarket expected value (bracket parsing)
-  F. Blended prediction (seat + Polymarket weighted)
-  G. Historical-comp prediction and comp + Polymarket blend when metadata exists
+  F. Model prediction (seat + historical comps)
+  G. Polymarket market context, excluded from model calculations
 
 Usage:
     python3 predict.py                              # All movies this weekend
@@ -946,13 +946,6 @@ def confidence_interval_factors(n_days, coverage_ratio=None):
     return max(0.25, low), max(high, low)
 
 
-def polymarket_weight_cap(seat_quality):
-    """Maximum market influence when real seat data exists."""
-    # High-quality seat data should dominate. Sparse seat data can lean a bit
-    # more on the market, but Polymarket never becomes the main driver.
-    return _clamp(0.35 - 0.15 * _coverage_value(seat_quality), 0.20, 0.35)
-
-
 def comp_component_weight(n_days):
     """How much the comp-translated seat signal should affect the seat model."""
     if n_days <= 1:
@@ -1222,52 +1215,6 @@ def polymarket_expected_value(markets_for_movie):
         "total_volume": total_volume,
         "raw_probability_sum": raw_probability_sum,
     }
-
-
-# ── Stage F: Blended Prediction ──────────────────────────────────────────────
-
-def blend_predictions(seat_est, seat_low, seat_high,
-                      poly_result, n_theatres, n_days, coverage_ratio=None):
-    """Stage F: weighted blend of seat-based and Polymarket estimates."""
-    if poly_result is None:
-        return seat_est, seat_low, seat_high, 1.0, 0.0
-
-    poly_ev = poly_result["ev"]
-    poly_volume = poly_result["total_volume"]
-
-    # Seat data quality (0-1). If coverage is known, trust the data set's
-    # coverage ratio rather than an absolute theatre count so different
-    # collection universes can be compared fairly.
-    seat_quality = seat_data_quality(
-        n_theatres,
-        n_days,
-        coverage_ratio=coverage_ratio,
-    )
-
-    # Polymarket quality (0-1)
-    poly_quality = min(1.0, poly_volume / 500_000)
-
-    # Weights
-    w_seat = seat_quality * 0.6
-    w_poly = poly_quality * 0.4
-    total_w = w_seat + w_poly
-
-    if total_w == 0:
-        return seat_est, seat_low, seat_high, 1.0, 0.0
-
-    w_seat_norm = w_seat / total_w
-    w_poly_norm = w_poly / total_w
-    if n_theatres > 0 and n_days > 0:
-        max_poly_weight = polymarket_weight_cap(seat_quality)
-        if w_poly_norm > max_poly_weight:
-            w_poly_norm = max_poly_weight
-            w_seat_norm = 1.0 - w_poly_norm
-
-    blended = seat_est * w_seat_norm + poly_ev * w_poly_norm
-    blended_low = min(seat_low, poly_result["low"])
-    blended_high = max(seat_high, poly_result["high"])
-
-    return blended, blended_low, blended_high, w_seat_norm, w_poly_norm
 
 
 # ── Calibration ──────────────────────────────────────────────────────────────
@@ -1583,7 +1530,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     if poly_data:
         poly_result = polymarket_expected_value(poly_data)
 
-    # Stage F: blend
+    # Stage F: model forecast. Polymarket is retained as market context only;
+    # it must never pull the seat/comp forecast up or down.
     # Count unique theatres across all days (a theatre that appears on both
     # Thursday and Friday should count as 1, not 2).
     all_theatre_names: set[str] = set()
@@ -1598,18 +1546,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     )
     n_days = len(daily_estimates)
 
-    if poly_result:
-        # Polymarket EV is already in millions
-        blended_m, blend_low_m, blend_high_m, w_seat, w_poly = blend_predictions(
-            seat_mid_m, seat_low_m, seat_high_m,
-            poly_result, n_theatres_total, n_days,
-            coverage_ratio=coverage_ratio,
-        )
-    else:
-        blended_m = seat_mid_m
-        blend_low_m = seat_low_m
-        blend_high_m = seat_high_m
-        w_seat, w_poly = 1.0, 0.0
+    blended_m = seat_mid_m
+    blend_low_m = seat_low_m
+    blend_high_m = seat_high_m
+    w_seat, w_poly = 1.0, 0.0
 
     avg_showings_total = (
         sum(d.get("avg_showings_per_cinema", 0) for d in daily_details.values()) /
@@ -1770,28 +1710,11 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         for comp in estimate.comps[:5]
     ]
 
-    poly_result = pred.get("poly_result")
-    if poly_result:
-        blended_m, blend_low_m, blend_high_m, w_model, w_poly = blend_predictions(
-            pred["seat_comp_mid_m"],
-            pred["seat_comp_low_m"],
-            pred["seat_comp_high_m"],
-            poly_result,
-            pred.get("n_theatres_total", 0),
-            pred.get("n_days", 0),
-            coverage_ratio=pred.get("coverage_ratio"),
-        )
-    else:
-        blended_m = pred["seat_comp_mid_m"]
-        blend_low_m = pred["seat_comp_low_m"]
-        blend_high_m = pred["seat_comp_high_m"]
-        w_model, w_poly = 1.0, 0.0
-
-    pred["comp_blended_m"] = blended_m
-    pred["comp_blend_low_m"] = blend_low_m
-    pred["comp_blend_high_m"] = blend_high_m
-    pred["comp_w_model"] = w_model
-    pred["comp_w_poly"] = w_poly
+    pred["comp_blended_m"] = pred["seat_comp_mid_m"]
+    pred["comp_blend_low_m"] = pred["seat_comp_low_m"]
+    pred["comp_blend_high_m"] = pred["seat_comp_high_m"]
+    pred["comp_w_model"] = 1.0
+    pred["comp_w_poly"] = 0.0
 
     primary = seat_primary_ensemble(pred)
     if primary:
@@ -1801,24 +1724,10 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         pred["seat_primary_w_direct"] = primary["w_direct"]
         pred["seat_primary_w_comp"] = primary["w_comp"]
         pred["seat_primary_disagreement_m"] = primary["disagreement_m"]
-        if poly_result:
-            final_m, final_low_m, final_high_m, w_seat, w_poly = blend_predictions(
-                primary["mid_m"],
-                primary["low_m"],
-                primary["high_m"],
-                poly_result,
-                pred.get("n_theatres_total", 0),
-                pred.get("n_days", 0),
-                coverage_ratio=pred.get("coverage_ratio"),
-            )
-        else:
-            final_m = primary["mid_m"]
-            final_low_m = primary["low_m"]
-            final_high_m = primary["high_m"]
-            w_seat, w_poly = 1.0, 0.0
-        pred["blended_m"] = final_m
-        pred["blend_low_m"] = final_low_m
-        pred["blend_high_m"] = final_high_m
+        pred["blended_m"] = primary["mid_m"]
+        pred["blend_low_m"] = primary["low_m"]
+        pred["blend_high_m"] = primary["high_m"]
+        w_seat, w_poly = 1.0, 0.0
         pred["w_seat"] = w_seat
         pred["w_poly"] = w_poly
     select_regression_prediction(pred)
@@ -2083,11 +1992,8 @@ def print_prediction(pred, verbose=False):
             print("    Top comps: " + ", ".join(comp["movie"] for comp in top_comps))
 
         if pred.get("comp_blended_m") is not None:
-            print(f"  Comp blend:       {fmt_m(pred['comp_blended_m']):>7}  "
+            print(f"  Seat+comp model:  {fmt_m(pred['comp_blended_m']):>7}  "
                   f"({fmt_m(pred['comp_blend_low_m'])} - {fmt_m(pred['comp_blend_high_m'])})")
-            if pred.get("poly_result"):
-                print(f"    Weights: {pred['comp_w_model']:.0%} comp / "
-                      f"{pred['comp_w_poly']:.0%} Polymarket")
 
         if pred.get("seat_primary_mid_m") is not None:
             print(f"  Seat primary:     {fmt_m(pred['seat_primary_mid_m']):>7}  "
@@ -2098,7 +2004,7 @@ def print_prediction(pred, verbose=False):
     # Polymarket
     poly = pred["poly_result"]
     if poly:
-        print(f"  Polymarket:    {fmt_m(poly['ev']):>10}  "
+        print(f"  Polymarket ctx:{fmt_m(poly['ev']):>10}  "
               f"({fmt_m(poly['low'])} - {fmt_m(poly['high'])})")
         bb = poly["best_bracket"]
         vol_str = f"${poly['total_volume']:,.0f}" if poly['total_volume'] else "—"
@@ -2117,12 +2023,8 @@ def print_prediction(pred, verbose=False):
     if source:
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
-        print(f"    Source: {label}{basis_str}; Polymarket context only")
+        print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
     if poly:
-        w_s = pred["w_seat"]
-        w_p = pred["w_poly"]
-        print(f"    Market blend: {fmt_m(pred['blended_m'])} "
-              f"({w_s:.0%} seat / {w_p:.0%} Polymarket)")
         diff = regression_mid - poly["ev"]
         direction = "higher" if diff > 0 else "lower"
         print(f"    vs Polymarket: {'+' if diff > 0 else ''}{diff:,.1f}M {direction}")

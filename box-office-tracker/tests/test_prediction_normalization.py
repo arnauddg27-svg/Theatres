@@ -1,6 +1,7 @@
 import unittest
 from pathlib import Path
 import sys
+import tempfile
 import types
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -9,7 +10,6 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 import predict
 import calibrate
 from predict import (
-    blend_predictions,
     days_to_weekend,
     polymarket_expected_value,
     predict_movie,
@@ -19,6 +19,21 @@ from predict import (
 
 
 class PredictionNormalizationTest(unittest.TestCase):
+    def test_parse_manual_daily_actuals(self):
+        parsed = calibrate.parse_daily_actuals_arg(
+            "Thursday=10.0,Friday=22.5,Saturday=25.9,Sunday=18.6"
+        )
+
+        self.assertEqual(
+            {
+                "Thursday": 10.0,
+                "Friday": 22.5,
+                "Saturday": 25.9,
+                "Sunday": 18.6,
+            },
+            parsed,
+        )
+
     def test_polymarket_expected_value_normalizes_interval_prices(self):
         result = polymarket_expected_value([
             {
@@ -36,27 +51,6 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(60.0, result["ev"], places=6)
         self.assertAlmostEqual(1.2, result["raw_probability_sum"], places=6)
         self.assertAlmostEqual(1.0, sum(b["p_norm"] for b in result["brackets"]), places=6)
-
-    def test_blend_predictions_keeps_seat_primary_with_liquid_market(self):
-        poly_result = {
-            "ev": 40.0,
-            "low": 35.0,
-            "high": 45.0,
-            "total_volume": 1_000_000,
-        }
-
-        _, _, _, w_seat, w_poly = blend_predictions(
-            100.0,
-            80.0,
-            120.0,
-            poly_result,
-            n_theatres=400,
-            n_days=1,
-            coverage_ratio=1.0,
-        )
-
-        self.assertGreaterEqual(w_seat, 0.75)
-        self.assertLessEqual(w_poly, 0.25)
 
     def test_low_coverage_widens_weekend_interval(self):
         cal = {
@@ -80,35 +74,6 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(full_mid, sparse_mid)
         self.assertLess(sparse_low, full_low)
         self.assertGreater(sparse_high, full_high)
-
-    def test_blend_predictions_uses_coverage_when_available(self):
-        poly_result = {
-            "ev": 80.0,
-            "low": 70.0,
-            "high": 90.0,
-            "total_volume": 500_000,
-        }
-
-        _, _, _, full_w_seat, _ = blend_predictions(
-            100.0,
-            90.0,
-            110.0,
-            poly_result,
-            n_theatres=400,
-            n_days=1,
-            coverage_ratio=1.0,
-        )
-        _, _, _, sparse_w_seat, _ = blend_predictions(
-            100.0,
-            90.0,
-            110.0,
-            poly_result,
-            n_theatres=400,
-            n_days=1,
-            coverage_ratio=0.25,
-        )
-
-        self.assertLess(sparse_w_seat, full_w_seat)
 
     def test_prediction_normalizes_sampled_amc_total_to_reference_theatre_count(self):
         cal = {
@@ -144,6 +109,38 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(2000.0, thursday["amc_total"], places=6)
         self.assertLess(pred["seat_data_quality"], 1.0)
         self.assertAlmostEqual(0.008, pred["seat_mid_m"], places=6)
+
+    def test_prediction_keeps_polymarket_ev_out_of_forecast_math(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+            },
+        }
+        rows = [self._row("AMC One")]
+        markets = [
+            {
+                "market_question": "Will Sample Movie Opening Weekend Box Office be between 100m and 110m?",
+                "outcome_prices": "[\"1.0\", \"0.0\"]",
+                "volume": "1000000",
+            },
+        ]
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": rows},
+            markets,
+            cal,
+        )
+
+        self.assertIsNotNone(pred["poly_result"])
+        self.assertGreater(pred["poly_result"]["ev"], pred["seat_mid_m"])
+        self.assertAlmostEqual(pred["seat_mid_m"], pred["blended_m"], places=6)
+        self.assertAlmostEqual(1.0, pred["w_seat"], places=6)
+        self.assertAlmostEqual(0.0, pred["w_poly"], places=6)
 
     def test_prediction_penalizes_missing_full_timezone_bucket(self):
         cal = {
@@ -341,6 +338,214 @@ class PredictionNormalizationTest(unittest.TestCase):
             cal["calibration_factors"]["historical_accuracy"][-1]["model_cohort_key"],
         )
 
+    def test_record_result_can_replace_existing_manual_actual(self):
+        cal = {
+            "history": [
+                {
+                    "movie": "Sample Movie",
+                    "weekend_of": "2026-05-08",
+                    "predicted_mid": 8.0,
+                    "actual_total": 9.0,
+                }
+            ],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [
+                    {
+                        "movie": "Sample Movie",
+                        "weekend_of": "2026-05-08",
+                        "abs_error_pct": 10.0,
+                    }
+                ],
+            },
+        }
+        old_save_calibration = calibrate.save_calibration
+        calibrate.save_calibration = lambda _cal: None
+        try:
+            entry = calibrate.record_result(
+                cal,
+                "Sample Movie",
+                "2026-05-08",
+                predicted_mid=10.0,
+                predicted_low=8.0,
+                predicted_high=12.0,
+                daily_actuals={"Thursday": 11.0},
+                daily_predictions={"Thursday": 10.0},
+                n_theatres=425,
+                n_days=1,
+                actual_source="manual test",
+                actual_status="provisional",
+                replace_existing=True,
+            )
+        finally:
+            calibrate.save_calibration = old_save_calibration
+
+        matching_history = [
+            h for h in cal["history"]
+            if h["movie"] == "Sample Movie" and h["weekend_of"] == "2026-05-08"
+        ]
+        matching_accuracy = [
+            h for h in cal["calibration_factors"]["historical_accuracy"]
+            if h["movie"] == "Sample Movie" and h["weekend_of"] == "2026-05-08"
+        ]
+        self.assertEqual(1, len(matching_history))
+        self.assertEqual(1, len(matching_accuracy))
+        self.assertEqual("manual test", entry["actual_source"])
+        self.assertEqual("provisional", entry["actual_status"])
+        self.assertEqual(11.0, entry["actual_total"])
+
+    def test_final_calibrated_movies_ignores_provisional_actuals(self):
+        cal = {
+            "history": [
+                {
+                    "movie": "Provisional Movie",
+                    "weekend_of": "2026-05-08",
+                    "actual_status": "provisional",
+                },
+                {
+                    "movie": "Final Movie",
+                    "weekend_of": "2026-05-08",
+                    "actual_status": "final",
+                },
+                {
+                    "movie": "Legacy Final Movie",
+                    "weekend_of": "2026-05-08",
+                },
+            ],
+            "calibration_factors": {},
+        }
+
+        done = calibrate.final_calibrated_movies(cal, "2026-05-08")
+
+        self.assertNotIn("Provisional Movie", done)
+        self.assertIn("Final Movie", done)
+        self.assertIn("Legacy Final Movie", done)
+
+    def test_load_prediction_calibration_requires_freeze_when_requested(self):
+        fallback = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Thursday": 1.0},
+            },
+        }
+
+        old_data_dir = calibrate.DATA_DIR
+        with tempfile.TemporaryDirectory() as tmpdir:
+            calibrate.DATA_DIR = tmpdir
+            try:
+                with self.assertRaises(FileNotFoundError):
+                    calibrate.load_prediction_calibration(
+                        "2026-05-08",
+                        fallback,
+                        require_freeze=True,
+                    )
+            finally:
+                calibrate.DATA_DIR = old_data_dir
+
+    def test_record_pending_calibrations_keeps_all_same_run_accuracy_entries(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [
+                    {
+                        "movie": "Older Movie",
+                        "weekend_of": "2026-05-01",
+                        "abs_error_pct": 5.0,
+                    }
+                ],
+            },
+        }
+        prediction_cal = {
+            "calibration_factors": dict(cal["calibration_factors"]),
+        }
+        pending = [
+            self._pending_calibration("Movie One", predicted=10.0, actual=11.0),
+            self._pending_calibration("Movie Two", predicted=20.0, actual=18.0),
+        ]
+
+        old_save_calibration = calibrate.save_calibration
+        calibrate.save_calibration = lambda _cal: None
+        try:
+            entries = calibrate.record_pending_calibrations(
+                cal,
+                prediction_cal,
+                "2026-05-08",
+                pending,
+            )
+        finally:
+            calibrate.save_calibration = old_save_calibration
+
+        self.assertEqual(2, len(entries))
+        accuracy_movies = [
+            entry["movie"]
+            for entry in cal["calibration_factors"]["historical_accuracy"]
+        ]
+        self.assertIn("Movie One", accuracy_movies)
+        self.assertIn("Movie Two", accuracy_movies)
+
+    def test_record_pending_calibrations_preserves_prior_same_weekend_accuracy(self):
+        prior_entry = {
+            "movie": "Already Final Movie",
+            "weekend_of": "2026-05-08",
+            "predicted_mid": 15.0,
+            "actual_total": 12.0,
+            "daily_actuals": {"Thursday": 12.0},
+            "daily_predictions": {"Thursday": 15.0},
+            "n_theatres": 425,
+            "n_days": 1,
+            "model_cohort_key": "core,expansion",
+            "reference_amc_theatres": 425,
+        }
+        cal = {
+            "history": [prior_entry],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [],
+            },
+        }
+        prediction_cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [],
+            },
+        }
+        pending = [
+            self._pending_calibration("Movie Two", predicted=20.0, actual=18.0),
+        ]
+
+        old_save_calibration = calibrate.save_calibration
+        calibrate.save_calibration = lambda _cal: None
+        try:
+            calibrate.record_pending_calibrations(
+                cal,
+                prediction_cal,
+                "2026-05-08",
+                pending,
+            )
+        finally:
+            calibrate.save_calibration = old_save_calibration
+
+        accuracy_movies = [
+            entry["movie"]
+            for entry in cal["calibration_factors"]["historical_accuracy"]
+        ]
+        self.assertIn("Already Final Movie", accuracy_movies)
+        self.assertIn("Movie Two", accuracy_movies)
+
     def test_record_actual_stores_numeric_days_and_reference_count(self):
         cal = {
             "history": [],
@@ -374,6 +579,23 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2, entry["days_collected"])
         self.assertEqual(2, entry["n_days"])
         self.assertEqual(376, entry["reference_amc_theatres"])
+
+    def _pending_calibration(self, movie, predicted, actual):
+        return {
+            "movie": movie,
+            "pred": {
+                "n_theatres_total": 425,
+                "n_days": 1,
+                "reference_amc_theatres": 425,
+                "model_cohort_key": "core,expansion",
+            },
+            "regression_prediction": (predicted, predicted * 0.9, predicted * 1.1),
+            "daily_actuals": {"Thursday": actual},
+            "daily_predictions": {"Thursday": predicted},
+            "raw_daily_predictions": {"Thursday": predicted},
+            "daily_theatre_counts": {"Thursday": 425},
+            "daily_coverage_ratios": {"Thursday": 1.0},
+        }
 
     def _row(self, theatre_name, date="2026-05-07", day="Thursday", timezone=None):
         row = {

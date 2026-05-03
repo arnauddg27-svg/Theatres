@@ -5,6 +5,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+import comp_backtest
 from historical_comps import (
     DEFAULT_COMPS_CSV,
     HistoricalComp,
@@ -24,6 +25,15 @@ from predict import (
 
 
 class HistoricalCompsTest(unittest.TestCase):
+    def test_backtest_labels_seat_primary_instead_of_market_blend(self):
+        line = comp_backtest.model_context_line({
+            "poly_result": {"ev": 70.0},
+            "blended_m": 76.5,
+            "seat_primary_mid_m": 76.5,
+        })
+
+        self.assertEqual(("Seat primary", 76.5), line)
+
     def test_estimate_weights_matching_music_biopic_comps(self):
         target = TargetMetadata(
             movie="Michael",
@@ -43,6 +53,40 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertGreater(estimate.weights["Close Match"], estimate.weights["Weak Match"])
         self.assertLess(estimate.mid_m, 125.0)
         self.assertGreater(estimate.mid_m, 90.0)
+
+    def test_estimate_excludes_target_movie_from_its_own_comps(self):
+        target = TargetMetadata(
+            movie="The Devil Wears Prada 2",
+            genre="comedy",
+            audience_type="female_skewing",
+            franchise_type="sequel",
+            rating="PG-13",
+        )
+        comps = [
+            HistoricalComp(
+                "The Devil Wears Prada 2",
+                "comedy",
+                "female_skewing",
+                "sequel",
+                "PG-13",
+                10.0,
+                77.0,
+            ),
+            HistoricalComp(
+                "Independent Comp",
+                "comedy",
+                "female_skewing",
+                "sequel",
+                "PG-13",
+                5.0,
+                50.0,
+            ),
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(10.0, target, comps)
+
+        self.assertEqual(["Independent Comp"], [comp.movie for comp in estimate.comps])
+        self.assertAlmostEqual(100.0, estimate.mid_m, places=6)
 
     def test_estimate_from_prediction_uses_thursday_daily_gross(self):
         target = TargetMetadata(
@@ -264,7 +308,7 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("Comp", prediction["seat_comp_top_comps"][0]["movie"])
         self.assertAlmostEqual(38.545454545, prediction["seat_comp_daily_m"]["Friday"], places=6)
 
-    def test_prediction_attaches_blended_comp_model_when_polymarket_exists(self):
+    def test_prediction_does_not_blend_polymarket_into_comp_model(self):
         prediction = {
             "movie": "Michael",
             "seat_mid_m": 88.6,
@@ -308,10 +352,10 @@ class HistoricalCompsTest(unittest.TestCase):
         attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
 
         self.assertAlmostEqual(100.0, prediction["seat_comp_mid_m"], places=6)
-        self.assertAlmostEqual(95.2, prediction["comp_blended_m"], places=6)
-        self.assertAlmostEqual(0.76, prediction["comp_w_model"], places=6)
-        self.assertAlmostEqual(0.24, prediction["comp_w_poly"], places=6)
-        self.assertAlmostEqual(70.0, prediction["comp_blend_low_m"], places=6)
+        self.assertAlmostEqual(100.0, prediction["comp_blended_m"], places=6)
+        self.assertAlmostEqual(1.0, prediction["comp_w_model"], places=6)
+        self.assertAlmostEqual(0.0, prediction["comp_w_poly"], places=6)
+        self.assertAlmostEqual(100.0, prediction["comp_blend_low_m"], places=6)
         self.assertAlmostEqual(100.0, prediction["comp_blend_high_m"], places=6)
 
     def test_model_prediction_uses_regression_not_market_blend(self):
@@ -363,7 +407,7 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("seat+comp-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_polymarket"])
         self.assertNotIn("headline_mid_m", prediction)
-        self.assertNotAlmostEqual(
+        self.assertAlmostEqual(
             prediction["model_forecast_mid_m"],
             prediction["comp_blended_m"],
             places=6,
@@ -418,8 +462,9 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertAlmostEqual(88.0, prediction["seat_primary_mid_m"], places=6)
         self.assertAlmostEqual(0.70, prediction["seat_primary_w_comp"], places=6)
-        self.assertGreater(prediction["blended_m"], 75.0)
-        self.assertGreaterEqual(prediction["w_seat"], 0.75)
+        self.assertAlmostEqual(88.0, prediction["blended_m"], places=6)
+        self.assertAlmostEqual(1.0, prediction["w_seat"], places=6)
+        self.assertAlmostEqual(0.0, prediction["w_poly"], places=6)
 
     def test_default_metadata_includes_current_prada_release(self):
         metadata = load_movie_metadata()
