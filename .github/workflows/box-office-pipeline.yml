@@ -12,7 +12,8 @@ on:
   # Runner topology:
   #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
   #     state file showtime-links.json benefits from single-writer serialization.
-  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT].
+  #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT],
+  #     serialized by the AMC lock so only one AMC browser session is active.
   #     Each leg gets a fresh Azure IP, then uploads a data artifact instead of
   #     pushing to main. This keeps any collected rows durable even if a leg
   #     fails after scraping.
@@ -57,10 +58,8 @@ permissions:
 # actual execution and avoids parallel writes to showtime-links.json.
 #
 # For Phase 2, GitHub Actions concurrency groups apply across workflow runs, not
-# across matrix legs within one run — so this queues a manual Phase 2 dispatch
-# behind the 04:00 UTC scheduled scrape (preventing two simultaneous AMC matrix
-# fan-outs from the same account) while leaving the three in-run matrix legs free
-# to execute truly in parallel.
+# across matrix legs within one run. The matrix therefore also sets
+# max-parallel: 1, and every AMC-touching leg acquires the remote AMC lock.
 #
 # Scrape runs split into regular vs snapshot lanes. GitHub keeps only one
 # pending run per concurrency group, so pre-reservation probes must not share
@@ -79,7 +78,7 @@ jobs:
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 90
+    timeout-minutes: 420
 
     steps:
       - name: Free disk space
@@ -143,14 +142,43 @@ jobs:
           pip3 install -r requirements.txt
           python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
 
+      - name: Acquire AMC lock
+        id: amc_lock
+        if: steps.dedup.outputs.skip != 'true'
+        timeout-minutes: 360
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 box-office-tracker/scripts/amc_lock.py acquire \
+            --mode "collect-links-${{ github.event.inputs.tz_group }}" \
+            --wait-seconds 21600 \
+            --poll-seconds 60 \
+            --github-output "$GITHUB_OUTPUT"
+
       - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
-        timeout-minutes: 60
+        timeout-minutes: 115
         env:
           PHASE1_FULL_WEEKEND_LINKS: 'true'
           PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
-        run: python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
+        run: |
+          set +e
+          python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
+          status=$?
+          if [ "$status" -ne 0 ]; then
+            echo "Phase 1 failed coverage/runtime check; waiting 180s and retrying once under the same AMC lock."
+            sleep 180
+            python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
+            status=$?
+          fi
+          exit "$status"
+
+      - name: Release AMC lock
+        if: always() && steps.amc_lock.outputs.acquired == 'true'
+        run: |
+          python3 box-office-tracker/scripts/amc_lock.py release \
+            --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
 
       - name: Commit showtime links
         # Only commit a successful Phase 1. The scraper now validates fresh
@@ -186,8 +214,8 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # Phase 2 — seat data scrape. Runs on ubuntu-latest matrix so each TZ gets
   # a fresh Azure IP, defeating AMC's Queue-It IP-flagging that had been
-  # zeroing out CT/PT on the VPS IP. All three TZs run in parallel (~60 min
-  # wall-clock instead of the old staggered 3+ hours on one self-hosted box).
+  # zeroing out CT/PT on the VPS IP. The matrix is intentionally serialized:
+  # strict-zero AMC overlap is more important than scrape speed.
   #
   # Each matrix leg uploads its local CSV/log snapshot as an artifact and never
   # pushes to main. The finalize job is the only Phase 2 writer; it downloads all
@@ -198,9 +226,10 @@ jobs:
   scrape:
     if: github.event.inputs.phase == 'scrape'
     runs-on: ubuntu-latest
-    timeout-minutes: 390
+    timeout-minutes: 450
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
+      max-parallel: 1
       matrix:
         tz: [ET, CT, PT]   # MT intentionally omitted — too few theatres to be worth the Phase 1 schedule
 
@@ -222,34 +251,11 @@ jobs:
       - name: Dedup guard — skip if ${{ matrix.tz }} already scraped today
         id: dedup
         run: |
-          # Force-bypass: same escape hatch as Phase 1 — `force=true` skips the
-          # workflow-level dedup so a manual re-dispatch can re-scrape the same
-          # UTC day after a partial / aborted / stale-stamped Phase 2 commit.
-          # (Note: the `--force` flag passed to scraper.py below is a separate
-          # bypass for the in-Python 12h staleness check on showtime-links.json
-          # — both layers have to be unlocked to fully re-run a same-day scrape.)
-          if [ "${{ github.event.inputs.force }}" = "true" ]; then
-            echo "Force-running — bypassing dedup guard"
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          # Snapshot-only runs are pre-reservation probes, not final post-show
-          # scrape runs. They must be allowed even if last night's real scrape
-          # committed on the same UTC day.
-          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
-            echo "Snapshot-only run — bypassing normal scrape dedup guard"
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          today=$(date -u +%Y-%m-%d)
-          pattern="data: box office ${{ matrix.tz }} scrape"
-          if git log --since="$today 00:00" --oneline --grep="$pattern" | grep -q .; then
-            echo "Skipping — ${{ matrix.tz }} scrape already ran today:"
-            git log --since="$today 00:00" --oneline --grep="$pattern"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          fi
+          python3 box-office-tracker/scripts/scrape_dedup_guard.py \
+            --tz "${{ matrix.tz }}" \
+            --force "${{ github.event.inputs.force }}" \
+            --snapshots-only "${{ github.event.inputs.snapshots_only }}" \
+            --github-output "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         if: steps.dedup.outputs.skip != 'true'
@@ -258,83 +264,22 @@ jobs:
           pip install -r requirements.txt
           python -m playwright install chromium --with-deps
 
-      - name: Snapshot capacity guard
-        if: steps.dedup.outputs.skip != 'true' && github.event.inputs.snapshots_only == 'true'
-        timeout-minutes: 300
+      - name: Acquire AMC lock
+        id: amc_lock
+        if: steps.dedup.outputs.skip != 'true'
+        timeout-minutes: 360
         env:
           GH_TOKEN: ${{ github.token }}
-          CURRENT_RUN_ID: ${{ github.run_id }}
-          SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES: "1140"  # 19:00 UTC; delayed snapshots wait instead of running into Phase 1.
-          SNAPSHOT_LAST_SAFE_START_MINUTES: "165"  # 02:45 UTC; delayed 02:30 snapshots wait instead of running into scrape.
-          REGULAR_WINDOW_START_MINUTES: "315"  # 05:15 UTC, before the 07:00 UTC model scrape.
-          REGULAR_WINDOW_END_MINUTES: "585"    # 09:45 UTC, after normal scrape timeout cushion.
         run: |
-          set -euo pipefail
-
-          wait_out_protected_window() {
-            utc_minutes=$((10#$(date -u +%H) * 60 + 10#$(date -u +%M)))
-            in_phase1_window=false
-            if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES" ] || [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
-              in_phase1_window=true
-            fi
-            in_regular_window=false
-            if [ "$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES" ] && [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
-              in_regular_window=true
-            fi
-            if [ "$in_phase1_window" = "true" ] || [ "$in_regular_window" = "true" ]; then
-              if [ "$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES" ]; then
-                sleep_seconds=$(((REGULAR_WINDOW_END_MINUTES - utc_minutes) * 60))
-              else
-                sleep_seconds=$((((24 * 60 - utc_minutes) + REGULAR_WINDOW_END_MINUTES) * 60))
-              fi
-              echo "Snapshot capacity guard: too close to Phase 1 / regular scrape capacity window; waiting ${sleep_seconds}s"
-              sleep "$sleep_seconds"
-            fi
-          }
-
-          wait_out_protected_window
-
-          blocking_runs() {
-            {
-              gh run list --workflow box-office-pipeline.yml --status queued --limit 50 --json databaseId,displayTitle,status
-              gh run list --workflow box-office-pipeline.yml --status in_progress --limit 50 --json databaseId,displayTitle,status
-            } | python3 -c '
-          import json
-          import os
-          import sys
-
-          current = str(os.environ["CURRENT_RUN_ID"])
-          seen = set()
-          for payload in sys.stdin:
-              payload = payload.strip()
-              if not payload:
-                  continue
-              for run in json.loads(payload):
-                  run_id = str(run.get("databaseId", ""))
-                  title = run.get("displayTitle") or ""
-                  if run_id == current or run_id in seen:
-                      continue
-                  if "box office scrape regular" in title or "box office collect-links" in title:
-                      print(f"{run_id} {run.get('status')} {title}")
-                      seen.add(run_id)
-          '
-          }
-
-          for attempt in $(seq 1 120); do
-            active_blockers="$(blocking_runs)"
-            if [ -z "$active_blockers" ]; then
-              wait_out_protected_window
-              echo "Snapshot capacity guard: no queued/running Phase 1 or regular scrape found."
-              exit 0
-            fi
-            echo "Snapshot capacity guard: Phase 1 / regular scrape still owns capacity:"
-            echo "$active_blockers"
-            echo "Waiting 60s before retry ${attempt}/120..."
-            sleep 60
-          done
-
-          echo "Snapshot capacity guard: Phase 1 / regular scrape capacity did not clear in time."
-          exit 1
+          lane="regular"
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            lane="snapshot"
+          fi
+          python3 box-office-tracker/scripts/amc_lock.py acquire \
+            --mode "scrape-${lane}-${{ matrix.tz }}" \
+            --wait-seconds 21600 \
+            --poll-seconds 60 \
+            --github-output "$GITHUB_OUTPUT"
 
       - name: Phase 2 — collect seat data (${{ matrix.tz }})
         if: steps.dedup.outputs.skip != 'true'
@@ -376,6 +321,12 @@ jobs:
             SNAPSHOT_FLAG="$SNAPSHOT_FLAG --snapshots-only"
           fi
           python scraper.py $ENSURE_LINKS_FLAG $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG ${{ matrix.tz }}
+
+      - name: Release AMC lock
+        if: always() && steps.amc_lock.outputs.acquired == 'true'
+        run: |
+          python3 box-office-tracker/scripts/amc_lock.py release \
+            --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
 
       - name: Write scrape manifest
         if: always()
@@ -447,7 +398,10 @@ jobs:
 
       - name: Merge scrape artifacts
         working-directory: box-office-tracker
-        run: python scripts/merge_scrape_artifacts.py data/scrape-artifacts --marker-file /tmp/box-office-scrape-markers.txt
+        run: |
+          python scripts/merge_scrape_artifacts.py data/scrape-artifacts \
+            --marker-file /tmp/box-office-scrape-markers.txt \
+            --summary-file /tmp/box-office-merge-summary.json
 
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard
@@ -504,13 +458,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Explicit allow-list: commit canonical merged data and derived files,
           # never the downloaded artifact staging directory.
-          git add box-office-tracker/data/seat-counts.csv \
-                  box-office-tracker/data/pre-reservation-snapshots.csv \
-                  box-office-tracker/data/polymarket-markets.csv \
-                  box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true
-          if [ -d box-office-tracker/data/run-logs ]; then
-            git add box-office-tracker/data/run-logs/ 2>/dev/null || true
-          fi
+          python box-office-tracker/scripts/stage_finalize_outputs.py \
+            --summary-file /tmp/box-office-merge-summary.json \
+            --marker-file /tmp/box-office-scrape-markers.txt
           if git diff --staged --quiet; then
             echo "No canonical data or derived artifacts changed."
             exit 0

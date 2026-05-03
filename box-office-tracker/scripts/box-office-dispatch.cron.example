@@ -1,5 +1,7 @@
 # Example VPS cron for the Box Office Pipeline.
-# Install as /etc/cron.d/box-office-dispatch after setting REPO_DIR and GH_REPO.
+# Install as /etc/cron.d/box-office-dispatch after setting REPO_DIR, GH_REPO,
+# and GH_TOKEN_FILE. The live VPS should run this tracked dispatcher instead
+# of any legacy /root/box-office-dispatch/dispatch.sh schedule.
 #
 # These times are UTC. They intentionally omit Mountain Time.
 # Snapshot probes use a separate workflow concurrency lane and force=true so they
@@ -10,21 +12,22 @@ SHELL=/bin/bash
 PATH=/usr/local/bin:/usr/bin:/bin
 REPO_DIR=/opt/box-office-tracker
 GH_REPO=arnauddg27-svg/Theatres
+GH_TOKEN_FILE=/root/box-office-dispatch/.env
 DISPATCH=$REPO_DIR/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
 
 # Phase 1 link collection, roughly 5pm local for each included timezone.
 # Dispatcher mode: collect-links -> phase=collect-links
-0 21 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
-0 23 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
-0 1 * * 0,1,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+0 21 * * 0,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+0 23 * * 0,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+0 1 * * 0,1,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
 
 # Pre-reservation snapshot probe before Phase 1 / final post-show scrape.
 # Dispatcher mode: snapshot -> phase=scrape, pre_reservation_snapshots=true, snapshots_only=true
-30 18 * * 0,4,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
+30 18 * * 0,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
 
 # Model-driving post-show scrape. Keep this clear of snapshot probes.
 # Dispatcher mode: scrape -> phase=scrape, snapshots_only=false
-0 7 * * 0,1,5,6 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" scrape >> /var/log/box-office-dispatch.log 2>&1
+0 7 * * 0,1,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" scrape >> /var/log/box-office-dispatch.log 2>&1
 
 # Weekly calibration after opening-weekend actuals are normally available.
-0 14 * * 2 gha cd "$REPO_DIR" && GH_REPO="$GH_REPO" "$DISPATCH" calibrate >> /var/log/box-office-dispatch.log 2>&1
+0 14 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" calibrate >> /var/log/box-office-dispatch.log 2>&1

@@ -12,6 +12,7 @@
 #   WORKFLOW_FILE=box-office-pipeline.yml
 #   FORCE=true                   Pass force=true to the workflow
 #   TEST=5                       Pass test=N to the workflow
+#   GH_TOKEN_FILE=/path/.env      Optional env file containing GH_TOKEN
 
 set -euo pipefail
 
@@ -19,6 +20,16 @@ WORKFLOW_FILE="${WORKFLOW_FILE:-box-office-pipeline.yml}"
 GH_REPO="${GH_REPO:-}"
 FORCE="${FORCE:-false}"
 TEST="${TEST:-}"
+GH_TOKEN_FILE="${GH_TOKEN_FILE:-}"
+
+if [[ -n "$GH_TOKEN_FILE" ]]; then
+  if [[ ! -f "$GH_TOKEN_FILE" ]]; then
+    echo "GH_TOKEN_FILE does not exist: $GH_TOKEN_FILE" >&2
+    exit 1
+  fi
+  # shellcheck disable=SC1090
+  source "$GH_TOKEN_FILE"
+fi
 
 usage() {
   echo "Usage: $0 collect-links ET|CT|PT|ALL | scrape | snapshot | calibrate" >&2

@@ -120,12 +120,36 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
             self.assertEqual(1, summary.polymarket_added)
             self.assertEqual(1, summary.polymarket_duplicates)
             self.assertEqual(1, summary.run_logs_copied)
+            self.assertEqual(1, summary.as_dict()["seat_added"])
+            self.assertEqual(["CT"], summary.as_dict()["markers"])
 
             with (data_dir / "seat-counts.csv").open() as f:
                 merged_seats = list(csv.DictReader(f))
             self.assertEqual(2, len(merged_seats))
             self.assertEqual("AMC New", merged_seats[-1]["theatre_name"])
             self.assertTrue((data_dir / "run-logs" / "2026-05-01" / "ct-run.md").exists())
+
+    def test_merge_artifacts_preserves_existing_crlf_csv_style(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            old_seat = seat_row("ET", "AMC Existing", 50)
+            new_seat = seat_row("ET", "AMC New", 60)
+            write_csv(artifact / "seat-counts.csv", SEAT_FIELDS, [old_seat, new_seat])
+            target = data_dir / "seat-counts.csv"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(
+                (",".join(SEAT_FIELDS) + "\r\n").encode()
+                + (",".join(old_seat.get(field, "") for field in SEAT_FIELDS) + "\r\n").encode()
+            )
+
+            merge_artifacts(root / "artifacts", data_dir)
+
+            content = target.read_bytes()
+            self.assertIn(b"\r\n", content)
+            self.assertNotIn(b"\r\r\n", content)
 
     def test_merge_artifacts_dedupes_pre_reservation_snapshots(self):
         with tempfile.TemporaryDirectory() as tmp:

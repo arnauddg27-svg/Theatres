@@ -50,24 +50,16 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
-        start = scrape_block.index("      - name: Snapshot capacity guard")
+        start = scrape_block.index("      - name: Acquire AMC lock")
         end = scrape_block.index("      - name: Phase 2", start)
         block = scrape_block[start:end]
 
-        self.assertIn("github.event.inputs.snapshots_only == 'true'", block)
+        self.assertIn("box-office-tracker/scripts/amc_lock.py acquire", block)
         self.assertIn("GH_TOKEN: ${{ github.token }}", block)
-        self.assertIn("SNAPSHOT_LAST_SAFE_START_MINUTES", block)
-        self.assertIn("REGULAR_WINDOW_START_MINUTES", block)
-        self.assertIn("REGULAR_WINDOW_END_MINUTES", block)
-        self.assertIn("SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES", block)
-        self.assertIn('"$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_START_MINUTES"', block)
-        self.assertIn('"$utc_minutes" -ge "$SNAPSHOT_LAST_SAFE_PRE_PHASE1_START_MINUTES"', block)
-        self.assertIn('"$utc_minutes" -lt "$REGULAR_WINDOW_END_MINUTES"', block)
-        self.assertIn("gh run list", block)
-        self.assertIn("box office scrape regular", block)
-        self.assertIn("box office collect-links", block)
-        self.assertIn("CURRENT_RUN_ID", block)
-        self.assertIn("sleep \"$sleep_seconds\"", block)
+        self.assertIn('lane="regular"', block)
+        self.assertIn('lane="snapshot"', block)
+        self.assertIn("--wait-seconds 21600", block)
+        self.assertIn("--github-output \"$GITHUB_OUTPUT\"", block)
 
     def test_snapshot_capacity_guard_runs_after_dependency_install(self):
         scrape_start = self.workflow.index("  scrape:")
@@ -75,7 +67,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_block = self.workflow[scrape_start:scrape_end]
 
         install_pos = scrape_block.index("      - name: Install dependencies")
-        guard_pos = scrape_block.index("      - name: Snapshot capacity guard")
+        guard_pos = scrape_block.index("      - name: Acquire AMC lock")
         phase2_pos = scrape_block.index("      - name: Phase 2")
 
         self.assertLess(install_pos, guard_pos)
@@ -115,7 +107,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("box-office-tracker/data/seat-counts.csv", block)
         self.assertIn("box-office-tracker/data/pre-reservation-snapshots.csv", block)
         self.assertNotIn("box-office-tracker/data/run-log.md", block)
-        self.assertIn("box-office-tracker/data/run-logs/", block)
+        self.assertIn("box-office-tracker/data/run-logs", block)
         self.assertIn("box-office-tracker/data/theatre-counts.json", block)
 
     def test_snapshot_only_runs_bypass_normal_scrape_dedup_guard(self):
@@ -126,12 +118,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         end = scrape_block.index("      - name: Install dependencies", start)
         block = scrape_block[start:end]
 
-        self.assertIn('github.event.inputs.snapshots_only', block)
-        self.assertIn("Snapshot-only run", block)
-        self.assertLess(
-            block.index('github.event.inputs.snapshots_only'),
-            block.index("pattern=\"data: box office"),
-        )
+        self.assertIn("scripts/scrape_dedup_guard.py", block)
+        self.assertIn("--snapshots-only \"${{ github.event.inputs.snapshots_only }}\"", block)
+        self.assertNotIn("pattern=\"data: box office", block)
 
     def test_finalize_downloads_merges_and_commits_once(self):
         start = self.workflow.index("  finalize:")
@@ -143,12 +132,47 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("continue-on-error: true", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
+        self.assertIn("--summary-file /tmp/box-office-merge-summary.json", block)
         self.assertIn("git status --short --", block)
         self.assertIn("box-office-tracker/data/seat-counts.csv", block)
         self.assertIn("box-office-tracker/data/pre-reservation-snapshots.csv", block)
         self.assertIn("box-office-tracker/data/polymarket-markets.csv", block)
-        self.assertIn("box-office-tracker/data/run-logs/", block)
+        self.assertIn("box-office-tracker/data/run-logs", block)
+        self.assertIn("scripts/stage_finalize_outputs.py", block)
+        self.assertNotIn("git add box-office-tracker/data/seat-counts.csv \\", block)
         self.assertIn("data: box office scrape merge + predictions", block)
+
+    def test_all_amc_touching_jobs_use_lock_and_release_it(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        finalize_start = self.workflow.index("  finalize:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        scrape_block = self.workflow[scrape_start:finalize_start]
+
+        for block in (collect_block, scrape_block):
+            self.assertIn("      - name: Acquire AMC lock", block)
+            self.assertIn("scripts/amc_lock.py acquire", block)
+            self.assertIn("      - name: Release AMC lock", block)
+            self.assertIn("scripts/amc_lock.py release", block)
+            self.assertIn("steps.amc_lock.outputs.acquired == 'true'", block)
+
+    def test_scrape_matrix_is_serialized_for_strict_zero_amc_overlap(self):
+        scrape_start = self.workflow.index("  scrape:")
+        finalize_start = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:finalize_start]
+
+        self.assertIn("max-parallel: 1", scrape_block)
+
+    def test_collect_links_retries_once_under_same_lock(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        phase_start = collect_block.index("      - name: Phase 1")
+        release_start = collect_block.index("      - name: Release AMC lock", phase_start)
+        phase_block = collect_block[phase_start:release_start]
+
+        self.assertIn("retrying once under the same AMC lock", phase_block)
+        self.assertEqual(2, phase_block.count("python3 scraper.py --collect-links"))
 
     def test_repo_contains_vps_dispatcher_for_snapshot_schedule(self):
         dispatcher = DISPATCHER.read_text()
@@ -156,10 +180,13 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
         self.assertIn("gh workflow run", dispatcher)
         self.assertIn("WORKFLOW_FILE:-box-office-pipeline.yml", dispatcher)
+        self.assertIn("GH_TOKEN_FILE", dispatcher)
         self.assertIn("pre_reservation_snapshots=true", dispatcher)
         self.assertIn("snapshots_only=true", dispatcher)
         self.assertIn("snapshot", cron)
         self.assertIn('"$DISPATCH" snapshot', cron)
+        self.assertIn("GH_TOKEN_FILE=/root/box-office-dispatch/.env", cron)
+        self.assertIn("git -C \"$REPO_DIR\" pull --ff-only origin main", cron)
         self.assertIn("30 18", cron)
         self.assertNotIn("30 22", cron)
         self.assertNotIn("30 2", cron)

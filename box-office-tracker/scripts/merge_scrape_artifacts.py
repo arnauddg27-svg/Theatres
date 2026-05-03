@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -123,6 +124,20 @@ class MergeSummary:
     def scrape_markers(self) -> set[str]:
         return self.markers
 
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "seat_added": self.seat_added,
+            "seat_duplicates": self.seat_duplicates,
+            "polymarket_added": self.polymarket_added,
+            "polymarket_duplicates": self.polymarket_duplicates,
+            "pre_reservation_added": self.pre_reservation_added,
+            "pre_reservation_duplicates": self.pre_reservation_duplicates,
+            "run_logs_copied": self.run_logs_copied,
+            "run_logs_skipped": self.run_logs_skipped,
+            "markers": sorted(self.markers),
+            "snapshot_markers": sorted(self.snapshot_markers),
+        }
+
 
 def _csv_sources(artifact_root: Path, filename: str) -> list[Path]:
     if not artifact_root.exists():
@@ -175,8 +190,11 @@ def _polymarket_key(row: dict[str, str]) -> tuple[str, ...]:
 
 def _write_rows(path: Path, fields: list[str], rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    lineterminator = "\n"
+    if path.exists() and b"\r\n" in path.read_bytes()[:8192]:
+        lineterminator = "\r\n"
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator=lineterminator)
         writer.writeheader()
         writer.writerows({field: row.get(field, "") for field in fields} for row in rows)
 
@@ -328,6 +346,11 @@ def main() -> int:
         default="/tmp/box-office-scrape-markers.txt",
         help="File containing commit-message markers for TZs with newly merged rows.",
     )
+    parser.add_argument(
+        "--summary-file",
+        default="",
+        help="Optional JSON summary path for the finalize staging guard.",
+    )
     args = parser.parse_args()
 
     summary = merge_artifacts(Path(args.artifact_root), Path(args.data_dir))
@@ -336,6 +359,10 @@ def main() -> int:
         summary.scrape_markers,
         snapshot_markers=summary.snapshot_markers,
     )
+    if args.summary_file:
+        summary_path = Path(args.summary_file)
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps(summary.as_dict(), indent=2, sort_keys=True) + "\n")
 
     print(f"Seat rows added: {summary.seat_added}")
     print(f"Seat duplicates skipped: {summary.seat_duplicates}")
