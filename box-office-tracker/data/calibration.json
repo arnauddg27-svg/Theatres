@@ -52,70 +52,153 @@
     {
       "movie": "The Devil Wears Prada 2",
       "weekend_of": "2026-05-01",
-      "date": "2026-05-03",
-      "predicted_mid": 71.77,
-      "predicted_low": 68.88,
-      "predicted_high": 75.49,
-      "actual_total": 77.0,
+      "date": "2026-05-05",
+      "predicted_mid": 95.93,
+      "predicted_low": 95.93,
+      "predicted_high": 95.93,
+      "actual_total": 76.75,
       "daily_actuals": {
-        "Thursday": 10.0,
-        "Friday": 22.5,
-        "Saturday": 25.9,
-        "Sunday": 18.6
+        "Friday": 32.9,
+        "Saturday": 25.11,
+        "Sunday": 18.74
       },
       "daily_predictions": {
-        "Thursday": 10.02,
-        "Friday": 24.26,
-        "Saturday": 20.29
+        "Thursday": 14.04,
+        "Friday": 36.27,
+        "Saturday": 30.73,
+        "Sunday": 14.89
       },
-      "error_pct": -6.8,
+      "error_pct": 25.0,
       "n_theatres": 431,
-      "n_days": 3,
+      "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "Deadline screenshots 2026-05-03 Sunday AM",
-      "actual_status": "provisional",
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
       "raw_daily_predictions": {
-        "Thursday": 9.33,
-        "Friday": 24.26,
-        "Saturday": 20.29
+        "Thursday": 13.07,
+        "Friday": 36.27,
+        "Saturday": 30.73,
+        "Sunday": 15.47
       },
       "daily_theatre_counts": {
         "Thursday": 425,
         "Friday": 287,
-        "Saturday": 261
+        "Saturday": 261,
+        "Sunday": 430
       },
       "daily_coverage_ratios": {
         "Thursday": 1.0,
         "Friday": 0.457,
-        "Saturday": 0.415
+        "Saturday": 0.415,
+        "Sunday": 1.0
       },
-      "coverage_ratio": 0.624,
+      "coverage_ratio": 0.718,
       "calibration_excluded_days": [
         "Friday",
         "Saturday"
       ]
+    },
+    {
+      "movie": "Animal Farm",
+      "weekend_of": "2026-05-01",
+      "date": "2026-05-05",
+      "predicted_mid": 2.3,
+      "predicted_low": 1.51,
+      "predicted_high": 3.75,
+      "actual_total": 3.3,
+      "daily_actuals": {
+        "Friday": 1.15,
+        "Saturday": 1.3,
+        "Sunday": 0.85
+      },
+      "daily_predictions": {
+        "Saturday": 0.83,
+        "Sunday": 0.53
+      },
+      "error_pct": -30.4,
+      "n_theatres": 292,
+      "n_days": 2,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Saturday": 0.83,
+        "Sunday": 0.55
+      },
+      "daily_theatre_counts": {
+        "Saturday": 49,
+        "Sunday": 287
+      },
+      "daily_coverage_ratios": {
+        "Saturday": 0.021,
+        "Sunday": 0.675
+      },
+      "coverage_ratio": 0.348,
+      "calibration_excluded_days": [
+        "Saturday",
+        "Sunday"
+      ]
+    },
+    {
+      "movie": "Hokum",
+      "weekend_of": "2026-05-01",
+      "date": "2026-05-05",
+      "predicted_mid": 8.27,
+      "predicted_low": 3.83,
+      "predicted_high": 17.76,
+      "actual_total": 6.43,
+      "daily_actuals": {
+        "Thursday": 0.9,
+        "Friday": 1.72,
+        "Saturday": 2.25,
+        "Sunday": 1.55
+      },
+      "daily_predictions": {
+        "Sunday": 2.13
+      },
+      "error_pct": 28.7,
+      "n_theatres": 72,
+      "n_days": 1,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Sunday": 2.21
+      },
+      "daily_theatre_counts": {
+        "Sunday": 72
+      },
+      "daily_coverage_ratios": {
+        "Sunday": 0.031
+      },
+      "coverage_ratio": 0.031,
+      "calibration_excluded_days": [
+        "Sunday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.1942,
+    "amc_market_share": 0.2415,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 1.0132,
+    "overall_scale_factor": 1.0472,
     "day_weights": {
-      "Thursday": 0.1299,
-      "Friday": 0.2848,
-      "Saturday": 0.3357,
-      "Sunday": 0.2496
+      "Thursday": 0.0675,
+      "Friday": 0.3306,
+      "Saturday": 0.3517,
+      "Sunday": 0.2502
     },
     "day_scale_factors": {
-      "Thursday": 1.0731,
+      "Thursday": 1.0739,
       "Friday": 1.0,
       "Saturday": 1.0,
-      "Sunday": 0.963
+      "Sunday": 1.0623
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -125,8 +208,6 @@
         "abs_error_pct": 3.7,
         "n_theatres": 378,
         "n_days": 4,
-        "model_cohort_key": "core",
-        "reference_amc_theatres": 376,
         "coverage_ratio": 0.846,
         "daily_coverage_ratios": {
           "Thursday": 0.997,
@@ -139,29 +220,66 @@
           "Friday": 45.7,
           "Saturday": 42.4,
           "Sunday": 6.4
-        }
+        },
+        "model_cohort_key": "core",
+        "reference_amc_theatres": 376
       },
       {
         "movie": "The Devil Wears Prada 2",
         "weekend_of": "2026-05-01",
-        "abs_error_pct": 6.8,
+        "abs_error_pct": 25.0,
         "n_theatres": 431,
-        "n_days": 3,
-        "coverage_ratio": 0.624,
+        "n_days": 4,
+        "coverage_ratio": 0.718,
         "daily_coverage_ratios": {
           "Thursday": 1.0,
           "Friday": 0.457,
-          "Saturday": 0.415
+          "Saturday": 0.415,
+          "Sunday": 1.0
         },
         "daily_errors": {
-          "Thursday": 0.2,
-          "Friday": 7.8,
-          "Saturday": 21.7
+          "Friday": 10.2,
+          "Saturday": 22.4,
+          "Sunday": 20.5
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Animal Farm",
+        "weekend_of": "2026-05-01",
+        "abs_error_pct": 30.4,
+        "n_theatres": 292,
+        "n_days": 2,
+        "coverage_ratio": 0.348,
+        "daily_coverage_ratios": {
+          "Saturday": 0.021,
+          "Sunday": 0.675
+        },
+        "daily_errors": {
+          "Saturday": 36.1,
+          "Sunday": 37.7
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Hokum",
+        "weekend_of": "2026-05-01",
+        "abs_error_pct": 28.7,
+        "n_theatres": 72,
+        "n_days": 1,
+        "coverage_ratio": 0.031,
+        "daily_coverage_ratios": {
+          "Sunday": 0.031
+        },
+        "daily_errors": {
+          "Sunday": 37.2
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-05-03"
+    "last_updated": "2026-05-05"
   }
 }
