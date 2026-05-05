@@ -306,6 +306,13 @@ def phase1_expected_date(tz_group):
     return (local_now(tz_group) - timedelta(hours=12)).strftime("%Y-%m-%d")
 
 
+def phase2_expected_dates(groups, snapshots_only=False):
+    """Return the Phase 1 show dates required by this Phase 2 mode."""
+    if snapshots_only:
+        return {group: local_date_str(group) for group in groups}
+    return {group: phase1_expected_date(group) for group in groups}
+
+
 def opening_weekend_friday(dt=None):
     """Return the Friday that anchors this opening weekend.
 
@@ -2305,7 +2312,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
     links_meta = {}
-    expected_dates = {group: phase1_expected_date(group) for group in groups_to_check}
+    expected_dates = phase2_expected_dates(groups_to_check, snapshots_only=snapshots_only)
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:

@@ -73,6 +73,22 @@ class ScraperLoggingTest(unittest.TestCase):
             dates,
         )
 
+    def test_snapshot_only_phase2_expects_current_local_date(self):
+        old_local_now = scraper.local_now
+        try:
+            scraper.local_now = lambda tz: datetime(2026, 5, 5, 9, 30)
+
+            self.assertEqual(
+                {"ET": "2026-05-04"},
+                scraper.phase2_expected_dates(["ET"], snapshots_only=False),
+            )
+            self.assertEqual(
+                {"ET": "2026-05-05"},
+                scraper.phase2_expected_dates(["ET"], snapshots_only=True),
+            )
+        finally:
+            scraper.local_now = old_local_now
+
     def test_phase1_coverage_reads_nested_full_weekend_links(self):
         theatres = {
             "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
