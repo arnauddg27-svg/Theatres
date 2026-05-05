@@ -1464,6 +1464,30 @@ def phase1_entry_movies(entry, expected_date):
     return (date_entry or {}).get("movies") or {}
 
 
+def phase2_theatre_expected_date(theatre, entry, expected_dates):
+    """Return the show date Phase 2 should use for a theatre/link entry."""
+    ref_tz = theatre.get("_tz") or entry.get("tz") or "ET"
+    return expected_dates.get(ref_tz) or phase1_expected_date(ref_tz)
+
+
+def filter_fresh_phase2_theatres(all_theatres, saved_links, expected_dates):
+    """Keep theatres whose Phase 1 entry matches the Phase 2 target show date."""
+    fresh_theatres = []
+    stale_skipped = []
+    for theatre in all_theatres:
+        entry = saved_links[theatre["name"]]
+        expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
+        if not phase1_date_entry(entry, expected_date):
+            entry_date = entry.get("show_date")
+            stale_skipped.append(
+                f"{theatre['name']} ({theatre.get('_tz','?')}: "
+                f"show_date={entry_date}, expected={expected_date})"
+            )
+            continue
+        fresh_theatres.append(theatre)
+    return fresh_theatres, stale_skipped
+
+
 def _phase1_entry_has_any_movies(entry):
     if entry.get("movies"):
         return True
@@ -2384,25 +2408,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # with yesterday's `show_date` — producing duplicate-day rows that
     # collide with yesterday's correctly-captured Phase 2 data.
     #
-    # We compute `expected_date` as `local_now(tz) - 12h` rather than just
-    # `local_date_str(tz)` because at the 04:00 UTC Phase 2 schedule, ET has
-    # already rolled past local midnight (00:00 EDT) while CT/PT haven't —
-    # so a naive `local_date_str("ET")` returns *tomorrow*, never matching
-    # Phase 1's afternoon stamp. Subtracting 12h snaps each TZ back to the
-    # date Phase 1 ran for, robust to TZ rollover at the standard scrape time.
-    fresh_theatres = []
-    stale_skipped = []
-    for t in all_theatres:
-        entry = saved_links[t["name"]]
-        ref_tz = t.get("_tz") or entry.get("tz") or "ET"
-        expected_date = phase1_expected_date(ref_tz)
-        if not phase1_date_entry(entry, expected_date):
-            entry_date = entry.get("show_date")
-            stale_skipped.append(
-                f"{t['name']} ({t.get('_tz','?')}: show_date={entry_date}, expected={expected_date})"
-            )
-            continue
-        fresh_theatres.append(t)
+    # Regular post-show scrapes use `local_now(tz) - 12h` because at the
+    # standard 04:00 UTC Phase 2 schedule, ET has already rolled past local
+    # midnight while CT/PT have not. Snapshot-only probes run before show day
+    # rolls over, so they use the current local date instead.
+    fresh_theatres, stale_skipped = filter_fresh_phase2_theatres(
+        all_theatres,
+        saved_links,
+        expected_dates,
+    )
     if stale_skipped:
         print(f"\n⚠️  Skipping {len(stale_skipped)} theatres with stale Phase 1 entries "
               f"(Phase 1 didn't refresh this TZ today):")
@@ -2471,7 +2485,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     all_issues.append(f"{name}: overall deadline reached — skipped")
                     return
                 saved_entry = saved_links[name]
-                expected_show_date = phase1_expected_date(theatre.get("_tz", "ET"))
+                expected_show_date = phase2_theatre_expected_date(
+                    theatre,
+                    saved_entry,
+                    expected_dates,
+                )
                 t_date = (
                     expected_show_date
                     if phase1_date_entry(saved_entry, expected_show_date)

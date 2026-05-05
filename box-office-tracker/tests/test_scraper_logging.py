@@ -89,6 +89,29 @@ class ScraperLoggingTest(unittest.TestCase):
         finally:
             scraper.local_now = old_local_now
 
+    def test_snapshot_only_keeps_current_day_phase1_links(self):
+        theatres = [{"name": "AMC Snapshot", "_tz": "ET"}]
+        saved_links = {
+            "AMC Snapshot": {
+                "tz": "ET",
+                "show_date": "2026-05-05",
+                "movies": {
+                    "Movie A": [
+                        {"showtime": "7:00pm", "showtime_id": "123", "format": "Standard"}
+                    ]
+                },
+            }
+        }
+
+        fresh, stale = scraper.filter_fresh_phase2_theatres(
+            theatres,
+            saved_links,
+            {"ET": "2026-05-05"},
+        )
+
+        self.assertEqual(theatres, fresh)
+        self.assertEqual([], stale)
+
     def test_phase1_coverage_reads_nested_full_weekend_links(self):
         theatres = {
             "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
