@@ -29,25 +29,27 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("'snapshot'", block)
         self.assertIn("'regular'", block)
 
-    def test_snapshot_scrapes_are_low_impact_and_staggered(self):
+    def test_snapshot_scrapes_are_low_impact_without_extra_stagger(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
 
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", scrape_block)
-        self.assertIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
-        self.assertIn("${{ matrix.tz }}", scrape_block)
-        self.assertIn('sleep "$SNAPSHOT_DELAY_SECONDS"', scrape_block)
+        self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
+        self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
 
-    def test_snapshot_stagger_does_not_hold_amc_lock_while_idle(self):
+    def test_snapshot_scrapes_go_directly_from_install_to_amc_lock(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
 
-        stagger_pos = scrape_block.index("      - name: Stagger snapshot-only matrix leg")
+        install_pos = scrape_block.index("      - name: Install dependencies")
         lock_pos = scrape_block.index("      - name: Acquire AMC lock")
+        phase2_pos = scrape_block.index("      - name: Phase 2")
 
-        self.assertLess(stagger_pos, lock_pos)
+        self.assertLess(install_pos, lock_pos)
+        self.assertLess(lock_pos, phase2_pos)
+        self.assertNotIn("sleep \"$SNAPSHOT_DELAY_SECONDS\"", scrape_block[install_pos:lock_pos])
 
     def test_snapshot_scrapes_wait_for_regular_capacity_window(self):
         self.assertIn("run-name:", self.workflow)

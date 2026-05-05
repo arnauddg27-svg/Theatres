@@ -264,20 +264,6 @@ jobs:
           pip install -r requirements.txt
           python -m playwright install chromium --with-deps
 
-      - name: Stagger snapshot-only matrix leg
-        if: steps.dedup.outputs.skip != 'true' && github.event.inputs.snapshots_only == 'true'
-        run: |
-          SNAPSHOT_DELAY_SECONDS=0
-          case "${{ matrix.tz }}" in
-            ET) SNAPSHOT_DELAY_SECONDS=0 ;;
-            CT) SNAPSHOT_DELAY_SECONDS=300 ;;
-            PT) SNAPSHOT_DELAY_SECONDS=600 ;;
-          esac
-          echo "Snapshot lane delay=${SNAPSHOT_DELAY_SECONDS}s before acquiring AMC lock"
-          if [ "$SNAPSHOT_DELAY_SECONDS" -gt 0 ]; then
-            sleep "$SNAPSHOT_DELAY_SECONDS"
-          fi
-
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
