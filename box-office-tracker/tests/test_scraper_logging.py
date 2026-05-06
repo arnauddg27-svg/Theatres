@@ -73,6 +73,26 @@ class ScraperLoggingTest(unittest.TestCase):
             dates,
         )
 
+    def test_phase1_full_weekend_dates_start_from_wednesday_for_preopening_snapshots(self):
+        dates = scraper.phase1_collection_dates(
+            "ET",
+            ref_dt=datetime(2026, 5, 6, 12, 0),
+            full_weekend=True,
+        )
+
+        self.assertEqual(
+            ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+            dates,
+        )
+        self.assertEqual(
+            "2026-05-01",
+            scraper.opening_weekend_friday(datetime(2026, 5, 6, 12, 0)),
+        )
+        self.assertEqual(
+            "2026-05-08",
+            scraper.phase1_weekend_anchor(datetime(2026, 5, 6, 12, 0), full_weekend=True),
+        )
+
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
         try:
@@ -88,6 +108,38 @@ class ScraperLoggingTest(unittest.TestCase):
             )
         finally:
             scraper.local_now = old_local_now
+
+    def test_snapshot_only_phase2_expects_thursday_links_on_wednesday(self):
+        old_local_now = scraper.local_now
+        try:
+            scraper.local_now = lambda tz: datetime(2026, 5, 6, 22, 30)
+
+            self.assertEqual(
+                {"ET": "2026-05-07", "CT": "2026-05-07", "PT": "2026-05-07"},
+                scraper.phase2_expected_dates(["ET", "CT", "PT"], snapshots_only=True),
+            )
+        finally:
+            scraper.local_now = old_local_now
+
+    def test_wednesday_preopening_collection_prefers_live_future_markets(self):
+        old_tracked = scraper.tracked_movie_titles_from_state
+        seen_weekends = []
+        try:
+            scraper.tracked_movie_titles_from_state = (
+                lambda weekend: seen_weekends.append(weekend) or ["Prior Weekend Movie"]
+            )
+            markets = scraper.select_collection_markets(
+                [{"movie_title": "Upcoming Movie", "market_url": "https://example.test"}],
+                datetime(2026, 5, 6, 18, 0),
+                "Phase 1",
+                weekend_override="2026-05-08",
+                prefer_live_markets=True,
+            )
+        finally:
+            scraper.tracked_movie_titles_from_state = old_tracked
+
+        self.assertEqual(["2026-05-08"], seen_weekends)
+        self.assertEqual(["Upcoming Movie"], [m["movie_title"] for m in markets])
 
     def test_snapshot_only_keeps_current_day_phase1_links(self):
         theatres = [{"name": "AMC Snapshot", "_tz": "ET"}]

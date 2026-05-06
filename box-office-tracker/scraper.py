@@ -309,7 +309,15 @@ def phase1_expected_date(tz_group):
 def phase2_expected_dates(groups, snapshots_only=False):
     """Return the Phase 1 show dates required by this Phase 2 mode."""
     if snapshots_only:
-        return {group: local_date_str(group) for group in groups}
+        expected = {}
+        for group in groups:
+            local = local_now(group)
+            # Wednesday evening snapshots are pre-opening probes for Thursday
+            # preview showtimes. Normal snapshot probes use same-day links.
+            if local.weekday() == 2:  # Wednesday
+                local = local + timedelta(days=1)
+            expected[group] = local.strftime("%Y-%m-%d")
+        return expected
     return {group: phase1_expected_date(group) for group in groups}
 
 
@@ -348,13 +356,20 @@ def opening_weekend_show_dates(weekend_of):
     ]
 
 
+def phase1_weekend_anchor(ref_dt, full_weekend=False):
+    """Weekend key Phase 1 should collect links for."""
+    if full_weekend and ref_dt.weekday() == 2:  # Wednesday pre-opening links
+        return (ref_dt + timedelta(days=2)).strftime("%Y-%m-%d")
+    return opening_weekend_friday(ref_dt)
+
+
 def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
                             full_weekend=False):
     """Dates Phase 1 should visit for one timezone.
 
-    Full-weekend expansion is intentionally Thursday-only by default. That lets
-    Thursday collect a forward cache for Fri/Sat/Sun while normal daily repairs
-    stay narrow and cheap.
+    Full-weekend expansion is intentionally limited to Wednesday/Thursday by
+    default. Wednesday starts pre-opening snapshots by caching Thu-Sun links;
+    Thursday refreshes that forward cache before previews.
     """
     if target_date:
         base_dt = datetime.strptime(target_date, "%Y-%m-%d")
@@ -362,8 +377,10 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
         base_dt = ref_dt or local_now(tz_group)
 
     current_date = target_date or base_dt.strftime("%Y-%m-%d")
-    if full_weekend and base_dt.weekday() == 3:
-        return opening_weekend_show_dates(opening_weekend_friday(base_dt))
+    if full_weekend and base_dt.weekday() in (2, 3):
+        return opening_weekend_show_dates(
+            phase1_weekend_anchor(base_dt, full_weekend=True)
+        )
     return [current_date]
 
 
@@ -642,10 +659,22 @@ def markets_for_tracked_titles(movie_titles, live_markets=None):
     return markets
 
 
-def select_collection_markets(live_markets, ref_dt, phase_label):
+def select_collection_markets(live_markets, ref_dt, phase_label,
+                              weekend_override=None,
+                              prefer_live_markets=False):
     """Choose which movie markets drive the data-collection run."""
-    weekend = opening_weekend_friday(ref_dt)
+    live_markets = live_markets or []
+    weekend = weekend_override or opening_weekend_friday(ref_dt)
     tracked_titles = tracked_movie_titles_from_state(weekend)
+
+    if prefer_live_markets and live_markets:
+        if tracked_titles:
+            live_titles = unique_preserving_order(m.get("movie_title", "") for m in live_markets)
+            print(
+                f"  🔜 {phase_label}: pre-opening collection for weekend {weekend}; "
+                f"using live market(s): {', '.join(live_titles)}"
+            )
+        return live_markets
 
     if ref_dt.weekday() in POST_WEEKEND_COLLECTION_WEEKDAYS and tracked_titles:
         markets = markets_for_tracked_titles(tracked_titles, live_markets)
@@ -1938,14 +1967,21 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     else:
         target_ref_dt = ref_local
     live_markets = fetch_polymarket_box_office()
-    poly_markets = select_collection_markets(live_markets, target_ref_dt, "Phase 1")
+    preopening_full_weekend = bool(full_weekend and target_ref_dt.weekday() == 2)
+    current_weekend = phase1_weekend_anchor(target_ref_dt, full_weekend=full_weekend)
+    poly_markets = select_collection_markets(
+        live_markets,
+        target_ref_dt,
+        "Phase 1",
+        weekend_override=current_weekend,
+        prefer_live_markets=preopening_full_weekend,
+    )
 
     if not poly_markets:
         fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     today = target_date or ref_local.strftime("%Y-%m-%d")
-    current_weekend = opening_weekend_friday(target_ref_dt)
     groups = phase1_groups(tz_group)
     collection_dates_by_group = {
         group: phase1_collection_dates(
@@ -1975,7 +2011,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     print(f"   Theatre-date visits: {len(all_theatres)}/{total_requested_visits} "
           f"planned; cap {PHASE1_MAX_THEATRE_DATE_VISITS}")
     if any(len(v) > 1 for v in collection_dates_by_group.values()):
-        print("   Full-weekend link cache enabled for Thursday run")
+        print("   Full-weekend link cache enabled for Wednesday/Thursday run")
     if capacity_skipped:
         print(f"   ⚠️  Capacity cap skipped {len(capacity_skipped)} optional future-date theatre visits")
 
@@ -2315,9 +2351,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     # Step 1: Get Polymarket movies
     # Step 2: Build flat list of theatres to scrape
-    weekend = opening_weekend_friday(local)
+    snapshot_preopening = bool(snapshots_only and local.weekday() == 2)
+    weekend = (
+        phase1_weekend_anchor(local, full_weekend=True)
+        if snapshot_preopening
+        else opening_weekend_friday(local)
+    )
     live_markets = fetch_polymarket_box_office()
-    poly_markets = select_collection_markets(live_markets, local, "Phase 2")
+    poly_markets = select_collection_markets(
+        live_markets,
+        local,
+        "Phase 2",
+        weekend_override=weekend,
+        prefer_live_markets=snapshot_preopening,
+    )
 
     if not poly_markets:
         log_run(tz_group, [], [], ["No active Polymarket box office markets found"])
