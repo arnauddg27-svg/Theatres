@@ -17,9 +17,22 @@ GH_TOKEN_FILE=/root/box-office-dispatch/.env
 # path absolute instead of using $REPO_DIR here.
 DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
 
-# Phase 1 link collection, roughly 5pm local for each included timezone.
-# Wednesday local starts the pre-opening snapshot flow. PT's Wednesday slot is
-# Thursday 01:00 UTC, so the PT line includes UTC day 4.
+# Phase 1 weekly warm-cache. Tuesday full-weekend mode targets the upcoming
+# Thu-Sun opening weekend, not the prior weekend. These staggered passes give
+# the system a full day to collect broad future links; duplicate later passes
+# skip automatically after a successful same-day collect-links commit.
+# Dispatcher mode: collect-links -> phase=collect-links
+0 13 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+0 15 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+0 17 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+0 19 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+0 21 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+0 23 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+
+# Phase 1 link refresh, roughly 5pm local for each included timezone.
+# Wednesday/Thursday refresh the pre-opening cache before snapshots and
+# previews. PT's Wednesday slot is Thursday 01:00 UTC, so the PT line includes
+# UTC day 4.
 # Dispatcher mode: collect-links -> phase=collect-links
 0 21 * * 0,3,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
 0 23 * * 0,3,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1

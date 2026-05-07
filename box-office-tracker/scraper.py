@@ -433,6 +433,8 @@ def opening_weekend_show_dates(weekend_of):
 
 def phase1_weekend_anchor(ref_dt, full_weekend=False):
     """Weekend key Phase 1 should collect links for."""
+    if full_weekend and ref_dt.weekday() == 1:  # Tuesday warm-cache links
+        return (ref_dt + timedelta(days=3)).strftime("%Y-%m-%d")
     if full_weekend and ref_dt.weekday() == 2:  # Wednesday pre-opening links
         return (ref_dt + timedelta(days=2)).strftime("%Y-%m-%d")
     return opening_weekend_friday(ref_dt)
@@ -442,9 +444,8 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
                             full_weekend=False):
     """Dates Phase 1 should visit for one timezone.
 
-    Full-weekend expansion is intentionally limited to Wednesday/Thursday by
-    default. Wednesday starts pre-opening snapshots by caching Thu-Sun links;
-    Thursday refreshes that forward cache before previews.
+    Full-weekend expansion starts with a Tuesday warm-cache pass, then
+    Wednesday/Thursday fill gaps and refresh late schedule changes.
     """
     if target_date:
         base_dt = datetime.strptime(target_date, "%Y-%m-%d")
@@ -452,7 +453,7 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
         base_dt = ref_dt or local_now(tz_group)
 
     current_date = target_date or base_dt.strftime("%Y-%m-%d")
-    if full_weekend and base_dt.weekday() in (2, 3):
+    if full_weekend and base_dt.weekday() in (1, 2, 3):
         return opening_weekend_show_dates(
             phase1_weekend_anchor(base_dt, full_weekend=True)
         )
@@ -2148,7 +2149,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     else:
         target_ref_dt = ref_local
     live_markets = fetch_polymarket_box_office()
-    preopening_full_weekend = bool(full_weekend and target_ref_dt.weekday() == 2)
+    preopening_full_weekend = bool(full_weekend and target_ref_dt.weekday() in (1, 2))
     current_weekend = phase1_weekend_anchor(target_ref_dt, full_weekend=full_weekend)
     poly_markets = select_collection_markets(
         live_markets,
