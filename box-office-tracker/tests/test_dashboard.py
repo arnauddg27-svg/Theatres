@@ -118,7 +118,11 @@ class DashboardTest(unittest.TestCase):
             )
 
         self.assertEqual("2026-05-08", data["current_weekend"])
-        self.assertEqual("ok", data["runs"]["snapshot"]["status"])
+        self.assertEqual("partial", data["runs"]["snapshot"]["status"])
+        self.assertEqual(
+            ["2026-05-08", "2026-05-09", "2026-05-10"],
+            data["runs"]["snapshot"]["missing_show_dates"],
+        )
         self.assertEqual("pending", data["runs"]["regular"]["status"])
         movie = data["movies"][0]
         self.assertEqual("Mortal Kombat II", movie["movie"])

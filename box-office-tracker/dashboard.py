@@ -119,6 +119,18 @@ def weekend_friday_for_date(date_str: str) -> str:
     return friday.strftime("%Y-%m-%d")
 
 
+def opening_weekend_show_dates(weekend_of: str) -> list[str]:
+    try:
+        friday = datetime.strptime(weekend_of, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        return []
+    from datetime import timedelta
+    return [
+        (friday + timedelta(days=offset)).strftime("%Y-%m-%d")
+        for offset in (-1, 0, 1, 2)
+    ]
+
+
 def row_weekend(row: dict[str, str], date_field: str) -> str:
     return row.get("weekend_of") or weekend_friday_for_date(row.get(date_field, ""))
 
@@ -338,9 +350,22 @@ def run_status(rows, current_weekend, row_type) -> dict:
     if row_type == "snapshot":
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "snapshot_time")
+        observed_show_dates = sorted({
+            row.get("show_date", "")
+            for row in current
+            if row.get("show_date")
+        })
+        expected_show_dates = opening_weekend_show_dates(current_weekend)
+        missing_show_dates = [
+            date_str for date_str in expected_show_dates
+            if date_str not in observed_show_dates
+        ]
     else:
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "check_time")
+        observed_show_dates = []
+        expected_show_dates = []
+        missing_show_dates = []
 
     if not current:
         return {
@@ -353,7 +378,7 @@ def run_status(rows, current_weekend, row_type) -> dict:
         }
 
     missing = missing_timezones(current)
-    status = "partial" if missing else "ok"
+    status = "partial" if missing or missing_show_dates else "ok"
     return {
         "status": status,
         "label": "OK" if status == "ok" else "Partial",
@@ -361,6 +386,8 @@ def run_status(rows, current_weekend, row_type) -> dict:
         "latest_time": latest_time,
         "timezone_rows": timezone_counts(current),
         "missing_timezones": missing,
+        "show_dates": observed_show_dates,
+        "missing_show_dates": missing_show_dates,
         "run_ids": run_ids(current)[-6:],
     }
 
@@ -714,9 +741,12 @@ HTML_PAGE = r"""<!doctype html>
       const phase1 = data.runs.phase1;
       const snapshot = data.runs.snapshot;
       const regular = data.runs.regular;
+      const snapshotDates = snapshot.missing_show_dates?.length
+        ? `missing ${snapshot.missing_show_dates.join(", ")}`
+        : `dates ${(snapshot.show_dates || []).join(", ") || "-"}`;
       document.getElementById("runGrid").innerHTML = [
         panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}`, phase1),
-        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)}`, snapshot),
+        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}`, snapshot),
         panel("Regular scrape", `${regular.rows || 0} rows`, `${fmtTime(regular.latest_time)} | ${tzText(regular.timezone_rows)}`, regular),
         panel("Local data", `${data.totals.seat_rows.toLocaleString()} seat rows`, `${data.totals.snapshot_rows.toLocaleString()} snapshot rows | pull: ${esc(data.pull.output || "-")}`, {status: data.git.dirty ? "partial" : "ok", label: data.git.dirty ? "Dirty" : "Clean"}),
       ].join("");
@@ -761,7 +791,7 @@ HTML_PAGE = r"""<!doctype html>
           <div class="cell">
             <div class="label">Snapshot</div>
             <div class="metric">${movie.snapshot.rows.toLocaleString()} rows</div>
-            <div class="small">${movie.snapshot.theatres} theatres | ${tzText(movie.snapshot.timezone_rows)}<br>${fmtTime(movie.snapshot.latest_snapshot_time)}</div>
+            <div class="small">${movie.snapshot.theatres} theatres | ${tzText(movie.snapshot.timezone_rows)}<br>${esc((movie.snapshot.show_dates || []).join(", ") || "-")}<br>${fmtTime(movie.snapshot.latest_snapshot_time)}</div>
           </div>
           <div class="cell">
             <div class="label">Market</div>

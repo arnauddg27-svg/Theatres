@@ -118,6 +118,17 @@ class ScraperLoggingTest(unittest.TestCase):
                 {"ET": "2026-05-07", "CT": "2026-05-07", "PT": "2026-05-07"},
                 scraper.phase2_expected_dates(["ET", "CT", "PT"], snapshots_only=True),
             )
+            self.assertEqual(
+                {
+                    "ET": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                    "CT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                    "PT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                },
+                scraper.phase2_collection_dates_by_group(
+                    ["ET", "CT", "PT"],
+                    snapshots_only=True,
+                ),
+            )
         finally:
             scraper.local_now = old_local_now
 
@@ -159,6 +170,62 @@ class ScraperLoggingTest(unittest.TestCase):
             theatres,
             saved_links,
             {"ET": "2026-05-05"},
+        )
+
+        self.assertEqual(theatres, fresh)
+        self.assertEqual([], stale)
+
+    def test_snapshot_only_keeps_future_weekend_phase1_links(self):
+        theatres = [
+            {
+                "name": "AMC Snapshot",
+                "_tz": "ET",
+                "_phase2_expected_date": "2026-05-10",
+            }
+        ]
+        saved_links = {
+            "AMC Snapshot": {
+                "tz": "ET",
+                "dates": {
+                    "2026-05-07": {"movies": {}},
+                    "2026-05-10": {
+                        "movies": {
+                            "Movie A": [
+                                {"showtime": "7:00pm", "showtime_id": "789", "format": "Standard"}
+                            ]
+                        }
+                    },
+                },
+            }
+        }
+
+        fresh, stale = scraper.filter_fresh_phase2_theatres(
+            theatres,
+            saved_links,
+            {"ET": "2026-05-07"},
+        )
+
+        self.assertEqual(theatres, fresh)
+        self.assertEqual([], stale)
+
+    def test_regular_phase2_uses_expected_date_not_theatre_local_date(self):
+        theatres = [{"name": "AMC Regular", "_tz": "ET", "_date": "2026-05-08"}]
+        saved_links = {
+            "AMC Regular": {
+                "tz": "ET",
+                "show_date": "2026-05-07",
+                "movies": {
+                    "Movie A": [
+                        {"showtime": "7:00pm", "showtime_id": "123", "format": "Standard"}
+                    ]
+                },
+            }
+        }
+
+        fresh, stale = scraper.filter_fresh_phase2_theatres(
+            theatres,
+            saved_links,
+            {"ET": "2026-05-07"},
         )
 
         self.assertEqual(theatres, fresh)

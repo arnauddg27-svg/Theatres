@@ -321,6 +321,36 @@ def phase2_expected_dates(groups, snapshots_only=False):
     return {group: phase1_expected_date(group) for group in groups}
 
 
+def phase2_snapshot_collection_dates(local):
+    """Return show dates a snapshot-only Phase 2 should probe.
+
+    Wednesday night snapshots are pre-opening reads, so they should capture the
+    full Thu-Sun opening weekend from the forward cache. Later snapshot probes
+    keep using the current opening-weekend cache and include remaining weekend
+    dates. Unscheduled Mon/Tue manual snapshots stay narrow.
+    """
+    if local.weekday() == 2:  # Wednesday pre-opening
+        return opening_weekend_show_dates(phase1_weekend_anchor(local, full_weekend=True))
+    if local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
+        local_date = local.strftime("%Y-%m-%d")
+        return [
+            date_str
+            for date_str in opening_weekend_show_dates(opening_weekend_friday(local))
+            if date_str >= local_date
+        ]
+    return [local.strftime("%Y-%m-%d")]
+
+
+def phase2_collection_dates_by_group(groups, snapshots_only=False):
+    """Return all show dates Phase 2 should visit for each timezone group."""
+    if snapshots_only:
+        return {
+            group: phase2_snapshot_collection_dates(local_now(group))
+            for group in groups
+        }
+    return {group: [phase1_expected_date(group)] for group in groups}
+
+
 def opening_weekend_friday(dt=None):
     """Return the Friday that anchors this opening weekend.
 
@@ -1495,6 +1525,8 @@ def phase1_entry_movies(entry, expected_date):
 
 def phase2_theatre_expected_date(theatre, entry, expected_dates):
     """Return the show date Phase 2 should use for a theatre/link entry."""
+    if theatre.get("_phase2_expected_date"):
+        return theatre["_phase2_expected_date"]
     ref_tz = theatre.get("_tz") or entry.get("tz") or "ET"
     return expected_dates.get(ref_tz) or phase1_expected_date(ref_tz)
 
@@ -2371,19 +2403,33 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         fail_phase("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
 
     run_id = local.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
+    expected_dates = phase2_expected_dates(groups_to_check, snapshots_only=snapshots_only)
+    collection_dates_by_group = phase2_collection_dates_by_group(
+        groups_to_check,
+        snapshots_only=snapshots_only,
+    )
+    if snapshots_only:
+        print("   Snapshot show dates: " + ", ".join(
+            f"{group}={','.join(dates)}"
+            for group, dates in collection_dates_by_group.items()
+        ))
 
     all_theatres = []
     for group in groups_to_check:
-        # Each group uses its own local date for the AMC showtime URL
-        for theatre in theatres_map.get(group, []):
-            all_theatres.append({**theatre, "_tz": group, "_date": local_date_str(group)})
+        for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
+            for theatre in theatres_map.get(group, []):
+                all_theatres.append({
+                    **theatre,
+                    "_tz": group,
+                    "_date": date_str,
+                    "_phase2_expected_date": date_str if snapshots_only else "",
+                })
     all_theatres.sort(key=_theatre_sort_key)
 
     # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
     # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
     links_meta = {}
-    expected_dates = phase2_expected_dates(groups_to_check, snapshots_only=snapshots_only)
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
