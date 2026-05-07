@@ -1708,6 +1708,27 @@ def phase1_link_coverage_for_date_sets(saved_links, theatres_map, groups, expect
     }
 
 
+def phase1_required_link_coverage(saved_links, theatres_map, groups, expected_dates,
+                                  collection_dates_by_group,
+                                  required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Coverage report for the exact Phase 1 contract the later scraper needs."""
+    if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
+        return phase1_link_coverage_for_date_sets(
+            saved_links,
+            theatres_map,
+            groups,
+            collection_dates_by_group,
+            required_cohorts=required_cohorts,
+        )
+    return phase1_link_coverage(
+        saved_links,
+        theatres_map,
+        groups,
+        expected_dates,
+        required_cohorts=required_cohorts,
+    )
+
+
 def print_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
     expected = report["expected_total"]
     fresh = report["fresh_count"]
@@ -2320,8 +2341,17 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                 entry["movies"] = collected
             total_links += sum(len(v) for v in collected.values())
 
-    fresh_report = phase1_link_coverage(links["theatres"], theatres_map, groups, expected_dates)
-    require_phase1_coverage(fresh_report, f"Phase 1 collected links for {tz_group}")
+    fresh_report = phase1_required_link_coverage(
+        links["theatres"],
+        theatres_map,
+        groups,
+        expected_dates,
+        collection_dates_by_group,
+    )
+    coverage_label = f"Phase 1 collected links for {tz_group}"
+    if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
+        coverage_label = f"Phase 1 full-weekend links for {tz_group}"
+    require_phase1_coverage(fresh_report, coverage_label)
     expansion_report = phase1_link_coverage(
         links["theatres"], theatres_map, groups, expected_dates,
         required_cohorts=(EXPANSION_COHORT,),
@@ -2332,20 +2362,6 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             f"Phase 1 expansion links for {tz_group}",
             min_ratio=0.0,
         )
-    for group, dates in collection_dates_by_group.items():
-        for show_date in dates[1:]:
-            future_report = phase1_link_coverage(
-                links["theatres"],
-                theatres_map,
-                [group],
-                {group: show_date},
-            )
-            print_phase1_coverage(
-                future_report,
-                f"Phase 1 forward-cache links for {group} {show_date}",
-                min_ratio=0.0,
-            )
-
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
         links["theatres"],

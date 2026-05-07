@@ -1,3 +1,4 @@
+import re
 import unittest
 from pathlib import Path
 
@@ -79,7 +80,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("GH_TOKEN: ${{ github.token }}", block)
         self.assertIn('lane="regular"', block)
         self.assertIn('lane="snapshot"', block)
-        self.assertIn("--wait-seconds 21600", block)
+        self.assertIn("--wait-seconds 18000", block)
         self.assertIn("--github-output \"$GITHUB_OUTPUT\"", block)
 
     def test_snapshot_capacity_guard_runs_after_dependency_install(self):
@@ -205,8 +206,30 @@ class WorkflowReliabilityTest(unittest.TestCase):
         collect_block = self.workflow[collect_start:scrape_start]
         scrape_block = self.workflow[scrape_start:finalize_start]
 
-        self.assertIn("timeout-minutes: 500", collect_block)
-        self.assertIn("timeout-minutes: 500", scrape_block)
+        collect_timeout = int(re.search(r"timeout-minutes: (\d+)", collect_block).group(1))
+        scrape_timeout = int(re.search(r"timeout-minutes: (\d+)", scrape_block).group(1))
+        collect_wait = int(re.search(r"--wait-seconds (\d+)", collect_block).group(1)) // 60
+        scrape_wait = int(re.search(r"--wait-seconds (\d+)", scrape_block).group(1)) // 60
+
+        collect_phase_start = collect_block.index("      - name: Phase 1")
+        collect_release_start = collect_block.index("      - name: Release AMC lock", collect_phase_start)
+        collect_phase_block = collect_block[collect_phase_start:collect_release_start]
+        scrape_phase_start = scrape_block.index("      - name: Phase 2")
+        scrape_release_start = scrape_block.index("      - name: Release AMC lock", scrape_phase_start)
+        scrape_phase_block = scrape_block[scrape_phase_start:scrape_release_start]
+
+        collect_phase_timeout = int(re.search(r"timeout-minutes: (\d+)", collect_phase_block).group(1))
+        scrape_phase_timeout = int(re.search(r"timeout-minutes: (\d+)", scrape_phase_block).group(1))
+
+        cleanup_buffer_minutes = 20
+        self.assertLessEqual(
+            collect_wait + collect_phase_timeout + cleanup_buffer_minutes,
+            collect_timeout,
+        )
+        self.assertLessEqual(
+            scrape_wait + scrape_phase_timeout + cleanup_buffer_minutes,
+            scrape_timeout,
+        )
 
     def test_calibration_commit_stages_required_file_before_optional_freezes(self):
         start = self.workflow.index("  calibrate:")

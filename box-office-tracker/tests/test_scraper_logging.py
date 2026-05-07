@@ -339,6 +339,47 @@ class ScraperLoggingTest(unittest.TestCase):
             )
         )
 
+    def test_phase1_required_coverage_uses_full_weekend_date_set(self):
+        theatres = {
+            "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
+        }
+        saved_links = {
+            "AMC Nested": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-07": {
+                        "movies": {
+                            "Movie A": [
+                                {"showtime": "7:00pm", "showtime_id": "123", "format": "Standard"}
+                            ]
+                        }
+                    }
+                },
+            }
+        }
+
+        coverage = scraper.phase1_required_link_coverage(
+            saved_links,
+            theatres,
+            ["ET"],
+            {"ET": "2026-05-07"},
+            {"ET": ["2026-05-07", "2026-05-08"]},
+        )
+
+        self.assertEqual(2, coverage["expected_total"])
+        self.assertEqual(1, coverage["fresh_count"])
+        self.assertEqual(
+            {"2026-05-07": {"expected": 1, "fresh": 1}, "2026-05-08": {"expected": 1, "fresh": 0}},
+            coverage["by_date"],
+        )
+        with self.assertRaises(SystemExit):
+            scraper.require_phase1_coverage(
+                coverage,
+                "Phase 1 full-weekend links for ET",
+                min_ratio=0.9,
+            )
+
     def test_snapshot_theatre_order_balances_show_dates_before_repeating_theatres(self):
         theatres = []
         for name in ("AMC A", "AMC B", "AMC C", "AMC D"):
