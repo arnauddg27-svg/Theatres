@@ -810,6 +810,23 @@ HTML_PAGE = r"""<!doctype html>
 class DashboardHandler(BaseHTTPRequestHandler):
     server_version = "BoxOfficeDashboard/1.0"
 
+    def do_HEAD(self):  # noqa: N802 - BaseHTTPRequestHandler API
+        parsed = urlparse(self.path)
+        if parsed.path == "/":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return
+        if parsed.path == "/api/status":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            return
+        self.send_response(404)
+        self.end_headers()
+
     def do_GET(self):  # noqa: N802 - BaseHTTPRequestHandler API
         parsed = urlparse(self.path)
         if parsed.path == "/":
