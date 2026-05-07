@@ -78,7 +78,7 @@ jobs:
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 500
+    timeout-minutes: 600
 
     steps:
       - name: Free disk space
@@ -158,9 +158,10 @@ jobs:
       - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
-        timeout-minutes: 115
+        timeout-minutes: 250
         env:
           PHASE1_FULL_WEEKEND_LINKS: 'true'
+          PHASE1_DEADLINE_SEC: '7200'
           PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
         run: |
           set +e

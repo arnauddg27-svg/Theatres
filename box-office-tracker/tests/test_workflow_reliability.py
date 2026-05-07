@@ -199,6 +199,19 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("retrying once under the same AMC lock", phase_block)
         self.assertEqual(2, phase_block.count("python3 scraper.py --collect-links"))
 
+    def test_collect_links_has_full_weekend_runtime_budget(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        phase_start = collect_block.index("      - name: Phase 1")
+        release_start = collect_block.index("      - name: Release AMC lock", phase_start)
+        phase_block = collect_block[phase_start:release_start]
+
+        self.assertIn("timeout-minutes: 250", phase_block)
+        self.assertIn("PHASE1_FULL_WEEKEND_LINKS: 'true'", phase_block)
+        self.assertIn("PHASE1_DEADLINE_SEC: '7200'", phase_block)
+        self.assertIn("PHASE1_MAX_THEATRE_DATE_VISITS: '2000'", phase_block)
+
     def test_amc_lock_wait_budget_fits_job_timeouts(self):
         collect_start = self.workflow.index("  collect-links:")
         scrape_start = self.workflow.index("  scrape:")
