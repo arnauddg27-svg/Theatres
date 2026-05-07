@@ -295,6 +295,79 @@ class ScraperLoggingTest(unittest.TestCase):
             )
         )
 
+    def test_snapshot_full_weekend_coverage_requires_each_show_date(self):
+        theatres = {
+            "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
+        }
+        saved_links = {
+            "AMC Nested": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-07": {
+                        "movies": {
+                            "Movie A": [
+                                {"showtime": "7:00pm", "showtime_id": "123", "format": "Standard"}
+                            ]
+                        }
+                    }
+                },
+            }
+        }
+        date_sets = {"ET": ["2026-05-07", "2026-05-08"]}
+
+        coverage = scraper.phase1_link_coverage_for_date_sets(
+            saved_links,
+            theatres,
+            ["ET"],
+            date_sets,
+        )
+
+        self.assertEqual(2, coverage["expected_total"])
+        self.assertEqual(1, coverage["fresh_count"])
+        self.assertEqual(0.5, coverage["ratio"])
+        self.assertEqual(
+            {"2026-05-07": {"expected": 1, "fresh": 1}, "2026-05-08": {"expected": 1, "fresh": 0}},
+            coverage["by_date"],
+        )
+        self.assertFalse(
+            scraper.phase1_forward_cache_is_usable_for_date_sets(
+                saved_links,
+                theatres,
+                ["ET"],
+                date_sets,
+            )
+        )
+
+    def test_snapshot_theatre_order_balances_show_dates_before_repeating_theatres(self):
+        theatres = []
+        for name in ("AMC A", "AMC B", "AMC C", "AMC D"):
+            for show_date in ("2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"):
+                theatres.append({
+                    "name": name,
+                    "dma": "NY",
+                    "cohort": scraper.CORE_COHORT,
+                    "_tz": "ET",
+                    "_date": show_date,
+                    "_phase2_expected_date": show_date,
+                })
+
+        ordered = scraper.order_phase2_theatres_for_collection(theatres, snapshots_only=True)
+
+        self.assertEqual(
+            [
+                ("AMC A", "2026-05-07"),
+                ("AMC B", "2026-05-08"),
+                ("AMC C", "2026-05-09"),
+                ("AMC D", "2026-05-10"),
+            ],
+            [(row["name"], row["_date"]) for row in ordered[:4]],
+        )
+        self.assertEqual(
+            len({(row["name"], row["_date"]) for row in theatres}),
+            len({(row["name"], row["_date"]) for row in ordered}),
+        )
+
     def test_phase1_batches_current_day_before_future_cache(self):
         theatres = [
             {"name": "Core A", "_tz": "ET", "_date": "2026-04-30", "cohort": scraper.CORE_COHORT},

@@ -193,6 +193,65 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual("Mortal Kombat II", data["movies"][0]["movie"])
         self.assertEqual(3, data["movies"][0]["seat_data"]["rows"])
 
+    def test_dashboard_snapshot_status_requires_each_date_timezone_slice(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            rows = []
+            for tz in ("ET", "CT", "PT"):
+                rows.append({
+                    "weekend_of": "2026-05-08",
+                    "run_id": f"run-thu-{tz.lower()}",
+                    "snapshot_time": "2026-05-07T03:00:00+00:00",
+                    "show_date": "2026-05-07",
+                    "theatre_name": f"AMC Thu {tz}",
+                    "timezone": tz,
+                    "movie_title": "Mortal Kombat II",
+                    "showtime": "7:00pm",
+                    "reserved_seats": "10",
+                    "total_seats": "100",
+                })
+            rows.append({
+                "weekend_of": "2026-05-08",
+                "run_id": "run-fri-et",
+                "snapshot_time": "2026-05-07T03:10:00+00:00",
+                "show_date": "2026-05-08",
+                "theatre_name": "AMC Fri ET",
+                "timezone": "ET",
+                "movie_title": "Mortal Kombat II",
+                "showtime": "7:00pm",
+                "reserved_seats": "10",
+                "total_seats": "100",
+            })
+            for date in ("2026-05-09", "2026-05-10"):
+                for tz in ("ET", "CT", "PT"):
+                    rows.append({
+                        "weekend_of": "2026-05-08",
+                        "run_id": f"run-{date}-{tz.lower()}",
+                        "snapshot_time": "2026-05-07T03:20:00+00:00",
+                        "show_date": date,
+                        "theatre_name": f"AMC {date} {tz}",
+                        "timezone": tz,
+                        "movie_title": "Mortal Kombat II",
+                        "showtime": "7:00pm",
+                        "reserved_seats": "10",
+                        "total_seats": "100",
+                    })
+            write_csv(data_dir / "pre-reservation-snapshots.csv", dashboard.PRE_RESERVATION_FIELDS, rows)
+            write_csv(data_dir / "seat-counts.csv", dashboard.SEAT_FIELDS, [])
+            write_csv(data_dir / "polymarket-markets.csv", dashboard.POLY_FIELDS, [])
+            (data_dir / "showtime-links.json").write_text("{}")
+
+            data = dashboard.build_dashboard_data(
+                data_dir=data_dir,
+                auto_pull=False,
+                include_predictions=False,
+            )
+
+        snapshot = data["runs"]["snapshot"]
+        self.assertEqual("partial", snapshot["status"])
+        self.assertEqual([], snapshot["missing_show_dates"])
+        self.assertEqual({"2026-05-08": ["CT", "PT"]}, snapshot["missing_date_timezones"])
+
 
 if __name__ == "__main__":
     unittest.main()

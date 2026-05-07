@@ -211,8 +211,9 @@ def phase2_max_concurrent_tabs(snapshots_only=False):
 # Runtime guards. A single hung Playwright navigation (typically caused
 # by AMC's Queue-It safety net redirecting the VPS IP) used to stall the whole
 # scrape for hours. The per-theatre timeout caps each tab; the overall deadline
-# stops launching new theatres early enough for in-flight work and the commit
-# step to finish inside the workflow's 75-minute step budget.
+# stops launching new theatres early enough for in-flight work and artifact
+# upload/finalize. Snapshot-only runs can raise PHASE2_DEADLINE_SEC from the
+# workflow because they cover multiple weekend show dates.
 PHASE1_THEATRE_TIMEOUT_SEC = 90
 PHASE2_THEATRE_TIMEOUT_SEC = 180
 try:
@@ -349,6 +350,50 @@ def phase2_collection_dates_by_group(groups, snapshots_only=False):
             for group in groups
         }
     return {group: [phase1_expected_date(group)] for group in groups}
+
+
+def order_phase2_theatres_for_collection(theatres, snapshots_only=False):
+    """Order Phase 2 work so deadline pressure leaves representative coverage."""
+    if not snapshots_only:
+        return sorted(theatres, key=_theatre_sort_key)
+
+    ordered = []
+    cohort_order = {CORE_COHORT: 0, EXPANSION_COHORT: 1}
+    grouped = {}
+    for theatre in theatres:
+        key = (
+            cohort_order.get(_theatre_cohort(theatre), 99),
+            _theatre_cohort(theatre),
+            theatre.get("_tz", ""),
+        )
+        grouped.setdefault(key, []).append(theatre)
+
+    for key in sorted(grouped):
+        rows = grouped[key]
+        dates = sorted({row.get("_date", "") for row in rows if row.get("_date")})
+        if not dates:
+            ordered.extend(sorted(rows, key=_theatre_sort_key))
+            continue
+
+        by_date = {}
+        for index, date_str in enumerate(dates):
+            date_rows = sorted(
+                [row for row in rows if row.get("_date") == date_str],
+                key=_theatre_sort_key,
+            )
+            if date_rows:
+                offset = index % len(date_rows)
+                date_rows = date_rows[offset:] + date_rows[:offset]
+            by_date[date_str] = date_rows
+
+        max_len = max((len(date_rows) for date_rows in by_date.values()), default=0)
+        for row_index in range(max_len):
+            for date_str in dates:
+                date_rows = by_date[date_str]
+                if row_index < len(date_rows):
+                    ordered.append(date_rows[row_index])
+
+    return ordered
 
 
 def opening_weekend_friday(dt=None):
@@ -1616,11 +1661,64 @@ def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
     }
 
 
+def phase1_link_coverage_for_date_sets(saved_links, theatres_map, groups, expected_date_sets,
+                                        required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Count fresh Phase 1 entries across every required show date."""
+    required_cohorts = set(required_cohorts or [])
+    expected_total = 0
+    fresh_names = []
+    stale_entries = []
+    missing_entries = []
+    by_date = {}
+
+    for group in groups:
+        for expected_date in expected_date_sets.get(group, []):
+            by_date.setdefault(expected_date, {"expected": 0, "fresh": 0})
+            for theatre in theatres_map.get(group, []):
+                if required_cohorts and _theatre_cohort(theatre) not in required_cohorts:
+                    continue
+                expected_total += 1
+                by_date[expected_date]["expected"] += 1
+                name = theatre["name"]
+                entry = saved_links.get(name)
+                label = f"{name} ({group}: expected={expected_date})"
+                if not entry:
+                    missing_entries.append(f"{label}, missing")
+                    continue
+                entry_date = entry.get("show_date")
+                if phase1_date_entry(entry, expected_date):
+                    fresh_names.append(f"{name}|{group}|{expected_date}")
+                    by_date[expected_date]["fresh"] += 1
+                else:
+                    stale_entries.append(
+                        f"{name} ({group}: show_date={entry_date or '?'}, expected={expected_date})"
+                    )
+
+    ratio = (len(fresh_names) / expected_total) if expected_total else 1.0
+    return {
+        "expected_total": expected_total,
+        "fresh_count": len(fresh_names),
+        "missing_count": len(missing_entries),
+        "stale_count": len(stale_entries),
+        "fresh_names": fresh_names,
+        "missing_entries": missing_entries,
+        "stale_entries": stale_entries,
+        "ratio": ratio,
+        "by_date": dict(sorted(by_date.items())),
+    }
+
+
 def print_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
     expected = report["expected_total"]
     fresh = report["fresh_count"]
     ratio = report["ratio"]
     print(f"\n🧯 {label}: {fresh}/{expected} fresh theatres ({ratio:.1%}); minimum {min_ratio:.0%}")
+    if report.get("by_date"):
+        for date_str, date_report in report["by_date"].items():
+            date_expected = date_report["expected"]
+            date_fresh = date_report["fresh"]
+            date_ratio = (date_fresh / date_expected) if date_expected else 1.0
+            print(f"   {date_str}: {date_fresh}/{date_expected} fresh ({date_ratio:.1%})")
     samples = report["stale_entries"][:3] + report["missing_entries"][:3]
     if samples:
         print("   Sample gaps:")
@@ -1636,6 +1734,17 @@ def require_phase1_coverage(report, label, min_ratio=PHASE1_MIN_FRESH_LINK_RATIO
             f"{report['fresh_count']}/{report['expected_total']} fresh theatres "
             f"({report['ratio']:.1%}, need {min_ratio:.0%})."
         )
+    for date_str, date_report in (report.get("by_date") or {}).items():
+        expected = date_report["expected"]
+        if not expected:
+            continue
+        ratio = date_report["fresh"] / expected
+        if ratio < min_ratio:
+            fail_phase(
+                f"❌ {label} below reliability threshold for {date_str}: "
+                f"{date_report['fresh']}/{expected} fresh theatres "
+                f"({ratio:.1%}, need {min_ratio:.0%})."
+            )
 
 
 def phase1_forward_cache_is_usable(saved_links, theatres_map, groups,
@@ -1649,6 +1758,25 @@ def phase1_forward_cache_is_usable(saved_links, theatres_map, groups,
         expected_dates,
     )
     return bool(report["expected_total"] and report["ratio"] >= min_ratio)
+
+
+def phase1_forward_cache_is_usable_for_date_sets(saved_links, theatres_map, groups,
+                                                  expected_date_sets,
+                                                  min_ratio=PHASE1_MIN_FRESH_LINK_RATIO):
+    """True when an older full-weekend link file covers every required show date."""
+    report = phase1_link_coverage_for_date_sets(
+        saved_links,
+        theatres_map,
+        groups,
+        expected_date_sets,
+    )
+    if not report["expected_total"] or report["ratio"] < min_ratio:
+        return False
+    for date_report in report.get("by_date", {}).values():
+        expected = date_report["expected"]
+        if expected and date_report["fresh"] / expected < min_ratio:
+            return False
+    return True
 
 
 def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None,
@@ -2408,6 +2536,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         groups_to_check,
         snapshots_only=snapshots_only,
     )
+    coverage_dates_by_group = (
+        collection_dates_by_group
+        if snapshots_only
+        else {group: [expected_dates[group]] for group in groups_to_check}
+    )
     if snapshots_only:
         print("   Snapshot show dates: " + ", ".join(
             f"{group}={','.join(dates)}"
@@ -2424,7 +2557,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     "_date": date_str,
                     "_phase2_expected_date": date_str if snapshots_only else "",
                 })
-    all_theatres.sort(key=_theatre_sort_key)
+    all_theatres = order_phase2_theatres_for_collection(
+        all_theatres,
+        snapshots_only=snapshots_only,
+    )
 
     # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
     # weekend, or older than 12 hours unless explicitly forced.
@@ -2448,11 +2584,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     age_hours = (datetime.now(timezone.utc) - collected_at).total_seconds() / 3600
                     age_str = f" from {age_hours:.1f}h ago"
                     if age_hours > 12:
-                        has_forward_cache = phase1_forward_cache_is_usable(
+                        has_forward_cache = phase1_forward_cache_is_usable_for_date_sets(
                             saved_links,
                             theatres_map,
                             groups_to_check,
-                            expected_dates,
+                            coverage_dates_by_group,
                         )
                         if not force and not has_forward_cache:
                             fail_phase(f"\n❌ showtime-links.json is stale ({age_hours:.1f}h old) — run Phase 1 first.")
@@ -2519,11 +2655,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             print(f"    ... and {len(stale_skipped)-5} more")
     all_theatres = fresh_theatres
 
-    coverage_report = phase1_link_coverage(saved_links, theatres_map, groups_to_check, expected_dates)
+    coverage_report = phase1_link_coverage_for_date_sets(
+        saved_links,
+        theatres_map,
+        groups_to_check,
+        coverage_dates_by_group,
+    )
     if not test_max:
         require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
-        expansion_report = phase1_link_coverage(
-            saved_links, theatres_map, groups_to_check, expected_dates,
+        expansion_report = phase1_link_coverage_for_date_sets(
+            saved_links, theatres_map, groups_to_check, coverage_dates_by_group,
             required_cohorts=(EXPANSION_COHORT,),
         )
         if expansion_report["expected_total"]:
@@ -2557,9 +2698,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     snapshot_rows_written = 0
     snapshot_rows_skipped = 0
 
-    # Per-theatre and overall deadlines. The workflow's step timeout caps us at
-    # 75 min, but we stop accepting new work earlier so in-flight theatres can
-    # finish and commit. Per-theatre wait_for prevents one hung tab (usually
+    # Per-theatre and overall deadlines. We stop accepting new work early enough
+    # for in-flight theatres and artifact upload/finalize to finish before the
+    # workflow step timeout. Per-theatre wait_for prevents one hung tab (usually
     # from AMC's queue-it redirect) from stalling the whole run.
     overall_deadline = asyncio.get_event_loop().time() + PHASE2_DEADLINE_SEC
     theatre_timeout_sec = PHASE2_THEATRE_TIMEOUT_SEC

@@ -154,6 +154,20 @@ def missing_timezones(rows) -> list[str]:
     return [tz for tz in TZ_ORDER if counts.get(tz, 0) == 0]
 
 
+def missing_date_timezones(rows, show_dates) -> dict[str, list[str]]:
+    missing = {}
+    for show_date in show_dates:
+        counts = Counter(
+            row.get("timezone", "")
+            for row in rows
+            if row.get("show_date") == show_date and row.get("timezone")
+        )
+        missing_tz = [tz for tz in TZ_ORDER if counts.get(tz, 0) == 0]
+        if missing_tz:
+            missing[show_date] = missing_tz
+    return missing
+
+
 def weighted_pct(rows, sold_field) -> float | None:
     sold = 0
     total = 0
@@ -360,12 +374,14 @@ def run_status(rows, current_weekend, row_type) -> dict:
             date_str for date_str in expected_show_dates
             if date_str not in observed_show_dates
         ]
+        missing_date_tz = missing_date_timezones(current, expected_show_dates)
     else:
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "check_time")
         observed_show_dates = []
         expected_show_dates = []
         missing_show_dates = []
+        missing_date_tz = {}
 
     if not current:
         return {
@@ -375,10 +391,11 @@ def run_status(rows, current_weekend, row_type) -> dict:
             "latest_time": "",
             "timezone_rows": {},
             "missing_timezones": list(TZ_ORDER),
+            "missing_date_timezones": {},
         }
 
     missing = missing_timezones(current)
-    status = "partial" if missing or missing_show_dates else "ok"
+    status = "partial" if missing or missing_show_dates or missing_date_tz else "ok"
     return {
         "status": status,
         "label": "OK" if status == "ok" else "Partial",
@@ -388,6 +405,7 @@ def run_status(rows, current_weekend, row_type) -> dict:
         "missing_timezones": missing,
         "show_dates": observed_show_dates,
         "missing_show_dates": missing_show_dates,
+        "missing_date_timezones": missing_date_tz,
         "run_ids": run_ids(current)[-6:],
     }
 
@@ -744,9 +762,12 @@ HTML_PAGE = r"""<!doctype html>
       const snapshotDates = snapshot.missing_show_dates?.length
         ? `missing ${snapshot.missing_show_dates.join(", ")}`
         : `dates ${(snapshot.show_dates || []).join(", ") || "-"}`;
+      const snapshotMissingSlices = snapshot.missing_date_timezones && Object.keys(snapshot.missing_date_timezones).length
+        ? ` | incomplete ${Object.entries(snapshot.missing_date_timezones).map(([date, tz]) => `${date}:${tz.join("/")}`).join(", ")}`
+        : "";
       document.getElementById("runGrid").innerHTML = [
         panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}`, phase1),
-        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}`, snapshot),
+        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}${snapshotMissingSlices}`, snapshot),
         panel("Regular scrape", `${regular.rows || 0} rows`, `${fmtTime(regular.latest_time)} | ${tzText(regular.timezone_rows)}`, regular),
         panel("Local data", `${data.totals.seat_rows.toLocaleString()} seat rows`, `${data.totals.snapshot_rows.toLocaleString()} snapshot rows | pull: ${esc(data.pull.output || "-")}`, {status: data.git.dirty ? "partial" : "ok", label: data.git.dirty ? "Dirty" : "Clean"}),
       ].join("");

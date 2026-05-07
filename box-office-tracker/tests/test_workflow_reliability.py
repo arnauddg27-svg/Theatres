@@ -38,6 +38,18 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
         self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
 
+    def test_snapshot_scrapes_have_full_weekend_runtime_budget(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+        phase_start = scrape_block.index("      - name: Phase 2")
+        phase_end = scrape_block.index("      - name: Release AMC lock", phase_start)
+        phase_block = scrape_block[phase_start:phase_end]
+
+        self.assertIn("timeout-minutes: 150", phase_block)
+        self.assertIn("PHASE2_DEADLINE_SEC=8100", phase_block)
+        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", phase_block)
+
     def test_snapshot_scrapes_go_directly_from_install_to_amc_lock(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
