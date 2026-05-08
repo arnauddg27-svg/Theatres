@@ -461,6 +461,68 @@ class ScraperLoggingTest(unittest.TestCase):
                 min_ratio=0.9,
             )
 
+    def test_active_market_guard_flags_missing_timezone_movie_links(self):
+        saved_links = {
+            "AMC East": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "The Sheep Detectives": [
+                                {"showtime": "7:00pm", "showtime_id": "east-1"}
+                            ]
+                        }
+                    }
+                },
+            },
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [
+                                {"showtime": "7:00pm", "showtime_id": "west-1"}
+                            ]
+                        }
+                    }
+                },
+            },
+        }
+        markets = [
+            {"movie_title": "The Sheep Detectives"},
+            {"movie_title": "Mortal Kombat II"},
+        ]
+
+        missing = scraper.active_market_phase1_link_gaps(
+            markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-05-08"]},
+        )
+
+        self.assertEqual(
+            [
+                {
+                    "movie_title": "The Sheep Detectives",
+                    "timezone": "PT",
+                    "show_date": "2026-05-08",
+                    "fresh_theatres": 0,
+                    "required_theatres": 1,
+                }
+            ],
+            missing,
+        )
+        with self.assertRaises(SystemExit):
+            scraper.require_active_market_phase1_links(
+                markets,
+                saved_links,
+                ["PT"],
+                {"PT": ["2026-05-08"]},
+                "Phase 1 scrape preflight for PT",
+            )
+
     def test_snapshot_theatre_order_balances_show_dates_before_repeating_theatres(self):
         theatres = []
         for name in ("AMC A", "AMC B", "AMC C", "AMC D"):

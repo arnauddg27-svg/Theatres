@@ -225,6 +225,7 @@ try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
 except ValueError:
     PHASE1_MIN_FRESH_LINK_RATIO = 0.80
+PHASE1_MIN_MOVIE_LINK_THEATRES = _env_int("PHASE1_MIN_MOVIE_LINK_THEATRES", 1, minimum=1)
 try:
     SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = float(os.getenv("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO", "0.80"))
 except ValueError:
@@ -1962,6 +1963,97 @@ def phase1_movie_link_counts(saved_links, groups=None, expected_dates=None,
     return counts
 
 
+def _unique_market_titles(poly_markets):
+    titles = []
+    seen = set()
+    for market in poly_markets or []:
+        title = (market.get("movie_title") or "").strip()
+        if title and title not in seen:
+            titles.append(title)
+            seen.add(title)
+    return titles
+
+
+def phase1_movie_link_counts_by_slice(saved_links, groups, expected_date_sets,
+                                      required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Count movie links by timezone/show-date so new-market gaps cannot hide."""
+    counts = {}
+    required_cohorts = set(required_cohorts or [])
+    groups = set(groups or [])
+    for entry in saved_links.values():
+        if required_cohorts:
+            cohort = (entry.get("cohort") or CORE_COHORT).strip().lower()
+            if cohort not in required_cohorts:
+                continue
+        tz = entry.get("tz")
+        if groups and tz not in groups:
+            continue
+        for expected_date in expected_date_sets.get(tz, []):
+            movies = phase1_entry_movies(entry, expected_date)
+            for movie, shows in movies.items():
+                if shows:
+                    key = (tz, expected_date, movie)
+                    counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def active_market_phase1_link_gaps(poly_markets, saved_links, groups, expected_date_sets,
+                                   min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                   required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Return active movie/timezone/date slices with no usable Phase 1 links."""
+    counts = phase1_movie_link_counts_by_slice(
+        saved_links,
+        groups,
+        expected_date_sets,
+        required_cohorts=required_cohorts,
+    )
+    gaps = []
+    for title in _unique_market_titles(poly_markets):
+        for group in groups:
+            for expected_date in expected_date_sets.get(group, []):
+                fresh = counts.get((group, expected_date, title), 0)
+                if fresh < min_theatres:
+                    gaps.append({
+                        "movie_title": title,
+                        "timezone": group,
+                        "show_date": expected_date,
+                        "fresh_theatres": fresh,
+                        "required_theatres": min_theatres,
+                    })
+    return gaps
+
+
+def require_active_market_phase1_links(poly_markets, saved_links, groups, expected_date_sets,
+                                       label,
+                                       min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                       required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Fail loudly when a live market would be silently skipped for a TZ/date."""
+    gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        saved_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    if not gaps:
+        return
+
+    print(f"\n❌ {label}: active market(s) missing Phase 1 movie links")
+    for gap in gaps[:20]:
+        print(
+            "    - "
+            f"{gap['movie_title']} {gap['show_date']} {gap['timezone']}: "
+            f"{gap['fresh_theatres']}/{gap['required_theatres']} theatres"
+        )
+    if len(gaps) > 20:
+        print(f"    ... and {len(gaps) - 20} more")
+    fail_phase(
+        f"❌ {label} has active Polymarket movie(s) with zero current AMC links. "
+        "Run Phase 1 collect-links for the missing timezone/date before scraping."
+    )
+
+
 def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
                                      groups=None, expected_dates=None,
                                      required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -2482,6 +2574,13 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
         coverage_label = f"Phase 1 full-weekend links for {tz_group}"
     require_phase1_coverage(fresh_report, coverage_label)
+    require_active_market_phase1_links(
+        poly_markets,
+        links["theatres"],
+        groups,
+        collection_dates_by_group,
+        coverage_label,
+    )
     expansion_report = phase1_link_coverage(
         links["theatres"], theatres_map, groups, expected_dates,
         required_cohorts=(EXPANSION_COHORT,),
@@ -2754,6 +2853,14 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
+
+    require_active_market_phase1_links(
+        poly_markets,
+        saved_links,
+        groups_to_check,
+        coverage_dates_by_group,
+        f"Phase 1 scrape preflight for {tz_group}",
+    )
 
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
