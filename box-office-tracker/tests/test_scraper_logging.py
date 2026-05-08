@@ -194,6 +194,33 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(["2026-05-08"], seen_weekends)
         self.assertEqual(["Upcoming Movie"], [m["movie_title"] for m in markets])
 
+    def test_live_market_selection_keeps_only_current_weekend_events(self):
+        old_tracked = scraper.tracked_movie_titles_from_state
+        try:
+            scraper.tracked_movie_titles_from_state = lambda weekend: []
+            markets = scraper.select_collection_markets(
+                [
+                    {
+                        "movie_title": "Mortal Kombat II",
+                        "market_url": "https://example.test/mk",
+                        "end_date": "2026-05-11T12:00:00Z",
+                    },
+                    {
+                        "movie_title": "Future Movie",
+                        "market_url": "https://example.test/future",
+                        "end_date": "2026-05-18T12:00:00Z",
+                    },
+                ],
+                datetime(2026, 5, 6, 18, 0),
+                "Phase 1",
+                weekend_override="2026-05-08",
+                prefer_live_markets=True,
+            )
+        finally:
+            scraper.tracked_movie_titles_from_state = old_tracked
+
+        self.assertEqual(["Mortal Kombat II"], [m["movie_title"] for m in markets])
+
     def test_snapshot_only_keeps_current_day_phase1_links(self):
         theatres = [{"name": "AMC Snapshot", "_tz": "ET"}]
         saved_links = {

@@ -643,6 +643,12 @@ def fetch_polymarket_box_office():
             "current_odds": "N/A",
             "volume": total_volume,
             "market_id": str(event.get("id", "")),
+            "end_date": (
+                event.get("endDate")
+                or event.get("end_date")
+                or event.get("end_date_iso")
+                or event.get("endDateIso")
+            ),
             "bracket_markets": bracket_markets,
         }
         candidates_by_movie.setdefault(movie_name, []).append(market)
@@ -804,12 +810,61 @@ def markets_for_tracked_titles(movie_titles, live_markets=None):
     return markets
 
 
+def market_end_datetime(market):
+    raw = (
+        market.get("end_date")
+        or market.get("endDate")
+        or market.get("end_date_iso")
+        or market.get("endDateIso")
+    )
+    if not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def market_matches_collection_weekend(market, weekend):
+    """True when a live Polymarket event resolves inside this opening weekend window."""
+    end_dt = market_end_datetime(market)
+    if end_dt is None:
+        # Do not drop markets if the API shape changes and omits an end date;
+        # later Phase 1 link filtering still prevents impossible AMC work.
+        return True
+    weekend_date = datetime.strptime(weekend, "%Y-%m-%d").date()
+    end_date = end_dt.astimezone(timezone.utc).date()
+    return weekend_date <= end_date <= weekend_date + timedelta(days=6)
+
+
+def filter_live_markets_for_weekend(live_markets, weekend, phase_label):
+    kept = [
+        market for market in live_markets
+        if market_matches_collection_weekend(market, weekend)
+    ]
+    dropped = [
+        market for market in live_markets
+        if not market_matches_collection_weekend(market, weekend)
+    ]
+    if dropped:
+        print(
+            f"  ↷ {phase_label}: ignoring {len(dropped)} live market(s) outside "
+            f"collection weekend {weekend}: "
+            + ", ".join(m.get("movie_title", "unknown") for m in dropped[:5])
+        )
+    return kept
+
+
 def select_collection_markets(live_markets, ref_dt, phase_label,
                               weekend_override=None,
                               prefer_live_markets=False):
     """Choose which movie markets drive the data-collection run."""
     live_markets = live_markets or []
     weekend = weekend_override or opening_weekend_friday(ref_dt)
+    live_markets = filter_live_markets_for_weekend(live_markets, weekend, phase_label)
     tracked_titles = tracked_movie_titles_from_state(weekend)
 
     if prefer_live_markets and live_markets:
