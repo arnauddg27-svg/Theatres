@@ -477,16 +477,19 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     cohort_sets = load_theatre_cohort_sets()
     model_cohorts = active_model_cohorts()
     with open(PRE_RESERVATION_CSV, "r") as f:
-        for row in csv.DictReader(f):
+        reader = csv.DictReader(f)
+        has_weekend_col = "weekend_of" in (reader.fieldnames or [])
+        for row in reader:
             movie = row.get("movie_title", "")
             show_date = row.get("show_date", "")
             if not movie or not show_date:
                 continue
-            if row.get("weekend_of", "") and row.get("weekend_of") != weekend_of:
+            if has_weekend_col and row.get("weekend_of", "") != weekend_of:
                 continue
             snapshot_date = (row.get("snapshot_time", "") or "")[:10]
-            if through_date and snapshot_date and snapshot_date > through_date:
-                continue
+            if through_date:
+                if not snapshot_date or snapshot_date > through_date:
+                    continue
             if not model_allows_theatre(
                 row.get("theatre_name", ""),
                 cohort_sets=cohort_sets,

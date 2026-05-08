@@ -293,6 +293,48 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("Friday", scales)
         self.assertNotEqual(1.0, scales["Friday"])
 
+    def test_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
+        snapshot_predictions, snapshot_coverage = (
+            calibrate.snapshot_calibration_fields_from_prediction({
+                "snapshot_daily_details": {
+                    "Friday": {
+                        "raw_domestic_mid": 10_000_000,
+                        "domestic_mid": 20_000_000,
+                        "effective_coverage_ratio": 0.9,
+                    },
+                },
+            })
+        )
+
+        self.assertEqual({"Friday": 10.0}, snapshot_predictions)
+        self.assertEqual({"Friday": 0.9}, snapshot_coverage)
+
+    def test_load_pre_reservation_data_requires_weekend_and_snapshot_date_for_replay(self):
+        old_snapshot_csv = predict.PRE_RESERVATION_CSV
+        with tempfile.TemporaryDirectory() as tmpdir:
+            snapshot_csv = Path(tmpdir) / "pre-reservation-snapshots.csv"
+            snapshot_csv.write_text(
+                "\n".join([
+                    "weekend_of,movie_title,show_date,snapshot_time,theatre_name",
+                    ",Blank Weekend Leak,2026-05-08,2026-05-07T12:00:00+00:00,Unknown AMC",
+                    "2026-05-08,Blank Snapshot Time,2026-05-08,,Unknown AMC",
+                    "2026-05-08,Fresh Snapshot,2026-05-08,2026-05-07T12:00:00+00:00,Unknown AMC",
+                ]),
+                encoding="utf-8",
+            )
+            predict.PRE_RESERVATION_CSV = str(snapshot_csv)
+            try:
+                loaded = predict.load_pre_reservation_data(
+                    weekend_of="2026-05-08",
+                    through_date="2026-05-07",
+                )
+            finally:
+                predict.PRE_RESERVATION_CSV = old_snapshot_csv
+
+        self.assertNotIn("Blank Weekend Leak", loaded)
+        self.assertNotIn("Blank Snapshot Time", loaded)
+        self.assertIn("Fresh Snapshot", loaded)
+
     def test_record_result_stores_snapshot_layer_and_recalibrates_it(self):
         cal = {
             "history": [],

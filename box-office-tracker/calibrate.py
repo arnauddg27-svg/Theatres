@@ -219,7 +219,9 @@ def snapshot_calibration_fields_from_prediction(pred):
     snapshot_predictions = {}
     snapshot_coverage = {}
     for day_name, details in pred.get("snapshot_daily_details", {}).items():
-        mid = _positive_float(details.get("domestic_mid"))
+        mid = _positive_float(
+            details.get("raw_domestic_mid", details.get("domestic_mid"))
+        )
         if not mid:
             continue
         snapshot_predictions[day_name] = mid / 1_000_000
