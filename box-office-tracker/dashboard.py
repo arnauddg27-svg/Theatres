@@ -25,6 +25,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+try:
+    from zoneinfo import ZoneInfo
+except Exception:  # pragma: no cover - Python without zoneinfo
+    ZoneInfo = None
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -32,10 +37,12 @@ ROOT_DIR = BASE_DIR.parent
 TZ_ORDER = ("ET", "CT", "PT")
 SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
 PHASE1_MIN_MOVIE_TZ_RATIO = 0.90
-# Snapshot runs are scheduled in UTC but execute during U.S. evening hours.
-# Subtracting six hours maps ET/CT/PT snapshot artifacts back to the intended
-# local collection day for dashboard health checks.
-SNAPSHOT_HEALTH_ANCHOR_OFFSET_HOURS = 6
+TZ_ZONE_NAMES = {
+    "ET": "America/New_York",
+    "CT": "America/Chicago",
+    "PT": "America/Los_Angeles",
+}
+TZ_FALLBACK_OFFSETS = {"ET": -4, "CT": -5, "PT": -7}
 
 SEAT_FIELDS = [
     "weekend_of", "run_id", "date", "day_of_week", "theatre_name",
@@ -151,19 +158,52 @@ def rolling_snapshot_show_dates(weekend_of: str, now: datetime | None = None) ->
     return [date_str for date_str in dates if start <= date_str <= end]
 
 
-def snapshot_health_anchor_time(latest_snapshot_time: str,
-                                fallback: datetime | None = None) -> datetime:
-    """Anchor dashboard expectations to the latest completed snapshot run."""
-    fallback = fallback or datetime.now()
-    if not latest_snapshot_time:
-        return fallback
+def parse_snapshot_time(value: str) -> datetime | None:
+    if not value:
+        return None
     try:
-        parsed = datetime.fromisoformat(latest_snapshot_time.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except (TypeError, ValueError):
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def snapshot_row_local_time(row: dict[str, str]) -> datetime | None:
+    parsed = parse_snapshot_time(row.get("snapshot_time", ""))
+    if parsed is None:
+        return None
+    tz = row.get("timezone", "")
+    zone_name = TZ_ZONE_NAMES.get(tz)
+    if zone_name and ZoneInfo is not None:
+        try:
+            return parsed.astimezone(ZoneInfo(zone_name)).replace(tzinfo=None)
+        except Exception:
+            pass
+    offset = TZ_FALLBACK_OFFSETS.get(tz, 0)
+    return (parsed.astimezone(timezone.utc) + timedelta(hours=offset)).replace(tzinfo=None)
+
+
+def snapshot_health_anchor_time(rows: list[dict[str, str]],
+                                fallback: datetime | None = None) -> datetime:
+    """Anchor dashboard expectations to the latest snapshot row's local run day."""
+    fallback = fallback or datetime.now()
+    if not rows:
         return fallback
-    if parsed.tzinfo is not None:
-        parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)
-    return parsed - timedelta(hours=SNAPSHOT_HEALTH_ANCHOR_OFFSET_HOURS)
+    latest_row = None
+    latest_time = None
+    for row in rows:
+        parsed = parse_snapshot_time(row.get("snapshot_time", ""))
+        if parsed is None:
+            continue
+        utc_time = parsed.astimezone(timezone.utc)
+        if latest_time is None or utc_time > latest_time:
+            latest_time = utc_time
+            latest_row = row
+    if latest_row is None:
+        return fallback
+    return snapshot_row_local_time(latest_row) or fallback
 
 
 def row_weekend(row: dict[str, str], date_field: str) -> str:
@@ -503,7 +543,7 @@ def run_status(rows, current_weekend, row_type, showtime_links=None,
         })
         expected_show_dates = rolling_snapshot_show_dates(
             current_weekend,
-            now=snapshot_health_anchor_time(latest_time, fallback=now),
+            now=snapshot_health_anchor_time(current, fallback=now),
         )
         missing_show_dates = [
             date_str for date_str in expected_show_dates

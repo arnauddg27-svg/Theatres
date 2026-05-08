@@ -320,11 +320,15 @@ class DashboardTest(unittest.TestCase):
             data_dir = Path(tmp)
             rows = []
             for date in ("2026-05-07", "2026-05-08"):
-                for tz in ("ET", "CT", "PT"):
+                for tz, snapshot_time in (
+                    ("ET", "2026-05-08T03:30:00+00:00"),
+                    ("CT", "2026-05-08T04:30:00+00:00"),
+                    ("PT", "2026-05-08T06:30:00+00:00"),
+                ):
                     rows.append({
                         "weekend_of": "2026-05-08",
                         "run_id": f"snapshot-{date}-{tz}",
-                        "snapshot_time": "2026-05-08T03:30:00+00:00",
+                        "snapshot_time": snapshot_time,
                         "show_date": date,
                         "theatre_name": f"AMC {date} {tz}",
                         "timezone": tz,
