@@ -2679,7 +2679,12 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
 
 
 async def ensure_phase1_links_async(tz_group="ALL"):
-    """Self-heal Phase 1 links for the Phase 2 show date when coverage is low."""
+    """Self-heal Phase 1 links before regular Phase 2 scraping.
+
+    Theatre coverage alone is not enough: if a new Polymarket movie appears
+    after one timezone's Phase 1 run, that timezone can have fresh theatre
+    links for older movies while having zero links for the new active title.
+    """
     if tz_group == "ALL":
         for group in phase1_groups(tz_group):
             await ensure_phase1_links_async(group)
@@ -2688,7 +2693,9 @@ async def ensure_phase1_links_async(tz_group="ALL"):
     theatres_map = load_theatres()
     target_date = phase1_expected_date(tz_group)
     expected_dates = {tz_group: target_date}
-    target_weekend = opening_weekend_friday(datetime.strptime(target_date, "%Y-%m-%d"))
+    expected_date_sets = {tz_group: [target_date]}
+    target_dt = datetime.strptime(target_date, "%Y-%m-%d")
+    target_weekend = opening_weekend_friday(target_dt)
     saved_links = {}
 
     if LINKS_JSON.exists():
@@ -2706,19 +2713,52 @@ async def ensure_phase1_links_async(tz_group="ALL"):
         except Exception as e:
             print(f"\n⚠️  Could not inspect Phase 1 links before scrape: {e}")
 
+    live_markets = fetch_polymarket_box_office()
+    poly_markets = select_collection_markets(
+        live_markets,
+        target_dt,
+        "Phase 1 repair",
+        weekend_override=target_weekend,
+    )
     report = phase1_link_coverage(saved_links, theatres_map, [tz_group], expected_dates)
-    if not report["expected_total"] or report["ratio"] >= PHASE1_MIN_FRESH_LINK_RATIO:
+    movie_gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        saved_links,
+        [tz_group],
+        expected_date_sets,
+    )
+    if (
+        (not report["expected_total"] or report["ratio"] >= PHASE1_MIN_FRESH_LINK_RATIO)
+        and not movie_gaps
+    ):
         print_phase1_coverage(report, f"Phase 1 preflight for {tz_group}")
         return
 
     print_phase1_coverage(report, f"Phase 1 preflight for {tz_group}")
+    if movie_gaps:
+        print(f"\n🔧 Phase 1 preflight for {tz_group}: active movie link gap(s) detected:")
+        for gap in movie_gaps[:20]:
+            print(
+                "    - "
+                f"{gap['movie_title']} {gap['show_date']} {gap['timezone']}: "
+                f"{gap['fresh_theatres']}/{gap['required_theatres']} theatres"
+            )
+        if len(movie_gaps) > 20:
+            print(f"    ... and {len(movie_gaps) - 20} more")
     print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
-    await run_collect_links_async(tz_group, target_date=target_date)
+    await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
 
     with open(LINKS_JSON) as f:
         repaired_links = json.load(f).get("theatres", {})
     repaired_report = phase1_link_coverage(repaired_links, theatres_map, [tz_group], expected_dates)
     require_phase1_coverage(repaired_report, f"Phase 1 repaired links for {tz_group}")
+    require_active_market_phase1_links(
+        poly_markets,
+        repaired_links,
+        [tz_group],
+        expected_date_sets,
+        f"Phase 1 repaired links for {tz_group}",
+    )
 
 
 async def run_async(tz_group="ALL", force=False, test_max=None,

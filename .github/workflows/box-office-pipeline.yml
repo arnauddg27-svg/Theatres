@@ -312,7 +312,11 @@ jobs:
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             SNAPSHOT_FLAG="$SNAPSHOT_FLAG --snapshots-only"
           fi
-          python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG ${{ matrix.tz }}
+          ENSURE_LINKS_FLAG="--ensure-links"
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            ENSURE_LINKS_FLAG=""
+          fi
+          python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $ENSURE_LINKS_FLAG ${{ matrix.tz }}
 
       - name: Release AMC lock
         if: always() && steps.amc_lock.outputs.acquired == 'true'

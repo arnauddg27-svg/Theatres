@@ -97,7 +97,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertLess(install_pos, guard_pos)
         self.assertLess(guard_pos, phase2_pos)
 
-    def test_scrape_lanes_do_not_repair_phase1_links(self):
+    def test_regular_scrapes_repair_phase1_links_but_snapshots_do_not(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
@@ -105,9 +105,10 @@ class WorkflowReliabilityTest(unittest.TestCase):
         end = scrape_block.index("      - name: Write scrape manifest", start)
         block = scrape_block[start:end]
 
-        self.assertNotIn("ENSURE_LINKS_FLAG", block)
-        self.assertNotIn("--ensure-links", block)
-        self.assertIn("python scraper.py $FORCE_FLAG", block)
+        self.assertIn('ENSURE_LINKS_FLAG="--ensure-links"', block)
+        self.assertIn('ENSURE_LINKS_FLAG=""', block)
+        self.assertIn('if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then', block)
+        self.assertIn("python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $ENSURE_LINKS_FLAG", block)
 
     def test_scrape_matrix_uploads_artifacts_instead_of_pushing(self):
         start = self.workflow.index("  scrape:")
