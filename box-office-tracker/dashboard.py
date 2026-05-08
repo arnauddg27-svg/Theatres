@@ -358,6 +358,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
         cal = predict.load_calibration()
         seat_data = predict.load_seat_data(weekend_of=current_weekend)
         poly_data = predict.load_polymarket_data(weekend_of=current_weekend)
+        snapshot_data = predict.load_pre_reservation_data(weekend_of=current_weekend)
         theatre_counts = predict.load_theatre_counts()
     except Exception as exc:
         return {"_error": {"message": str(exc)}}
@@ -372,6 +373,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 poly_data.get(movie, []),
                 cal,
                 national_theatre_count=nat_count,
+                snapshot_data=snapshot_data.get(movie, {}),
             )
             if not pred:
                 continue
@@ -386,6 +388,10 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 "seat_only_m": round(pred.get("seat_mid_m", 0), 1),
                 "seat_comp_m": round(pred["seat_comp_mid_m"], 1) if pred.get("seat_comp_mid_m") is not None else None,
                 "seat_primary_m": round(pred["seat_primary_mid_m"], 1) if pred.get("seat_primary_mid_m") is not None else None,
+                "snapshot_m": round(pred["snapshot_mid_m"], 1) if pred.get("snapshot_mid_m") is not None else None,
+                "snapshot_weight": pred.get("snapshot_model_weight", 0),
+                "snapshot_days": pred.get("snapshot_days", []),
+                "snapshot_coverage_ratio": pred.get("snapshot_coverage_ratio"),
                 "n_days": pred.get("n_days"),
                 "n_theatres": pred.get("n_theatres_total"),
                 "coverage_ratio": pred.get("coverage_ratio"),
@@ -903,6 +909,9 @@ HTML_PAGE = r"""<!doctype html>
       const p = movie.prediction;
       const estimate = p && !p.error ? fmtMoney(p.mid_m) : "Pending";
       const range = p && !p.error ? `${fmtMoney(p.low_m)} - ${fmtMoney(p.high_m)}` : "No seat-count model yet";
+      const snapshotLine = p && !p.error && p.snapshot_m !== null && p.snapshot_m !== undefined
+        ? `<br>snapshot ${fmtMoney(p.snapshot_m)} @ ${Math.round((p.snapshot_weight || 0) * 100)}% (${esc((p.snapshot_days || []).join("/") || "-")})`
+        : "";
       const marketUrl = movie.market.market_url;
       const dailyRows = p && p.daily ? p.daily.map(row => `<tr>
         <td>${esc(row.day)}<div class="small">${esc(row.date)}</div></td>
@@ -924,7 +933,7 @@ HTML_PAGE = r"""<!doctype html>
           <div class="cell">
             <div class="label">Model estimate</div>
             <div class="metric">${estimate}</div>
-            <div class="small">${range}<br>${p && !p.error ? esc(p.source) : ""}</div>
+            <div class="small">${range}<br>${p && !p.error ? esc(p.source) : ""}${snapshotLine}</div>
           </div>
           <div class="cell">
             <div class="label">Seat data</div>

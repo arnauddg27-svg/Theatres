@@ -33,11 +33,13 @@ from historical_comps import (estimate_from_prediction,
                               load_movie_metadata,
                               metadata_for_movie)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
-                               sanitize_calibration, recalibrate_scale_factor)
+                               sanitize_calibration, recalibrate_scale_factor,
+                               recalibrate_snapshot_day_scale_factors)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
+PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
@@ -54,7 +56,8 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v4"
+MODEL_VERSION = "seat-regression-v5"
+SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -161,6 +164,18 @@ def get_day_scale(cal, day_name):
         return float(legacy)
     except (TypeError, ValueError):
         return 1.0
+
+
+def get_snapshot_to_day_scale(cal, day_name):
+    """Calibrated scale for pre-reservation snapshot → final day gross."""
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    per_day = factors.get("snapshot_to_day_scale_factors") if cal else None
+    if isinstance(per_day, dict) and day_name in per_day:
+        try:
+            return float(per_day[day_name])
+        except (TypeError, ValueError):
+            pass
+    return 1.0
 
 
 def get_day_weights(cal):
@@ -437,6 +452,48 @@ def load_seat_data(weekend_of=None):
         if has_weekend_col and row_weekend != weekend_of:
             continue
         data.setdefault(row["movie_title"], {}).setdefault(row["date"], []).append(row)
+    return data
+
+
+def load_pre_reservation_data(weekend_of=None, through_date=None):
+    """Load pre-reservation snapshots grouped by movie → show_date.
+
+    These rows are a separate early-demand signal. They are not mixed into
+    regular post-show seat counts; prediction code decides when to use them.
+    """
+    if not os.path.exists(PRE_RESERVATION_CSV):
+        return {}
+
+    if weekend_of is None:
+        with open(PRE_RESERVATION_CSV, "r") as f:
+            weekends = [
+                r.get("weekend_of", "")
+                for r in csv.DictReader(f)
+                if r.get("weekend_of")
+            ]
+        weekend_of = max(weekends) if weekends else _current_weekend_friday()
+
+    data = {}
+    cohort_sets = load_theatre_cohort_sets()
+    model_cohorts = active_model_cohorts()
+    with open(PRE_RESERVATION_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            movie = row.get("movie_title", "")
+            show_date = row.get("show_date", "")
+            if not movie or not show_date:
+                continue
+            if row.get("weekend_of", "") and row.get("weekend_of") != weekend_of:
+                continue
+            snapshot_date = (row.get("snapshot_time", "") or "")[:10]
+            if through_date and snapshot_date and snapshot_date > through_date:
+                continue
+            if not model_allows_theatre(
+                row.get("theatre_name", ""),
+                cohort_sets=cohort_sets,
+                model_cohorts=model_cohorts,
+            ):
+                continue
+            data.setdefault(movie, {}).setdefault(show_date, []).append(row)
     return data
 
 
@@ -742,6 +799,67 @@ def sum_amc_theatres(theatre_results):
         "median_revenue": median_rev,
         "stdev": stdev,
         "total": total,
+    }
+
+
+def snapshot_reservation_multiplier(minutes_until_showtime):
+    """Project pre-reserved seats forward to final attendance.
+
+    This is deliberately conservative and separately calibrated by
+    snapshot_to_day_scale_factors once actuals are available.
+    """
+    minutes = _parse_numeric(minutes_until_showtime, default=0)
+    if minutes <= 0:
+        return 1.0
+    if minutes <= 60:
+        return 1.15
+    if minutes <= 180:
+        return 1.35
+    if minutes <= 360:
+        return 1.60
+    if minutes <= 24 * 60:
+        return 2.20
+    if minutes <= 48 * 60:
+        return 3.00
+    return 4.00
+
+
+def estimate_snapshot_showtime_revenue(row):
+    """Estimate final showtime revenue from one pre-reservation row."""
+    total_seats = _parse_numeric(row.get("total_seats", 0))
+    reserved = _parse_numeric(row.get("reserved_seats", 0))
+    if total_seats <= 0 or reserved < 0:
+        return None
+
+    fmt = (row.get("auditorium_type") or row.get("auditorium_name") or "").lower()
+    format_rank = 1
+    if "imax with laser" in fmt:
+        format_rank = 7
+    elif "imax" in fmt:
+        format_rank = 6
+    elif "dolby" in fmt:
+        format_rank = 5
+    elif "prime" in fmt:
+        format_rank = 4
+    elif "xl" in fmt:
+        format_rank = 3
+    elif "laser" in fmt:
+        format_rank = 2
+
+    multiplier = snapshot_reservation_multiplier(row.get("minutes_until_showtime", 0))
+    projected_reserved = min(total_seats, reserved * multiplier)
+    ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(1))
+    revenue = projected_reserved * ticket_price
+    return {
+        "revenue": revenue,
+        "projected_occ": projected_reserved / total_seats if total_seats else 0.0,
+        "reserved_occ": reserved / total_seats if total_seats else 0.0,
+        "reservation_mult": multiplier,
+        "total_seats": total_seats,
+        "ticket_price": ticket_price,
+        "format_rank": format_rank,
+        "theatre_name": row.get("theatre_name", "?"),
+        "format": row.get("auditorium_type") or row.get("auditorium_name") or "?",
     }
 
 
@@ -1088,6 +1206,30 @@ def select_regression_prediction(pred):
         high = pred["seat_high_m"]
         basis = "seat-only"
 
+    snapshot_mid = pred.get("snapshot_mid_m")
+    snapshot_weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
+    if snapshot_mid is not None and snapshot_weight > 0:
+        seat_weight = 1.0 - snapshot_weight
+        snapshot_low = pred.get("snapshot_low_m", snapshot_mid)
+        snapshot_high = pred.get("snapshot_high_m", snapshot_mid)
+        base_mid = mid
+        mid = base_mid * seat_weight + snapshot_mid * snapshot_weight
+        low = low * seat_weight + snapshot_low * snapshot_weight
+        high = high * seat_weight + snapshot_high * snapshot_weight
+        disagreement = abs(snapshot_mid - base_mid)
+        low = max(0.0, low - disagreement * snapshot_weight * 0.20)
+        high = high + disagreement * snapshot_weight * 0.20
+        pred["snapshot_blended_base_mid_m"] = base_mid
+        pred["snapshot_blended_disagreement_m"] = disagreement
+        pred["snapshot_blended_weight"] = snapshot_weight
+        if source == "seat-only-regression":
+            source = "seat+snapshot-regression"
+        elif "seat+comp" in source:
+            source = "seat+comp+snapshot-regression"
+        else:
+            source = f"{source}+snapshot"
+        basis = f"{basis} + snapshot future days"
+
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
     pred["regression_high_m"] = high
@@ -1191,6 +1333,219 @@ def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None):
     weekend_high = weekend_mid * conf_high
 
     return weekend_mid, weekend_low, weekend_high, calibrated_daily
+
+
+def _snapshot_day_name(date_str, rows):
+    csv_day = rows[0].get("day_of_week", "") if rows else ""
+    if csv_day:
+        return csv_day
+    return datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+
+
+def _latest_snapshot_showtime_rows(rows):
+    latest = {}
+    for row in rows:
+        t_name = row.get("theatre_name", "")
+        showtime_key = (
+            row.get("showtime_id")
+            or row.get("amc_seat_map_url")
+            or f"{row.get('auditorium_type') or row.get('auditorium_name')}|{row.get('showtime')}"
+        )
+        key = f"{t_name}|{showtime_key}"
+        sort_key = (
+            row.get("snapshot_bucket", ""),
+            row.get("snapshot_time", ""),
+            row.get("run_id", ""),
+        )
+        prev = latest.get(key)
+        if not prev or sort_key > prev[0]:
+            latest[key] = (sort_key, row)
+    return [row for _, row in latest.values()]
+
+
+def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
+                          expected_timezone_counts=None,
+                          theatre_timezone_map=None,
+                          national_theatre_count=None):
+    """Estimate one future day from pre-reservation snapshots only."""
+    day_name = _snapshot_day_name(date_str, rows)
+    latest_rows = _latest_snapshot_showtime_rows(rows)
+    per_showtime_results = []
+    captured_by_theatre = {}
+    no_data_count = 0
+    for row in latest_rows:
+        result = estimate_snapshot_showtime_revenue(row)
+        if not result:
+            no_data_count += 1
+            continue
+        per_showtime_results.append(result)
+        captured_by_theatre.setdefault(result["theatre_name"], []).append(result)
+
+    if not per_showtime_results:
+        return None
+
+    theatre_results = []
+    showings_by_theatre = {}
+    for t_name, captured_rows in captured_by_theatre.items():
+        revenue = sum(r["revenue"] for r in captured_rows)
+        theatre_results.append({
+            "revenue": revenue,
+            "theatre_name": t_name,
+            "n_snapshot_showings": len(captured_rows),
+        })
+        showings_by_theatre[t_name] = len(captured_rows)
+
+    sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
+    n_amc_theatres = amc_stats.get("n_theatres", 0)
+    tz_profile = timezone_coverage_profile(
+        rows,
+        expected_timezone_counts=expected_timezone_counts,
+        theatre_timezone_map=theatre_timezone_map,
+    )
+    amc_total, sample_norm_factor = normalize_amc_sample(
+        sampled_amc_total,
+        n_amc_theatres,
+        expected_amc_theatres,
+        representativeness=tz_profile["coverage_factor"],
+    )
+    coverage_ratio = (
+        min(1.0, n_amc_theatres / expected_amc_theatres)
+        if expected_amc_theatres else None
+    )
+    effective_coverage_ratio = coverage_ratio
+    if coverage_ratio is not None and tz_profile["missing_timezones"]:
+        effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
+
+    domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
+    if national_theatre_count and n_amc_theatres > 0:
+        mean_rev = amc_stats.get("mean_revenue", 0)
+        nat_est = mean_rev * national_theatre_count
+        domestic_mid = domestic_mid * 0.6 + nat_est * 0.4
+        domestic_low = domestic_low * 0.6 + nat_est * 0.4 * 0.85
+        domestic_high = domestic_high * 0.6 + nat_est * 0.4 * 1.15
+
+    snapshot_scale = get_snapshot_to_day_scale(cal, day_name)
+    avg_showings = (
+        sum(showings_by_theatre.values()) / len(showings_by_theatre)
+        if showings_by_theatre else 0
+    )
+    return {
+        "date": date_str,
+        "day": day_name,
+        "source": "pre-reservation-snapshot",
+        "amc_total": amc_total,
+        "sampled_amc_total": sampled_amc_total,
+        "sample_normalization_factor": sample_norm_factor,
+        "raw_domestic_mid": domestic_mid,
+        "raw_domestic_low": domestic_low,
+        "raw_domestic_high": domestic_high,
+        "domestic_mid": domestic_mid * snapshot_scale,
+        "domestic_low": domestic_low * snapshot_scale,
+        "domestic_high": domestic_high * snapshot_scale,
+        "snapshot_scale": snapshot_scale,
+        "n_theatres": n_amc_theatres,
+        "expected_theatres": expected_amc_theatres,
+        "coverage_ratio": coverage_ratio,
+        "effective_coverage_ratio": effective_coverage_ratio,
+        "observed_timezones": tz_profile["observed_timezones"],
+        "expected_timezones": tz_profile["expected_timezones"],
+        "missing_timezones": tz_profile["missing_timezones"],
+        "timezone_coverage_factor": tz_profile["coverage_factor"],
+        "n_no_data": no_data_count,
+        "avg_showings_per_cinema": round(avg_showings, 1),
+        "theatre_results": theatre_results,
+    }
+
+
+def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
+                                expected_amc_theatres, expected_timezone_counts=None,
+                                theatre_timezone_map=None,
+                                national_theatre_count=None):
+    """Use snapshots only for opening-weekend days without seat-count actuals."""
+    if not snapshot_data:
+        return None
+
+    snapshot_details = {}
+    ignored_days = []
+    for date_str, rows in sorted(snapshot_data.items()):
+        if not rows:
+            continue
+        day_name = _snapshot_day_name(date_str, rows)
+        if day_name not in OPENING_WEEKEND_DAYS:
+            continue
+        if day_name in regular_daily_details:
+            ignored_days.append(day_name)
+            continue
+        details = estimate_snapshot_day(
+            rows,
+            date_str,
+            cal,
+            expected_amc_theatres,
+            expected_timezone_counts=expected_timezone_counts,
+            theatre_timezone_map=theatre_timezone_map,
+            national_theatre_count=national_theatre_count,
+        )
+        if details:
+            snapshot_details[day_name] = details
+
+    if not snapshot_details:
+        return {
+            "snapshot_daily_details": {},
+            "snapshot_ignored_days": sorted(set(ignored_days)),
+        }
+
+    day_weights = get_day_weights(cal)
+    combined_days = {}
+    coverage = {}
+    for day, details in regular_daily_details.items():
+        combined_days[day] = details.get("domestic_mid", 0)
+        if details.get("coverage_ratio") is not None:
+            coverage[day] = details.get(
+                "effective_coverage_ratio",
+                details["coverage_ratio"],
+            )
+    for day, details in snapshot_details.items():
+        combined_days[day] = details.get("domestic_mid", 0)
+        if details.get("coverage_ratio") is not None:
+            coverage[day] = details.get(
+                "effective_coverage_ratio",
+                details["coverage_ratio"],
+            )
+
+    collected_sum = sum(combined_days.values())
+    collected_share = sum(day_weights.get(day, 0) for day in combined_days)
+    if collected_share >= 0.99:
+        mid = collected_sum
+    elif collected_share > 0:
+        mid = collected_sum / collected_share
+    else:
+        mid = collected_sum
+
+    n_days = len(combined_days)
+    avg_coverage = _coverage_average(coverage)
+    low_factor, high_factor = confidence_interval_factors(
+        n_days,
+        coverage_ratio=avg_coverage,
+    )
+    snapshot_missing_share = sum(day_weights.get(day, 0) for day in snapshot_details)
+    snapshot_coverage = _coverage_average({
+        day: details.get("effective_coverage_ratio", details.get("coverage_ratio"))
+        for day, details in snapshot_details.items()
+    })
+    model_weight = SNAPSHOT_LAYER_MAX_WEIGHT
+    model_weight *= _coverage_value(snapshot_coverage)
+    model_weight *= _clamp(snapshot_missing_share, 0.0, 1.0)
+
+    return {
+        "snapshot_daily_details": snapshot_details,
+        "snapshot_ignored_days": sorted(set(ignored_days)),
+        "snapshot_mid_m": mid / 1_000_000,
+        "snapshot_low_m": (mid * low_factor) / 1_000_000,
+        "snapshot_high_m": (mid * high_factor) / 1_000_000,
+        "snapshot_model_weight": round(_clamp(model_weight, 0.0, SNAPSHOT_LAYER_MAX_WEIGHT), 4),
+        "snapshot_coverage_ratio": round(snapshot_coverage, 3) if snapshot_coverage is not None else None,
+        "snapshot_days": sorted(snapshot_details),
+    }
 
 
 # ── Stage E: Polymarket Expected Value ───────────────────────────────────────
@@ -1301,6 +1656,8 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   seat_raw, poly_ev, actual, n_theatres, days_collected,
                   daily_theatre_counts=None, daily_coverage_ratios=None,
                   daily_predictions=None, raw_daily_predictions=None,
+                  snapshot_daily_predictions=None,
+                  snapshot_daily_coverage_ratios=None,
                   weekend_of=None, reference_amc_theatres=None,
                   model_cohort_key=None):
     """Record a predicted-vs-actual result and update calibration factors."""
@@ -1342,6 +1699,17 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
         }
+    if snapshot_daily_predictions:
+        entry["snapshot_daily_predictions"] = {
+            k: round(v, 2) for k, v in snapshot_daily_predictions.items()
+            if v is not None
+        }
+    if snapshot_daily_coverage_ratios:
+        entry["snapshot_daily_coverage_ratios"] = {
+            k: round(min(1.0, max(0.0, float(v))), 3)
+            for k, v in snapshot_daily_coverage_ratios.items()
+            if v is not None
+        }
     if daily_theatre_counts:
         entry["daily_theatre_counts"] = daily_theatre_counts
     if daily_coverage_ratios:
@@ -1364,6 +1732,9 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
             history,
             default=1.0,
         )
+        cal["calibration_factors"]["snapshot_to_day_scale_factors"] = (
+            recalibrate_snapshot_day_scale_factors(history)
+        )
 
     # Refine AMC market share from seat-based estimates
     share_estimates = []
@@ -1383,7 +1754,8 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
 
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
-def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_theatre_count=None):
+def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
+                  national_theatre_count=None, snapshot_data=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -1603,6 +1975,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
     seat_low_m = seat_low / 1_000_000
     seat_high_m = seat_high / 1_000_000
 
+    snapshot_layer = build_snapshot_future_layer(
+        snapshot_data,
+        daily_details,
+        cal,
+        expected_amc_theatres,
+        expected_timezone_counts=expected_timezone_counts,
+        theatre_timezone_map=theatre_timezone_map,
+        national_theatre_count=national_theatre_count,
+    )
+
     # Stage E: Polymarket
     poly_result = None
     if poly_data:
@@ -1654,6 +2036,38 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False, national_thea
             for day, details in daily_details.items()
         },
         "raw_daily_estimates": daily_estimates,
+        "snapshot_daily_details": (
+            snapshot_layer.get("snapshot_daily_details", {})
+            if snapshot_layer else {}
+        ),
+        "snapshot_ignored_days": (
+            snapshot_layer.get("snapshot_ignored_days", [])
+            if snapshot_layer else []
+        ),
+        "snapshot_mid_m": (
+            snapshot_layer.get("snapshot_mid_m")
+            if snapshot_layer and snapshot_layer.get("snapshot_mid_m") is not None else None
+        ),
+        "snapshot_low_m": (
+            snapshot_layer.get("snapshot_low_m")
+            if snapshot_layer and snapshot_layer.get("snapshot_low_m") is not None else None
+        ),
+        "snapshot_high_m": (
+            snapshot_layer.get("snapshot_high_m")
+            if snapshot_layer and snapshot_layer.get("snapshot_high_m") is not None else None
+        ),
+        "snapshot_model_weight": (
+            snapshot_layer.get("snapshot_model_weight", 0.0)
+            if snapshot_layer else 0.0
+        ),
+        "snapshot_coverage_ratio": (
+            snapshot_layer.get("snapshot_coverage_ratio")
+            if snapshot_layer else None
+        ),
+        "snapshot_days": (
+            snapshot_layer.get("snapshot_days", [])
+            if snapshot_layer else []
+        ),
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
         "expected_amc_theatres": expected_amc_theatres,
@@ -2126,6 +2540,14 @@ def print_prediction(pred, verbose=False):
             print(f"    Weights: {pred['seat_primary_w_direct']:.0%} direct seats / "
                   f"{pred['seat_primary_w_comp']:.0%} seat+comp")
 
+    if pred.get("snapshot_mid_m") is not None:
+        days = ", ".join(pred.get("snapshot_days") or [])
+        print(f"  Snapshot layer:   {fmt_m(pred['snapshot_mid_m']):>7}  "
+              f"({fmt_m(pred['snapshot_low_m'])} - {fmt_m(pred['snapshot_high_m'])})")
+        print(f"    Future days: {days or '-'}; "
+              f"coverage {pred.get('snapshot_coverage_ratio') or 0:.0%}; "
+              f"model weight {pred.get('snapshot_model_weight', 0):.0%}")
+
     # Polymarket
     poly = pred["poly_result"]
     if poly:
@@ -2305,6 +2727,7 @@ def main():
         # Try to find the last prediction for this movie
         seat_data = load_seat_data()
         poly_data = load_polymarket_data()
+        snapshot_data = load_pre_reservation_data()
         theatre_counts = load_theatre_counts()
         movie_match = None
         for m in seat_data:
@@ -2319,7 +2742,8 @@ def main():
         nat_count = national_theatre_count_for_movie(movie_match, theatre_counts)
         pred = predict_movie(movie_match, seat_data[movie_match],
                             poly_data.get(movie_match, []), cal,
-                            national_theatre_count=nat_count)
+                            national_theatre_count=nat_count,
+                            snapshot_data=snapshot_data.get(movie_match, {}))
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -2364,6 +2788,19 @@ def main():
             for day, details in pred.get("daily_details", {}).items()
             if details.get("coverage_ratio") is not None
         }
+        snapshot_daily_predictions = {
+            day: details.get("domestic_mid", 0) / 1_000_000
+            for day, details in pred.get("snapshot_daily_details", {}).items()
+            if details.get("domestic_mid") is not None
+        }
+        snapshot_daily_coverage_ratios = {
+            day: round(
+                details.get("effective_coverage_ratio", details["coverage_ratio"]),
+                3,
+            )
+            for day, details in pred.get("snapshot_daily_details", {}).items()
+            if details.get("coverage_ratio") is not None
+        }
 
         record_actual(cal, movie_match, pred_mid, pred_low, pred_high,
                      seat_raw, poly_ev, actual_val, n_th, days,
@@ -2371,6 +2808,8 @@ def main():
                      daily_coverage_ratios=daily_coverage_ratios,
                      daily_predictions=daily_predictions,
                      raw_daily_predictions=raw_daily_predictions,
+                     snapshot_daily_predictions=snapshot_daily_predictions,
+                     snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
                      weekend_of=weekend_of,
                      reference_amc_theatres=pred.get("reference_amc_theatres"),
                      model_cohort_key=pred.get("model_cohort_key"))
@@ -2386,6 +2825,10 @@ def main():
     seat_data = load_seat_data(weekend_of=replay_weekend)
     seat_data = filter_seat_data_through(seat_data, through_date)
     poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
+    snapshot_data = load_pre_reservation_data(
+        weekend_of=replay_weekend,
+        through_date=through_date,
+    )
     theatre_counts = load_theatre_counts()
 
     if not seat_data:
@@ -2431,7 +2874,8 @@ def main():
         nat_count = national_theatre_count_for_movie(movie, theatre_counts)
         pred = predict_movie(movie, seat_data[movie],
                             poly_data.get(movie, []), cal, verbose=verbose,
-                            national_theatre_count=nat_count)
+                            national_theatre_count=nat_count,
+                            snapshot_data=snapshot_data.get(movie, {}))
         if pred:
             print_prediction(pred, verbose=verbose)
 

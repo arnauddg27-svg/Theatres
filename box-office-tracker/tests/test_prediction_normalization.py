@@ -9,6 +9,7 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
 import predict
 import calibrate
+from model_calibration import recalibrate_snapshot_day_scale_factors
 from predict import (
     days_to_weekend,
     polymarket_expected_value,
@@ -178,6 +179,158 @@ class PredictionNormalizationTest(unittest.TestCase):
             friday["sampled_amc_total"] * naive_factor,
         )
         self.assertLess(friday["effective_coverage_ratio"], friday["coverage_ratio"])
+
+    def test_snapshot_layer_estimates_missing_future_days_only(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {
+                    "Thursday": 0.25,
+                    "Friday": 0.25,
+                    "Saturday": 0.25,
+                    "Sunday": 0.25,
+                },
+                "day_scale_factors": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
+                "snapshot_to_day_scale_factors": {
+                    "Friday": 1.0,
+                },
+                "reference_amc_theatres": 4,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 4,
+                },
+            },
+        }
+        seat_rows = [
+            self._row("AMC One", date="2026-05-07", day="Thursday", timezone="ET"),
+            self._row("AMC Two", date="2026-05-07", day="Thursday", timezone="CT"),
+        ]
+        snapshot_rows = [
+            self._snapshot_row("AMC One", "Friday", "2026-05-08", timezone="ET"),
+            self._snapshot_row("AMC Two", "Friday", "2026-05-08", timezone="CT"),
+        ]
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": seat_rows},
+            [],
+            cal,
+            snapshot_data={"2026-05-08": snapshot_rows},
+        )
+
+        self.assertIn("Thursday", pred["daily_details"])
+        self.assertIn("Friday", pred["snapshot_daily_details"])
+        self.assertNotIn("Friday", pred["daily_details"])
+        self.assertIsNotNone(pred["snapshot_mid_m"])
+        self.assertNotEqual(pred["snapshot_mid_m"], pred["seat_mid_m"])
+        self.assertGreater(pred["snapshot_model_weight"], 0)
+        self.assertEqual(
+            "seat+snapshot-regression",
+            pred["regression_source"],
+        )
+
+    def test_snapshot_layer_never_overrides_actual_seat_count_day(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 0.5, "Friday": 0.5},
+                "day_scale_factors": {"Thursday": 1.0, "Friday": 1.0},
+                "reference_amc_theatres": 4,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 4,
+                },
+            },
+        }
+        seat_rows = [
+            self._row("AMC One", date="2026-05-07", day="Thursday", timezone="ET"),
+        ]
+        snapshot_rows = [
+            self._snapshot_row("AMC One", "Thursday", "2026-05-07", timezone="ET"),
+            self._snapshot_row("AMC Two", "Friday", "2026-05-08", timezone="CT"),
+        ]
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": seat_rows},
+            [],
+            cal,
+            snapshot_data={
+                "2026-05-07": [snapshot_rows[0]],
+                "2026-05-08": [snapshot_rows[1]],
+            },
+        )
+
+        self.assertEqual(["Thursday"], sorted(pred["daily_details"]))
+        self.assertEqual(["Friday"], sorted(pred["snapshot_daily_details"]))
+        self.assertIn("Thursday", pred["snapshot_ignored_days"])
+
+    def test_snapshot_day_scale_calibration_uses_all_reliable_movie_days(self):
+        history = [
+            {
+                "movie": "Movie One",
+                "daily_actuals": {"Friday": 12.0},
+                "snapshot_daily_predictions": {"Friday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Friday": 0.9},
+            },
+            {
+                "movie": "Movie Two",
+                "daily_actuals": {"Friday": 8.0},
+                "snapshot_daily_predictions": {"Friday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Friday": 0.9},
+            },
+        ]
+
+        scales = recalibrate_snapshot_day_scale_factors(history, alpha=0.5)
+
+        self.assertIn("Friday", scales)
+        self.assertNotEqual(1.0, scales["Friday"])
+
+    def test_record_result_stores_snapshot_layer_and_recalibrates_it(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 1.0},
+                "day_scale_factors": {"Friday": 1.0},
+                "snapshot_to_day_scale_factors": {"Friday": 1.0},
+                "historical_accuracy": [],
+            },
+        }
+        old_save_calibration = calibrate.save_calibration
+        calibrate.save_calibration = lambda _cal: None
+        try:
+            entry = calibrate.record_result(
+                cal,
+                "Sample Movie",
+                "2026-05-08",
+                predicted_mid=10.0,
+                predicted_low=8.0,
+                predicted_high=12.0,
+                daily_actuals={"Friday": 12.0},
+                daily_predictions={"Friday": 10.0},
+                n_theatres=425,
+                n_days=1,
+                snapshot_daily_predictions={"Friday": 10.0},
+                snapshot_daily_coverage_ratios={"Friday": 0.9},
+            )
+        finally:
+            calibrate.save_calibration = old_save_calibration
+
+        self.assertEqual({"Friday": 10.0}, entry["snapshot_daily_predictions"])
+        self.assertEqual({"Friday": 0.9}, entry["snapshot_daily_coverage_ratios"])
+        self.assertNotEqual(
+            1.0,
+            cal["calibration_factors"]["snapshot_to_day_scale_factors"]["Friday"],
+        )
 
     def test_reference_count_prefers_recorded_prediction_reference(self):
         cal = {
@@ -610,6 +763,26 @@ class PredictionNormalizationTest(unittest.TestCase):
             "total_seats": "100",
             "adult_ticket_price": "10",
             "minutes_after_showtime": "0",
+        }
+        if timezone:
+            row["timezone"] = timezone
+        return row
+
+    def _snapshot_row(self, theatre_name, day, show_date, timezone=None):
+        row = {
+            "weekend_of": "2026-05-08",
+            "movie_title": "Sample Movie",
+            "show_date": show_date,
+            "day_of_week": day,
+            "theatre_name": theatre_name,
+            "auditorium_type": "Standard",
+            "showtime": "7:00 PM",
+            "showtime_id": f"{theatre_name}-{show_date}",
+            "reserved_seats": "20",
+            "total_seats": "100",
+            "minutes_until_showtime": "180",
+            "snapshot_time": "2026-05-07T12:00:00+00:00",
+            "snapshot_bucket": "2026-05-07T12:00Z",
         }
         if timezone:
             row["timezone"] = timezone

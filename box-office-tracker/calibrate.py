@@ -32,7 +32,8 @@ from calibration_freeze import (calibration_has_weekend,
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                excluded_calibration_days,
                                sanitize_calibration, recalibrate_scale_factor,
-                               recalibrate_day_scale_factors)
+                               recalibrate_day_scale_factors,
+                               recalibrate_snapshot_day_scale_factors)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -211,6 +212,22 @@ def accuracy_entry_from_history(entry):
     if entry.get("reference_amc_theatres"):
         accuracy_entry["reference_amc_theatres"] = entry["reference_amc_theatres"]
     return accuracy_entry
+
+
+def snapshot_calibration_fields_from_prediction(pred):
+    """Extract per-day snapshot predictions for future snapshot calibration."""
+    snapshot_predictions = {}
+    snapshot_coverage = {}
+    for day_name, details in pred.get("snapshot_daily_details", {}).items():
+        mid = _positive_float(details.get("domestic_mid"))
+        if not mid:
+            continue
+        snapshot_predictions[day_name] = mid / 1_000_000
+        coverage = details.get("effective_coverage_ratio", details.get("coverage_ratio"))
+        cov = _positive_float(coverage)
+        if cov is not None:
+            snapshot_coverage[day_name] = round(min(1.0, cov), 3)
+    return snapshot_predictions, snapshot_coverage
 
 
 def rebuild_historical_accuracy(cal):
@@ -438,6 +455,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   predicted_high, daily_actuals, daily_predictions,
                   n_theatres, n_days, daily_theatre_counts=None,
                   daily_coverage_ratios=None, raw_daily_predictions=None,
+                  snapshot_daily_predictions=None,
+                  snapshot_daily_coverage_ratios=None,
                   reference_amc_theatres=None, model_cohort_key=None,
                   actual_source=None, actual_status="final",
                   replace_existing=False):
@@ -479,6 +498,17 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
+        }
+    if snapshot_daily_predictions:
+        entry["snapshot_daily_predictions"] = {
+            k: round(v, 2) for k, v in snapshot_daily_predictions.items()
+            if v is not None
+        }
+    if snapshot_daily_coverage_ratios:
+        entry["snapshot_daily_coverage_ratios"] = {
+            k: round(min(1.0, max(0.0, float(v))), 3)
+            for k, v in snapshot_daily_coverage_ratios.items()
+            if v is not None
         }
     if daily_theatre_counts:
         entry["daily_theatre_counts"] = daily_theatre_counts
@@ -527,6 +557,9 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     #     learned independently. Deterministic: always EMAs from 1.0 over
     #     history, so re-running this on the same history is a no-op.
     factors["day_scale_factors"] = recalibrate_day_scale_factors(cal["history"])
+    factors["snapshot_to_day_scale_factors"] = recalibrate_snapshot_day_scale_factors(
+        cal["history"]
+    )
 
     # 2. Update day weights from actual daily proportions
     #    Average the actual day splits across all movies with daily data
@@ -651,6 +684,8 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             daily_theatre_counts=item.get("daily_theatre_counts"),
             daily_coverage_ratios=item.get("daily_coverage_ratios"),
             raw_daily_predictions=item.get("raw_daily_predictions"),
+            snapshot_daily_predictions=item.get("snapshot_daily_predictions"),
+            snapshot_daily_coverage_ratios=item.get("snapshot_daily_coverage_ratios"),
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
             actual_source=actual_source,
@@ -674,6 +709,7 @@ def auto_calibrate():
     """Fetch actual daily results and calibrate against our predictions."""
     from predict import (regression_prediction_values, load_seat_data,
                          load_polymarket_data, load_theatre_counts,
+                         load_pre_reservation_data,
                          predict_movie)
 
     cal = load_calibration()
@@ -687,6 +723,7 @@ def auto_calibrate():
 
     seat_data = load_seat_data(weekend_of=last_fri)
     poly_data = load_polymarket_data(weekend_of=last_fri)
+    snapshot_data = load_pre_reservation_data(weekend_of=last_fri)
     # National theatre counts feed the AMC-share / national-count blend in
     # predict_movie. Skipping them here makes calibrate.py's "predicted" number
     # disagree with `predict.py --movie X` output and trains the EMA scale
@@ -737,7 +774,8 @@ def auto_calibrate():
 
         # Our prediction
         pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), prediction_cal,
-                             national_theatre_count=nat_count)
+                             national_theatre_count=nat_count,
+                             snapshot_data=snapshot_data.get(movie, {}))
         if not pred:
             print(f"    No prediction possible")
             continue
@@ -763,6 +801,9 @@ def auto_calibrate():
         raw_daily_predictions = {}
         daily_theatre_counts = {}
         daily_coverage_ratios = {}
+        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+            snapshot_calibration_fields_from_prediction(pred)
+        )
         for day_name, details in pred.get("daily_details", {}).items():
             daily_predictions[day_name] = details.get("domestic_mid", 0) / 1_000_000
             raw_daily_predictions[day_name] = details.get(
@@ -785,6 +826,8 @@ def auto_calibrate():
             "raw_daily_predictions": raw_daily_predictions,
             "daily_theatre_counts": daily_theatre_counts,
             "daily_coverage_ratios": daily_coverage_ratios,
+            "snapshot_daily_predictions": snapshot_daily_predictions,
+            "snapshot_daily_coverage_ratios": snapshot_daily_coverage_ratios,
         })
 
     entries = record_pending_calibrations(cal, prediction_cal, last_fri, pending)
@@ -917,11 +960,13 @@ if __name__ == "__main__":
 
         from predict import (regression_prediction_values, load_seat_data,
                              load_polymarket_data, load_theatre_counts,
+                             load_pre_reservation_data,
                              predict_movie)
         cal = load_calibration()
         weekend_of = _last_friday()
         seat_data = load_seat_data(weekend_of=weekend_of)
         poly_data = load_polymarket_data(weekend_of=weekend_of)
+        snapshot_data = load_pre_reservation_data(weekend_of=weekend_of)
         theatre_counts = load_theatre_counts()
 
         matched_movie = None
@@ -965,6 +1010,7 @@ if __name__ == "__main__":
             poly_data.get(matched_movie, []),
             prediction_cal,
             national_theatre_count=nat_count,
+            snapshot_data=snapshot_data.get(matched_movie, {}),
         )
         if not pred:
             print(f"No prediction found for {matched_movie!r}; not recording actual.")
@@ -974,6 +1020,9 @@ if __name__ == "__main__":
         raw_daily_predictions = {}
         daily_theatre_counts = {}
         daily_coverage_ratios = {}
+        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+            snapshot_calibration_fields_from_prediction(pred)
+        )
         for day_name, details in pred.get("daily_details", {}).items():
             daily_predictions[day_name] = details.get("domestic_mid", 0) / 1_000_000
             raw_daily_predictions[day_name] = details.get(
@@ -1017,6 +1066,8 @@ if __name__ == "__main__":
             daily_theatre_counts=daily_theatre_counts,
             daily_coverage_ratios=daily_coverage_ratios,
             raw_daily_predictions=raw_daily_predictions,
+            snapshot_daily_predictions=snapshot_daily_predictions,
+            snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
             actual_source=actual_source,

@@ -189,6 +189,42 @@ def recalibrate_day_scale_factors(history: list[dict],
             for d, s in scales.items()}
 
 
+def recalibrate_snapshot_day_scale_factors(history: list[dict],
+                                           alpha: float = 0.35) -> dict[str, float]:
+    """Per-day EMA for pre-reservation snapshot → final day gross.
+
+    This learns the snapshot layer across all movies with reliable snapshot
+    coverage. It is separate from day_scale_factors so early reservation probes
+    cannot contaminate post-show seat-count calibration.
+    """
+    scales: dict[str, float] = {
+        day: 1.0 for day in ("Thursday", "Friday", "Saturday", "Sunday")
+    }
+    if not history:
+        return {d: round(s, 4) for d, s in scales.items()}
+
+    for entry in history[-20:]:
+        daily_actuals = entry.get("daily_actuals", {}) or {}
+        snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+        snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
+
+        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
+            actual = _as_float(daily_actuals.get(day), 0.0)
+            predicted = _as_float(snapshot_predictions.get(day), 0.0)
+            if actual <= 0 or predicted <= 0:
+                continue
+            coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            if coverage < 0.10:
+                continue
+            raw_ratio = actual / predicted
+            shrunk = 1.0 + (raw_ratio - 1.0) * coverage
+            ratio = clamp(shrunk, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
+            scales[day] = alpha * ratio + (1.0 - alpha) * scales[day]
+
+    return {d: round(clamp(s, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR), 4)
+            for d, s in scales.items()}
+
+
 def normalize_day_weights(day_weights: dict | None,
                           defaults: dict[str, float]) -> dict[str, float]:
     """Fill missing day weights from defaults and normalize the whole set."""
@@ -248,5 +284,8 @@ def sanitize_calibration(cal: dict,
     # every load (idempotent — always EMAs from 1.0), so a stale persisted
     # value can never silently compound across reloads.
     factors["day_scale_factors"] = recalibrate_day_scale_factors(history)
+    factors["snapshot_to_day_scale_factors"] = recalibrate_snapshot_day_scale_factors(
+        history
+    )
 
     return cal
