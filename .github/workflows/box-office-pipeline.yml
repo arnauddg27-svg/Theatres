@@ -162,6 +162,7 @@ jobs:
         env:
           PHASE1_FULL_WEEKEND_LINKS: 'true'
           PHASE1_DEADLINE_SEC: '7200'
+          PHASE1_MIN_FRESH_LINK_RATIO: '0.90'
           PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
         run: |
           set +e
@@ -287,9 +288,11 @@ jobs:
         working-directory: box-office-tracker
         timeout-minutes: 150
         run: |
+          export PHASE1_MIN_FRESH_LINK_RATIO=0.90
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
-            export SNAPSHOT_MAX_CONCURRENT_TABS=1
+            export SNAPSHOT_MAX_CONCURRENT_TABS=3
             export PHASE2_DEADLINE_SEC=8100
+            export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
             echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
@@ -327,6 +330,8 @@ jobs:
             echo "workflow_run_id=${{ github.run_id }}"
             echo "workflow_run_attempt=${{ github.run_attempt }}"
             echo "workflow_job_status=${{ job.status }}"
+            echo "snapshots_only=${{ github.event.inputs.snapshots_only }}"
+            echo "pre_reservation_snapshots=${{ github.event.inputs.pre_reservation_snapshots }}"
           } > box-office-tracker/data/scrape-manifest/${{ matrix.tz }}.env
 
       - name: Upload scrape artifact

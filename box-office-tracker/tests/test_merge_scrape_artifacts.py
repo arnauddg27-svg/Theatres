@@ -176,6 +176,61 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
             self.assertEqual(2, len(rows))
             self.assertEqual("42", rows[-1]["reserved_seats"])
 
+    def test_failed_snapshot_only_artifact_does_not_merge_partial_snapshots(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            write_csv(
+                artifact / "pre-reservation-snapshots.csv",
+                PRE_RESERVATION_FIELDS,
+                [pre_reservation_row(31)],
+            )
+            manifest = artifact / "scrape-manifest" / "ET.env"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            manifest.write_text(
+                "timezone=ET\n"
+                "workflow_job_status=failure\n"
+                "snapshots_only=true\n"
+                "pre_reservation_snapshots=true\n"
+            )
+
+            summary = merge_artifacts(root / "artifacts", data_dir)
+
+            self.assertEqual(0, summary.pre_reservation_added)
+            target = data_dir / "pre-reservation-snapshots.csv"
+            if target.exists():
+                with target.open() as f:
+                    rows = list(csv.DictReader(f))
+                self.assertEqual([], rows)
+
+    def test_failed_regular_artifact_keeps_seat_rows_but_not_partial_snapshots(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            write_csv(artifact / "seat-counts.csv", SEAT_FIELDS, [seat_row("ET", "AMC A", 50)])
+            write_csv(
+                artifact / "pre-reservation-snapshots.csv",
+                PRE_RESERVATION_FIELDS,
+                [pre_reservation_row(31)],
+            )
+            manifest = artifact / "scrape-manifest" / "ET.env"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            manifest.write_text(
+                "timezone=ET\n"
+                "workflow_job_status=failure\n"
+                "snapshots_only=false\n"
+                "pre_reservation_snapshots=true\n"
+            )
+
+            summary = merge_artifacts(root / "artifacts", data_dir)
+
+            self.assertEqual(1, summary.seat_added)
+            self.assertEqual(0, summary.pre_reservation_added)
+
     def test_write_markers_uses_dedup_guard_commit_phrasing(self):
         with tempfile.TemporaryDirectory() as tmp:
             marker_file = Path(tmp) / "markers.txt"

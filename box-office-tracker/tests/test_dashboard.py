@@ -252,6 +252,98 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual([], snapshot["missing_show_dates"])
         self.assertEqual({"2026-05-08": ["CT", "PT"]}, snapshot["missing_date_timezones"])
 
+    def test_dashboard_snapshot_status_checks_theatre_coverage_by_date_timezone(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            rows = []
+            theatres = {}
+            for date in ("2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"):
+                for tz in ("ET", "CT", "PT"):
+                    for idx in range(4):
+                        name = f"AMC {tz} {idx}"
+                        theatres.setdefault(name, {
+                            "tz": tz,
+                            "dates": {},
+                        })
+                        theatres[name]["dates"][date] = {
+                            "movies": {
+                                "Mortal Kombat II": [
+                                    {"showtime": "7:00pm", "showtime_id": f"{date}-{tz}-{idx}"}
+                                ]
+                            }
+                        }
+                    rows.append({
+                        "weekend_of": "2026-05-08",
+                        "run_id": f"snapshot-{date}-{tz}",
+                        "snapshot_time": "2026-05-07T03:00:00+00:00",
+                        "show_date": date,
+                        "theatre_name": f"AMC {tz} 0",
+                        "timezone": tz,
+                        "movie_title": "Mortal Kombat II",
+                        "showtime": "7:00pm",
+                        "reserved_seats": "10",
+                        "total_seats": "100",
+                    })
+
+            write_csv(data_dir / "pre-reservation-snapshots.csv", dashboard.PRE_RESERVATION_FIELDS, rows)
+            write_csv(data_dir / "seat-counts.csv", dashboard.SEAT_FIELDS, [])
+            write_csv(data_dir / "polymarket-markets.csv", dashboard.POLY_FIELDS, [])
+            (data_dir / "showtime-links.json").write_text(json.dumps({
+                "weekend_of": "2026-05-08",
+                "collected_at": "2026-05-07T01:33:00",
+                "theatres": theatres,
+            }))
+
+            data = dashboard.build_dashboard_data(
+                data_dir=data_dir,
+                auto_pull=False,
+                include_predictions=False,
+            )
+
+        snapshot = data["runs"]["snapshot"]
+        self.assertEqual("partial", snapshot["status"])
+        self.assertEqual([], snapshot["missing_show_dates"])
+        self.assertEqual({}, snapshot["missing_date_timezones"])
+        self.assertTrue(snapshot["low_coverage_slices"])
+        self.assertEqual(
+            {"observed": 1, "expected": 4, "ratio": 0.25},
+            snapshot["theatre_coverage"]["2026-05-07:ET"],
+        )
+
+    def test_phase1_status_surfaces_movie_timezone_link_holes(self):
+        theatres = {}
+        for tz in ("ET", "CT", "PT"):
+            name = f"AMC {tz}"
+            theatres[name] = {
+                "tz": tz,
+                "dates": {
+                    "2026-05-07": {
+                        "movies": {
+                            "Mortal Kombat II": [
+                                {"showtime": "7:00pm", "showtime_id": f"mk-{tz}"}
+                            ],
+                            **({} if tz == "PT" else {
+                                "The Sheep Detectives": [
+                                    {"showtime": "7:00pm", "showtime_id": f"sheep-{tz}"}
+                                ]
+                            }),
+                        }
+                    }
+                },
+            }
+        showtime_links = {
+            "weekend_of": "2026-05-08",
+            "collected_at": "2026-05-07T01:33:00",
+            "theatres": theatres,
+        }
+
+        status = dashboard.phase1_status(showtime_links, "2026-05-08")
+
+        self.assertEqual("partial", status["status"])
+        self.assertTrue(
+            any("The Sheep Detectives 2026-05-07:PT 0/1" in item for item in status["low_coverage"])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

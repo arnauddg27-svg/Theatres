@@ -30,6 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 ROOT_DIR = BASE_DIR.parent
 TZ_ORDER = ("ET", "CT", "PT")
+SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
+PHASE1_MIN_MOVIE_TZ_RATIO = 0.90
 
 SEAT_FIELDS = [
     "weekend_of", "run_id", "date", "day_of_week", "theatre_name",
@@ -166,6 +168,95 @@ def missing_date_timezones(rows, show_dates) -> dict[str, list[str]]:
         if missing_tz:
             missing[show_date] = missing_tz
     return missing
+
+
+def _linked_movies(showtime_links: dict) -> list[str]:
+    requested = showtime_links.get("_requested_movies") or []
+    movies = {movie for movie in requested if movie}
+    for entry in (showtime_links.get("theatres") or {}).values():
+        for date_entry in (entry.get("dates") or {}).values():
+            movies.update((date_entry.get("movies") or {}).keys())
+    return sorted(movies)
+
+
+def _phase1_expected_theatres(showtime_links: dict, date_str: str, tz: str,
+                              movie: str | None = None) -> set[str]:
+    theatres = set()
+    for name, entry in (showtime_links.get("theatres") or {}).items():
+        if entry.get("tz") != tz:
+            continue
+        date_entry = (entry.get("dates") or {}).get(date_str) or {}
+        movies = date_entry.get("movies") or {}
+        if movie is None:
+            if any(movies.values()):
+                theatres.add(name)
+        elif movies.get(movie):
+            theatres.add(name)
+    return theatres
+
+
+def snapshot_theatre_coverage(rows, showtime_links: dict, current_weekend: str) -> dict:
+    expected_dates = opening_weekend_show_dates(current_weekend)
+    low_slices = []
+    by_slice = {}
+    for date_str in expected_dates:
+        for tz in TZ_ORDER:
+            expected = _phase1_expected_theatres(showtime_links, date_str, tz)
+            if not expected:
+                continue
+            observed = {
+                row.get("theatre_name", "")
+                for row in rows
+                if row.get("show_date") == date_str and row.get("timezone") == tz
+            } & expected
+            ratio = len(observed) / len(expected)
+            label = f"{date_str}:{tz} {len(observed)}/{len(expected)} ({ratio:.0%})"
+            by_slice[f"{date_str}:{tz}"] = {
+                "observed": len(observed),
+                "expected": len(expected),
+                "ratio": round(ratio, 3),
+            }
+            if ratio < SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO:
+                low_slices.append(label)
+    return {
+        "by_slice": by_slice,
+        "low_slices": low_slices,
+        "min_ratio": SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO,
+    }
+
+
+def phase1_movie_coverage(showtime_links: dict, current_weekend: str) -> dict:
+    weekend = showtime_links.get("weekend_of") or showtime_links.get("date", "")
+    if weekend != current_weekend:
+        return {"by_movie": {}, "low_coverage": []}
+
+    dates = opening_weekend_show_dates(current_weekend)
+    movies = _linked_movies(showtime_links)
+    by_movie = {}
+    low = []
+    for movie in movies:
+        movie_slices = {}
+        for date_str in dates:
+            for tz in TZ_ORDER:
+                total = sum(
+                    1
+                    for entry in (showtime_links.get("theatres") or {}).values()
+                    if entry.get("tz") == tz
+                )
+                if not total:
+                    continue
+                linked = len(_phase1_expected_theatres(showtime_links, date_str, tz, movie=movie))
+                ratio = linked / total
+                key = f"{date_str}:{tz}"
+                movie_slices[key] = {
+                    "linked": linked,
+                    "expected": total,
+                    "ratio": round(ratio, 3),
+                }
+                if ratio < PHASE1_MIN_MOVIE_TZ_RATIO:
+                    low.append(f"{movie} {date_str}:{tz} {linked}/{total} ({ratio:.0%})")
+        by_movie[movie] = movie_slices
+    return {"by_movie": by_movie, "low_coverage": low}
 
 
 def weighted_pct(rows, sold_field) -> float | None:
@@ -360,7 +451,7 @@ def maybe_git_pull(repo_dir: Path, auto_pull: bool) -> dict:
     return {"attempted": True, **pull}
 
 
-def run_status(rows, current_weekend, row_type) -> dict:
+def run_status(rows, current_weekend, row_type, showtime_links=None) -> dict:
     if row_type == "snapshot":
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "snapshot_time")
@@ -375,6 +466,11 @@ def run_status(rows, current_weekend, row_type) -> dict:
             if date_str not in observed_show_dates
         ]
         missing_date_tz = missing_date_timezones(current, expected_show_dates)
+        theatre_coverage = snapshot_theatre_coverage(
+            current,
+            showtime_links or {},
+            current_weekend,
+        )
     else:
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "check_time")
@@ -382,6 +478,11 @@ def run_status(rows, current_weekend, row_type) -> dict:
         expected_show_dates = []
         missing_show_dates = []
         missing_date_tz = {}
+        theatre_coverage = {
+            "by_slice": {},
+            "low_slices": [],
+            "min_ratio": SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO,
+        }
 
     if not current:
         return {
@@ -392,10 +493,13 @@ def run_status(rows, current_weekend, row_type) -> dict:
             "timezone_rows": {},
             "missing_timezones": list(TZ_ORDER),
             "missing_date_timezones": {},
+            "low_coverage_slices": [],
+            "theatre_coverage": {},
         }
 
     missing = missing_timezones(current)
-    status = "partial" if missing or missing_show_dates or missing_date_tz else "ok"
+    low_slices = theatre_coverage.get("low_slices", [])
+    status = "partial" if missing or missing_show_dates or missing_date_tz or low_slices else "ok"
     return {
         "status": status,
         "label": "OK" if status == "ok" else "Partial",
@@ -406,6 +510,8 @@ def run_status(rows, current_weekend, row_type) -> dict:
         "show_dates": observed_show_dates,
         "missing_show_dates": missing_show_dates,
         "missing_date_timezones": missing_date_tz,
+        "low_coverage_slices": low_slices,
+        "theatre_coverage": theatre_coverage.get("by_slice", {}),
         "run_ids": run_ids(current)[-6:],
     }
 
@@ -413,14 +519,19 @@ def run_status(rows, current_weekend, row_type) -> dict:
 def phase1_status(showtime_links: dict, current_weekend: str) -> dict:
     weekend = showtime_links.get("weekend_of") or showtime_links.get("date", "")
     theatres = showtime_links.get("theatres") or {}
+    coverage = phase1_movie_coverage(showtime_links, current_weekend)
     status = "ok" if weekend == current_weekend and theatres else "stale"
+    if status == "ok" and coverage.get("low_coverage"):
+        status = "partial"
     return {
         "status": status,
-        "label": "OK" if status == "ok" else "Stale",
+        "label": "OK" if status == "ok" else ("Partial" if status == "partial" else "Stale"),
         "weekend_of": weekend,
         "collected_at": showtime_links.get("collected_at", ""),
         "theatres": len(theatres),
-        "movies": showtime_links.get("_requested_movies") or [],
+        "movies": _linked_movies(showtime_links),
+        "coverage": coverage.get("by_movie", {}),
+        "low_coverage": coverage.get("low_coverage", []),
     }
 
 
@@ -494,7 +605,12 @@ def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
         "pull": pull,
         "runs": {
             "phase1": phase1_status(showtime_links, current_weekend),
-            "snapshot": run_status(snapshot_rows, current_weekend, "snapshot"),
+            "snapshot": run_status(
+                snapshot_rows,
+                current_weekend,
+                "snapshot",
+                showtime_links=showtime_links,
+            ),
             "regular": run_status(seat_rows, current_weekend, "regular"),
         },
         "movies": movie_cards,
@@ -765,9 +881,15 @@ HTML_PAGE = r"""<!doctype html>
       const snapshotMissingSlices = snapshot.missing_date_timezones && Object.keys(snapshot.missing_date_timezones).length
         ? ` | incomplete ${Object.entries(snapshot.missing_date_timezones).map(([date, tz]) => `${date}:${tz.join("/")}`).join(", ")}`
         : "";
+      const snapshotLowCoverage = snapshot.low_coverage_slices?.length
+        ? ` | low coverage ${snapshot.low_coverage_slices.slice(0, 3).join(", ")}${snapshot.low_coverage_slices.length > 3 ? "..." : ""}`
+        : "";
+      const phase1LowCoverage = phase1.low_coverage?.length
+        ? ` | weak ${phase1.low_coverage.slice(0, 3).join(", ")}${phase1.low_coverage.length > 3 ? "..." : ""}`
+        : "";
       document.getElementById("runGrid").innerHTML = [
-        panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}`, phase1),
-        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}${snapshotMissingSlices}`, snapshot),
+        panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}${phase1LowCoverage}`, phase1),
+        panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}${snapshotMissingSlices}${snapshotLowCoverage}`, snapshot),
         panel("Regular scrape", `${regular.rows || 0} rows`, `${fmtTime(regular.latest_time)} | ${tzText(regular.timezone_rows)}`, regular),
         panel("Local data", `${data.totals.seat_rows.toLocaleString()} seat rows`, `${data.totals.snapshot_rows.toLocaleString()} snapshot rows | pull: ${esc(data.pull.output || "-")}`, {status: data.git.dirty ? "partial" : "ok", label: data.git.dirty ? "Dirty" : "Clean"}),
       ].join("");

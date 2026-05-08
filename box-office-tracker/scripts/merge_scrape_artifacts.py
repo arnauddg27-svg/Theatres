@@ -145,6 +145,50 @@ def _csv_sources(artifact_root: Path, filename: str) -> list[Path]:
     return sorted(p for p in artifact_root.rglob(filename) if p.is_file())
 
 
+def _artifact_dir_for_source(artifact_root: Path, source: Path) -> Path:
+    try:
+        rel = source.resolve().relative_to(artifact_root.resolve())
+    except ValueError:
+        return source.parent
+    if len(rel.parts) <= 1:
+        return artifact_root
+    return artifact_root / rel.parts[0]
+
+
+def _read_manifest(path: Path) -> dict[str, str]:
+    values: dict[str, str] = {}
+    if not path.exists():
+        return values
+    for raw_line in path.read_text(errors="ignore").splitlines():
+        if "=" not in raw_line:
+            continue
+        key, value = raw_line.split("=", 1)
+        values[key.strip()] = value.strip()
+    return values
+
+
+def _artifact_manifest(artifact_root: Path, source: Path) -> dict[str, str]:
+    artifact_dir = _artifact_dir_for_source(artifact_root, source)
+    candidates = sorted(artifact_dir.rglob("scrape-manifest/*.env"))
+    if not candidates:
+        return {}
+    return _read_manifest(candidates[0])
+
+
+def _filter_pre_reservation_sources(artifact_root: Path, sources: list[Path]) -> list[Path]:
+    filtered: list[Path] = []
+    for source in sources:
+        manifest = _artifact_manifest(artifact_root, source)
+        writes_snapshots = (
+            manifest.get("snapshots_only", "").lower() == "true"
+            or manifest.get("pre_reservation_snapshots", "").lower() == "true"
+        )
+        if writes_snapshots and manifest.get("workflow_job_status", "").lower() != "success":
+            continue
+        filtered.append(source)
+    return filtered
+
+
 def _read_rows(path: Path, fields: list[str]) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     if not path.exists():
@@ -294,9 +338,13 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
     summary.polymarket_added = poly_added
     summary.polymarket_duplicates = poly_dupes
 
+    pre_sources = _filter_pre_reservation_sources(
+        artifact_root,
+        _csv_sources(artifact_root, PRE_RESERVATION_CSV),
+    )
     pre_added, pre_dupes, added_pre = _merge_csv(
         data_dir / PRE_RESERVATION_CSV,
-        _csv_sources(artifact_root, PRE_RESERVATION_CSV),
+        pre_sources,
         PRE_RESERVATION_FIELDS,
         _tuple_key(PRE_RESERVATION_DEDUPE_FIELDS),
     )

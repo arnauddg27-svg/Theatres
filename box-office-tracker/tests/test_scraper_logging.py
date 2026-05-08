@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 import os
+import importlib
 from datetime import datetime
 from pathlib import Path
 from types import ModuleType
@@ -449,6 +450,38 @@ class ScraperLoggingTest(unittest.TestCase):
             len({(row["name"], row["_date"]) for row in theatres}),
             len({(row["name"], row["_date"]) for row in ordered}),
         )
+
+    def test_snapshot_theatre_coverage_flags_thin_theatre_date_sample(self):
+        expected_theatres = [
+            {"name": "AMC A", "_tz": "ET", "_date": "2026-05-07"},
+            {"name": "AMC B", "_tz": "ET", "_date": "2026-05-07"},
+            {"name": "AMC C", "_tz": "ET", "_date": "2026-05-08"},
+        ]
+        snapshot_rows = [
+            {"theatre_name": "AMC A", "timezone": "ET", "show_date": "2026-05-07"},
+        ]
+
+        report = scraper.snapshot_theatre_coverage(expected_theatres, snapshot_rows)
+        failures = scraper.snapshot_coverage_failures(report, min_ratio=0.8)
+
+        self.assertEqual(3, report["expected_total"])
+        self.assertEqual(1, report["observed_total"])
+        self.assertAlmostEqual(1 / 3, report["ratio"])
+        self.assertIn("overall 1/3 theatre-date slices", failures[0])
+        self.assertTrue(any("2026-05-08 ET 0/1 theatres" in failure for failure in failures))
+
+    def test_phase2_deadline_is_env_configurable_for_snapshot_workflow(self):
+        old_value = os.environ.get("PHASE2_DEADLINE_SEC")
+        os.environ["PHASE2_DEADLINE_SEC"] = "8100"
+        try:
+            reloaded = importlib.reload(scraper)
+            self.assertEqual(8100, reloaded.PHASE2_DEADLINE_SEC)
+        finally:
+            if old_value is None:
+                os.environ.pop("PHASE2_DEADLINE_SEC", None)
+            else:
+                os.environ["PHASE2_DEADLINE_SEC"] = old_value
+            importlib.reload(scraper)
 
     def test_phase1_batches_current_day_before_future_cache(self):
         theatres = [

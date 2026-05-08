@@ -30,12 +30,12 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("'snapshot'", block)
         self.assertIn("'regular'", block)
 
-    def test_snapshot_scrapes_are_low_impact_without_extra_stagger(self):
+    def test_snapshot_scrapes_have_dedicated_capacity_without_extra_stagger(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
 
-        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", scrape_block)
+        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", scrape_block)
         self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
         self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
 
@@ -49,7 +49,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
         self.assertIn("timeout-minutes: 150", phase_block)
         self.assertIn("PHASE2_DEADLINE_SEC=8100", phase_block)
-        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=1", phase_block)
+        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
+        self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
+        self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
 
     def test_snapshot_scrapes_go_directly_from_install_to_amc_lock(self):
         scrape_start = self.workflow.index("  scrape:")
@@ -115,6 +117,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("git commit", block)
         self.assertNotIn("git push", block)
         self.assertIn("Write scrape manifest", block)
+        self.assertIn("snapshots_only=${{ github.event.inputs.snapshots_only }}", block)
+        self.assertIn("pre_reservation_snapshots=${{ github.event.inputs.pre_reservation_snapshots }}", block)
         self.assertIn("Upload scrape artifact", block)
         self.assertIn("SNAPSHOT_FLAG", block)
         self.assertIn("--pre-reservation-snapshots", block)
@@ -207,6 +211,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("timeout-minutes: 250", phase_block)
         self.assertIn("PHASE1_FULL_WEEKEND_LINKS: 'true'", phase_block)
         self.assertIn("PHASE1_DEADLINE_SEC: '7200'", phase_block)
+        self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO: '0.90'", phase_block)
         self.assertIn("PHASE1_MAX_THEATRE_DATE_VISITS: '2000'", phase_block)
 
     def test_amc_lock_wait_budget_fits_job_timeouts(self):

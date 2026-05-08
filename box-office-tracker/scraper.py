@@ -220,11 +220,15 @@ try:
     PHASE1_DEADLINE_SEC = int(os.getenv("PHASE1_DEADLINE_SEC", str(45 * 60)))
 except ValueError:
     PHASE1_DEADLINE_SEC = 45 * 60
-PHASE2_DEADLINE_SEC = 60 * 60   # 60 min — leaves 15 min for commit + push
+PHASE2_DEADLINE_SEC = _env_int("PHASE2_DEADLINE_SEC", 60 * 60, minimum=60)
 try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
 except ValueError:
     PHASE1_MIN_FRESH_LINK_RATIO = 0.80
+try:
+    SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = float(os.getenv("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO", "0.80"))
+except ValueError:
+    SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
 PHASE1_FULL_WEEKEND_LINKS = _env_bool("PHASE1_FULL_WEEKEND_LINKS", True)
 try:
     PHASE1_MAX_THEATRE_DATE_VISITS = int(os.getenv("PHASE1_MAX_THEATRE_DATE_VISITS", "2000"))
@@ -394,6 +398,71 @@ def order_phase2_theatres_for_collection(theatres, snapshots_only=False):
                     ordered.append(date_rows[row_index])
 
     return ordered
+
+
+def snapshot_theatre_coverage(expected_theatres, snapshot_rows):
+    """Measure snapshot breadth by show-date/timezone theatre coverage.
+
+    Snapshot rows are showtime-level, so row count alone can be misleading: a
+    few busy theatres can produce more rows than a broad but sparse sample. The
+    coverage contract for snapshot-only runs is theatre-date breadth.
+    """
+    expected_by_slice = {}
+    for theatre in expected_theatres:
+        date_str = theatre.get("_date", "")
+        tz = theatre.get("_tz", "")
+        name = theatre.get("name", "")
+        if not date_str or not tz or not name:
+            continue
+        expected_by_slice.setdefault((date_str, tz), set()).add(name)
+
+    observed_by_slice = {key: set() for key in expected_by_slice}
+    for row in snapshot_rows:
+        date_str = str(row.get("show_date", "") or "")
+        tz = str(row.get("timezone", "") or "")
+        name = str(row.get("theatre_name", "") or "")
+        key = (date_str, tz)
+        if key in observed_by_slice and name:
+            observed_by_slice[key].add(name)
+
+    expected_total = sum(len(names) for names in expected_by_slice.values())
+    observed_total = sum(
+        len(observed_by_slice.get(key, set()) & expected)
+        for key, expected in expected_by_slice.items()
+    )
+    ratio = (observed_total / expected_total) if expected_total else 1.0
+    by_slice = {}
+    for key in sorted(expected_by_slice):
+        expected = expected_by_slice[key]
+        observed = observed_by_slice.get(key, set()) & expected
+        slice_ratio = (len(observed) / len(expected)) if expected else 1.0
+        by_slice[key] = {
+            "expected": len(expected),
+            "observed": len(observed),
+            "ratio": slice_ratio,
+        }
+    return {
+        "expected_total": expected_total,
+        "observed_total": observed_total,
+        "ratio": ratio,
+        "by_slice": by_slice,
+    }
+
+
+def snapshot_coverage_failures(report, min_ratio=SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO):
+    failures = []
+    if report["expected_total"] and report["ratio"] < min_ratio:
+        failures.append(
+            f"overall {report['observed_total']}/{report['expected_total']} "
+            f"theatre-date slices ({report['ratio']:.1%})"
+        )
+    for (date_str, tz), details in report.get("by_slice", {}).items():
+        if details["expected"] and details["ratio"] < min_ratio:
+            failures.append(
+                f"{date_str} {tz} {details['observed']}/{details['expected']} "
+                f"theatres ({details['ratio']:.1%})"
+            )
+    return failures
 
 
 def opening_weekend_friday(dt=None):
@@ -2714,6 +2783,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     skipped_rows = 0
     snapshot_rows_written = 0
     snapshot_rows_skipped = 0
+    all_snapshot_rows = []
 
     # Per-theatre and overall deadlines. We stop accepting new work early enough
     # for in-flight theatres and artifact upload/finalize to finish before the
@@ -2774,6 +2844,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             all_results.extend(results)
             all_issues.extend(issues)
             if snapshot_rows:
+                all_snapshot_rows.extend(snapshot_rows)
                 async with snapshot_write_lock:
                     w, s = append_unique_pre_reservation_rows(snapshot_rows)
                     snapshot_rows_written += w
@@ -2818,8 +2889,36 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     if snapshot_rows_skipped:
         print(f"↺ Skipped {snapshot_rows_skipped} duplicate pre-reservation snapshot row(s)")
 
+    snapshot_failures = []
+    if snapshots_only and not test_max:
+        snapshot_report = snapshot_theatre_coverage(all_theatres, all_snapshot_rows)
+        print(
+            "\n🧯 Snapshot theatre coverage: "
+            f"{snapshot_report['observed_total']}/{snapshot_report['expected_total']} "
+            f"theatre-date slices ({snapshot_report['ratio']:.1%}); "
+            f"minimum {SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO:.0%}"
+        )
+        for (date_str, tz), details in snapshot_report["by_slice"].items():
+            print(
+                f"   {date_str} {tz}: "
+                f"{details['observed']}/{details['expected']} "
+                f"({details['ratio']:.1%})"
+            )
+        snapshot_failures = snapshot_coverage_failures(snapshot_report)
+        if snapshot_failures:
+            all_issues.append(
+                "Snapshot coverage below minimum: "
+                + "; ".join(snapshot_failures[:8])
+            )
+
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues, run_id=run_id)
+
+    if snapshot_failures:
+        fail_phase(
+            "\n❌ Snapshot-only run was partial; refusing to mark it successful. "
+            + "; ".join(snapshot_failures[:8])
+        )
 
     # Use local time for the day check — PT phase 2 runs at 7am UTC which is
     # already "Sunday" UTC, but still "Saturday" PT local time.
