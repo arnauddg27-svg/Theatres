@@ -32,6 +32,10 @@ ROOT_DIR = BASE_DIR.parent
 TZ_ORDER = ("ET", "CT", "PT")
 SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
 PHASE1_MIN_MOVIE_TZ_RATIO = 0.90
+# Snapshot runs are scheduled in UTC but execute during U.S. evening hours.
+# Subtracting six hours maps ET/CT/PT snapshot artifacts back to the intended
+# local collection day for dashboard health checks.
+SNAPSHOT_HEALTH_ANCHOR_OFFSET_HOURS = 6
 
 SEAT_FIELDS = [
     "weekend_of", "run_id", "date", "day_of_week", "theatre_name",
@@ -145,6 +149,21 @@ def rolling_snapshot_show_dates(weekend_of: str, now: datetime | None = None) ->
     start = dates[0] if today < dates[0] else today
     end = (datetime.strptime(start, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
     return [date_str for date_str in dates if start <= date_str <= end]
+
+
+def snapshot_health_anchor_time(latest_snapshot_time: str,
+                                fallback: datetime | None = None) -> datetime:
+    """Anchor dashboard expectations to the latest completed snapshot run."""
+    fallback = fallback or datetime.now()
+    if not latest_snapshot_time:
+        return fallback
+    try:
+        parsed = datetime.fromisoformat(latest_snapshot_time.replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return fallback
+    if parsed.tzinfo is not None:
+        parsed = parsed.astimezone(timezone.utc).replace(tzinfo=None)
+    return parsed - timedelta(hours=SNAPSHOT_HEALTH_ANCHOR_OFFSET_HOURS)
 
 
 def row_weekend(row: dict[str, str], date_field: str) -> str:
@@ -482,7 +501,10 @@ def run_status(rows, current_weekend, row_type, showtime_links=None,
             for row in current
             if row.get("show_date")
         })
-        expected_show_dates = rolling_snapshot_show_dates(current_weekend, now=now)
+        expected_show_dates = rolling_snapshot_show_dates(
+            current_weekend,
+            now=snapshot_health_anchor_time(latest_time, fallback=now),
+        )
         missing_show_dates = [
             date_str for date_str in expected_show_dates
             if date_str not in observed_show_dates

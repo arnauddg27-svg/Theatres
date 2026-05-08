@@ -122,7 +122,7 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual("2026-05-08", data["current_weekend"])
         self.assertEqual("partial", data["runs"]["snapshot"]["status"])
         self.assertEqual(
-            ["2026-05-08", "2026-05-09"],
+            ["2026-05-08"],
             data["runs"]["snapshot"]["missing_show_dates"],
         )
         self.assertEqual("pending", data["runs"]["regular"]["status"])
@@ -314,6 +314,42 @@ class DashboardTest(unittest.TestCase):
             {"observed": 1, "expected": 4, "ratio": 0.25},
             snapshot["theatre_coverage"]["2026-05-08:ET"],
         )
+
+    def test_dashboard_snapshot_health_uses_latest_snapshot_run_day(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            rows = []
+            for date in ("2026-05-07", "2026-05-08"):
+                for tz in ("ET", "CT", "PT"):
+                    rows.append({
+                        "weekend_of": "2026-05-08",
+                        "run_id": f"snapshot-{date}-{tz}",
+                        "snapshot_time": "2026-05-08T03:30:00+00:00",
+                        "show_date": date,
+                        "theatre_name": f"AMC {date} {tz}",
+                        "timezone": tz,
+                        "movie_title": "Mortal Kombat II",
+                        "showtime": "7:00pm",
+                        "reserved_seats": "10",
+                        "total_seats": "100",
+                    })
+
+            write_csv(data_dir / "pre-reservation-snapshots.csv", dashboard.PRE_RESERVATION_FIELDS, rows)
+            write_csv(data_dir / "seat-counts.csv", dashboard.SEAT_FIELDS, [])
+            write_csv(data_dir / "polymarket-markets.csv", dashboard.POLY_FIELDS, [])
+            (data_dir / "showtime-links.json").write_text("{}")
+
+            data = dashboard.build_dashboard_data(
+                data_dir=data_dir,
+                auto_pull=False,
+                include_predictions=False,
+                now=datetime(2026, 5, 8, 12, 0),
+            )
+
+        snapshot = data["runs"]["snapshot"]
+        self.assertEqual("ok", snapshot["status"])
+        self.assertEqual(["2026-05-07", "2026-05-08"], snapshot["show_dates"])
+        self.assertEqual([], snapshot["missing_show_dates"])
 
     def test_phase1_status_surfaces_movie_timezone_link_holes(self):
         theatres = {}
