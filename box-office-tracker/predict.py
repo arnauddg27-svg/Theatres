@@ -54,7 +54,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v3"
+MODEL_VERSION = "seat-regression-v4"
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -959,7 +959,7 @@ def comp_component_weight(n_days):
 
 def seat_primary_ensemble(pred):
     """Blend direct seat totals with the comp-translated seat signal."""
-    comp_mid = pred.get("seat_comp_mid_m")
+    comp_mid = pred.get("seat_comp_adjusted_mid_m", pred.get("seat_comp_mid_m"))
     if comp_mid is None:
         return None
 
@@ -968,8 +968,8 @@ def seat_primary_ensemble(pred):
     direct_mid = pred["seat_mid_m"]
     direct_low = pred["seat_low_m"]
     direct_high = pred["seat_high_m"]
-    comp_low = pred["seat_comp_low_m"]
-    comp_high = pred["seat_comp_high_m"]
+    comp_low = pred.get("seat_comp_adjusted_low_m", pred["seat_comp_low_m"])
+    comp_high = pred.get("seat_comp_adjusted_high_m", pred["seat_comp_high_m"])
 
     mid = direct_mid * w_direct + comp_mid * w_comp
     low = direct_low * w_direct + comp_low * w_comp
@@ -990,6 +990,78 @@ def seat_primary_ensemble(pred):
     }
 
 
+def has_missing_timezone_bucket(pred):
+    """Whether any collected day is missing a full expected timezone bucket."""
+    for details in (pred.get("daily_details") or {}).values():
+        if details.get("missing_timezones"):
+            return True
+    return False
+
+
+def missing_data_prior_weight(pred):
+    """Historical-prior weight for incomplete seat samples.
+
+    The observed seat count remains the anchor, but one-day reads with weak
+    coverage should not be treated as a full AMC census. Missing an entire
+    timezone bucket is especially important because it is systematic, not
+    random noise.
+    """
+    n_days = int(pred.get("n_days") or 0)
+    if n_days <= 0:
+        return 0.0
+
+    quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
+    weight = 1.0 - quality
+    if has_missing_timezone_bucket(pred) and n_days <= 1:
+        weight = max(weight, 0.55)
+
+    if n_days <= 1:
+        cap = 0.65
+    elif n_days == 2:
+        cap = 0.45
+    elif n_days == 3:
+        cap = 0.25
+    else:
+        cap = 0.10
+    return _clamp(weight, 0.0, cap)
+
+
+def coverage_adjusted_comp_model(pred, model, estimate):
+    """Blend sparse seat+comp output with a metadata-only historical prior."""
+    prior_mid = _positive_float(getattr(estimate, "prior_weekend_mid_m", 0))
+    if not prior_mid:
+        return None
+
+    prior_low = _positive_float(getattr(estimate, "prior_weekend_low_m", 0)) or prior_mid
+    prior_high = _positive_float(getattr(estimate, "prior_weekend_high_m", 0)) or prior_mid
+    prior_low, prior_high = min(prior_low, prior_high), max(prior_low, prior_high)
+    weight = missing_data_prior_weight(pred)
+    if weight <= 0:
+        return None
+
+    seat_weight = 1.0 - weight
+    mid = model["mid_m"] * seat_weight + prior_mid * weight
+    low = model["low_m"] * seat_weight + prior_low * weight
+    high = model["high_m"] * seat_weight + prior_high * weight
+    disagreement = abs(model["mid_m"] - prior_mid)
+
+    # Make the interval honestly reflect disagreement between the observed
+    # seat signal and the metadata prior.
+    low = max(0.0, low - disagreement * weight * 0.15)
+    high = high + disagreement * weight * 0.15
+    return {
+        "mid_m": mid,
+        "low_m": min(low, high),
+        "high_m": max(low, high),
+        "prior_mid_m": prior_mid,
+        "prior_low_m": prior_low,
+        "prior_high_m": prior_high,
+        "prior_weight": weight,
+        "seat_weight": seat_weight,
+        "disagreement_m": disagreement,
+    }
+
+
 def select_regression_prediction(pred):
     """Attach the model-driven regression forecast.
 
@@ -997,7 +1069,13 @@ def select_regression_prediction(pred):
     strategy, and reporting use the actual-predictive regression line. Prefer
     the seat+comp regression when available; fall back to the direct seat model.
     """
-    if pred.get("seat_comp_mid_m") is not None:
+    if pred.get("seat_comp_adjusted_mid_m") is not None:
+        source = "seat+comp-coverage-adjusted-regression"
+        mid = pred["seat_comp_adjusted_mid_m"]
+        low = pred["seat_comp_adjusted_low_m"]
+        high = pred["seat_comp_adjusted_high_m"]
+        basis = pred.get("seat_comp_adjusted_basis")
+    elif pred.get("seat_comp_mid_m") is not None:
         source = "seat+comp-regression"
         mid = pred["seat_comp_mid_m"]
         low = pred["seat_comp_low_m"]
@@ -1646,7 +1724,12 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     except (KeyError, TypeError, ValueError):
         return None
 
-    local_share = learned_local_thursday_share(cal, exclude_movie=pred.get("movie", ""))
+    local_share = learned_local_thursday_share(
+        cal,
+        exclude_movie=pred.get("movie", ""),
+        target_metadata=target,
+        metadata=metadata,
+    )
     external_thursday_share = (
         estimate.audience_adjusted_thursday_share
         or estimate.weighted_thursday_share
@@ -1710,9 +1793,22 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         for comp in estimate.comps[:5]
     ]
 
-    pred["comp_blended_m"] = pred["seat_comp_mid_m"]
-    pred["comp_blend_low_m"] = pred["seat_comp_low_m"]
-    pred["comp_blend_high_m"] = pred["seat_comp_high_m"]
+    adjusted = coverage_adjusted_comp_model(pred, model, estimate)
+    if adjusted:
+        pred["seat_comp_prior_mid_m"] = adjusted["prior_mid_m"]
+        pred["seat_comp_prior_low_m"] = adjusted["prior_low_m"]
+        pred["seat_comp_prior_high_m"] = adjusted["prior_high_m"]
+        pred["seat_comp_prior_weight"] = adjusted["prior_weight"]
+        pred["seat_comp_observed_weight"] = adjusted["seat_weight"]
+        pred["seat_comp_prior_disagreement_m"] = adjusted["disagreement_m"]
+        pred["seat_comp_adjusted_mid_m"] = adjusted["mid_m"]
+        pred["seat_comp_adjusted_low_m"] = adjusted["low_m"]
+        pred["seat_comp_adjusted_high_m"] = adjusted["high_m"]
+        pred["seat_comp_adjusted_basis"] = f"{model['basis']} + coverage prior"
+
+    pred["comp_blended_m"] = pred.get("seat_comp_adjusted_mid_m", pred["seat_comp_mid_m"])
+    pred["comp_blend_low_m"] = pred.get("seat_comp_adjusted_low_m", pred["seat_comp_low_m"])
+    pred["comp_blend_high_m"] = pred.get("seat_comp_adjusted_high_m", pred["seat_comp_high_m"])
     pred["comp_w_model"] = 1.0
     pred["comp_w_poly"] = 0.0
 
@@ -1742,17 +1838,35 @@ def _movie_matches(a, b):
     return a in b or b in a
 
 
-def learned_local_thursday_share(cal, exclude_movie=""):
+def _metadata_matches_local_share(target_metadata, entry_metadata):
+    if not target_metadata or not entry_metadata:
+        return False
+    return bool(
+        target_metadata.audience_type
+        and target_metadata.audience_type == entry_metadata.audience_type
+    )
+
+
+def learned_local_thursday_share(cal, exclude_movie="", target_metadata=None,
+                                 metadata=None):
     """Estimate Thursday/weekend share from settled local seat predictions.
 
     Uses our own recorded Thursday seat-implied grosses divided by the settled
     actual opening weekend. The target movie is excluded to prevent replay
     leakage after actuals have been recorded.
     """
-    values = []
+    all_values = []
+    matched_values = []
+    saw_entry_metadata = False
     for item in (cal or {}).get("history", []):
-        if _movie_matches(exclude_movie, item.get("movie", "")):
+        entry_movie = item.get("movie", "")
+        if _movie_matches(exclude_movie, entry_movie):
             continue
+        entry_metadata = None
+        if target_metadata is not None and metadata:
+            entry_metadata = metadata_for_movie(entry_movie, metadata)
+            if entry_metadata:
+                saw_entry_metadata = True
         actual = item.get("actual_total") or item.get("actual")
         daily_predictions = item.get("daily_predictions") or {}
         thursday = daily_predictions.get("Thursday")
@@ -1768,8 +1882,11 @@ def learned_local_thursday_share(cal, exclude_movie=""):
             continue
         share = thursday / actual
         if 0.02 <= share <= 0.35:
-            values.append(share)
+            all_values.append(share)
+            if _metadata_matches_local_share(target_metadata, entry_metadata):
+                matched_values.append(share)
 
+    values = matched_values if saw_entry_metadata else all_values
     if not values:
         return None
     return {
@@ -1990,6 +2107,14 @@ def print_prediction(pred, verbose=False):
         top_comps = pred.get("seat_comp_top_comps") or []
         if top_comps:
             print("    Top comps: " + ", ".join(comp["movie"] for comp in top_comps))
+
+        if pred.get("seat_comp_adjusted_mid_m") is not None:
+            print(f"  Coverage-adjusted: {fmt_m(pred['seat_comp_adjusted_mid_m']):>7}  "
+                  f"({fmt_m(pred['seat_comp_adjusted_low_m'])} - "
+                  f"{fmt_m(pred['seat_comp_adjusted_high_m'])})")
+            print(f"    Weights: {pred['seat_comp_observed_weight']:.0%} observed seat+comp / "
+                  f"{pred['seat_comp_prior_weight']:.0%} historical prior; "
+                  f"prior {fmt_m(pred['seat_comp_prior_mid_m'])}")
 
         if pred.get("comp_blended_m") is not None:
             print(f"  Seat+comp model:  {fmt_m(pred['comp_blended_m']):>7}  "

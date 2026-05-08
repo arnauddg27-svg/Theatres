@@ -109,6 +109,9 @@ class CompEstimate:
     audience_regression_n: int = 0
     audience_regression_r2: float | None = None
     audience_regression_features: dict[str, float] | None = None
+    prior_weekend_mid_m: float = 0.0
+    prior_weekend_low_m: float = 0.0
+    prior_weekend_high_m: float = 0.0
 
 
 def _clean(value: str | None) -> str:
@@ -435,6 +438,14 @@ def estimate_opening_weekend_from_thursday(
     weighted_share = _weighted_average(share_values)
     low_share = _weighted_quantile(share_values, 0.75)
     high_share = _weighted_quantile(share_values, 0.25)
+    weekend_values = [
+        (comp.opening_weekend_m, weight)
+        for comp, weight in selected
+        if comp.opening_weekend_m > 0
+    ]
+    prior_mid = _weighted_average(weekend_values)
+    prior_low = _weighted_quantile(weekend_values, 0.25)
+    prior_high = _weighted_quantile(weekend_values, 0.75)
 
     mid = thursday_gross_m / weighted_share if weighted_share else 0.0
     low = thursday_gross_m / low_share if low_share else mid
@@ -497,6 +508,9 @@ def estimate_opening_weekend_from_thursday(
         audience_regression_n=audience_n,
         audience_regression_r2=audience_r2,
         audience_regression_features=audience_features,
+        prior_weekend_mid_m=prior_mid,
+        prior_weekend_low_m=min(prior_low, prior_high),
+        prior_weekend_high_m=max(prior_low, prior_high),
     )
 
 

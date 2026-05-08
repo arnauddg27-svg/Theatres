@@ -14,6 +14,7 @@ from historical_comps import (
     estimate_opening_weekend_from_thursday,
     load_historical_comps,
     load_movie_metadata,
+    metadata_for_movie,
 )
 from predict import (
     CORE_COHORT,
@@ -475,6 +476,22 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("female_skewing", target.audience_type)
         self.assertEqual("sequel", target.franchise_type)
 
+    def test_default_metadata_includes_current_collection_movies(self):
+        metadata = load_movie_metadata()
+
+        mk = metadata_for_movie("Mortal Kombat II", metadata)
+        sheep = metadata_for_movie("The Sheep Detectives", metadata)
+
+        self.assertIsNotNone(mk)
+        self.assertEqual("action", mk.genre)
+        self.assertEqual("fan_driven", mk.audience_type)
+        self.assertEqual("video_game", mk.franchise_type)
+
+        self.assertIsNotNone(sheep)
+        self.assertEqual("comedy", sheep.genre)
+        self.assertEqual("broad_family", sheep.audience_type)
+        self.assertEqual("original", sheep.franchise_type)
+
     def test_prediction_seat_comp_model_uses_latest_available_daily_basis(self):
         prediction = {
             "movie": "Michael",
@@ -590,6 +607,99 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertAlmostEqual(90.909090909, prediction["seat_comp_mid_m"], places=6)
         self.assertEqual(2, prediction["seat_comp_local_thursday_n"])
         self.assertAlmostEqual(0.20, prediction["seat_comp_local_thursday_weight"], places=6)
+
+    def test_local_thursday_share_ignores_unmatched_metadata_when_available(self):
+        target = TargetMetadata(
+            movie="Family Movie",
+            genre="comedy",
+            audience_type="broad_family",
+            franchise_type="original",
+            rating="PG",
+        )
+        metadata = {
+            "family movie": target,
+            "adult event": TargetMetadata(
+                movie="Adult Event",
+                genre="comedy",
+                audience_type="female_skewing",
+                franchise_type="sequel",
+                rating="PG-13",
+            ),
+        }
+        cal = {
+            "history": [
+                {
+                    "movie": "Adult Event",
+                    "actual_total": 100.0,
+                    "daily_predictions": {"Thursday": 20.0},
+                },
+            ],
+        }
+
+        learned = learned_local_thursday_share(
+            cal,
+            exclude_movie="Family Movie",
+            target_metadata=target,
+            metadata=metadata,
+        )
+
+        self.assertIsNone(learned)
+
+    def test_sparse_seat_comp_prediction_uses_historical_prior(self):
+        prediction = {
+            "movie": "Family Movie",
+            "seat_mid_m": 6.0,
+            "seat_low_m": 4.0,
+            "seat_high_m": 8.0,
+            "n_days": 1,
+            "seat_data_quality": 0.40,
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 500_000,
+                    "missing_timezones": ["PT"],
+                },
+            },
+        }
+        metadata = {
+            "family movie": TargetMetadata(
+                movie="Family Movie",
+                genre="comedy",
+                audience_type="broad_family",
+                franchise_type="original",
+                rating="PG",
+            )
+        }
+        comps = [
+            HistoricalComp("Comp A", "comedy", "broad_family", "original", "PG", 1.0, 20.0),
+            HistoricalComp("Comp B", "comedy", "broad_family", "original", "PG", 1.2, 24.0),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertIn("seat_comp_adjusted_mid_m", prediction)
+        self.assertGreater(
+            prediction["seat_comp_adjusted_mid_m"],
+            prediction["seat_comp_mid_m"],
+        )
+        self.assertLess(
+            prediction["seat_comp_adjusted_mid_m"],
+            prediction["seat_comp_prior_mid_m"],
+        )
+        self.assertEqual(
+            "seat+comp-coverage-adjusted-regression",
+            prediction["regression_source"],
+        )
+        self.assertAlmostEqual(
+            prediction["seat_comp_adjusted_mid_m"],
+            prediction["regression_mid_m"],
+            places=6,
+        )
+        self.assertAlmostEqual(
+            prediction["seat_mid_m"] * prediction["seat_primary_w_direct"]
+            + prediction["seat_comp_adjusted_mid_m"] * prediction["seat_primary_w_comp"],
+            prediction["seat_primary_mid_m"],
+            places=6,
+        )
 
     def test_prediction_exposes_audience_regression_adjustment(self):
         prediction = {
