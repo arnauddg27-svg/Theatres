@@ -95,7 +95,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertLess(install_pos, guard_pos)
         self.assertLess(guard_pos, phase2_pos)
 
-    def test_snapshot_only_does_not_repair_phase1_links(self):
+    def test_scrape_lanes_do_not_repair_phase1_links(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
@@ -103,12 +103,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         end = scrape_block.index("      - name: Write scrape manifest", start)
         block = scrape_block[start:end]
 
-        self.assertIn("ENSURE_LINKS_FLAG", block)
-        self.assertIn('github.event.inputs.snapshots_only', block)
-        self.assertIn('ENSURE_LINKS_FLAG=""', block)
-        self.assertIn('ENSURE_LINKS_FLAG="--ensure-links"', block)
-        self.assertIn("python scraper.py $ENSURE_LINKS_FLAG", block)
-        self.assertNotIn("python scraper.py --ensure-links", block)
+        self.assertNotIn("ENSURE_LINKS_FLAG", block)
+        self.assertNotIn("--ensure-links", block)
+        self.assertIn("python scraper.py $FORCE_FLAG", block)
 
     def test_scrape_matrix_uploads_artifacts_instead_of_pushing(self):
         start = self.workflow.index("  scrape:")
@@ -281,14 +278,15 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("0 19 * * 2", cron)
         self.assertIn("0 21 * * 2", cron)
         self.assertIn("0 23 * * 2", cron)
-        self.assertIn("0 21 * * 0,3,4,5,6", cron)
-        self.assertIn("0 23 * * 0,3,4,5,6", cron)
-        self.assertIn("0 1 * * 0,1,4,5,6", cron)
+        self.assertNotIn("0 21 * * 0,3,4,5,6", cron)
+        self.assertNotIn("0 23 * * 0,3,4,5,6", cron)
+        self.assertNotIn("0 1 * * 0,1,4,5,6", cron)
         self.assertIn("30 2 * * 0,1,4,5,6", cron)
         self.assertIn("0 7 * * 0,1,5,6", cron)
         self.assertNotIn("0 7 * * 0,1,4,5,6", cron)
-        self.assertIn("after Phase 1 / before final post-show scrape", cron)
-        self.assertIn("after the PT collect-links slot", cron)
+        self.assertIn("using Tuesday's committed Phase 1 cache", cron)
+        self.assertIn("0 12 * * 2", cron)
+        self.assertNotIn("0 14 * * 2", cron)
         self.assertNotIn("30 22", cron)
         self.assertNotIn("30 18", cron)
         self.assertIn("phase=scrape", cron)
