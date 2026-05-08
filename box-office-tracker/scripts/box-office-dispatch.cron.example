@@ -29,8 +29,10 @@ DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_
 0 21 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
 0 23 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
 
-# Pre-reservation snapshot probe using Tuesday's committed Phase 1 cache.
-# Snapshot-only stays pure: it does not run Phase 1 repair itself.
+# Rolling pre-reservation snapshot probe using Tuesday's committed Phase 1 cache.
+# Snapshot-only stays pure: it does not run Phase 1 repair itself. Each run
+# captures the current local show date plus the next opening-weekend show date
+# (Wednesday night captures Thu/Fri; Sunday night captures Sunday only).
 # The UTC day 4 slot is Wednesday evening local time for all ET/CT/PT groups.
 # Dispatcher mode: snapshot -> phase=scrape, pre_reservation_snapshots=true, snapshots_only=true
 30 2 * * 0,1,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1

@@ -2,6 +2,7 @@ import csv
 import json
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 from types import ModuleType
 import sys
@@ -115,12 +116,13 @@ class DashboardTest(unittest.TestCase):
                 data_dir=data_dir,
                 auto_pull=False,
                 include_predictions=False,
+                now=datetime(2026, 5, 8, 12, 0),
             )
 
         self.assertEqual("2026-05-08", data["current_weekend"])
         self.assertEqual("partial", data["runs"]["snapshot"]["status"])
         self.assertEqual(
-            ["2026-05-08", "2026-05-09", "2026-05-10"],
+            ["2026-05-08", "2026-05-09"],
             data["runs"]["snapshot"]["missing_show_dates"],
         )
         self.assertEqual("pending", data["runs"]["regular"]["status"])
@@ -186,6 +188,7 @@ class DashboardTest(unittest.TestCase):
                 data_dir=data_dir,
                 auto_pull=False,
                 include_predictions=False,
+                now=datetime(2026, 5, 8, 12, 0),
             )
 
         self.assertEqual("2026-05-08", data["current_weekend"])
@@ -245,6 +248,7 @@ class DashboardTest(unittest.TestCase):
                 data_dir=data_dir,
                 auto_pull=False,
                 include_predictions=False,
+                now=datetime(2026, 5, 8, 12, 0),
             )
 
         snapshot = data["runs"]["snapshot"]
@@ -298,6 +302,7 @@ class DashboardTest(unittest.TestCase):
                 data_dir=data_dir,
                 auto_pull=False,
                 include_predictions=False,
+                now=datetime(2026, 5, 8, 12, 0),
             )
 
         snapshot = data["runs"]["snapshot"]
@@ -307,7 +312,7 @@ class DashboardTest(unittest.TestCase):
         self.assertTrue(snapshot["low_coverage_slices"])
         self.assertEqual(
             {"observed": 1, "expected": 4, "ratio": 0.25},
-            snapshot["theatre_coverage"]["2026-05-07:ET"],
+            snapshot["theatre_coverage"]["2026-05-08:ET"],
         )
 
     def test_phase1_status_surfaces_movie_timezone_link_holes(self):

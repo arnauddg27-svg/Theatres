@@ -39,7 +39,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
         self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
 
-    def test_snapshot_scrapes_have_full_weekend_runtime_budget(self):
+    def test_snapshot_scrapes_have_rolling_day_plus_one_runtime_budget(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]

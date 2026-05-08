@@ -20,7 +20,7 @@ import re
 import subprocess
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -133,6 +133,20 @@ def opening_weekend_show_dates(weekend_of: str) -> list[str]:
     ]
 
 
+def rolling_snapshot_show_dates(weekend_of: str, now: datetime | None = None) -> list[str]:
+    """Show dates the rolling snapshot job is expected to have covered now."""
+    dates = opening_weekend_show_dates(weekend_of)
+    if not dates:
+        return []
+    now = now or datetime.now()
+    today = now.strftime("%Y-%m-%d")
+    if today > dates[-1]:
+        return dates
+    start = dates[0] if today < dates[0] else today
+    end = (datetime.strptime(start, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
+    return [date_str for date_str in dates if start <= date_str <= end]
+
+
 def row_weekend(row: dict[str, str], date_field: str) -> str:
     return row.get("weekend_of") or weekend_friday_for_date(row.get(date_field, ""))
 
@@ -195,8 +209,9 @@ def _phase1_expected_theatres(showtime_links: dict, date_str: str, tz: str,
     return theatres
 
 
-def snapshot_theatre_coverage(rows, showtime_links: dict, current_weekend: str) -> dict:
-    expected_dates = opening_weekend_show_dates(current_weekend)
+def snapshot_theatre_coverage(rows, showtime_links: dict, current_weekend: str,
+                              expected_dates: list[str] | None = None) -> dict:
+    expected_dates = expected_dates or opening_weekend_show_dates(current_weekend)
     low_slices = []
     by_slice = {}
     for date_str in expected_dates:
@@ -457,7 +472,8 @@ def maybe_git_pull(repo_dir: Path, auto_pull: bool) -> dict:
     return {"attempted": True, **pull}
 
 
-def run_status(rows, current_weekend, row_type, showtime_links=None) -> dict:
+def run_status(rows, current_weekend, row_type, showtime_links=None,
+               now: datetime | None = None) -> dict:
     if row_type == "snapshot":
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
         latest_time = latest_value(current, "snapshot_time")
@@ -466,7 +482,7 @@ def run_status(rows, current_weekend, row_type, showtime_links=None) -> dict:
             for row in current
             if row.get("show_date")
         })
-        expected_show_dates = opening_weekend_show_dates(current_weekend)
+        expected_show_dates = rolling_snapshot_show_dates(current_weekend, now=now)
         missing_show_dates = [
             date_str for date_str in expected_show_dates
             if date_str not in observed_show_dates
@@ -476,6 +492,7 @@ def run_status(rows, current_weekend, row_type, showtime_links=None) -> dict:
             current,
             showtime_links or {},
             current_weekend,
+            expected_show_dates,
         )
     else:
         current = [row for row in rows if row.get("weekend_of") == current_weekend]
@@ -542,7 +559,9 @@ def phase1_status(showtime_links: dict, current_weekend: str) -> dict:
 
 
 def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
-                         include_predictions=True) -> dict:
+                         include_predictions=True,
+                         now: datetime | None = None) -> dict:
+    now = now or datetime.now()
     data_dir = Path(data_dir)
     pull = maybe_git_pull(ROOT_DIR, auto_pull) if data_dir.resolve() == DATA_DIR.resolve() else {
         "attempted": False,
@@ -616,6 +635,7 @@ def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
                 current_weekend,
                 "snapshot",
                 showtime_links=showtime_links,
+                now=now,
             ),
             "regular": run_status(seat_rows, current_weekend, "regular"),
         },

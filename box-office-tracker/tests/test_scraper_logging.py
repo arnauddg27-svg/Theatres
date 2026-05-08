@@ -130,7 +130,7 @@ class ScraperLoggingTest(unittest.TestCase):
         finally:
             scraper.local_now = old_local_now
 
-    def test_snapshot_only_phase2_expects_thursday_links_on_wednesday(self):
+    def test_snapshot_only_phase2_uses_rolling_day_plus_one_window(self):
         old_local_now = scraper.local_now
         try:
             scraper.local_now = lambda tz: datetime(2026, 5, 6, 22, 30)
@@ -141,14 +141,26 @@ class ScraperLoggingTest(unittest.TestCase):
             )
             self.assertEqual(
                 {
-                    "ET": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
-                    "CT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
-                    "PT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                    "ET": ["2026-05-07", "2026-05-08"],
+                    "CT": ["2026-05-07", "2026-05-08"],
+                    "PT": ["2026-05-07", "2026-05-08"],
                 },
                 scraper.phase2_collection_dates_by_group(
                     ["ET", "CT", "PT"],
                     snapshots_only=True,
                 ),
+            )
+
+            scraper.local_now = lambda tz: datetime(2026, 5, 8, 22, 30)
+            self.assertEqual(
+                {"ET": ["2026-05-08", "2026-05-09"]},
+                scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
+            )
+
+            scraper.local_now = lambda tz: datetime(2026, 5, 10, 22, 30)
+            self.assertEqual(
+                {"ET": ["2026-05-10"]},
+                scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
             )
         finally:
             scraper.local_now = old_local_now

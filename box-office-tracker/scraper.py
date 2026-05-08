@@ -314,35 +314,40 @@ def phase1_expected_date(tz_group):
 def phase2_expected_dates(groups, snapshots_only=False):
     """Return the Phase 1 show dates required by this Phase 2 mode."""
     if snapshots_only:
-        expected = {}
-        for group in groups:
-            local = local_now(group)
-            # Wednesday evening snapshots are pre-opening probes for Thursday
-            # preview showtimes. Normal snapshot probes use same-day links.
-            if local.weekday() == 2:  # Wednesday
-                local = local + timedelta(days=1)
-            expected[group] = local.strftime("%Y-%m-%d")
-        return expected
+        return {
+            group: phase2_snapshot_collection_dates(local_now(group))[0]
+            for group in groups
+        }
     return {group: phase1_expected_date(group) for group in groups}
 
 
 def phase2_snapshot_collection_dates(local):
     """Return show dates a snapshot-only Phase 2 should probe.
 
-    Wednesday night snapshots are pre-opening reads, so they should capture the
-    full Thu-Sun opening weekend from the forward cache. Later snapshot probes
-    keep using the current opening-weekend cache and include remaining weekend
-    dates. Unscheduled Mon/Tue manual snapshots stay narrow.
+    Snapshot probes are rolling near-term reads, not full-weekend census runs:
+    Wednesday captures Thu/Fri, Thu captures Thu/Fri, Fri captures Fri/Sat,
+    Sat captures Sat/Sun, and Sun captures Sun only. That keeps the snapshot
+    layer broad enough for future-day demand while staying small enough to
+    complete under strict one-AMC-session-at-a-time scheduling.
     """
     if local.weekday() == 2:  # Wednesday pre-opening
-        return opening_weekend_show_dates(phase1_weekend_anchor(local, full_weekend=True))
-    if local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
-        local_date = local.strftime("%Y-%m-%d")
-        return [
-            date_str
-            for date_str in opening_weekend_show_dates(opening_weekend_friday(local))
-            if date_str >= local_date
-        ]
+        weekend = phase1_weekend_anchor(local, full_weekend=True)
+        start = local + timedelta(days=1)
+    elif local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
+        weekend = opening_weekend_friday(local)
+        start = local
+    else:
+        return [local.strftime("%Y-%m-%d")]
+
+    start_date = start.strftime("%Y-%m-%d")
+    end_date = (start + timedelta(days=1)).strftime("%Y-%m-%d")
+    dates = [
+        date_str
+        for date_str in opening_weekend_show_dates(weekend)
+        if start_date <= date_str <= end_date
+    ]
+    if dates:
+        return dates
     return [local.strftime("%Y-%m-%d")]
 
 
@@ -3142,7 +3147,7 @@ if __name__ == "__main__":
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
         print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
         print(f"  --pre-reservation-snapshots  Also write time-bucketed reserved-seat snapshots")
-        print(f"  --snapshots-only Write snapshots without appending prediction seat-count rows")
+        print(f"  --snapshots-only Write rolling day+1 snapshots without appending prediction seat-count rows")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")
         print(f"  MT               Mountain theatres only")
