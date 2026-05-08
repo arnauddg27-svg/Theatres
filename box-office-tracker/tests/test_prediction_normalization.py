@@ -309,6 +309,22 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual({"Friday": 10.0}, snapshot_predictions)
         self.assertEqual({"Friday": 0.9}, snapshot_coverage)
 
+    def test_predict_actual_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
+        snapshot_predictions, snapshot_coverage = (
+            predict.snapshot_calibration_fields_from_prediction({
+                "snapshot_daily_details": {
+                    "Saturday": {
+                        "raw_domestic_mid": 8_000_000,
+                        "domestic_mid": 16_000_000,
+                        "coverage_ratio": 0.5,
+                    },
+                },
+            })
+        )
+
+        self.assertEqual({"Saturday": 8.0}, snapshot_predictions)
+        self.assertEqual({"Saturday": 0.5}, snapshot_coverage)
+
     def test_load_pre_reservation_data_requires_weekend_and_snapshot_date_for_replay(self):
         old_snapshot_csv = predict.PRE_RESERVATION_CSV
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -1755,6 +1755,24 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
     save_calibration(cal)
 
 
+def snapshot_calibration_fields_from_prediction(pred):
+    """Extract raw snapshot day estimates for calibration history."""
+    snapshot_predictions = {}
+    snapshot_coverage = {}
+    for day_name, details in pred.get("snapshot_daily_details", {}).items():
+        mid = _positive_float(
+            details.get("raw_domestic_mid", details.get("domestic_mid"))
+        )
+        if not mid:
+            continue
+        snapshot_predictions[day_name] = mid / 1_000_000
+        coverage = details.get("effective_coverage_ratio", details.get("coverage_ratio"))
+        cov = _positive_float(coverage)
+        if cov is not None:
+            snapshot_coverage[day_name] = round(min(1.0, cov), 3)
+    return snapshot_predictions, snapshot_coverage
+
+
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
@@ -2791,19 +2809,9 @@ def main():
             for day, details in pred.get("daily_details", {}).items()
             if details.get("coverage_ratio") is not None
         }
-        snapshot_daily_predictions = {
-            day: details.get("domestic_mid", 0) / 1_000_000
-            for day, details in pred.get("snapshot_daily_details", {}).items()
-            if details.get("domestic_mid") is not None
-        }
-        snapshot_daily_coverage_ratios = {
-            day: round(
-                details.get("effective_coverage_ratio", details["coverage_ratio"]),
-                3,
-            )
-            for day, details in pred.get("snapshot_daily_details", {}).items()
-            if details.get("coverage_ratio") is not None
-        }
+        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+            snapshot_calibration_fields_from_prediction(pred)
+        )
 
         record_actual(cal, movie_match, pred_mid, pred_low, pred_high,
                      seat_raw, poly_ev, actual_val, n_th, days,
