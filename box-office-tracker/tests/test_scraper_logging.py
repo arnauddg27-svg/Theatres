@@ -167,6 +167,45 @@ class ScraperLoggingTest(unittest.TestCase):
         finally:
             scraper.local_now = old_local_now
 
+    def test_snapshot_prunes_future_date_with_missing_active_movie_links(self):
+        saved_links = {
+            "AMC PT 1": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime_id": "mk-fri"}],
+                            "The Sheep Detectives": [{"showtime_id": "sheep-fri"}],
+                        }
+                    },
+                    "2026-05-09": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime_id": "mk-sat"}],
+                        }
+                    },
+                },
+            },
+        }
+        poly_markets = [
+            {"movie_title": "Mortal Kombat II"},
+            {"movie_title": "The Sheep Detectives"},
+        ]
+
+        usable, skipped = scraper.snapshot_usable_date_sets(
+            poly_markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-05-08", "2026-05-09"]},
+            min_theatres=1,
+        )
+
+        self.assertEqual({"PT": ["2026-05-08"]}, usable)
+        self.assertEqual(1, len(skipped))
+        self.assertEqual("PT", skipped[0]["timezone"])
+        self.assertEqual("2026-05-09", skipped[0]["show_date"])
+        self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+
     def test_wednesday_preopening_collection_prefers_live_future_markets(self):
         old_tracked = scraper.tracked_movie_titles_from_state
         seen_weekends = []

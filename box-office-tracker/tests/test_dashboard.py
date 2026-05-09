@@ -355,6 +355,42 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual(["2026-05-07", "2026-05-08"], snapshot["show_dates"])
         self.assertEqual([], snapshot["missing_show_dates"])
 
+    def test_dashboard_snapshot_health_ignores_stale_timezone_slice(self):
+        rows = [
+            {
+                "weekend_of": "2026-05-08",
+                "run_id": "current-et",
+                "snapshot_time": "2026-05-09T04:00:00+00:00",
+                "show_date": "2026-05-08",
+                "theatre_name": "AMC ET",
+                "timezone": "ET",
+                "movie_title": "Mortal Kombat II",
+            },
+            {
+                "weekend_of": "2026-05-08",
+                "run_id": "current-ct",
+                "snapshot_time": "2026-05-09T05:00:00+00:00",
+                "show_date": "2026-05-08",
+                "theatre_name": "AMC CT",
+                "timezone": "CT",
+                "movie_title": "Mortal Kombat II",
+            },
+            {
+                "weekend_of": "2026-05-08",
+                "run_id": "stale-pt",
+                "snapshot_time": "2026-05-08T05:00:00+00:00",
+                "show_date": "2026-05-08",
+                "theatre_name": "AMC PT",
+                "timezone": "PT",
+                "movie_title": "Mortal Kombat II",
+            },
+        ]
+
+        fresh = dashboard.latest_snapshot_window_rows(rows)
+
+        self.assertEqual(["CT", "ET"], sorted({row["timezone"] for row in fresh}))
+        self.assertNotIn("stale-pt", {row["run_id"] for row in fresh})
+
     def test_phase1_status_surfaces_movie_timezone_link_holes(self):
         theatres = {}
         for tz in ("ET", "CT", "PT"):

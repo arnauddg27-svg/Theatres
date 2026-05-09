@@ -23,7 +23,7 @@ Usage:
 """
 
 import json, csv, os, sys, re, statistics
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from math import sqrt
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
@@ -58,6 +58,7 @@ LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
 MODEL_VERSION = "seat-regression-v5"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
+SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -1345,6 +1346,64 @@ def _snapshot_day_name(date_str, rows):
     return datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
 
 
+def _parse_snapshot_time(value):
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE_HOURS):
+    """Keep one coherent recent snapshot run per show-date/timezone slice."""
+    parsed_rows = []
+    for idx, row in enumerate(rows):
+        parsed = _parse_snapshot_time(row.get("snapshot_time", ""))
+        parsed_rows.append((idx, row, parsed))
+
+    latest_overall = max((parsed for _, _, parsed in parsed_rows if parsed), default=None)
+    if latest_overall is None:
+        return list(rows)
+
+    by_slice = {}
+    for item in parsed_rows:
+        _, row, _ = item
+        key = (row.get("show_date", ""), row.get("timezone", ""))
+        by_slice.setdefault(key, []).append(item)
+
+    keep_indexes = set()
+    max_age_seconds = max_slice_age_hours * 3600
+    for items in by_slice.values():
+        timed = [item for item in items if item[2]]
+        if not timed:
+            keep_indexes.update(idx for idx, _, _ in items)
+            continue
+        latest_slice_time = max(parsed for _, _, parsed in timed)
+        if (latest_overall - latest_slice_time).total_seconds() > max_age_seconds:
+            continue
+        latest_item = max(
+            timed,
+            key=lambda item: (
+                item[2],
+                item[1].get("snapshot_bucket", ""),
+                item[1].get("run_id", ""),
+            ),
+        )
+        latest_run_id = latest_item[1].get("run_id", "")
+        latest_bucket = latest_item[1].get("snapshot_bucket", "")
+        for idx, row, _ in items:
+            if latest_run_id and row.get("run_id", "") == latest_run_id:
+                keep_indexes.add(idx)
+            elif not latest_run_id and row.get("snapshot_bucket", "") == latest_bucket:
+                keep_indexes.add(idx)
+
+    return [row for idx, row, _ in parsed_rows if idx in keep_indexes]
+
+
 def _latest_snapshot_showtime_rows(rows):
     latest = {}
     for row in rows:
@@ -1372,7 +1431,7 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           national_theatre_count=None):
     """Estimate one future day from pre-reservation snapshots only."""
     day_name = _snapshot_day_name(date_str, rows)
-    latest_rows = _latest_snapshot_showtime_rows(rows)
+    latest_rows = _latest_snapshot_showtime_rows(latest_snapshot_window_rows(rows))
     per_showtime_results = []
     captured_by_theatre = {}
     no_data_count = 0
@@ -1401,7 +1460,7 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
     sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
     n_amc_theatres = amc_stats.get("n_theatres", 0)
     tz_profile = timezone_coverage_profile(
-        rows,
+        latest_rows,
         expected_timezone_counts=expected_timezone_counts,
         theatre_timezone_map=theatre_timezone_map,
     )

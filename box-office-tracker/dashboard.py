@@ -36,6 +36,7 @@ DATA_DIR = BASE_DIR / "data"
 ROOT_DIR = BASE_DIR.parent
 TZ_ORDER = ("ET", "CT", "PT")
 SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
+SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 PHASE1_MIN_MOVIE_TZ_RATIO = 0.90
 TZ_ZONE_NAMES = {
     "ET": "America/New_York",
@@ -168,6 +169,52 @@ def parse_snapshot_time(value: str) -> datetime | None:
     if parsed.tzinfo is None:
         parsed = parsed.replace(tzinfo=timezone.utc)
     return parsed
+
+
+def latest_snapshot_window_rows(rows: list[dict[str, str]],
+                                max_slice_age_hours: int = SNAPSHOT_MAX_SLICE_AGE_HOURS
+                                ) -> list[dict[str, str]]:
+    """Keep the latest recent run for each show-date/timezone snapshot slice."""
+    parsed_rows = [
+        (idx, row, parse_snapshot_time(row.get("snapshot_time", "")))
+        for idx, row in enumerate(rows)
+    ]
+    latest_overall = max((parsed for _, _, parsed in parsed_rows if parsed), default=None)
+    if latest_overall is None:
+        return list(rows)
+
+    by_slice = defaultdict(list)
+    for item in parsed_rows:
+        _, row, _ = item
+        by_slice[(row.get("show_date", ""), row.get("timezone", ""))].append(item)
+
+    keep = set()
+    max_age_seconds = max_slice_age_hours * 3600
+    for items in by_slice.values():
+        timed = [item for item in items if item[2]]
+        if not timed:
+            keep.update(idx for idx, _, _ in items)
+            continue
+        latest_slice_time = max(parsed for _, _, parsed in timed)
+        if (latest_overall - latest_slice_time).total_seconds() > max_age_seconds:
+            continue
+        latest_item = max(
+            timed,
+            key=lambda item: (
+                item[2],
+                item[1].get("snapshot_bucket", ""),
+                item[1].get("run_id", ""),
+            ),
+        )
+        latest_run_id = latest_item[1].get("run_id", "")
+        latest_bucket = latest_item[1].get("snapshot_bucket", "")
+        for idx, row, _ in items:
+            if latest_run_id and row.get("run_id", "") == latest_run_id:
+                keep.add(idx)
+            elif not latest_run_id and row.get("snapshot_bucket", "") == latest_bucket:
+                keep.add(idx)
+
+    return [row for idx, row, _ in parsed_rows if idx in keep]
 
 
 def snapshot_row_local_time(row: dict[str, str]) -> datetime | None:
@@ -534,7 +581,9 @@ def maybe_git_pull(repo_dir: Path, auto_pull: bool) -> dict:
 def run_status(rows, current_weekend, row_type, showtime_links=None,
                now: datetime | None = None) -> dict:
     if row_type == "snapshot":
-        current = [row for row in rows if row.get("weekend_of") == current_weekend]
+        current = latest_snapshot_window_rows([
+            row for row in rows if row.get("weekend_of") == current_weekend
+        ])
         latest_time = latest_value(current, "snapshot_time")
         observed_show_dates = sorted({
             row.get("show_date", "")
@@ -639,10 +688,10 @@ def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
     current_weekend = latest_weekend(seat_rows, snapshot_rows, poly_rows)
 
     current_seat_rows = [row for row in seat_rows if row_weekend(row, "date") == current_weekend]
-    current_snapshot_rows = [
+    current_snapshot_rows = latest_snapshot_window_rows([
         row for row in snapshot_rows
         if row_weekend(row, "show_date") == current_weekend
-    ]
+    ])
     current_poly_rows = [
         row for row in poly_rows
         if weekend_friday_for_date(row.get("date", "")) == current_weekend

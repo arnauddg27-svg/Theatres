@@ -2054,6 +2054,38 @@ def require_active_market_phase1_links(poly_markets, saved_links, groups, expect
     )
 
 
+def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
+                              min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                              required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Keep snapshot dates whose active movies have usable Phase 1 links.
+
+    Snapshot probes are a future-demand layer. A missing day+1 movie slice
+    should not throw away same-day snapshot data for the whole timezone.
+    """
+    usable = {}
+    skipped = []
+    for group in groups:
+        for date_str in requested_date_sets.get(group, []):
+            gaps = active_market_phase1_link_gaps(
+                poly_markets,
+                saved_links,
+                [group],
+                {group: [date_str]},
+                min_theatres=min_theatres,
+                required_cohorts=required_cohorts,
+            )
+            if gaps:
+                skipped.append({
+                    "timezone": group,
+                    "show_date": date_str,
+                    "missing_movies": sorted({gap["movie_title"] for gap in gaps}),
+                    "gaps": gaps,
+                })
+                continue
+            usable.setdefault(group, []).append(date_str)
+    return usable, skipped
+
+
 def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
                                      groups=None, expected_dates=None,
                                      required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -2832,21 +2864,6 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             for group, dates in collection_dates_by_group.items()
         ))
 
-    all_theatres = []
-    for group in groups_to_check:
-        for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
-            for theatre in theatres_map.get(group, []):
-                all_theatres.append({
-                    **theatre,
-                    "_tz": group,
-                    "_date": date_str,
-                    "_phase2_expected_date": date_str if snapshots_only else "",
-                })
-    all_theatres = order_phase2_theatres_for_collection(
-        all_theatres,
-        snapshots_only=snapshots_only,
-    )
-
     # Phase 2 requires Phase 1 links — abort if missing, from the wrong opening
     # weekend, or older than 12 hours unless explicitly forced.
     saved_links = {}
@@ -2894,6 +2911,48 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
+    snapshot_skipped_slice_issues = []
+    if snapshots_only:
+        usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
+            poly_markets,
+            saved_links,
+            groups_to_check,
+            coverage_dates_by_group,
+        )
+        if skipped_date_slices:
+            print("\n↷ Snapshot skipping date slice(s) without complete active movie links:")
+            for skipped in skipped_date_slices:
+                issue = (
+                    f"Snapshot skipped {skipped['timezone']} {skipped['show_date']} "
+                    f"missing links for {', '.join(skipped['missing_movies'])}"
+                )
+                snapshot_skipped_slice_issues.append(issue)
+                print(f"    - {issue}")
+
+        groups_to_check = [
+            group for group in groups_to_check
+            if usable_date_sets.get(group)
+        ]
+        if not groups_to_check:
+            fail_phase(
+                "\n❌ Snapshot-only run has no timezone/date slices with complete "
+                "active movie Phase 1 links."
+            )
+        collection_dates_by_group = {
+            group: usable_date_sets[group]
+            for group in groups_to_check
+        }
+        coverage_dates_by_group = collection_dates_by_group
+        expected_dates = {
+            group: dates[0]
+            for group, dates in collection_dates_by_group.items()
+            if dates
+        }
+        print("   Snapshot usable show dates: " + ", ".join(
+            f"{group}={','.join(dates)}"
+            for group, dates in collection_dates_by_group.items()
+        ))
+
     require_active_market_phase1_links(
         poly_markets,
         saved_links,
@@ -2915,6 +2974,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
+
+    all_theatres = []
+    for group in groups_to_check:
+        for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
+            for theatre in theatres_map.get(group, []):
+                all_theatres.append({
+                    **theatre,
+                    "_tz": group,
+                    "_date": date_str,
+                    "_phase2_expected_date": date_str if snapshots_only else "",
+                })
+    all_theatres = order_phase2_theatres_for_collection(
+        all_theatres,
+        snapshots_only=snapshots_only,
+    )
 
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
     all_theatres = [t for t in all_theatres if t["name"] in saved_links]
@@ -2983,6 +3057,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
     all_issues = []
+    all_issues.extend(snapshot_skipped_slice_issues)
     sem = asyncio.Semaphore(max_concurrent_tabs)
     write_lock = asyncio.Lock()
     snapshot_write_lock = asyncio.Lock()

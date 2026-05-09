@@ -272,6 +272,52 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(["Friday"], sorted(pred["snapshot_daily_details"]))
         self.assertIn("Thursday", pred["snapshot_ignored_days"])
 
+    def test_snapshot_day_ignores_stale_timezone_slice(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "snapshot_to_day_scale_factors": {"Friday": 1.0},
+            },
+        }
+        rows = [
+            self._snapshot_row(
+                "AMC ET",
+                "Friday",
+                "2026-05-08",
+                timezone="ET",
+                snapshot_time="2026-05-09T04:00:00+00:00",
+            ),
+            self._snapshot_row(
+                "AMC CT",
+                "Friday",
+                "2026-05-08",
+                timezone="CT",
+                snapshot_time="2026-05-09T05:00:00+00:00",
+            ),
+            self._snapshot_row(
+                "AMC PT Stale",
+                "Friday",
+                "2026-05-08",
+                timezone="PT",
+                snapshot_time="2026-05-08T05:00:00+00:00",
+            ),
+        ]
+
+        details = predict.estimate_snapshot_day(
+            rows,
+            "2026-05-08",
+            cal,
+            expected_amc_theatres=3,
+            expected_timezone_counts={"ET": 1, "CT": 1, "PT": 1},
+        )
+
+        self.assertEqual(2, details["n_theatres"])
+        self.assertEqual(["CT", "ET"], details["observed_timezones"])
+        self.assertEqual(["PT"], details["missing_timezones"])
+        self.assertLess(details["effective_coverage_ratio"], details["coverage_ratio"])
+
     def test_snapshot_day_scale_calibration_uses_all_reliable_movie_days(self):
         history = [
             {
@@ -826,7 +872,8 @@ class PredictionNormalizationTest(unittest.TestCase):
             row["timezone"] = timezone
         return row
 
-    def _snapshot_row(self, theatre_name, day, show_date, timezone=None):
+    def _snapshot_row(self, theatre_name, day, show_date, timezone=None,
+                      snapshot_time="2026-05-07T12:00:00+00:00"):
         row = {
             "weekend_of": "2026-05-08",
             "movie_title": "Sample Movie",
@@ -839,8 +886,8 @@ class PredictionNormalizationTest(unittest.TestCase):
             "reserved_seats": "20",
             "total_seats": "100",
             "minutes_until_showtime": "180",
-            "snapshot_time": "2026-05-07T12:00:00+00:00",
-            "snapshot_bucket": "2026-05-07T12:00Z",
+            "snapshot_time": snapshot_time,
+            "snapshot_bucket": snapshot_time[:13] + ":00Z",
         }
         if timezone:
             row["timezone"] = timezone
