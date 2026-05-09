@@ -240,6 +240,7 @@ try:
 except ValueError:
     PRE_RESERVATION_BUCKET_MINUTES = 60
 ENABLE_PRERESERVATION_SNAPSHOTS = _env_bool("ENABLE_PRERESERVATION_SNAPSHOTS", False)
+SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
 # same tracked title. Those weekday curves are calibration data; they should not
@@ -2086,6 +2087,74 @@ def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_
     return usable, skipped
 
 
+async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, requested_date_sets,
+                                             min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                             required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Try to fill missing snapshot link slices, then return usable partial coverage.
+
+    Snapshot data is better partial than absent. This repair is deliberately
+    targeted to the missing timezone/date slices and does not convert snapshot
+    runs into a broad Phase 1 rebuild.
+    """
+    usable, skipped = snapshot_usable_date_sets(
+        poly_markets,
+        saved_links,
+        groups,
+        requested_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    if not skipped:
+        return saved_links, usable, skipped
+
+    repairs = sorted({
+        (item["timezone"], item["show_date"])
+        for item in skipped
+    })
+    print("\n🔧 Snapshot link repair: missing active movie links detected")
+    for group, date_str in repairs:
+        missing_movies = sorted({
+            movie
+            for item in skipped
+            if item["timezone"] == group and item["show_date"] == date_str
+            for movie in item["missing_movies"]
+        })
+        print(
+            f"    - repairing {group} {date_str}: "
+            f"{', '.join(missing_movies)}"
+        )
+        try:
+            await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+        except SystemExit as e:
+            print(
+                f"      ⚠️  targeted Phase 1 repair did not complete "
+                f"(exit {getattr(e, 'code', 1)}) — keeping partial snapshot data"
+            )
+        except Exception as e:
+            print(
+                f"      ⚠️  targeted Phase 1 repair errored ({e}) — "
+                "keeping partial snapshot data"
+            )
+
+    repaired_links = saved_links
+    if LINKS_JSON.exists():
+        try:
+            with open(LINKS_JSON) as f:
+                repaired_links = json.load(f).get("theatres", {})
+        except Exception as e:
+            print(f"      ⚠️  Could not reload repaired Phase 1 links: {e}")
+
+    usable, skipped = snapshot_usable_date_sets(
+        poly_markets,
+        repaired_links,
+        groups,
+        requested_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    return repaired_links, usable, skipped
+
+
 def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
                                      groups=None, expected_dates=None,
                                      required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -2794,7 +2863,8 @@ async def ensure_phase1_links_async(tz_group="ALL"):
 
 
 async def run_async(tz_group="ALL", force=False, test_max=None,
-                    capture_pre_reservations=False, snapshots_only=False):
+                    capture_pre_reservations=False, snapshots_only=False,
+                    repair_snapshot_links=False):
     """
     Main entry point (async).
     Parallelizes browser tabs using a semaphore. Snapshot-only probes default
@@ -2808,6 +2878,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     print(f"   Concurrency: {max_concurrent_tabs} tabs")
     if snapshots_only:
         print("   Snapshot-only: on (seat-counts.csv will not be appended)")
+        if repair_snapshot_links:
+            print("   Snapshot link repair: on (targeted missing date slices only)")
     print(f"{'='*60}")
 
     ensure_csv_header()
@@ -2913,12 +2985,22 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     snapshot_skipped_slice_issues = []
     if snapshots_only:
-        usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
-            poly_markets,
-            saved_links,
-            groups_to_check,
-            coverage_dates_by_group,
-        )
+        if repair_snapshot_links and not test_max:
+            saved_links, usable_date_sets, skipped_date_slices = (
+                await repair_snapshot_phase1_links_async(
+                    poly_markets,
+                    saved_links,
+                    groups_to_check,
+                    coverage_dates_by_group,
+                )
+            )
+        else:
+            usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
+                poly_markets,
+                saved_links,
+                groups_to_check,
+                coverage_dates_by_group,
+            )
         if skipped_date_slices:
             print("\n↷ Snapshot skipping date slice(s) without complete active movie links:")
             for skipped in skipped_date_slices:
@@ -3288,7 +3370,8 @@ def generate_weekend_summary():
 async def run_with_preflight_async(tz_group="ALL", force=False, test_max=None,
                                    ensure_links=False,
                                    capture_pre_reservations=False,
-                                   snapshots_only=False):
+                                   snapshots_only=False,
+                                   repair_snapshot_links=False):
     if ensure_links and not test_max:
         await ensure_phase1_links_async(tz_group)
     await run_async(
@@ -3297,11 +3380,13 @@ async def run_with_preflight_async(tz_group="ALL", force=False, test_max=None,
         test_max=test_max,
         capture_pre_reservations=capture_pre_reservations,
         snapshots_only=snapshots_only,
+        repair_snapshot_links=repair_snapshot_links,
     )
 
 
 def run(tz_group="ALL", force=False, test_max=None, ensure_links=False,
-        capture_pre_reservations=False, snapshots_only=False):
+        capture_pre_reservations=False, snapshots_only=False,
+        repair_snapshot_links=False):
     """Sync wrapper for the async pipeline."""
     asyncio.run(run_with_preflight_async(
         tz_group,
@@ -3310,6 +3395,7 @@ def run(tz_group="ALL", force=False, test_max=None, ensure_links=False,
         ensure_links=ensure_links,
         capture_pre_reservations=capture_pre_reservations,
         snapshots_only=snapshots_only,
+        repair_snapshot_links=repair_snapshot_links,
     ))
 
 
@@ -3335,6 +3421,10 @@ if __name__ == "__main__":
         or ENABLE_PRERESERVATION_SNAPSHOTS
     )
     snapshots_only_mode = "--snapshots-only" in args
+    repair_snapshot_links_mode = (
+        "--repair-snapshot-links" in args
+        or SNAPSHOT_REPAIR_LINKS
+    )
     if snapshots_only_mode:
         pre_reservation_mode = True
 
@@ -3355,14 +3445,14 @@ if __name__ == "__main__":
         if a not in (
             "--collect-links", "--force", "--ensure-links",
             "--full-weekend-links", "--pre-reservation-snapshots",
-            "--snapshots-only",
+            "--snapshots-only", "--repair-snapshot-links",
         )
     ]
 
     tz = args[0].upper() if args else "ALL"
 
     if tz not in ("ET", "CT", "MT", "PT", "ALL"):
-        print(f"Usage: python scraper.py [--collect-links] [--full-weekend-links] [--ensure-links] [--force] [--test N] [--pre-reservation-snapshots] [--snapshots-only] [ET|CT|MT|PT|ALL]")
+        print(f"Usage: python scraper.py [--collect-links] [--full-weekend-links] [--ensure-links] [--force] [--test N] [--pre-reservation-snapshots] [--snapshots-only] [--repair-snapshot-links] [ET|CT|MT|PT|ALL]")
         print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
         print(f"  --full-weekend-links  Phase 1: on Thursday, collect Thu-Sun showtime links")
         print(f"  --ensure-links   Phase 2: repair missing/stale Phase 1 links for this TZ before scraping")
@@ -3370,6 +3460,7 @@ if __name__ == "__main__":
         print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
         print(f"  --pre-reservation-snapshots  Also write time-bucketed reserved-seat snapshots")
         print(f"  --snapshots-only Write rolling day+1 snapshots without appending prediction seat-count rows")
+        print(f"  --repair-snapshot-links  In snapshot mode, attempt targeted Phase 1 repair before keeping partial data")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")
         print(f"  MT               Mountain theatres only")
@@ -3387,4 +3478,5 @@ if __name__ == "__main__":
             ensure_links=ensure_links_mode,
             capture_pre_reservations=pre_reservation_mode,
             snapshots_only=snapshots_only_mode,
+            repair_snapshot_links=repair_snapshot_links_mode,
         )

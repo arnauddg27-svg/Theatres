@@ -228,7 +228,7 @@ jobs:
   scrape:
     if: github.event.inputs.phase == 'scrape'
     runs-on: ubuntu-latest
-    timeout-minutes: 500
+    timeout-minutes: 540
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       max-parallel: 1
@@ -286,14 +286,17 @@ jobs:
       - name: Phase 2 — collect seat data (${{ matrix.tz }})
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
-        timeout-minutes: 150
+        timeout-minutes: 190
         run: |
           export PHASE1_MIN_FRESH_LINK_RATIO=0.90
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             export SNAPSHOT_MAX_CONCURRENT_TABS=3
+            export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=8100
+            export PHASE1_DEADLINE_SEC=2700
+            export PHASE1_MAX_THEATRE_DATE_VISITS=500
             export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
-            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s"
+            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
@@ -312,11 +315,15 @@ jobs:
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             SNAPSHOT_FLAG="$SNAPSHOT_FLAG --snapshots-only"
           fi
+          SNAPSHOT_REPAIR_FLAG=""
+          if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
+            SNAPSHOT_REPAIR_FLAG="--repair-snapshot-links"
+          fi
           ENSURE_LINKS_FLAG="--ensure-links"
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             ENSURE_LINKS_FLAG=""
           fi
-          python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $ENSURE_LINKS_FLAG ${{ matrix.tz }}
+          python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $SNAPSHOT_REPAIR_FLAG $ENSURE_LINKS_FLAG ${{ matrix.tz }}
 
       - name: Release AMC lock
         if: always() && steps.amc_lock.outputs.acquired == 'true'

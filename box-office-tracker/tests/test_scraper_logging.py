@@ -634,6 +634,63 @@ class ScraperLoggingTest(unittest.TestCase):
 
             self.assertEqual([("PT", "2026-05-08", False)], calls)
 
+    def test_snapshot_repair_attempts_missing_movie_links_and_keeps_partial_data(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_links_json = scraper.LINKS_JSON
+            old_run_collect = scraper.run_collect_links_async
+            tmp_links = Path(tmp) / "showtime-links.json"
+            saved_links = {
+                "AMC PT 1": {
+                    "tz": "PT",
+                    "cohort": scraper.CORE_COHORT,
+                    "dates": {
+                        "2026-05-08": {
+                            "movies": {
+                                "Mortal Kombat II": [{"showtime_id": "mk-fri"}],
+                                "The Sheep Detectives": [{"showtime_id": "sheep-fri"}],
+                            }
+                        },
+                        "2026-05-09": {
+                            "movies": {
+                                "Mortal Kombat II": [{"showtime_id": "mk-sat"}],
+                            }
+                        },
+                    },
+                },
+            }
+            tmp_links.write_text(json.dumps({
+                "weekend_of": "2026-05-08",
+                "theatres": saved_links,
+            }))
+            calls = []
+
+            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+                calls.append((tz_group, target_date, full_weekend))
+
+            try:
+                scraper.LINKS_JSON = tmp_links
+                scraper.run_collect_links_async = fake_collect
+                repaired_links, usable, skipped = asyncio.run(
+                    scraper.repair_snapshot_phase1_links_async(
+                        [
+                            {"movie_title": "Mortal Kombat II"},
+                            {"movie_title": "The Sheep Detectives"},
+                        ],
+                        saved_links,
+                        ["PT"],
+                        {"PT": ["2026-05-08", "2026-05-09"]},
+                    )
+                )
+            finally:
+                scraper.LINKS_JSON = old_links_json
+                scraper.run_collect_links_async = old_run_collect
+
+            self.assertEqual([("PT", "2026-05-09", False)], calls)
+            self.assertEqual(saved_links, repaired_links)
+            self.assertEqual({"PT": ["2026-05-08"]}, usable)
+            self.assertEqual(1, len(skipped))
+            self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+
     def test_snapshot_theatre_order_balances_show_dates_before_repeating_theatres(self):
         theatres = []
         for name in ("AMC A", "AMC B", "AMC C", "AMC D"):

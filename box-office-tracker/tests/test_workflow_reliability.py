@@ -47,7 +47,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         phase_end = scrape_block.index("      - name: Release AMC lock", phase_start)
         phase_block = scrape_block[phase_start:phase_end]
 
-        self.assertIn("timeout-minutes: 150", phase_block)
+        self.assertIn("timeout-minutes: 190", phase_block)
         self.assertIn("PHASE2_DEADLINE_SEC=8100", phase_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
@@ -97,7 +97,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertLess(install_pos, guard_pos)
         self.assertLess(guard_pos, phase2_pos)
 
-    def test_regular_scrapes_repair_phase1_links_but_snapshots_do_not(self):
+    def test_regular_scrapes_repair_phase1_links_and_snapshots_use_targeted_repair(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
@@ -107,8 +107,13 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
         self.assertIn('ENSURE_LINKS_FLAG="--ensure-links"', block)
         self.assertIn('ENSURE_LINKS_FLAG=""', block)
+        self.assertIn("SNAPSHOT_REPAIR_LINKS=1", block)
+        self.assertIn('SNAPSHOT_REPAIR_FLAG="--repair-snapshot-links"', block)
         self.assertIn('if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then', block)
-        self.assertIn("python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $ENSURE_LINKS_FLAG", block)
+        self.assertIn(
+            "python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $SNAPSHOT_REPAIR_FLAG $ENSURE_LINKS_FLAG",
+            block,
+        )
 
     def test_scrape_matrix_uploads_artifacts_instead_of_pushing(self):
         start = self.workflow.index("  scrape:")
