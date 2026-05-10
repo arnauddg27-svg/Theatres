@@ -168,8 +168,14 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("box-office-tracker/data/polymarket-markets.csv", block)
         self.assertIn("box-office-tracker/data/run-logs", block)
         self.assertIn("row_changes=$(python3 -c", block)
-        self.assertIn('"seat_added", "pre_reservation_added", "polymarket_added"', block)
-        self.assertIn("No canonical seat, snapshot, or market rows were merged", block)
+        self.assertIn(
+            '"seat_added", "seat_metadata_updated", "pre_reservation_added", "polymarket_added"',
+            block,
+        )
+        self.assertIn(
+            "No canonical seat, snapshot, market rows, or seat metadata were merged",
+            block,
+        )
         self.assertIn("scripts/stage_finalize_outputs.py", block)
         self.assertNotIn("git add box-office-tracker/data/seat-counts.csv \\", block)
         self.assertIn("data: box office scrape merge + predictions", block)

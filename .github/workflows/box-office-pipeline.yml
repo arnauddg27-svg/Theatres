@@ -411,9 +411,9 @@ jobs:
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard
         run: |
-          row_changes=$(python3 -c 'import json; s=json.load(open("/tmp/box-office-merge-summary.json")); print(sum(int(s.get(k, 0) or 0) for k in ("seat_added", "pre_reservation_added", "polymarket_added")))')
+          row_changes=$(python3 -c 'import json; s=json.load(open("/tmp/box-office-merge-summary.json")); print(sum(int(s.get(k, 0) or 0) for k in ("seat_added", "seat_metadata_updated", "pre_reservation_added", "polymarket_added")))')
           if [ "$row_changes" -eq 0 ]; then
-            echo "No canonical seat, snapshot, or market rows were merged; skipping finalize."
+            echo "No canonical seat, snapshot, market rows, or seat metadata were merged; skipping finalize."
             echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi

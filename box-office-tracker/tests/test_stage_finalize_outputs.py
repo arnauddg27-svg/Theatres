@@ -62,6 +62,39 @@ class StageFinalizeOutputsTest(unittest.TestCase):
             staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
             self.assertIn("box-office-tracker/data/seat-counts.csv", staged)
 
+    def test_stages_seat_metadata_updates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = self._repo(root)
+            summary = root / "summary.json"
+            marker = root / "markers.txt"
+            summary.write_text(json.dumps({
+                "seat_added": 0,
+                "seat_metadata_updated": 1,
+                "pre_reservation_added": 0,
+                "polymarket_added": 0,
+            }))
+            marker.write_text("data: box office ET scrape\n")
+            (repo / "box-office-tracker" / "data" / "seat-counts.csv").write_text(
+                "timezone,seats_sold,notes\nET,10,showtime_window=sat-sun-10-23-v1\n"
+            )
+
+            run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--repo-root",
+                    str(repo),
+                    "--summary-file",
+                    str(summary),
+                    "--marker-file",
+                    str(marker),
+                ]
+            )
+
+            staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
+            self.assertIn("box-office-tracker/data/seat-counts.csv", staged)
+
     def test_refuses_marker_only_commit(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -111,6 +111,7 @@ PRE_RESERVATION_DEDUPE_FIELDS = (
 class MergeSummary:
     seat_added: int = 0
     seat_duplicates: int = 0
+    seat_metadata_updated: int = 0
     polymarket_added: int = 0
     polymarket_duplicates: int = 0
     pre_reservation_added: int = 0
@@ -128,6 +129,7 @@ class MergeSummary:
         return {
             "seat_added": self.seat_added,
             "seat_duplicates": self.seat_duplicates,
+            "seat_metadata_updated": self.seat_metadata_updated,
             "polymarket_added": self.polymarket_added,
             "polymarket_duplicates": self.polymarket_duplicates,
             "pre_reservation_added": self.pre_reservation_added,
@@ -218,6 +220,23 @@ def _tuple_key(fields: Iterable[str]) -> Callable[[dict[str, str]], tuple[str, .
     return key
 
 
+def _merge_seat_row_metadata(existing: dict[str, str], incoming: dict[str, str]) -> bool:
+    """Carry forward metadata from duplicate seat rows without duplicating facts."""
+    existing_note = str(existing.get("notes", "") or "")
+    incoming_note = str(incoming.get("notes", "") or "")
+    changed = False
+
+    for part in (piece.strip() for piece in incoming_note.split(";")):
+        if not part.startswith("showtime_window="):
+            continue
+        if part and part not in existing_note:
+            existing["notes"] = f"{existing_note}; {part}" if existing_note else part
+            existing_note = existing["notes"]
+            changed = True
+
+    return changed
+
+
 def _polymarket_key(row: dict[str, str]) -> tuple[str, ...]:
     market_id = str(row.get("market_id", "") or "")
     if market_id:
@@ -248,12 +267,16 @@ def _merge_csv(
     sources: list[Path],
     fields: list[str],
     key_fn: Callable[[dict[str, str]], tuple[str, ...]],
-) -> tuple[int, int, list[dict[str, str]]]:
+    merge_duplicate: Callable[[dict[str, str], dict[str, str]], bool] | None = None,
+) -> tuple[int, int, int, list[dict[str, str]], list[dict[str, str]]]:
     existing = _read_rows(target, fields)
-    seen = {key_fn(row) for row in existing}
+    rows_by_key = {key_fn(row): row for row in existing}
+    seen = set(rows_by_key)
     merged = list(existing)
     added_rows: list[dict[str, str]] = []
+    updated_rows: list[dict[str, str]] = []
     duplicates = 0
+    metadata_updated = 0
 
     for source in sources:
         if source.resolve() == target.resolve():
@@ -262,15 +285,20 @@ def _merge_csv(
             key = key_fn(row)
             if key in seen:
                 duplicates += 1
+                existing_row = rows_by_key.get(key)
+                if merge_duplicate and existing_row and merge_duplicate(existing_row, row):
+                    metadata_updated += 1
+                    updated_rows.append(existing_row)
                 continue
             merged.append(row)
             added_rows.append(row)
             seen.add(key)
+            rows_by_key[key] = row
 
-    if added_rows or (sources and not target.exists()):
+    if added_rows or metadata_updated or (sources and not target.exists()):
         _write_rows(target, fields, merged)
 
-    return len(added_rows), duplicates, added_rows
+    return len(added_rows), duplicates, metadata_updated, added_rows, updated_rows
 
 
 def _unique_destination(path: Path) -> Path:
@@ -315,21 +343,23 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
     data_dir = data_dir.resolve()
 
     summary = MergeSummary()
-    seat_added, seat_dupes, added_seats = _merge_csv(
+    seat_added, seat_dupes, seat_metadata_updated, added_seats, updated_seats = _merge_csv(
         data_dir / SEAT_CSV,
         _csv_sources(artifact_root, SEAT_CSV),
         SEAT_FIELDS,
         _tuple_key(SEAT_DEDUPE_FIELDS),
+        merge_duplicate=_merge_seat_row_metadata,
     )
     summary.seat_added = seat_added
     summary.seat_duplicates = seat_dupes
+    summary.seat_metadata_updated = seat_metadata_updated
     summary.markers.update(
         str(row.get("timezone", "") or "").strip()
-        for row in added_seats
+        for row in [*added_seats, *updated_seats]
         if str(row.get("timezone", "") or "").strip()
     )
 
-    poly_added, poly_dupes, _ = _merge_csv(
+    poly_added, poly_dupes, _, _, _ = _merge_csv(
         data_dir / POLY_CSV,
         _csv_sources(artifact_root, POLY_CSV),
         POLY_FIELDS,
@@ -342,7 +372,7 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
         artifact_root,
         _csv_sources(artifact_root, PRE_RESERVATION_CSV),
     )
-    pre_added, pre_dupes, added_pre = _merge_csv(
+    pre_added, pre_dupes, _, added_pre, _ = _merge_csv(
         data_dir / PRE_RESERVATION_CSV,
         pre_sources,
         PRE_RESERVATION_FIELDS,

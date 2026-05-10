@@ -97,6 +97,12 @@ def main() -> int:
         _fail_if_expected_change_not_staged(
             repo_root,
             summary,
+            "seat_metadata_updated",
+            "box-office-tracker/data/seat-counts.csv",
+        )
+        _fail_if_expected_change_not_staged(
+            repo_root,
+            summary,
             "pre_reservation_added",
             "box-office-tracker/data/pre-reservation-snapshots.csv",
         )

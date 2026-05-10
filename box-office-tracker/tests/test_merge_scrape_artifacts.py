@@ -129,6 +129,34 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
             self.assertEqual("AMC New", merged_seats[-1]["theatre_name"])
             self.assertTrue((data_dir / "run-logs" / "2026-05-01" / "ct-run.md").exists())
 
+    def test_merge_artifacts_upgrades_duplicate_seat_window_notes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            old_seat = seat_row("ET", "AMC Existing", 50)
+            old_seat["notes"] = "Standard @ 7:00 PM"
+            new_seat = dict(old_seat)
+            new_seat["run_id"] = "run-ET-new"
+            new_seat["notes"] = "Standard @ 7:00 PM; showtime_window=sat-sun-10-23-v1"
+            write_csv(data_dir / "seat-counts.csv", SEAT_FIELDS, [old_seat])
+            write_csv(artifact / "seat-counts.csv", SEAT_FIELDS, [new_seat])
+
+            summary = merge_artifacts(root / "artifacts", data_dir)
+
+            self.assertEqual(0, summary.seat_added)
+            self.assertEqual(1, summary.seat_duplicates)
+            self.assertEqual(1, summary.seat_metadata_updated)
+            self.assertEqual({"ET"}, summary.markers)
+            self.assertEqual(1, summary.as_dict()["seat_metadata_updated"])
+            self.assertEqual(["ET"], summary.as_dict()["markers"])
+
+            with (data_dir / "seat-counts.csv").open() as f:
+                merged_seats = list(csv.DictReader(f))
+            self.assertEqual(1, len(merged_seats))
+            self.assertIn("showtime_window=sat-sun-10-23-v1", merged_seats[0]["notes"])
+
     def test_merge_artifacts_preserves_existing_crlf_csv_style(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

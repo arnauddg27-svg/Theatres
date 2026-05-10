@@ -1499,10 +1499,33 @@ def _seat_row_dict(row_data):
     return dict(zip(SEAT_FIELDS, row_data))
 
 
+def _normalize_seat_row(row):
+    if isinstance(row, list):
+        row = _seat_row_dict(row)
+    return {field: str(row.get(field, "") or "") for field in SEAT_FIELDS}
+
+
 def _seat_row_key(row):
     if isinstance(row, list):
         row = _seat_row_dict(row)
     return tuple(str(row.get(field, "") or "") for field in SEAT_DEDUPE_FIELDS)
+
+
+def _merge_seat_row_metadata(existing, incoming):
+    """Update metadata-only fields when a duplicate row carries newer context."""
+    existing_note = str(existing.get("notes", "") or "")
+    incoming_note = str(incoming.get("notes", "") or "")
+    changed = False
+
+    for part in (piece.strip() for piece in incoming_note.split(";")):
+        if not part.startswith("showtime_window="):
+            continue
+        if part and part not in existing_note:
+            existing["notes"] = f"{existing_note}; {part}" if existing_note else part
+            existing_note = existing["notes"]
+            changed = True
+
+    return changed
 
 
 def _pre_reservation_row_key(row):
@@ -1600,26 +1623,41 @@ def append_unique_seat_rows(rows):
     if not rows:
         return 0, 0
 
-    existing_keys = set()
+    ensure_csv_header()
+    existing_rows = []
+    existing_by_key = {}
     if SEAT_CSV.exists():
         with open(SEAT_CSV, "r", newline="") as f:
             for row in csv.DictReader(f):
-                existing_keys.add(_seat_row_key(row))
+                normalized = _normalize_seat_row(row)
+                existing_rows.append(normalized)
+                existing_by_key.setdefault(_seat_row_key(normalized), normalized)
 
     pending = []
-    seen_keys = set(existing_keys)
+    seen_keys = set(existing_by_key)
     skipped = 0
+    metadata_updated = 0
     for row in rows:
-        key = _seat_row_key(row)
+        normalized = _normalize_seat_row(row)
+        key = _seat_row_key(normalized)
         if key in seen_keys:
             skipped += 1
+            existing_row = existing_by_key.get(key)
+            if existing_row and _merge_seat_row_metadata(existing_row, normalized):
+                metadata_updated += 1
             continue
-        pending.append(row)
+        pending.append(normalized)
         seen_keys.add(key)
+        existing_by_key[key] = normalized
 
-    if pending:
+    if metadata_updated:
+        with open(SEAT_CSV, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=SEAT_FIELDS)
+            writer.writeheader()
+            writer.writerows(existing_rows + pending)
+    elif pending:
         with open(SEAT_CSV, "a", newline="") as f:
-            writer = csv.writer(f)
+            writer = csv.DictWriter(f, fieldnames=SEAT_FIELDS)
             writer.writerows(pending)
 
     return len(pending), skipped

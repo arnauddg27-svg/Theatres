@@ -1,4 +1,5 @@
 import asyncio
+import csv
 import json
 import tempfile
 import unittest
@@ -214,6 +215,48 @@ class ScraperLoggingTest(unittest.TestCase):
         note = scraper.add_showtime_window_note("Standard @ 7:00 PM")
 
         self.assertIn(f"showtime_window={scraper.SHOWTIME_WINDOW_VERSION}", note)
+
+    def test_duplicate_seat_row_updates_showtime_window_note(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.SEAT_CSV
+            scraper.SEAT_CSV = Path(tmp) / "seat-counts.csv"
+            row = {field: "" for field in scraper.SEAT_FIELDS}
+            row.update({
+                "weekend_of": "2026-05-08",
+                "run_id": "old-run",
+                "date": "2026-05-09",
+                "day_of_week": "Saturday",
+                "theatre_name": "AMC Existing",
+                "timezone": "ET",
+                "movie_title": "Movie A",
+                "showtime": "7:00pm",
+                "auditorium_type": "Standard",
+                "total_seats": "100",
+                "seats_sold": "50",
+                "seats_available": "50",
+                "notes": "Standard @ 7:00 PM",
+            })
+            updated = dict(row)
+            updated["run_id"] = "new-run"
+            updated["notes"] = scraper.add_showtime_window_note(updated["notes"])
+            try:
+                scraper.ensure_csv_header()
+                with scraper.SEAT_CSV.open("a", newline="") as f:
+                    writer = csv.DictWriter(f, fieldnames=scraper.SEAT_FIELDS)
+                    writer.writerow(row)
+
+                written, skipped = scraper.append_unique_seat_rows([
+                    [updated.get(field, "") for field in scraper.SEAT_FIELDS]
+                ])
+                with scraper.SEAT_CSV.open(newline="") as f:
+                    rows = list(csv.DictReader(f))
+            finally:
+                scraper.SEAT_CSV = old_csv
+
+        self.assertEqual(0, written)
+        self.assertEqual(1, skipped)
+        self.assertEqual(1, len(rows))
+        self.assertIn(f"showtime_window={scraper.SHOWTIME_WINDOW_VERSION}", rows[0]["notes"])
 
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
