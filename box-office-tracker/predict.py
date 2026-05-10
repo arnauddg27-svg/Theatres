@@ -109,6 +109,8 @@ FAMILY_DAYPART_REFERENCE_SHOWINGS = 4.5
 FAMILY_DAYPART_MIN_SHOWINGS = 1.5
 FAMILY_DAYPART_MAX_EVENING_TO_DAILY = 3.8
 WEEKEND_FULL_DAY_START_HOUR = 10.0
+WEEKEND_FULL_DAY_LATEST_EARLY_HOUR = WEEKEND_FULL_DAY_START_HOUR + 4.0
+WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE = 0.60
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
 # only — adding Mon-Wed entries here would silently shrink Thu-Sun weights when
@@ -171,19 +173,24 @@ def _parse_showtime_hour(time_str):
 
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
                                       target_metadata=None,
-                                      earliest_showtime_hour=None):
+                                      earliest_showtime_hour=None,
+                                      full_day_window_coverage_ratio=None):
     """Adjust partial-day scaling when showtime mix misses matinee demand.
 
-    Saturday/Sunday are meant to collect 10am-11pm. When that full-day window
-    is present, no evening-to-day uplift should be applied. Older 5pm-only
-    samples still need a family/PG missing-matinee adjustment.
+    Saturday/Sunday are meant to collect 10am-11pm. When broad theatre-level
+    early-day coverage proves that full-day window is present, no evening-to-day
+    uplift should be applied. Older 5pm-only samples still need a family/PG
+    missing-matinee adjustment.
     """
     if day_name not in {"Friday", "Saturday", "Sunday"}:
         return base_multiplier
+    try:
+        full_day_coverage = float(full_day_window_coverage_ratio)
+    except (TypeError, ValueError):
+        full_day_coverage = 0.0
     if (
         day_name in {"Saturday", "Sunday"}
-        and earliest_showtime_hour is not None
-        and earliest_showtime_hour <= WEEKEND_FULL_DAY_START_HOUR + 0.25
+        and full_day_coverage >= WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
     ):
         return 1.0
     if target_metadata is None:
@@ -2215,12 +2222,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         per_showtime_results = []
         no_data_count = 0
         captured_by_theatre = {}        # {theatre: [per_showtime_result, ...]}
+        showtime_hours_by_theatre = {}
         for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
                 per_showtime_results.append(result)
                 t_name = result["theatre_name"]
                 captured_by_theatre.setdefault(t_name, []).append(result)
+                parsed_hour = _parse_showtime_hour(row.get("showtime", ""))
+                if parsed_hour is not None:
+                    showtime_hours_by_theatre.setdefault(t_name, []).append(parsed_hour)
             else:
                 no_data_count += 1
 
@@ -2234,11 +2245,21 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
                         if showings_by_theatre else 0)
         showtime_hours = [
-            _parse_showtime_hour(row.get("showtime", ""))
-            for row in rows_by_theatre_fmt_show.values()
+            hour
+            for theatre_hours in showtime_hours_by_theatre.values()
+            for hour in theatre_hours
         ]
-        showtime_hours = [hour for hour in showtime_hours if hour is not None]
         earliest_showtime_hour = min(showtime_hours) if showtime_hours else None
+        full_day_window_theatres = sum(
+            1
+            for theatre_hours in showtime_hours_by_theatre.values()
+            if theatre_hours
+            and min(theatre_hours) <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
+        )
+        full_day_window_coverage_ratio = (
+            full_day_window_theatres / len(captured_by_theatre)
+            if captured_by_theatre else 0.0
+        )
 
         # Per-theatre full-day revenue:
         #   captured_revenue  = sum of per-showtime revenues across captured
@@ -2257,6 +2278,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             avg_showings,
             target_metadata=movie_metadata,
             earliest_showtime_hour=earliest_showtime_hour,
+            full_day_window_coverage_ratio=full_day_window_coverage_ratio,
         )
         theatre_results = []
         for t_name, captured_rows in captured_by_theatre.items():
@@ -2326,6 +2348,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "n_no_data": no_data_count,
             "avg_showings_per_cinema": round(avg_showings, 1),
             "earliest_showtime_hour": earliest_showtime_hour,
+            "full_day_window_coverage_ratio": full_day_window_coverage_ratio,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
             "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,
@@ -2916,6 +2939,10 @@ def print_prediction(pred, verbose=False):
             base_ev = details.get("base_evening_to_daily", details.get("evening_to_daily", 1.0))
             adj_ev = details.get("evening_to_daily", base_ev)
             daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
+        full_day_window_coverage = details.get("full_day_window_coverage_ratio")
+        full_day_window_str = ""
+        if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
+            full_day_window_str = f", early-day theatres {full_day_window_coverage:.0%}"
         amc_input = f"AMC {fmt_m(amc_m)}"
         if abs(sample_norm - 1.0) >= 0.005:
             amc_input = (
@@ -2925,6 +2952,7 @@ def print_prediction(pred, verbose=False):
         print(f"    {day} ({details['date']}): "
               f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
+              f"{full_day_window_str}"
               f"{daypart_str}"
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")

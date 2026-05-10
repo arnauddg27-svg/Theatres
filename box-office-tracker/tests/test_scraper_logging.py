@@ -849,6 +849,19 @@ class ScraperLoggingTest(unittest.TestCase):
                 os.environ["PHASE2_DEADLINE_SEC"] = old_value
             importlib.reload(scraper)
 
+    def test_phase2_theatre_timeout_is_env_configurable_for_daytime_window(self):
+        old_value = os.environ.get("PHASE2_THEATRE_TIMEOUT_SEC")
+        os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = "300"
+        try:
+            reloaded = importlib.reload(scraper)
+            self.assertEqual(300, reloaded.PHASE2_THEATRE_TIMEOUT_SEC)
+        finally:
+            if old_value is None:
+                os.environ.pop("PHASE2_THEATRE_TIMEOUT_SEC", None)
+            else:
+                os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = old_value
+            importlib.reload(scraper)
+
     def test_phase1_batches_current_day_before_future_cache(self):
         theatres = [
             {"name": "Core A", "_tz": "ET", "_date": "2026-04-30", "cohort": scraper.CORE_COHORT},

@@ -219,7 +219,7 @@ def phase2_max_concurrent_tabs(snapshots_only=False):
 # upload/finalize. Snapshot-only runs can raise PHASE2_DEADLINE_SEC from the
 # workflow because they cover multiple weekend show dates.
 PHASE1_THEATRE_TIMEOUT_SEC = 90
-PHASE2_THEATRE_TIMEOUT_SEC = 180
+PHASE2_THEATRE_TIMEOUT_SEC = _env_int("PHASE2_THEATRE_TIMEOUT_SEC", 300, minimum=60)
 try:
     PHASE1_DEADLINE_SEC = int(os.getenv("PHASE1_DEADLINE_SEC", str(45 * 60)))
 except ValueError:
@@ -3098,12 +3098,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             elif links_weekend:
                 fail_phase(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
             else:
-                # Old-format file: fall back to date comparison
-                if links_data.get("date") == today:
-                    saved_links = links_data.get("theatres", {})
-                    print(f"\n📂 Phase 1 links for today ({len(saved_links)} theatres)")
-                else:
-                    fail_phase(f"\n❌ showtime-links.json is from {links_data.get('date')}, not today — run Phase 1 first.")
+                fail_phase(
+                    "\n❌ showtime-links.json uses the legacy schema without "
+                    "weekend/window metadata — run Phase 1 collect-links first."
+                )
         except Exception as e:
             fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
     else:

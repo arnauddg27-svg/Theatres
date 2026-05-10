@@ -276,9 +276,24 @@ class PredictionNormalizationTest(unittest.TestCase):
             avg_showings=5.5,
             target_metadata=metadata,
             earliest_showtime_hour=10.0,
+            full_day_window_coverage_ratio=0.80,
         )
 
         self.assertAlmostEqual(1.0, adjusted)
+
+    def test_single_early_showtime_does_not_make_weekend_sample_full_day(self):
+        metadata = types.SimpleNamespace(audience_type="broad_family", rating="PG")
+
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.1,
+            target_metadata=metadata,
+            earliest_showtime_hour=10.0,
+            full_day_window_coverage_ratio=0.05,
+        )
+
+        self.assertGreater(adjusted, 3.0)
 
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
