@@ -324,6 +324,84 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(friday_actual, saturday["domestic_mid"], delta=1)
         self.assertGreater(saturday["domestic_mid"], uncalibrated_sat["domestic_mid"])
 
+    def test_snapshot_day_ignores_rows_beyond_day_plus_one_window(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+            },
+        }
+        near_row = self._snapshot_row(
+            "AMC Near",
+            "Saturday",
+            "2026-05-09",
+            timezone="ET",
+        )
+        far_row = self._snapshot_row(
+            "AMC Far",
+            "Saturday",
+            "2026-05-09",
+            timezone="CT",
+        )
+        far_row["minutes_until_showtime"] = str(72 * 60)
+
+        details = predict.estimate_snapshot_day(
+            [near_row, far_row],
+            "2026-05-09",
+            cal,
+            expected_amc_theatres=2,
+            expected_timezone_counts={"ET": 1, "CT": 1},
+        )
+
+        self.assertEqual(1, details["n_theatres"])
+        self.assertEqual(["ET"], details["observed_timezones"])
+        self.assertEqual(["CT"], details["missing_timezones"])
+        self.assertEqual(1, details["n_lead_window_ignored"])
+
+    def test_partial_snapshot_future_days_anchor_to_regular_day_shape(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 0.5, "Saturday": 0.25, "Sunday": 0.25},
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+            },
+        }
+        rows = [
+            self._snapshot_row("AMC One", "Saturday", "2026-05-09", timezone="ET"),
+            self._snapshot_row("AMC Two", "Saturday", "2026-05-09", timezone="ET"),
+        ]
+        for row in rows:
+            row["reserved_seats"] = "1"
+        raw = predict.estimate_snapshot_day(
+            rows,
+            "2026-05-09",
+            cal,
+            expected_amc_theatres=4,
+            expected_timezone_counts={"ET": 2, "CT": 2},
+        )
+        layer = predict.build_snapshot_future_layer(
+            {"2026-05-09": rows},
+            {
+                "Friday": {
+                    "domestic_mid": 20_000_000,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                }
+            },
+            cal,
+            expected_amc_theatres=4,
+            expected_timezone_counts={"ET": 2, "CT": 2},
+        )
+
+        saturday = layer["snapshot_daily_details"]["Saturday"]
+        self.assertGreater(saturday["domestic_mid"], raw["domestic_mid"])
+        self.assertGreater(saturday["snapshot_day_shape_prior_weight"], 0.70)
+        self.assertGreater(saturday["domestic_mid"], 7_000_000)
+
     def test_snapshot_day_ignores_stale_timezone_slice(self):
         cal = {
             "history": [],

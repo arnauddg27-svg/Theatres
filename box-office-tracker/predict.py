@@ -61,6 +61,8 @@ SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
+SNAPSHOT_MAX_LEAD_MINUTES = 36 * 60
+SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -869,6 +871,14 @@ def estimate_snapshot_showtime_revenue(row):
     }
 
 
+def snapshot_within_day_plus_one_window(row):
+    """Keep pre-reservation rows close enough to be useful for day+1 demand."""
+    minutes = _parse_numeric(row.get("minutes_until_showtime", ""), default=None)
+    if minutes is None:
+        return True
+    return minutes <= SNAPSHOT_MAX_LEAD_MINUTES
+
+
 def _positive_float(value):
     try:
         number = float(value)
@@ -1434,6 +1444,12 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
     """Estimate one future day from pre-reservation snapshots only."""
     day_name = _snapshot_day_name(date_str, rows)
     latest_rows = _latest_snapshot_showtime_rows(latest_snapshot_window_rows(rows))
+    lead_window_rows = [
+        row for row in latest_rows
+        if snapshot_within_day_plus_one_window(row)
+    ]
+    lead_window_ignored = len(latest_rows) - len(lead_window_rows)
+    latest_rows = lead_window_rows
     per_showtime_results = []
     captured_by_theatre = {}
     no_data_count = 0
@@ -1516,6 +1532,7 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "missing_timezones": tz_profile["missing_timezones"],
         "timezone_coverage_factor": tz_profile["coverage_factor"],
         "n_no_data": no_data_count,
+        "n_lead_window_ignored": lead_window_ignored,
         "avg_showings_per_cinema": round(avg_showings, 1),
         "theatre_results": theatre_results,
     }
@@ -1574,6 +1591,67 @@ def apply_same_week_snapshot_scale(details, scale):
     return adjusted
 
 
+def regular_day_shape_priors(regular_daily_details, cal):
+    """Daily priors implied by the observed seat days and learned day shape."""
+    if not regular_daily_details:
+        return {}
+    day_weights = get_day_weights(cal)
+    collected_sum = sum(
+        _positive_float(details.get("domestic_mid")) or 0
+        for details in regular_daily_details.values()
+    )
+    collected_share = sum(
+        day_weights.get(day, 0)
+        for day in regular_daily_details
+    )
+    if collected_sum <= 0 or collected_share <= 0:
+        return {}
+    weekend_mid = collected_sum / collected_share
+    return {
+        day: weekend_mid * weight
+        for day, weight in day_weights.items()
+        if weight > 0
+    }
+
+
+def apply_snapshot_day_shape_prior(details, day_shape_prior):
+    """Anchor partial pre-reservation reads to the seat-derived day shape."""
+    prior_mid = _positive_float(day_shape_prior)
+    if not details or not prior_mid:
+        return details
+
+    coverage = _coverage_value(
+        details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+        default=0.0,
+    )
+    signal_weight = _clamp(
+        coverage * SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT,
+        0.0,
+        SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT,
+    )
+    prior_weight = 1.0 - signal_weight
+    if signal_weight >= 1.0:
+        return details
+
+    adjusted = dict(details)
+    adjusted["day_shape_prior_domestic_mid"] = prior_mid
+    adjusted["snapshot_day_shape_signal_weight"] = round(signal_weight, 4)
+    adjusted["snapshot_day_shape_prior_weight"] = round(prior_weight, 4)
+
+    prior_bounds = {
+        "domestic_mid": prior_mid,
+        "domestic_low": prior_mid * 0.85,
+        "domestic_high": prior_mid * 1.15,
+    }
+    for key, prior_value in prior_bounds.items():
+        adjusted[f"pre_day_shape_{key}"] = adjusted.get(key)
+        adjusted[key] = (
+            (adjusted.get(key, 0) * signal_weight) +
+            (prior_value * prior_weight)
+        )
+    return adjusted
+
+
 def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 expected_amc_theatres, expected_timezone_counts=None,
                                 theatre_timezone_map=None,
@@ -1608,13 +1686,18 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
     )
 
     snapshot_details = {}
+    day_shape_priors = regular_day_shape_priors(regular_daily_details, cal)
     for day_name, details in all_snapshot_details.items():
         if day_name in regular_daily_details:
             ignored_days.append(day_name)
             continue
-        snapshot_details[day_name] = apply_same_week_snapshot_scale(
+        scaled_details = apply_same_week_snapshot_scale(
             details,
             same_week_scale,
+        )
+        snapshot_details[day_name] = apply_snapshot_day_shape_prior(
+            scaled_details,
+            day_shape_priors.get(day_name),
         )
 
     if not snapshot_details:
@@ -2714,6 +2797,22 @@ def print_prediction(pred, verbose=False):
             )
             print(f"    Same-week calibration: x{snapshot_scale:.2f}"
                   f"{f' from {anchors}' if anchors else ''}")
+        for day, details in sorted(
+            pred.get("snapshot_daily_details", {}).items(),
+            key=lambda item: item[1].get("date", ""),
+        ):
+            prior = details.get("day_shape_prior_domestic_mid")
+            signal_weight = details.get("snapshot_day_shape_signal_weight")
+            raw_mid = details.get(
+                "pre_day_shape_domestic_mid",
+                details.get("domestic_mid", 0),
+            )
+            if prior is None or signal_weight is None:
+                continue
+            print(f"    {day}: {fmt_m(details['domestic_mid'] / 1_000_000)} "
+                  f"(snapshot {fmt_m(raw_mid / 1_000_000)}, "
+                  f"day-shape prior {fmt_m(prior / 1_000_000)}, "
+                  f"{signal_weight:.0%} snapshot signal)")
 
     # Polymarket
     poly = pred["poly_result"]
