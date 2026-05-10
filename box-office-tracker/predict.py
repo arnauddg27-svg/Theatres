@@ -59,6 +59,8 @@ MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
 MODEL_VERSION = "seat-regression-v5"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
+SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
+SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -1519,6 +1521,59 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
     }
 
 
+def same_week_snapshot_scale(snapshot_details, regular_daily_details):
+    """Calibrate pre-reservation snapshots to same-week observed seat days."""
+    anchors = []
+    for day_name, details in snapshot_details.items():
+        regular = regular_daily_details.get(day_name)
+        if not regular:
+            continue
+        snapshot_mid = _positive_float(details.get("domestic_mid"))
+        regular_mid = _positive_float(regular.get("domestic_mid"))
+        if not snapshot_mid or not regular_mid:
+            continue
+        coverage = _coverage_value(
+            details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+            default=0.0,
+        )
+        if coverage <= 0:
+            continue
+        raw_ratio = regular_mid / snapshot_mid
+        ratio = _clamp(
+            raw_ratio,
+            SNAPSHOT_SAME_WEEK_SCALE_MIN,
+            SNAPSHOT_SAME_WEEK_SCALE_MAX,
+        )
+        anchors.append({
+            "day": day_name,
+            "scale": ratio,
+            "raw_scale": raw_ratio,
+            "weight": coverage,
+            "snapshot_mid": snapshot_mid,
+            "regular_mid": regular_mid,
+        })
+
+    if not anchors:
+        return 1.0, []
+
+    total_weight = sum(anchor["weight"] for anchor in anchors)
+    if total_weight <= 0:
+        return 1.0, []
+    scale = sum(anchor["scale"] * anchor["weight"] for anchor in anchors) / total_weight
+    return scale, anchors
+
+
+def apply_same_week_snapshot_scale(details, scale):
+    if not details or abs(scale - 1.0) < 1e-9:
+        return details
+    adjusted = dict(details)
+    adjusted["same_week_snapshot_scale"] = scale
+    for key in ("domestic_mid", "domestic_low", "domestic_high"):
+        adjusted[f"pre_same_week_{key}"] = adjusted.get(key)
+        adjusted[key] = adjusted.get(key, 0) * scale
+    return adjusted
+
+
 def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 expected_amc_theatres, expected_timezone_counts=None,
                                 theatre_timezone_map=None,
@@ -1527,16 +1582,13 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
     if not snapshot_data:
         return None
 
-    snapshot_details = {}
+    all_snapshot_details = {}
     ignored_days = []
     for date_str, rows in sorted(snapshot_data.items()):
         if not rows:
             continue
         day_name = _snapshot_day_name(date_str, rows)
         if day_name not in OPENING_WEEKEND_DAYS:
-            continue
-        if day_name in regular_daily_details:
-            ignored_days.append(day_name)
             continue
         details = estimate_snapshot_day(
             rows,
@@ -1548,12 +1600,29 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             national_theatre_count=national_theatre_count,
         )
         if details:
-            snapshot_details[day_name] = details
+            all_snapshot_details[day_name] = details
+
+    same_week_scale, same_week_anchors = same_week_snapshot_scale(
+        all_snapshot_details,
+        regular_daily_details,
+    )
+
+    snapshot_details = {}
+    for day_name, details in all_snapshot_details.items():
+        if day_name in regular_daily_details:
+            ignored_days.append(day_name)
+            continue
+        snapshot_details[day_name] = apply_same_week_snapshot_scale(
+            details,
+            same_week_scale,
+        )
 
     if not snapshot_details:
         return {
             "snapshot_daily_details": {},
             "snapshot_ignored_days": sorted(set(ignored_days)),
+            "snapshot_same_week_scale": round(same_week_scale, 4),
+            "snapshot_same_week_anchors": same_week_anchors,
         }
 
     day_weights = get_day_weights(cal)
@@ -1607,6 +1676,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_model_weight": round(_clamp(model_weight, 0.0, SNAPSHOT_LAYER_MAX_WEIGHT), 4),
         "snapshot_coverage_ratio": round(snapshot_coverage, 3) if snapshot_coverage is not None else None,
         "snapshot_days": sorted(snapshot_details),
+        "snapshot_same_week_scale": round(same_week_scale, 4),
+        "snapshot_same_week_anchors": same_week_anchors,
     }
 
 
@@ -2148,6 +2219,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             snapshot_layer.get("snapshot_days", [])
             if snapshot_layer else []
         ),
+        "snapshot_same_week_scale": (
+            snapshot_layer.get("snapshot_same_week_scale")
+            if snapshot_layer else None
+        ),
+        "snapshot_same_week_anchors": (
+            snapshot_layer.get("snapshot_same_week_anchors", [])
+            if snapshot_layer else []
+        ),
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
         "expected_amc_theatres": expected_amc_theatres,
@@ -2627,6 +2706,14 @@ def print_prediction(pred, verbose=False):
         print(f"    Future days: {days or '-'}; "
               f"coverage {pred.get('snapshot_coverage_ratio') or 0:.0%}; "
               f"model weight {pred.get('snapshot_model_weight', 0):.0%}")
+        snapshot_scale = pred.get("snapshot_same_week_scale")
+        if snapshot_scale and abs(snapshot_scale - 1.0) >= 0.01:
+            anchors = ", ".join(
+                anchor.get("day", "?")
+                for anchor in pred.get("snapshot_same_week_anchors", [])
+            )
+            print(f"    Same-week calibration: x{snapshot_scale:.2f}"
+                  f"{f' from {anchors}' if anchors else ''}")
 
     # Polymarket
     poly = pred["poly_result"]

@@ -272,6 +272,58 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(["Friday"], sorted(pred["snapshot_daily_details"]))
         self.assertIn("Thursday", pred["snapshot_ignored_days"])
 
+    def test_snapshot_layer_calibrates_future_days_from_same_week_overlap(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 0.5, "Saturday": 0.5},
+                "snapshot_to_day_scale_factors": {"Friday": 1.0, "Saturday": 1.0},
+            },
+        }
+        friday_rows = [
+            self._snapshot_row("AMC One", "Friday", "2026-05-08", timezone="ET"),
+            self._snapshot_row("AMC Two", "Friday", "2026-05-08", timezone="CT"),
+        ]
+        saturday_rows = [
+            self._snapshot_row("AMC One", "Saturday", "2026-05-09", timezone="ET"),
+            self._snapshot_row("AMC Two", "Saturday", "2026-05-09", timezone="CT"),
+        ]
+        uncalibrated_sat = predict.estimate_snapshot_day(
+            saturday_rows,
+            "2026-05-09",
+            cal,
+            expected_amc_theatres=2,
+            expected_timezone_counts={"ET": 1, "CT": 1},
+            theatre_timezone_map={"AMC One": "ET", "AMC Two": "CT"},
+        )
+        friday_actual = uncalibrated_sat["domestic_mid"] * 2.0
+
+        layer = predict.build_snapshot_future_layer(
+            {
+                "2026-05-08": friday_rows,
+                "2026-05-09": saturday_rows,
+            },
+            {
+                "Friday": {
+                    "domestic_mid": friday_actual,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                }
+            },
+            cal,
+            expected_amc_theatres=2,
+            expected_timezone_counts={"ET": 1, "CT": 1},
+            theatre_timezone_map={"AMC One": "ET", "AMC Two": "CT"},
+        )
+
+        saturday = layer["snapshot_daily_details"]["Saturday"]
+        self.assertIn("Friday", layer["snapshot_ignored_days"])
+        self.assertGreater(layer["snapshot_same_week_scale"], 1.0)
+        self.assertAlmostEqual(friday_actual, saturday["domestic_mid"], delta=1)
+        self.assertGreater(saturday["domestic_mid"], uncalibrated_sat["domestic_mid"])
+
     def test_snapshot_day_ignores_stale_timezone_slice(self):
         cal = {
             "history": [],
