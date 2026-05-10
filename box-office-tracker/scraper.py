@@ -1787,6 +1787,45 @@ def merge_phase1_entries(old_entry, new_entry):
     return merged
 
 
+def phase1_cache_is_mergeable(existing, current_weekend):
+    """True when an existing Phase 1 cache can safely merge with new links."""
+    if not existing:
+        return False
+    existing_weekend = existing.get("weekend_of") or existing.get("date", "")
+    if existing_weekend and existing_weekend != current_weekend:
+        return False
+    return existing.get("showtime_window_version") == SHOWTIME_WINDOW_VERSION
+
+
+def sanitize_phase1_links_for_current_window(saved_links):
+    """Drop per-date Phase 1 entries collected under an older showtime window."""
+    sanitized = {}
+    for name, entry in (saved_links or {}).items():
+        kept = dict(entry)
+        kept_dates = {}
+        for date_str, date_entry in (entry.get("dates") or {}).items():
+            if date_entry.get("showtime_window_version") == SHOWTIME_WINDOW_VERSION:
+                kept_dates[date_str] = date_entry
+
+        if kept_dates:
+            kept["dates"] = kept_dates
+        else:
+            kept.pop("dates", None)
+
+        top_level_is_current = (
+            entry.get("showtime_window_version") == SHOWTIME_WINDOW_VERSION
+            and entry.get("show_date")
+            and entry.get("movies")
+        )
+        if not top_level_is_current:
+            kept.pop("show_date", None)
+            kept.pop("movies", None)
+
+        if kept.get("dates") or kept.get("movies"):
+            sanitized[name] = kept
+    return sanitized
+
+
 def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
                          required_cohorts=REQUIRED_PHASE1_COHORTS):
     """Count fresh Phase 1 theatre entries against the configured theatre universe."""
@@ -2175,7 +2214,9 @@ async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, 
     if LINKS_JSON.exists():
         try:
             with open(LINKS_JSON) as f:
-                repaired_links = json.load(f).get("theatres", {})
+                repaired_links = sanitize_phase1_links_for_current_window(
+                    json.load(f).get("theatres", {})
+                )
         except Exception as e:
             print(f"      ⚠️  Could not reload repaired Phase 1 links: {e}")
 
@@ -2700,9 +2741,11 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             })
             entry["tz"] = tz
             entry["cohort"] = _theatre_cohort(theatre)
+            entry["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
             entry.setdefault("dates", {})[show_date] = {
                 "movies": collected,
                 "collected_at": datetime.now(timezone.utc).isoformat(),
+                "showtime_window_version": SHOWTIME_WINDOW_VERSION,
             }
             if show_date == expected_dates.get(tz) or not entry.get("movies"):
                 entry["show_date"] = show_date
@@ -2767,6 +2810,16 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             existing_weekend = existing.get("weekend_of") or existing.get("date", "")
             if existing_weekend and existing_weekend != current_weekend:
                 existing = {}  # previous weekend — start fresh
+            elif existing and not phase1_cache_is_mergeable(existing, current_weekend):
+                print(
+                    "  ⚠️  Existing Phase 1 cache uses an older showtime window "
+                    f"({existing.get('showtime_window_version') or 'none'}); starting fresh"
+                )
+                existing = {}
+            elif existing:
+                existing["theatres"] = sanitize_phase1_links_for_current_window(
+                    existing.get("theatres", {})
+                )
         except Exception as e:
             print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
             existing = {}
@@ -2857,7 +2910,9 @@ async def ensure_phase1_links_async(tz_group="ALL"):
             links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
             if links_weekend == target_weekend:
                 if links_data.get("showtime_window_version") == SHOWTIME_WINDOW_VERSION:
-                    saved_links = links_data.get("theatres", {})
+                    saved_links = sanitize_phase1_links_for_current_window(
+                        links_data.get("theatres", {})
+                    )
                 else:
                     print(
                         "\n⚠️  Phase 1 links use an older showtime window; "
@@ -3018,7 +3073,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     else:
                         fail_phase(message + " Run Phase 1 collect-links first.")
                 else:
-                    saved_links = links_data.get("theatres", {})
+                    saved_links = sanitize_phase1_links_for_current_window(
+                        links_data.get("theatres", {})
+                    )
                 age_str = ""
                 if collected_at_str:
                     collected_at = datetime.fromisoformat(collected_at_str.replace("Z", "+00:00"))

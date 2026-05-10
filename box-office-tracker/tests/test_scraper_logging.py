@@ -144,6 +144,72 @@ class ScraperLoggingTest(unittest.TestCase):
             [entry["showtime_id"] for entry in kept],
         )
 
+    def test_phase1_cache_requires_current_showtime_window_before_merge(self):
+        old_window_cache = {
+            "weekend_of": "2026-05-08",
+            "theatres": {
+                "AMC Old": {
+                    "tz": "ET",
+                    "dates": {
+                        "2026-05-09": {
+                            "movies": {
+                                "The Sheep Detectives": [
+                                    {"showtime": "7:00pm", "showtime_id": "old"}
+                                ],
+                            },
+                        },
+                    },
+                },
+            },
+        }
+        current_window_cache = {
+            **old_window_cache,
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+        }
+
+        self.assertFalse(
+            scraper.phase1_cache_is_mergeable(old_window_cache, "2026-05-08")
+        )
+        self.assertTrue(
+            scraper.phase1_cache_is_mergeable(current_window_cache, "2026-05-08")
+        )
+        self.assertFalse(
+            scraper.phase1_cache_is_mergeable(current_window_cache, "2026-05-15")
+        )
+
+    def test_phase1_cache_sanitizer_drops_unversioned_date_entries(self):
+        saved_links = {
+            "AMC Mixed": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-09": {
+                        "movies": {
+                            "The Sheep Detectives": [
+                                {"showtime": "7:00pm", "showtime_id": "old-window"}
+                            ],
+                        },
+                    },
+                    "2026-05-10": {
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "The Sheep Detectives": [
+                                {"showtime": "10:00am", "showtime_id": "new-window"}
+                            ],
+                        },
+                    },
+                },
+            },
+        }
+
+        sanitized = scraper.sanitize_phase1_links_for_current_window(saved_links)
+
+        self.assertEqual(["2026-05-10"], list(sanitized["AMC Mixed"]["dates"]))
+        self.assertNotIn(
+            "2026-05-09",
+            sanitized["AMC Mixed"]["dates"],
+        )
+
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
         try:
@@ -673,21 +739,24 @@ class ScraperLoggingTest(unittest.TestCase):
                     "cohort": scraper.CORE_COHORT,
                     "dates": {
                         "2026-05-08": {
-                        "movies": {
-                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-fri"}],
-                            "The Sheep Detectives": [{"showtime": "7:00pm", "showtime_id": "sheep-fri"}],
-                        }
-                    },
-                    "2026-05-09": {
-                        "movies": {
-                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-sat"}],
-                        }
-                    },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                            "movies": {
+                                "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-fri"}],
+                                "The Sheep Detectives": [{"showtime": "7:00pm", "showtime_id": "sheep-fri"}],
+                            },
+                        },
+                        "2026-05-09": {
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                            "movies": {
+                                "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-sat"}],
+                            },
+                        },
                     },
                 },
             }
             tmp_links.write_text(json.dumps({
                 "weekend_of": "2026-05-08",
+                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
                 "theatres": saved_links,
             }))
             calls = []
