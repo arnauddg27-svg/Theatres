@@ -180,6 +180,68 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
         self.assertLess(friday["effective_coverage_ratio"], friday["coverage_ratio"])
 
+    def test_prediction_reports_weighted_missing_data_profile(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {
+                    "Thursday": 0.10,
+                    "Friday": 0.30,
+                    "Saturday": 0.35,
+                    "Sunday": 0.25,
+                },
+                "day_scale_factors": {"Thursday": 1.0},
+                "reference_amc_theatres": 1,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 1,
+                },
+            },
+        }
+
+        pred = predict_movie(
+            "Sample Movie",
+            {
+                "2026-05-07": [
+                    self._row(
+                        "AMC One",
+                        date="2026-05-07",
+                        day="Thursday",
+                        timezone="ET",
+                    )
+                ]
+            },
+            [],
+            cal,
+        )
+
+        profile = pred["missing_data_profile"]
+        self.assertEqual(["Friday", "Saturday", "Sunday"], profile["missing_days"])
+        self.assertAlmostEqual(0.10, pred["seat_observed_day_share"], places=6)
+        self.assertAlmostEqual(0.90, pred["seat_missing_day_share"], places=6)
+        self.assertGreater(pred["seat_weighted_coverage_ratio"], 0)
+        self.assertLessEqual(pred["seat_weighted_coverage_ratio"], 0.10)
+        self.assertLess(pred["seat_data_quality"], 0.50)
+
+    def test_missing_day_share_raises_partial_data_prior_weight(self):
+        pred = {
+            "n_days": 3,
+            "seat_data_quality": 0.92,
+            "daily_details": {
+                "Thursday": {},
+                "Friday": {},
+                "Saturday": {},
+            },
+            "missing_data_profile": {
+                "missing_day_share": 0.25,
+                "missing_days": ["Sunday"],
+                "missing_timezone_days": [],
+            },
+        }
+
+        self.assertGreaterEqual(predict.missing_data_prior_weight(pred), 0.15)
+
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],

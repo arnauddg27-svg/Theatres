@@ -912,6 +912,77 @@ def _coverage_value(value, default=0.0):
         return default
 
 
+def weighted_weekend_coverage_ratio(day_coverage_ratios, cal):
+    """Coverage over the full opening weekend, counting missing days as zero."""
+    if not day_coverage_ratios:
+        return None
+    day_weights = get_day_weights(cal)
+    total_weight = sum(
+        day_weights.get(day, 0)
+        for day in OPENING_WEEKEND_DAYS
+    )
+    if total_weight <= 0:
+        return _coverage_average(day_coverage_ratios)
+    weighted = 0.0
+    for day in OPENING_WEEKEND_DAYS:
+        weight = day_weights.get(day, 0)
+        if weight <= 0:
+            continue
+        weighted += weight * _coverage_value(
+            day_coverage_ratios.get(day),
+            default=0.0,
+        )
+    return _clamp(weighted / total_weight, 0.0, 1.0)
+
+
+def missing_data_profile(daily_details, cal, snapshot_layer=None):
+    """Summarize missing/partial data using weekend day weights."""
+    day_weights = get_day_weights(cal)
+    expected_days = [
+        day for day in OPENING_WEEKEND_DAYS
+        if day_weights.get(day, 0) > 0
+    ]
+    total_weight = sum(day_weights.get(day, 0) for day in expected_days) or 1.0
+    observed_days = [
+        day for day in expected_days
+        if day in (daily_details or {})
+    ]
+    missing_days = [
+        day for day in expected_days
+        if day not in (daily_details or {})
+    ]
+    day_coverages = {}
+    missing_timezone_days = []
+    for day, details in (daily_details or {}).items():
+        coverage = details.get(
+            "effective_coverage_ratio",
+            details.get("coverage_ratio"),
+        )
+        day_coverages[day] = coverage
+        if details.get("missing_timezones"):
+            missing_timezone_days.append(day)
+
+    observed_day_share = sum(day_weights.get(day, 0) for day in observed_days) / total_weight
+    missing_day_share = sum(day_weights.get(day, 0) for day in missing_days) / total_weight
+    weighted_coverage = weighted_weekend_coverage_ratio(day_coverages, cal)
+    snapshot_days = []
+    snapshot_coverage = None
+    if snapshot_layer:
+        snapshot_days = snapshot_layer.get("snapshot_days", [])
+        snapshot_coverage = snapshot_layer.get("snapshot_coverage_ratio")
+
+    return {
+        "observed_days": observed_days,
+        "missing_days": missing_days,
+        "observed_day_share": _clamp(observed_day_share, 0.0, 1.0),
+        "missing_day_share": _clamp(missing_day_share, 0.0, 1.0),
+        "seat_weighted_coverage_ratio": weighted_coverage,
+        "missing_timezone_days": sorted(set(missing_timezone_days)),
+        "snapshot_days": snapshot_days,
+        "snapshot_coverage_ratio": snapshot_coverage,
+    }
+
+
 def reference_amc_theatre_count(cal, fallback=0, model_cohort_key=None):
     """The stable sample size that AMC-share calibration was trained against."""
     factors = (cal or {}).get("calibration_factors", {}) if cal else {}
@@ -1144,10 +1215,18 @@ def missing_data_prior_weight(pred):
     if n_days <= 0:
         return 0.0
 
+    profile = pred.get("missing_data_profile") or {}
     quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
     weight = 1.0 - quality
+    missing_day_share = _coverage_value(
+        profile.get("missing_day_share"),
+        default=0.0,
+    )
+    weight = max(weight, missing_day_share * 0.60)
     if has_missing_timezone_bucket(pred) and n_days <= 1:
         weight = max(weight, 0.55)
+    elif has_missing_timezone_bucket(pred):
+        weight = max(weight, 0.15)
 
     if n_days <= 1:
         cap = 0.65
@@ -1341,9 +1420,13 @@ def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None):
     # Confidence based on how many days and how complete the scraped sample was.
     n_days = len(daily_estimates)
     coverage_ratio = _coverage_average(daily_coverage_ratios)
+    weighted_coverage_ratio = weighted_weekend_coverage_ratio(
+        daily_coverage_ratios,
+        cal,
+    )
     conf_low, conf_high = confidence_interval_factors(
         n_days,
-        coverage_ratio=coverage_ratio,
+        coverage_ratio=weighted_coverage_ratio,
     )
     weekend_low = weekend_mid * conf_low
     weekend_high = weekend_mid * conf_high
@@ -2180,6 +2263,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         if details.get("coverage_ratio") is not None
     }
     coverage_ratio = _coverage_average(daily_coverage_ratios)
+    weighted_coverage_ratio = weighted_weekend_coverage_ratio(
+        daily_coverage_ratios,
+        cal,
+    )
     raw_coverage_ratio = _coverage_average(daily_raw_coverage_ratios)
 
     # Stage D: day-by-day calibration → weekend sum.
@@ -2217,6 +2304,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         expected_timezone_counts=expected_timezone_counts,
         theatre_timezone_map=theatre_timezone_map,
         national_theatre_count=national_theatre_count,
+    )
+    data_profile = missing_data_profile(
+        daily_details,
+        cal,
+        snapshot_layer=snapshot_layer,
     )
 
     # Stage E: Polymarket
@@ -2316,6 +2408,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "reference_amc_theatres": expected_amc_theatres,
         "ignored_post_weekend_dates": ignored_dates,
         "coverage_ratio": round(coverage_ratio, 3) if coverage_ratio is not None else None,
+        "seat_observed_day_share": data_profile["observed_day_share"],
+        "seat_missing_day_share": data_profile["missing_day_share"],
+        "seat_weighted_coverage_ratio": weighted_coverage_ratio,
+        "missing_data_profile": data_profile,
         "raw_coverage_ratio": (
             round(raw_coverage_ratio, 3)
             if raw_coverage_ratio is not None else None
@@ -2324,17 +2420,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             seat_data_quality(
                 n_theatres_total,
                 n_days,
-                coverage_ratio=coverage_ratio,
+                coverage_ratio=weighted_coverage_ratio,
             ),
             3,
         ),
         "seat_confidence_low_factor": confidence_interval_factors(
             n_days,
-            coverage_ratio=coverage_ratio,
+            coverage_ratio=weighted_coverage_ratio,
         )[0],
         "seat_confidence_high_factor": confidence_interval_factors(
             n_days,
-            coverage_ratio=coverage_ratio,
+            coverage_ratio=weighted_coverage_ratio,
         )[1],
         "national_theatre_count": national_theatre_count,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
@@ -2689,6 +2785,16 @@ def print_prediction(pred, verbose=False):
           f"({fmt_m(pred['seat_low_m'])} - {fmt_m(pred['seat_high_m'])})")
     print(f"    Data: {n_th} AMC theatres{model_quality_str}{nat_str}, "
           f"{pred['n_days']} day(s) [{days_str}]{shows_str}")
+    profile = pred.get("missing_data_profile") or {}
+    missing_days = profile.get("missing_days") or []
+    missing_tz_days = profile.get("missing_timezone_days") or []
+    if missing_days or missing_tz_days:
+        coverage = pred.get("seat_weighted_coverage_ratio")
+        coverage_str = f"{coverage:.0%}" if coverage is not None else "n/a"
+        print(f"    Completeness: {profile.get('observed_day_share', 0):.0%} day-share, "
+              f"{coverage_str} weighted seat coverage"
+              f"{'; missing ' + '/'.join(missing_days) if missing_days else ''}"
+              f"{'; missing TZ on ' + '/'.join(missing_tz_days) if missing_tz_days else ''}")
 
     # Per-day breakdown
     for day, details in sorted(pred["daily_details"].items(),
