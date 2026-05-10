@@ -242,6 +242,31 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertGreaterEqual(predict.missing_data_prior_weight(pred), 0.15)
 
+    def test_family_daypart_adjustment_boosts_low_evening_show_count(self):
+        metadata = types.SimpleNamespace(audience_type="broad_family", rating="PG")
+
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.1,
+            target_metadata=metadata,
+        )
+
+        self.assertGreater(adjusted, 3.0)
+        self.assertLessEqual(adjusted, 3.8)
+
+    def test_daypart_adjustment_does_not_boost_non_family_movies(self):
+        metadata = types.SimpleNamespace(audience_type="fan_driven", rating="R")
+
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.1,
+            target_metadata=metadata,
+        )
+
+        self.assertAlmostEqual(1.7, adjusted)
+
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],

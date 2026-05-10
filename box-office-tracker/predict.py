@@ -103,6 +103,9 @@ DAY_EVENING_TO_DAILY_DEFAULT = {
     "Saturday":  1.70,
     "Sunday":    1.70,
 }
+FAMILY_DAYPART_REFERENCE_SHOWINGS = 4.5
+FAMILY_DAYPART_MIN_SHOWINGS = 1.5
+FAMILY_DAYPART_MAX_EVENING_TO_DAILY = 3.8
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
 # only — adding Mon-Wed entries here would silently shrink Thu-Sun weights when
@@ -144,6 +147,41 @@ def get_evening_to_daily_multiplier(cal, day_name=None):
     if day_name and day_name in DAY_EVENING_TO_DAILY_DEFAULT:
         return DAY_EVENING_TO_DAILY_DEFAULT[day_name]
     return DEFAULT_EVENING_TO_DAILY
+
+
+def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
+                                      target_metadata=None):
+    """Adjust evening-sample scaling when showtime mix misses daytime demand.
+
+    A low captured evening-show count means the scrape likely saw a narrow
+    slice of the day. That matters most for PG/family titles, where matinee
+    business is structurally stronger than late-evening business. Adult/fan
+    titles keep the calibrated base multiplier.
+    """
+    if day_name not in {"Friday", "Saturday", "Sunday"}:
+        return base_multiplier
+    if target_metadata is None:
+        return base_multiplier
+
+    audience_type = (getattr(target_metadata, "audience_type", "") or "").lower()
+    rating = (getattr(target_metadata, "rating", "") or "").upper()
+    is_family_title = "family" in audience_type or rating in {"G", "PG"}
+    if not is_family_title:
+        return base_multiplier
+
+    try:
+        base = float(base_multiplier)
+        show_count = float(avg_showings)
+    except (TypeError, ValueError):
+        return base_multiplier
+
+    if show_count <= 0 or base <= 0:
+        return base_multiplier
+
+    effective_show_count = max(FAMILY_DAYPART_MIN_SHOWINGS, show_count)
+    daypart_factor = max(1.0, FAMILY_DAYPART_REFERENCE_SHOWINGS / effective_show_count)
+    adjusted = base * daypart_factor
+    return min(FAMILY_DAYPART_MAX_EVENING_TO_DAILY, max(base, adjusted))
 
 
 def get_day_scale(cal, day_name):
@@ -2120,6 +2158,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         fallback=observed_max_theatres,
         model_cohort_key=model_cohort_key,
     )
+    movie_metadata = metadata_for_movie(movie, load_movie_metadata())
 
     for date_str in opening_dates:
         rows = seat_data[date_str]
@@ -2162,6 +2201,13 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         if not per_showtime_results:
             continue
 
+        showings_by_theatre = {
+            t_name: len(captured_rows)
+            for t_name, captured_rows in captured_by_theatre.items()
+        }
+        avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
+                        if showings_by_theatre else 0)
+
         # Per-theatre full-day revenue:
         #   captured_revenue  = sum of per-showtime revenues across captured
         #                       evening shows at this theatre
@@ -2172,9 +2218,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         # occupancy) and 1.0 for Thursday (preview-only night, no matinees
         # exist for this movie that day, so what we scrape IS the full day).
         # Calibration EMA can tune this per day from actuals over time.
-        ev_to_daily = get_evening_to_daily_multiplier(cal, day_name=day_name)
+        base_ev_to_daily = get_evening_to_daily_multiplier(cal, day_name=day_name)
+        ev_to_daily = daypart_adjusted_evening_to_daily(
+            base_ev_to_daily,
+            day_name,
+            avg_showings,
+            target_metadata=movie_metadata,
+        )
         theatre_results = []
-        showings_by_theatre = {}
         for t_name, captured_rows in captured_by_theatre.items():
             captured_rev = sum(r["revenue"] for r in captured_rows)
             theatre_day_rev = captured_rev * ev_to_daily
@@ -2184,8 +2235,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 "n_captured_showings": len(captured_rows),
                 "captured_revenue": captured_rev,
                 "evening_to_daily": ev_to_daily,
+                "base_evening_to_daily": base_ev_to_daily,
             })
-            showings_by_theatre[t_name] = len(captured_rows)
 
         # Stage B: sum all AMC
         sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
@@ -2208,8 +2259,6 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         effective_coverage_ratio = coverage_ratio
         if coverage_ratio is not None and tz_profile["missing_timezones"]:
             effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
-        avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
-                        if showings_by_theatre else 0)
 
         # Stage C: AMC → domestic
         # If we have a national theatre count, use it to cross-check our scaling.
@@ -2244,6 +2293,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "n_no_data": no_data_count,
             "avg_showings_per_cinema": round(avg_showings, 1),
             "evening_to_daily": ev_to_daily,
+            "base_evening_to_daily": base_ev_to_daily,
+            "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,
+            "daypart_adjustment_factor": (
+                ev_to_daily / base_ev_to_daily if base_ev_to_daily else 1.0
+            ),
             "mean_revenue": amc_stats.get("mean_revenue", 0),
             "median_revenue": amc_stats.get("median_revenue", 0),
             "theatre_results": theatre_results if verbose else [],
@@ -2823,6 +2877,11 @@ def print_prediction(pred, verbose=False):
         day_model = fmt_m(dom_m)
         if abs(day_scale - 1.0) >= 0.005:
             day_model = f"{fmt_m(raw_dom_m)} × {day_scale:.3f} = {fmt_m(dom_m)}"
+        daypart_str = ""
+        if details.get("daypart_adjusted_evening_to_daily"):
+            base_ev = details.get("base_evening_to_daily", details.get("evening_to_daily", 1.0))
+            adj_ev = details.get("evening_to_daily", base_ev)
+            daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
         amc_input = f"AMC {fmt_m(amc_m)}"
         if abs(sample_norm - 1.0) >= 0.005:
             amc_input = (
@@ -2832,6 +2891,7 @@ def print_prediction(pred, verbose=False):
         print(f"    {day} ({details['date']}): "
               f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
+              f"{daypart_str}"
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
