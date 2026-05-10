@@ -295,6 +295,38 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertGreater(adjusted, 3.0)
 
+    def test_showtime_window_marker_treats_weekend_rows_as_full_day_collection(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Saturday": 1.0},
+                "day_scale_factors": {"Saturday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 2,
+                },
+            },
+        }
+        rows = [
+            self._row("AMC One", date="2026-05-09", day="Saturday"),
+            self._row("AMC Two", date="2026-05-09", day="Saturday"),
+        ]
+        for row in rows:
+            row["notes"] = "Standard @ 7:00 PM; showtime_window=sat-sun-10-23-v1"
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-09": rows},
+            [],
+            cal,
+        )
+
+        saturday = pred["daily_details"]["Saturday"]
+        self.assertAlmostEqual(1.0, saturday["full_day_window_coverage_ratio"])
+        self.assertAlmostEqual(1.0, saturday["evening_to_daily"])
+
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],

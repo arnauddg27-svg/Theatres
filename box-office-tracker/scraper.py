@@ -196,11 +196,20 @@ WEEKEND_FULL_DAY_START_HOUR = 10
 DEFAULT_COLLECTION_START_HOUR = 17
 COLLECTION_END_HOUR = 23
 SHOWTIME_WINDOW_VERSION = "sat-sun-10-23-v1"
+SHOWTIME_WINDOW_NOTE = f"showtime_window={SHOWTIME_WINDOW_VERSION}"
 
 # Concurrency — 3 tabs on the 2GB VPS (Chromium base ~150MB + 3×75MB = ~375MB, well within limits).
 MAX_CONCURRENT_TABS = 3
 MAX_CONCURRENT_TABS_PHASE1 = 2
 SNAPSHOT_MAX_CONCURRENT_TABS = 1
+
+
+def add_showtime_window_note(note):
+    """Tag scraped rows with the Phase 1 showtime-window contract used."""
+    note = str(note or "").strip()
+    if SHOWTIME_WINDOW_NOTE in note:
+        return note
+    return f"{note}; {SHOWTIME_WINDOW_NOTE}" if note else SHOWTIME_WINDOW_NOTE
 
 
 def phase2_max_concurrent_tabs(snapshots_only=False):
@@ -2390,6 +2399,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     showtime_id = show.get("showtime_id", "")
                     amc_url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats" if showtime_id else ""
                     note = f"{flags}. {reason}" if flags else reason
+                    note = add_showtime_window_note(note)
                     if _theatre_cohort(theatre) == EXPANSION_COHORT:
                         note = f"{note}; cohort=expansion"
                     if capture_pre_reservations:

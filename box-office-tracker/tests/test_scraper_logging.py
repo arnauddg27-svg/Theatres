@@ -210,6 +210,11 @@ class ScraperLoggingTest(unittest.TestCase):
             sanitized["AMC Mixed"]["dates"],
         )
 
+    def test_seat_row_notes_include_showtime_window_version(self):
+        note = scraper.add_showtime_window_note("Standard @ 7:00 PM")
+
+        self.assertIn(f"showtime_window={scraper.SHOWTIME_WINDOW_VERSION}", note)
+
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
         try:

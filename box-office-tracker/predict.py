@@ -111,6 +111,7 @@ FAMILY_DAYPART_MAX_EVENING_TO_DAILY = 3.8
 WEEKEND_FULL_DAY_START_HOUR = 10.0
 WEEKEND_FULL_DAY_LATEST_EARLY_HOUR = WEEKEND_FULL_DAY_START_HOUR + 4.0
 WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE = 0.60
+FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
 # only — adding Mon-Wed entries here would silently shrink Thu-Sun weights when
@@ -169,6 +170,10 @@ def _parse_showtime_hour(time_str):
     elif ampm == "AM" and hour == 12:
         hour = 0
     return hour + minute / 60
+
+
+def _row_has_full_day_showtime_window(row):
+    return FULL_DAY_SHOWTIME_WINDOW_NOTE in str((row or {}).get("notes", ""))
 
 
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
@@ -2223,6 +2228,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         no_data_count = 0
         captured_by_theatre = {}        # {theatre: [per_showtime_result, ...]}
         showtime_hours_by_theatre = {}
+        full_day_window_theatre_names = set()
         for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
             if result:
@@ -2232,6 +2238,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 parsed_hour = _parse_showtime_hour(row.get("showtime", ""))
                 if parsed_hour is not None:
                     showtime_hours_by_theatre.setdefault(t_name, []).append(parsed_hour)
+                if _row_has_full_day_showtime_window(row):
+                    full_day_window_theatre_names.add(t_name)
             else:
                 no_data_count += 1
 
@@ -2250,14 +2258,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             for hour in theatre_hours
         ]
         earliest_showtime_hour = min(showtime_hours) if showtime_hours else None
-        full_day_window_theatres = sum(
-            1
-            for theatre_hours in showtime_hours_by_theatre.values()
+        full_day_window_theatre_names.update(
+            t_name
+            for t_name, theatre_hours in showtime_hours_by_theatre.items()
             if theatre_hours
             and min(theatre_hours) <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
         )
         full_day_window_coverage_ratio = (
-            full_day_window_theatres / len(captured_by_theatre)
+            len(full_day_window_theatre_names) / len(captured_by_theatre)
             if captured_by_theatre else 0.0
         )
 
@@ -2942,7 +2950,7 @@ def print_prediction(pred, verbose=False):
         full_day_window_coverage = details.get("full_day_window_coverage_ratio")
         full_day_window_str = ""
         if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
-            full_day_window_str = f", early-day theatres {full_day_window_coverage:.0%}"
+            full_day_window_str = f", full-window theatres {full_day_window_coverage:.0%}"
         amc_input = f"AMC {fmt_m(amc_m)}"
         if abs(sample_norm - 1.0) >= 0.005:
             amc_input = (
