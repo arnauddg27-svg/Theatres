@@ -82,9 +82,11 @@ FORMAT_TICKET_PRICES = {
     1: 13.00, 0: 13.00,   # Standard / Digital
 }
 
-# Evening-sample (5pm–11pm) → full-day revenue multipliers, *per day of week*.
-# Most days have full daytime business (matinees) we don't scrape, so 1.7×
-# extrapolates 6 captured evening showings to ~10–14 full-day showings.
+# Partial-day sample → full-day revenue multipliers, *per day of week*.
+# Friday still collects 5pm–11pm, so 1.7× extrapolates captured late-day
+# showings to a full day. Saturday/Sunday are intended to collect 10am–11pm;
+# when those rows are present, daypart_adjusted_evening_to_daily() removes the
+# uplift and treats the sample as full-day coverage.
 #
 # Thursday is structurally different: a wide release that opens Friday has NO
 # Thursday daytime showings — only evening preview screenings. What we capture
@@ -106,6 +108,7 @@ DAY_EVENING_TO_DAILY_DEFAULT = {
 FAMILY_DAYPART_REFERENCE_SHOWINGS = 4.5
 FAMILY_DAYPART_MIN_SHOWINGS = 1.5
 FAMILY_DAYPART_MAX_EVENING_TO_DAILY = 3.8
+WEEKEND_FULL_DAY_START_HOUR = 10.0
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
 # only — adding Mon-Wed entries here would silently shrink Thu-Sun weights when
@@ -149,17 +152,40 @@ def get_evening_to_daily_multiplier(cal, day_name=None):
     return DEFAULT_EVENING_TO_DAILY
 
 
-def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
-                                      target_metadata=None):
-    """Adjust evening-sample scaling when showtime mix misses daytime demand.
+def _parse_showtime_hour(time_str):
+    """Parse a showtime like '7:30pm' into local decimal hour."""
+    if not time_str:
+        return None
+    match = re.search(r"(\d{1,2}):(\d{2})\s*(AM|PM)", str(time_str).strip(), re.I)
+    if not match:
+        return None
+    hour = int(match.group(1))
+    minute = int(match.group(2))
+    ampm = match.group(3).upper()
+    if ampm == "PM" and hour != 12:
+        hour += 12
+    elif ampm == "AM" and hour == 12:
+        hour = 0
+    return hour + minute / 60
 
-    A low captured evening-show count means the scrape likely saw a narrow
-    slice of the day. That matters most for PG/family titles, where matinee
-    business is structurally stronger than late-evening business. Adult/fan
-    titles keep the calibrated base multiplier.
+
+def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
+                                      target_metadata=None,
+                                      earliest_showtime_hour=None):
+    """Adjust partial-day scaling when showtime mix misses matinee demand.
+
+    Saturday/Sunday are meant to collect 10am-11pm. When that full-day window
+    is present, no evening-to-day uplift should be applied. Older 5pm-only
+    samples still need a family/PG missing-matinee adjustment.
     """
     if day_name not in {"Friday", "Saturday", "Sunday"}:
         return base_multiplier
+    if (
+        day_name in {"Saturday", "Sunday"}
+        and earliest_showtime_hour is not None
+        and earliest_showtime_hour <= WEEKEND_FULL_DAY_START_HOUR + 0.25
+    ):
+        return 1.0
     if target_metadata is None:
         return base_multiplier
 
@@ -768,9 +794,9 @@ def estimate_theatre_daily_revenue(row, cal):
     `time_multiplier` projects pre-showtime occupancy forward to showtime,
     which IS legitimate (tickets keep selling until lights down).
 
-    The caller (predict_movie) sums these per-row revenues per (theatre,
-    day), then multiplies by the evening→daily multiplier to extrapolate
-    from our 5pm–11pm sample to a full-day theatre estimate.
+    The caller (predict_movie) sums these per-row revenues per theatre/day.
+    Friday's late-day sample is scaled to full-day; Saturday/Sunday 10am-11pm
+    samples are treated as full-day coverage.
     """
     total_seats = _parse_numeric(row.get("total_seats", 0))
     seats_sold = _parse_numeric(row.get("seats_sold", 0))
@@ -2183,9 +2209,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             if not prev or sort_key > prev.get("_sort_key", ""):
                 rows_by_theatre_fmt_show[key] = {**row, "_sort_key": sort_key}
 
-        # Stage A: per-showtime revenue (one row = one captured evening
-        # showing). Aggregate per theatre, then scale the evening sample to
-        # a full-day estimate via the calibrated evening→daily multiplier.
+        # Stage A: per-showtime revenue (one row = one captured showtime).
+        # Aggregate per theatre, then scale partial-day samples to a full-day
+        # estimate via the calibrated daypart multiplier.
         per_showtime_results = []
         no_data_count = 0
         captured_by_theatre = {}        # {theatre: [per_showtime_result, ...]}
@@ -2207,6 +2233,12 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         }
         avg_showings = (sum(showings_by_theatre.values()) / len(showings_by_theatre)
                         if showings_by_theatre else 0)
+        showtime_hours = [
+            _parse_showtime_hour(row.get("showtime", ""))
+            for row in rows_by_theatre_fmt_show.values()
+        ]
+        showtime_hours = [hour for hour in showtime_hours if hour is not None]
+        earliest_showtime_hour = min(showtime_hours) if showtime_hours else None
 
         # Per-theatre full-day revenue:
         #   captured_revenue  = sum of per-showtime revenues across captured
@@ -2224,6 +2256,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             day_name,
             avg_showings,
             target_metadata=movie_metadata,
+            earliest_showtime_hour=earliest_showtime_hour,
         )
         theatre_results = []
         for t_name, captured_rows in captured_by_theatre.items():
@@ -2292,6 +2325,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "timezone_coverage_factor": tz_profile["coverage_factor"],
             "n_no_data": no_data_count,
             "avg_showings_per_cinema": round(avg_showings, 1),
+            "earliest_showtime_hour": earliest_showtime_hour,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
             "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,

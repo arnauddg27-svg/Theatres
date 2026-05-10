@@ -116,6 +116,34 @@ class ScraperLoggingTest(unittest.TestCase):
             scraper.phase1_weekend_anchor(datetime(2026, 5, 6, 12, 0), full_weekend=True),
         )
 
+    def test_saturday_sunday_collection_window_starts_at_10am(self):
+        self.assertTrue(scraper.showtime_in_collection_window("10:00am", "2026-05-09"))
+        self.assertTrue(scraper.showtime_in_collection_window("12:00pm", "2026-05-09"))
+        self.assertTrue(scraper.showtime_in_collection_window("11:00pm", "2026-05-10"))
+        self.assertFalse(scraper.showtime_in_collection_window("9:55am", "2026-05-09"))
+        self.assertFalse(scraper.showtime_in_collection_window("11:30pm", "2026-05-10"))
+
+    def test_weekday_collection_window_keeps_existing_5pm_start(self):
+        self.assertFalse(scraper.showtime_in_collection_window("10:00am", "2026-05-08"))
+        self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-08"))
+        self.assertTrue(scraper.showtime_in_collection_window("11:00pm", "2026-05-08"))
+
+    def test_phase2_saved_entries_use_same_showtime_window(self):
+        entries = [
+            {"showtime": "9:55am", "showtime_id": "too-early"},
+            {"showtime": "10:00am", "showtime_id": "morning"},
+            {"showtime": "4:30pm", "showtime_id": "daytime"},
+            {"showtime": "11:00pm", "showtime_id": "late"},
+            {"showtime": "11:30pm", "showtime_id": "too-late"},
+        ]
+
+        kept = scraper.filter_showtime_entries_for_collection_window(entries, "2026-05-09")
+
+        self.assertEqual(
+            ["morning", "daytime", "late"],
+            [entry["showtime_id"] for entry in kept],
+        )
+
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
         try:
@@ -175,13 +203,13 @@ class ScraperLoggingTest(unittest.TestCase):
                 "dates": {
                     "2026-05-08": {
                         "movies": {
-                            "Mortal Kombat II": [{"showtime_id": "mk-fri"}],
-                            "The Sheep Detectives": [{"showtime_id": "sheep-fri"}],
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-fri"}],
+                            "The Sheep Detectives": [{"showtime": "7:00pm", "showtime_id": "sheep-fri"}],
                         }
                     },
                     "2026-05-09": {
                         "movies": {
-                            "Mortal Kombat II": [{"showtime_id": "mk-sat"}],
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-sat"}],
                         }
                     },
                 },
@@ -645,16 +673,16 @@ class ScraperLoggingTest(unittest.TestCase):
                     "cohort": scraper.CORE_COHORT,
                     "dates": {
                         "2026-05-08": {
-                            "movies": {
-                                "Mortal Kombat II": [{"showtime_id": "mk-fri"}],
-                                "The Sheep Detectives": [{"showtime_id": "sheep-fri"}],
-                            }
-                        },
-                        "2026-05-09": {
-                            "movies": {
-                                "Mortal Kombat II": [{"showtime_id": "mk-sat"}],
-                            }
-                        },
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-fri"}],
+                            "The Sheep Detectives": [{"showtime": "7:00pm", "showtime_id": "sheep-fri"}],
+                        }
+                    },
+                    "2026-05-09": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk-sat"}],
+                        }
+                    },
                     },
                 },
             }

@@ -73,7 +73,7 @@ jobs:
   # Phase 1 — collect showtime links. Runs on VPS because (a) it isn't
   # Queue-It'd, so IP rotation buys nothing, and (b) showtime-links.json is
   # shared state — parallel writers would conflict. VPS cron dispatches one
-  # TZ at a time (5pm/6pm local), so this job always sees a single TZ.
+  # TZ at a time, so this job always sees a single TZ.
   # ──────────────────────────────────────────────────────────────────────────
   collect-links:
     if: github.event.inputs.phase == 'collect-links'

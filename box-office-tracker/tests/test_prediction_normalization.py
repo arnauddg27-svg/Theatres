@@ -267,6 +267,19 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertAlmostEqual(1.7, adjusted)
 
+    def test_saturday_full_day_window_removes_evening_multiplier(self):
+        metadata = types.SimpleNamespace(audience_type="broad_family", rating="PG")
+
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=5.5,
+            target_metadata=metadata,
+            earliest_showtime_hour=10.0,
+        )
+
+        self.assertAlmostEqual(1.0, adjusted)
+
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],

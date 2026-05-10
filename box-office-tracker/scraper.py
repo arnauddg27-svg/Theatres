@@ -192,6 +192,10 @@ FORMAT_PRIORITY = {
     "standard": 10,
     "digital": 10,
 }
+WEEKEND_FULL_DAY_START_HOUR = 10
+DEFAULT_COLLECTION_START_HOUR = 17
+COLLECTION_END_HOUR = 23
+SHOWTIME_WINDOW_VERSION = "sat-sun-10-23-v1"
 
 # Concurrency — 3 tabs on the 2GB VPS (Chromium base ~150MB + 3×75MB = ~375MB, well within limits).
 MAX_CONCURRENT_TABS = 3
@@ -1390,6 +1394,33 @@ def parse_showtime_hour(time_str):
     return None
 
 
+def collection_window_start_hour(date_str):
+    """Return the first local showtime hour to collect for a show date."""
+    try:
+        day_name = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+    except (TypeError, ValueError):
+        return DEFAULT_COLLECTION_START_HOUR
+    if day_name in {"Saturday", "Sunday"}:
+        return WEEKEND_FULL_DAY_START_HOUR
+    return DEFAULT_COLLECTION_START_HOUR
+
+
+def showtime_in_collection_window(time_str, date_str):
+    """True when a showtime belongs to the Phase 1/2 collection window."""
+    hour = parse_showtime_hour(time_str)
+    if hour is None:
+        return False
+    return collection_window_start_hour(date_str) <= hour <= COLLECTION_END_HOUR
+
+
+def filter_showtime_entries_for_collection_window(entries, date_str):
+    """Keep saved/loaded showtime entries that match the intended date window."""
+    return [
+        entry for entry in entries
+        if showtime_in_collection_window(entry.get("showtime", ""), date_str)
+    ]
+
+
 # ─── Data Logging ────────────────────────────────────────────────────────────
 
 SEAT_FIELDS = [
@@ -1697,7 +1728,11 @@ def phase1_date_entry(entry, expected_date):
 
 def phase1_entry_movies(entry, expected_date):
     date_entry = phase1_date_entry(entry, expected_date)
-    return (date_entry or {}).get("movies") or {}
+    movies = (date_entry or {}).get("movies") or {}
+    return {
+        movie: filter_showtime_entries_for_collection_window(shows, expected_date)
+        for movie, shows in movies.items()
+    }
 
 
 def phase2_theatre_expected_date(theatre, entry, expected_dates):
@@ -2241,15 +2276,18 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
         current_hour = tz_local.hour + tz_local.minute / 60 + day_offset * 24
         check_time = datetime.now(timezone.utc).isoformat()
 
-        # Build evening_shows from saved Phase 1 links.
-        # Phase 1 already selected the right shows at 5pm local — use all of them
+        # Build showtime work from saved Phase 1 links.
+        # Phase 1 already selected the right local-time window — use those links
         # regardless of what time Phase 2 runs (avoids cross-midnight filter failures).
         # Only use titles from the current discovery/fallback list. The saved
         # links file is merged across runs, so stale bad titles should not be
         # re-scraped just because they are still present in showtime-links.json.
         movie_shows_map = {}
         for movie_title in movie_titles:
-            entries = saved_movies.get(movie_title, [])
+            entries = filter_showtime_entries_for_collection_window(
+                saved_movies.get(movie_title, []),
+                date_str,
+            )
             if not entries:
                 continue
             started = entries
@@ -2274,13 +2312,13 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
             movie_shows_map[movie_title] = shows
 
         queue_blocked = False
-        for movie_title, evening_shows in movie_shows_map.items():
+        for movie_title, showtime_work in movie_shows_map.items():
             if queue_blocked:
                 break
-            if not evening_shows:
+            if not showtime_work:
                 continue
 
-            for show, reason in evening_shows:
+            for show, reason in showtime_work:
                 fmt = show.get("format", "Standard")
                 st = show.get("showtime", "?")
                 flags = show.get("flags", "")
@@ -2357,7 +2395,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
 
 async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     """
-    Phase 1: Visit a theatre's showtime page and save all evening showtime IDs.
+    Phase 1: Visit a theatre's showtime page and save target-window showtime IDs.
     No seat maps fetched — just links for later.
     Returns dict: {movie_title: [{showtime, showtime_id, format}, ...]}
     """
@@ -2377,14 +2415,15 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
             matching = [s for s in showtimes
                         if movie_lower in s.get("movie", "").lower()
                         or s.get("movie", "").lower() in movie_lower]
-            evening = [s for s in matching
-                       if parse_showtime_hour(s.get("showtime", "")) is not None
-                       and 17 <= parse_showtime_hour(s.get("showtime", "")) <= 23]
-            if evening:
+            collection_window = filter_showtime_entries_for_collection_window(
+                matching,
+                date_str,
+            )
+            if collection_window:
                 collected[movie_title] = [
                     {"showtime": s.get("showtime"), "showtime_id": s.get("showtime_id"),
                      "format": s.get("format", "Standard")}
-                    for s in evening
+                    for s in collection_window
                 ]
     except Exception as e:
         print(f"  ⚠️  {theatre['name']}: {e}")
@@ -2527,6 +2566,12 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         "weekend_of": current_weekend,
         "collected_local_date": today,
         "collected_at": datetime.now().isoformat(),
+        "showtime_window_version": SHOWTIME_WINDOW_VERSION,
+        "showtime_windows": {
+            "default": f"{DEFAULT_COLLECTION_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+            "Saturday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+            "Sunday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+        },
         "theatres": {},
     }
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
@@ -2768,6 +2813,12 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         links["weekend_of"] = existing["weekend_of"]
     if existing.get("date"):
         links["date"] = existing["date"]
+    links["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
+    links["showtime_windows"] = {
+        "default": f"{DEFAULT_COLLECTION_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+        "Saturday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+        "Sunday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+    }
     # Use the latest successful Phase 1 refresh time. Weekend Phase 2 runs for
     # MT/PT happen more than 12h after the ET/noon collection window, so keeping
     # the earliest timestamp would incorrectly mark fresh same-day links as stale.
@@ -2805,7 +2856,13 @@ async def ensure_phase1_links_async(tz_group="ALL"):
                 links_data = json.load(f)
             links_weekend = links_data.get("weekend_of") or links_data.get("date", "")
             if links_weekend == target_weekend:
-                saved_links = links_data.get("theatres", {})
+                if links_data.get("showtime_window_version") == SHOWTIME_WINDOW_VERSION:
+                    saved_links = links_data.get("theatres", {})
+                else:
+                    print(
+                        "\n⚠️  Phase 1 links use an older showtime window; "
+                        f"rebuilding {tz_group} links before scraping."
+                    )
             elif links_weekend:
                 print(
                     f"\n⚠️  Phase 1 links are from weekend {links_weekend}, "
@@ -2949,7 +3006,19 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             current_weekend = weekend
             collected_at_str = links_data.get("collected_at", "")
             if links_weekend and links_weekend == current_weekend:
-                saved_links = links_data.get("theatres", {})
+                if links_data.get("showtime_window_version") != SHOWTIME_WINDOW_VERSION:
+                    message = (
+                        "\n⚠️  showtime-links.json was generated with an older showtime "
+                        "window; Saturday/Sunday need 10am-11pm links."
+                    )
+                    if snapshots_only and repair_snapshot_links:
+                        print(message + " Snapshot repair will rebuild the requested slices.")
+                        saved_links = {}
+                        collected_at_str = ""
+                    else:
+                        fail_phase(message + " Run Phase 1 collect-links first.")
+                else:
+                    saved_links = links_data.get("theatres", {})
                 age_str = ""
                 if collected_at_str:
                     collected_at = datetime.fromisoformat(collected_at_str.replace("Z", "+00:00"))
@@ -3453,7 +3522,7 @@ if __name__ == "__main__":
 
     if tz not in ("ET", "CT", "MT", "PT", "ALL"):
         print(f"Usage: python scraper.py [--collect-links] [--full-weekend-links] [--ensure-links] [--force] [--test N] [--pre-reservation-snapshots] [--snapshots-only] [--repair-snapshot-links] [ET|CT|MT|PT|ALL]")
-        print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json (run at 5-6pm)")
+        print(f"  --collect-links  Phase 1: save showtime IDs to showtime-links.json")
         print(f"  --full-weekend-links  Phase 1: on Thursday, collect Thu-Sun showtime links")
         print(f"  --ensure-links   Phase 2: repair missing/stale Phase 1 links for this TZ before scraping")
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
