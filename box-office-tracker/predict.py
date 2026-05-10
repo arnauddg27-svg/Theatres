@@ -24,7 +24,7 @@ Usage:
 
 import json, csv, os, sys, re, statistics
 from datetime import datetime, timedelta, timezone
-from math import sqrt
+from math import exp, log, sqrt
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
@@ -58,6 +58,13 @@ LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
 MODEL_VERSION = "seat-regression-v5"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
+RESIDUAL_REGRESSION_MIN_OBS = 2
+RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
+RESIDUAL_REGRESSION_MAX_STRENGTH = 0.35
+RESIDUAL_REGRESSION_RATIO_MIN = 0.60
+RESIDUAL_REGRESSION_RATIO_MAX = 1.60
+RESIDUAL_REGRESSION_FACTOR_MIN = 0.85
+RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
@@ -1351,7 +1358,116 @@ def coverage_adjusted_comp_model(pred, model, estimate):
     }
 
 
-def select_regression_prediction(pred):
+def _actual_status_is_final(entry):
+    return (entry.get("actual_status") or "final") != "provisional"
+
+
+def _historical_residual_weight(pred, entry):
+    current_quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
+    current_days = int(_positive_float(pred.get("n_days")) or 0)
+    current_coverage = _coverage_value(
+        pred.get("seat_weighted_coverage_ratio", pred.get("coverage_ratio")),
+        default=current_quality,
+    )
+
+    entry_days = int(_positive_float(entry.get("n_days", entry.get("days_collected"))) or 0)
+    entry_coverage = entry.get("coverage_ratio")
+    if entry_coverage is None:
+        entry_coverage = _coverage_average(entry.get("daily_coverage_ratios") or {})
+    entry_coverage = _coverage_value(entry_coverage, default=0.0)
+    entry_quality = seat_data_quality(
+        _positive_float(entry.get("n_theatres")) or 0,
+        entry_days,
+        coverage_ratio=entry_coverage,
+    )
+
+    current_cohort = normalize_model_cohort_key(pred.get("model_cohort_key"))
+    entry_cohort = normalize_model_cohort_key(entry.get("model_cohort_key"))
+    if current_cohort and entry_cohort:
+        cohort_weight = 1.0 if current_cohort == entry_cohort else 0.45
+    else:
+        cohort_weight = 0.65
+
+    day_similarity = 1.0 - min(1.0, abs(current_days - entry_days) / 4.0) * 0.45
+    coverage_similarity = 1.0 - abs(current_coverage - entry_coverage) * 0.45
+    return max(
+        0.0,
+        entry_quality * cohort_weight * day_similarity * coverage_similarity,
+    )
+
+
+def historical_residual_regression(pred, cal):
+    """Estimate a shrunken actual/predicted residual from settled history.
+
+    This is a guardrail on top of the seat forecast, not a replacement for it:
+    the current seat count remains the driver and the learned residual is capped
+    heavily until there are many same-quality settled movies.
+    """
+    if not cal:
+        return None
+
+    values = []
+    for entry in (cal or {}).get("history", [])[-20:]:
+        if not _actual_status_is_final(entry):
+            continue
+        if _movie_matches(pred.get("movie", ""), entry.get("movie", "")):
+            continue
+        predicted = _positive_float(entry.get("predicted_mid"))
+        actual = _positive_float(entry.get("actual_total", entry.get("actual")))
+        if not predicted or not actual:
+            continue
+        weight = _historical_residual_weight(pred, entry)
+        if weight <= 0:
+            continue
+        ratio = _clamp(
+            actual / predicted,
+            RESIDUAL_REGRESSION_RATIO_MIN,
+            RESIDUAL_REGRESSION_RATIO_MAX,
+        )
+        values.append((ratio, weight, entry))
+
+    if len(values) < RESIDUAL_REGRESSION_MIN_OBS:
+        return None
+
+    total_weight = sum(weight for _, weight, _ in values)
+    if total_weight <= 0:
+        return None
+
+    log_ratio = sum(log(ratio) * weight for ratio, weight, _ in values) / total_weight
+    raw_factor = exp(log_ratio)
+    strength = min(
+        RESIDUAL_REGRESSION_MAX_STRENGTH,
+        total_weight / (total_weight + RESIDUAL_REGRESSION_PRIOR_WEIGHT),
+    )
+    factor = 1.0 + (raw_factor - 1.0) * strength
+    factor = _clamp(
+        factor,
+        RESIDUAL_REGRESSION_FACTOR_MIN,
+        RESIDUAL_REGRESSION_FACTOR_MAX,
+    )
+    return {
+        "factor": factor,
+        "raw_factor": raw_factor,
+        "strength": strength,
+        "n": len(values),
+        "effective_weight": total_weight,
+        "examples": [
+            {
+                "movie": entry.get("movie"),
+                "weekend_of": entry.get("weekend_of"),
+                "ratio": ratio,
+                "weight": weight,
+            }
+            for ratio, weight, entry in sorted(
+                values,
+                key=lambda item: item[1],
+                reverse=True,
+            )[:5]
+        ],
+    }
+
+
+def select_regression_prediction(pred, cal=None):
     """Attach the model-driven regression forecast.
 
     Polymarket and published trade estimates remain context only. Calibration,
@@ -1400,6 +1516,33 @@ def select_regression_prediction(pred):
         else:
             source = f"{source}+snapshot"
         basis = f"{basis} + snapshot future days"
+
+    residual = historical_residual_regression(pred, cal)
+    if residual:
+        base_mid = mid
+        mid = mid * residual["factor"]
+        low = low * residual["factor"]
+        high = high * residual["factor"]
+        pred["historical_residual_base_mid_m"] = base_mid
+        pred["historical_residual_factor"] = round(residual["factor"], 4)
+        pred["historical_residual_raw_factor"] = round(residual["raw_factor"], 4)
+        pred["historical_residual_strength"] = round(residual["strength"], 4)
+        pred["historical_residual_n"] = residual["n"]
+        pred["historical_residual_effective_weight"] = round(
+            residual["effective_weight"],
+            3,
+        )
+        pred["historical_residual_examples"] = [
+            {
+                "movie": item["movie"],
+                "weekend_of": item["weekend_of"],
+                "ratio": round(item["ratio"], 4),
+                "weight": round(item["weight"], 3),
+            }
+            for item in residual["examples"]
+        ]
+        source = f"{source}+historical-residual"
+        basis = f"{basis} + settled residuals"
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -2556,7 +2699,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
     attach_comp_model_prediction(result, cal)
-    select_regression_prediction(result)
+    select_regression_prediction(result, cal)
     return result
 
 
@@ -2697,7 +2840,7 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         w_seat, w_poly = 1.0, 0.0
         pred["w_seat"] = w_seat
         pred["w_poly"] = w_poly
-    select_regression_prediction(pred)
+    select_regression_prediction(pred, cal)
     return estimate
 
 
@@ -3073,6 +3216,11 @@ def print_prediction(pred, verbose=False):
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
+    if pred.get("historical_residual_factor") is not None:
+        print(f"    Historical residual: x{pred['historical_residual_factor']:.3f} "
+              f"(raw x{pred['historical_residual_raw_factor']:.3f}, "
+              f"strength {pred['historical_residual_strength']:.0%}, "
+              f"n={pred['historical_residual_n']})")
     if poly:
         diff = regression_mid - poly["ev"]
         direction = "higher" if diff > 0 else "lower"

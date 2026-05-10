@@ -16,6 +16,7 @@ from predict import (
     predict_movie,
     record_actual,
     reference_amc_theatre_count,
+    select_regression_prediction,
 )
 
 
@@ -1113,6 +1114,93 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2, entry["days_collected"])
         self.assertEqual(2, entry["n_days"])
         self.assertEqual(376, entry["reference_amc_theatres"])
+
+    def test_regression_uses_shrunk_historical_residuals(self):
+        pred = {
+            "movie": "Future Movie",
+            "seat_comp_mid_m": 100.0,
+            "seat_comp_low_m": 90.0,
+            "seat_comp_high_m": 110.0,
+            "n_theatres_total": 425,
+            "n_days": 4,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 1.0,
+            "seat_data_quality": 1.0,
+            "model_cohort_key": "core,expansion",
+        }
+        cal = {
+            "history": [
+                {
+                    "movie": "Settled One",
+                    "predicted_mid": 100.0,
+                    "actual_total": 80.0,
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                },
+                {
+                    "movie": "Settled Two",
+                    "predicted_mid": 50.0,
+                    "actual_total": 40.0,
+                    "n_theatres": 420,
+                    "n_days": 4,
+                    "coverage_ratio": 0.95,
+                    "model_cohort_key": "core,expansion",
+                },
+            ],
+        }
+
+        select_regression_prediction(pred, cal)
+
+        self.assertLess(pred["regression_mid_m"], 100.0)
+        self.assertGreater(pred["regression_mid_m"], 80.0)
+        self.assertLess(pred["historical_residual_factor"], 1.0)
+        self.assertEqual(2, pred["historical_residual_n"])
+        self.assertIn("historical-residual", pred["regression_source"])
+        self.assertFalse(pred["regression_uses_polymarket"])
+
+    def test_regression_residual_skips_target_and_provisional_actuals(self):
+        pred = {
+            "movie": "Future Movie",
+            "seat_comp_mid_m": 100.0,
+            "seat_comp_low_m": 90.0,
+            "seat_comp_high_m": 110.0,
+            "n_theatres_total": 425,
+            "n_days": 4,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 1.0,
+            "seat_data_quality": 1.0,
+            "model_cohort_key": "core,expansion",
+        }
+        cal = {
+            "history": [
+                {
+                    "movie": "Future Movie",
+                    "predicted_mid": 100.0,
+                    "actual_total": 50.0,
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                },
+                {
+                    "movie": "Other Provisional",
+                    "predicted_mid": 100.0,
+                    "actual_total": 50.0,
+                    "actual_status": "provisional",
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                },
+            ],
+        }
+
+        select_regression_prediction(pred, cal)
+
+        self.assertAlmostEqual(100.0, pred["regression_mid_m"], places=6)
+        self.assertNotIn("historical_residual_factor", pred)
 
     def _pending_calibration(self, movie, predicted, actual):
         return {
