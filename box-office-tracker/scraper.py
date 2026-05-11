@@ -211,7 +211,7 @@ def snapshot_theatre_signal_scores(seat_csv_path=SEAT_CSV):
                 sample_key = (
                     row.get("weekend_of", ""),
                     row.get("movie_title", ""),
-                    row.get("show_date", ""),
+                    row.get("date", "") or row.get("show_date", ""),
                 )
                 if any(sample_key):
                     sample_keys.setdefault(theatre, set()).add(sample_key)
@@ -385,6 +385,19 @@ def build_phase2_theatre_work(theatres_map, groups_to_check, collection_dates_by
         all_theatres,
         snapshots_only=snapshots_only,
     )
+
+
+def snapshot_global_selection_inputs(theatres_map):
+    """Return the global TZ/date universe used to cap snapshot theatres.
+
+    Snapshot jobs run as serialized ET/CT/PT matrix legs, but the theatre cap is
+    a global capacity budget. Build the top-theatre set against all enabled
+    timezone groups so a single leg cannot expand the cap to 100 theatres by
+    itself.
+    """
+    groups = [group for group in ("ET", "CT", "PT") if group in (theatres_map or {})]
+    return groups, phase2_collection_dates_by_group(groups, snapshots_only=True)
+
 
 # AMC format priority (higher = bigger room, more important)
 FORMAT_PRIORITY = {
@@ -1917,6 +1930,14 @@ def build_pre_reservation_row(theatre, tz, movie_title, show, seat_data,
     }
 
 
+def should_record_pre_reservation_snapshot(delta_minutes):
+    """True when the seat map is still a pre-show reservation snapshot."""
+    try:
+        return int(delta_minutes) <= 0
+    except (TypeError, ValueError):
+        return False
+
+
 def _log_slug(value):
     return re.sub(r"[^A-Za-z0-9_.-]+", "-", str(value or "")).strip("-") or "run"
 
@@ -2723,7 +2744,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     note = add_showtime_window_note(note)
                     if _theatre_cohort(theatre) == EXPANSION_COHORT:
                         note = f"{note}; cohort=expansion"
-                    if capture_pre_reservations:
+                    if (
+                        capture_pre_reservations
+                        and should_record_pre_reservation_snapshot(delta_minutes)
+                    ):
                         pre_reservation_rows.append(
                             build_pre_reservation_row(
                                 theatre, tz, movie_title, show, seat_data,
@@ -3342,10 +3366,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     theatres_map = load_theatres()
     snapshot_theatre_names = None
     coverage_theatres_map = theatres_map
+    snapshot_selection_groups, snapshot_selection_date_sets = snapshot_global_selection_inputs(
+        theatres_map
+    )
     if snapshots_only:
         snapshot_theatre_names = select_snapshot_theatre_names(
             theatres_map,
-            groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+            groups=snapshot_selection_groups,
         )
         coverage_theatres_map = filter_theatres_map_by_names(
             theatres_map,
@@ -3470,9 +3497,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     if snapshots_only:
         linked_snapshot_theatre_names = select_snapshot_theatre_names(
             theatres_map,
-            groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+            groups=snapshot_selection_groups,
             saved_links=saved_links,
-            requested_date_sets=coverage_dates_by_group,
+            requested_date_sets=snapshot_selection_date_sets,
             movie_titles=_unique_market_titles(poly_markets),
         )
         if linked_snapshot_theatre_names:
@@ -3501,9 +3528,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             )
             linked_snapshot_theatre_names = select_snapshot_theatre_names(
                 theatres_map,
-                groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+                groups=snapshot_selection_groups,
                 saved_links=saved_links,
-                requested_date_sets=coverage_dates_by_group,
+                requested_date_sets=snapshot_selection_date_sets,
                 movie_titles=_unique_market_titles(poly_markets),
             )
             if linked_snapshot_theatre_names:

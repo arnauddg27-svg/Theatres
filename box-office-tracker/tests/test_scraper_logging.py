@@ -939,6 +939,28 @@ class ScraperLoggingTest(unittest.TestCase):
 
         self.assertEqual({"ET A", "ET B", "CT A", "CT B", "PT A"}, selected)
 
+    def test_snapshot_signal_scores_reward_distinct_regular_seat_dates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            seat_csv = Path(tmp) / "seat-counts.csv"
+            with open(seat_csv, "w", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=scraper.SEAT_FIELDS)
+                writer.writeheader()
+                for date_str in ("2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"):
+                    writer.writerow({
+                        "weekend_of": "2026-05-08",
+                        "date": date_str,
+                        "theatre_name": "AMC Multi Day",
+                        "movie_title": "Mortal Kombat II",
+                        "total_seats": "100",
+                        "seats_sold": "0",
+                    })
+
+            scores = scraper.snapshot_theatre_signal_scores(seat_csv)
+
+        # Four distinct regular seat-count dates should count as four samples:
+        # 4 * (100 seats * 0.03) + 4 * sample_bonus(5) = 32.
+        self.assertAlmostEqual(32.0, scores["AMC Multi Day"])
+
     def test_snapshot_phase2_work_expands_remaining_weekend_only_for_selected_theatres(self):
         theatres_map = {
             "ET": [
@@ -1106,6 +1128,79 @@ class ScraperLoggingTest(unittest.TestCase):
 
         self.assertEqual({"AMC Lower Full"}, selected)
 
+    def test_snapshot_global_selection_uses_all_timezones_for_matrix_leg_cap(self):
+        theatres_map = {
+            "ET": [
+                {"name": "ET A", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "ET B", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ],
+            "CT": [
+                {"name": "CT A", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+                {"name": "CT B", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+            ],
+            "PT": [
+                {"name": "PT A", "dma": "LA", "cohort": scraper.CORE_COHORT},
+                {"name": "PT B", "dma": "LA", "cohort": scraper.CORE_COHORT},
+            ],
+        }
+
+        groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+
+        self.assertEqual(["ET", "CT", "PT"], groups)
+        self.assertEqual({"ET", "CT", "PT"}, set(date_sets))
+        self.assertTrue(all(date_sets[group] for group in groups))
+
+    def test_snapshot_link_aware_selection_keeps_global_cap_across_timezones(self):
+        theatres_map = {
+            "ET": [
+                {"name": "ET A", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "ET B", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ],
+            "CT": [
+                {"name": "CT A", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+                {"name": "CT B", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+            ],
+            "PT": [
+                {"name": "PT A", "dma": "LA", "cohort": scraper.CORE_COHORT},
+                {"name": "PT B", "dma": "LA", "cohort": scraper.CORE_COHORT},
+            ],
+        }
+        groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+        saved_links = {}
+        for group, theatres in theatres_map.items():
+            date_str = date_sets[group][0]
+            for theatre in theatres:
+                saved_links[theatre["name"]] = {
+                    "tz": group,
+                    "cohort": scraper.CORE_COHORT,
+                    "dates": {
+                        date_str: {
+                            "movies": {
+                                "Mortal Kombat II": [
+                                    {"showtime": "7:00pm", "showtime_id": theatre["name"]}
+                                ],
+                            },
+                        },
+                    },
+                }
+
+        selected = scraper.select_snapshot_theatre_names(
+            theatres_map,
+            groups=groups,
+            cap=3,
+            signal_scores={
+                "ET A": 100, "ET B": 90,
+                "CT A": 80, "CT B": 70,
+                "PT A": 60, "PT B": 50,
+            },
+            saved_links=saved_links,
+            requested_date_sets=date_sets,
+            movie_titles=["Mortal Kombat II"],
+        )
+
+        self.assertEqual(3, len(selected))
+        self.assertEqual({"ET", "CT", "PT"}, {saved_links[name]["tz"] for name in selected})
+
     def test_snapshot_market_filter_keeps_movie_with_future_date_links(self):
         saved_links = {
             "AMC Future": {
@@ -1194,6 +1289,12 @@ class ScraperLoggingTest(unittest.TestCase):
         }
 
         self.assertTrue(scraper.snapshot_phase1_coverage_failure_is_fatal(report))
+
+    def test_pre_reservation_snapshot_only_records_future_showtimes(self):
+        self.assertTrue(scraper.should_record_pre_reservation_snapshot(-90))
+        self.assertTrue(scraper.should_record_pre_reservation_snapshot(0))
+        self.assertFalse(scraper.should_record_pre_reservation_snapshot(1))
+        self.assertFalse(scraper.should_record_pre_reservation_snapshot(75))
 
     def test_phase2_deadline_is_env_configurable_for_snapshot_workflow(self):
         old_value = os.environ.get("PHASE2_DEADLINE_SEC")

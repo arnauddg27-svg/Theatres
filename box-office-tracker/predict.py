@@ -960,7 +960,7 @@ def snapshot_within_remaining_weekend_window(row):
     minutes = _parse_numeric(row.get("minutes_until_showtime", ""), default=None)
     if minutes is None:
         return True
-    return minutes <= SNAPSHOT_MAX_LEAD_MINUTES
+    return 0 <= minutes <= SNAPSHOT_MAX_LEAD_MINUTES
 
 
 def _positive_float(value):

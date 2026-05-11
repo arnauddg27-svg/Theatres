@@ -538,9 +538,16 @@ class PredictionNormalizationTest(unittest.TestCase):
             timezone="PT",
         )
         too_far_row["minutes_until_showtime"] = str(120 * 60)
+        stale_row = self._snapshot_row(
+            "AMC Stale",
+            "Saturday",
+            "2026-05-09",
+            timezone="PT",
+        )
+        stale_row["minutes_until_showtime"] = "-30"
 
         details = predict.estimate_snapshot_day(
-            [near_row, far_row, too_far_row],
+            [near_row, far_row, too_far_row, stale_row],
             "2026-05-09",
             cal,
             expected_amc_theatres=3,
@@ -550,7 +557,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2, details["n_theatres"])
         self.assertEqual(["CT", "ET"], details["observed_timezones"])
         self.assertEqual(["PT"], details["missing_timezones"])
-        self.assertEqual(1, details["n_lead_window_ignored"])
+        self.assertEqual(2, details["n_lead_window_ignored"])
 
     def test_partial_snapshot_future_days_anchor_to_regular_day_shape(self):
         cal = {
