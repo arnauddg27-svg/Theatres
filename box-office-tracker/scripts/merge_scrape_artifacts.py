@@ -272,6 +272,7 @@ def _merge_csv(
     fields: list[str],
     key_fn: Callable[[dict[str, str]], tuple[str, ...]],
     merge_duplicate: Callable[[dict[str, str], dict[str, str]], bool] | None = None,
+    row_filter: Callable[[dict[str, str]], bool] | None = None,
 ) -> tuple[int, int, int, list[dict[str, str]], list[dict[str, str]]]:
     existing = _read_rows(target, fields)
     rows_by_key = {key_fn(row): row for row in existing}
@@ -286,6 +287,8 @@ def _merge_csv(
         if source.resolve() == target.resolve():
             continue
         for row in _read_rows(source, fields):
+            if row_filter and not row_filter(row):
+                continue
             key = key_fn(row)
             if key in seen:
                 duplicates += 1
@@ -303,6 +306,16 @@ def _merge_csv(
         _write_rows(target, fields, merged)
 
     return len(added_rows), duplicates, metadata_updated, added_rows, updated_rows
+
+
+def _is_future_pre_reservation_row(row: dict[str, str]) -> bool:
+    """Only ingest snapshot rows that are still future reservations."""
+    raw_minutes = str(row.get("minutes_until_showtime", "") or "").strip()
+    try:
+        minutes_until_showtime = float(raw_minutes)
+    except ValueError:
+        return False
+    return minutes_until_showtime >= 0
 
 
 def _unique_destination(path: Path) -> Path:
@@ -381,6 +394,7 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
         pre_sources,
         PRE_RESERVATION_FIELDS,
         _tuple_key(PRE_RESERVATION_DEDUPE_FIELDS),
+        row_filter=_is_future_pre_reservation_row,
     )
     summary.pre_reservation_added = pre_added
     summary.pre_reservation_duplicates = pre_dupes

@@ -82,6 +82,7 @@ def pre_reservation_row(reserved):
             "movie_title": "The Devil Wears Prada 2",
             "showtime": "7:00pm",
             "showtime_id": "123",
+            "minutes_until_showtime": "180",
             "auditorium_type": "Standard",
             "reserved_seats": str(reserved),
             "available_seats": str(200 - reserved),
@@ -232,6 +233,44 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
                 rows = list(csv.DictReader(f))
             self.assertEqual(1, len(rows))
             self.assertEqual("31", rows[0]["reserved_seats"])
+
+    def test_merge_artifacts_rejects_non_future_pre_reservation_rows(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            valid = pre_reservation_row(40)
+            started = pre_reservation_row(41)
+            started["showtime_id"] = "started"
+            started["minutes_until_showtime"] = "-5"
+            missing = pre_reservation_row(42)
+            missing["showtime_id"] = "missing"
+            missing["minutes_until_showtime"] = ""
+            malformed = pre_reservation_row(43)
+            malformed["showtime_id"] = "malformed"
+            malformed["minutes_until_showtime"] = "soon"
+            write_csv(
+                artifact / "pre-reservation-snapshots.csv",
+                PRE_RESERVATION_FIELDS,
+                [valid, started, missing, malformed],
+            )
+            manifest = artifact / "scrape-manifest" / "ET.env"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            manifest.write_text(
+                "timezone=ET\n"
+                "workflow_job_status=failure\n"
+                "snapshots_only=true\n"
+                "pre_reservation_snapshots=true\n"
+            )
+
+            summary = merge_artifacts(root / "artifacts", data_dir)
+
+            self.assertEqual(1, summary.pre_reservation_added)
+            target = data_dir / "pre-reservation-snapshots.csv"
+            with target.open() as f:
+                rows = list(csv.DictReader(f))
+            self.assertEqual(["123"], [row["showtime_id"] for row in rows])
 
     def test_failed_regular_artifact_keeps_seat_rows_but_not_partial_snapshots(self):
         with tempfile.TemporaryDirectory() as tmp:
