@@ -276,14 +276,21 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_phase_timeout = int(re.search(r"timeout-minutes: (\d+)", scrape_phase_block).group(1))
 
         cleanup_buffer_minutes = 20
+        dependency_install_buffer_minutes = 30
         self.assertLessEqual(collect_timeout, 360)
         self.assertLessEqual(scrape_timeout, 360)
         self.assertLessEqual(
-            collect_wait + collect_phase_timeout + cleanup_buffer_minutes,
+            collect_wait
+            + collect_phase_timeout
+            + cleanup_buffer_minutes
+            + dependency_install_buffer_minutes,
             collect_timeout,
         )
         self.assertLessEqual(
-            scrape_wait + scrape_phase_timeout + cleanup_buffer_minutes,
+            scrape_wait
+            + scrape_phase_timeout
+            + cleanup_buffer_minutes
+            + dependency_install_buffer_minutes,
             scrape_timeout,
         )
 

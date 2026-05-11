@@ -135,7 +135,7 @@ jobs:
         run: |
           python3 box-office-tracker/scripts/amc_lock.py acquire \
             --mode "collect-links-${{ github.event.inputs.tz_group }}" \
-            --wait-seconds 4500 \
+            --wait-seconds 3600 \
             --poll-seconds 60 \
             --github-output "$GITHUB_OUTPUT"
 

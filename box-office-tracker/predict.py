@@ -959,7 +959,7 @@ def snapshot_within_remaining_weekend_window(row):
     """Keep pre-reservation rows inside the remaining-weekend signal window."""
     minutes = _parse_numeric(row.get("minutes_until_showtime", ""), default=None)
     if minutes is None:
-        return True
+        return False
     return 0 <= minutes <= SNAPSHOT_MAX_LEAD_MINUTES
 
 
