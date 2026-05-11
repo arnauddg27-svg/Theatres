@@ -39,7 +39,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
         self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
 
-    def test_snapshot_scrapes_have_rolling_day_plus_one_runtime_budget(self):
+    def test_snapshot_scrapes_have_remaining_weekend_top_theatre_runtime_budget(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
@@ -50,6 +50,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("timeout-minutes: 190", phase_block)
         self.assertIn("PHASE2_DEADLINE_SEC=8100", phase_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
+        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=100", phase_block)
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
 

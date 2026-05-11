@@ -274,7 +274,7 @@ class ScraperLoggingTest(unittest.TestCase):
         finally:
             scraper.local_now = old_local_now
 
-    def test_snapshot_only_phase2_uses_rolling_day_plus_one_window(self):
+    def test_snapshot_only_phase2_uses_remaining_weekend_window(self):
         old_local_now = scraper.local_now
         try:
             scraper.local_now = lambda tz: datetime(2026, 5, 6, 22, 30)
@@ -285,9 +285,9 @@ class ScraperLoggingTest(unittest.TestCase):
             )
             self.assertEqual(
                 {
-                    "ET": ["2026-05-07", "2026-05-08"],
-                    "CT": ["2026-05-07", "2026-05-08"],
-                    "PT": ["2026-05-07", "2026-05-08"],
+                    "ET": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                    "CT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                    "PT": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
                 },
                 scraper.phase2_collection_dates_by_group(
                     ["ET", "CT", "PT"],
@@ -297,7 +297,7 @@ class ScraperLoggingTest(unittest.TestCase):
 
             scraper.local_now = lambda tz: datetime(2026, 5, 8, 22, 30)
             self.assertEqual(
-                {"ET": ["2026-05-08", "2026-05-09"]},
+                {"ET": ["2026-05-08", "2026-05-09", "2026-05-10"]},
                 scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
             )
 
@@ -346,6 +346,44 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(1, len(skipped))
         self.assertEqual("PT", skipped[0]["timezone"])
         self.assertEqual("2026-05-09", skipped[0]["show_date"])
+        self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+
+    def test_snapshot_link_validation_uses_selected_theatre_subset(self):
+        saved_links = {
+            "AMC Selected": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk"}],
+                        }
+                    }
+                },
+            },
+            "AMC Not Selected": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "The Sheep Detectives": [{"showtime": "7:00pm", "showtime_id": "sheep"}],
+                        }
+                    }
+                },
+            },
+        }
+
+        selected_links = scraper.filter_saved_links_by_names(saved_links, {"AMC Selected"})
+        usable, skipped = scraper.snapshot_usable_date_sets(
+            [{"movie_title": "Mortal Kombat II"}, {"movie_title": "The Sheep Detectives"}],
+            selected_links,
+            ["ET"],
+            {"ET": ["2026-05-08"]},
+            min_theatres=1,
+        )
+
+        self.assertEqual({}, usable)
         self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
 
     def test_wednesday_preopening_collection_prefers_live_future_markets(self):
@@ -863,6 +901,65 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(
             len({(row["name"], row["_date"]) for row in theatres}),
             len({(row["name"], row["_date"]) for row in ordered}),
+        )
+
+    def test_snapshot_theatre_cap_selects_top_signal_theatres_across_timezones(self):
+        theatres_map = {
+            "ET": [
+                {"name": "ET A", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "ET B", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "ET C", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "ET D", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ],
+            "CT": [
+                {"name": "CT A", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+                {"name": "CT B", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+                {"name": "CT C", "dma": "Chicago", "cohort": scraper.CORE_COHORT},
+            ],
+            "PT": [
+                {"name": "PT A", "dma": "LA", "cohort": scraper.CORE_COHORT},
+                {"name": "PT B", "dma": "LA", "cohort": scraper.CORE_COHORT},
+                {"name": "PT C", "dma": "LA", "cohort": scraper.CORE_COHORT},
+            ],
+        }
+        signal_scores = {
+            "ET A": 40, "ET B": 30, "ET C": 20, "ET D": 10,
+            "CT A": 80, "CT B": 70, "CT C": 60,
+            "PT A": 100, "PT B": 90, "PT C": 1,
+        }
+
+        selected = scraper.select_snapshot_theatre_names(
+            theatres_map,
+            cap=5,
+            signal_scores=signal_scores,
+        )
+
+        self.assertEqual({"ET A", "ET B", "CT A", "CT B", "PT A"}, selected)
+
+    def test_snapshot_phase2_work_expands_remaining_weekend_only_for_selected_theatres(self):
+        theatres_map = {
+            "ET": [
+                {"name": "AMC Keep", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "AMC Drop", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ]
+        }
+        collection_dates = {
+            "ET": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"]
+        }
+
+        work = scraper.build_phase2_theatre_work(
+            theatres_map,
+            ["ET"],
+            collection_dates,
+            snapshots_only=True,
+            snapshot_theatre_names={"AMC Keep"},
+        )
+
+        self.assertEqual(4, len(work))
+        self.assertEqual({"AMC Keep"}, {row["name"] for row in work})
+        self.assertEqual(
+            ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+            [row["_date"] for row in work],
         )
 
     def test_snapshot_theatre_coverage_flags_thin_theatre_date_sample(self):

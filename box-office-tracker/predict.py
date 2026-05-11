@@ -68,7 +68,7 @@ RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
-SNAPSHOT_MAX_LEAD_MINUTES = 36 * 60
+SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
 
 # Samples more than six hours before showtime are outside the intended
@@ -955,8 +955,8 @@ def estimate_snapshot_showtime_revenue(row):
     }
 
 
-def snapshot_within_day_plus_one_window(row):
-    """Keep pre-reservation rows close enough to be useful for day+1 demand."""
+def snapshot_within_remaining_weekend_window(row):
+    """Keep pre-reservation rows inside the remaining-weekend signal window."""
     minutes = _parse_numeric(row.get("minutes_until_showtime", ""), default=None)
     if minutes is None:
         return True
@@ -1749,7 +1749,7 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
     latest_rows = _latest_snapshot_showtime_rows(latest_snapshot_window_rows(rows))
     lead_window_rows = [
         row for row in latest_rows
-        if snapshot_within_day_plus_one_window(row)
+        if snapshot_within_remaining_weekend_window(row)
     ]
     lead_window_ignored = len(latest_rows) - len(lead_window_rows)
     latest_rows = lead_window_rows

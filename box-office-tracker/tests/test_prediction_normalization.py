@@ -509,7 +509,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(friday_actual, saturday["domestic_mid"], delta=1)
         self.assertGreater(saturday["domestic_mid"], uncalibrated_sat["domestic_mid"])
 
-    def test_snapshot_day_ignores_rows_beyond_day_plus_one_window(self):
+    def test_snapshot_day_accepts_rest_of_weekend_lead_window(self):
         cal = {
             "history": [],
             "calibration_factors": {
@@ -531,18 +531,25 @@ class PredictionNormalizationTest(unittest.TestCase):
             timezone="CT",
         )
         far_row["minutes_until_showtime"] = str(72 * 60)
+        too_far_row = self._snapshot_row(
+            "AMC Too Far",
+            "Saturday",
+            "2026-05-09",
+            timezone="PT",
+        )
+        too_far_row["minutes_until_showtime"] = str(120 * 60)
 
         details = predict.estimate_snapshot_day(
-            [near_row, far_row],
+            [near_row, far_row, too_far_row],
             "2026-05-09",
             cal,
-            expected_amc_theatres=2,
-            expected_timezone_counts={"ET": 1, "CT": 1},
+            expected_amc_theatres=3,
+            expected_timezone_counts={"ET": 1, "CT": 1, "PT": 1},
         )
 
-        self.assertEqual(1, details["n_theatres"])
-        self.assertEqual(["ET"], details["observed_timezones"])
-        self.assertEqual(["CT"], details["missing_timezones"])
+        self.assertEqual(2, details["n_theatres"])
+        self.assertEqual(["CT", "ET"], details["observed_timezones"])
+        self.assertEqual(["PT"], details["missing_timezones"])
         self.assertEqual(1, details["n_lead_window_ignored"])
 
     def test_partial_snapshot_future_days_anchor_to_regular_day_shape(self):

@@ -291,6 +291,7 @@ jobs:
           export PHASE1_MIN_FRESH_LINK_RATIO=0.90
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             export SNAPSHOT_MAX_CONCURRENT_TABS=3
+            export SNAPSHOT_TOP_THEATRE_CAP=100
             export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=8100
             export PHASE1_DEADLINE_SEC=2700

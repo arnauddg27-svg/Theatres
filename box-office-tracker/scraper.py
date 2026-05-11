@@ -176,6 +176,181 @@ def _cohort_counts(theatres):
         counts[cohort] = counts.get(cohort, 0) + 1
     return counts
 
+
+def _parse_float(value, default=0.0):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def snapshot_theatre_signal_scores(seat_csv_path=SEAT_CSV):
+    """Rank theatres by historical box-office signal in collected seat data.
+
+    This is used only to shrink pre-reservation snapshot volume. The regular
+    model-driving scrape still uses the full configured theatre universe.
+    """
+    scores = {}
+    sample_keys = {}
+    if not seat_csv_path.exists():
+        return scores
+    try:
+        with open(seat_csv_path, newline="") as f:
+            for row in csv.DictReader(f):
+                theatre = (row.get("theatre_name") or "").strip()
+                if not theatre:
+                    continue
+                seats_sold = _parse_float(row.get("seats_sold"), 0.0)
+                total_seats = _parse_float(row.get("total_seats"), 0.0)
+                if seats_sold < 0 or total_seats <= 0:
+                    continue
+                # Sold seats capture realized demand; capacity keeps large,
+                # nationally useful venues from being over-penalized on quiet
+                # titles. Distinct movie/day samples reward reliable theatres.
+                scores[theatre] = scores.get(theatre, 0.0) + seats_sold + total_seats * 0.03
+                sample_key = (
+                    row.get("weekend_of", ""),
+                    row.get("movie_title", ""),
+                    row.get("show_date", ""),
+                )
+                if any(sample_key):
+                    sample_keys.setdefault(theatre, set()).add(sample_key)
+    except OSError:
+        return scores
+
+    for theatre, keys in sample_keys.items():
+        scores[theatre] = scores.get(theatre, 0.0) + len(keys) * 5.0
+    return scores
+
+
+def _snapshot_cap_allocations(theatres_by_group, cap):
+    groups = [group for group, rows in theatres_by_group.items() if rows]
+    group_order = {group: index for index, group in enumerate(groups)}
+    total = sum(len(theatres_by_group[group]) for group in groups)
+    cap = max(0, min(int(cap or 0), total))
+    if not groups or cap <= 0:
+        return {group: 0 for group in theatres_by_group}
+    if cap >= total:
+        return {group: len(theatres_by_group.get(group, [])) for group in theatres_by_group}
+
+    raw = {
+        group: cap * (len(theatres_by_group[group]) / total)
+        for group in groups
+    }
+    allocations = {
+        group: min(len(theatres_by_group[group]), int(raw[group]))
+        for group in groups
+    }
+    if cap >= len(groups):
+        for group in groups:
+            if allocations[group] == 0:
+                allocations[group] = 1
+
+    def allocated_total():
+        return sum(allocations.values())
+
+    while allocated_total() > cap:
+        candidates = [
+            group for group in groups
+            if allocations[group] > (1 if cap >= len(groups) else 0)
+        ]
+        if not candidates:
+            break
+        group = min(candidates, key=lambda g: (raw[g] - int(raw[g]), allocations[g], g))
+        allocations[group] -= 1
+
+    while allocated_total() < cap:
+        candidates = [
+            group for group in groups
+            if allocations[group] < len(theatres_by_group[group])
+        ]
+        if not candidates:
+            break
+        group = max(
+            candidates,
+            key=lambda g: (
+                raw[g] - int(raw[g]),
+                len(theatres_by_group[g]),
+                -group_order.get(g, 0),
+            ),
+        )
+        allocations[group] += 1
+
+    return {group: allocations.get(group, 0) for group in theatres_by_group}
+
+
+def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_scores=None):
+    """Select a timezone-balanced top theatre set for snapshot-only probes."""
+    cap = SNAPSHOT_TOP_THEATRE_CAP if cap is None else cap
+    if cap <= 0:
+        return set()
+    groups = list(groups or [g for g in ("ET", "CT", "PT") if g in theatres_map])
+    theatres_by_group = {
+        group: list(theatres_map.get(group, []))
+        for group in groups
+        if theatres_map.get(group)
+    }
+    if not theatres_by_group:
+        return set()
+    signal_scores = signal_scores if signal_scores is not None else snapshot_theatre_signal_scores()
+    allocations = _snapshot_cap_allocations(theatres_by_group, cap)
+    selected = set()
+    for group in groups:
+        rows = theatres_by_group.get(group, [])
+        limit = allocations.get(group, 0)
+        ranked = sorted(
+            rows,
+            key=lambda theatre: (
+                -signal_scores.get(theatre.get("name", ""), 0.0),
+                _theatre_sort_key(theatre),
+            ),
+        )
+        selected.update(theatre["name"] for theatre in ranked[:limit] if theatre.get("name"))
+    return selected
+
+
+def filter_theatres_map_by_names(theatres_map, theatre_names):
+    names = set(theatre_names or [])
+    if not names:
+        return {group: [] for group in theatres_map}
+    return {
+        group: [theatre for theatre in theatres if theatre.get("name") in names]
+        for group, theatres in theatres_map.items()
+    }
+
+
+def filter_saved_links_by_names(saved_links, theatre_names):
+    names = set(theatre_names or [])
+    if not names:
+        return {}
+    return {
+        name: entry
+        for name, entry in (saved_links or {}).items()
+        if name in names
+    }
+
+
+def build_phase2_theatre_work(theatres_map, groups_to_check, collection_dates_by_group,
+                              snapshots_only=False, snapshot_theatre_names=None):
+    """Expand theatres into Phase 2 theatre/date work items."""
+    selected_names = set(snapshot_theatre_names or [])
+    all_theatres = []
+    for group in groups_to_check:
+        for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
+            for theatre in theatres_map.get(group, []):
+                if snapshots_only and selected_names and theatre.get("name") not in selected_names:
+                    continue
+                all_theatres.append({
+                    **theatre,
+                    "_tz": group,
+                    "_date": date_str,
+                    "_phase2_expected_date": date_str if snapshots_only else "",
+                })
+    return order_phase2_theatres_for_collection(
+        all_theatres,
+        snapshots_only=snapshots_only,
+    )
+
 # AMC format priority (higher = bigger room, more important)
 FORMAT_PRIORITY = {
     "imax with laser": 110,
@@ -254,6 +429,7 @@ except ValueError:
     PRE_RESERVATION_BUCKET_MINUTES = 60
 ENABLE_PRERESERVATION_SNAPSHOTS = _env_bool("ENABLE_PRERESERVATION_SNAPSHOTS", False)
 SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
+SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 100, minimum=1)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
 # same tracked title. Those weekday curves are calibration data; they should not
@@ -339,11 +515,9 @@ def phase2_expected_dates(groups, snapshots_only=False):
 def phase2_snapshot_collection_dates(local):
     """Return show dates a snapshot-only Phase 2 should probe.
 
-    Snapshot probes are rolling near-term reads, not full-weekend census runs:
-    Wednesday captures Thu/Fri, Thu captures Thu/Fri, Fri captures Fri/Sat,
-    Sat captures Sat/Sun, and Sun captures Sun only. That keeps the snapshot
-    layer broad enough for future-day demand while staying small enough to
-    complete under strict one-AMC-session-at-a-time scheduling.
+    Snapshot probes cover the remaining opening weekend. Runtime is controlled
+    by selecting only the top historical-signal theatres rather than truncating
+    the future-day window.
     """
     if local.weekday() == 2:  # Wednesday pre-opening
         weekend = phase1_weekend_anchor(local, full_weekend=True)
@@ -355,7 +529,7 @@ def phase2_snapshot_collection_dates(local):
         return [local.strftime("%Y-%m-%d")]
 
     start_date = start.strftime("%Y-%m-%d")
-    end_date = (start + timedelta(days=1)).strftime("%Y-%m-%d")
+    end_date = opening_weekend_show_dates(weekend)[-1]
     dates = [
         date_str
         for date_str in opening_weekend_show_dates(weekend)
@@ -2210,16 +2384,21 @@ def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_
 
 async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, requested_date_sets,
                                              min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
-                                             required_cohorts=REQUIRED_PHASE1_COHORTS):
+                                             required_cohorts=REQUIRED_PHASE1_COHORTS,
+                                             link_filter_names=None):
     """Try to fill missing snapshot link slices, then return usable partial coverage.
 
     Snapshot data is better partial than absent. This repair is deliberately
     targeted to the missing timezone/date slices and does not convert snapshot
     runs into a broad Phase 1 rebuild.
     """
+    validation_links = (
+        filter_saved_links_by_names(saved_links, link_filter_names)
+        if link_filter_names is not None else saved_links
+    )
     usable, skipped = snapshot_usable_date_sets(
         poly_markets,
-        saved_links,
+        validation_links,
         groups,
         requested_date_sets,
         min_theatres=min_theatres,
@@ -2269,7 +2448,10 @@ async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, 
 
     usable, skipped = snapshot_usable_date_sets(
         poly_markets,
-        repaired_links,
+        (
+            filter_saved_links_by_names(repaired_links, link_filter_names)
+            if link_filter_names is not None else repaired_links
+        ),
         groups,
         requested_date_sets,
         min_theatres=min_theatres,
@@ -3057,6 +3239,30 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
 
     theatres_map = load_theatres()
+    snapshot_theatre_names = None
+    coverage_theatres_map = theatres_map
+    if snapshots_only:
+        snapshot_theatre_names = select_snapshot_theatre_names(
+            theatres_map,
+            groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+        )
+        coverage_theatres_map = filter_theatres_map_by_names(
+            theatres_map,
+            snapshot_theatre_names,
+        )
+        selected_by_group = {
+            group: sum(
+                1
+                for theatre in theatres_map.get(group, [])
+                if theatre.get("name") in snapshot_theatre_names
+            )
+            for group in groups_to_check
+        }
+        print(
+            "   Snapshot theatre cap: "
+            f"{sum(selected_by_group.values())}/{SNAPSHOT_TOP_THEATRE_CAP} "
+            f"selected for this run ({selected_by_group})"
+        )
 
     # Step 1: Get Polymarket movies
     # Step 2: Build flat list of theatres to scrape
@@ -3134,7 +3340,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     if age_hours > 12:
                         has_forward_cache = phase1_forward_cache_is_usable_for_date_sets(
                             saved_links,
-                            theatres_map,
+                            coverage_theatres_map,
                             groups_to_check,
                             coverage_dates_by_group,
                         )
@@ -3156,6 +3362,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
     snapshot_skipped_slice_issues = []
+    phase1_validation_links = (
+        filter_saved_links_by_names(saved_links, snapshot_theatre_names)
+        if snapshots_only else saved_links
+    )
     if snapshots_only:
         if repair_snapshot_links and not test_max:
             saved_links, usable_date_sets, skipped_date_slices = (
@@ -3164,12 +3374,17 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     saved_links,
                     groups_to_check,
                     coverage_dates_by_group,
+                    link_filter_names=snapshot_theatre_names,
                 )
+            )
+            phase1_validation_links = filter_saved_links_by_names(
+                saved_links,
+                snapshot_theatre_names,
             )
         else:
             usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
                 poly_markets,
-                saved_links,
+                phase1_validation_links,
                 groups_to_check,
                 coverage_dates_by_group,
             )
@@ -3209,7 +3424,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     require_active_market_phase1_links(
         poly_markets,
-        saved_links,
+        phase1_validation_links,
         groups_to_check,
         coverage_dates_by_group,
         f"Phase 1 scrape preflight for {tz_group}",
@@ -3217,7 +3432,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     poly_markets = filter_markets_with_phase1_links(
         poly_markets,
-        saved_links,
+        phase1_validation_links,
         groups=groups_to_check,
         expected_dates=expected_dates,
     )
@@ -3229,19 +3444,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
 
-    all_theatres = []
-    for group in groups_to_check:
-        for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
-            for theatre in theatres_map.get(group, []):
-                all_theatres.append({
-                    **theatre,
-                    "_tz": group,
-                    "_date": date_str,
-                    "_phase2_expected_date": date_str if snapshots_only else "",
-                })
-    all_theatres = order_phase2_theatres_for_collection(
-        all_theatres,
+    all_theatres = build_phase2_theatre_work(
+        theatres_map,
+        groups_to_check,
+        collection_dates_by_group,
         snapshots_only=snapshots_only,
+        snapshot_theatre_names=snapshot_theatre_names,
     )
 
     # Only scrape theatres that have saved links — skip anything Phase 1 didn't visit
@@ -3278,14 +3486,14 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     coverage_report = phase1_link_coverage_for_date_sets(
         saved_links,
-        theatres_map,
+        coverage_theatres_map,
         groups_to_check,
         coverage_dates_by_group,
     )
     if not test_max:
         require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
         expansion_report = phase1_link_coverage_for_date_sets(
-            saved_links, theatres_map, groups_to_check, coverage_dates_by_group,
+            saved_links, coverage_theatres_map, groups_to_check, coverage_dates_by_group,
             required_cohorts=(EXPANSION_COHORT,),
         )
         if expansion_report["expected_total"]:
