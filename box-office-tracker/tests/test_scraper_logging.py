@@ -309,7 +309,7 @@ class ScraperLoggingTest(unittest.TestCase):
         finally:
             scraper.local_now = old_local_now
 
-    def test_snapshot_prunes_future_date_with_missing_active_movie_links(self):
+    def test_snapshot_keeps_date_when_at_least_one_active_movie_has_links(self):
         saved_links = {
             "AMC PT 1": {
                 "tz": "PT",
@@ -342,11 +342,12 @@ class ScraperLoggingTest(unittest.TestCase):
             min_theatres=1,
         )
 
-        self.assertEqual({"PT": ["2026-05-08"]}, usable)
+        self.assertEqual({"PT": ["2026-05-08", "2026-05-09"]}, usable)
         self.assertEqual(1, len(skipped))
         self.assertEqual("PT", skipped[0]["timezone"])
         self.assertEqual("2026-05-09", skipped[0]["show_date"])
         self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+        self.assertFalse(skipped[0]["date_skipped"])
 
     def test_snapshot_link_validation_uses_selected_theatre_subset(self):
         saved_links = {
@@ -383,8 +384,9 @@ class ScraperLoggingTest(unittest.TestCase):
             min_theatres=1,
         )
 
-        self.assertEqual({}, usable)
+        self.assertEqual({"ET": ["2026-05-08"]}, usable)
         self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+        self.assertFalse(skipped[0]["date_skipped"])
 
     def test_wednesday_preopening_collection_prefers_live_future_markets(self):
         old_tracked = scraper.tracked_movie_titles_from_state
@@ -870,9 +872,10 @@ class ScraperLoggingTest(unittest.TestCase):
 
             self.assertEqual([("PT", "2026-05-09", False)], calls)
             self.assertEqual(saved_links, repaired_links)
-            self.assertEqual({"PT": ["2026-05-08"]}, usable)
+            self.assertEqual({"PT": ["2026-05-08", "2026-05-09"]}, usable)
             self.assertEqual(1, len(skipped))
             self.assertEqual(["The Sheep Detectives"], skipped[0]["missing_movies"])
+            self.assertFalse(skipped[0]["date_skipped"])
 
     def test_snapshot_theatre_order_balances_show_dates_before_repeating_theatres(self):
         theatres = []
@@ -1016,6 +1019,120 @@ class ScraperLoggingTest(unittest.TestCase):
         )
 
         self.assertEqual({"AMC Lower With Links"}, selected)
+
+    def test_snapshot_theatre_selection_keeps_partial_active_movie_links(self):
+        theatres_map = {
+            "PT": [
+                {"name": "AMC Partial", "dma": "LA", "cohort": scraper.CORE_COHORT},
+            ],
+        }
+        saved_links = {
+            "AMC Partial": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-09": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "mk"}],
+                        },
+                    },
+                },
+            },
+        }
+
+        selected = scraper.select_snapshot_theatre_names(
+            theatres_map,
+            groups=["PT"],
+            cap=1,
+            signal_scores={"AMC Partial": 1},
+            saved_links=saved_links,
+            requested_date_sets={"PT": ["2026-05-09"]},
+            movie_titles=["Mortal Kombat II", "The Sheep Detectives"],
+        )
+
+        self.assertEqual({"AMC Partial"}, selected)
+
+    def test_snapshot_theatre_selection_prefers_fuller_weekend_link_coverage(self):
+        theatres_map = {
+            "ET": [
+                {"name": "AMC High Partial", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "AMC Lower Full", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ],
+        }
+        saved_links = {
+            "AMC High Partial": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "partial-fri"}],
+                        },
+                    },
+                },
+            },
+            "AMC Lower Full": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "full-fri"}],
+                        },
+                    },
+                    "2026-05-09": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "full-sat"}],
+                        },
+                    },
+                    "2026-05-10": {
+                        "movies": {
+                            "Mortal Kombat II": [{"showtime": "7:00pm", "showtime_id": "full-sun"}],
+                        },
+                    },
+                },
+            },
+        }
+
+        selected = scraper.select_snapshot_theatre_names(
+            theatres_map,
+            groups=["ET"],
+            cap=1,
+            signal_scores={"AMC High Partial": 999, "AMC Lower Full": 1},
+            saved_links=saved_links,
+            requested_date_sets={"ET": ["2026-05-08", "2026-05-09", "2026-05-10"]},
+            movie_titles=["Mortal Kombat II"],
+        )
+
+        self.assertEqual({"AMC Lower Full"}, selected)
+
+    def test_snapshot_market_filter_keeps_movie_with_future_date_links(self):
+        saved_links = {
+            "AMC Future": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-09": {
+                        "movies": {
+                            "Future Only": [{"showtime": "7:00pm", "showtime_id": "future"}],
+                        },
+                    },
+                },
+            }
+        }
+
+        filtered = scraper.filter_markets_with_phase1_links_for_date_sets(
+            [
+                {"movie_title": "Missing"},
+                {"movie_title": "Future Only"},
+            ],
+            saved_links,
+            groups=["ET"],
+            expected_date_sets={"ET": ["2026-05-08", "2026-05-09"]},
+            min_theatres=1,
+        )
+
+        self.assertEqual(["Future Only"], [market["movie_title"] for market in filtered])
 
     def test_snapshot_theatre_coverage_flags_thin_theatre_date_sample(self):
         expected_theatres = [

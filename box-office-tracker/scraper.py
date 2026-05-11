@@ -285,12 +285,11 @@ def _snapshot_link_availability(theatre, group, saved_links, requested_date_sets
     entry = saved_links.get(theatre.get("name", ""))
     if not entry:
         return 0
-    available_dates = 0
+    available_movie_dates = 0
     for date_str in requested_date_sets.get(group, []):
         movies = phase1_entry_movies(entry, date_str)
-        if all(movies.get(title) for title in movie_titles):
-            available_dates += 1
-    return available_dates
+        available_movie_dates += sum(1 for title in movie_titles if movies.get(title))
+    return available_movie_dates
 
 
 def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_scores=None,
@@ -332,8 +331,8 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
         ranked = sorted(
             rows,
             key=lambda theatre: (
-                -signal_scores.get(theatre.get("name", ""), 0.0),
                 -availability_by_name.get(theatre.get("name", ""), 0),
+                -signal_scores.get(theatre.get("name", ""), 0.0),
                 _theatre_sort_key(theatre),
             ),
         )
@@ -2403,32 +2402,47 @@ def require_active_market_phase1_links(poly_markets, saved_links, groups, expect
 def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
                               min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                               required_cohorts=REQUIRED_PHASE1_COHORTS):
-    """Keep snapshot dates whose active movies have usable Phase 1 links.
+    """Keep snapshot dates with at least one active movie Phase 1 link.
 
-    Snapshot probes are a future-demand layer. A missing day+1 movie slice
-    should not throw away same-day snapshot data for the whole timezone.
+    Snapshot probes are a future-demand layer. A missing remaining-weekend movie
+    slice should not throw away snapshot data for the whole timezone, and a
+    missing lower-volume movie should not block another active movie with links.
     """
     usable = {}
     skipped = []
+    titles = _unique_market_titles(poly_markets)
+    counts = phase1_movie_link_counts_by_slice(
+        saved_links,
+        groups,
+        requested_date_sets,
+        required_cohorts=required_cohorts,
+    )
     for group in groups:
         for date_str in requested_date_sets.get(group, []):
-            gaps = active_market_phase1_link_gaps(
-                poly_markets,
-                saved_links,
-                [group],
-                {group: [date_str]},
-                min_theatres=min_theatres,
-                required_cohorts=required_cohorts,
-            )
+            gaps = []
+            present_titles = []
+            for title in titles:
+                fresh = counts.get((group, date_str, title), 0)
+                if fresh >= min_theatres:
+                    present_titles.append(title)
+                    continue
+                gaps.append({
+                    "movie_title": title,
+                    "timezone": group,
+                    "show_date": date_str,
+                    "fresh_theatres": fresh,
+                    "required_theatres": min_theatres,
+                })
+            if present_titles:
+                usable.setdefault(group, []).append(date_str)
             if gaps:
                 skipped.append({
                     "timezone": group,
                     "show_date": date_str,
                     "missing_movies": sorted({gap["movie_title"] for gap in gaps}),
                     "gaps": gaps,
+                    "date_skipped": not present_titles,
                 })
-                continue
-            usable.setdefault(group, []).append(date_str)
     return usable, skipped
 
 
@@ -2535,6 +2549,43 @@ def filter_markets_with_phase1_links(poly_markets, saved_links, min_theatres=1,
 
     if skipped:
         print("\n↷ Skipping Polymarket market(s) with no current AMC Phase 1 links:")
+        for title in skipped:
+            print(f"    - {title}")
+    return filtered
+
+
+def filter_markets_with_phase1_links_for_date_sets(poly_markets, saved_links,
+                                                   min_theatres=1,
+                                                   groups=None,
+                                                   expected_date_sets=None,
+                                                   required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Keep markets with links in at least one requested timezone/date slice."""
+    if not poly_markets:
+        return []
+    groups = list(groups or [])
+    expected_date_sets = expected_date_sets or {}
+    linked_counts = phase1_movie_link_counts_by_slice(
+        saved_links,
+        groups,
+        expected_date_sets,
+        required_cohorts=required_cohorts,
+    )
+    filtered = []
+    skipped = []
+    for market in poly_markets:
+        title = market.get("movie_title", "")
+        has_links = any(
+            linked_counts.get((group, date_str, title), 0) >= min_theatres
+            for group in groups
+            for date_str in expected_date_sets.get(group, [])
+        )
+        if has_links:
+            filtered.append(market)
+        else:
+            skipped.append(title or market.get("question", "unknown market"))
+
+    if skipped:
+        print("\n↷ Skipping Polymarket market(s) with no requested AMC Phase 1 links:")
         for title in skipped:
             print(f"    - {title}")
     return filtered
@@ -3479,12 +3530,18 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 coverage_dates_by_group,
             )
         if skipped_date_slices:
-            print("\n↷ Snapshot skipping date slice(s) without complete active movie links:")
+            print("\n↷ Snapshot active-movie link gaps:")
             for skipped in skipped_date_slices:
-                issue = (
-                    f"Snapshot skipped {skipped['timezone']} {skipped['show_date']} "
-                    f"missing links for {', '.join(skipped['missing_movies'])}"
-                )
+                if skipped.get("date_skipped"):
+                    issue = (
+                        f"Snapshot skipped {skipped['timezone']} {skipped['show_date']} "
+                        f"missing links for {', '.join(skipped['missing_movies'])}"
+                    )
+                else:
+                    issue = (
+                        f"Snapshot partial {skipped['timezone']} {skipped['show_date']} "
+                        f"missing links for {', '.join(skipped['missing_movies'])}"
+                    )
                 snapshot_skipped_slice_issues.append(issue)
                 print(f"    - {issue}")
 
@@ -3521,20 +3578,46 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         }
         print(f"   Snapshot final selected theatres: {selected_by_group}")
 
-    require_active_market_phase1_links(
-        poly_markets,
-        phase1_validation_links,
-        groups_to_check,
-        coverage_dates_by_group,
-        f"Phase 1 scrape preflight for {tz_group}",
-    )
+    if snapshots_only:
+        active_link_gaps = active_market_phase1_link_gaps(
+            poly_markets,
+            phase1_validation_links,
+            groups_to_check,
+            coverage_dates_by_group,
+        )
+        if active_link_gaps:
+            print(f"\n⚠️  Phase 1 scrape preflight for {tz_group}: partial active movie links")
+            for gap in active_link_gaps[:20]:
+                print(
+                    "    - "
+                    f"{gap['movie_title']} {gap['show_date']} {gap['timezone']}: "
+                    f"{gap['fresh_theatres']}/{gap['required_theatres']} theatres"
+                )
+            if len(active_link_gaps) > 20:
+                print(f"    ... and {len(active_link_gaps) - 20} more")
+    else:
+        require_active_market_phase1_links(
+            poly_markets,
+            phase1_validation_links,
+            groups_to_check,
+            coverage_dates_by_group,
+            f"Phase 1 scrape preflight for {tz_group}",
+        )
 
-    poly_markets = filter_markets_with_phase1_links(
-        poly_markets,
-        phase1_validation_links,
-        groups=groups_to_check,
-        expected_dates=expected_dates,
-    )
+    if snapshots_only:
+        poly_markets = filter_markets_with_phase1_links_for_date_sets(
+            poly_markets,
+            phase1_validation_links,
+            groups=groups_to_check,
+            expected_date_sets=coverage_dates_by_group,
+        )
+    else:
+        poly_markets = filter_markets_with_phase1_links(
+            poly_markets,
+            phase1_validation_links,
+            groups=groups_to_check,
+            expected_dates=expected_dates,
+        )
     if not poly_markets:
         log_run(tz_group, [], [], ["No active Polymarket markets have current Phase 1 links"])
         fail_phase("\n❌ No active box office markets have current AMC Phase 1 links.")
@@ -3961,7 +4044,7 @@ if __name__ == "__main__":
         print(f"  --force          Force re-scrape even if showtime-links.json is stale")
         print(f"  --test N         Phase 2 test: run N theatres only, skip time filter")
         print(f"  --pre-reservation-snapshots  Also write time-bucketed reserved-seat snapshots")
-        print(f"  --snapshots-only Write rolling day+1 snapshots without appending prediction seat-count rows")
+        print(f"  --snapshots-only Write rolling remaining-weekend snapshots without appending prediction seat-count rows")
         print(f"  --repair-snapshot-links  In snapshot mode, attempt targeted Phase 1 repair before keeping partial data")
         print(f"  ET               Eastern theatres only")
         print(f"  CT               Central theatres only")

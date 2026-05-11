@@ -83,7 +83,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("GH_TOKEN: ${{ github.token }}", block)
         self.assertIn('lane="regular"', block)
         self.assertIn('lane="snapshot"', block)
-        self.assertIn("--wait-seconds 18000", block)
+        self.assertIn("--wait-seconds 7200", block)
         self.assertIn("--github-output \"$GITHUB_OUTPUT\"", block)
 
     def test_snapshot_capacity_guard_runs_after_dependency_install(self):
@@ -227,6 +227,18 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO: '0.90'", phase_block)
         self.assertIn("PHASE1_MAX_THEATRE_DATE_VISITS: '2000'", phase_block)
 
+    def test_phase1_commit_stages_required_outputs_without_optional_masking(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        commit_start = collect_block.index("      - name: Commit showtime links")
+        commit_block = collect_block[commit_start:]
+
+        self.assertIn("git add box-office-tracker/data/showtime-links.json", commit_block)
+        self.assertIn("git add box-office-tracker/data/theatre-counts.json", commit_block)
+        self.assertIn('if [ -f "box-office-tracker/data/polymarket-markets.csv" ]; then', commit_block)
+        self.assertNotIn("box-office-tracker/data/polymarket-markets.csv 2>/dev/null || true", commit_block)
+
     def test_amc_lock_wait_budget_fits_job_timeouts(self):
         collect_start = self.workflow.index("  collect-links:")
         scrape_start = self.workflow.index("  scrape:")
@@ -250,6 +262,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_phase_timeout = int(re.search(r"timeout-minutes: (\d+)", scrape_phase_block).group(1))
 
         cleanup_buffer_minutes = 20
+        self.assertLessEqual(collect_timeout, 360)
+        self.assertLessEqual(scrape_timeout, 360)
         self.assertLessEqual(
             collect_wait + collect_phase_timeout + cleanup_buffer_minutes,
             collect_timeout,

@@ -78,7 +78,7 @@ jobs:
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 600
+    timeout-minutes: 360
 
     steps:
       - name: Free disk space
@@ -145,13 +145,13 @@ jobs:
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
-        timeout-minutes: 360
+        timeout-minutes: 90
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 box-office-tracker/scripts/amc_lock.py acquire \
             --mode "collect-links-${{ github.event.inputs.tz_group }}" \
-            --wait-seconds 18000 \
+            --wait-seconds 4500 \
             --poll-seconds 60 \
             --github-output "$GITHUB_OUTPUT"
 
@@ -193,9 +193,11 @@ jobs:
           # Only stage the files Phase 1 actually writes. A blanket
           # `git add box-office-tracker/` would sweep up any stray untracked
           # files (e.g. runner caches, locally-modified secrets).
-          git add box-office-tracker/data/showtime-links.json \
-                  box-office-tracker/data/theatre-counts.json \
-                  box-office-tracker/data/polymarket-markets.csv 2>/dev/null || true
+          git add box-office-tracker/data/showtime-links.json
+          git add box-office-tracker/data/theatre-counts.json
+          if [ -f "box-office-tracker/data/polymarket-markets.csv" ]; then
+            git add box-office-tracker/data/polymarket-markets.csv
+          fi
           if git diff --staged --quiet; then
             echo "No data changes to commit."
             exit 0
@@ -228,7 +230,7 @@ jobs:
   scrape:
     if: github.event.inputs.phase == 'scrape'
     runs-on: ubuntu-latest
-    timeout-minutes: 540
+    timeout-minutes: 360
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       max-parallel: 1
@@ -269,7 +271,7 @@ jobs:
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
-        timeout-minutes: 360
+        timeout-minutes: 130
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -279,7 +281,7 @@ jobs:
           fi
           python3 box-office-tracker/scripts/amc_lock.py acquire \
             --mode "scrape-${lane}-${{ matrix.tz }}" \
-            --wait-seconds 18000 \
+            --wait-seconds 7200 \
             --poll-seconds 60 \
             --github-output "$GITHUB_OUTPUT"
 
