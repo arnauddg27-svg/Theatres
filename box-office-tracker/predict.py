@@ -189,10 +189,11 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
                                       full_day_window_coverage_ratio=None):
     """Adjust partial-day scaling when showtime mix misses matinee demand.
 
-    Saturday/Sunday are meant to collect 10am-11pm. When broad theatre-level
-    early-day coverage proves that full-day window is present, no evening-to-day
-    uplift should be applied. Older 5pm-only samples still need a family/PG
-    missing-matinee adjustment.
+    Saturday/Sunday are meant to collect 10am-11pm. When actual theatre-level
+    daytime rows prove that the full-day window landed, no evening-to-day uplift
+    should be applied. The showtime-window marker only describes the intended
+    link window; it is not enough by itself because AMC can drop earlier seat
+    maps before the post-show scrape runs.
     """
     if day_name not in {"Friday", "Saturday", "Sunday"}:
         return base_multiplier
@@ -2371,6 +2372,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         no_data_count = 0
         captured_by_theatre = {}        # {theatre: [per_showtime_result, ...]}
         showtime_hours_by_theatre = {}
+        showtime_window_tagged_theatre_names = set()
         full_day_window_theatre_names = set()
         for row in rows_by_theatre_fmt_show.values():
             result = estimate_theatre_daily_revenue(row, cal)
@@ -2382,7 +2384,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 if parsed_hour is not None:
                     showtime_hours_by_theatre.setdefault(t_name, []).append(parsed_hour)
                 if _row_has_full_day_showtime_window(row):
-                    full_day_window_theatre_names.add(t_name)
+                    showtime_window_tagged_theatre_names.add(t_name)
             else:
                 no_data_count += 1
 
@@ -2409,6 +2411,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         )
         full_day_window_coverage_ratio = (
             len(full_day_window_theatre_names) / len(captured_by_theatre)
+            if captured_by_theatre else 0.0
+        )
+        showtime_window_tagged_coverage_ratio = (
+            len(showtime_window_tagged_theatre_names) / len(captured_by_theatre)
             if captured_by_theatre else 0.0
         )
 
@@ -2500,6 +2506,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "avg_showings_per_cinema": round(avg_showings, 1),
             "earliest_showtime_hour": earliest_showtime_hour,
             "full_day_window_coverage_ratio": full_day_window_coverage_ratio,
+            "showtime_window_tagged_coverage_ratio": showtime_window_tagged_coverage_ratio,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
             "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,
