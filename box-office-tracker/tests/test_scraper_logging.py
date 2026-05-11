@@ -962,6 +962,61 @@ class ScraperLoggingTest(unittest.TestCase):
             [row["_date"] for row in work],
         )
 
+    def test_snapshot_phase2_work_never_falls_back_to_all_theatres_when_selection_empty(self):
+        theatres_map = {
+            "ET": [
+                {"name": "AMC A", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "AMC B", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ]
+        }
+
+        work = scraper.build_phase2_theatre_work(
+            theatres_map,
+            ["ET"],
+            {"ET": ["2026-05-08"]},
+            snapshots_only=True,
+            snapshot_theatre_names=set(),
+        )
+
+        self.assertEqual([], work)
+
+    def test_snapshot_theatre_selection_uses_link_available_theatres_first(self):
+        theatres_map = {
+            "ET": [
+                {"name": "AMC High No Links", "dma": "NY", "cohort": scraper.CORE_COHORT},
+                {"name": "AMC Lower With Links", "dma": "NY", "cohort": scraper.CORE_COHORT},
+            ],
+            "CT": [],
+            "PT": [],
+        }
+        saved_links = {
+            "AMC Lower With Links": {
+                "tz": "ET",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-08": {
+                        "movies": {
+                            "Mortal Kombat II": [
+                                {"showtime": "7:00pm", "showtime_id": "mk"}
+                            ],
+                        }
+                    }
+                },
+            },
+        }
+
+        selected = scraper.select_snapshot_theatre_names(
+            theatres_map,
+            groups=["ET"],
+            cap=1,
+            signal_scores={"AMC High No Links": 999, "AMC Lower With Links": 1},
+            saved_links=saved_links,
+            requested_date_sets={"ET": ["2026-05-08"]},
+            movie_titles=["Mortal Kombat II"],
+        )
+
+        self.assertEqual({"AMC Lower With Links"}, selected)
+
     def test_snapshot_theatre_coverage_flags_thin_theatre_date_sample(self):
         expected_theatres = [
             {"name": "AMC A", "_tz": "ET", "_date": "2026-05-07"},
@@ -980,6 +1035,48 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertAlmostEqual(1 / 3, report["ratio"])
         self.assertIn("overall 1/3 theatre-date slices", failures[0])
         self.assertTrue(any("2026-05-08 ET 0/1 theatres" in failure for failure in failures))
+
+    def test_partial_snapshot_coverage_is_warning_when_rows_were_captured(self):
+        report = {
+            "expected_total": 10,
+            "observed_total": 4,
+            "ratio": 0.4,
+            "by_slice": {},
+        }
+
+        self.assertFalse(
+            scraper.snapshot_coverage_failure_is_fatal(report, snapshot_rows_written=12)
+        )
+
+    def test_empty_snapshot_coverage_is_fatal(self):
+        report = {
+            "expected_total": 10,
+            "observed_total": 0,
+            "ratio": 0.0,
+            "by_slice": {},
+        }
+
+        self.assertTrue(
+            scraper.snapshot_coverage_failure_is_fatal(report, snapshot_rows_written=0)
+        )
+
+    def test_partial_snapshot_phase1_coverage_is_warning_when_some_links_exist(self):
+        report = {
+            "expected_total": 10,
+            "fresh_count": 3,
+            "ratio": 0.3,
+        }
+
+        self.assertFalse(scraper.snapshot_phase1_coverage_failure_is_fatal(report))
+
+    def test_empty_snapshot_phase1_coverage_is_fatal(self):
+        report = {
+            "expected_total": 10,
+            "fresh_count": 0,
+            "ratio": 0.0,
+        }
+
+        self.assertTrue(scraper.snapshot_phase1_coverage_failure_is_fatal(report))
 
     def test_phase2_deadline_is_env_configurable_for_snapshot_workflow(self):
         old_value = os.environ.get("PHASE2_DEADLINE_SEC")

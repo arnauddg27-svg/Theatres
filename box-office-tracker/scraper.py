@@ -279,17 +279,48 @@ def _snapshot_cap_allocations(theatres_by_group, cap):
     return {group: allocations.get(group, 0) for group in theatres_by_group}
 
 
-def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_scores=None):
+def _snapshot_link_availability(theatre, group, saved_links, requested_date_sets, movie_titles):
+    if saved_links is None or requested_date_sets is None or not movie_titles:
+        return 0
+    entry = saved_links.get(theatre.get("name", ""))
+    if not entry:
+        return 0
+    available_dates = 0
+    for date_str in requested_date_sets.get(group, []):
+        movies = phase1_entry_movies(entry, date_str)
+        if all(movies.get(title) for title in movie_titles):
+            available_dates += 1
+    return available_dates
+
+
+def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_scores=None,
+                                  saved_links=None, requested_date_sets=None,
+                                  movie_titles=None):
     """Select a timezone-balanced top theatre set for snapshot-only probes."""
     cap = SNAPSHOT_TOP_THEATRE_CAP if cap is None else cap
     if cap <= 0:
         return set()
     groups = list(groups or [g for g in ("ET", "CT", "PT") if g in theatres_map])
-    theatres_by_group = {
-        group: list(theatres_map.get(group, []))
-        for group in groups
-        if theatres_map.get(group)
-    }
+    movie_titles = list(movie_titles or [])
+    require_links = saved_links is not None and requested_date_sets is not None and movie_titles
+    theatres_by_group = {}
+    availability_by_name = {}
+    for group in groups:
+        rows = []
+        for theatre in theatres_map.get(group, []):
+            availability = _snapshot_link_availability(
+                theatre,
+                group,
+                saved_links,
+                requested_date_sets,
+                movie_titles,
+            )
+            if require_links and availability <= 0:
+                continue
+            availability_by_name[theatre.get("name", "")] = availability
+            rows.append(theatre)
+        if rows:
+            theatres_by_group[group] = rows
     if not theatres_by_group:
         return set()
     signal_scores = signal_scores if signal_scores is not None else snapshot_theatre_signal_scores()
@@ -302,6 +333,7 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
             rows,
             key=lambda theatre: (
                 -signal_scores.get(theatre.get("name", ""), 0.0),
+                -availability_by_name.get(theatre.get("name", ""), 0),
                 _theatre_sort_key(theatre),
             ),
         )
@@ -338,7 +370,11 @@ def build_phase2_theatre_work(theatres_map, groups_to_check, collection_dates_by
     for group in groups_to_check:
         for date_str in collection_dates_by_group.get(group, [local_date_str(group)]):
             for theatre in theatres_map.get(group, []):
-                if snapshots_only and selected_names and theatre.get("name") not in selected_names:
+                if (
+                    snapshots_only
+                    and snapshot_theatre_names is not None
+                    and theatre.get("name") not in selected_names
+                ):
                     continue
                 all_theatres.append({
                     **theatre,
@@ -657,6 +693,20 @@ def snapshot_coverage_failures(report, min_ratio=SNAPSHOT_MIN_THEATRE_COVERAGE_R
                 f"theatres ({details['ratio']:.1%})"
             )
     return failures
+
+
+def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written):
+    """Only zero-row snapshots should fail solely because coverage is thin."""
+    if not report.get("expected_total"):
+        return False
+    if snapshot_rows_written > 0 or report.get("observed_total", 0) > 0:
+        return False
+    return True
+
+
+def snapshot_phase1_coverage_failure_is_fatal(report):
+    """Snapshot preflight should only fail when no selected links are usable."""
+    return bool(report.get("expected_total") and not report.get("fresh_count"))
 
 
 def opening_weekend_friday(dt=None):
@@ -3259,7 +3309,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             for group in groups_to_check
         }
         print(
-            "   Snapshot theatre cap: "
+            "   Snapshot theatre cap candidates: "
             f"{sum(selected_by_group.values())}/{SNAPSHOT_TOP_THEATRE_CAP} "
             f"selected for this run ({selected_by_group})"
         )
@@ -3367,6 +3417,23 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         if snapshots_only else saved_links
     )
     if snapshots_only:
+        linked_snapshot_theatre_names = select_snapshot_theatre_names(
+            theatres_map,
+            groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+            saved_links=saved_links,
+            requested_date_sets=coverage_dates_by_group,
+            movie_titles=_unique_market_titles(poly_markets),
+        )
+        if linked_snapshot_theatre_names:
+            snapshot_theatre_names = linked_snapshot_theatre_names
+            coverage_theatres_map = filter_theatres_map_by_names(
+                theatres_map,
+                snapshot_theatre_names,
+            )
+            phase1_validation_links = filter_saved_links_by_names(
+                saved_links,
+                snapshot_theatre_names,
+            )
         if repair_snapshot_links and not test_max:
             saved_links, usable_date_sets, skipped_date_slices = (
                 await repair_snapshot_phase1_links_async(
@@ -3381,6 +3448,29 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 saved_links,
                 snapshot_theatre_names,
             )
+            linked_snapshot_theatre_names = select_snapshot_theatre_names(
+                theatres_map,
+                groups=[g for g in ("ET", "CT", "PT") if g in theatres_map],
+                saved_links=saved_links,
+                requested_date_sets=coverage_dates_by_group,
+                movie_titles=_unique_market_titles(poly_markets),
+            )
+            if linked_snapshot_theatre_names:
+                snapshot_theatre_names = linked_snapshot_theatre_names
+                coverage_theatres_map = filter_theatres_map_by_names(
+                    theatres_map,
+                    snapshot_theatre_names,
+                )
+                phase1_validation_links = filter_saved_links_by_names(
+                    saved_links,
+                    snapshot_theatre_names,
+                )
+                usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
+                    poly_markets,
+                    phase1_validation_links,
+                    groups_to_check,
+                    coverage_dates_by_group,
+                )
         else:
             usable_date_sets, skipped_date_slices = snapshot_usable_date_sets(
                 poly_markets,
@@ -3421,6 +3511,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             f"{group}={','.join(dates)}"
             for group, dates in collection_dates_by_group.items()
         ))
+        selected_by_group = {
+            group: sum(
+                1
+                for theatre in theatres_map.get(group, [])
+                if theatre.get("name") in snapshot_theatre_names
+            )
+            for group in groups_to_check
+        }
+        print(f"   Snapshot final selected theatres: {selected_by_group}")
 
     require_active_market_phase1_links(
         poly_markets,
@@ -3491,7 +3590,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         coverage_dates_by_group,
     )
     if not test_max:
-        require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
+        if snapshots_only:
+            print_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
+            if snapshot_phase1_coverage_failure_is_fatal(coverage_report):
+                fail_phase(
+                    f"❌ Phase 1 scrape preflight for {tz_group} has zero usable "
+                    "selected snapshot links."
+                )
+            if coverage_report["expected_total"] and coverage_report["ratio"] < PHASE1_MIN_FRESH_LINK_RATIO:
+                print(
+                    "\n⚠️  Snapshot Phase 1 coverage is partial; continuing so "
+                    "available pre-reservation rows can be committed and weighted."
+                )
+        else:
+            require_phase1_coverage(coverage_report, f"Phase 1 scrape preflight for {tz_group}")
         expansion_report = phase1_link_coverage_for_date_sets(
             saved_links, coverage_theatres_map, groups_to_check, coverage_dates_by_group,
             required_cohorts=(EXPANSION_COHORT,),
@@ -3634,6 +3746,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         print(f"↺ Skipped {snapshot_rows_skipped} duplicate pre-reservation snapshot row(s)")
 
     snapshot_failures = []
+    fatal_snapshot_failure = False
     if snapshots_only and not test_max:
         snapshot_report = snapshot_theatre_coverage(all_theatres, all_snapshot_rows)
         print(
@@ -3654,13 +3767,22 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 "Snapshot coverage below minimum: "
                 + "; ".join(snapshot_failures[:8])
             )
+            fatal_snapshot_failure = snapshot_coverage_failure_is_fatal(
+                snapshot_report,
+                snapshot_rows_written,
+            )
+            if not fatal_snapshot_failure:
+                print(
+                    "\n⚠️  Snapshot coverage is partial, but rows were captured; "
+                    "committing partial snapshot data for the model to weight by coverage."
+                )
 
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues, run_id=run_id)
 
-    if snapshot_failures:
+    if fatal_snapshot_failure:
         fail_phase(
-            "\n❌ Snapshot-only run was partial; refusing to mark it successful. "
+            "\n❌ Snapshot-only run captured no usable theatre coverage. "
             + "; ".join(snapshot_failures[:8])
         )
 

@@ -297,7 +297,7 @@ jobs:
             export PHASE1_DEADLINE_SEC=2700
             export PHASE1_MAX_THEATRE_DATE_VISITS=500
             export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
-            echo "Snapshot lane: max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
+            echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
