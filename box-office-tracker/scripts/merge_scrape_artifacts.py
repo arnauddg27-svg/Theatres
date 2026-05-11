@@ -181,11 +181,15 @@ def _filter_pre_reservation_sources(artifact_root: Path, sources: list[Path]) ->
     filtered: list[Path] = []
     for source in sources:
         manifest = _artifact_manifest(artifact_root, source)
-        writes_snapshots = (
-            manifest.get("snapshots_only", "").lower() == "true"
-            or manifest.get("pre_reservation_snapshots", "").lower() == "true"
-        )
-        if writes_snapshots and manifest.get("workflow_job_status", "").lower() != "success":
+        snapshots_only = manifest.get("snapshots_only", "").lower() == "true"
+        writes_snapshots = snapshots_only or manifest.get("pre_reservation_snapshots", "").lower() == "true"
+        successful = manifest.get("workflow_job_status", "").lower() == "success"
+        # Snapshot-only runs are designed to be useful even when partial. The
+        # scraper writes rows incrementally and coverage is model-weighted later,
+        # so keep any rows it managed to capture. Regular scrape artifacts can
+        # include optional snapshot CSVs too; if those failed, keep protecting
+        # the model-driving scrape and ignore their partial snapshot sidecar.
+        if writes_snapshots and not successful and not snapshots_only:
             continue
         filtered.append(source)
     return filtered

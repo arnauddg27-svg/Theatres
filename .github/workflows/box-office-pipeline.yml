@@ -498,7 +498,8 @@ jobs:
           done
 
   # ──────────────────────────────────────────────────────────────────────────
-  # Calibrate — Tuesday 10am ET only. Stays on VPS; doesn't hit AMC.
+  # Calibrate — scheduled by VPS cron after actuals have time to post.
+  # Stays on VPS; doesn't hit AMC.
   # ──────────────────────────────────────────────────────────────────────────
   calibrate:
     if: github.event.inputs.phase == 'calibrate'
