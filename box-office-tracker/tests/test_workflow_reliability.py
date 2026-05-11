@@ -152,6 +152,20 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("--snapshots-only \"${{ github.event.inputs.snapshots_only }}\"", block)
         self.assertNotIn("pattern=\"data: box office", block)
 
+    def test_collect_links_dedup_guard_requires_canonical_link_file(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        start = collect_block.index("      - name: Dedup guard")
+        end = collect_block.index("      - name: Install dependencies", start)
+        block = collect_block[start:end]
+
+        self.assertIn("scripts/collect_links_dedup_guard.py", block)
+        self.assertIn("--tz \"${{ github.event.inputs.tz_group }}\"", block)
+        self.assertIn("--force \"${{ github.event.inputs.force }}\"", block)
+        self.assertNotIn("git log --since", block)
+        self.assertNotIn("pattern=\"data: box office", block)
+
     def test_finalize_downloads_merges_and_commits_once(self):
         start = self.workflow.index("  finalize:")
         end = self.workflow.index("  calibrate:", start)
