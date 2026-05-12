@@ -207,12 +207,54 @@ def _read_rows(path: Path, fields: list[str]) -> list[dict[str, str]]:
             normalized = {field: str(row.get(field, "") or "") for field in fields}
             if _is_repeated_header(normalized, fields):
                 continue
+            if fields == SEAT_FIELDS:
+                normalized = _normalize_seat_count_fields(normalized)
             rows.append(normalized)
     return rows
 
 
 def _is_repeated_header(row: dict[str, str], fields: list[str]) -> bool:
     return all(row.get(field, "") == field for field in fields if field in row)
+
+
+def _parse_seat_count(value: str) -> int | None:
+    try:
+        if value is None or str(value).strip() == "":
+            return None
+        return int(float(str(value).strip()))
+    except (TypeError, ValueError):
+        return None
+
+
+def _format_seat_number(value: float) -> str:
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+    return f"{number:.1f}".rstrip("0").rstrip(".")
+
+
+def _normalize_seat_count_fields(row: dict[str, str]) -> dict[str, str]:
+    total = _parse_seat_count(row.get("total_seats", ""))
+    sold = _parse_seat_count(row.get("seats_sold", ""))
+    available = _parse_seat_count(row.get("seats_available", ""))
+    if total is None or total < 0:
+        return row
+
+    if sold is None and available is not None:
+        sold = max(total - available, 0)
+    if available is None and sold is not None:
+        available = max(total - sold, 0)
+
+    if sold is not None:
+        row["seats_sold"] = str(sold)
+    if available is not None:
+        row["seats_available"] = str(available)
+    if sold is not None and total > 0:
+        row["occupancy_pct"] = _format_seat_number(round(sold / total * 100, 1))
+    elif total == 0:
+        row["occupancy_pct"] = "0"
+
+    return row
 
 
 def _tuple_key(fields: Iterable[str]) -> Callable[[dict[str, str]], tuple[str, ...]]:

@@ -258,6 +258,55 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(1, len(rows))
         self.assertIn(f"showtime_window={scraper.SHOWTIME_WINDOW_VERSION}", rows[0]["notes"])
 
+    def test_append_unique_seat_rows_fills_inferable_blank_counts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.SEAT_CSV
+            scraper.SEAT_CSV = Path(tmp) / "seat-counts.csv"
+            zero_sold = {field: "" for field in scraper.SEAT_FIELDS}
+            zero_sold.update({
+                "weekend_of": "2026-05-08",
+                "run_id": "run-1",
+                "date": "2026-05-10",
+                "day_of_week": "Sunday",
+                "theatre_name": "AMC Empty",
+                "timezone": "ET",
+                "movie_title": "Movie A",
+                "showtime": "9:00pm",
+                "auditorium_type": "Standard",
+                "total_seats": "53",
+                "seats_sold": "",
+                "seats_available": "53",
+                "occupancy_pct": "",
+                "amc_seat_map_url": "https://example.test/empty",
+            })
+            sold_out = dict(zero_sold)
+            sold_out.update({
+                "run_id": "run-2",
+                "theatre_name": "AMC Full",
+                "total_seats": "107",
+                "seats_sold": "107",
+                "seats_available": "",
+                "amc_seat_map_url": "https://example.test/full",
+            })
+            try:
+                written, skipped = scraper.append_unique_seat_rows([
+                    [zero_sold.get(field, "") for field in scraper.SEAT_FIELDS],
+                    [sold_out.get(field, "") for field in scraper.SEAT_FIELDS],
+                ])
+                with scraper.SEAT_CSV.open(newline="") as f:
+                    rows = list(csv.DictReader(f))
+            finally:
+                scraper.SEAT_CSV = old_csv
+
+        self.assertEqual(2, written)
+        self.assertEqual(0, skipped)
+        self.assertEqual("0", rows[0]["seats_sold"])
+        self.assertEqual("53", rows[0]["seats_available"])
+        self.assertEqual("0", rows[0]["occupancy_pct"])
+        self.assertEqual("107", rows[1]["seats_sold"])
+        self.assertEqual("0", rows[1]["seats_available"])
+        self.assertEqual("100", rows[1]["occupancy_pct"])
+
     def test_snapshot_only_phase2_expects_current_local_date(self):
         old_local_now = scraper.local_now
         try:

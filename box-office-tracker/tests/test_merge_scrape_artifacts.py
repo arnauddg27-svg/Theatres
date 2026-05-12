@@ -180,6 +180,32 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
             self.assertIn(b"\r\n", content)
             self.assertNotIn(b"\r\r\n", content)
 
+    def test_merge_artifacts_fills_inferable_blank_seat_counts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data_dir = root / "data"
+            artifact = root / "artifacts" / "scrape-ET-1"
+
+            zero_sold = seat_row("ET", "AMC Empty", 0)
+            zero_sold["seats_sold"] = ""
+            zero_sold["occupancy_pct"] = ""
+            sold_out = seat_row("ET", "AMC Full", 200)
+            sold_out["seats_available"] = ""
+            sold_out["occupancy_pct"] = ""
+            write_csv(artifact / "seat-counts.csv", SEAT_FIELDS, [zero_sold, sold_out])
+
+            summary = merge_artifacts(root / "artifacts", data_dir)
+
+            self.assertEqual(2, summary.seat_added)
+            with (data_dir / "seat-counts.csv").open() as f:
+                rows = list(csv.DictReader(f))
+            self.assertEqual("0", rows[0]["seats_sold"])
+            self.assertEqual("200", rows[0]["seats_available"])
+            self.assertEqual("0", rows[0]["occupancy_pct"])
+            self.assertEqual("200", rows[1]["seats_sold"])
+            self.assertEqual("0", rows[1]["seats_available"])
+            self.assertEqual("100", rows[1]["occupancy_pct"])
+
     def test_merge_artifacts_dedupes_pre_reservation_snapshots(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

@@ -1713,12 +1713,25 @@ PRE_RESERVATION_DEDUPE_FIELDS = (
 )
 
 
+def _csv_lineterminator(path):
+    """Keep large tracked CSVs in their existing line-ending style."""
+    try:
+        candidate = Path(path)
+        if candidate.exists():
+            with candidate.open("rb") as f:
+                if b"\r\n" in f.read(8192):
+                    return "\r\n"
+    except OSError:
+        pass
+    return "\n"
+
+
 def ensure_csv_header():
     """Create seat-counts.csv with header if it doesn't exist."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not SEAT_CSV.exists():
         with open(SEAT_CSV, "w", newline="") as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, lineterminator=_csv_lineterminator(SEAT_CSV))
             writer.writerow(SEAT_FIELDS)
 
 
@@ -1727,7 +1740,7 @@ def ensure_pre_reservation_header():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     if not PRE_RESERVATION_CSV.exists():
         with open(PRE_RESERVATION_CSV, "w", newline="") as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, lineterminator=_csv_lineterminator(PRE_RESERVATION_CSV))
             writer.writerow(PRE_RESERVATION_FIELDS)
 
 
@@ -1735,10 +1748,51 @@ def _seat_row_dict(row_data):
     return dict(zip(SEAT_FIELDS, row_data))
 
 
+def _parse_seat_count(value):
+    try:
+        if value is None or str(value).strip() == "":
+            return None
+        return int(float(str(value).strip()))
+    except (TypeError, ValueError):
+        return None
+
+
+def _format_seat_number(value):
+    number = float(value)
+    if number.is_integer():
+        return str(int(number))
+    return f"{number:.1f}".rstrip("0").rstrip(".")
+
+
+def _normalize_seat_count_fields(row):
+    total = _parse_seat_count(row.get("total_seats"))
+    sold = _parse_seat_count(row.get("seats_sold"))
+    available = _parse_seat_count(row.get("seats_available"))
+    if total is None or total < 0:
+        return row
+
+    if sold is None and available is not None:
+        sold = max(total - available, 0)
+    if available is None and sold is not None:
+        available = max(total - sold, 0)
+
+    if sold is not None:
+        row["seats_sold"] = str(sold)
+    if available is not None:
+        row["seats_available"] = str(available)
+    if sold is not None and total > 0:
+        row["occupancy_pct"] = _format_seat_number(round(sold / total * 100, 1))
+    elif total == 0:
+        row["occupancy_pct"] = "0"
+
+    return row
+
+
 def _normalize_seat_row(row):
     if isinstance(row, list):
         row = _seat_row_dict(row)
-    return {field: str(row.get(field, "") or "") for field in SEAT_FIELDS}
+    normalized = {field: str(row.get(field, "") or "") for field in SEAT_FIELDS}
+    return _normalize_seat_count_fields(normalized)
 
 
 def _seat_row_key(row):
@@ -1848,7 +1902,11 @@ def append_unique_pre_reservation_rows(rows):
 
     if pending:
         with open(PRE_RESERVATION_CSV, "a", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=PRE_RESERVATION_FIELDS)
+            writer = csv.DictWriter(
+                f,
+                fieldnames=PRE_RESERVATION_FIELDS,
+                lineterminator=_csv_lineterminator(PRE_RESERVATION_CSV),
+            )
             writer.writerows(pending)
 
     return len(pending), skipped
@@ -1888,12 +1946,20 @@ def append_unique_seat_rows(rows):
 
     if metadata_updated:
         with open(SEAT_CSV, "w", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=SEAT_FIELDS)
+            writer = csv.DictWriter(
+                f,
+                fieldnames=SEAT_FIELDS,
+                lineterminator=_csv_lineterminator(SEAT_CSV),
+            )
             writer.writeheader()
             writer.writerows(existing_rows + pending)
     elif pending:
         with open(SEAT_CSV, "a", newline="") as f:
-            writer = csv.DictWriter(f, fieldnames=SEAT_FIELDS)
+            writer = csv.DictWriter(
+                f,
+                fieldnames=SEAT_FIELDS,
+                lineterminator=_csv_lineterminator(SEAT_CSV),
+            )
             writer.writerows(pending)
 
     return len(pending), skipped
