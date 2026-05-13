@@ -12,11 +12,19 @@ from __future__ import annotations
 import argparse
 import os
 import subprocess
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 
 SHOWTIME_LINKS_PATH = "box-office-tracker/data/showtime-links.json"
+
+
+def default_since_date(now: datetime | None = None) -> str:
+    """Look back to Tuesday when Wednesday is acting as the warm-cache fallback."""
+    now = now or datetime.now(timezone.utc)
+    if now.weekday() == 2:  # Wednesday UTC fallback should respect Tuesday successes.
+        now = now - timedelta(days=1)
+    return now.strftime("%Y-%m-%d")
 
 
 def _run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -84,7 +92,7 @@ def main() -> int:
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--tz", required=True)
     parser.add_argument("--force", default="false")
-    parser.add_argument("--since", default=datetime.now(timezone.utc).strftime("%Y-%m-%d"))
+    parser.add_argument("--since", default="")
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT", ""))
     args = parser.parse_args()
 
@@ -92,7 +100,7 @@ def main() -> int:
         Path(args.repo_root).resolve(),
         args.tz,
         args.force == "true",
-        args.since,
+        args.since or default_since_date(),
     )
     _write_output(args.github_output, skip)
     return 0

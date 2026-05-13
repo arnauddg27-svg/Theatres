@@ -18,16 +18,17 @@ GH_TOKEN_FILE=/root/box-office-dispatch/.env
 DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
 
 # Phase 1 weekly warm-cache. Tuesday full-weekend mode targets the upcoming
-# Thu-Sun opening weekend, not the prior weekend. These staggered passes give
-# the system a full day to collect broad future links; duplicate later passes
-# skip automatically after a successful same-day collect-links commit.
+# Thu-Sun opening weekend, not the prior weekend. Wednesday repeats are fallback
+# passes: the dedup guard looks back to Tuesday on Wednesdays and skips any TZ
+# whose Tuesday run committed canonical showtime links. This covers the case
+# where Polymarket has not exposed the upcoming market yet on Tuesday.
 # Dispatcher mode: collect-links -> phase=collect-links
-0 13 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
-0 15 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
-0 17 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
-0 19 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
-0 21 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
-0 23 * * 2 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+0 13 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+0 15 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+0 17 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+0 19 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+0 21 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+0 23 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
 
 # Rolling pre-reservation snapshot probe using Tuesday's committed Phase 1 cache.
 # Each run captures the remaining opening weekend for the capped top-theatre
