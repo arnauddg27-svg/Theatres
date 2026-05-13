@@ -822,6 +822,101 @@ def _polymarket_event_score(market):
     )
 
 
+def _is_active_polymarket_event(event):
+    """Return True for live events that can still drive collection."""
+    return (
+        bool(event.get("active", True))
+        and not bool(event.get("closed", False))
+        and not bool(event.get("archived", False))
+    )
+
+
+def _event_to_box_office_market(event):
+    title = event.get("title", "")
+    title_lower = title.lower()
+
+    # Same filter as trade.py: must have BOTH keywords. Non-opening markets
+    # need a separate model path before they can safely drive collection.
+    if "opening weekend" not in title_lower or "box office" not in title_lower:
+        return None
+    if is_comparison_box_office_market(title):
+        print(f"    ↷ Skipping comparison market: {title}")
+        return None
+
+    # Extract movie name from quoted title (e.g. "Thunderbolts" Opening Weekend...)
+    raw_title = title.replace("\u201c", '"').replace("\u201d", '"')
+    movie_name = None
+    if '"' in raw_title:
+        parts = raw_title.split('"')
+        if len(parts) >= 3:
+            movie_name = parts[1]
+
+    if not movie_name:
+        movie_name = extract_movie_title(title)
+
+    slug = event.get("slug", "")
+    event_url = f"https://polymarket.com/event/{slug}"
+    total_volume = 0
+
+    # Extract individual bracket markets (one per question/price pair)
+    bracket_markets = []
+    for m in event.get("markets", []):
+        vol = float(m.get("volume", 0) or 0)
+        total_volume += vol
+        bracket_markets.append({
+            "market_question": m.get("question", ""),
+            "outcome_prices": m.get("outcomePrices", ""),
+            "volume": vol,
+            "market_id": str(m.get("id", "")),
+        })
+
+    return {
+        "movie_title": movie_name,
+        "market_url": event_url,
+        "question": title,
+        "current_odds": "N/A",
+        "volume": total_volume or float(event.get("volume", 0) or event.get("volume24hr", 0) or 0),
+        "market_id": str(event.get("id", "")),
+        "end_date": (
+            event.get("endDate")
+            or event.get("end_date")
+            or event.get("end_date_iso")
+            or event.get("endDateIso")
+        ),
+        "bracket_markets": bracket_markets,
+    }
+
+
+def _fetch_polymarket_events_feed():
+    url = "https://gamma-api.polymarket.com/events"
+    params = {
+        "active": "true",
+        "closed": "false",
+        "limit": 500,
+        "order": "volume24hr",
+        "ascending": "false",
+    }
+    resp = requests.get(url, params=params, timeout=15)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def _fetch_polymarket_public_search_events():
+    url = "https://gamma-api.polymarket.com/public-search"
+    params = {
+        "q": "box office",
+        "limit": 50,
+    }
+    resp = requests.get(url, params=params, timeout=15)
+    resp.raise_for_status()
+    payload = resp.json()
+    if isinstance(payload, dict):
+        return payload.get("events", [])
+    if isinstance(payload, list):
+        return payload
+    return []
+
+
 def fetch_polymarket_box_office():
     """
     Find active opening-weekend box office bracket events on Polymarket.
@@ -835,79 +930,34 @@ def fetch_polymarket_box_office():
     """
     print("\n📊 Checking Polymarket for active box office markets...")
 
-    url = "https://gamma-api.polymarket.com/events"
-    params = {
-        "active": "true",
-        "closed": "false",
-        "limit": 500,
-        "order": "volume24hr",
-        "ascending": "false",
-    }
+    events = []
+    try:
+        events.extend(_fetch_polymarket_events_feed())
+    except Exception as e:
+        print(f"  ⚠️  Polymarket events API error: {e}")
 
     try:
-        resp = requests.get(url, params=params, timeout=15)
-        resp.raise_for_status()
-        events = resp.json()
+        search_events = _fetch_polymarket_public_search_events()
+        if search_events:
+            print(f"  🔎 Public search returned {len(search_events)} box-office candidate event(s)")
+            seen_ids = {str(e.get("id", "")) for e in events}
+            for event in search_events:
+                event_id = str(event.get("id", ""))
+                if event_id and event_id in seen_ids:
+                    continue
+                events.append(event)
     except Exception as e:
-        print(f"  ❌ Polymarket API error: {e}")
-        return []
+        print(f"  ⚠️  Polymarket public-search fallback error: {e}")
 
     candidates_by_movie = {}
 
     for event in events:
-        title = event.get("title", "")
-        title_lower = title.lower()
-
-        # Same filter as trade.py: must have BOTH keywords
-        if "opening weekend" not in title_lower or "box office" not in title_lower:
+        if not _is_active_polymarket_event(event):
             continue
-        if is_comparison_box_office_market(title):
-            print(f"    ↷ Skipping comparison market: {title}")
+        market = _event_to_box_office_market(event)
+        if market is None:
             continue
-
-        # Extract movie name from quoted title (e.g. "Thunderbolts" Opening Weekend...)
-        raw_title = title.replace("\u201c", '"').replace("\u201d", '"')
-        movie_name = None
-        if '"' in raw_title:
-            parts = raw_title.split('"')
-            if len(parts) >= 3:
-                movie_name = parts[1]
-
-        if not movie_name:
-            movie_name = extract_movie_title(title)
-
-        slug = event.get("slug", "")
-        event_url = f"https://polymarket.com/event/{slug}"
-        total_volume = 0
-
-        # Extract individual bracket markets (one per question/price pair)
-        bracket_markets = []
-        for m in event.get("markets", []):
-            vol = float(m.get("volume", 0) or 0)
-            total_volume += vol
-            bracket_markets.append({
-                "market_question": m.get("question", ""),
-                "outcome_prices": m.get("outcomePrices", ""),
-                "volume": vol,
-                "market_id": str(m.get("id", "")),
-            })
-
-        market = {
-            "movie_title": movie_name,
-            "market_url": event_url,
-            "question": title,
-            "current_odds": "N/A",
-            "volume": total_volume,
-            "market_id": str(event.get("id", "")),
-            "end_date": (
-                event.get("endDate")
-                or event.get("end_date")
-                or event.get("end_date_iso")
-                or event.get("endDateIso")
-            ),
-            "bracket_markets": bracket_markets,
-        }
-        candidates_by_movie.setdefault(movie_name, []).append(market)
+        candidates_by_movie.setdefault(market["movie_title"], []).append(market)
 
     markets_found = []
     for movie_name, candidates in candidates_by_movie.items():

@@ -117,6 +117,92 @@ class ScraperLoggingTest(unittest.TestCase):
             scraper.phase1_weekend_anchor(datetime(2026, 5, 6, 12, 0), full_weekend=True),
         )
 
+    def test_polymarket_fetch_uses_public_search_for_low_volume_opening_markets(self):
+        class FakeResponse:
+            def __init__(self, payload):
+                self.payload = payload
+
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return self.payload
+
+        def event(title, slug, end_date, *, closed=False):
+            return {
+                "id": slug,
+                "title": title,
+                "slug": slug,
+                "active": True,
+                "closed": closed,
+                "archived": False,
+                "endDate": end_date,
+                "volume24hr": 500,
+                "markets": [
+                    {
+                        "id": f"{slug}-1",
+                        "question": f"Will {title} be less than 20m?",
+                        "volume": "500",
+                        "outcomePrices": "[\"0.5\", \"0.5\"]",
+                    }
+                ],
+            }
+
+        old_get = getattr(scraper.requests, "get", None)
+
+        def fake_get(url, params=None, timeout=None):
+            if url.endswith("/events"):
+                return FakeResponse([])
+            if url.endswith("/public-search"):
+                return FakeResponse({
+                    "events": [
+                        event(
+                            '"Obsession" Opening Weekend Box Office',
+                            "obsession-opening-weekend-box-office",
+                            "2026-05-18T12:00:00Z",
+                        ),
+                        event(
+                            '"Mortal Kombat II" 2nd Weekend Box Office',
+                            "mortal-kombat-ii-2nd-weekend-box-office",
+                            "2026-05-18T12:00:00Z",
+                        ),
+                        event(
+                            '"Backrooms" Opening Weekend Box Office',
+                            "backrooms-opening-weekend-box-office",
+                            "2026-06-01T12:00:00Z",
+                        ),
+                        event(
+                            '"Old Movie" Opening Weekend Box Office',
+                            "old-movie-opening-weekend-box-office",
+                            "2026-05-18T12:00:00Z",
+                            closed=True,
+                        ),
+                    ]
+                })
+            raise AssertionError(url)
+
+        try:
+            scraper.requests.get = fake_get
+            markets = scraper.fetch_polymarket_box_office()
+        finally:
+            if old_get is None:
+                del scraper.requests.get
+            else:
+                scraper.requests.get = old_get
+
+        titles = [m["movie_title"] for m in markets]
+        self.assertIn("Obsession", titles)
+        self.assertIn("Backrooms", titles)
+        self.assertNotIn("Mortal Kombat II", titles)
+        self.assertNotIn("Old Movie", titles)
+
+        current_weekend = scraper.filter_live_markets_for_weekend(
+            markets,
+            "2026-05-15",
+            "Phase 1",
+        )
+        self.assertEqual(["Obsession"], [m["movie_title"] for m in current_weekend])
+
     def test_saturday_sunday_collection_window_starts_at_10am(self):
         self.assertTrue(scraper.showtime_in_collection_window("10:00am", "2026-05-09"))
         self.assertTrue(scraper.showtime_in_collection_window("12:00pm", "2026-05-09"))
