@@ -44,6 +44,11 @@ class HistoricalComp:
     rt_audience_score: int = 0
     rt_audience_score_type: str = ""
     rt_url: str = ""
+    social_media_universe_m: float = 0.0
+    social_sentiment_score: float = 0.0
+    social_buzz_score: float = 0.0
+    social_source_url: str = ""
+    social_notes: str = ""
 
     @property
     def thursday_share(self) -> float:
@@ -83,6 +88,9 @@ class TargetMetadata:
     imdb_votes: int = 0
     rt_audience_score: int = 0
     rt_audience_score_type: str = ""
+    social_media_universe_m: float = 0.0
+    social_sentiment_score: float = 0.0
+    social_buzz_score: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -161,6 +169,11 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 rt_audience_score=_int(row, "rt_audience_score") or 0,
                 rt_audience_score_type=(row.get("rt_audience_score_type") or "").strip(),
                 rt_url=(row.get("rt_url") or "").strip(),
+                social_media_universe_m=_float(row, "social_media_universe_m"),
+                social_sentiment_score=_float(row, "social_sentiment_score"),
+                social_buzz_score=_float(row, "social_buzz_score"),
+                social_source_url=(row.get("social_source_url") or "").strip(),
+                social_notes=(row.get("social_notes") or "").strip(),
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)
@@ -189,6 +202,9 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 imdb_votes=_int(row, "imdb_votes") or 0,
                 rt_audience_score=_int(row, "rt_audience_score") or 0,
                 rt_audience_score_type=(row.get("rt_audience_score_type") or "").strip(),
+                social_media_universe_m=_float(row, "social_media_universe_m"),
+                social_sentiment_score=_float(row, "social_sentiment_score"),
+                social_buzz_score=_float(row, "social_buzz_score"),
             )
             metadata[movie.lower()] = item
     return metadata
@@ -234,6 +250,15 @@ def _audience_feature_values(item) -> dict[str, float]:
     if rt_audience_score > 0:
         # RT critic scores are intentionally not modeled; this is audience only.
         values["rt_audience_score"] = rt_audience_score / 10.0
+    social_media_universe_m = float(getattr(item, "social_media_universe_m", 0) or 0)
+    social_sentiment_score = float(getattr(item, "social_sentiment_score", 0) or 0)
+    social_buzz_score = float(getattr(item, "social_buzz_score", 0) or 0)
+    if social_media_universe_m > 0:
+        values["log_social_media_universe_m"] = math.log1p(social_media_universe_m)
+    if social_sentiment_score:
+        values["social_sentiment_score"] = max(-1.0, min(1.0, social_sentiment_score))
+    if social_buzz_score:
+        values["social_buzz_score"] = max(-1.0, min(1.0, social_buzz_score))
     return values
 
 
@@ -333,10 +358,27 @@ def _audience_regression_adjustment(
     if not target_features:
         return None
 
-    feature_names = [
-        name for name in ("imdb_rating", "rt_audience_score")
+    candidate_feature_names = [
+        name for name in (
+            "imdb_rating",
+            "rt_audience_score",
+            "log_social_media_universe_m",
+            "social_sentiment_score",
+            "social_buzz_score",
+        )
         if name in target_features
     ]
+    feature_names = []
+    for name in candidate_feature_names:
+        n_with_feature = sum(
+            1
+            for comp, _ in eligible
+            if name in _audience_feature_values(comp)
+        )
+        if n_with_feature >= 4:
+            feature_names.append(name)
+    if not feature_names:
+        return None
     rows = []
     for comp, weight in eligible:
         comp_features = _audience_feature_values(comp)
@@ -373,6 +415,10 @@ def _audience_regression_adjustment(
         "features": {
             "imdb_rating": float(getattr(target, "imdb_rating", 0) or 0),
             "rt_audience_score": float(getattr(target, "rt_audience_score", 0) or 0),
+            "social_media_universe_m": float(getattr(target, "social_media_universe_m", 0) or 0),
+            "social_sentiment_score": float(getattr(target, "social_sentiment_score", 0) or 0),
+            "social_buzz_score": float(getattr(target, "social_buzz_score", 0) or 0),
+            "model_features": ",".join(feature_names),
         },
     }
 

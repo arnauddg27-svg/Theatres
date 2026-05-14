@@ -23,6 +23,7 @@ Usage:
 """
 
 import json, csv, os, sys, re, statistics
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from math import exp, log, sqrt
 from calibration_freeze import (calibration_has_weekend,
@@ -750,6 +751,11 @@ def _social_reach_from_row(row):
     mentions = _social_float(row, ("mentions", "posts", "videos", "items"), 0.0)
     engagement = _social_float(row, ("engagement", "interactions"), 0.0)
     views = _social_float(row, ("views", "video_views", "impressions"), 0.0)
+    social_media_universe_m = _social_float(
+        row,
+        ("social_media_universe_m", "smu_m", "social_media_universe"),
+        0.0,
+    )
     likes = _social_float(row, ("likes",), 0.0)
     comments = _social_float(row, ("comments", "replies"), 0.0)
     shares = _social_float(row, ("shares", "reposts", "retweets"), 0.0)
@@ -758,6 +764,7 @@ def _social_reach_from_row(row):
         mentions
         + engagement / 25.0
         + views / 1000.0
+        + social_media_universe_m * 1000.0
         + likes / 50.0
         + comments / 10.0
         + shares / 10.0,
@@ -822,11 +829,17 @@ def load_social_signal_data(weekend_of=None, through_date=None):
         reach = _social_reach_from_row(row)
         sentiment = _social_sentiment_from_row(row)
         explicit_buzz = _normalize_social_score((row.get("buzz_score") or "").strip())
+        social_media_universe_m = _social_float(
+            row,
+            ("social_media_universe_m", "smu_m", "social_media_universe"),
+            0.0,
+        )
         grouped.setdefault(movie, []).append({
             "row": row,
             "reach": reach,
             "sentiment": sentiment,
             "explicit_buzz": explicit_buzz,
+            "social_media_universe_m": social_media_universe_m,
             "platform": (row.get("platform") or "unknown").strip() or "unknown",
         })
 
@@ -852,6 +865,10 @@ def load_social_signal_data(weekend_of=None, through_date=None):
             if buzz_scores else None
         )
         platforms = sorted({item["platform"] for item in items})
+        social_media_universe_m = max(
+            float(item.get("social_media_universe_m") or 0.0)
+            for item in items
+        )
         quality = _clamp(
             (log(1.0 + max(reach, 0.0)) / log(1.0 + 25_000.0) if reach > 0 else 0.0)
             * _clamp(0.50 + 0.20 * len(platforms), 0.50, 1.0),
@@ -867,6 +884,7 @@ def load_social_signal_data(weekend_of=None, through_date=None):
             "sentiment_score": _clamp(sentiment, -1.0, 1.0),
             "explicit_buzz_score": explicit_buzz,
             "signal_quality": quality,
+            "social_media_universe_m": round(social_media_universe_m, 3),
         }
 
     baseline = statistics.median(reaches) if len(reaches) >= 2 else None
@@ -1720,6 +1738,10 @@ def build_social_signal_layer(movie, social_data):
         "buzz_source": signal.get("buzz_source", "neutral"),
         "signal_quality": round(quality, 4),
         "reach": round(float(signal.get("reach") or 0.0), 2),
+        "social_media_universe_m": round(
+            float(signal.get("social_media_universe_m") or 0.0),
+            3,
+        ),
         "rows": int(signal.get("rows") or 0),
         "platforms": signal.get("platforms") or [],
         "max_adjustment_pct": round(SOCIAL_LAYER_MAX_ADJUSTMENT * 100.0, 1),
@@ -1732,6 +1754,30 @@ def attach_social_signal_prediction(pred, social_data):
         return None
     pred["social_signal"] = layer
     return layer
+
+
+def _metadata_with_social_signal(target, social):
+    """Return TargetMetadata enriched with current-weekend social fields."""
+    if not target or not social:
+        return target
+    social_media_universe_m = _positive_float(social.get("social_media_universe_m")) or 0.0
+    if social_media_universe_m <= 0:
+        # For generic platform rows we only have the model's reach proxy. Keep
+        # that on the same rough million-user scale so historical RelishMix SMU
+        # can still train the comp regression when current social rows exist.
+        social_media_universe_m = max(float(social.get("reach") or 0.0), 0.0) / 1000.0
+    quality = _coverage_value(social.get("signal_quality"), default=0.0)
+    sentiment = float(social.get("sentiment_score") or 0.0)
+    buzz = float(social.get("buzz_score") or 0.0)
+    if quality < SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT:
+        sentiment = 0.0
+        buzz = 0.0
+    return replace(
+        target,
+        social_media_universe_m=social_media_universe_m,
+        social_sentiment_score=sentiment,
+        social_buzz_score=buzz,
+    )
 
 
 def select_regression_prediction(pred, cal=None):
@@ -1812,7 +1858,7 @@ def select_regression_prediction(pred, cal=None):
         basis = f"{basis} + settled residuals"
 
     social = pred.get("social_signal")
-    if social:
+    if social and not pred.get("social_signal_model_integrated"):
         factor = _positive_float(social.get("factor")) or 1.0
         factor = _clamp(
             factor,
@@ -1832,6 +1878,11 @@ def select_regression_prediction(pred, cal=None):
         pred["social_adjustment_pct"] = round((factor - 1.0) * 100.0, 2)
         source = f"{source}+social"
         basis = f"{basis} + social buzz/sentiment"
+    elif social and pred.get("social_signal_model_integrated"):
+        pred["social_factor"] = 1.0
+        pred["social_adjustment_m"] = 0.0
+        pred["social_adjustment_pct"] = 0.0
+        pred["social_model_note"] = "social signal integrated into historical comp regression"
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -3010,8 +3061,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
-    attach_comp_model_prediction(result, cal)
     attach_social_signal_prediction(result, social_data)
+    attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
     return result
 
@@ -3038,6 +3089,8 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     target = metadata_for_movie(pred.get("movie", ""), metadata)
     if not target or not comps:
         return None
+    if pred.get("social_signal"):
+        target = _metadata_with_social_signal(target, pred.get("social_signal"))
 
     try:
         day_weights = get_day_weights(cal)
@@ -3092,11 +3145,28 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_raw_external_thursday_share"] = estimate.weighted_thursday_share
     if estimate.audience_regression_n:
         features = estimate.audience_regression_features or {}
+        model_features = set(
+            feature.strip()
+            for feature in str(features.get("model_features") or "").split(",")
+            if feature.strip()
+        )
         feature_parts = []
         if features.get("imdb_rating"):
             feature_parts.append(f"IMDb {features['imdb_rating']:.1f}")
         if features.get("rt_audience_score"):
             feature_parts.append(f"RT audience {features['rt_audience_score']:.0f}%")
+        if features.get("social_media_universe_m"):
+            feature_parts.append(f"RelishMix SMU {features['social_media_universe_m']:.0f}M")
+            if "log_social_media_universe_m" in model_features:
+                pred["social_signal_model_integrated"] = True
+        if features.get("social_sentiment_score"):
+            feature_parts.append(f"social sentiment {features['social_sentiment_score']:+.2f}")
+            if "social_sentiment_score" in model_features:
+                pred["social_signal_model_integrated"] = True
+        if features.get("social_buzz_score"):
+            feature_parts.append(f"social buzz {features['social_buzz_score']:+.2f}")
+            if "social_buzz_score" in model_features:
+                pred["social_signal_model_integrated"] = True
         pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
         pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
         pred["seat_comp_audience_regression_r2"] = estimate.audience_regression_r2
@@ -3440,7 +3510,7 @@ def print_prediction(pred, verbose=False):
         if pred.get("seat_comp_audience_factor"):
             r2 = pred.get("seat_comp_audience_regression_r2")
             r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
-            print(f"    Audience regression: x{pred['seat_comp_audience_factor']:.3f} "
+            print(f"    Audience/social regression: x{pred['seat_comp_audience_factor']:.3f} "
                   f"from {pred.get('seat_comp_audience_features', 'audience scores')} "
                   f"(n={pred['seat_comp_audience_regression_n']}{r2_str})")
         daily = pred.get("seat_comp_daily_m") or {}
@@ -3517,6 +3587,8 @@ def print_prediction(pred, verbose=False):
               f"quality {social.get('signal_quality', 0):.0%}, "
               f"reach {social.get('reach', 0):,.0f}"
               f"{f', {platforms}' if platforms else ''}")
+        if pred.get("social_signal_model_integrated"):
+            print("    Integrated into historical comp regression; no separate social overlay applied.")
 
     # Polymarket
     poly = pred["poly_result"]

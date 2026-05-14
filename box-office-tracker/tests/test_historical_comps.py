@@ -210,6 +210,17 @@ class HistoricalCompsTest(unittest.TestCase):
         ]
         self.assertEqual([], missing)
 
+    def test_comp_database_has_relishmix_social_references(self):
+        comps = load_historical_comps(DEFAULT_COMPS_CSV)
+        social_comps = [
+            comp
+            for comp in comps
+            if comp.social_media_universe_m > 0
+            and comp.social_source_url.startswith("https://www.relishmix.com/")
+        ]
+
+        self.assertGreaterEqual(len(social_comps), 15)
+
     def test_audience_regression_uses_imdb_and_rt_audience_scores(self):
         target = TargetMetadata(
             movie="High Audience Sequel",
@@ -244,6 +255,51 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertGreaterEqual(estimate.audience_regression_r2, 0.0)
         self.assertIn("imdb_rating", estimate.audience_regression_features)
         self.assertIn("rt_audience_score", estimate.audience_regression_features)
+
+    def test_social_regression_uses_historical_smu_when_available(self):
+        target = TargetMetadata(
+            movie="High Buzz Sequel",
+            genre="action",
+            audience_type="fan_driven",
+            franchise_type="sequel",
+            rating="PG-13",
+            social_media_universe_m=600.0,
+        )
+        comps = [
+            HistoricalComp(
+                f"Comp {idx}",
+                "action",
+                "fan_driven",
+                "sequel",
+                "PG-13",
+                10.0,
+                weekend,
+                social_media_universe_m=smu,
+            )
+            for idx, (smu, weekend) in enumerate([
+                (30.0, 70.0),
+                (60.0, 76.0),
+                (90.0, 82.0),
+                (130.0, 90.0),
+                (190.0, 100.0),
+                (260.0, 112.0),
+                (390.0, 125.0),
+                (520.0, 140.0),
+            ])
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(10.0, target, comps, max_comps=8)
+
+        self.assertGreater(estimate.audience_regression_factor, 1.02)
+        self.assertEqual(8, estimate.audience_regression_n)
+        self.assertIn(
+            "log_social_media_universe_m",
+            estimate.audience_regression_features["model_features"],
+        )
+        self.assertEqual(
+            600.0,
+            estimate.audience_regression_features["social_media_universe_m"],
+        )
 
     def test_movie_metadata_loads_optional_audience_scores(self):
         with self.subTest("temporary metadata csv"):
@@ -743,6 +799,63 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertGreater(prediction["seat_comp_mid_m"], 102.5)
         self.assertEqual(6, prediction["seat_comp_audience_regression_n"])
         self.assertIn("RT audience", prediction["seat_comp_audience_features"])
+
+    def test_prediction_integrates_current_social_signal_into_comp_regression(self):
+        prediction = {
+            "movie": "High Buzz Sequel",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 95.0,
+            "seat_high_m": 105.0,
+            "social_signal": {
+                "factor": 1.08,
+                "sentiment_score": 0.2,
+                "buzz_score": 0.5,
+                "signal_quality": 1.0,
+                "reach": 600_000,
+                "social_media_universe_m": 600.0,
+            },
+            "daily_details": {
+                "Thursday": {"domestic_mid": 10_000_000},
+            },
+        }
+        metadata = {
+            "high buzz sequel": TargetMetadata(
+                movie="High Buzz Sequel",
+                genre="action",
+                audience_type="fan_driven",
+                franchise_type="sequel",
+                rating="PG-13",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                f"Comp {idx}",
+                "action",
+                "fan_driven",
+                "sequel",
+                "PG-13",
+                10.0,
+                weekend,
+                social_media_universe_m=smu,
+            )
+            for idx, (smu, weekend) in enumerate([
+                (30.0, 70.0),
+                (60.0, 76.0),
+                (90.0, 82.0),
+                (130.0, 90.0),
+                (190.0, 100.0),
+                (260.0, 112.0),
+                (390.0, 125.0),
+                (520.0, 140.0),
+            ])
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertTrue(prediction["social_signal_model_integrated"])
+        self.assertIn("RelishMix SMU 600M", prediction["seat_comp_audience_features"])
+        self.assertEqual(0.0, prediction["social_adjustment_m"])
+        self.assertNotIn("+social", prediction["regression_source"])
 
     def test_default_model_cohorts_include_expansion_data(self):
         old_value = os.environ.pop("THEATRE_MODEL_COHORTS", None)

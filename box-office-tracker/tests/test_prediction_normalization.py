@@ -1334,6 +1334,29 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertGreater(loaded["Sample Movie"]["buzz_score"], 0)
         self.assertEqual("relative-volume", loaded["Sample Movie"]["buzz_source"])
 
+    def test_social_signal_loader_preserves_relishmix_smu(self):
+        old_path = predict.SOCIAL_SIGNALS_CSV
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                path = Path(tmpdir) / "social-signals.csv"
+                path.write_text(
+                    "\n".join([
+                        "weekend_of,as_of_date,movie_title,platform,source,social_media_universe_m,sentiment_score,buzz_score",
+                        "2026-05-15,2026-05-14,Sample Movie,RelishMix,manual,500,0.25,0.4",
+                    ])
+                    + "\n"
+                )
+                predict.SOCIAL_SIGNALS_CSV = str(path)
+
+                loaded = predict.load_social_signal_data(weekend_of="2026-05-15")
+                layer = predict.build_social_signal_layer("Sample Movie", loaded)
+        finally:
+            predict.SOCIAL_SIGNALS_CSV = old_path
+
+        self.assertEqual(500.0, loaded["Sample Movie"]["social_media_universe_m"])
+        self.assertEqual(500.0, layer["social_media_universe_m"])
+        self.assertGreater(loaded["Sample Movie"]["reach"], 0)
+
     def _pending_calibration(self, movie, predicted, actual):
         return {
             "movie": movie,
