@@ -30,11 +30,11 @@ SOCIAL_FIELDS = [
 ]
 
 TITLE_OVERRIDES = {
-    "Alien: Romulus": "Alien Romulus",
     "A Quiet Place: Day One": "A Quiet Place Day One",
     "Bad Boys: Ride or Die": "Bad Boys Ride or Die",
-    "Beetlejuice Beetlejuice": "Beetlejuice 2",
-    "Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle": "Demon Slayer",
+    "Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle": (
+        "Demon Slayer Infinity Castle"
+    ),
     "Dungeons & Dragons: Honor Among Thieves": "Dungeons & Dragons Honor Among Thieves",
     "Five Nights at Freddy's": "Five Nights at Freddys",
     "Godzilla x Kong: The New Empire": "Godzilla x Kong The New Empire",
@@ -45,6 +45,16 @@ TITLE_OVERRIDES = {
     "Spider-Man: No Way Home": "Spider Man No Way Home",
     "The Super Mario Bros. Movie": "Super Mario Bros",
     "Venom: Let There be Carnage": "Venom Let There Be Carnage",
+}
+
+TITLE_ALIASES = {
+    "Alien: Romulus": ["Alien Romulus", "Alien Romulous"],
+    "Beetlejuice Beetlejuice": ["Beetlejuice Beetlejuice", "Beetlejuice 2"],
+    "Dune: Part Two": ["Dune Part Two", "Dune 2"],
+    "Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle": [
+        "Demon Slayer Infinity Castle",
+        "Infinity Castle",
+    ],
 }
 
 
@@ -63,6 +73,17 @@ def tokens(value: str) -> list[str]:
 
 def source_title(title: str) -> str:
     return TITLE_OVERRIDES.get(title, title)
+
+
+def source_titles(title: str) -> list[str]:
+    aliases = TITLE_ALIASES.get(title, [])
+    values = aliases + [source_title(title), title]
+    deduped = []
+    for value in values:
+        value = value.strip()
+        if value and value not in deduped:
+            deduped.append(value)
+    return deduped
 
 
 def fetch(url: str) -> str:
@@ -108,28 +129,30 @@ def page_title(page: str) -> str:
 
 
 def title_match_score(movie: str, url: str, title: str, text: str) -> float:
-    source = source_title(movie)
-    source_norm = norm(source)
     title_norm = norm(title)
     slug = url.rstrip("/").split("/")[-1].replace("-", " ")
     slug_norm = norm(slug)
     text_prefix_norm = norm(text[:5000])
 
-    score = 0.0
-    if source_norm and source_norm in title_norm:
-        score += 8.0
-    if source_norm and source_norm in slug_norm:
-        score += 6.0
-    if source_norm and source_norm in text_prefix_norm:
-        score += 3.0
+    best = 0.0
+    for source in source_titles(movie):
+        source_norm = norm(source)
+        score = 0.0
+        if source_norm and source_norm in title_norm:
+            score += 8.0
+        if source_norm and source_norm in slug_norm:
+            score += 6.0
+        if source_norm and source_norm in text_prefix_norm:
+            score += 3.0
 
-    movie_tokens = set(tokens(source))
-    title_tokens = set(tokens(title))
-    slug_tokens = set(tokens(slug))
-    if movie_tokens:
-        score += len(movie_tokens & title_tokens) / len(movie_tokens) * 3.0
-        score += len(movie_tokens & slug_tokens) / len(movie_tokens) * 2.0
-    return score
+        movie_tokens = set(tokens(source))
+        title_tokens = set(tokens(title))
+        slug_tokens = set(tokens(slug))
+        if movie_tokens:
+            score += len(movie_tokens & title_tokens) / len(movie_tokens) * 3.0
+            score += len(movie_tokens & slug_tokens) / len(movie_tokens) * 2.0
+        best = max(best, score)
+    return best
 
 
 def parse_number(raw: str, suffix: str) -> float:
@@ -242,12 +265,13 @@ def load_pages() -> list[dict[str, str]]:
 
 
 def title_positions(movie: str, text: str) -> list[int]:
-    source = source_title(movie)
     lowered = text.lower()
-    phrases = {source.lower()}
-    compact_tokens = tokens(source)
-    if compact_tokens:
-        phrases.add(" ".join(compact_tokens))
+    phrases = set()
+    for source in source_titles(movie):
+        phrases.add(source.lower())
+        compact_tokens = tokens(source)
+        if compact_tokens:
+            phrases.add(" ".join(compact_tokens))
     positions = []
     for phrase in phrases:
         if not phrase:
@@ -296,19 +320,23 @@ def metric_for_movie(movie: str, page: dict[str, str]) -> tuple[float, float]:
 
 
 def is_unsafe_short_match(movie: str, url: str, title: str) -> bool:
-    movie_tokens = tokens(source_title(movie))
-    if len(movie_tokens) > 1 and len(norm(source_title(movie))) > 4:
+    alias_tokens = [tokens(alias) for alias in source_titles(movie)]
+    if any(len(movie_tokens) > 1 and len(norm(" ".join(movie_tokens))) > 4 for movie_tokens in alias_tokens):
         return False
-    source_norm = norm(source_title(movie))
-    if not source_norm:
+    source_norms = [norm(alias) for alias in source_titles(movie)]
+    if not any(source_norms):
         return True
     title_norm = norm(title)
     slug_norm = norm(url.rstrip("/").split("/")[-1])
-    return not (title_norm.startswith(source_norm) or slug_norm.startswith(source_norm))
+    return not any(
+        title_norm.startswith(source_norm) or slug_norm.startswith(source_norm)
+        for source_norm in source_norms
+        if source_norm
+    )
 
 
 def choose_page(movie: str, pages: list[dict[str, str]]) -> dict[str, str] | None:
-    source_norm = norm(source_title(movie))
+    source_norms = [norm(alias) for alias in source_titles(movie)]
     best = None
     best_score = 0.0
     for page in pages:
@@ -316,18 +344,23 @@ def choose_page(movie: str, pages: list[dict[str, str]]) -> dict[str, str] | Non
             continue
         title_norm = norm(page["title"])
         slug_norm = norm(page["url"].rstrip("/").split("/")[-1])
-        if source_norm not in title_norm and source_norm not in slug_norm:
+        matching_norms = [
+            source_norm
+            for source_norm in source_norms
+            if source_norm and (source_norm in title_norm or source_norm in slug_norm)
+        ]
+        if not matching_norms:
             continue
         smu_m, proximity_score = metric_for_movie(movie, page)
         if smu_m <= 0 or proximity_score < 2.0:
             continue
         score = title_match_score(movie, page["url"], page["title"], page["text"])
         score += proximity_score
-        if slug_norm.startswith(source_norm):
+        if any(slug_norm.startswith(source_norm) for source_norm in matching_norms):
             score += 5.0
-        elif source_norm in slug_norm:
+        elif any(source_norm in slug_norm for source_norm in matching_norms):
             score += 1.0
-        if title_norm.startswith(source_norm):
+        if any(title_norm.startswith(source_norm) for source_norm in matching_norms):
             score += 3.0
         if score > best_score:
             best = {**page, "smu_m": f"{smu_m:.3f}"}

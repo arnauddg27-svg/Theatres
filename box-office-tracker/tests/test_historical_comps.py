@@ -221,6 +221,25 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertGreaterEqual(len(social_comps), 15)
 
+    def test_relishmix_social_backfill_uses_specific_movie_pages(self):
+        comps = {
+            comp.movie: comp
+            for comp in load_historical_comps(DEFAULT_COMPS_CSV)
+        }
+
+        self.assertAlmostEqual(575.5, comps["Dune: Part Two"].social_media_universe_m)
+        self.assertEqual(
+            "https://www.relishmix.com/dune-2",
+            comps["Dune: Part Two"].social_source_url,
+        )
+        self.assertAlmostEqual(246.8, comps["Alien: Romulus"].social_media_universe_m)
+        self.assertEqual(
+            "",
+            comps[
+                "Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle"
+            ].social_source_url,
+        )
+
     def test_audience_regression_uses_imdb_and_rt_audience_scores(self):
         target = TargetMetadata(
             movie="High Audience Sequel",
