@@ -41,6 +41,7 @@ DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
 PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
+SOCIAL_SIGNALS_CSV  = os.path.join(DATA_DIR, "social-signals.csv")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 THEATRES_JSON       = os.path.join(DATA_DIR, "theatres-all.json")
@@ -56,7 +57,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v5"
+MODEL_VERSION = "seat-regression-v6-social"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -65,6 +66,10 @@ RESIDUAL_REGRESSION_RATIO_MIN = 0.60
 RESIDUAL_REGRESSION_RATIO_MAX = 1.60
 RESIDUAL_REGRESSION_FACTOR_MIN = 0.85
 RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
+SOCIAL_LAYER_MAX_ADJUSTMENT = 0.08
+SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
+SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
+SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
@@ -678,6 +683,208 @@ def load_polymarket_data(weekend_of=None, through_date=None):
         _, best_rows = max(groups.items(), key=group_score)
         data[movie] = [row for _, row in sorted(best_rows)]
     return data
+
+
+def _social_float(row, fields, default=0.0):
+    for field in fields:
+        value = (row.get(field, "") or "").strip()
+        if value == "":
+            continue
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            continue
+    return default
+
+
+def _social_date(row):
+    """Best-effort YYYY-MM-DD timestamp for social signal rows."""
+    for field in ("as_of_date", "date", "snapshot_date", "collected_at", "timestamp"):
+        value = (row.get(field, "") or "").strip()
+        if value:
+            return value[:10]
+    return ""
+
+
+def _normalize_social_score(value):
+    """Normalize manual sentiment/buzz scores to -1..1.
+
+    Accepted conventions:
+      - -1..1: native normalized score
+      - 0..100: 50 is neutral
+      - -100..100: percentage-style score
+    """
+    try:
+        score = float(value)
+    except (TypeError, ValueError):
+        return None
+    if -1.0 <= score <= 1.0:
+        return _clamp(score, -1.0, 1.0)
+    if 0.0 <= score <= 100.0:
+        return _clamp((score - 50.0) / 50.0, -1.0, 1.0)
+    if -100.0 <= score <= 100.0:
+        return _clamp(score / 100.0, -1.0, 1.0)
+    return None
+
+
+def _social_sentiment_from_row(row):
+    explicit = (row.get("sentiment_score", "") or "").strip()
+    if explicit != "":
+        normalized = _normalize_social_score(explicit)
+        if normalized is not None:
+            return normalized
+
+    positive = _social_float(row, ("positive_mentions", "positive", "pos"), 0.0)
+    negative = _social_float(row, ("negative_mentions", "negative", "neg"), 0.0)
+    neutral = _social_float(row, ("neutral_mentions", "neutral"), 0.0)
+    denom = positive + negative + neutral
+    if denom <= 0:
+        denom = positive + negative
+    if denom <= 0:
+        return 0.0
+    return _clamp((positive - negative) / denom, -1.0, 1.0)
+
+
+def _social_reach_from_row(row):
+    """Return a weighted activity proxy across common platform fields."""
+    mentions = _social_float(row, ("mentions", "posts", "videos", "items"), 0.0)
+    engagement = _social_float(row, ("engagement", "interactions"), 0.0)
+    views = _social_float(row, ("views", "video_views", "impressions"), 0.0)
+    likes = _social_float(row, ("likes",), 0.0)
+    comments = _social_float(row, ("comments", "replies"), 0.0)
+    shares = _social_float(row, ("shares", "reposts", "retweets"), 0.0)
+    return max(
+        0.0,
+        mentions
+        + engagement / 25.0
+        + views / 1000.0
+        + likes / 50.0
+        + comments / 10.0
+        + shares / 10.0,
+    )
+
+
+def load_social_signal_data(weekend_of=None, through_date=None):
+    """Load optional social buzz/sentiment rows grouped by movie.
+
+    `social-signals.csv` is intentionally data-source agnostic. It can hold
+    manual or automated platform snapshots from TikTok, X, Reddit, YouTube,
+    Google Trends, RelishMix-style exports, etc. Prediction uses the latest row
+    per movie/platform/source, then compares total reach against other movies in
+    the same file/weekend. If the file is absent or has no usable rows, the
+    social layer is neutral and forecast math is unchanged.
+    """
+    if not os.path.exists(SOCIAL_SIGNALS_CSV):
+        return {}
+
+    rows = []
+    with open(SOCIAL_SIGNALS_CSV, "r") as f:
+        reader = csv.DictReader(f)
+        for idx, row in enumerate(reader):
+            movie = (row.get("movie_title") or row.get("movie") or "").strip()
+            if not movie:
+                continue
+            row_weekend = (row.get("weekend_of") or "").strip()
+            if weekend_of and row_weekend and row_weekend != weekend_of:
+                continue
+            row_date = _social_date(row)
+            if through_date:
+                if not row_date or row_date > through_date:
+                    continue
+            row["movie_title"] = movie
+            rows.append((idx, row_date, row))
+
+    if weekend_of is None:
+        weekends = [
+            row.get("weekend_of", "")
+            for _, _, row in rows
+            if row.get("weekend_of")
+        ]
+        weekend_of = max(weekends) if weekends else _current_weekend_friday()
+
+    latest_rows = {}
+    for idx, row_date, row in rows:
+        row_weekend = (row.get("weekend_of") or "").strip()
+        if row_weekend and row_weekend != weekend_of:
+            continue
+        movie = row["movie_title"]
+        platform = (row.get("platform") or "unknown").strip().lower()
+        source = (row.get("source") or row.get("source_url") or "").strip().lower()
+        dedupe_key = (movie.lower(), platform, source)
+        sort_key = (row_date, idx)
+        prev = latest_rows.get(dedupe_key)
+        if not prev or sort_key >= prev[0]:
+            latest_rows[dedupe_key] = (sort_key, row)
+
+    grouped = {}
+    for _, row in latest_rows.values():
+        movie = row["movie_title"]
+        reach = _social_reach_from_row(row)
+        sentiment = _social_sentiment_from_row(row)
+        explicit_buzz = _normalize_social_score((row.get("buzz_score") or "").strip())
+        grouped.setdefault(movie, []).append({
+            "row": row,
+            "reach": reach,
+            "sentiment": sentiment,
+            "explicit_buzz": explicit_buzz,
+            "platform": (row.get("platform") or "unknown").strip() or "unknown",
+        })
+
+    aggregates = {}
+    reaches = []
+    for movie, items in grouped.items():
+        reach = sum(item["reach"] for item in items)
+        if reach > 0:
+            reaches.append(reach)
+        weight_total = sum(max(item["reach"], 1.0) for item in items)
+        sentiment = (
+            sum(item["sentiment"] * max(item["reach"], 1.0) for item in items) / weight_total
+            if weight_total > 0 else 0.0
+        )
+        buzz_scores = [
+            (item["explicit_buzz"], max(item["reach"], 1.0))
+            for item in items
+            if item["explicit_buzz"] is not None
+        ]
+        explicit_buzz = (
+            sum(score * weight for score, weight in buzz_scores) /
+            sum(weight for _, weight in buzz_scores)
+            if buzz_scores else None
+        )
+        platforms = sorted({item["platform"] for item in items})
+        quality = _clamp(
+            (log(1.0 + max(reach, 0.0)) / log(1.0 + 25_000.0) if reach > 0 else 0.0)
+            * _clamp(0.50 + 0.20 * len(platforms), 0.50, 1.0),
+            0.0,
+            1.0,
+        )
+        aggregates[movie] = {
+            "movie": movie,
+            "weekend_of": weekend_of,
+            "rows": len(items),
+            "platforms": platforms,
+            "reach": reach,
+            "sentiment_score": _clamp(sentiment, -1.0, 1.0),
+            "explicit_buzz_score": explicit_buzz,
+            "signal_quality": quality,
+        }
+
+    baseline = statistics.median(reaches) if len(reaches) >= 2 else None
+    for signal in aggregates.values():
+        if signal["explicit_buzz_score"] is not None:
+            buzz = signal["explicit_buzz_score"]
+            source = "explicit"
+        elif baseline and signal["reach"] > 0:
+            buzz = _clamp(log(signal["reach"] / baseline) / log(4.0), -1.0, 1.0)
+            source = "relative-volume"
+        else:
+            buzz = 0.0
+            source = "neutral"
+        signal["buzz_score"] = round(_clamp(buzz, -1.0, 1.0), 4)
+        signal["buzz_source"] = source
+        signal["sentiment_score"] = round(signal["sentiment_score"], 4)
+        signal["signal_quality"] = round(signal["signal_quality"], 4)
+    return aggregates
 
 
 def load_calibration():
@@ -1468,6 +1675,65 @@ def historical_residual_regression(pred, cal):
     }
 
 
+def build_social_signal_layer(movie, social_data):
+    """Return a capped social buzz/sentiment modifier for one movie.
+
+    Social data is intentionally secondary. The layer can only make a bounded
+    multiplicative adjustment to the seat/comp/snapshot forecast, and missing
+    social data returns None so the core seat model is unchanged.
+    """
+    signal = (social_data or {}).get(movie)
+    if not signal:
+        return None
+
+    try:
+        sentiment = _clamp(float(signal.get("sentiment_score", 0.0)), -1.0, 1.0)
+    except (TypeError, ValueError):
+        sentiment = 0.0
+    try:
+        buzz = _clamp(float(signal.get("buzz_score", 0.0)), -1.0, 1.0)
+    except (TypeError, ValueError):
+        buzz = 0.0
+    quality = _coverage_value(signal.get("signal_quality"), default=0.0)
+
+    raw_adjustment = (
+        SOCIAL_LAYER_SENTIMENT_WEIGHT * sentiment
+        + SOCIAL_LAYER_BUZZ_WEIGHT * buzz
+    )
+    if quality < SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT:
+        adjustment = 0.0
+    else:
+        adjustment = raw_adjustment * quality
+    adjustment = _clamp(
+        adjustment,
+        -SOCIAL_LAYER_MAX_ADJUSTMENT,
+        SOCIAL_LAYER_MAX_ADJUSTMENT,
+    )
+    return {
+        "movie": movie,
+        "weekend_of": signal.get("weekend_of"),
+        "factor": round(1.0 + adjustment, 5),
+        "adjustment_pct": round(adjustment * 100.0, 2),
+        "raw_adjustment_pct": round(raw_adjustment * 100.0, 2),
+        "sentiment_score": round(sentiment, 4),
+        "buzz_score": round(buzz, 4),
+        "buzz_source": signal.get("buzz_source", "neutral"),
+        "signal_quality": round(quality, 4),
+        "reach": round(float(signal.get("reach") or 0.0), 2),
+        "rows": int(signal.get("rows") or 0),
+        "platforms": signal.get("platforms") or [],
+        "max_adjustment_pct": round(SOCIAL_LAYER_MAX_ADJUSTMENT * 100.0, 1),
+    }
+
+
+def attach_social_signal_prediction(pred, social_data):
+    layer = build_social_signal_layer(pred.get("movie", ""), social_data)
+    if not layer:
+        return None
+    pred["social_signal"] = layer
+    return layer
+
+
 def select_regression_prediction(pred, cal=None):
     """Attach the model-driven regression forecast.
 
@@ -1544,6 +1810,28 @@ def select_regression_prediction(pred, cal=None):
         ]
         source = f"{source}+historical-residual"
         basis = f"{basis} + settled residuals"
+
+    social = pred.get("social_signal")
+    if social:
+        factor = _positive_float(social.get("factor")) or 1.0
+        factor = _clamp(
+            factor,
+            1.0 - SOCIAL_LAYER_MAX_ADJUSTMENT,
+            1.0 + SOCIAL_LAYER_MAX_ADJUSTMENT,
+        )
+        base_mid = mid
+        mid = mid * factor
+        low = low * factor
+        high = high * factor
+        social_delta = abs(mid - base_mid)
+        low = max(0.0, low - social_delta * 0.20)
+        high = high + social_delta * 0.20
+        pred["social_base_mid_m"] = base_mid
+        pred["social_factor"] = round(factor, 5)
+        pred["social_adjustment_m"] = round(mid - base_mid, 3)
+        pred["social_adjustment_pct"] = round((factor - 1.0) * 100.0, 2)
+        source = f"{source}+social"
+        basis = f"{basis} + social buzz/sentiment"
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -2178,7 +2466,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
                   weekend_of=None, reference_amc_theatres=None,
-                  model_cohort_key=None):
+                  model_cohort_key=None, social_signal=None):
     """Record a predicted-vs-actual result and update calibration factors."""
     if isinstance(days_collected, (list, tuple, set, dict)):
         n_days = len(days_collected)
@@ -2228,6 +2516,22 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
             k: round(min(1.0, max(0.0, float(v))), 3)
             for k, v in snapshot_daily_coverage_ratios.items()
             if v is not None
+        }
+    if social_signal:
+        entry["social_signal"] = {
+            key: social_signal.get(key)
+            for key in (
+                "factor",
+                "adjustment_pct",
+                "sentiment_score",
+                "buzz_score",
+                "buzz_source",
+                "signal_quality",
+                "reach",
+                "rows",
+                "platforms",
+            )
+            if social_signal.get(key) is not None
         }
     if daily_theatre_counts:
         entry["daily_theatre_counts"] = daily_theatre_counts
@@ -2292,7 +2596,8 @@ def snapshot_calibration_fields_from_prediction(pred):
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
-                  national_theatre_count=None, snapshot_data=None):
+                  national_theatre_count=None, snapshot_data=None,
+                  social_data=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -2706,6 +3011,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
     attach_comp_model_prediction(result, cal)
+    attach_social_signal_prediction(result, social_data)
     select_regression_prediction(result, cal)
     return result
 
@@ -3200,6 +3506,18 @@ def print_prediction(pred, verbose=False):
                   f"day-shape prior {fmt_m(prior / 1_000_000)}, "
                   f"{signal_weight:.0%} snapshot signal)")
 
+    social = pred.get("social_signal")
+    if social:
+        platforms = ", ".join(social.get("platforms") or [])
+        print(f"  Social layer:     x{social.get('factor', 1.0):.3f} "
+              f"({social.get('adjustment_pct', 0):+.1f}%)")
+        print(f"    Buzz {social.get('buzz_score', 0):+.2f} "
+              f"({social.get('buzz_source', 'neutral')}), "
+              f"sentiment {social.get('sentiment_score', 0):+.2f}, "
+              f"quality {social.get('signal_quality', 0):.0%}, "
+              f"reach {social.get('reach', 0):,.0f}"
+              f"{f', {platforms}' if platforms else ''}")
+
     # Polymarket
     poly = pred["poly_result"]
     if poly:
@@ -3385,6 +3703,7 @@ def main():
         seat_data = load_seat_data()
         poly_data = load_polymarket_data()
         snapshot_data = load_pre_reservation_data()
+        social_data = load_social_signal_data()
         theatre_counts = load_theatre_counts()
         movie_match = None
         for m in seat_data:
@@ -3400,7 +3719,8 @@ def main():
         pred = predict_movie(movie_match, seat_data[movie_match],
                             poly_data.get(movie_match, []), cal,
                             national_theatre_count=nat_count,
-                            snapshot_data=snapshot_data.get(movie_match, {}))
+                            snapshot_data=snapshot_data.get(movie_match, {}),
+                            social_data=social_data)
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -3459,7 +3779,8 @@ def main():
                      snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
                      weekend_of=weekend_of,
                      reference_amc_theatres=pred.get("reference_amc_theatres"),
-                     model_cohort_key=pred.get("model_cohort_key"))
+                     model_cohort_key=pred.get("model_cohort_key"),
+                     social_signal=pred.get("social_signal"))
         print(f"Recorded: {movie_match} actual = ${actual_val}M")
         print(f"Calibration updated → scale={cal['calibration_factors']['overall_scale_factor']:.4f}, "
               f"AMC share={cal['calibration_factors']['amc_market_share']:.2%}")
@@ -3473,6 +3794,10 @@ def main():
     seat_data = filter_seat_data_through(seat_data, through_date)
     poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
     snapshot_data = load_pre_reservation_data(
+        weekend_of=replay_weekend,
+        through_date=through_date,
+    )
+    social_data = load_social_signal_data(
         weekend_of=replay_weekend,
         through_date=through_date,
     )
@@ -3522,7 +3847,8 @@ def main():
         pred = predict_movie(movie, seat_data[movie],
                             poly_data.get(movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count,
-                            snapshot_data=snapshot_data.get(movie, {}))
+                            snapshot_data=snapshot_data.get(movie, {}),
+                            social_data=social_data)
         if pred:
             print_prediction(pred, verbose=verbose)
 

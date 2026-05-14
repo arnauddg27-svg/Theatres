@@ -1260,6 +1260,80 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(100.0, pred["regression_mid_m"], places=6)
         self.assertNotIn("historical_residual_factor", pred)
 
+    def test_social_signal_layer_is_capped_and_excludes_polymarket(self):
+        pred = {
+            "movie": "Future Movie",
+            "seat_comp_mid_m": 100.0,
+            "seat_comp_low_m": 90.0,
+            "seat_comp_high_m": 110.0,
+            "n_theatres_total": 425,
+            "n_days": 4,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 1.0,
+            "seat_data_quality": 1.0,
+            "model_cohort_key": "core,expansion",
+            "social_signal": {
+                "factor": 1.50,
+                "adjustment_pct": 50.0,
+                "sentiment_score": 1.0,
+                "buzz_score": 1.0,
+                "signal_quality": 1.0,
+                "reach": 1000000,
+                "rows": 2,
+                "platforms": ["TikTok", "X"],
+            },
+        }
+
+        select_regression_prediction(pred, {})
+
+        self.assertAlmostEqual(108.0, pred["regression_mid_m"], places=6)
+        self.assertEqual(8.0, pred["social_adjustment_pct"])
+        self.assertIn("social", pred["regression_source"])
+        self.assertFalse(pred["regression_uses_polymarket"])
+
+    def test_build_social_signal_layer_is_neutral_without_quality(self):
+        layer = predict.build_social_signal_layer(
+            "Future Movie",
+            {
+                "Future Movie": {
+                    "sentiment_score": 1.0,
+                    "buzz_score": 1.0,
+                    "signal_quality": 0.0,
+                    "reach": 0,
+                    "rows": 1,
+                    "platforms": ["manual"],
+                }
+            },
+        )
+
+        self.assertEqual(1.0, layer["factor"])
+        self.assertEqual(0.0, layer["adjustment_pct"])
+
+    def test_social_signal_loader_uses_latest_platform_snapshot(self):
+        old_path = predict.SOCIAL_SIGNALS_CSV
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                path = Path(tmpdir) / "social-signals.csv"
+                path.write_text(
+                    "\n".join([
+                        "weekend_of,as_of_date,movie_title,platform,source,mentions,engagement,views,positive_mentions,negative_mentions,neutral_mentions,sentiment_score,buzz_score",
+                        "2026-05-15,2026-05-13,Sample Movie,TikTok,manual,100,0,0,80,20,0,,",
+                        "2026-05-15,2026-05-14,Sample Movie,TikTok,manual,400,0,0,300,50,50,,",
+                        "2026-05-15,2026-05-14,Other Movie,TikTok,manual,100,0,0,40,40,20,,",
+                    ])
+                    + "\n"
+                )
+                predict.SOCIAL_SIGNALS_CSV = str(path)
+
+                loaded = predict.load_social_signal_data(weekend_of="2026-05-15")
+        finally:
+            predict.SOCIAL_SIGNALS_CSV = old_path
+
+        self.assertEqual(400, loaded["Sample Movie"]["reach"])
+        self.assertAlmostEqual(0.625, loaded["Sample Movie"]["sentiment_score"])
+        self.assertGreater(loaded["Sample Movie"]["buzz_score"], 0)
+        self.assertEqual("relative-volume", loaded["Sample Movie"]["buzz_source"])
+
     def _pending_calibration(self, movie, predicted, actual):
         return {
             "movie": movie,

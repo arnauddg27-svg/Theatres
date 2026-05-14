@@ -460,6 +460,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
                   reference_amc_theatres=None, model_cohort_key=None,
+                  social_signal=None,
                   actual_source=None, actual_status="final",
                   replace_existing=False):
     """Record daily predicted-vs-actual and update all calibration factors."""
@@ -511,6 +512,22 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
             k: round(min(1.0, max(0.0, float(v))), 3)
             for k, v in snapshot_daily_coverage_ratios.items()
             if v is not None
+        }
+    if social_signal:
+        entry["social_signal"] = {
+            key: social_signal.get(key)
+            for key in (
+                "factor",
+                "adjustment_pct",
+                "sentiment_score",
+                "buzz_score",
+                "buzz_source",
+                "signal_quality",
+                "reach",
+                "rows",
+                "platforms",
+            )
+            if social_signal.get(key) is not None
         }
     if daily_theatre_counts:
         entry["daily_theatre_counts"] = daily_theatre_counts
@@ -690,6 +707,7 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             snapshot_daily_coverage_ratios=item.get("snapshot_daily_coverage_ratios"),
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
+            social_signal=item.get("social_signal"),
             actual_source=actual_source,
             actual_status=actual_status,
             replace_existing=True,
@@ -712,6 +730,7 @@ def auto_calibrate():
     from predict import (regression_prediction_values, load_seat_data,
                          load_polymarket_data, load_theatre_counts,
                          load_pre_reservation_data,
+                         load_social_signal_data,
                          predict_movie)
 
     cal = load_calibration()
@@ -726,6 +745,7 @@ def auto_calibrate():
     seat_data = load_seat_data(weekend_of=last_fri)
     poly_data = load_polymarket_data(weekend_of=last_fri)
     snapshot_data = load_pre_reservation_data(weekend_of=last_fri)
+    social_data = load_social_signal_data(weekend_of=last_fri)
     # National theatre counts feed the AMC-share / national-count blend in
     # predict_movie. Skipping them here makes calibrate.py's "predicted" number
     # disagree with `predict.py --movie X` output and trains the EMA scale
@@ -777,7 +797,8 @@ def auto_calibrate():
         # Our prediction
         pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), prediction_cal,
                              national_theatre_count=nat_count,
-                             snapshot_data=snapshot_data.get(movie, {}))
+                             snapshot_data=snapshot_data.get(movie, {}),
+                             social_data=social_data)
         if not pred:
             print(f"    No prediction possible")
             continue
@@ -830,6 +851,7 @@ def auto_calibrate():
             "daily_coverage_ratios": daily_coverage_ratios,
             "snapshot_daily_predictions": snapshot_daily_predictions,
             "snapshot_daily_coverage_ratios": snapshot_daily_coverage_ratios,
+            "social_signal": pred.get("social_signal"),
         })
 
     entries = record_pending_calibrations(cal, prediction_cal, last_fri, pending)
@@ -963,12 +985,14 @@ if __name__ == "__main__":
         from predict import (regression_prediction_values, load_seat_data,
                              load_polymarket_data, load_theatre_counts,
                              load_pre_reservation_data,
+                             load_social_signal_data,
                              predict_movie)
         cal = load_calibration()
         weekend_of = _last_friday()
         seat_data = load_seat_data(weekend_of=weekend_of)
         poly_data = load_polymarket_data(weekend_of=weekend_of)
         snapshot_data = load_pre_reservation_data(weekend_of=weekend_of)
+        social_data = load_social_signal_data(weekend_of=weekend_of)
         theatre_counts = load_theatre_counts()
 
         matched_movie = None
@@ -1013,6 +1037,7 @@ if __name__ == "__main__":
             prediction_cal,
             national_theatre_count=nat_count,
             snapshot_data=snapshot_data.get(matched_movie, {}),
+            social_data=social_data,
         )
         if not pred:
             print(f"No prediction found for {matched_movie!r}; not recording actual.")
@@ -1072,6 +1097,7 @@ if __name__ == "__main__":
             snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
+            social_signal=pred.get("social_signal"),
             actual_source=actual_source,
             actual_status=actual_status,
             replace_existing=True,
