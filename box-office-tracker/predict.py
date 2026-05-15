@@ -32,7 +32,8 @@ from calibration_freeze import (calibration_has_weekend,
 from historical_comps import (estimate_from_prediction,
                               load_historical_comps,
                               load_movie_metadata,
-                              metadata_for_movie)
+                              metadata_for_movie,
+                              release_footprint_factor)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                sanitize_calibration, recalibrate_scale_factor,
                                recalibrate_snapshot_day_scale_factors)
@@ -58,7 +59,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v7-theatre-footprint"
+MODEL_VERSION = "seat-regression-v8-theatre-footprint-prior"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -984,6 +985,9 @@ def national_release_footprint_factor(national_theatre_count,
     versus a 3,600-4,200-theatre release, while very wide releases get only a
     small upside because seat occupancy/showtime density already carry demand.
     """
+    if baseline == NATIONAL_WIDE_RELEASE_BASELINE_THEATRES:
+        return release_footprint_factor(national_theatre_count)
+
     count = _positive_float(national_theatre_count)
     baseline = _positive_float(baseline)
     if not count or not baseline:
@@ -3261,6 +3265,16 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         pred["seat_comp_prior_weight"] = adjusted["prior_weight"]
         pred["seat_comp_observed_weight"] = adjusted["seat_weight"]
         pred["seat_comp_prior_disagreement_m"] = adjusted["disagreement_m"]
+        pred["seat_comp_prior_raw_mid_m"] = getattr(
+            estimate,
+            "raw_prior_weekend_mid_m",
+            adjusted["prior_mid_m"],
+        )
+        pred["seat_comp_prior_footprint_factor"] = getattr(
+            estimate,
+            "prior_footprint_factor",
+            1.0,
+        )
         pred["seat_comp_adjusted_mid_m"] = adjusted["mid_m"]
         pred["seat_comp_adjusted_low_m"] = adjusted["low_m"]
         pred["seat_comp_adjusted_high_m"] = adjusted["high_m"]
@@ -3616,6 +3630,9 @@ def print_prediction(pred, verbose=False):
             print(f"    Weights: {pred['seat_comp_observed_weight']:.0%} observed seat+comp / "
                   f"{pred['seat_comp_prior_weight']:.0%} historical prior; "
                   f"prior {fmt_m(pred['seat_comp_prior_mid_m'])}")
+            if pred.get("seat_comp_prior_footprint_factor") not in (None, 1.0):
+                print(f"    Prior footprint: x{pred['seat_comp_prior_footprint_factor']:.3f} "
+                      f"from raw {fmt_m(pred.get('seat_comp_prior_raw_mid_m', 0))}")
 
         if pred.get("comp_blended_m") is not None:
             print(f"  Seat+comp model:  {fmt_m(pred['comp_blended_m']):>7}  "

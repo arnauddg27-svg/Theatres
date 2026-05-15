@@ -359,6 +359,40 @@ class HistoricalCompsTest(unittest.TestCase):
             estimate.audience_regression_features["national_theatre_count"],
         )
 
+    def test_theatre_count_normalizes_sparse_historical_prior(self):
+        target = TargetMetadata(
+            movie="Sub-Wide Horror",
+            genre="horror",
+            audience_type="horror_fan",
+            franchise_type="original",
+            rating="R",
+            national_theatre_count=2000,
+        )
+        comps = [
+            HistoricalComp(
+                f"Wide Comp {idx}",
+                "horror",
+                "horror_fan",
+                "original",
+                "R",
+                8.0,
+                80.0,
+                national_theatre_count=4000,
+            )
+            for idx in range(6)
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(
+            8.0,
+            target,
+            comps,
+            max_comps=6,
+        )
+
+        self.assertLess(estimate.prior_weekend_mid_m, 65.0)
+        self.assertLess(estimate.prior_footprint_factor, 0.85)
+        self.assertAlmostEqual(80.0, estimate.raw_prior_weekend_mid_m, places=6)
+
     def test_social_regression_uses_historical_smu_when_available(self):
         target = TargetMetadata(
             movie="High Buzz Sequel",

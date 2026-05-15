@@ -19,6 +19,12 @@ BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
 DEFAULT_COMPS_CSV = DATA_DIR / "historical-comps.csv"
 DEFAULT_METADATA_CSV = DATA_DIR / "movie-metadata.csv"
+NATIONAL_WIDE_RELEASE_BASELINE_THEATRES = 4000
+NATIONAL_FOOTPRINT_EXPONENT = 0.55
+NATIONAL_FOOTPRINT_MIN_FACTOR = 0.55
+NATIONAL_FOOTPRINT_MAX_FACTOR = 1.08
+NATIONAL_PRIOR_FOOTPRINT_MIN_FACTOR = 0.55
+NATIONAL_PRIOR_FOOTPRINT_MAX_FACTOR = 1.25
 
 
 @dataclass(frozen=True)
@@ -122,6 +128,8 @@ class CompEstimate:
     prior_weekend_mid_m: float = 0.0
     prior_weekend_low_m: float = 0.0
     prior_weekend_high_m: float = 0.0
+    raw_prior_weekend_mid_m: float = 0.0
+    prior_footprint_factor: float = 1.0
 
 
 def _clean(value: str | None) -> str:
@@ -255,6 +263,49 @@ def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
         else:
             score -= 0.20
     return score
+
+
+def _clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
+
+
+def release_footprint_factor(national_theatre_count: int | float | None) -> float:
+    count = float(national_theatre_count or 0)
+    if count <= 0:
+        return 1.0
+    ratio = count / NATIONAL_WIDE_RELEASE_BASELINE_THEATRES
+    if ratio < 1.0:
+        return _clamp(
+            ratio ** NATIONAL_FOOTPRINT_EXPONENT,
+            NATIONAL_FOOTPRINT_MIN_FACTOR,
+            1.0,
+        )
+    return _clamp(
+        1.0 + ((ratio - 1.0) * 0.20),
+        1.0,
+        NATIONAL_FOOTPRINT_MAX_FACTOR,
+    )
+
+
+def _footprint_adjusted_opening_weekend(target: TargetMetadata,
+                                        comp: HistoricalComp) -> float:
+    """Scale comp absolute grosses to the target's national release footprint."""
+    if (
+        not target.national_theatre_count
+        or not comp.national_theatre_count
+        or comp.opening_weekend_m <= 0
+    ):
+        return comp.opening_weekend_m
+    target_factor = release_footprint_factor(target.national_theatre_count)
+    comp_factor = release_footprint_factor(comp.national_theatre_count)
+    if comp_factor <= 0:
+        return comp.opening_weekend_m
+    adjustment = _clamp(
+        target_factor / comp_factor,
+        NATIONAL_PRIOR_FOOTPRINT_MIN_FACTOR,
+        NATIONAL_PRIOR_FOOTPRINT_MAX_FACTOR,
+    )
+    return comp.opening_weekend_m * adjustment
 
 
 def _audience_feature_values(item) -> dict[str, float]:
@@ -505,14 +556,25 @@ def estimate_opening_weekend_from_thursday(
     weighted_share = _weighted_average(share_values)
     low_share = _weighted_quantile(share_values, 0.75)
     high_share = _weighted_quantile(share_values, 0.25)
-    weekend_values = [
+    raw_weekend_values = [
         (comp.opening_weekend_m, weight)
         for comp, weight in selected
         if comp.opening_weekend_m > 0
     ]
+    weekend_values = [
+        (_footprint_adjusted_opening_weekend(target, comp), weight)
+        for comp, weight in selected
+        if comp.opening_weekend_m > 0
+    ]
+    raw_prior_mid = _weighted_average(raw_weekend_values)
     prior_mid = _weighted_average(weekend_values)
     prior_low = _weighted_quantile(weekend_values, 0.25)
     prior_high = _weighted_quantile(weekend_values, 0.75)
+    prior_footprint_factor = (
+        prior_mid / raw_prior_mid
+        if raw_prior_mid and prior_mid
+        else 1.0
+    )
 
     mid = thursday_gross_m / weighted_share if weighted_share else 0.0
     low = thursday_gross_m / low_share if low_share else mid
@@ -578,6 +640,8 @@ def estimate_opening_weekend_from_thursday(
         prior_weekend_mid_m=prior_mid,
         prior_weekend_low_m=min(prior_low, prior_high),
         prior_weekend_high_m=max(prior_low, prior_high),
+        raw_prior_weekend_mid_m=raw_prior_mid,
+        prior_footprint_factor=prior_footprint_factor,
     )
 
 
