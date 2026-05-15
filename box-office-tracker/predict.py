@@ -29,7 +29,11 @@ from math import exp, log, sqrt
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
-from historical_comps import (estimate_from_prediction,
+from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
+                              NATIONAL_FOOTPRINT_MAX_FACTOR,
+                              NATIONAL_FOOTPRINT_MIN_FACTOR,
+                              NATIONAL_WIDE_RELEASE_BASELINE_THEATRES,
+                              estimate_from_prediction,
                               load_historical_comps,
                               load_movie_metadata,
                               metadata_for_movie,
@@ -77,11 +81,6 @@ SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
-NATIONAL_WIDE_RELEASE_BASELINE_THEATRES = 4000
-NATIONAL_FOOTPRINT_EXPONENT = 0.55
-NATIONAL_FOOTPRINT_MIN_FACTOR = 0.55
-NATIONAL_FOOTPRINT_MAX_FACTOR = 1.08
-
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
 MAX_REASONABLE_PRE_SHOW_MINUTES = 360

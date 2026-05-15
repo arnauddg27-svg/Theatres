@@ -9,7 +9,7 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
 import predict
 import calibrate
-from historical_comps import TargetMetadata
+from historical_comps import TargetMetadata, release_footprint_factor
 from model_calibration import recalibrate_snapshot_day_scale_factors
 from predict import (
     days_to_weekend,
@@ -117,6 +117,11 @@ class PredictionNormalizationTest(unittest.TestCase):
 
     def test_national_theatre_count_is_footprint_drag_for_sub_wide_release(self):
         self.assertLess(national_release_footprint_factor(2615), 1.0)
+        self.assertAlmostEqual(
+            release_footprint_factor(2615),
+            national_release_footprint_factor(2615),
+            places=12,
+        )
         self.assertEqual(1.0, national_release_footprint_factor(None))
 
         cal = {
