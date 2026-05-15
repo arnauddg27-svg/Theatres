@@ -553,10 +553,12 @@ def phase1_expected_date(tz_group):
 def phase2_expected_dates(groups, snapshots_only=False):
     """Return the Phase 1 show dates required by this Phase 2 mode."""
     if snapshots_only:
-        return {
-            group: phase2_snapshot_collection_dates(local_now(group))[0]
-            for group in groups
-        }
+        expected = {}
+        for group in groups:
+            dates = phase2_snapshot_collection_dates(local_now(group))
+            if dates:
+                expected[group] = dates[0]
+        return expected
     return {group: phase1_expected_date(group) for group in groups}
 
 
@@ -572,7 +574,9 @@ def phase2_snapshot_collection_dates(local):
         start = local + timedelta(days=1)
     elif local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
         weekend = opening_weekend_friday(local)
-        start = local
+        # Snapshot probes are for future pre-reservations. The current local
+        # show date is handled by the model-driving regular Phase 2 run.
+        start = local + timedelta(days=1)
     else:
         return [local.strftime("%Y-%m-%d")]
 
@@ -585,7 +589,7 @@ def phase2_snapshot_collection_dates(local):
     ]
     if dates:
         return dates
-    return [local.strftime("%Y-%m-%d")]
+    return []
 
 
 def phase2_collection_dates_by_group(groups, snapshots_only=False):
@@ -3530,10 +3534,35 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         fail_phase("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
 
     run_id = local.strftime("%Y%m%d-%H%M%S") + "-" + uuid.uuid4().hex[:6]
-    expected_dates = phase2_expected_dates(groups_to_check, snapshots_only=snapshots_only)
     collection_dates_by_group = phase2_collection_dates_by_group(
         groups_to_check,
         snapshots_only=snapshots_only,
+    )
+    if snapshots_only:
+        groups_to_check = [
+            group for group in groups_to_check
+            if collection_dates_by_group.get(group)
+        ]
+        collection_dates_by_group = {
+            group: collection_dates_by_group[group]
+            for group in groups_to_check
+        }
+        if not groups_to_check:
+            issue = (
+                "No future snapshot show dates remain; same-day actuals are "
+                "collected by the regular Phase 2 scrape."
+            )
+            print(f"\n↷ {issue}")
+            log_run(tz_group, [m["movie_title"] for m in poly_markets], [], [issue], run_id=run_id)
+            return
+    expected_dates = (
+        {
+            group: dates[0]
+            for group, dates in collection_dates_by_group.items()
+            if dates
+        }
+        if snapshots_only
+        else phase2_expected_dates(groups_to_check, snapshots_only=False)
     )
     coverage_dates_by_group = (
         collection_dates_by_group
