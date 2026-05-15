@@ -1825,9 +1825,22 @@ def select_regression_prediction(pred, cal=None):
 
     Polymarket and published trade estimates remain context only. Calibration,
     strategy, and reporting use the actual-predictive regression line. Prefer
-    the seat+comp regression when available; fall back to the direct seat model.
+    the seat-primary ensemble when available, because it is the calibrated
+    blend of direct seat demand, comp priors, coverage quality, and missing-data
+    risk. Fall back to the lower-level seat+comp or direct seat lines.
     """
-    if pred.get("seat_comp_adjusted_mid_m") is not None:
+    if pred.get("seat_primary_mid_m") is not None:
+        source = "seat-primary-regression"
+        mid = pred["seat_primary_mid_m"]
+        low = pred["seat_primary_low_m"]
+        high = pred["seat_primary_high_m"]
+        w_direct = pred.get("seat_primary_w_direct")
+        w_comp = pred.get("seat_primary_w_comp")
+        if w_direct is not None and w_comp is not None:
+            basis = f"direct seats ({w_direct:.0%}) + seat/comp prior ({w_comp:.0%})"
+        else:
+            basis = "direct seats + seat/comp prior"
+    elif pred.get("seat_comp_adjusted_mid_m") is not None:
         source = "seat+comp-coverage-adjusted-regression"
         mid = pred["seat_comp_adjusted_mid_m"]
         low = pred["seat_comp_adjusted_low_m"]
@@ -1866,6 +1879,8 @@ def select_regression_prediction(pred, cal=None):
             source = "seat+snapshot-regression"
         elif "seat+comp" in source:
             source = "seat+comp+snapshot-regression"
+        elif source == "seat-primary-regression":
+            source = "seat-primary+snapshot-regression"
         else:
             source = f"{source}+snapshot"
         basis = f"{basis} + snapshot future days"

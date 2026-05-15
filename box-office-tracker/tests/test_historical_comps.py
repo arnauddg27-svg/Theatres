@@ -596,14 +596,14 @@ class HistoricalCompsTest(unittest.TestCase):
 
         attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
 
-        self.assertAlmostEqual(100.0, prediction["regression_mid_m"], places=6)
-        self.assertAlmostEqual(100.0, prediction["model_forecast_mid_m"], places=6)
-        self.assertEqual("seat+comp-regression", prediction["regression_source"])
+        self.assertAlmostEqual(96.58, prediction["regression_mid_m"], places=6)
+        self.assertAlmostEqual(96.58, prediction["model_forecast_mid_m"], places=6)
+        self.assertEqual("seat-primary-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_polymarket"])
         self.assertNotIn("headline_mid_m", prediction)
         self.assertAlmostEqual(
             prediction["model_forecast_mid_m"],
-            prediction["comp_blended_m"],
+            prediction["seat_primary_mid_m"],
             places=6,
         )
 
@@ -894,12 +894,9 @@ class HistoricalCompsTest(unittest.TestCase):
             prediction["seat_comp_adjusted_mid_m"],
             prediction["seat_comp_prior_mid_m"],
         )
-        self.assertEqual(
-            "seat+comp-coverage-adjusted-regression",
-            prediction["regression_source"],
-        )
+        self.assertEqual("seat-primary-regression", prediction["regression_source"])
         self.assertAlmostEqual(
-            prediction["seat_comp_adjusted_mid_m"],
+            prediction["seat_primary_mid_m"],
             prediction["regression_mid_m"],
             places=6,
         )

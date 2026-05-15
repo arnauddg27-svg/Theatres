@@ -211,6 +211,29 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, pred["w_seat"], places=6)
         self.assertAlmostEqual(0.0, pred["w_poly"], places=6)
 
+    def test_regression_selector_uses_seat_primary_line_when_available(self):
+        pred = {
+            "seat_mid_m": 30.0,
+            "seat_low_m": 24.0,
+            "seat_high_m": 36.0,
+            "seat_comp_adjusted_mid_m": 18.0,
+            "seat_comp_adjusted_low_m": 15.0,
+            "seat_comp_adjusted_high_m": 22.0,
+            "seat_comp_adjusted_basis": "Thursday comp prior",
+            "seat_primary_mid_m": 22.8,
+            "seat_primary_low_m": 18.6,
+            "seat_primary_high_m": 26.2,
+            "seat_primary_w_direct": 0.40,
+            "seat_primary_w_comp": 0.60,
+        }
+
+        select_regression_prediction(pred, {"history": []})
+
+        self.assertAlmostEqual(22.8, pred["regression_mid_m"], places=6)
+        self.assertEqual("seat-primary-regression", pred["regression_source"])
+        self.assertIn("direct seats", pred["regression_basis"])
+        self.assertFalse(pred["regression_uses_polymarket"])
+
     def test_prediction_penalizes_missing_full_timezone_bucket(self):
         cal = {
             "history": [],
