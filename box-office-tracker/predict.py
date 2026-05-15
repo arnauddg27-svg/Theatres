@@ -64,7 +64,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v10-fit-shrunk-comp-features"
+MODEL_VERSION = "seat-regression-v11-partial-day-feature-shares"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -3462,6 +3462,7 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
     if "Thursday" in details:
         evidence_m = day_domestic_m("Thursday")
         basis = "Thursday"
+        share_adjustment_factor = 1.0
         share_values = [
             (comp.thursday_share, estimate.weights.get(comp.movie, 0))
             for comp in estimate.comps
@@ -3481,6 +3482,7 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
                 if comp.daily_shares.get("Friday")
             ]
             evidence_share = estimate.daily_shares["Friday"]
+            share_adjustment_factor = audience_factor
 
         if "Saturday" in details and estimate.daily_shares.get("Saturday"):
             evidence_m = (
@@ -3498,6 +3500,7 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
                 if comp.daily_shares.get("Friday") and comp.daily_shares.get("Saturday")
             ]
             evidence_share = estimate.daily_shares["Friday"] + estimate.daily_shares["Saturday"]
+            share_adjustment_factor = audience_factor
 
         if "Sunday" in details and estimate.daily_shares.get("Sunday"):
             evidence_m = (
@@ -3513,12 +3516,17 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
                 if comp.has_daily_breakdown
             ]
             evidence_share = sum(estimate.daily_shares.values())
+            share_adjustment_factor = 1.0
     else:
         evidence_m = 0.0
         evidence_share = 0.0
+        share_adjustment_factor = audience_factor
         basis_days = []
         if "Friday" in details and estimate.daily_shares.get("Friday"):
-            friday_share = max(0.0, estimate.daily_shares["Friday"] - thursday_share)
+            friday_share = max(
+                0.0,
+                estimate.daily_shares["Friday"] - estimate.weighted_thursday_share,
+            )
             if friday_share > 0:
                 evidence_m += day_domestic_m("Friday")
                 evidence_share += friday_share
@@ -3559,18 +3567,32 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
             "evidence_share": thursday_share,
         }
 
-    mid_m = evidence_m / evidence_share
-    low_share = _weighted_quantile_pairs(share_values, 0.75)
-    high_share = _weighted_quantile_pairs(share_values, 0.25)
-    low_m = (evidence_m / low_share) * audience_factor if low_share else mid_m
-    high_m = (evidence_m / high_share) * audience_factor if high_share else mid_m
+    if evidence_share >= 0.99:
+        share_adjustment_factor = 1.0
+    share_adjustment_factor = max(float(share_adjustment_factor or 1.0), 0.01)
+    adjusted_evidence_share = evidence_share / share_adjustment_factor
+    adjusted_share_values = [
+        (share / share_adjustment_factor, weight)
+        for share, weight in share_values
+    ]
+
+    mid_m = evidence_m / adjusted_evidence_share
+    low_share = _weighted_quantile_pairs(adjusted_share_values, 0.75)
+    high_share = _weighted_quantile_pairs(adjusted_share_values, 0.25)
+    thursday_interval_factor = (
+        audience_factor
+        if basis == "Thursday" and share_adjustment_factor == 1.0
+        else 1.0
+    )
+    low_m = (evidence_m / low_share) * thursday_interval_factor if low_share else mid_m
+    high_m = (evidence_m / high_share) * thursday_interval_factor if high_share else mid_m
     return {
         "mid_m": mid_m,
         "low_m": min(low_m, high_m),
         "high_m": max(low_m, high_m),
         "basis": basis,
         "evidence_m": evidence_m,
-        "evidence_share": evidence_share,
+        "evidence_share": adjusted_evidence_share,
     }
 
 

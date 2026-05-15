@@ -734,6 +734,71 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertAlmostEqual(0.40, prediction["seat_comp_evidence_share"], places=6)
         self.assertEqual("seat-primary-regression", prediction["regression_source"])
 
+    def test_non_thursday_comp_model_applies_feature_adjustment_to_midpoint(self):
+        def prediction():
+            return {
+                "movie": "High Audience Sequel",
+                "seat_mid_m": 10.0,
+                "seat_low_m": 9.0,
+                "seat_high_m": 11.0,
+                "daily_details": {
+                    "Friday": {"domestic_mid": 4_000_000},
+                },
+            }
+
+        base_metadata = {
+            "high audience sequel": TargetMetadata(
+                movie="High Audience Sequel",
+                genre="comedy",
+                audience_type="female_skewing",
+                franchise_type="sequel",
+                rating="PG-13",
+            )
+        }
+        high_metadata = {
+            "high audience sequel": TargetMetadata(
+                movie="High Audience Sequel",
+                genre="comedy",
+                audience_type="female_skewing",
+                franchise_type="sequel",
+                rating="PG-13",
+                imdb_rating=8.0,
+                rt_audience_score=95,
+            )
+        }
+        comps = [
+            HistoricalComp("Low 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 70.0,
+                           friday_m=35.0, saturday_m=20.0, sunday_m=15.0,
+                           imdb_rating=5.5, imdb_votes=20_000, rt_audience_score=50),
+            HistoricalComp("Low 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 75.0,
+                           friday_m=37.5, saturday_m=22.5, sunday_m=15.0,
+                           imdb_rating=5.8, imdb_votes=25_000, rt_audience_score=58),
+            HistoricalComp("Mid 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 100.0,
+                           friday_m=50.0, saturday_m=30.0, sunday_m=20.0,
+                           imdb_rating=6.6, imdb_votes=35_000, rt_audience_score=76),
+            HistoricalComp("Mid 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 105.0,
+                           friday_m=52.5, saturday_m=31.5, sunday_m=21.0,
+                           imdb_rating=6.8, imdb_votes=40_000, rt_audience_score=80),
+            HistoricalComp("High 1", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 130.0,
+                           friday_m=65.0, saturday_m=39.0, sunday_m=26.0,
+                           imdb_rating=8.0, imdb_votes=50_000, rt_audience_score=94),
+            HistoricalComp("High 2", "comedy", "female_skewing", "sequel", "PG-13", 10.0, 135.0,
+                           friday_m=67.5, saturday_m=40.5, sunday_m=27.0,
+                           imdb_rating=8.2, imdb_votes=55_000, rt_audience_score=97),
+        ]
+        base_prediction = prediction()
+        high_prediction = prediction()
+
+        attach_comp_model_prediction(base_prediction, {}, metadata=base_metadata, comps=comps)
+        attach_comp_model_prediction(high_prediction, {}, metadata=high_metadata, comps=comps)
+
+        self.assertEqual("Friday only", high_prediction["seat_comp_basis"])
+        self.assertGreater(high_prediction["seat_comp_audience_factor"], 1.05)
+        self.assertGreater(
+            high_prediction["seat_comp_mid_m"],
+            base_prediction["seat_comp_mid_m"],
+        )
+
     def test_default_metadata_includes_current_prada_release(self):
         metadata = load_movie_metadata()
 
