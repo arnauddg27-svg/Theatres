@@ -480,6 +480,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
         seat_data = predict.load_seat_data(weekend_of=current_weekend)
         poly_data = predict.load_polymarket_data(weekend_of=current_weekend)
         snapshot_data = predict.load_pre_reservation_data(weekend_of=current_weekend)
+        social_data = predict.load_social_signal_data(weekend_of=current_weekend)
         theatre_counts = predict.load_theatre_counts()
         metadata = predict.load_movie_metadata()
     except Exception as exc:
@@ -500,6 +501,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 cal,
                 national_theatre_count=nat_count,
                 snapshot_data=snapshot_data.get(movie, {}),
+                social_data=social_data,
             )
             if not pred:
                 continue

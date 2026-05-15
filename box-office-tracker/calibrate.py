@@ -735,6 +735,7 @@ def auto_calibrate():
                          load_pre_reservation_data,
                          load_social_signal_data,
                          load_movie_metadata,
+                         daily_calibration_fields_from_prediction,
                          national_theatre_count_for_movie,
                          predict_movie)
 
@@ -822,26 +823,18 @@ def auto_calibrate():
             pct = gross / total_actual * 100 if total_actual > 0 else 0
             print(f"      {day}: ${gross:.1f}M ({pct:.1f}%)")
 
-        # Extract our per-day predictions for comparison
-        daily_predictions = {}
-        raw_daily_predictions = {}
-        daily_theatre_counts = {}
-        daily_coverage_ratios = {}
+        # Extract our pre-actual per-day seat predictions for calibration.
+        # If a reported daily override was used in prediction, the helper keeps
+        # the seat-implied value so the model learns the miss.
+        (
+            daily_predictions,
+            raw_daily_predictions,
+            daily_theatre_counts,
+            daily_coverage_ratios,
+        ) = daily_calibration_fields_from_prediction(pred)
         snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
             snapshot_calibration_fields_from_prediction(pred)
         )
-        for day_name, details in pred.get("daily_details", {}).items():
-            daily_predictions[day_name] = details.get("domestic_mid", 0) / 1_000_000
-            raw_daily_predictions[day_name] = details.get(
-                "raw_domestic_mid",
-                details.get("domestic_mid", 0),
-            ) / 1_000_000
-            daily_theatre_counts[day_name] = details.get("n_theatres", 0)
-            if details.get("coverage_ratio") is not None:
-                daily_coverage_ratios[day_name] = round(
-                    details.get("effective_coverage_ratio", details["coverage_ratio"]),
-                    3,
-                )
 
         pending.append({
             "movie": movie,
@@ -990,6 +983,7 @@ if __name__ == "__main__":
                              load_pre_reservation_data,
                              load_social_signal_data,
                              load_movie_metadata,
+                             daily_calibration_fields_from_prediction,
                              national_theatre_count_for_movie,
                              predict_movie)
         cal = load_calibration()
@@ -1047,25 +1041,15 @@ if __name__ == "__main__":
             print(f"No prediction found for {matched_movie!r}; not recording actual.")
             sys.exit(1)
 
-        daily_predictions = {}
-        raw_daily_predictions = {}
-        daily_theatre_counts = {}
-        daily_coverage_ratios = {}
+        (
+            daily_predictions,
+            raw_daily_predictions,
+            daily_theatre_counts,
+            daily_coverage_ratios,
+        ) = daily_calibration_fields_from_prediction(pred)
         snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
             snapshot_calibration_fields_from_prediction(pred)
         )
-        for day_name, details in pred.get("daily_details", {}).items():
-            daily_predictions[day_name] = details.get("domestic_mid", 0) / 1_000_000
-            raw_daily_predictions[day_name] = details.get(
-                "raw_domestic_mid",
-                details.get("domestic_mid", 0),
-            ) / 1_000_000
-            daily_theatre_counts[day_name] = details.get("n_theatres", 0)
-            if details.get("coverage_ratio") is not None:
-                daily_coverage_ratios[day_name] = round(
-                    details.get("effective_coverage_ratio", details["coverage_ratio"]),
-                    3,
-                )
 
         if manual_daily_actuals:
             daily_actuals = manual_daily_actuals

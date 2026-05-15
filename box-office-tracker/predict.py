@@ -65,7 +65,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v14-same-week-amc-share"
+MODEL_VERSION = "seat-regression-v15-preview-seat-residual"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -80,6 +80,13 @@ RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
 RESIDUAL_SAME_MODEL_VERSION_WEIGHT = 1.0
 RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT = 0.60
 RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT = 0.35
+PREVIEW_SEAT_RESIDUAL_MIN_OBS = 1
+PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT = 4.0
+PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH = 0.60
+PREVIEW_SEAT_RESIDUAL_RATIO_MIN = 0.70
+PREVIEW_SEAT_RESIDUAL_RATIO_MAX = 1.80
+PREVIEW_SEAT_RESIDUAL_FACTOR_MIN = 0.85
+PREVIEW_SEAT_RESIDUAL_FACTOR_MAX = 1.45
 SOCIAL_LAYER_MAX_ADJUSTMENT = 0.08
 SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
@@ -2857,6 +2864,48 @@ def snapshot_calibration_fields_from_prediction(pred):
     return snapshot_predictions, snapshot_coverage
 
 
+def daily_calibration_fields_from_prediction(pred):
+    """Extract per-day seat predictions used to train calibration.
+
+    If a reported daily actual override is present, `domestic_mid` is the known
+    actual by design. Calibration still needs the pre-actual seat-implied value
+    so the miss teaches future runs instead of being recorded as a perfect
+    prediction.
+    """
+    daily_predictions = {}
+    raw_daily_predictions = {}
+    daily_theatre_counts = {}
+    daily_coverage_ratios = {}
+    for day_name, details in pred.get("daily_details", {}).items():
+        if details.get("actual_override"):
+            scaled_mid = details.get(
+                "seat_implied_scaled_domestic_mid",
+                details.get("seat_implied_domestic_mid", details.get("domestic_mid", 0)),
+            )
+            raw_mid = details.get(
+                "seat_implied_domestic_mid",
+                details.get("raw_domestic_mid", details.get("domestic_mid", 0)),
+            )
+        else:
+            scaled_mid = details.get("domestic_mid", 0)
+            raw_mid = details.get("raw_domestic_mid", scaled_mid)
+
+        daily_predictions[day_name] = scaled_mid / 1_000_000
+        raw_daily_predictions[day_name] = raw_mid / 1_000_000
+        daily_theatre_counts[day_name] = details.get("n_theatres", 0)
+        if details.get("coverage_ratio") is not None:
+            daily_coverage_ratios[day_name] = round(
+                details.get("effective_coverage_ratio", details["coverage_ratio"]),
+                3,
+            )
+    return (
+        daily_predictions,
+        raw_daily_predictions,
+        daily_theatre_counts,
+        daily_coverage_ratios,
+    )
+
+
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
 def daily_actual_override_for(movie, day_name, daily_actual_overrides):
@@ -2933,7 +2982,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         fallback=observed_max_theatres,
         model_cohort_key=model_cohort_key,
     )
-    movie_metadata = metadata_for_movie(movie, load_movie_metadata())
+    movie_metadata_map = load_movie_metadata()
+    movie_metadata = metadata_for_movie(movie, movie_metadata_map)
     if not national_theatre_count and movie_metadata and movie_metadata.national_theatre_count:
         national_theatre_count = movie_metadata.national_theatre_count
     if (
@@ -3108,6 +3158,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             domestic_low *= footprint_factor
             domestic_high *= footprint_factor
 
+        preview_residual = learned_preview_seat_residual(
+            cal,
+            day_name,
+            exclude_movie=movie,
+            target_metadata=movie_metadata,
+            metadata=movie_metadata_map,
+        )
+        if preview_residual:
+            residual_factor = preview_residual["factor"]
+            domestic_mid *= residual_factor
+            domestic_low *= residual_factor
+            domestic_high *= residual_factor
+
         seat_implied_domestic_mid = domestic_mid
         seat_implied_domestic_low = domestic_low
         seat_implied_domestic_high = domestic_high
@@ -3151,6 +3214,21 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "pre_footprint_domestic_low": pre_footprint_low,
             "pre_footprint_domestic_high": pre_footprint_high,
             "national_footprint_factor": footprint_factor,
+            "preview_seat_residual_factor": (
+                preview_residual["factor"] if preview_residual else 1.0
+            ),
+            "preview_seat_residual_raw_factor": (
+                preview_residual["raw_factor"] if preview_residual else None
+            ),
+            "preview_seat_residual_strength": (
+                preview_residual["strength"] if preview_residual else 0.0
+            ),
+            "preview_seat_residual_n": (
+                preview_residual["n"] if preview_residual else 0
+            ),
+            "preview_seat_residual_source": (
+                preview_residual["source"] if preview_residual else None
+            ),
             "amc_market_share_used": share_override or calibrated_amc_market_share(cal),
             "amc_market_share_source": (
                 "same_week_actual_anchor" if share_anchor_for_day else "calibration"
@@ -3678,6 +3756,150 @@ def _weighted_quantile_pairs(values, quantile):
     return ordered[-1][0]
 
 
+def _weighted_geomean_ratio(values):
+    """Weighted geometric mean for bounded multiplicative ratios."""
+    if not values:
+        return None
+    total_weight = sum(weight for _, weight, _ in values)
+    if total_weight <= 0:
+        return None
+    return exp(
+        sum(log(max(ratio, 1e-9)) * weight for ratio, weight, _ in values)
+        / total_weight
+    )
+
+
+def _metadata_preview_similarity(target_metadata, entry_metadata):
+    """0-1 similarity for local preview-seat residuals."""
+    if not target_metadata or not entry_metadata:
+        return 0.0
+    score = 0.0
+    total = 0.0
+    for attr, weight in (
+        ("genre", 0.45),
+        ("audience_type", 0.35),
+        ("franchise_type", 0.12),
+        ("rating", 0.08),
+    ):
+        total += weight
+        target_val = getattr(target_metadata, attr, None)
+        entry_val = getattr(entry_metadata, attr, None)
+        if target_val and entry_val and target_val == entry_val:
+            score += weight
+    return score / total if total else 0.0
+
+
+def learned_preview_seat_residual(cal, day_name, exclude_movie="",
+                                  target_metadata=None, metadata=None):
+    """Learn a same-day actual/seat residual for Thursday previews.
+
+    Day scale factors already learn broad per-day bias. This layer only learns
+    the residual left after the stored day prediction for a settled movie. It is
+    applied before reported same-week actual overrides, so a known Thursday
+    preview still wins, while future movies can benefit from prior local misses.
+    """
+    if day_name != "Thursday" or not cal:
+        return None
+
+    global_values = []
+    similar_values = []
+    saw_entry_metadata = False
+    for entry in (cal or {}).get("history", [])[-30:]:
+        if not _actual_status_is_final(entry):
+            continue
+        entry_movie = entry.get("movie", "")
+        if _movie_matches(exclude_movie, entry_movie):
+            continue
+        daily_actuals = entry.get("daily_actuals") or {}
+        daily_predictions = entry.get("daily_predictions") or {}
+        raw_daily_predictions = entry.get("raw_daily_predictions") or {}
+        actual = _positive_float(daily_actuals.get(day_name))
+        raw_predicted = _positive_float(raw_daily_predictions.get(day_name))
+        if raw_predicted:
+            predicted = raw_predicted * get_day_scale(cal, day_name)
+        else:
+            predicted = _positive_float(daily_predictions.get(day_name))
+        if not actual or not predicted:
+            continue
+
+        coverage = _coverage_value(
+            (entry.get("daily_coverage_ratios") or {}).get(day_name),
+            default=0.0,
+        )
+        if coverage < MIN_DAILY_CALIBRATION_COVERAGE:
+            continue
+
+        ratio = _clamp(
+            actual / predicted,
+            PREVIEW_SEAT_RESIDUAL_RATIO_MIN,
+            PREVIEW_SEAT_RESIDUAL_RATIO_MAX,
+        )
+        version = entry.get("model_version")
+        if not version:
+            version_weight = RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT
+        elif version == MODEL_VERSION:
+            version_weight = RESIDUAL_SAME_MODEL_VERSION_WEIGHT
+        else:
+            version_weight = RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT
+        base_weight = coverage * version_weight
+        if base_weight <= 0:
+            continue
+
+        global_values.append((ratio, base_weight, entry))
+
+        similarity = 0.0
+        if target_metadata is not None and metadata:
+            entry_metadata = metadata_for_movie(entry_movie, metadata)
+            if entry_metadata:
+                saw_entry_metadata = True
+                similarity = _metadata_preview_similarity(target_metadata, entry_metadata)
+        if similarity > 0:
+            similar_values.append((ratio, base_weight * similarity, entry))
+
+    source_values = similar_values if saw_entry_metadata and similar_values else global_values
+    if len(source_values) < PREVIEW_SEAT_RESIDUAL_MIN_OBS:
+        return None
+
+    raw_factor = _weighted_geomean_ratio(source_values)
+    if raw_factor is None:
+        return None
+    total_weight = sum(weight for _, weight, _ in source_values)
+    strength = min(
+        PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH,
+        total_weight / (total_weight + PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT),
+    )
+    factor = 1.0 + (raw_factor - 1.0) * strength
+    factor = _clamp(
+        factor,
+        PREVIEW_SEAT_RESIDUAL_FACTOR_MIN,
+        PREVIEW_SEAT_RESIDUAL_FACTOR_MAX,
+    )
+    if abs(factor - 1.0) < 0.005:
+        return None
+
+    return {
+        "day": day_name,
+        "factor": factor,
+        "raw_factor": raw_factor,
+        "strength": strength,
+        "n": len(source_values),
+        "effective_weight": total_weight,
+        "source": "matched-local-preview-history" if source_values is similar_values else "local-preview-history",
+        "examples": [
+            {
+                "movie": entry.get("movie"),
+                "ratio": ratio,
+                "weight": weight,
+            }
+            for ratio, weight, entry in sorted(
+                source_values,
+                key=lambda item: item[1],
+                reverse=True,
+            )[:5]
+        ],
+    }
+
+
 def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, audience_factor=1.0):
     """Project weekend from the latest observed seat data plus comp shape.
 
@@ -3900,6 +4122,13 @@ def print_prediction(pred, verbose=False):
             daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
         footprint_factor = details.get("national_footprint_factor", 1.0)
         footprint_note = ""
+        preview_factor = details.get("preview_seat_residual_factor", 1.0)
+        preview_note = ""
+        if abs(preview_factor - 1.0) >= 0.005:
+            preview_note = (
+                f", preview residual x{preview_factor:.3f}"
+                f" n={details.get('preview_seat_residual_n', 0)}"
+            )
         if details.get("actual_override"):
             source = details.get("actual_override_source") or "reported"
             day_model = f"reported actual {fmt_m(dom_m)} ({source})"
@@ -3955,6 +4184,7 @@ def print_prediction(pred, verbose=False):
               f"{full_day_window_str}"
               f"{daypart_str}"
               f"{footprint_note}"
+              f"{preview_note}"
               f"{share_note}"
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
@@ -4300,29 +4530,12 @@ def main():
         poly_ev = pred["poly_result"]["ev"] if pred["poly_result"] else 0
         n_th = pred["n_theatres_total"]
         days = list(pred["daily_estimates"].keys())
-        daily_predictions = {
-            day: details.get("domestic_mid", 0) / 1_000_000
-            for day, details in pred.get("daily_details", {}).items()
-        }
-        raw_daily_predictions = {
-            day: details.get(
-                "raw_domestic_mid",
-                details.get("domestic_mid", 0),
-            ) / 1_000_000
-            for day, details in pred.get("daily_details", {}).items()
-        }
-        daily_theatre_counts = {
-            day: details.get("n_theatres", 0)
-            for day, details in pred.get("daily_details", {}).items()
-        }
-        daily_coverage_ratios = {
-            day: round(
-                details.get("effective_coverage_ratio", details["coverage_ratio"]),
-                3,
-            )
-            for day, details in pred.get("daily_details", {}).items()
-            if details.get("coverage_ratio") is not None
-        }
+        (
+            daily_predictions,
+            raw_daily_predictions,
+            daily_theatre_counts,
+            daily_coverage_ratios,
+        ) = daily_calibration_fields_from_prediction(pred)
         snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
             snapshot_calibration_fields_from_prediction(pred)
         )

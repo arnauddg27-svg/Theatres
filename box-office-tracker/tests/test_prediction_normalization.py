@@ -1662,6 +1662,19 @@ class PredictionNormalizationTest(unittest.TestCase):
             overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"],
             0,
         )
+        daily_predictions, raw_daily_predictions, _, _ = (
+            predict.daily_calibration_fields_from_prediction(overridden)
+        )
+        self.assertNotAlmostEqual(
+            daily_predictions["Thursday"],
+            overridden["daily_details"]["Thursday"]["actual_override_m"],
+            places=3,
+        )
+        self.assertAlmostEqual(
+            overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"] / 1_000_000,
+            raw_daily_predictions["Thursday"],
+            places=6,
+        )
 
     def test_daily_actual_override_calibrates_future_day_amc_share(self):
         cal = {
@@ -1709,6 +1722,86 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(0.14375, friday["amc_market_share_used"], places=6)
         self.assertAlmostEqual(1700 / 0.14375, friday["domestic_mid"], places=6)
         self.assertGreater(friday["domestic_mid"], 1700 / 0.25)
+
+    def test_thursday_preview_residual_learns_from_local_history(self):
+        cal = {
+            "history": [
+                {
+                    "movie": "Sample Horror Comp",
+                    "actual_status": "final",
+                    "model_version": predict.MODEL_VERSION,
+                    "daily_actuals": {"Thursday": 2.0},
+                    "daily_predictions": {"Thursday": 1.0},
+                    "daily_coverage_ratios": {"Thursday": 1.0},
+                    "n_theatres": 425,
+                    "n_days": 1,
+                }
+            ],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "reference_amc_theatres": 2,
+            },
+        }
+        metadata = {
+            "sample movie": TargetMetadata(
+                movie="Sample Movie",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            ),
+            "sample horror comp": TargetMetadata(
+                movie="Sample Horror Comp",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            ),
+        }
+        rows = [
+            self._row("AMC One"),
+            self._row("AMC Two"),
+        ]
+
+        old_load_metadata = predict.load_movie_metadata
+        predict.load_movie_metadata = lambda: metadata
+        try:
+            baseline = predict_movie(
+                "Sample Movie",
+                {"2026-05-07": rows},
+                [],
+                {**cal, "history": []},
+                daily_actual_overrides={},
+            )
+            adjusted = predict_movie(
+                "Sample Movie",
+                {"2026-05-07": rows},
+                [],
+                cal,
+                daily_actual_overrides={},
+            )
+            self_leak = predict_movie(
+                "Sample Horror Comp",
+                {"2026-05-07": rows},
+                [],
+                cal,
+                daily_actual_overrides={},
+            )
+        finally:
+            predict.load_movie_metadata = old_load_metadata
+
+        thursday = adjusted["daily_details"]["Thursday"]
+        self.assertGreater(thursday["preview_seat_residual_factor"], 1.0)
+        self.assertGreater(
+            thursday["domestic_mid"],
+            baseline["daily_details"]["Thursday"]["domestic_mid"],
+        )
+        self.assertAlmostEqual(
+            1.0,
+            self_leak["daily_details"]["Thursday"]["preview_seat_residual_factor"],
+        )
 
     def _pending_calibration(self, movie, predicted, actual):
         return {
