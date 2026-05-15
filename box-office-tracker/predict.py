@@ -2720,21 +2720,30 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         day: details.get("effective_coverage_ratio", details.get("coverage_ratio"))
         for day, details in snapshot_details.items()
     })
-    support_weighted_total = 0.0
-    support_weight_total = 0.0
+    support_values = []
     for day, details in snapshot_details.items():
         support_factor = _positive_float(
             details.get("snapshot_calibration_support_factor")
         )
         if support_factor is None:
             continue
-        weight = day_weights.get(day, 0.0) or 1.0
-        support_weighted_total += support_factor * weight
-        support_weight_total += weight
-    snapshot_support_factor = (
-        support_weighted_total / support_weight_total
-        if support_weight_total > 0 else 1.0
-    )
+        weight = _positive_float(day_weights.get(day)) or 0.0
+        support_values.append((support_factor, weight))
+    positive_weight_values = [
+        (factor, weight) for factor, weight in support_values if weight > 0
+    ]
+    if positive_weight_values:
+        support_weighted_total = sum(
+            factor * weight for factor, weight in positive_weight_values
+        )
+        support_weight_total = sum(weight for _, weight in positive_weight_values)
+        snapshot_support_factor = support_weighted_total / support_weight_total
+    elif support_values:
+        snapshot_support_factor = (
+            sum(factor for factor, _ in support_values) / len(support_values)
+        )
+    else:
+        snapshot_support_factor = 1.0
     model_weight = SNAPSHOT_LAYER_MAX_WEIGHT
     model_weight *= _coverage_value(snapshot_coverage)
     model_weight *= _clamp(snapshot_missing_share, 0.0, 1.0)

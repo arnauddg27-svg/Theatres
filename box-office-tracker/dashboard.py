@@ -1048,9 +1048,12 @@ HTML_PAGE = r"""<!doctype html>
       const p = movie.prediction;
       const estimate = p && !p.error ? fmtMoney(p.mid_m) : "Pending";
       const range = p && !p.error ? `${fmtMoney(p.low_m)} - ${fmtMoney(p.high_m)}` : "No seat-count model yet";
+      const snapshotSupport = p && p.snapshot_support !== null && p.snapshot_support !== undefined
+        ? `${Math.round(p.snapshot_support * 100)}%`
+        : "n/a";
       const snapshotLine = p && !p.error && p.snapshot_m !== null && p.snapshot_m !== undefined
         ? `<br>snapshot ${fmtMoney(p.snapshot_m)} @ ${Math.round((p.snapshot_weight || 0) * 100)}%` +
-          `, support ${Math.round((p.snapshot_support ?? 1) * 100)}% (${esc((p.snapshot_days || []).join("/") || "-")})`
+          `, support ${snapshotSupport} (${esc((p.snapshot_days || []).join("/") || "-")})`
         : "";
       const marketUrl = movie.market.market_url;
       const dailyRows = p && p.daily ? p.daily.map(row => `<tr>

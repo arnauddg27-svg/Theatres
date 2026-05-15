@@ -630,6 +630,16 @@ class PredictionNormalizationTest(unittest.TestCase):
             trained["snapshot_model_weight"],
         )
         self.assertAlmostEqual(
+            0.575,
+            untrained["snapshot_calibration_support_factor"],
+            places=6,
+        )
+        self.assertAlmostEqual(
+            0.8,
+            trained["snapshot_calibration_support_factor"],
+            places=6,
+        )
+        self.assertAlmostEqual(
             0.35,
             untrained["snapshot_daily_details"]["Saturday"][
                 "snapshot_calibration_support_factor"
