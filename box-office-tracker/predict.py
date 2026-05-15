@@ -40,8 +40,10 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
                               metadata_for_movie,
                               release_footprint_factor)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
+                               SNAPSHOT_LEAD_BUCKETS,
                                sanitize_calibration, recalibrate_scale_factor,
-                               recalibrate_snapshot_day_scale_factors)
+                               recalibrate_snapshot_day_scale_factors,
+                               recalibrate_snapshot_lead_scale_factors)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -65,7 +67,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v15-preview-seat-residual"
+MODEL_VERSION = "seat-regression-v16-snapshot-lead-calibration"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -280,16 +282,31 @@ def get_day_scale(cal, day_name):
         return 1.0
 
 
-def get_snapshot_to_day_scale(cal, day_name):
-    """Calibrated scale for pre-reservation snapshot → final day gross."""
+def get_snapshot_lead_scale(cal, lead_bucket):
+    """Calibrated residual for a snapshot lead-time bucket."""
     factors = (cal or {}).get("calibration_factors", {}) if cal else {}
-    per_day = factors.get("snapshot_to_day_scale_factors") if cal else None
-    if isinstance(per_day, dict) and day_name in per_day:
+    per_lead = factors.get("snapshot_to_lead_scale_factors") if cal else None
+    if isinstance(per_lead, dict) and lead_bucket in per_lead:
         try:
-            return float(per_day[day_name])
+            return float(per_lead[lead_bucket])
         except (TypeError, ValueError):
             pass
     return 1.0
+
+
+def get_snapshot_to_day_scale(cal, day_name, lead_bucket=None):
+    """Calibrated scale for pre-reservation snapshot → final day gross."""
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    per_day = factors.get("snapshot_to_day_scale_factors") if cal else None
+    day_scale = 1.0
+    if isinstance(per_day, dict) and day_name in per_day:
+        try:
+            day_scale = float(per_day[day_name])
+        except (TypeError, ValueError):
+            pass
+    if lead_bucket:
+        return day_scale * get_snapshot_lead_scale(cal, lead_bucket)
+    return day_scale
 
 
 def get_day_weights(cal):
@@ -1016,6 +1033,12 @@ def load_calibration():
             "amc_market_share": DEFAULT_AMC_MARKET_SHARE,
             "overall_scale_factor": 1.0,
             "day_weights": DAY_WEIGHTS_DEFAULT,
+            "snapshot_to_day_scale_factors": {
+                day: 1.0 for day in OPENING_WEEKEND_DAYS
+            },
+            "snapshot_to_lead_scale_factors": {
+                bucket: 1.0 for bucket in SNAPSHOT_LEAD_BUCKETS
+            },
             "format_scale_factors": {},
             "historical_accuracy": [],
             "last_updated": None,
@@ -1271,6 +1294,20 @@ def snapshot_reservation_multiplier(minutes_until_showtime):
     return 4.00
 
 
+def snapshot_lead_bucket(minutes_until_showtime):
+    """Bucket snapshot lead time for calibration residuals."""
+    minutes = _parse_numeric(minutes_until_showtime, default=None)
+    if minutes is None:
+        return None
+    if minutes <= 24 * 60:
+        return "same_day"
+    if minutes <= 48 * 60:
+        return "next_day"
+    if minutes <= SNAPSHOT_MAX_LEAD_MINUTES:
+        return "multi_day"
+    return "long_lead"
+
+
 def estimate_snapshot_showtime_revenue(row):
     """Estimate final showtime revenue from one pre-reservation row."""
     total_seats = _parse_numeric(row.get("total_seats", 0))
@@ -1293,7 +1330,8 @@ def estimate_snapshot_showtime_revenue(row):
     elif "laser" in fmt:
         format_rank = 2
 
-    multiplier = snapshot_reservation_multiplier(row.get("minutes_until_showtime", 0))
+    minutes_until_showtime = _parse_numeric(row.get("minutes_until_showtime", 0), default=0)
+    multiplier = snapshot_reservation_multiplier(minutes_until_showtime)
     projected_reserved = min(total_seats, reserved * multiplier)
     ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(1))
     revenue = projected_reserved * ticket_price
@@ -1305,6 +1343,7 @@ def estimate_snapshot_showtime_revenue(row):
         "total_seats": total_seats,
         "ticket_price": ticket_price,
         "format_rank": format_rank,
+        "minutes_until_showtime": minutes_until_showtime,
         "theatre_name": row.get("theatre_name", "?"),
         "format": row.get("auditorium_type") or row.get("auditorium_name") or "?",
     }
@@ -2362,7 +2401,16 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         domestic_low *= footprint_factor
         domestic_high *= footprint_factor
 
-    snapshot_scale = get_snapshot_to_day_scale(cal, day_name)
+    lead_minutes = [
+        result.get("minutes_until_showtime")
+        for result in per_showtime_results
+        if result.get("minutes_until_showtime") is not None
+    ]
+    median_lead_minutes = statistics.median(lead_minutes) if lead_minutes else None
+    lead_bucket = snapshot_lead_bucket(median_lead_minutes)
+    snapshot_day_scale = get_snapshot_to_day_scale(cal, day_name)
+    snapshot_lead_scale = get_snapshot_lead_scale(cal, lead_bucket)
+    snapshot_scale = get_snapshot_to_day_scale(cal, day_name, lead_bucket)
     avg_showings = (
         sum(showings_by_theatre.values()) / len(showings_by_theatre)
         if showings_by_theatre else 0
@@ -2385,6 +2433,10 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "domestic_high": domestic_high * snapshot_scale,
         "national_footprint_factor": footprint_factor,
         "snapshot_scale": snapshot_scale,
+        "snapshot_day_scale": snapshot_day_scale,
+        "snapshot_lead_scale": snapshot_lead_scale,
+        "lead_bucket": lead_bucket,
+        "median_minutes_until_showtime": median_lead_minutes,
         "n_theatres": n_amc_theatres,
         "expected_theatres": expected_amc_theatres,
         "coverage_ratio": coverage_ratio,
@@ -2565,6 +2617,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
     if not snapshot_details:
         return {
             "snapshot_daily_details": {},
+            "snapshot_all_daily_details": all_snapshot_details,
             "snapshot_ignored_days": sorted(set(ignored_days)),
             "snapshot_same_week_scale": round(same_week_scale, 4),
             "snapshot_same_week_anchors": same_week_anchors,
@@ -2614,6 +2667,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
 
     return {
         "snapshot_daily_details": snapshot_details,
+        "snapshot_all_daily_details": all_snapshot_details,
         "snapshot_ignored_days": sorted(set(ignored_days)),
         "snapshot_mid_m": mid / 1_000_000,
         "snapshot_low_m": (mid * low_factor) / 1_000_000,
@@ -2736,6 +2790,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   daily_predictions=None, raw_daily_predictions=None,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
+                  snapshot_daily_lead_buckets=None,
                   weekend_of=None, reference_amc_theatres=None,
                   model_cohort_key=None, social_signal=None):
     """Record a predicted-vs-actual result and update calibration factors."""
@@ -2788,6 +2843,11 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
             for k, v in snapshot_daily_coverage_ratios.items()
             if v is not None
         }
+    if snapshot_daily_lead_buckets:
+        entry["snapshot_daily_lead_buckets"] = {
+            k: v for k, v in snapshot_daily_lead_buckets.items()
+            if v in SNAPSHOT_LEAD_BUCKETS
+        }
     if social_signal:
         entry["social_signal"] = {
             key: social_signal.get(key)
@@ -2829,6 +2889,12 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         cal["calibration_factors"]["snapshot_to_day_scale_factors"] = (
             recalibrate_snapshot_day_scale_factors(history)
         )
+        cal["calibration_factors"]["snapshot_to_lead_scale_factors"] = (
+            recalibrate_snapshot_lead_scale_factors(
+                history,
+                day_scales=cal["calibration_factors"]["snapshot_to_day_scale_factors"],
+            )
+        )
 
     # Refine AMC market share from seat-based estimates
     share_estimates = []
@@ -2850,7 +2916,12 @@ def snapshot_calibration_fields_from_prediction(pred):
     """Extract raw snapshot day estimates for calibration history."""
     snapshot_predictions = {}
     snapshot_coverage = {}
-    for day_name, details in pred.get("snapshot_daily_details", {}).items():
+    snapshot_leads = {}
+    calibration_details = (
+        pred.get("snapshot_all_daily_details")
+        or pred.get("snapshot_daily_details", {})
+    )
+    for day_name, details in calibration_details.items():
         mid = _positive_float(
             details.get("raw_domestic_mid", details.get("domestic_mid"))
         )
@@ -2861,7 +2932,10 @@ def snapshot_calibration_fields_from_prediction(pred):
         cov = _positive_float(coverage)
         if cov is not None:
             snapshot_coverage[day_name] = round(min(1.0, cov), 3)
-    return snapshot_predictions, snapshot_coverage
+        lead_bucket = details.get("lead_bucket")
+        if lead_bucket in SNAPSHOT_LEAD_BUCKETS:
+            snapshot_leads[day_name] = lead_bucket
+    return snapshot_predictions, snapshot_coverage, snapshot_leads
 
 
 def daily_calibration_fields_from_prediction(pred):
@@ -3400,6 +3474,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "raw_daily_estimates": daily_estimates,
         "snapshot_daily_details": (
             snapshot_layer.get("snapshot_daily_details", {})
+            if snapshot_layer else {}
+        ),
+        "snapshot_all_daily_details": (
+            snapshot_layer.get("snapshot_all_daily_details", {})
             if snapshot_layer else {}
         ),
         "snapshot_ignored_days": (
@@ -4536,7 +4614,11 @@ def main():
             daily_theatre_counts,
             daily_coverage_ratios,
         ) = daily_calibration_fields_from_prediction(pred)
-        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+        (
+            snapshot_daily_predictions,
+            snapshot_daily_coverage_ratios,
+            snapshot_daily_lead_buckets,
+        ) = (
             snapshot_calibration_fields_from_prediction(pred)
         )
 
@@ -4548,6 +4630,7 @@ def main():
                      raw_daily_predictions=raw_daily_predictions,
                      snapshot_daily_predictions=snapshot_daily_predictions,
                      snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
+                     snapshot_daily_lead_buckets=snapshot_daily_lead_buckets,
                      weekend_of=weekend_of,
                      reference_amc_theatres=pred.get("reference_amc_theatres"),
                      model_cohort_key=pred.get("model_cohort_key"),

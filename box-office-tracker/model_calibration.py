@@ -14,6 +14,7 @@ MAX_SCALE_FACTOR = 2.0
 MIN_MARKET_SHARE = 0.15
 MAX_MARKET_SHARE = 0.40
 MIN_DAILY_CALIBRATION_COVERAGE = 0.80
+SNAPSHOT_LEAD_BUCKETS = ("same_day", "next_day", "multi_day", "long_lead")
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -225,6 +226,51 @@ def recalibrate_snapshot_day_scale_factors(history: list[dict],
             for d, s in scales.items()}
 
 
+def recalibrate_snapshot_lead_scale_factors(history: list[dict],
+                                            day_scales: dict[str, float] | None = None,
+                                            alpha: float = 0.30) -> dict[str, float]:
+    """Lead-time residual EMA for pre-reservation snapshot → final day gross.
+
+    Day scales learn Friday-vs-Saturday type bias. This second layer learns the
+    remaining bias from how far before showtime the snapshot was taken, so a
+    same-day reservation read does not train the same correction as a two-day
+    lead read. Ratios are computed after applying the per-day snapshot scale to
+    avoid double-counting day effects.
+    """
+    scales: dict[str, float] = {bucket: 1.0 for bucket in SNAPSHOT_LEAD_BUCKETS}
+    if not history:
+        return {bucket: round(scale, 4) for bucket, scale in scales.items()}
+
+    day_scales = day_scales or {}
+    for entry in history[-20:]:
+        daily_actuals = entry.get("daily_actuals", {}) or {}
+        snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+        snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
+        snapshot_leads = entry.get("snapshot_daily_lead_buckets", {}) or {}
+
+        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
+            actual = _as_float(daily_actuals.get(day), 0.0)
+            predicted = _as_float(snapshot_predictions.get(day), 0.0)
+            bucket = str(snapshot_leads.get(day, "") or "").strip()
+            if bucket not in scales or actual <= 0 or predicted <= 0:
+                continue
+            coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            if coverage < 0.10:
+                continue
+            baseline = predicted * _as_float(day_scales.get(day), 1.0)
+            if baseline <= 0:
+                continue
+            raw_ratio = actual / baseline
+            shrunk = 1.0 + (raw_ratio - 1.0) * coverage
+            ratio = clamp(shrunk, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
+            scales[bucket] = alpha * ratio + (1.0 - alpha) * scales[bucket]
+
+    return {
+        bucket: round(clamp(scale, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR), 4)
+        for bucket, scale in scales.items()
+    }
+
+
 def normalize_day_weights(day_weights: dict | None,
                           defaults: dict[str, float]) -> dict[str, float]:
     """Fill missing day weights from defaults and normalize the whole set."""
@@ -284,8 +330,11 @@ def sanitize_calibration(cal: dict,
     # every load (idempotent — always EMAs from 1.0), so a stale persisted
     # value can never silently compound across reloads.
     factors["day_scale_factors"] = recalibrate_day_scale_factors(history)
-    factors["snapshot_to_day_scale_factors"] = recalibrate_snapshot_day_scale_factors(
-        history
+    snapshot_day_scales = recalibrate_snapshot_day_scale_factors(history)
+    factors["snapshot_to_day_scale_factors"] = snapshot_day_scales
+    factors["snapshot_to_lead_scale_factors"] = recalibrate_snapshot_lead_scale_factors(
+        history,
+        day_scales=snapshot_day_scales,
     )
 
     return cal

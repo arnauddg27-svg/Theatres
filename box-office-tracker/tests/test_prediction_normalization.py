@@ -15,7 +15,10 @@ from historical_comps import (
     estimate_opening_weekend_from_thursday,
     release_footprint_factor,
 )
-from model_calibration import recalibrate_snapshot_day_scale_factors
+from model_calibration import (
+    recalibrate_snapshot_day_scale_factors,
+    recalibrate_snapshot_lead_scale_factors,
+)
 from predict import (
     days_to_weekend,
     national_theatre_count_for_movie,
@@ -820,13 +823,14 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertNotEqual(1.0, scales["Friday"])
 
     def test_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
-        snapshot_predictions, snapshot_coverage = (
+        snapshot_predictions, snapshot_coverage, snapshot_leads = (
             calibrate.snapshot_calibration_fields_from_prediction({
                 "snapshot_daily_details": {
                     "Friday": {
                         "raw_domestic_mid": 10_000_000,
                         "domestic_mid": 20_000_000,
                         "effective_coverage_ratio": 0.9,
+                        "lead_bucket": "next_day",
                     },
                 },
             })
@@ -834,15 +838,17 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertEqual({"Friday": 10.0}, snapshot_predictions)
         self.assertEqual({"Friday": 0.9}, snapshot_coverage)
+        self.assertEqual({"Friday": "next_day"}, snapshot_leads)
 
     def test_predict_actual_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
-        snapshot_predictions, snapshot_coverage = (
+        snapshot_predictions, snapshot_coverage, snapshot_leads = (
             predict.snapshot_calibration_fields_from_prediction({
                 "snapshot_daily_details": {
                     "Saturday": {
                         "raw_domestic_mid": 8_000_000,
                         "domestic_mid": 16_000_000,
                         "coverage_ratio": 0.5,
+                        "lead_bucket": "multi_day",
                     },
                 },
             })
@@ -850,6 +856,67 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertEqual({"Saturday": 8.0}, snapshot_predictions)
         self.assertEqual({"Saturday": 0.5}, snapshot_coverage)
+        self.assertEqual({"Saturday": "multi_day"}, snapshot_leads)
+
+    def test_snapshot_calibration_keeps_ignored_regular_days(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Friday": 1.0},
+                "snapshot_to_day_scale_factors": {"Friday": 1.0},
+            },
+        }
+        rows = [
+            self._snapshot_row(
+                "AMC Snapshot",
+                "Friday",
+                "2026-05-08",
+                timezone="ET",
+                snapshot_time="2026-05-07T12:00:00+00:00",
+            )
+        ]
+
+        layer = predict.build_snapshot_future_layer(
+            {"2026-05-08": rows},
+            {
+                "Friday": {
+                    "domestic_mid": 12_000_000,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                }
+            },
+            cal,
+            expected_amc_theatres=1,
+            expected_timezone_counts={"ET": 1},
+        )
+
+        self.assertEqual({}, layer["snapshot_daily_details"])
+        self.assertIn("Friday", layer["snapshot_all_daily_details"])
+        snapshot_predictions, snapshot_coverage, snapshot_leads = (
+            calibrate.snapshot_calibration_fields_from_prediction(layer)
+        )
+        self.assertIn("Friday", snapshot_predictions)
+        self.assertEqual({"Friday": 1.0}, snapshot_coverage)
+        self.assertEqual({"Friday": "same_day"}, snapshot_leads)
+
+    def test_snapshot_lead_scale_learns_residual_after_day_scale(self):
+        history = [
+            {
+                "movie": "Same Day Snapshot",
+                "daily_actuals": {"Friday": 15.0},
+                "snapshot_daily_predictions": {"Friday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Friday": 1.0},
+                "snapshot_daily_lead_buckets": {"Friday": "same_day"},
+            }
+        ]
+
+        scales = recalibrate_snapshot_lead_scale_factors(
+            history,
+            day_scales={"Friday": 1.0},
+            alpha=0.5,
+        )
+
+        self.assertGreater(scales["same_day"], 1.0)
 
     def test_load_pre_reservation_data_requires_weekend_and_snapshot_date_for_replay(self):
         old_snapshot_csv = predict.PRE_RESERVATION_CSV

@@ -30,10 +30,12 @@ from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
+                               SNAPSHOT_LEAD_BUCKETS,
                                excluded_calibration_days,
                                sanitize_calibration, recalibrate_scale_factor,
                                recalibrate_day_scale_factors,
-                               recalibrate_snapshot_day_scale_factors)
+                               recalibrate_snapshot_day_scale_factors,
+                               recalibrate_snapshot_lead_scale_factors)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -48,6 +50,18 @@ DEFAULT_CALIBRATION = {
             "Friday": 0.32,
             "Saturday": 0.33,
             "Sunday": 0.23,
+        },
+        "snapshot_to_day_scale_factors": {
+            "Thursday": 1.0,
+            "Friday": 1.0,
+            "Saturday": 1.0,
+            "Sunday": 1.0,
+        },
+        "snapshot_to_lead_scale_factors": {
+            "same_day": 1.0,
+            "next_day": 1.0,
+            "multi_day": 1.0,
+            "long_lead": 1.0,
         },
         "format_scale_factors": {},
         "historical_accuracy": [],
@@ -218,7 +232,12 @@ def snapshot_calibration_fields_from_prediction(pred):
     """Extract per-day snapshot predictions for future snapshot calibration."""
     snapshot_predictions = {}
     snapshot_coverage = {}
-    for day_name, details in pred.get("snapshot_daily_details", {}).items():
+    snapshot_leads = {}
+    calibration_details = (
+        pred.get("snapshot_all_daily_details")
+        or pred.get("snapshot_daily_details", {})
+    )
+    for day_name, details in calibration_details.items():
         mid = _positive_float(
             details.get("raw_domestic_mid", details.get("domestic_mid"))
         )
@@ -229,7 +248,10 @@ def snapshot_calibration_fields_from_prediction(pred):
         cov = _positive_float(coverage)
         if cov is not None:
             snapshot_coverage[day_name] = round(min(1.0, cov), 3)
-    return snapshot_predictions, snapshot_coverage
+        lead_bucket = details.get("lead_bucket")
+        if lead_bucket in SNAPSHOT_LEAD_BUCKETS:
+            snapshot_leads[day_name] = lead_bucket
+    return snapshot_predictions, snapshot_coverage, snapshot_leads
 
 
 def rebuild_historical_accuracy(cal):
@@ -459,6 +481,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   daily_coverage_ratios=None, raw_daily_predictions=None,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
+                  snapshot_daily_lead_buckets=None,
                   reference_amc_theatres=None, model_cohort_key=None,
                   social_signal=None, model_version=None,
                   actual_source=None, actual_status="final",
@@ -514,6 +537,11 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
             k: round(min(1.0, max(0.0, float(v))), 3)
             for k, v in snapshot_daily_coverage_ratios.items()
             if v is not None
+        }
+    if snapshot_daily_lead_buckets:
+        entry["snapshot_daily_lead_buckets"] = {
+            k: v for k, v in snapshot_daily_lead_buckets.items()
+            if v in SNAPSHOT_LEAD_BUCKETS
         }
     if social_signal:
         entry["social_signal"] = {
@@ -580,6 +608,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     factors["day_scale_factors"] = recalibrate_day_scale_factors(cal["history"])
     factors["snapshot_to_day_scale_factors"] = recalibrate_snapshot_day_scale_factors(
         cal["history"]
+    )
+    factors["snapshot_to_lead_scale_factors"] = recalibrate_snapshot_lead_scale_factors(
+        cal["history"],
+        day_scales=factors["snapshot_to_day_scale_factors"],
     )
 
     # 2. Update day weights from actual daily proportions
@@ -707,6 +739,7 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             raw_daily_predictions=item.get("raw_daily_predictions"),
             snapshot_daily_predictions=item.get("snapshot_daily_predictions"),
             snapshot_daily_coverage_ratios=item.get("snapshot_daily_coverage_ratios"),
+            snapshot_daily_lead_buckets=item.get("snapshot_daily_lead_buckets"),
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
             social_signal=item.get("social_signal"),
@@ -832,7 +865,11 @@ def auto_calibrate():
             daily_theatre_counts,
             daily_coverage_ratios,
         ) = daily_calibration_fields_from_prediction(pred)
-        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+        (
+            snapshot_daily_predictions,
+            snapshot_daily_coverage_ratios,
+            snapshot_daily_lead_buckets,
+        ) = (
             snapshot_calibration_fields_from_prediction(pred)
         )
 
@@ -847,6 +884,7 @@ def auto_calibrate():
             "daily_coverage_ratios": daily_coverage_ratios,
             "snapshot_daily_predictions": snapshot_daily_predictions,
             "snapshot_daily_coverage_ratios": snapshot_daily_coverage_ratios,
+            "snapshot_daily_lead_buckets": snapshot_daily_lead_buckets,
             "social_signal": pred.get("social_signal"),
         })
 
@@ -1047,7 +1085,11 @@ if __name__ == "__main__":
             daily_theatre_counts,
             daily_coverage_ratios,
         ) = daily_calibration_fields_from_prediction(pred)
-        snapshot_daily_predictions, snapshot_daily_coverage_ratios = (
+        (
+            snapshot_daily_predictions,
+            snapshot_daily_coverage_ratios,
+            snapshot_daily_lead_buckets,
+        ) = (
             snapshot_calibration_fields_from_prediction(pred)
         )
 
@@ -1083,6 +1125,7 @@ if __name__ == "__main__":
             raw_daily_predictions=raw_daily_predictions,
             snapshot_daily_predictions=snapshot_daily_predictions,
             snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
+            snapshot_daily_lead_buckets=snapshot_daily_lead_buckets,
             reference_amc_theatres=pred.get("reference_amc_theatres"),
             model_cohort_key=pred.get("model_cohort_key"),
             social_signal=pred.get("social_signal"),

@@ -97,7 +97,16 @@
       "calibration_excluded_days": [
         "Friday",
         "Saturday"
-      ]
+      ],
+      "snapshot_daily_predictions": {
+        "Saturday": 3.0
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Saturday": 0.034
+      },
+      "snapshot_daily_lead_buckets": {
+        "Saturday": "same_day"
+      }
     },
     {
       "movie": "Animal Farm",
@@ -139,7 +148,16 @@
       "calibration_excluded_days": [
         "Saturday",
         "Sunday"
-      ]
+      ],
+      "snapshot_daily_predictions": {
+        "Saturday": 0.11
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Saturday": 0.021
+      },
+      "snapshot_daily_lead_buckets": {
+        "Saturday": "same_day"
+      }
     },
     {
       "movie": "Hokum",
@@ -224,7 +242,25 @@
         "Saturday": 1.0,
         "Sunday": 1.0
       },
-      "coverage_ratio": 0.994
+      "coverage_ratio": 0.994,
+      "snapshot_daily_predictions": {
+        "Thursday": 2.47,
+        "Friday": 4.67,
+        "Saturday": 4.3,
+        "Sunday": 2.27
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.202,
+        "Friday": 0.667,
+        "Saturday": 1.0,
+        "Sunday": 1.0
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      }
     },
     {
       "movie": "The Sheep Detectives",
@@ -273,7 +309,22 @@
       "coverage_ratio": 0.871,
       "calibration_excluded_days": [
         "Thursday"
-      ]
+      ],
+      "snapshot_daily_predictions": {
+        "Friday": 0.84,
+        "Saturday": 1.08,
+        "Sunday": 0.8
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Friday": 0.646,
+        "Saturday": 0.974,
+        "Sunday": 0.974
+      },
+      "snapshot_daily_lead_buckets": {
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      }
     }
   ],
   "calibration_factors": {
@@ -421,10 +472,17 @@
     ],
     "last_updated": "2026-05-12",
     "snapshot_to_day_scale_factors": {
-      "Thursday": 1.0,
-      "Friday": 1.0,
-      "Saturday": 1.0,
-      "Sunday": 1.0
-    }
+      "Thursday": 1.0781,
+      "Friday": 1.5752,
+      "Saturday": 1.5775,
+      "Sunday": 1.5775
+    },
+    "snapshot_to_lead_scale_factors": {
+      "same_day": 1.8553,
+      "next_day": 1.0,
+      "multi_day": 1.0,
+      "long_lead": 1.0
+    },
+    "last_snapshot_calibration_backfill": "2026-05-15"
   }
 }
