@@ -731,6 +731,8 @@ def auto_calibrate():
                          load_polymarket_data, load_theatre_counts,
                          load_pre_reservation_data,
                          load_social_signal_data,
+                         load_movie_metadata,
+                         national_theatre_count_for_movie,
                          predict_movie)
 
     cal = load_calibration()
@@ -751,6 +753,7 @@ def auto_calibrate():
     # disagree with `predict.py --movie X` output and trains the EMA scale
     # factor against the wrong baseline.
     theatre_counts = load_theatre_counts()
+    metadata = load_movie_metadata()
 
     if not seat_data:
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
@@ -785,14 +788,11 @@ def auto_calibrate():
 
         print(f"\n  {movie}:")
 
-        # Match national theatre count by exact or fuzzy name (same logic as
-        # predict.py main loop).
-        nat_count = theatre_counts.get(movie)
-        if not nat_count:
-            for tc_movie, count in theatre_counts.items():
-                if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
-                    nat_count = count
-                    break
+        nat_count = national_theatre_count_for_movie(
+            movie,
+            theatre_counts,
+            metadata=metadata,
+        )
 
         # Our prediction
         pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), prediction_cal,
@@ -986,6 +986,8 @@ if __name__ == "__main__":
                              load_polymarket_data, load_theatre_counts,
                              load_pre_reservation_data,
                              load_social_signal_data,
+                             load_movie_metadata,
+                             national_theatre_count_for_movie,
                              predict_movie)
         cal = load_calibration()
         weekend_of = _last_friday()
@@ -994,19 +996,18 @@ if __name__ == "__main__":
         snapshot_data = load_pre_reservation_data(weekend_of=weekend_of)
         social_data = load_social_signal_data(weekend_of=weekend_of)
         theatre_counts = load_theatre_counts()
+        metadata = load_movie_metadata()
 
         matched_movie = None
         nat_count = None
         for m in seat_data:
             if movie_name.lower() in m.lower():
                 matched_movie = m
-                # Same fuzzy match for national theatre count as auto_calibrate.
-                nat_count = theatre_counts.get(m)
-                if not nat_count:
-                    for tc_movie, count in theatre_counts.items():
-                        if tc_movie.lower() in m.lower() or m.lower() in tc_movie.lower():
-                            nat_count = count
-                            break
+                nat_count = national_theatre_count_for_movie(
+                    m,
+                    theatre_counts,
+                    metadata=metadata,
+                )
                 break
 
         if not matched_movie:

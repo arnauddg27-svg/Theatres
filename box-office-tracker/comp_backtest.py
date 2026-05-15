@@ -104,7 +104,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"No seat data found for {args.movie!r}.")
         return 1
 
-    nat_count = national_theatre_count_for_movie(movie_match, theatre_counts)
+    nat_count = national_theatre_count_for_movie(movie_match, theatre_counts, metadata=metadata)
     prediction = predict_movie(
         movie_match,
         seat_data[movie_match],

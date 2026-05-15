@@ -49,6 +49,7 @@ class HistoricalComp:
     social_buzz_score: float = 0.0
     social_source_url: str = ""
     social_notes: str = ""
+    national_theatre_count: int = 0
 
     @property
     def thursday_share(self) -> float:
@@ -91,6 +92,7 @@ class TargetMetadata:
     social_media_universe_m: float = 0.0
     social_sentiment_score: float = 0.0
     social_buzz_score: float = 0.0
+    national_theatre_count: int = 0
 
 
 @dataclass(frozen=True)
@@ -174,6 +176,7 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 social_buzz_score=_float(row, "social_buzz_score"),
                 social_source_url=(row.get("social_source_url") or "").strip(),
                 social_notes=(row.get("social_notes") or "").strip(),
+                national_theatre_count=_int(row, "national_theatre_count") or 0,
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)
@@ -205,6 +208,7 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 social_media_universe_m=_float(row, "social_media_universe_m"),
                 social_sentiment_score=_float(row, "social_sentiment_score"),
                 social_buzz_score=_float(row, "social_buzz_score"),
+                national_theatre_count=_int(row, "national_theatre_count") or 0,
             )
             metadata[movie.lower()] = item
     return metadata
@@ -238,6 +242,18 @@ def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
         score += 1.25
     if target.rating and target.rating == comp.rating:
         score += 0.75
+    if target.national_theatre_count and comp.national_theatre_count:
+        low = min(target.national_theatre_count, comp.national_theatre_count)
+        high = max(target.national_theatre_count, comp.national_theatre_count)
+        theatre_ratio = low / high if high else 0.0
+        if theatre_ratio >= 0.90:
+            score += 1.00
+        elif theatre_ratio >= 0.75:
+            score += 0.60
+        elif theatre_ratio >= 0.55:
+            score += 0.25
+        else:
+            score -= 0.20
     return score
 
 
@@ -259,6 +275,9 @@ def _audience_feature_values(item) -> dict[str, float]:
         values["social_sentiment_score"] = max(-1.0, min(1.0, social_sentiment_score))
     if social_buzz_score:
         values["social_buzz_score"] = max(-1.0, min(1.0, social_buzz_score))
+    national_theatre_count = int(getattr(item, "national_theatre_count", 0) or 0)
+    if national_theatre_count > 0:
+        values["log_national_theatre_count"] = math.log(national_theatre_count)
     return values
 
 
@@ -365,6 +384,7 @@ def _audience_regression_adjustment(
             "log_social_media_universe_m",
             "social_sentiment_score",
             "social_buzz_score",
+            "log_national_theatre_count",
         )
         if name in target_features
     ]
@@ -418,6 +438,7 @@ def _audience_regression_adjustment(
             "social_media_universe_m": float(getattr(target, "social_media_universe_m", 0) or 0),
             "social_sentiment_score": float(getattr(target, "social_sentiment_score", 0) or 0),
             "social_buzz_score": float(getattr(target, "social_buzz_score", 0) or 0),
+            "national_theatre_count": int(getattr(target, "national_theatre_count", 0) or 0),
             "model_features": ",".join(feature_names),
         },
     }

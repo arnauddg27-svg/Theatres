@@ -58,7 +58,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v6-social"
+MODEL_VERSION = "seat-regression-v7-theatre-footprint"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -959,7 +959,7 @@ def load_theatre_counts():
     return {}
 
 
-def national_theatre_count_for_movie(movie, theatre_counts):
+def national_theatre_count_for_movie(movie, theatre_counts, metadata=None):
     """Find the BOM theatre count for a movie, allowing simple fuzzy matches."""
     nat_count = theatre_counts.get(movie)
     if nat_count:
@@ -967,6 +967,10 @@ def national_theatre_count_for_movie(movie, theatre_counts):
     for tc_movie, count in theatre_counts.items():
         if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
             return count
+    if metadata:
+        target = metadata_for_movie(movie, metadata)
+        if target and target.national_theatre_count:
+            return target.national_theatre_count
     return None
 
 
@@ -2736,6 +2740,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         model_cohort_key=model_cohort_key,
     )
     movie_metadata = metadata_for_movie(movie, load_movie_metadata())
+    if not national_theatre_count and movie_metadata and movie_metadata.national_theatre_count:
+        national_theatre_count = movie_metadata.national_theatre_count
+    if (
+        national_theatre_count
+        and movie_metadata
+        and movie_metadata.national_theatre_count != int(national_theatre_count)
+    ):
+        movie_metadata = replace(
+            movie_metadata,
+            national_theatre_count=int(national_theatre_count),
+        )
 
     for date_str in opening_dates:
         rows = seat_data[date_str]
@@ -3130,6 +3145,9 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     target = metadata_for_movie(pred.get("movie", ""), metadata)
     if not target or not comps:
         return None
+    pred_nat_count = pred.get("national_theatre_count")
+    if pred_nat_count and target.national_theatre_count != int(pred_nat_count):
+        target = replace(target, national_theatre_count=int(pred_nat_count))
     if pred.get("social_signal"):
         target = _metadata_with_social_signal(target, pred.get("social_signal"))
 
@@ -3208,6 +3226,10 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
             feature_parts.append(f"social buzz {features['social_buzz_score']:+.2f}")
             if "social_buzz_score" in model_features:
                 pred["social_signal_model_integrated"] = True
+        if features.get("national_theatre_count"):
+            feature_parts.append(f"{int(features['national_theatre_count']):,} theatres")
+            if "log_national_theatre_count" in model_features:
+                pred["theatre_count_model_integrated"] = True
         pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
         pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
         pred["seat_comp_audience_regression_r2"] = estimate.audience_regression_r2
@@ -3571,7 +3593,7 @@ def print_prediction(pred, verbose=False):
         if pred.get("seat_comp_audience_factor"):
             r2 = pred.get("seat_comp_audience_regression_r2")
             r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
-            print(f"    Audience/social regression: x{pred['seat_comp_audience_factor']:.3f} "
+            print(f"    Comp feature regression: x{pred['seat_comp_audience_factor']:.3f} "
                   f"from {pred.get('seat_comp_audience_features', 'audience scores')} "
                   f"(n={pred['seat_comp_audience_regression_n']}{r2_str})")
         daily = pred.get("seat_comp_daily_m") or {}
@@ -3838,6 +3860,7 @@ def main():
         snapshot_data = load_pre_reservation_data()
         social_data = load_social_signal_data()
         theatre_counts = load_theatre_counts()
+        metadata = load_movie_metadata()
         movie_match = None
         for m in seat_data:
             if movie_name.lower() in m.lower():
@@ -3848,7 +3871,7 @@ def main():
             print(f"No seat-count prediction found for {movie_name!r}; not recording actual.")
             return
 
-        nat_count = national_theatre_count_for_movie(movie_match, theatre_counts)
+        nat_count = national_theatre_count_for_movie(movie_match, theatre_counts, metadata=metadata)
         pred = predict_movie(movie_match, seat_data[movie_match],
                             poly_data.get(movie_match, []), cal,
                             national_theatre_count=nat_count,
@@ -3935,6 +3958,7 @@ def main():
         through_date=through_date,
     )
     theatre_counts = load_theatre_counts()
+    metadata = load_movie_metadata()
 
     if not seat_data:
         print("No seat data found. Run: python3 scraper.py --collect-links, then python3 scraper.py")
@@ -3966,7 +3990,7 @@ def main():
     print(f"  Theatre cohorts: {', '.join(sorted(active_model_cohorts()))}")
     if theatre_counts:
         relevant_counts = {
-            movie: national_theatre_count_for_movie(movie, theatre_counts)
+            movie: national_theatre_count_for_movie(movie, theatre_counts, metadata=metadata)
             for movie in movies_to_predict
         }
         relevant_counts = {m: c for m, c in relevant_counts.items() if c}
@@ -3976,7 +4000,7 @@ def main():
     print(f"{'='*70}")
 
     for movie in movies_to_predict:
-        nat_count = national_theatre_count_for_movie(movie, theatre_counts)
+        nat_count = national_theatre_count_for_movie(movie, theatre_counts, metadata=metadata)
         pred = predict_movie(movie, seat_data[movie],
                             poly_data.get(movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count,

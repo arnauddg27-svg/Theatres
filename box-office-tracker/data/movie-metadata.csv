@@ -1,5 +1,8 @@
-movie,weekend_of,genre,audience_type,franchise_type,rating,notes,imdb_rating,imdb_votes,rt_audience_score,rt_audience_score_type
-Michael,2026-04-24,music_biopic,broad_legacy,biopic,PG-13,Manual metadata for historical-comp replay; scraper-independent.,,,,
-The Devil Wears Prada 2,2026-05-01,comedy,female_skewing,sequel,PG-13,Manual metadata for historical-comp model; comedy-drama legacy sequel with female-skewing audience.,,,,
-Mortal Kombat II,2026-05-08,action,fan_driven,video_game,R,Manual metadata for current-weekend comp model; action video-game sequel.,,,,
-The Sheep Detectives,2026-05-08,comedy,broad_family,original,PG,Manual metadata for current-weekend comp model; broad-family original comedy.,,,,
+movie,weekend_of,genre,audience_type,franchise_type,rating,notes,imdb_rating,imdb_votes,rt_audience_score,rt_audience_score_type,national_theatre_count
+Michael,2026-04-24,music_biopic,broad_legacy,biopic,PG-13,Manual metadata for historical-comp replay; scraper-independent.,,,,,3955
+The Devil Wears Prada 2,2026-05-01,comedy,female_skewing,sequel,PG-13,Manual metadata for historical-comp model; comedy-drama legacy sequel with female-skewing audience.,,,,,4150
+Animal Farm,2026-05-01,animation,broad_family,adaptation,PG,Manual metadata for current-weekend comp model; animated adaptation with family-skewing release footprint.,,,,,2600
+Hokum,2026-05-01,horror,horror_fan,original,R,Manual metadata for current-weekend comp model; horror/fan-skewing release footprint.,,,,,1885
+Mortal Kombat II,2026-05-08,action,fan_driven,video_game,R,Manual metadata for current-weekend comp model; action video-game sequel.,,,,,3503
+The Sheep Detectives,2026-05-08,comedy,broad_family,original,PG,Manual metadata for current-weekend comp model; broad-family original comedy.,,,,,3457
+Obsession,2026-05-15,horror,horror_fan,original,R,Manual metadata for current-weekend comp model; sub-wide Blumhouse horror release footprint.,,,,,2615

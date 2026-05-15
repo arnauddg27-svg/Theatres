@@ -9,9 +9,11 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
 import predict
 import calibrate
+from historical_comps import TargetMetadata
 from model_calibration import recalibrate_snapshot_day_scale_factors
 from predict import (
     days_to_weekend,
+    national_theatre_count_for_movie,
     national_release_footprint_factor,
     polymarket_expected_value,
     predict_movie,
@@ -153,6 +155,23 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(
             sub_wide["daily_details"]["Thursday"]["national_footprint_factor"],
             1.0,
+        )
+
+    def test_national_theatre_count_falls_back_to_movie_metadata(self):
+        metadata = {
+            "sample movie": TargetMetadata(
+                movie="Sample Movie",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+                national_theatre_count=2615,
+            )
+        }
+
+        self.assertEqual(
+            2615,
+            national_theatre_count_for_movie("Sample Movie", {}, metadata=metadata),
         )
 
     def test_prediction_keeps_polymarket_ev_out_of_forecast_math(self):

@@ -275,6 +275,90 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertIn("imdb_rating", estimate.audience_regression_features)
         self.assertIn("rt_audience_score", estimate.audience_regression_features)
 
+    def test_movie_metadata_loads_national_theatre_count(self):
+        path = Path(__file__).with_name("tmp-metadata-theatres.csv")
+        try:
+            path.write_text(
+                "movie,weekend_of,genre,audience_type,franchise_type,rating,notes,"
+                "imdb_rating,imdb_votes,rt_audience_score,rt_audience_score_type,"
+                "national_theatre_count\n"
+                "Future Movie,2026-05-15,horror,horror_fan,original,R,,"
+                "6.1,1000,74,VERIFIED,2615\n"
+            )
+
+            metadata = load_movie_metadata(path)
+        finally:
+            path.unlink(missing_ok=True)
+
+        target = metadata["future movie"]
+        self.assertEqual(2615, target.national_theatre_count)
+
+    def test_historical_comps_load_national_theatre_count(self):
+        path = Path(__file__).with_name("tmp-comps-theatres.csv")
+        try:
+            path.write_text(
+                "movie,release_year,genre,audience_type,franchise_type,rating,"
+                "thursday_preview_m,opening_weekend_m,friday_m,saturday_m,sunday_m,"
+                "national_theatre_count\n"
+                "Comp Movie,2024,horror,horror_fan,original,R,"
+                "4.0,28.0,12.0,9.0,7.0,2615\n"
+            )
+
+            comps = load_historical_comps(path)
+        finally:
+            path.unlink(missing_ok=True)
+
+        self.assertEqual(1, len(comps))
+        self.assertEqual(2615, comps[0].national_theatre_count)
+
+    def test_theatre_count_regression_uses_release_footprint(self):
+        target = TargetMetadata(
+            movie="Sub-Wide Horror",
+            genre="horror",
+            audience_type="horror_fan",
+            franchise_type="original",
+            rating="R",
+            national_theatre_count=2000,
+        )
+        comps = [
+            HistoricalComp(
+                f"Comp {idx}",
+                "horror",
+                "horror_fan",
+                "original",
+                "R",
+                5.0,
+                weekend,
+                national_theatre_count=theatres,
+            )
+            for idx, (theatres, weekend) in enumerate([
+                (1800, 28.0),
+                (2200, 33.0),
+                (2600, 39.0),
+                (3200, 48.0),
+                (3800, 58.0),
+                (4200, 66.0),
+            ])
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(
+            5.0,
+            target,
+            comps,
+            max_comps=6,
+        )
+
+        self.assertLess(estimate.audience_regression_factor, 1.0)
+        self.assertLess(estimate.audience_adjusted_mid_m, estimate.mid_m)
+        self.assertIn(
+            "log_national_theatre_count",
+            estimate.audience_regression_features["model_features"],
+        )
+        self.assertEqual(
+            2000,
+            estimate.audience_regression_features["national_theatre_count"],
+        )
+
     def test_social_regression_uses_historical_smu_when_available(self):
         target = TargetMetadata(
             movie="High Buzz Sequel",
@@ -556,16 +640,32 @@ class HistoricalCompsTest(unittest.TestCase):
 
         mk = metadata_for_movie("Mortal Kombat II", metadata)
         sheep = metadata_for_movie("The Sheep Detectives", metadata)
+        obsession = metadata_for_movie("Obsession", metadata)
+        animal_farm = metadata_for_movie("Animal Farm", metadata)
+        hokum = metadata_for_movie("Hokum", metadata)
 
         self.assertIsNotNone(mk)
         self.assertEqual("action", mk.genre)
         self.assertEqual("fan_driven", mk.audience_type)
         self.assertEqual("video_game", mk.franchise_type)
+        self.assertEqual(3503, mk.national_theatre_count)
 
         self.assertIsNotNone(sheep)
         self.assertEqual("comedy", sheep.genre)
         self.assertEqual("broad_family", sheep.audience_type)
         self.assertEqual("original", sheep.franchise_type)
+        self.assertEqual(3457, sheep.national_theatre_count)
+
+        self.assertIsNotNone(obsession)
+        self.assertEqual("horror", obsession.genre)
+        self.assertEqual("horror_fan", obsession.audience_type)
+        self.assertEqual(2615, obsession.national_theatre_count)
+
+        self.assertIsNotNone(animal_farm)
+        self.assertEqual(2600, animal_farm.national_theatre_count)
+
+        self.assertIsNotNone(hokum)
+        self.assertEqual(1885, hokum.national_theatre_count)
 
     def test_prediction_seat_comp_model_uses_latest_available_daily_basis(self):
         prediction = {

@@ -481,13 +481,18 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
         poly_data = predict.load_polymarket_data(weekend_of=current_weekend)
         snapshot_data = predict.load_pre_reservation_data(weekend_of=current_weekend)
         theatre_counts = predict.load_theatre_counts()
+        metadata = predict.load_movie_metadata()
     except Exception as exc:
         return {"_error": {"message": str(exc)}}
 
     predictions = {}
     for movie, movie_seat_data in seat_data.items():
         try:
-            nat_count = predict.national_theatre_count_for_movie(movie, theatre_counts)
+            nat_count = predict.national_theatre_count_for_movie(
+                movie,
+                theatre_counts,
+                metadata=metadata,
+            )
             pred = predict.predict_movie(
                 movie,
                 movie_seat_data,
