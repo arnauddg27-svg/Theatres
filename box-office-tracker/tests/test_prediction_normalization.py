@@ -234,6 +234,28 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("direct seats", pred["regression_basis"])
         self.assertFalse(pred["regression_uses_polymarket"])
 
+    def test_seat_primary_dampens_direct_weight_for_sparse_partial_data(self):
+        pred = {
+            "seat_mid_m": 30.0,
+            "seat_low_m": 24.0,
+            "seat_high_m": 36.0,
+            "seat_comp_adjusted_mid_m": 15.0,
+            "seat_comp_adjusted_low_m": 12.0,
+            "seat_comp_adjusted_high_m": 18.0,
+            "seat_comp_mid_m": 15.0,
+            "seat_comp_low_m": 12.0,
+            "seat_comp_high_m": 18.0,
+            "n_days": 1,
+            "seat_data_quality": 0.10,
+        }
+
+        primary = predict.seat_primary_ensemble(pred)
+
+        self.assertLess(primary["w_direct"], 0.30)
+        self.assertGreater(primary["w_comp"], 0.70)
+        self.assertLess(primary["mid_m"], 19.5)
+        self.assertGreater(primary["mid_m"], 15.0)
+
     def test_prediction_penalizes_missing_full_timezone_bucket(self):
         cal = {
             "history": [],

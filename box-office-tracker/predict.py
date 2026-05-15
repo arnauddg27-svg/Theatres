@@ -1520,6 +1520,15 @@ def seat_primary_ensemble(pred):
 
     w_comp = comp_component_weight(pred.get("n_days", 0))
     w_direct = 1.0 - w_comp
+    quality_raw = pred.get("seat_data_quality")
+    if quality_raw is not None:
+        quality = _coverage_value(quality_raw, default=1.0)
+        # The base day-count weight says how many days were collected; quality
+        # says whether those days represent enough of the weekend/theatre map to
+        # trust a direct extrapolation. Keep a small floor so seats remain the
+        # anchor, but let sparse partial reads lean on comps/priors.
+        w_direct *= 0.35 + 0.65 * quality
+        w_comp = 1.0 - w_direct
     direct_mid = pred["seat_mid_m"]
     direct_low = pred["seat_low_m"]
     direct_high = pred["seat_high_m"]
