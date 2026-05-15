@@ -47,6 +47,7 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
 PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
+DAILY_ACTUALS_CSV   = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 SOCIAL_SIGNALS_CSV  = os.path.join(DATA_DIR, "social-signals.csv")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
@@ -64,7 +65,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v11-partial-day-feature-shares"
+MODEL_VERSION = "seat-regression-v12-daily-actual-overrides"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -301,6 +302,20 @@ DAY_CONFIDENCE = {
     7: (0.99, 1.02),   # full week
 }
 OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
+OPENING_DAY_ALIASES = {
+    "thu": "Thursday",
+    "thur": "Thursday",
+    "thurs": "Thursday",
+    "thursday": "Thursday",
+    "preview": "Thursday",
+    "previews": "Thursday",
+    "friday": "Friday",
+    "fri": "Friday",
+    "saturday": "Saturday",
+    "sat": "Saturday",
+    "sunday": "Sunday",
+    "sun": "Sunday",
+}
 
 DEFAULT_TICKET_PRICE = 14.50
 PRICE_DISCOUNT_FACTOR = 0.85   # avg effective price vs adult price
@@ -601,6 +616,72 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
                 continue
             data.setdefault(movie, {}).setdefault(show_date, []).append(row)
     return data
+
+
+def normalize_opening_day_name(value):
+    """Return canonical opening-weekend day name for manual/report inputs."""
+    raw = (value or "").strip().lower()
+    raw = re.sub(r"[^a-z]+", "", raw)
+    return OPENING_DAY_ALIASES.get(raw)
+
+
+def _movie_lookup_key(value):
+    return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
+
+
+def load_daily_actual_overrides(weekend_of=None, through_date=None):
+    """Load reported partial actuals, e.g. Thursday previews.
+
+    These are known daily grosses used as forecast inputs. They are not final
+    opening-weekend actuals and should not be written into calibration history
+    until the full weekend settles.
+    """
+    if not os.path.exists(DAILY_ACTUALS_CSV):
+        return {}
+
+    with open(DAILY_ACTUALS_CSV, "r") as f:
+        rows = list(csv.DictReader(f))
+
+    if weekend_of is None:
+        weekends = sorted({
+            row.get("weekend_of", "")
+            for row in rows
+            if row.get("weekend_of")
+        })
+        weekend_of = weekends[-1] if weekends else _current_weekend_friday()
+
+    selected = {}
+    for idx, row in enumerate(rows):
+        row_weekend = row.get("weekend_of", "")
+        if row_weekend and row_weekend != weekend_of:
+            continue
+        as_of_date = row.get("as_of_date", "") or row.get("reported_date", "")
+        if through_date and as_of_date and as_of_date > through_date:
+            continue
+        movie = (row.get("movie_title", "") or "").strip()
+        day_name = normalize_opening_day_name(
+            row.get("day_of_week", "") or row.get("day", "")
+        )
+        gross_m = _positive_float(row.get("gross_m", "") or row.get("gross", ""))
+        if not movie or not day_name or gross_m is None:
+            continue
+        movie_bucket = selected.setdefault(movie, {})
+        candidate = {
+            "gross_m": gross_m,
+            "source": row.get("source", ""),
+            "status": row.get("status", ""),
+            "as_of_date": as_of_date,
+            "notes": row.get("notes", ""),
+            "_sort_key": (as_of_date or "", idx),
+        }
+        existing = movie_bucket.get(day_name)
+        if not existing or candidate["_sort_key"] >= existing.get("_sort_key", ("", -1)):
+            movie_bucket[day_name] = candidate
+
+    for movie_bucket in selected.values():
+        for actual in movie_bucket.values():
+            actual.pop("_sort_key", None)
+    return selected
 
 
 def seat_data_weekend_of(movie_seat_data):
@@ -2733,9 +2814,28 @@ def snapshot_calibration_fields_from_prediction(pred):
 
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
 
+def daily_actual_override_for(movie, day_name, daily_actual_overrides):
+    """Find a reported daily actual for this movie/day, if one exists."""
+    if not isinstance(daily_actual_overrides, dict):
+        return None
+    direct = daily_actual_overrides.get(movie)
+    if isinstance(direct, dict) and direct.get(day_name):
+        return direct[day_name]
+
+    target_key = _movie_lookup_key(movie)
+    if not target_key:
+        return None
+    for title, daily_actuals in daily_actual_overrides.items():
+        if not isinstance(daily_actuals, dict):
+            continue
+        if _movie_lookup_key(title) == target_key and daily_actuals.get(day_name):
+            return daily_actuals[day_name]
+    return None
+
+
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
-                  social_data=None):
+                  social_data=None, daily_actual_overrides=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -2756,6 +2856,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
 
     if not opening_dates:
         return None
+
+    if daily_actual_overrides is None:
+        daily_actual_overrides = load_daily_actual_overrides(
+            weekend_of=seat_data_weekend_of(seat_data)
+        )
 
     model_cohorts = active_model_cohorts()
     model_cohort_key = normalize_model_cohort_key(model_cohorts)
@@ -2937,8 +3042,31 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             domestic_low *= footprint_factor
             domestic_high *= footprint_factor
 
+        seat_implied_domestic_mid = domestic_mid
+        seat_implied_domestic_low = domestic_low
+        seat_implied_domestic_high = domestic_high
+        actual_override = daily_actual_override_for(
+            movie,
+            day_name,
+            daily_actual_overrides,
+        )
+        if actual_override:
+            actual_gross_m = _positive_float(actual_override.get("gross_m"))
+            if actual_gross_m is not None:
+                actual_gross = actual_gross_m * 1_000_000
+                day_scale = get_day_scale(cal, day_name)
+                raw_actual_gross = (
+                    actual_gross / day_scale
+                    if day_scale and abs(day_scale) > 1e-9 else actual_gross
+                )
+                domestic_mid = raw_actual_gross
+                domestic_low = raw_actual_gross
+                domestic_high = raw_actual_gross
+                coverage_ratio = 1.0
+                effective_coverage_ratio = 1.0
+
         daily_estimates[day_name] = domestic_mid
-        daily_details[day_name] = {
+        details = {
             "date": date_str,
             "amc_total": amc_total,
             "sampled_amc_total": sampled_amc_total,
@@ -2973,6 +3101,24 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "median_revenue": amc_stats.get("median_revenue", 0),
             "theatre_results": theatre_results if verbose else [],
         }
+        if actual_override and _positive_float(actual_override.get("gross_m")) is not None:
+            details.update({
+                "actual_override": True,
+                "actual_override_m": _positive_float(actual_override.get("gross_m")),
+                "actual_override_source": actual_override.get("source", ""),
+                "actual_override_status": actual_override.get("status", ""),
+                "actual_override_as_of_date": actual_override.get("as_of_date", ""),
+                "actual_override_notes": actual_override.get("notes", ""),
+                "seat_implied_domestic_mid": seat_implied_domestic_mid,
+                "seat_implied_domestic_low": seat_implied_domestic_low,
+                "seat_implied_domestic_high": seat_implied_domestic_high,
+                "seat_implied_scaled_domestic_mid": (
+                    seat_implied_domestic_mid * get_day_scale(cal, day_name)
+                ),
+            })
+        else:
+            details["actual_override"] = False
+        daily_details[day_name] = details
 
     if not daily_estimates:
         return None
@@ -3666,7 +3812,10 @@ def print_prediction(pred, verbose=False):
             daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
         footprint_factor = details.get("national_footprint_factor", 1.0)
         footprint_note = ""
-        if nat and abs(footprint_factor - 1.0) >= 0.005:
+        if details.get("actual_override"):
+            source = details.get("actual_override_source") or "reported"
+            day_model = f"reported actual {fmt_m(dom_m)} ({source})"
+        elif nat and abs(footprint_factor - 1.0) >= 0.005:
             pre_footprint_m = (
                 details.get("pre_footprint_domestic_mid", details["domestic_mid"])
                 / 1_000_000
@@ -3693,6 +3842,15 @@ def print_prediction(pred, verbose=False):
                 f"sample AMC {fmt_m(sampled_amc_m)} × {sample_norm:.3f} "
                 f"= AMC {fmt_m(amc_m)}"
             )
+        if details.get("actual_override"):
+            implied_m = (
+                details.get(
+                    "seat_implied_scaled_domestic_mid",
+                    details.get("seat_implied_domestic_mid", details["domestic_mid"]),
+                )
+                / 1_000_000
+            )
+            amc_input = f"seat-implied {fmt_m(implied_m)}"
         print(f"    {day} ({details['date']}): "
               f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
@@ -4002,6 +4160,7 @@ def main():
         poly_data = load_polymarket_data()
         snapshot_data = load_pre_reservation_data()
         social_data = load_social_signal_data()
+        daily_actual_overrides = load_daily_actual_overrides()
         theatre_counts = load_theatre_counts()
         metadata = load_movie_metadata()
         movie_match = None
@@ -4019,7 +4178,8 @@ def main():
                             poly_data.get(movie_match, []), cal,
                             national_theatre_count=nat_count,
                             snapshot_data=snapshot_data.get(movie_match, {}),
-                            social_data=social_data)
+                            social_data=social_data,
+                            daily_actual_overrides=daily_actual_overrides)
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -4100,6 +4260,10 @@ def main():
         weekend_of=replay_weekend,
         through_date=through_date,
     )
+    daily_actual_overrides = load_daily_actual_overrides(
+        weekend_of=replay_weekend,
+        through_date=through_date,
+    )
     theatre_counts = load_theatre_counts()
     metadata = load_movie_metadata()
 
@@ -4148,7 +4312,8 @@ def main():
                             poly_data.get(movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count,
                             snapshot_data=snapshot_data.get(movie, {}),
-                            social_data=social_data)
+                            social_data=social_data,
+                            daily_actual_overrides=daily_actual_overrides)
         if pred:
             print_prediction(pred, verbose=verbose)
 

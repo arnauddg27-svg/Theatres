@@ -1554,6 +1554,83 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(500.0, layer["social_media_universe_m"])
         self.assertGreater(loaded["Sample Movie"]["reach"], 0)
 
+    def test_daily_actual_override_loader_uses_latest_report(self):
+        old_path = predict.DAILY_ACTUALS_CSV
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                path = Path(tmpdir) / "daily-actual-overrides.csv"
+                path.write_text(
+                    "\n".join([
+                        "weekend_of,movie_title,day_of_week,gross_m,source,status,as_of_date,notes",
+                        "2026-05-15,Sample Movie,Thu,2.4,early,reported,2026-05-15,old report",
+                        "2026-05-15,Sample Movie,Thursday,2.6,manual,reported,2026-05-15,final preview",
+                        "2026-05-15,Sample Movie,Friday,8.0,manual,reported,2026-05-16,future",
+                        "2026-05-08,Sample Movie,Thursday,1.0,manual,reported,2026-05-08,old weekend",
+                    ])
+                    + "\n"
+                )
+                predict.DAILY_ACTUALS_CSV = str(path)
+
+                loaded = predict.load_daily_actual_overrides(
+                    weekend_of="2026-05-15",
+                    through_date="2026-05-15",
+                )
+        finally:
+            predict.DAILY_ACTUALS_CSV = old_path
+
+        self.assertEqual(2.6, loaded["Sample Movie"]["Thursday"]["gross_m"])
+        self.assertEqual("manual", loaded["Sample Movie"]["Thursday"]["source"])
+        self.assertNotIn("Friday", loaded["Sample Movie"])
+
+    def test_daily_actual_override_replaces_seat_implied_day(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "reference_amc_theatres": 2,
+            }
+        }
+        seat_data = {
+            "2026-05-14": [
+                self._row("AMC One", date="2026-05-14", day="Thursday"),
+                self._row("AMC Two", date="2026-05-14", day="Thursday"),
+            ]
+        }
+
+        seat_only = predict_movie(
+            "Sample Movie",
+            seat_data,
+            [],
+            cal,
+            daily_actual_overrides={},
+        )
+        overridden = predict_movie(
+            "Sample Movie",
+            seat_data,
+            [],
+            cal,
+            daily_actual_overrides={
+                "Sample Movie": {
+                    "Thursday": {
+                        "gross_m": 2.6,
+                        "source": "manual",
+                        "status": "reported",
+                        "as_of_date": "2026-05-15",
+                    }
+                }
+            },
+        )
+
+        self.assertNotAlmostEqual(2.6, seat_only["seat_mid_m"], places=3)
+        self.assertAlmostEqual(2.6, overridden["seat_mid_m"], places=6)
+        self.assertAlmostEqual(2_600_000, overridden["daily_details"]["Thursday"]["domestic_mid"])
+        self.assertTrue(overridden["daily_details"]["Thursday"]["actual_override"])
+        self.assertGreater(
+            overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"],
+            0,
+        )
+
     def _pending_calibration(self, movie, predicted, actual):
         return {
             "movie": movie,
