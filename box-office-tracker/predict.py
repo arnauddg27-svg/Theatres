@@ -64,7 +64,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v9-partial-day-comp-shape"
+MODEL_VERSION = "seat-regression-v10-fit-shrunk-comp-features"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -3294,6 +3294,8 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
         pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
         pred["seat_comp_audience_regression_r2"] = estimate.audience_regression_r2
+        pred["seat_comp_audience_raw_factor"] = features.get("regression_raw_factor")
+        pred["seat_comp_audience_fit_weight"] = features.get("regression_fit_weight")
         pred["seat_comp_audience_features"] = ", ".join(feature_parts)
     if local_share:
         pred["seat_comp_local_thursday_share"] = local_share["share"]
@@ -3701,9 +3703,17 @@ def print_prediction(pred, verbose=False):
         if pred.get("seat_comp_audience_factor"):
             r2 = pred.get("seat_comp_audience_regression_r2")
             r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
+            raw = pred.get("seat_comp_audience_raw_factor")
+            fit_weight = pred.get("seat_comp_audience_fit_weight")
+            shrink_bits = []
+            if raw:
+                shrink_bits.append(f"raw x{raw:.3f}")
+            if fit_weight is not None:
+                shrink_bits.append(f"fit {fit_weight:.0%}")
+            shrink_str = f" ({', '.join(shrink_bits)})" if shrink_bits else ""
             print(f"    Comp feature regression: x{pred['seat_comp_audience_factor']:.3f} "
                   f"from {pred.get('seat_comp_audience_features', 'audience scores')} "
-                  f"(n={pred['seat_comp_audience_regression_n']}{r2_str})")
+                  f"(n={pred['seat_comp_audience_regression_n']}{r2_str}){shrink_str}")
         daily = pred.get("seat_comp_daily_m") or {}
         shares = pred.get("seat_comp_daily_shares") or {}
         if daily:

@@ -10,6 +10,7 @@ from historical_comps import (
     DEFAULT_COMPS_CSV,
     HistoricalComp,
     TargetMetadata,
+    _fit_weighted_regression_factor,
     estimate_from_prediction,
     estimate_opening_weekend_from_thursday,
     load_historical_comps,
@@ -26,6 +27,21 @@ from predict import (
 
 
 class HistoricalCompsTest(unittest.TestCase):
+    def test_feature_regression_shrinks_low_fit_adjustments(self):
+        weak_factor, weak_weight = _fit_weighted_regression_factor(
+            raw_factor=0.85,
+            r2=0.01,
+        )
+        strong_factor, strong_weight = _fit_weighted_regression_factor(
+            raw_factor=1.20,
+            r2=0.81,
+        )
+
+        self.assertGreater(weak_factor, 0.98)
+        self.assertLess(weak_weight, 0.20)
+        self.assertGreater(strong_factor, 1.15)
+        self.assertGreater(strong_weight, 0.85)
+
     def test_backtest_labels_seat_primary_instead_of_market_blend(self):
         line = comp_backtest.model_context_line({
             "poly_result": {"ev": 70.0},

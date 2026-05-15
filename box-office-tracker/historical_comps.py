@@ -419,6 +419,20 @@ def _weighted_ridge_regression(rows, feature_names, ridge=1.0):
     return predict, r2
 
 
+def _fit_weighted_regression_factor(raw_factor: float,
+                                    r2: float | None) -> tuple[float, float]:
+    """Shrink feature-regression adjustments by the model's explanatory power.
+
+    The feature regression is a secondary modifier, not the core signal. When
+    the fit is weak, even a large raw extrapolation should stay close to neutral
+    so noisy IMDb/RT/social/theatre-count correlations do not overpower seats.
+    """
+    bounded_raw = _clamp(float(raw_factor or 1.0), 0.85, 1.20)
+    fit_weight = math.sqrt(_clamp(float(r2 or 0.0), 0.0, 1.0))
+    factor = 1.0 + (bounded_raw - 1.0) * fit_weight
+    return factor, fit_weight
+
+
 def _audience_regression_adjustment(
     target: TargetMetadata,
     eligible: list[tuple[HistoricalComp, float]],
@@ -477,10 +491,11 @@ def _audience_regression_adjustment(
     target_log_multiple = predict(target_features)
     baseline_log_multiple = _weighted_average(selected_predictions)
     raw_factor = math.exp(target_log_multiple - baseline_log_multiple)
-    factor = max(0.85, min(1.20, raw_factor))
+    factor, fit_weight = _fit_weighted_regression_factor(raw_factor, r2)
     return {
         "factor": factor,
         "raw_factor": raw_factor,
+        "fit_weight": fit_weight,
         "n": len(rows),
         "r2": r2,
         "features": {
@@ -491,6 +506,8 @@ def _audience_regression_adjustment(
             "social_buzz_score": float(getattr(target, "social_buzz_score", 0) or 0),
             "national_theatre_count": int(getattr(target, "national_theatre_count", 0) or 0),
             "model_features": ",".join(feature_names),
+            "regression_raw_factor": raw_factor,
+            "regression_fit_weight": fit_weight,
         },
     }
 
