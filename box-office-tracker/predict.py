@@ -65,8 +65,11 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v13-chain-aware-footprint"
+MODEL_VERSION = "seat-regression-v14-same-week-amc-share"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
+DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
+DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
+DYNAMIC_AMC_SHARE_MAX_SHARE = 0.50
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
 RESIDUAL_REGRESSION_MAX_STRENGTH = 0.35
@@ -2065,18 +2068,65 @@ def regression_prediction_values(pred):
 
 # ── Stage C: AMC → Total Domestic ────────────────────────────────────────────
 
-def amc_to_domestic(amc_revenue, cal):
-    """Stage C: scale AMC revenue to total domestic market."""
+def calibrated_amc_market_share(cal):
+    """Current historical AMC/tracked-chain share prior."""
     share = cal["calibration_factors"].get("amc_market_share", DEFAULT_AMC_MARKET_SHARE)
-    share = max(0.10, min(0.50, share))   # clamp to sane range
+    return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, share))
+
+
+def amc_to_domestic(amc_revenue, cal, share_override=None):
+    """Stage C: scale AMC revenue to total domestic market."""
+    if share_override is None:
+        share = calibrated_amc_market_share(cal)
+    else:
+        share = max(
+            DYNAMIC_AMC_SHARE_MIN_SHARE,
+            min(DYNAMIC_AMC_SHARE_MAX_SHARE, float(share_override)),
+        )
     mid = amc_revenue / share
     # Uncertainty in market share: ±3 points, both bounds clamped away from 0
-    low  = amc_revenue / min(0.50, share + 0.03)   # higher share → lower gross
-    high = amc_revenue / max(0.10, share - 0.03)   # lower share  → higher gross
+    low  = amc_revenue / min(DYNAMIC_AMC_SHARE_MAX_SHARE, share + 0.03)   # higher share → lower gross
+    high = amc_revenue / max(DYNAMIC_AMC_SHARE_MIN_SHARE, share - 0.03)   # lower share  → higher gross
     # Sanity guard: ensure low ≤ mid ≤ high
     low  = min(low, mid)
     high = max(high, mid)
     return mid, low, high
+
+
+def same_week_amc_share_anchor(day_name, amc_total, actual_gross, cal,
+                               footprint_factor=1.0, coverage_ratio=None):
+    """Infer this movie's tracked-AMC share from a reported daily actual."""
+    if not amc_total or not actual_gross or actual_gross <= 0:
+        return None
+    day_scale = get_day_scale(cal, day_name)
+    implied_raw = (amc_total * footprint_factor * day_scale) / actual_gross
+    implied_share = _clamp(
+        implied_raw,
+        DYNAMIC_AMC_SHARE_MIN_SHARE,
+        DYNAMIC_AMC_SHARE_MAX_SHARE,
+    )
+    prior_share = calibrated_amc_market_share(cal)
+    coverage = _clamp(float(coverage_ratio if coverage_ratio is not None else 0.0), 0.0, 1.0)
+    anchor_weight = DYNAMIC_AMC_SHARE_MAX_WEIGHT * coverage
+    if anchor_weight <= 0:
+        return None
+    blended_share = (
+        implied_share * anchor_weight
+        + prior_share * (1.0 - anchor_weight)
+    )
+    return {
+        "day": day_name,
+        "prior_share": prior_share,
+        "raw_implied_share": implied_raw,
+        "implied_share": implied_share,
+        "anchor_weight": anchor_weight,
+        "blended_share": _clamp(
+            blended_share,
+            DYNAMIC_AMC_SHARE_MIN_SHARE,
+            DYNAMIC_AMC_SHARE_MAX_SHARE,
+        ),
+        "coverage_ratio": coverage,
+    }
 
 
 # ── Stage D: Partial Days → Full Weekend ─────────────────────────────────────
@@ -2896,11 +2946,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             national_theatre_count=int(national_theatre_count),
         )
 
+    dynamic_amc_share_anchor = None
     for date_str in opening_dates:
         rows = seat_data[date_str]
         # Use day_of_week from CSV if available, else compute from date
         csv_day = rows[0].get("day_of_week", "") if rows else ""
         day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
+        actual_override = daily_actual_override_for(
+            movie,
+            day_name,
+            daily_actual_overrides,
+        )
 
         # Group by (theatre, format): collect all showtime rows per pair.
         # Each row is one showtime — revenue = sum across all captured showings.
@@ -3026,8 +3082,23 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         if coverage_ratio is not None and tz_profile["missing_timezones"]:
             effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
 
-        # Stage C: AMC → domestic
-        domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
+        # Stage C: AMC → domestic. Once a reliable same-week reported actual
+        # exists, use its implied tracked-AMC share for later regular seat
+        # days so this movie calibrates itself instead of leaning on one global
+        # AMC share prior.
+        share_anchor_for_day = (
+            dynamic_amc_share_anchor
+            if dynamic_amc_share_anchor and not actual_override else None
+        )
+        share_override = (
+            share_anchor_for_day["blended_share"]
+            if share_anchor_for_day else None
+        )
+        domestic_mid, domestic_low, domestic_high = amc_to_domestic(
+            amc_total,
+            cal,
+            share_override=share_override,
+        )
         pre_footprint_mid = domestic_mid
         pre_footprint_low = domestic_low
         pre_footprint_high = domestic_high
@@ -3040,11 +3111,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         seat_implied_domestic_mid = domestic_mid
         seat_implied_domestic_low = domestic_low
         seat_implied_domestic_high = domestic_high
-        actual_override = daily_actual_override_for(
-            movie,
-            day_name,
-            daily_actual_overrides,
-        )
+        coverage_for_share_anchor = effective_coverage_ratio
+        actual_gross_m = None
         if actual_override:
             actual_gross_m = _positive_float(actual_override.get("gross_m"))
             if actual_gross_m is not None:
@@ -3059,6 +3127,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 domestic_high = raw_actual_gross
                 coverage_ratio = 1.0
                 effective_coverage_ratio = 1.0
+                anchor = same_week_amc_share_anchor(
+                    day_name,
+                    amc_total,
+                    actual_gross,
+                    cal,
+                    footprint_factor=footprint_factor,
+                    coverage_ratio=coverage_for_share_anchor,
+                )
+                if anchor:
+                    dynamic_amc_share_anchor = anchor
 
         daily_estimates[day_name] = domestic_mid
         details = {
@@ -3073,6 +3151,13 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "pre_footprint_domestic_low": pre_footprint_low,
             "pre_footprint_domestic_high": pre_footprint_high,
             "national_footprint_factor": footprint_factor,
+            "amc_market_share_used": share_override or calibrated_amc_market_share(cal),
+            "amc_market_share_source": (
+                "same_week_actual_anchor" if share_anchor_for_day else "calibration"
+            ),
+            "amc_market_share_anchor_day": (
+                share_anchor_for_day.get("day") if share_anchor_for_day else None
+            ),
             "n_theatres": n_amc_theatres,
             "expected_theatres": expected_amc_theatres,
             "coverage_ratio": coverage_ratio,
@@ -3111,6 +3196,13 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                     seat_implied_domestic_mid * get_day_scale(cal, day_name)
                 ),
             })
+            if dynamic_amc_share_anchor and dynamic_amc_share_anchor.get("day") == day_name:
+                details.update({
+                    "amc_market_share_implied": dynamic_amc_share_anchor["implied_share"],
+                    "amc_market_share_raw_implied": dynamic_amc_share_anchor["raw_implied_share"],
+                    "amc_market_share_anchor_weight": dynamic_amc_share_anchor["anchor_weight"],
+                    "amc_market_share_blended": dynamic_amc_share_anchor["blended_share"],
+                })
         else:
             details["actual_override"] = False
         daily_details[day_name] = details
@@ -3299,6 +3391,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             coverage_ratio=weighted_coverage_ratio,
         )[1],
         "national_theatre_count": national_theatre_count,
+        "dynamic_amc_share_anchor": dynamic_amc_share_anchor,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
@@ -3831,6 +3924,16 @@ def print_prediction(pred, verbose=False):
         full_day_window_str = ""
         if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
             full_day_window_str = f", full-window theatres {full_day_window_coverage:.0%}"
+        share_note = ""
+        if details.get("actual_override") and details.get("amc_market_share_implied"):
+            share_note = (
+                f", implied AMC share {details['amc_market_share_implied']:.1%}"
+            )
+        elif details.get("amc_market_share_source") == "same_week_actual_anchor":
+            share_note = (
+                f", AMC share {details.get('amc_market_share_used', 0):.1%} "
+                f"from {details.get('amc_market_share_anchor_day')} actual"
+            )
         amc_input = f"AMC {fmt_m(amc_m)}"
         if abs(sample_norm - 1.0) >= 0.005:
             amc_input = (
@@ -3852,6 +3955,7 @@ def print_prediction(pred, verbose=False):
               f"{full_day_window_str}"
               f"{daypart_str}"
               f"{footprint_note}"
+              f"{share_note}"
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
