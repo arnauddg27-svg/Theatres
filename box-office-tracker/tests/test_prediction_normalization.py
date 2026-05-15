@@ -1285,6 +1285,36 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2, entry["n_days"])
         self.assertEqual(376, entry["reference_amc_theatres"])
 
+    def test_calibration_record_result_stores_model_version(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "historical_accuracy": [],
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+            },
+        }
+        old_save_calibration = calibrate.save_calibration
+        calibrate.save_calibration = lambda _cal: None
+        try:
+            entry = calibrate.record_result(
+                cal,
+                "Sample Movie",
+                "2026-05-15",
+                predicted_mid=10.0,
+                predicted_low=8.0,
+                predicted_high=12.0,
+                daily_actuals={"Thursday": 10.0},
+                daily_predictions={"Thursday": 10.0},
+                n_theatres=425,
+                n_days=1,
+                model_version=predict.MODEL_VERSION,
+            )
+        finally:
+            calibrate.save_calibration = old_save_calibration
+
+        self.assertEqual(predict.MODEL_VERSION, entry["model_version"])
+
     def test_regression_uses_shrunk_historical_residuals(self):
         pred = {
             "movie": "Future Movie",
@@ -1329,6 +1359,61 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2, pred["historical_residual_n"])
         self.assertIn("historical-residual", pred["regression_source"])
         self.assertFalse(pred["regression_uses_polymarket"])
+
+    def test_legacy_model_residuals_are_downweighted(self):
+        def prediction():
+            return {
+                "movie": "Future Movie",
+                "seat_comp_mid_m": 100.0,
+                "seat_comp_low_m": 90.0,
+                "seat_comp_high_m": 110.0,
+                "n_theatres_total": 425,
+                "n_days": 4,
+                "coverage_ratio": 1.0,
+                "seat_weighted_coverage_ratio": 1.0,
+                "seat_data_quality": 1.0,
+                "model_cohort_key": "core,expansion",
+                "model_version": predict.MODEL_VERSION,
+            }
+
+        base_entries = [
+            {
+                "movie": "Settled One",
+                "predicted_mid": 100.0,
+                "actual_total": 80.0,
+                "n_theatres": 425,
+                "n_days": 4,
+                "coverage_ratio": 1.0,
+                "model_cohort_key": "core,expansion",
+            },
+            {
+                "movie": "Settled Two",
+                "predicted_mid": 50.0,
+                "actual_total": 40.0,
+                "n_theatres": 420,
+                "n_days": 4,
+                "coverage_ratio": 0.95,
+                "model_cohort_key": "core,expansion",
+            },
+        ]
+        legacy_pred = prediction()
+        current_pred = prediction()
+        current_entries = [
+            {**entry, "model_version": predict.MODEL_VERSION}
+            for entry in base_entries
+        ]
+
+        select_regression_prediction(legacy_pred, {"history": base_entries})
+        select_regression_prediction(current_pred, {"history": current_entries})
+
+        self.assertLess(
+            legacy_pred["historical_residual_strength"],
+            current_pred["historical_residual_strength"],
+        )
+        self.assertGreater(
+            legacy_pred["historical_residual_factor"],
+            current_pred["historical_residual_factor"],
+        )
 
     def test_regression_residual_skips_target_and_provisional_actuals(self):
         pred = {

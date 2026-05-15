@@ -73,6 +73,9 @@ RESIDUAL_REGRESSION_RATIO_MIN = 0.60
 RESIDUAL_REGRESSION_RATIO_MAX = 1.60
 RESIDUAL_REGRESSION_FACTOR_MIN = 0.85
 RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
+RESIDUAL_SAME_MODEL_VERSION_WEIGHT = 1.0
+RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT = 0.60
+RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT = 0.35
 SOCIAL_LAYER_MAX_ADJUSTMENT = 0.08
 SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
@@ -1664,11 +1667,24 @@ def _historical_residual_weight(pred, entry):
     else:
         cohort_weight = 0.65
 
+    current_version = pred.get("model_version") or MODEL_VERSION
+    entry_version = entry.get("model_version")
+    if not entry_version:
+        version_weight = RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT
+    elif entry_version == current_version:
+        version_weight = RESIDUAL_SAME_MODEL_VERSION_WEIGHT
+    else:
+        version_weight = RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT
+
     day_similarity = 1.0 - min(1.0, abs(current_days - entry_days) / 4.0) * 0.45
     coverage_similarity = 1.0 - abs(current_coverage - entry_coverage) * 0.45
     return max(
         0.0,
-        entry_quality * cohort_weight * day_similarity * coverage_similarity,
+        entry_quality
+        * cohort_weight
+        * version_weight
+        * day_similarity
+        * coverage_similarity,
     )
 
 
