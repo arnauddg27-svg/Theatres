@@ -9,7 +9,12 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
 import predict
 import calibrate
-from historical_comps import TargetMetadata, release_footprint_factor
+from historical_comps import (
+    HistoricalComp,
+    TargetMetadata,
+    estimate_opening_weekend_from_thursday,
+    release_footprint_factor,
+)
 from model_calibration import recalibrate_snapshot_day_scale_factors
 from predict import (
     days_to_weekend,
@@ -116,12 +121,10 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(0.008, pred["seat_mid_m"], places=6)
 
     def test_national_theatre_count_is_footprint_drag_for_sub_wide_release(self):
-        self.assertLess(national_release_footprint_factor(2615), 1.0)
-        self.assertAlmostEqual(
-            release_footprint_factor(2615),
-            national_release_footprint_factor(2615),
-            places=12,
-        )
+        factor = national_release_footprint_factor(2615)
+        self.assertLess(factor, 1.0)
+        self.assertGreater(factor, 0.90)
+        self.assertAlmostEqual(release_footprint_factor(2615), factor, places=12)
         self.assertEqual(1.0, national_release_footprint_factor(None))
 
         cal = {
@@ -161,6 +164,35 @@ class PredictionNormalizationTest(unittest.TestCase):
             sub_wide["daily_details"]["Thursday"]["national_footprint_factor"],
             1.0,
         )
+        self.assertGreater(
+            sub_wide["daily_details"]["Thursday"]["national_footprint_factor"],
+            0.90,
+        )
+
+    def test_comp_prior_theatre_count_drag_is_chain_adjusted(self):
+        target = TargetMetadata(
+            movie="Sample Movie",
+            genre="horror",
+            audience_type="horror_fan",
+            franchise_type="original",
+            rating="R",
+            national_theatre_count=2615,
+        )
+        comp = HistoricalComp(
+            movie="Wide Horror Comp",
+            genre="horror",
+            audience_type="horror_fan",
+            franchise_type="original",
+            rating="R",
+            thursday_preview_m=10.0,
+            opening_weekend_m=100.0,
+            national_theatre_count=4000,
+        )
+
+        estimate = estimate_opening_weekend_from_thursday(2.6, target, [comp])
+
+        self.assertLess(estimate.prior_footprint_factor, 1.0)
+        self.assertGreater(estimate.prior_footprint_factor, 0.90)
 
     def test_national_theatre_count_falls_back_to_movie_metadata(self):
         metadata = {

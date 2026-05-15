@@ -367,12 +367,17 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertLess(estimate.audience_regression_factor, 1.0)
         self.assertLess(estimate.audience_adjusted_mid_m, estimate.mid_m)
         self.assertIn(
-            "log_national_theatre_count",
+            "release_footprint_factor",
             estimate.audience_regression_features["model_features"],
         )
         self.assertEqual(
             2000,
             estimate.audience_regression_features["national_theatre_count"],
+        )
+        self.assertAlmostEqual(
+            0.90,
+            estimate.audience_regression_features["release_footprint_factor"],
+            places=6,
         )
 
     def test_theatre_count_normalizes_sparse_historical_prior(self):
@@ -405,8 +410,10 @@ class HistoricalCompsTest(unittest.TestCase):
             max_comps=6,
         )
 
-        self.assertLess(estimate.prior_weekend_mid_m, 65.0)
-        self.assertLess(estimate.prior_footprint_factor, 0.85)
+        self.assertLess(estimate.prior_weekend_mid_m, 80.0)
+        self.assertGreater(estimate.prior_weekend_mid_m, 70.0)
+        self.assertLess(estimate.prior_footprint_factor, 1.0)
+        self.assertGreater(estimate.prior_footprint_factor, 0.88)
         self.assertAlmostEqual(80.0, estimate.raw_prior_weekend_mid_m, places=6)
 
     def test_social_regression_uses_historical_smu_when_available(self):

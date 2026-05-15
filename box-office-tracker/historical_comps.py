@@ -20,11 +20,15 @@ DATA_DIR = BASE_DIR / "data"
 DEFAULT_COMPS_CSV = DATA_DIR / "historical-comps.csv"
 DEFAULT_METADATA_CSV = DATA_DIR / "movie-metadata.csv"
 NATIONAL_WIDE_RELEASE_BASELINE_THEATRES = 4000
-NATIONAL_FOOTPRINT_EXPONENT = 0.55
+NATIONAL_FOOTPRINT_EXPONENT = 0.18
 NATIONAL_FOOTPRINT_MIN_FACTOR = 0.55
 NATIONAL_FOOTPRINT_MAX_FACTOR = 1.08
 NATIONAL_PRIOR_FOOTPRINT_MIN_FACTOR = 0.55
 NATIONAL_PRIOR_FOOTPRINT_MAX_FACTOR = 1.25
+NATIONAL_CHAIN_THEATRE_BREAKPOINT = 2000
+NATIONAL_CHAIN_THEATRE_MIN_FACTOR = 0.90
+NATIONAL_LIMITED_THEATRE_BREAKPOINT = 1000
+NATIONAL_LIMITED_THEATRE_FACTOR = 0.75
 
 
 @dataclass(frozen=True)
@@ -275,10 +279,29 @@ def release_footprint_factor(national_theatre_count: int | float | None) -> floa
         return 1.0
     ratio = count / NATIONAL_WIDE_RELEASE_BASELINE_THEATRES
     if ratio < 1.0:
+        # A 2,000-3,000 theatre "wide" release is usually concentrated in the
+        # highest-volume chains. Since the seat model already observes AMC
+        # directly, national theatre count should be a modest footprint drag,
+        # not a proportional capacity haircut against a 4,000-theatre tentpole.
+        if count >= NATIONAL_CHAIN_THEATRE_BREAKPOINT:
+            return _clamp(
+                ratio ** NATIONAL_FOOTPRINT_EXPONENT,
+                NATIONAL_CHAIN_THEATRE_MIN_FACTOR,
+                1.0,
+            )
+        if count >= NATIONAL_LIMITED_THEATRE_BREAKPOINT:
+            t = (
+                (count - NATIONAL_LIMITED_THEATRE_BREAKPOINT)
+                / (NATIONAL_CHAIN_THEATRE_BREAKPOINT - NATIONAL_LIMITED_THEATRE_BREAKPOINT)
+            )
+            return NATIONAL_LIMITED_THEATRE_FACTOR + (
+                (NATIONAL_CHAIN_THEATRE_MIN_FACTOR - NATIONAL_LIMITED_THEATRE_FACTOR)
+                * _clamp(t, 0.0, 1.0)
+            )
         return _clamp(
-            ratio ** NATIONAL_FOOTPRINT_EXPONENT,
+            ratio ** 0.55,
             NATIONAL_FOOTPRINT_MIN_FACTOR,
-            1.0,
+            NATIONAL_LIMITED_THEATRE_FACTOR,
         )
     return _clamp(
         1.0 + ((ratio - 1.0) * 0.20),
@@ -328,7 +351,9 @@ def _audience_feature_values(item) -> dict[str, float]:
         values["social_buzz_score"] = max(-1.0, min(1.0, social_buzz_score))
     national_theatre_count = int(getattr(item, "national_theatre_count", 0) or 0)
     if national_theatre_count > 0:
-        values["log_national_theatre_count"] = math.log(national_theatre_count)
+        values["release_footprint_factor"] = release_footprint_factor(
+            national_theatre_count
+        )
     return values
 
 
@@ -449,7 +474,7 @@ def _audience_regression_adjustment(
             "log_social_media_universe_m",
             "social_sentiment_score",
             "social_buzz_score",
-            "log_national_theatre_count",
+            "release_footprint_factor",
         )
         if name in target_features
     ]
@@ -505,6 +530,7 @@ def _audience_regression_adjustment(
             "social_sentiment_score": float(getattr(target, "social_sentiment_score", 0) or 0),
             "social_buzz_score": float(getattr(target, "social_buzz_score", 0) or 0),
             "national_theatre_count": int(getattr(target, "national_theatre_count", 0) or 0),
+            "release_footprint_factor": target_features.get("release_footprint_factor", 1.0),
             "model_features": ",".join(feature_names),
             "regression_raw_factor": raw_factor,
             "regression_fit_weight": fit_weight,

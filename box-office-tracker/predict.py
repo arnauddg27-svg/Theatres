@@ -65,7 +65,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v12-daily-actual-overrides"
+MODEL_VERSION = "seat-regression-v13-chain-aware-footprint"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -1076,17 +1076,12 @@ def national_release_footprint_factor(national_theatre_count,
     baseline = _positive_float(baseline)
     if not count or not baseline:
         return 1.0
-
-    ratio = count / baseline
-    if ratio < 1.0:
-        return _clamp(
-            ratio ** NATIONAL_FOOTPRINT_EXPONENT,
-            NATIONAL_FOOTPRINT_MIN_FACTOR,
-            1.0,
-        )
+    baseline_factor = release_footprint_factor(baseline)
+    if baseline_factor <= 0:
+        return 1.0
     return _clamp(
-        1.0 + ((ratio - 1.0) * 0.20),
-        1.0,
+        release_footprint_factor(count) / baseline_factor,
+        NATIONAL_FOOTPRINT_MIN_FACTOR,
         NATIONAL_FOOTPRINT_MAX_FACTOR,
     )
 
@@ -3435,7 +3430,7 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
                 pred["social_signal_model_integrated"] = True
         if features.get("national_theatre_count"):
             feature_parts.append(f"{int(features['national_theatre_count']):,} theatres")
-            if "log_national_theatre_count" in model_features:
+            if "release_footprint_factor" in model_features:
                 pred["theatre_count_model_integrated"] = True
         pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
         pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
