@@ -15,6 +15,8 @@ MIN_MARKET_SHARE = 0.15
 MAX_MARKET_SHARE = 0.40
 MIN_DAILY_CALIBRATION_COVERAGE = 0.80
 SNAPSHOT_LEAD_BUCKETS = ("same_day", "next_day", "multi_day", "long_lead")
+SNAPSHOT_DAY_SCALE_PRIOR_WEIGHT = 4.0
+SNAPSHOT_LEAD_SCALE_PRIOR_WEIGHT = 4.0
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -204,6 +206,7 @@ def recalibrate_snapshot_day_scale_factors(history: list[dict],
     if not history:
         return {d: round(s, 4) for d, s in scales.items()}
 
+    ratios: dict[str, list[tuple[float, float]]] = {day: [] for day in scales}
     for entry in history[-20:]:
         daily_actuals = entry.get("daily_actuals", {}) or {}
         snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
@@ -218,9 +221,19 @@ def recalibrate_snapshot_day_scale_factors(history: list[dict],
             if coverage < 0.10:
                 continue
             raw_ratio = actual / predicted
-            shrunk = 1.0 + (raw_ratio - 1.0) * coverage
-            ratio = clamp(shrunk, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
-            scales[day] = alpha * ratio + (1.0 - alpha) * scales[day]
+            ratio = clamp(raw_ratio, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
+            ratios[day].append((ratio, coverage))
+
+    for day, values in ratios.items():
+        support = sum(weight for _, weight in values)
+        if support <= 0:
+            continue
+        weighted_ratio = sum(ratio * weight for ratio, weight in values) / support
+        strength = min(
+            clamp(_as_float(alpha, 0.35), 0.0, 1.0),
+            support / (support + SNAPSHOT_DAY_SCALE_PRIOR_WEIGHT),
+        )
+        scales[day] = 1.0 + (weighted_ratio - 1.0) * strength
 
     return {d: round(clamp(s, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR), 4)
             for d, s in scales.items()}
@@ -242,6 +255,7 @@ def recalibrate_snapshot_lead_scale_factors(history: list[dict],
         return {bucket: round(scale, 4) for bucket, scale in scales.items()}
 
     day_scales = day_scales or {}
+    ratios: dict[str, list[tuple[float, float]]] = {bucket: [] for bucket in scales}
     for entry in history[-20:]:
         daily_actuals = entry.get("daily_actuals", {}) or {}
         snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
@@ -261,9 +275,19 @@ def recalibrate_snapshot_lead_scale_factors(history: list[dict],
             if baseline <= 0:
                 continue
             raw_ratio = actual / baseline
-            shrunk = 1.0 + (raw_ratio - 1.0) * coverage
-            ratio = clamp(shrunk, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
-            scales[bucket] = alpha * ratio + (1.0 - alpha) * scales[bucket]
+            ratio = clamp(raw_ratio, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR)
+            ratios[bucket].append((ratio, coverage))
+
+    for bucket, values in ratios.items():
+        support = sum(weight for _, weight in values)
+        if support <= 0:
+            continue
+        weighted_ratio = sum(ratio * weight for ratio, weight in values) / support
+        strength = min(
+            clamp(_as_float(alpha, 0.30), 0.0, 1.0),
+            support / (support + SNAPSHOT_LEAD_SCALE_PRIOR_WEIGHT),
+        )
+        scales[bucket] = 1.0 + (weighted_ratio - 1.0) * strength
 
     return {
         bucket: round(clamp(scale, MIN_SCALE_FACTOR, MAX_SCALE_FACTOR), 4)

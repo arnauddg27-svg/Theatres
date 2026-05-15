@@ -811,7 +811,7 @@ class PredictionNormalizationTest(unittest.TestCase):
             },
             {
                 "movie": "Movie Two",
-                "daily_actuals": {"Friday": 8.0},
+                "daily_actuals": {"Friday": 14.0},
                 "snapshot_daily_predictions": {"Friday": 10.0},
                 "snapshot_daily_coverage_ratios": {"Friday": 0.9},
             },
@@ -917,6 +917,25 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
 
         self.assertGreater(scales["same_day"], 1.0)
+
+    def test_sparse_snapshot_lead_scale_is_shrunk_toward_prior(self):
+        history = [
+            {
+                "movie": "Extreme Sparse Snapshot",
+                "daily_actuals": {"Friday": 50.0},
+                "snapshot_daily_predictions": {"Friday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Friday": 1.0},
+                "snapshot_daily_lead_buckets": {"Friday": "same_day"},
+            }
+        ]
+
+        scales = recalibrate_snapshot_lead_scale_factors(
+            history,
+            day_scales={"Friday": 1.0},
+            alpha=1.0,
+        )
+
+        self.assertLess(scales["same_day"], 1.5)
 
     def test_load_pre_reservation_data_requires_weekend_and_snapshot_date_for_replay(self):
         old_snapshot_csv = predict.PRE_RESERVATION_CSV

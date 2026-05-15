@@ -472,13 +472,13 @@
     ],
     "last_updated": "2026-05-12",
     "snapshot_to_day_scale_factors": {
-      "Thursday": 1.0781,
-      "Friday": 1.5752,
-      "Saturday": 1.5775,
-      "Sunday": 1.5775
+      "Thursday": 1.0481,
+      "Friday": 1.2471,
+      "Saturday": 1.3304,
+      "Sunday": 1.3304
     },
     "snapshot_to_lead_scale_factors": {
-      "same_day": 1.8553,
+      "same_day": 1.2997,
       "next_day": 1.0,
       "multi_day": 1.0,
       "long_lead": 1.0
