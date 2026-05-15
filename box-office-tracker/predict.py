@@ -76,6 +76,10 @@ SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
+NATIONAL_WIDE_RELEASE_BASELINE_THEATRES = 4000
+NATIONAL_FOOTPRINT_EXPONENT = 0.55
+NATIONAL_FOOTPRINT_MIN_FACTOR = 0.55
+NATIONAL_FOOTPRINT_MAX_FACTOR = 1.08
 
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
@@ -964,6 +968,35 @@ def national_theatre_count_for_movie(movie, theatre_counts):
         if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
             return count
     return None
+
+
+def national_release_footprint_factor(national_theatre_count,
+                                      baseline=NATIONAL_WIDE_RELEASE_BASELINE_THEATRES):
+    """Capacity modifier from national theatre count.
+
+    The AMC model is calibrated from wide-release outcomes, so a reported
+    national count should not become an independent gross extrapolation. Use it
+    as a bounded footprint modifier instead: sub-wide releases get a drag
+    versus a 3,600-4,200-theatre release, while very wide releases get only a
+    small upside because seat occupancy/showtime density already carry demand.
+    """
+    count = _positive_float(national_theatre_count)
+    baseline = _positive_float(baseline)
+    if not count or not baseline:
+        return 1.0
+
+    ratio = count / baseline
+    if ratio < 1.0:
+        return _clamp(
+            ratio ** NATIONAL_FOOTPRINT_EXPONENT,
+            NATIONAL_FOOTPRINT_MIN_FACTOR,
+            1.0,
+        )
+    return _clamp(
+        1.0 + ((ratio - 1.0) * 0.20),
+        1.0,
+        NATIONAL_FOOTPRINT_MAX_FACTOR,
+    )
 
 
 # ── Stage A: Per-Theatre Daily Revenue ───────────────────────────────────────
@@ -2139,12 +2172,14 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
 
     domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
-    if national_theatre_count and n_amc_theatres > 0:
-        mean_rev = amc_stats.get("mean_revenue", 0)
-        nat_est = mean_rev * national_theatre_count
-        domestic_mid = domestic_mid * 0.6 + nat_est * 0.4
-        domestic_low = domestic_low * 0.6 + nat_est * 0.4 * 0.85
-        domestic_high = domestic_high * 0.6 + nat_est * 0.4 * 1.15
+    pre_footprint_mid = domestic_mid
+    pre_footprint_low = domestic_low
+    pre_footprint_high = domestic_high
+    footprint_factor = national_release_footprint_factor(national_theatre_count)
+    if national_theatre_count:
+        domestic_mid *= footprint_factor
+        domestic_low *= footprint_factor
+        domestic_high *= footprint_factor
 
     snapshot_scale = get_snapshot_to_day_scale(cal, day_name)
     avg_showings = (
@@ -2161,9 +2196,13 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "raw_domestic_mid": domestic_mid,
         "raw_domestic_low": domestic_low,
         "raw_domestic_high": domestic_high,
+        "pre_footprint_domestic_mid": pre_footprint_mid,
+        "pre_footprint_domestic_low": pre_footprint_low,
+        "pre_footprint_domestic_high": pre_footprint_high,
         "domestic_mid": domestic_mid * snapshot_scale,
         "domestic_low": domestic_low * snapshot_scale,
         "domestic_high": domestic_high * snapshot_scale,
+        "national_footprint_factor": footprint_factor,
         "snapshot_scale": snapshot_scale,
         "n_theatres": n_amc_theatres,
         "expected_theatres": expected_amc_theatres,
@@ -2829,17 +2868,15 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
 
         # Stage C: AMC → domestic
-        # If we have a national theatre count, use it to cross-check our scaling.
-        # Per-theatre revenue from our sample × national theatre count gives an
-        # independent estimate — we blend it 50/50 with the market-share approach.
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
+        pre_footprint_mid = domestic_mid
+        pre_footprint_low = domestic_low
+        pre_footprint_high = domestic_high
+        footprint_factor = national_release_footprint_factor(national_theatre_count)
         if national_theatre_count and n_amc_theatres > 0:
-            mean_rev = amc_stats.get("mean_revenue", 0)
-            nat_est = mean_rev * national_theatre_count
-            # Blend: 60% market-share, 40% national-count extrapolation
-            domestic_mid  = domestic_mid  * 0.6 + nat_est * 0.4
-            domestic_low  = domestic_low  * 0.6 + nat_est * 0.4 * 0.85
-            domestic_high = domestic_high * 0.6 + nat_est * 0.4 * 1.15
+            domestic_mid *= footprint_factor
+            domestic_low *= footprint_factor
+            domestic_high *= footprint_factor
 
         daily_estimates[day_name] = domestic_mid
         daily_details[day_name] = {
@@ -2850,6 +2887,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "domestic_mid": domestic_mid,
             "domestic_low": domestic_low,
             "domestic_high": domestic_high,
+            "pre_footprint_domestic_mid": pre_footprint_mid,
+            "pre_footprint_domestic_low": pre_footprint_low,
+            "pre_footprint_domestic_high": pre_footprint_high,
+            "national_footprint_factor": footprint_factor,
             "n_theatres": n_amc_theatres,
             "expected_theatres": expected_amc_theatres,
             "coverage_ratio": coverage_ratio,
@@ -3473,6 +3514,25 @@ def print_prediction(pred, verbose=False):
             base_ev = details.get("base_evening_to_daily", details.get("evening_to_daily", 1.0))
             adj_ev = details.get("evening_to_daily", base_ev)
             daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
+        footprint_factor = details.get("national_footprint_factor", 1.0)
+        footprint_note = ""
+        if nat and abs(footprint_factor - 1.0) >= 0.005:
+            pre_footprint_m = (
+                details.get("pre_footprint_domestic_mid", details["domestic_mid"])
+                / 1_000_000
+            )
+            post_footprint_m = pre_footprint_m * footprint_factor
+            if abs(day_scale - 1.0) >= 0.005:
+                day_model = (
+                    f"{fmt_m(pre_footprint_m)} × footprint {footprint_factor:.3f} "
+                    f"= {fmt_m(post_footprint_m)} × {day_scale:.3f} = {fmt_m(dom_m)}"
+                )
+            else:
+                day_model = (
+                    f"{fmt_m(pre_footprint_m)} × footprint {footprint_factor:.3f} "
+                    f"= {fmt_m(dom_m)}"
+                )
+            footprint_note = f", footprint {footprint_factor:.3f}"
         full_day_window_coverage = details.get("full_day_window_coverage_ratio")
         full_day_window_str = ""
         if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
@@ -3488,6 +3548,7 @@ def print_prediction(pred, verbose=False):
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
               f"{full_day_window_str}"
               f"{daypart_str}"
+              f"{footprint_note}"
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 

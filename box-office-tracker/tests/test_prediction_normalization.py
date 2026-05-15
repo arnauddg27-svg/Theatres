@@ -12,6 +12,7 @@ import calibrate
 from model_calibration import recalibrate_snapshot_day_scale_factors
 from predict import (
     days_to_weekend,
+    national_release_footprint_factor,
     polymarket_expected_value,
     predict_movie,
     record_actual,
@@ -111,6 +112,48 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(2000.0, thursday["amc_total"], places=6)
         self.assertLess(pred["seat_data_quality"], 1.0)
         self.assertAlmostEqual(0.008, pred["seat_mid_m"], places=6)
+
+    def test_national_theatre_count_is_footprint_drag_for_sub_wide_release(self):
+        self.assertLess(national_release_footprint_factor(2615), 1.0)
+        self.assertEqual(1.0, national_release_footprint_factor(None))
+
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 2,
+                },
+            },
+        }
+        rows = [
+            self._row("AMC One"),
+            self._row("AMC Two"),
+        ]
+
+        no_count = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": rows},
+            [],
+            cal,
+        )
+        sub_wide = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": rows},
+            [],
+            cal,
+            national_theatre_count=2615,
+        )
+
+        self.assertLess(sub_wide["seat_mid_m"], no_count["seat_mid_m"])
+        self.assertLess(
+            sub_wide["daily_details"]["Thursday"]["national_footprint_factor"],
+            1.0,
+        )
 
     def test_prediction_keeps_polymarket_ev_out_of_forecast_math(self):
         cal = {
