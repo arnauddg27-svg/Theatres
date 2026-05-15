@@ -660,6 +660,64 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, prediction["w_seat"], places=6)
         self.assertAlmostEqual(0.0, prediction["w_poly"], places=6)
 
+    def test_comp_model_uses_friday_only_when_thursday_is_missing(self):
+        prediction = {
+            "movie": "Partial Horror",
+            "seat_mid_m": 9.0,
+            "seat_low_m": 7.0,
+            "seat_high_m": 12.0,
+            "n_days": 1,
+            "seat_data_quality": 0.45,
+            "daily_details": {
+                "Friday": {
+                    "domestic_mid": 4_000_000,
+                },
+            },
+        }
+        metadata = {
+            "partial horror": TargetMetadata(
+                movie="Partial Horror",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            )
+        }
+        comps = [
+            HistoricalComp(
+                "Comp A",
+                "horror",
+                "horror_fan",
+                "original",
+                "R",
+                2.0,
+                20.0,
+                friday_m=10.0,
+                saturday_m=6.0,
+                sunday_m=4.0,
+            ),
+            HistoricalComp(
+                "Comp B",
+                "horror",
+                "horror_fan",
+                "original",
+                "R",
+                3.0,
+                30.0,
+                friday_m=15.0,
+                saturday_m=9.0,
+                sunday_m=6.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
+
+        self.assertEqual("Friday only", prediction["seat_comp_basis"])
+        self.assertFalse(prediction["seat_comp_has_thursday_evidence"])
+        self.assertAlmostEqual(10.0, prediction["seat_comp_mid_m"], places=6)
+        self.assertAlmostEqual(0.40, prediction["seat_comp_evidence_share"], places=6)
+        self.assertEqual("seat-primary-regression", prediction["regression_source"])
+
     def test_default_metadata_includes_current_prada_release(self):
         metadata = load_movie_metadata()
 

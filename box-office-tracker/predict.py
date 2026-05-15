@@ -34,6 +34,7 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
                               NATIONAL_FOOTPRINT_MIN_FACTOR,
                               NATIONAL_WIDE_RELEASE_BASELINE_THEATRES,
                               estimate_from_prediction,
+                              estimate_opening_weekend_from_thursday,
                               load_historical_comps,
                               load_movie_metadata,
                               metadata_for_movie,
@@ -63,7 +64,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v8-theatre-footprint-prior"
+MODEL_VERSION = "seat-regression-v9-partial-day-comp-shape"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
@@ -3179,7 +3180,20 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
             baseline_thursday_share=baseline_thursday_share,
         )
     except (KeyError, TypeError, ValueError):
-        return None
+        day_weights = get_day_weights(cal)
+        baseline_thursday_share = float(day_weights.get("Thursday", 0) or 0)
+        has_non_thursday_evidence = any(
+            day in (pred.get("daily_details") or {})
+            for day in ("Friday", "Saturday", "Sunday")
+        )
+        if not has_non_thursday_evidence:
+            return None
+        estimate = estimate_opening_weekend_from_thursday(
+            1.0,
+            target,
+            comps,
+            baseline_thursday_share=baseline_thursday_share,
+        )
 
     local_share = learned_local_thursday_share(
         cal,
@@ -3216,7 +3230,11 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_basis"] = model["basis"]
     pred["seat_comp_evidence_m"] = model["evidence_m"]
     pred["seat_comp_evidence_share"] = model["evidence_share"]
-    pred["seat_comp_thursday_gross_m"] = estimate.thursday_gross_m
+    has_thursday_evidence = "Thursday" in (pred.get("daily_details") or {})
+    pred["seat_comp_has_thursday_evidence"] = has_thursday_evidence
+    pred["seat_comp_thursday_gross_m"] = (
+        estimate.thursday_gross_m if has_thursday_evidence else None
+    )
     pred["seat_comp_thursday_share"] = thursday_share
     pred["seat_comp_external_thursday_share"] = external_thursday_share
     pred["seat_comp_raw_external_thursday_share"] = estimate.weighted_thursday_share
@@ -3404,81 +3422,114 @@ def _seat_comp_model_from_available_days(pred, estimate, thursday_share=None, au
 
     Public daily grosses report Friday as Friday+previews, so once Friday seat
     data exists this uses (Thursday + Friday) against the comp's reported
-    Friday share. Saturday and Sunday are added as they become available.
+    Friday share. If Thursday is missing, Friday seat data is compared against
+    pure Friday share by removing previews from the reported Friday comp share.
+    Saturday and Sunday are added as they become available.
     """
     details = pred.get("daily_details", {})
-    if "Thursday" not in details:
-        return {
-            "mid_m": estimate.audience_adjusted_mid_m or estimate.mid_m,
-            "low_m": estimate.low_m * audience_factor,
-            "high_m": estimate.high_m * audience_factor,
-            "basis": "Thursday",
-            "evidence_m": estimate.thursday_gross_m,
-            "evidence_share": thursday_share or estimate.weighted_thursday_share,
-        }
+    thursday_share = thursday_share or estimate.weighted_thursday_share
 
-    evidence_m = details["Thursday"]["domestic_mid"] / 1_000_000
-    basis = "Thursday"
-    share_values = [
-        (comp.thursday_share, estimate.weights.get(comp.movie, 0))
-        for comp in estimate.comps
-        if comp.thursday_share > 0
-    ]
-    evidence_share = thursday_share or estimate.weighted_thursday_share
+    def day_domestic_m(day):
+        return (details.get(day, {}).get("domestic_mid", 0) or 0) / 1_000_000
 
-    if "Friday" in details and estimate.daily_shares.get("Friday"):
-        evidence_m = (
-            details["Thursday"]["domestic_mid"]
-            + details["Friday"]["domestic_mid"]
-        ) / 1_000_000
-        basis = "reported Friday"
+    if "Thursday" in details:
+        evidence_m = day_domestic_m("Thursday")
+        basis = "Thursday"
         share_values = [
-            (comp.daily_shares["Friday"], estimate.weights.get(comp.movie, 0))
+            (comp.thursday_share, estimate.weights.get(comp.movie, 0))
             for comp in estimate.comps
-            if comp.daily_shares.get("Friday")
+            if comp.thursday_share > 0
         ]
-        evidence_share = estimate.daily_shares["Friday"]
+        evidence_share = thursday_share
 
-    if "Saturday" in details and estimate.daily_shares.get("Saturday"):
-        evidence_m = (
-            details["Thursday"]["domestic_mid"]
-            + details.get("Friday", {}).get("domestic_mid", 0)
-            + details["Saturday"]["domestic_mid"]
-        ) / 1_000_000
-        basis = "reported Friday+Saturday"
-        share_values = [
-            (
-                comp.daily_shares["Friday"] + comp.daily_shares["Saturday"],
-                estimate.weights.get(comp.movie, 0),
-            )
-            for comp in estimate.comps
-            if comp.daily_shares.get("Friday") and comp.daily_shares.get("Saturday")
-        ]
-        evidence_share = estimate.daily_shares["Friday"] + estimate.daily_shares["Saturday"]
+        if "Friday" in details and estimate.daily_shares.get("Friday"):
+            evidence_m = (
+                details["Thursday"]["domestic_mid"]
+                + details["Friday"]["domestic_mid"]
+            ) / 1_000_000
+            basis = "reported Friday"
+            share_values = [
+                (comp.daily_shares["Friday"], estimate.weights.get(comp.movie, 0))
+                for comp in estimate.comps
+                if comp.daily_shares.get("Friday")
+            ]
+            evidence_share = estimate.daily_shares["Friday"]
 
-    if "Sunday" in details and estimate.daily_shares.get("Sunday"):
-        evidence_m = (
-            details["Thursday"]["domestic_mid"]
-            + details.get("Friday", {}).get("domestic_mid", 0)
-            + details.get("Saturday", {}).get("domestic_mid", 0)
-            + details["Sunday"]["domestic_mid"]
-        ) / 1_000_000
-        basis = "reported full weekend"
-        share_values = [
-            (sum(comp.daily_shares.values()), estimate.weights.get(comp.movie, 0))
-            for comp in estimate.comps
-            if comp.has_daily_breakdown
-        ]
-        evidence_share = sum(estimate.daily_shares.values())
+        if "Saturday" in details and estimate.daily_shares.get("Saturday"):
+            evidence_m = (
+                details["Thursday"]["domestic_mid"]
+                + details.get("Friday", {}).get("domestic_mid", 0)
+                + details["Saturday"]["domestic_mid"]
+            ) / 1_000_000
+            basis = "reported Friday+Saturday"
+            share_values = [
+                (
+                    comp.daily_shares["Friday"] + comp.daily_shares["Saturday"],
+                    estimate.weights.get(comp.movie, 0),
+                )
+                for comp in estimate.comps
+                if comp.daily_shares.get("Friday") and comp.daily_shares.get("Saturday")
+            ]
+            evidence_share = estimate.daily_shares["Friday"] + estimate.daily_shares["Saturday"]
+
+        if "Sunday" in details and estimate.daily_shares.get("Sunday"):
+            evidence_m = (
+                details["Thursday"]["domestic_mid"]
+                + details.get("Friday", {}).get("domestic_mid", 0)
+                + details.get("Saturday", {}).get("domestic_mid", 0)
+                + details["Sunday"]["domestic_mid"]
+            ) / 1_000_000
+            basis = "reported full weekend"
+            share_values = [
+                (sum(comp.daily_shares.values()), estimate.weights.get(comp.movie, 0))
+                for comp in estimate.comps
+                if comp.has_daily_breakdown
+            ]
+            evidence_share = sum(estimate.daily_shares.values())
+    else:
+        evidence_m = 0.0
+        evidence_share = 0.0
+        basis_days = []
+        if "Friday" in details and estimate.daily_shares.get("Friday"):
+            friday_share = max(0.0, estimate.daily_shares["Friday"] - thursday_share)
+            if friday_share > 0:
+                evidence_m += day_domestic_m("Friday")
+                evidence_share += friday_share
+                basis_days.append("Friday")
+        for day in ("Saturday", "Sunday"):
+            if day in details and estimate.daily_shares.get(day):
+                evidence_m += day_domestic_m(day)
+                evidence_share += estimate.daily_shares[day]
+                basis_days.append(day)
+
+        share_values = []
+        if evidence_m > 0 and evidence_share > 0:
+            for comp in estimate.comps:
+                share = 0.0
+                if "Friday" in details and comp.daily_shares.get("Friday"):
+                    share += max(0.0, comp.daily_shares["Friday"] - comp.thursday_share)
+                for day in ("Saturday", "Sunday"):
+                    if day in details and comp.daily_shares.get(day):
+                        share += comp.daily_shares[day]
+                if share > 0:
+                    share_values.append((share, estimate.weights.get(comp.movie, 0)))
+        basis = (
+            f"{basis_days[0]} only"
+            if len(basis_days) == 1
+            else f"{'+'.join(basis_days)} only"
+        )
 
     if not share_values or evidence_share <= 0:
+        base_mid = estimate.audience_adjusted_mid_m or estimate.mid_m
+        base_low = estimate.low_m * audience_factor
+        base_high = estimate.high_m * audience_factor
         return {
-            "mid_m": estimate.mid_m,
-            "low_m": estimate.low_m,
-            "high_m": estimate.high_m,
-            "basis": "Thursday",
+            "mid_m": base_mid,
+            "low_m": min(base_low, base_high),
+            "high_m": max(base_low, base_high),
+            "basis": "historical comp prior",
             "evidence_m": estimate.thursday_gross_m,
-            "evidence_share": thursday_share or estimate.weighted_thursday_share,
+            "evidence_share": thursday_share,
         }
 
     mid_m = evidence_m / evidence_share
@@ -3615,9 +3666,13 @@ def print_prediction(pred, verbose=False):
                 f"n={pred['seat_comp_local_thursday_n']} "
                 f"w={pred['seat_comp_local_thursday_weight']:.0%}"
             )
-        print(f"    Seat-implied Thu: {fmt_m(pred['seat_comp_thursday_gross_m'])}; "
-              f"Thu share used: {pred['seat_comp_thursday_share']:.1%} "
-              f"({'; '.join(share_bits)})")
+        if pred.get("seat_comp_has_thursday_evidence"):
+            print(f"    Seat-implied Thu: {fmt_m(pred['seat_comp_thursday_gross_m'])}; "
+                  f"Thu share used: {pred['seat_comp_thursday_share']:.1%} "
+                  f"({'; '.join(share_bits)})")
+        else:
+            print(f"    No Thursday seat data; using comp daily-shape shares "
+                  f"({'; '.join(share_bits)})")
         if pred.get("seat_comp_audience_factor"):
             r2 = pred.get("seat_comp_audience_regression_r2")
             r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
