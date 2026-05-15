@@ -518,6 +518,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 "seat_primary_m": round(pred["seat_primary_mid_m"], 1) if pred.get("seat_primary_mid_m") is not None else None,
                 "snapshot_m": round(pred["snapshot_mid_m"], 1) if pred.get("snapshot_mid_m") is not None else None,
                 "snapshot_weight": pred.get("snapshot_model_weight", 0),
+                "snapshot_support": pred.get("snapshot_calibration_support_factor"),
                 "snapshot_days": pred.get("snapshot_days", []),
                 "snapshot_coverage_ratio": pred.get("snapshot_coverage_ratio"),
                 "n_days": pred.get("n_days"),
@@ -1048,7 +1049,8 @@ HTML_PAGE = r"""<!doctype html>
       const estimate = p && !p.error ? fmtMoney(p.mid_m) : "Pending";
       const range = p && !p.error ? `${fmtMoney(p.low_m)} - ${fmtMoney(p.high_m)}` : "No seat-count model yet";
       const snapshotLine = p && !p.error && p.snapshot_m !== null && p.snapshot_m !== undefined
-        ? `<br>snapshot ${fmtMoney(p.snapshot_m)} @ ${Math.round((p.snapshot_weight || 0) * 100)}% (${esc((p.snapshot_days || []).join("/") || "-")})`
+        ? `<br>snapshot ${fmtMoney(p.snapshot_m)} @ ${Math.round((p.snapshot_weight || 0) * 100)}%` +
+          `, support ${Math.round((p.snapshot_support ?? 1) * 100)}% (${esc((p.snapshot_days || []).join("/") || "-")})`
         : "";
       const marketUrl = movie.market.market_url;
       const dailyRows = p && p.daily ? p.daily.map(row => `<tr>

@@ -35,7 +35,8 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                sanitize_calibration, recalibrate_scale_factor,
                                recalibrate_day_scale_factors,
                                recalibrate_snapshot_day_scale_factors,
-                               recalibrate_snapshot_lead_scale_factors)
+                               recalibrate_snapshot_lead_scale_factors,
+                               snapshot_calibration_support)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -62,6 +63,20 @@ DEFAULT_CALIBRATION = {
             "next_day": 1.0,
             "multi_day": 1.0,
             "long_lead": 1.0,
+        },
+        "snapshot_calibration_support": {
+            "days": {
+                "Thursday": {"n": 0, "support": 0.0},
+                "Friday": {"n": 0, "support": 0.0},
+                "Saturday": {"n": 0, "support": 0.0},
+                "Sunday": {"n": 0, "support": 0.0},
+            },
+            "leads": {
+                "same_day": {"n": 0, "support": 0.0},
+                "next_day": {"n": 0, "support": 0.0},
+                "multi_day": {"n": 0, "support": 0.0},
+                "long_lead": {"n": 0, "support": 0.0},
+            },
         },
         "format_scale_factors": {},
         "historical_accuracy": [],
@@ -612,6 +627,9 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     factors["snapshot_to_lead_scale_factors"] = recalibrate_snapshot_lead_scale_factors(
         cal["history"],
         day_scales=factors["snapshot_to_day_scale_factors"],
+    )
+    factors["snapshot_calibration_support"] = snapshot_calibration_support(
+        cal["history"]
     )
 
     # 2. Update day weights from actual daily proportions

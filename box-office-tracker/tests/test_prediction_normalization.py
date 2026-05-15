@@ -18,6 +18,7 @@ from historical_comps import (
 from model_calibration import (
     recalibrate_snapshot_day_scale_factors,
     recalibrate_snapshot_lead_scale_factors,
+    snapshot_calibration_support,
 )
 from predict import (
     days_to_weekend,
@@ -562,9 +563,84 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIsNotNone(pred["snapshot_mid_m"])
         self.assertNotEqual(pred["snapshot_mid_m"], pred["seat_mid_m"])
         self.assertGreater(pred["snapshot_model_weight"], 0)
+        self.assertIsNotNone(pred["snapshot_calibration_support_factor"])
         self.assertEqual(
             "seat+snapshot-regression",
             pred["regression_source"],
+        )
+
+    def test_snapshot_layer_weight_is_capped_by_untrained_lead_bucket(self):
+        def cal_with_next_day_support(next_day_support):
+            return {
+                "history": [],
+                "calibration_factors": {
+                    "amc_market_share": 0.25,
+                    "overall_scale_factor": 1.0,
+                    "day_weights": {"Friday": 0.5, "Saturday": 0.5},
+                    "snapshot_to_day_scale_factors": {"Friday": 1.0, "Saturday": 1.0},
+                    "snapshot_to_lead_scale_factors": {
+                        "same_day": 1.0,
+                        "next_day": 1.0,
+                        "multi_day": 1.0,
+                        "long_lead": 1.0,
+                    },
+                    "snapshot_calibration_support": {
+                        "days": {
+                            "Friday": {"n": 8, "support": 8.0},
+                            "Saturday": {"n": 8, "support": 8.0},
+                        },
+                        "leads": {
+                            "same_day": {"n": 8, "support": 8.0},
+                            "next_day": {"n": int(next_day_support), "support": next_day_support},
+                        },
+                    },
+                },
+            }
+
+        friday_rows = [
+            self._snapshot_row("AMC One", "Friday", "2026-05-08", timezone="ET"),
+            self._snapshot_row("AMC Two", "Friday", "2026-05-08", timezone="CT"),
+        ]
+        saturday_rows = [
+            self._snapshot_row("AMC One", "Saturday", "2026-05-09", timezone="ET"),
+            self._snapshot_row("AMC Two", "Saturday", "2026-05-09", timezone="CT"),
+        ]
+        for row in saturday_rows:
+            row["minutes_until_showtime"] = str(25 * 60)
+
+        untrained = predict.build_snapshot_future_layer(
+            {"2026-05-08": friday_rows, "2026-05-09": saturday_rows},
+            {},
+            cal_with_next_day_support(0.0),
+            expected_amc_theatres=2,
+            expected_timezone_counts={"ET": 1, "CT": 1},
+            theatre_timezone_map={"AMC One": "ET", "AMC Two": "CT"},
+        )
+        trained = predict.build_snapshot_future_layer(
+            {"2026-05-08": friday_rows, "2026-05-09": saturday_rows},
+            {},
+            cal_with_next_day_support(8.0),
+            expected_amc_theatres=2,
+            expected_timezone_counts={"ET": 1, "CT": 1},
+            theatre_timezone_map={"AMC One": "ET", "AMC Two": "CT"},
+        )
+
+        self.assertLess(
+            untrained["snapshot_model_weight"],
+            trained["snapshot_model_weight"],
+        )
+        self.assertAlmostEqual(
+            0.35,
+            untrained["snapshot_daily_details"]["Saturday"][
+                "snapshot_calibration_support_factor"
+            ],
+            places=6,
+        )
+        self.assertGreater(
+            trained["snapshot_daily_details"]["Saturday"][
+                "snapshot_calibration_support_factor"
+            ],
+            0.75,
         )
 
     def test_snapshot_layer_never_overrides_actual_seat_count_day(self):
@@ -917,6 +993,31 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
 
         self.assertGreater(scales["same_day"], 1.0)
+
+    def test_snapshot_calibration_support_tracks_day_and_lead_history(self):
+        history = [
+            {
+                "movie": "Reliable Snapshot",
+                "daily_actuals": {"Saturday": 12.0},
+                "snapshot_daily_predictions": {"Saturday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Saturday": 0.8},
+                "snapshot_daily_lead_buckets": {"Saturday": "next_day"},
+            },
+            {
+                "movie": "Too Sparse Snapshot",
+                "daily_actuals": {"Saturday": 12.0},
+                "snapshot_daily_predictions": {"Saturday": 10.0},
+                "snapshot_daily_coverage_ratios": {"Saturday": 0.05},
+                "snapshot_daily_lead_buckets": {"Saturday": "next_day"},
+            },
+        ]
+
+        support = snapshot_calibration_support(history)
+
+        self.assertEqual(1, support["days"]["Saturday"]["n"])
+        self.assertAlmostEqual(0.8, support["days"]["Saturday"]["support"])
+        self.assertEqual(1, support["leads"]["next_day"]["n"])
+        self.assertAlmostEqual(0.8, support["leads"]["next_day"]["support"])
 
     def test_sparse_snapshot_lead_scale_is_shrunk_toward_prior(self):
         history = [

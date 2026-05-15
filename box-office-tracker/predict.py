@@ -43,7 +43,8 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                SNAPSHOT_LEAD_BUCKETS,
                                sanitize_calibration, recalibrate_scale_factor,
                                recalibrate_snapshot_day_scale_factors,
-                               recalibrate_snapshot_lead_scale_factors)
+                               recalibrate_snapshot_lead_scale_factors,
+                               snapshot_calibration_support)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -67,7 +68,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v16-snapshot-lead-calibration"
+MODEL_VERSION = "seat-regression-v17-snapshot-support-weight"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -98,6 +99,9 @@ SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
+SNAPSHOT_SUPPORT_PRIOR_WEIGHT = 2.0
+SNAPSHOT_UNTRAINED_DAY_SUPPORT_FLOOR = 0.20
+SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
 MAX_REASONABLE_PRE_SHOW_MINUTES = 360
@@ -307,6 +311,49 @@ def get_snapshot_to_day_scale(cal, day_name, lead_bucket=None):
     if lead_bucket:
         return day_scale * get_snapshot_lead_scale(cal, lead_bucket)
     return day_scale
+
+
+def _snapshot_support_entry(cal, section, key):
+    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
+    support = factors.get("snapshot_calibration_support", {}) or {}
+    entry = (support.get(section, {}) or {}).get(key, {}) or {}
+    return {
+        "n": int(_positive_float(entry.get("n")) or 0),
+        "support": _positive_float(entry.get("support")) or 0.0,
+    }
+
+
+def _snapshot_support_strength(weighted_support, floor):
+    support = _positive_float(weighted_support) or 0.0
+    if support <= 0:
+        return _clamp(floor, 0.0, 1.0)
+    strength = support / (support + SNAPSHOT_SUPPORT_PRIOR_WEIGHT)
+    return _clamp(strength, floor, 1.0)
+
+
+def snapshot_calibration_support_factor(cal, day_name, lead_bucket):
+    """Model-weight cap implied by historical snapshot calibration support."""
+    day_entry = _snapshot_support_entry(cal, "days", day_name)
+    lead_entry = _snapshot_support_entry(cal, "leads", lead_bucket)
+    day_strength = _snapshot_support_strength(
+        day_entry["support"],
+        SNAPSHOT_UNTRAINED_DAY_SUPPORT_FLOOR,
+    )
+    lead_strength = _snapshot_support_strength(
+        lead_entry["support"],
+        SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR,
+    )
+    # The snapshot layer needs both a day-specific relationship and a lead-time
+    # relationship. Use the weaker of the two so an untrained future-day bucket
+    # cannot inherit full same-day confidence.
+    factor = min(day_strength, lead_strength)
+    return {
+        "factor": round(_clamp(factor, 0.0, 1.0), 4),
+        "day_support": round(day_entry["support"], 4),
+        "day_n": day_entry["n"],
+        "lead_support": round(lead_entry["support"], 4),
+        "lead_n": lead_entry["n"],
+    }
 
 
 def get_day_weights(cal):
@@ -2609,10 +2656,22 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             details,
             same_week_scale,
         )
-        snapshot_details[day_name] = apply_snapshot_day_shape_prior(
+        adjusted_details = apply_snapshot_day_shape_prior(
             scaled_details,
             day_shape_priors.get(day_name),
         )
+        support_info = snapshot_calibration_support_factor(
+            cal,
+            day_name,
+            adjusted_details.get("lead_bucket"),
+        )
+        adjusted_details = dict(adjusted_details)
+        adjusted_details["snapshot_calibration_support_factor"] = support_info["factor"]
+        adjusted_details["snapshot_day_calibration_support"] = support_info["day_support"]
+        adjusted_details["snapshot_day_calibration_n"] = support_info["day_n"]
+        adjusted_details["snapshot_lead_calibration_support"] = support_info["lead_support"]
+        adjusted_details["snapshot_lead_calibration_n"] = support_info["lead_n"]
+        snapshot_details[day_name] = adjusted_details
 
     if not snapshot_details:
         return {
@@ -2661,9 +2720,25 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         day: details.get("effective_coverage_ratio", details.get("coverage_ratio"))
         for day, details in snapshot_details.items()
     })
+    support_weighted_total = 0.0
+    support_weight_total = 0.0
+    for day, details in snapshot_details.items():
+        support_factor = _positive_float(
+            details.get("snapshot_calibration_support_factor")
+        )
+        if support_factor is None:
+            continue
+        weight = day_weights.get(day, 0.0) or 1.0
+        support_weighted_total += support_factor * weight
+        support_weight_total += weight
+    snapshot_support_factor = (
+        support_weighted_total / support_weight_total
+        if support_weight_total > 0 else 1.0
+    )
     model_weight = SNAPSHOT_LAYER_MAX_WEIGHT
     model_weight *= _coverage_value(snapshot_coverage)
     model_weight *= _clamp(snapshot_missing_share, 0.0, 1.0)
+    model_weight *= _clamp(snapshot_support_factor, 0.0, 1.0)
 
     return {
         "snapshot_daily_details": snapshot_details,
@@ -2673,6 +2748,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_low_m": (mid * low_factor) / 1_000_000,
         "snapshot_high_m": (mid * high_factor) / 1_000_000,
         "snapshot_model_weight": round(_clamp(model_weight, 0.0, SNAPSHOT_LAYER_MAX_WEIGHT), 4),
+        "snapshot_calibration_support_factor": round(snapshot_support_factor, 4),
         "snapshot_coverage_ratio": round(snapshot_coverage, 3) if snapshot_coverage is not None else None,
         "snapshot_days": sorted(snapshot_details),
         "snapshot_same_week_scale": round(same_week_scale, 4),
@@ -2894,6 +2970,9 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                 history,
                 day_scales=cal["calibration_factors"]["snapshot_to_day_scale_factors"],
             )
+        )
+        cal["calibration_factors"]["snapshot_calibration_support"] = (
+            snapshot_calibration_support(history)
         )
 
     # Refine AMC market share from seat-based estimates
@@ -3499,6 +3578,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "snapshot_model_weight": (
             snapshot_layer.get("snapshot_model_weight", 0.0)
             if snapshot_layer else 0.0
+        ),
+        "snapshot_calibration_support_factor": (
+            snapshot_layer.get("snapshot_calibration_support_factor")
+            if snapshot_layer else None
         ),
         "snapshot_coverage_ratio": (
             snapshot_layer.get("snapshot_coverage_ratio")
@@ -4341,6 +4424,7 @@ def print_prediction(pred, verbose=False):
               f"({fmt_m(pred['snapshot_low_m'])} - {fmt_m(pred['snapshot_high_m'])})")
         print(f"    Future days: {days or '-'}; "
               f"coverage {pred.get('snapshot_coverage_ratio') or 0:.0%}; "
+              f"calibration support {pred.get('snapshot_calibration_support_factor', 1):.0%}; "
               f"model weight {pred.get('snapshot_model_weight', 0):.0%}")
         snapshot_scale = pred.get("snapshot_same_week_scale")
         if snapshot_scale and abs(snapshot_scale - 1.0) >= 0.01:
@@ -4365,7 +4449,8 @@ def print_prediction(pred, verbose=False):
             print(f"    {day}: {fmt_m(details['domestic_mid'] / 1_000_000)} "
                   f"(snapshot {fmt_m(raw_mid / 1_000_000)}, "
                   f"day-shape prior {fmt_m(prior / 1_000_000)}, "
-                  f"{signal_weight:.0%} snapshot signal)")
+                  f"{signal_weight:.0%} snapshot signal, "
+                  f"{details.get('snapshot_calibration_support_factor', 1):.0%} calibrated support)")
 
     social = pred.get("social_signal")
     if social:

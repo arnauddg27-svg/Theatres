@@ -483,6 +483,44 @@
       "multi_day": 1.0,
       "long_lead": 1.0
     },
-    "last_snapshot_calibration_backfill": "2026-05-15"
+    "last_snapshot_calibration_backfill": "2026-05-15",
+    "snapshot_calibration_support": {
+      "days": {
+        "Thursday": {
+          "n": 1,
+          "support": 0.202
+        },
+        "Friday": {
+          "n": 2,
+          "support": 1.313
+        },
+        "Saturday": {
+          "n": 2,
+          "support": 1.974
+        },
+        "Sunday": {
+          "n": 2,
+          "support": 1.974
+        }
+      },
+      "leads": {
+        "same_day": {
+          "n": 7,
+          "support": 5.463
+        },
+        "next_day": {
+          "n": 0,
+          "support": 0.0
+        },
+        "multi_day": {
+          "n": 0,
+          "support": 0.0
+        },
+        "long_lead": {
+          "n": 0,
+          "support": 0.0
+        }
+      }
+    }
   }
 }

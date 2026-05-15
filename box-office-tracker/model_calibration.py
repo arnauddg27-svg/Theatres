@@ -295,6 +295,58 @@ def recalibrate_snapshot_lead_scale_factors(history: list[dict],
     }
 
 
+def snapshot_calibration_support(history: list[dict]) -> dict[str, dict[str, dict[str, float | int]]]:
+    """Coverage-weighted support behind each snapshot day and lead bucket.
+
+    Scale factors can remain at the neutral prior (1.0) when a bucket has no
+    settled actuals. Prediction needs to know that difference so an untrained
+    future-day reservation read does not receive the same model weight as a
+    well-calibrated same-day read.
+    """
+    days = {
+        day: {"n": 0, "support": 0.0}
+        for day in ("Thursday", "Friday", "Saturday", "Sunday")
+    }
+    leads = {
+        bucket: {"n": 0, "support": 0.0}
+        for bucket in SNAPSHOT_LEAD_BUCKETS
+    }
+
+    for entry in (history or [])[-20:]:
+        daily_actuals = entry.get("daily_actuals", {}) or {}
+        snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+        snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
+        snapshot_leads = entry.get("snapshot_daily_lead_buckets", {}) or {}
+
+        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
+            actual = _as_float(daily_actuals.get(day), 0.0)
+            predicted = _as_float(snapshot_predictions.get(day), 0.0)
+            if actual <= 0 or predicted <= 0:
+                continue
+            coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            if coverage < 0.10:
+                continue
+
+            days[day]["n"] += 1
+            days[day]["support"] += coverage
+
+            bucket = str(snapshot_leads.get(day, "") or "").strip()
+            if bucket in leads:
+                leads[bucket]["n"] += 1
+                leads[bucket]["support"] += coverage
+
+    def _rounded(section: dict[str, dict[str, float | int]]) -> dict[str, dict[str, float | int]]:
+        return {
+            key: {
+                "n": int(value["n"]),
+                "support": round(float(value["support"]), 4),
+            }
+            for key, value in section.items()
+        }
+
+    return {"days": _rounded(days), "leads": _rounded(leads)}
+
+
 def normalize_day_weights(day_weights: dict | None,
                           defaults: dict[str, float]) -> dict[str, float]:
     """Fill missing day weights from defaults and normalize the whole set."""
@@ -360,5 +412,6 @@ def sanitize_calibration(cal: dict,
         history,
         day_scales=snapshot_day_scales,
     )
+    factors["snapshot_calibration_support"] = snapshot_calibration_support(history)
 
     return cal
