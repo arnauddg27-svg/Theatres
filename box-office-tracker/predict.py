@@ -85,6 +85,10 @@ RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT = 0.60
 RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT = 0.35
 RESIDUAL_METADATA_MIN_WEIGHT = 0.55
 RESIDUAL_METADATA_MAX_WEIGHT = 1.15
+RESIDUAL_FOOTPRINT_MIN_WEIGHT = 0.65
+RESIDUAL_FOOTPRINT_MAX_WEIGHT = 1.10
+RESIDUAL_METADATA_COMBINED_MIN_WEIGHT = 0.45
+RESIDUAL_METADATA_COMBINED_MAX_WEIGHT = 1.20
 PREVIEW_SEAT_RESIDUAL_MIN_OBS = 1
 PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT = 4.0
 PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH = 0.60
@@ -1869,11 +1873,26 @@ def _historical_residual_metadata_weight(pred, entry, metadata):
     if not target_metadata or not entry_metadata:
         return 1.0
     similarity = _metadata_preview_similarity(target_metadata, entry_metadata)
-    return _clamp(
+    similarity_weight = _clamp(
         RESIDUAL_METADATA_MIN_WEIGHT
         + ((RESIDUAL_METADATA_MAX_WEIGHT - RESIDUAL_METADATA_MIN_WEIGHT) * similarity),
         RESIDUAL_METADATA_MIN_WEIGHT,
         RESIDUAL_METADATA_MAX_WEIGHT,
+    )
+    target_count = _positive_float(getattr(target_metadata, "national_theatre_count", 0))
+    entry_count = _positive_float(getattr(entry_metadata, "national_theatre_count", 0))
+    footprint_weight = 1.0
+    if target_count and entry_count:
+        ratio = min(target_count, entry_count) / max(target_count, entry_count)
+        footprint_weight = _clamp(
+            0.45 + (0.65 * ratio),
+            RESIDUAL_FOOTPRINT_MIN_WEIGHT,
+            RESIDUAL_FOOTPRINT_MAX_WEIGHT,
+        )
+    return _clamp(
+        similarity_weight * footprint_weight,
+        RESIDUAL_METADATA_COMBINED_MIN_WEIGHT,
+        RESIDUAL_METADATA_COMBINED_MAX_WEIGHT,
     )
 
 
