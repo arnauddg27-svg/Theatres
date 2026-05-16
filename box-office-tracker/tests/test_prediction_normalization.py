@@ -292,6 +292,42 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(primary["mid_m"], 19.5)
         self.assertGreater(primary["mid_m"], 15.0)
 
+    def test_reported_actual_days_raise_direct_weight_in_seat_primary(self):
+        sparse_pred = {
+            "seat_mid_m": 20.0,
+            "seat_low_m": 16.0,
+            "seat_high_m": 24.0,
+            "seat_comp_adjusted_mid_m": 12.0,
+            "seat_comp_adjusted_low_m": 10.0,
+            "seat_comp_adjusted_high_m": 14.0,
+            "seat_comp_mid_m": 12.0,
+            "seat_comp_low_m": 10.0,
+            "seat_comp_high_m": 14.0,
+            "n_days": 2,
+            "seat_data_quality": 0.42,
+        }
+        actual_anchored = dict(sparse_pred)
+        actual_anchored["reported_actual_day_share"] = 0.38
+
+        sparse = predict.seat_primary_ensemble(sparse_pred)
+        anchored = predict.seat_primary_ensemble(actual_anchored)
+
+        self.assertGreater(anchored["w_direct"], sparse["w_direct"])
+        self.assertGreaterEqual(anchored["w_direct"], 0.45)
+        self.assertGreater(anchored["mid_m"], sparse["mid_m"])
+
+    def test_actual_anchor_reduces_metadata_prior_weight(self):
+        pred = {
+            "n_days": 2,
+            "seat_data_quality": 0.42,
+            "reported_actual_day_share": 0.38,
+            "missing_data_profile": {
+                "missing_day_share": 0.62,
+            },
+        }
+
+        self.assertLess(predict.missing_data_prior_weight(pred), 0.45)
+
     def test_prediction_penalizes_missing_full_timezone_bucket(self):
         cal = {
             "history": [],

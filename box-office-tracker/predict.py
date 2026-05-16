@@ -1511,6 +1511,24 @@ def missing_data_profile(daily_details, cal, snapshot_layer=None):
     }
 
 
+def actual_override_day_share(daily_details, cal):
+    """Opening-weekend share already replaced by reported daily actuals."""
+    if not daily_details:
+        return 0.0
+    day_weights = get_day_weights(cal)
+    expected_days = [
+        day for day in OPENING_WEEKEND_DAYS
+        if day_weights.get(day, 0) > 0
+    ]
+    total_weight = sum(day_weights.get(day, 0) for day in expected_days) or 1.0
+    actual_weight = sum(
+        day_weights.get(day, 0)
+        for day, details in daily_details.items()
+        if day in expected_days and details.get("actual_override")
+    )
+    return _clamp(actual_weight / total_weight, 0.0, 1.0)
+
+
 def reference_amc_theatre_count(cal, fallback=0, model_cohort_key=None):
     """The stable sample size that AMC-share calibration was trained against."""
     factors = (cal or {}).get("calibration_factors", {}) if cal else {}
@@ -1707,6 +1725,11 @@ def seat_primary_ensemble(pred):
         # anchor, but let sparse partial reads lean on comps/priors.
         w_direct *= 0.35 + 0.65 * quality
         w_comp = 1.0 - w_direct
+    actual_share = _coverage_value(pred.get("reported_actual_day_share"), default=0.0)
+    if actual_share >= 0.20:
+        actual_anchor_floor = min(0.70, 0.25 + 0.60 * actual_share)
+        w_direct = max(w_direct, actual_anchor_floor)
+        w_comp = 1.0 - w_direct
     direct_mid = pred["seat_mid_m"]
     direct_low = pred["seat_low_m"]
     direct_high = pred["seat_high_m"]
@@ -1728,6 +1751,7 @@ def seat_primary_ensemble(pred):
         "high_m": max(low, high),
         "w_direct": w_direct,
         "w_comp": w_comp,
+        "reported_actual_day_share": actual_share,
         "disagreement_m": disagreement,
     }
 
@@ -1760,6 +1784,9 @@ def missing_data_prior_weight(pred):
         default=0.0,
     )
     weight = max(weight, missing_day_share * 0.60)
+    actual_share = _coverage_value(pred.get("reported_actual_day_share"), default=0.0)
+    if actual_share >= 0.20:
+        weight *= 1.0 - min(0.30, actual_share * 0.45)
     if has_missing_timezone_bucket(pred) and n_days <= 1:
         weight = max(weight, 0.55)
     elif has_missing_timezone_bucket(pred):
@@ -1773,6 +1800,8 @@ def missing_data_prior_weight(pred):
         cap = 0.25
     else:
         cap = 0.10
+    if actual_share >= 0.20:
+        cap *= 1.0 - min(0.25, actual_share * 0.35)
     return _clamp(weight, 0.0, cap)
 
 
@@ -3892,6 +3921,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         cal,
         snapshot_layer=snapshot_layer,
     )
+    reported_actual_share = actual_override_day_share(daily_details, cal)
 
     # Stage E: Polymarket
     poly_result = None
@@ -4013,6 +4043,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "seat_observed_day_share": data_profile["observed_day_share"],
         "seat_missing_day_share": data_profile["missing_day_share"],
         "seat_weighted_coverage_ratio": weighted_coverage_ratio,
+        "reported_actual_day_share": reported_actual_share,
         "missing_data_profile": data_profile,
         "raw_coverage_ratio": (
             round(raw_coverage_ratio, 3)
