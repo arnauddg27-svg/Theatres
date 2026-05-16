@@ -68,7 +68,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v19-strategic-snapshot"
+MODEL_VERSION = "seat-regression-v20-multi-anchor-snapshot"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -2268,6 +2268,105 @@ def same_week_amc_share_anchor(day_name, amc_total, actual_gross, cal,
     }
 
 
+def same_week_amc_share_anchor_for_day(anchors, target_day=None):
+    """Blend same-week reported-actual AMC share anchors for a target day.
+
+    A single same-week actual should transfer directly, preserving the original
+    behavior. Once multiple actuals exist, weight them by weekend-day similarity
+    so Friday dominates Saturday/Sunday but Thursday previews still contribute a
+    small amount of movie-specific share information.
+    """
+    if not anchors:
+        return None
+    if isinstance(anchors, dict):
+        anchors = [anchors]
+
+    valid = []
+    for anchor in anchors:
+        if not isinstance(anchor, dict):
+            continue
+        blended = _positive_float(anchor.get("blended_share"))
+        if blended is None:
+            continue
+        valid.append(anchor)
+
+    if not valid:
+        return None
+    if len(valid) == 1:
+        anchor = dict(valid[0])
+        if target_day:
+            anchor["target_day"] = target_day
+        return anchor
+
+    weighted = []
+    for anchor in valid:
+        base_weight = (
+            _positive_float(anchor.get("anchor_weight"))
+            or _positive_float(anchor.get("coverage_ratio"))
+            or 1.0
+        )
+        similarity = 1.0
+        if target_day:
+            similarity = snapshot_day_similarity(anchor.get("day"), target_day)
+        weight = base_weight * similarity
+        if weight > 0:
+            weighted.append((anchor, weight))
+
+    if not weighted:
+        latest = dict(valid[-1])
+        if target_day:
+            latest["target_day"] = target_day
+        return latest
+
+    total_weight = sum(weight for _, weight in weighted)
+
+    def weighted_average(field, default=None):
+        values = []
+        for anchor, weight in weighted:
+            value = _positive_float(anchor.get(field))
+            if value is None:
+                continue
+            values.append((value, weight))
+        if not values:
+            return default
+        total = sum(weight for _, weight in values)
+        return sum(value * weight for value, weight in values) / total
+
+    day_labels = []
+    for anchor, _ in weighted:
+        day = anchor.get("day")
+        if day and day not in day_labels:
+            day_labels.append(day)
+
+    blended_share = weighted_average("blended_share")
+    if blended_share is None:
+        return None
+
+    return {
+        "day": "+".join(day_labels),
+        "days": day_labels,
+        "target_day": target_day,
+        "prior_share": weighted_average("prior_share"),
+        "raw_implied_share": weighted_average("raw_implied_share"),
+        "implied_share": weighted_average("implied_share"),
+        "anchor_weight": _clamp(total_weight, 0.0, 1.0),
+        "blended_share": _clamp(
+            blended_share,
+            DYNAMIC_AMC_SHARE_MIN_SHARE,
+            DYNAMIC_AMC_SHARE_MAX_SHARE,
+        ),
+        "coverage_ratio": weighted_average("coverage_ratio", default=0.0),
+        "anchors": [
+            {
+                "day": anchor.get("day"),
+                "blended_share": anchor.get("blended_share"),
+                "weight": round(weight, 4),
+            }
+            for anchor, weight in weighted
+        ],
+    }
+
+
 # ── Stage D: Partial Days → Full Weekend ─────────────────────────────────────
 
 def calibrated_daily_estimates(daily_estimates, cal):
@@ -2990,23 +3089,34 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 theatre_timezone_map=None,
                                 national_theatre_count=None,
                                 regular_seat_data=None,
-                                amc_share_anchor=None):
+                                amc_share_anchor=None,
+                                amc_share_anchors=None):
     """Use snapshots only for opening-weekend days without seat-count actuals."""
     if not snapshot_data:
         return None
 
     all_snapshot_details = {}
     ignored_days = []
-    share_override = (
-        amc_share_anchor.get("blended_share")
-        if isinstance(amc_share_anchor, dict) else None
+    share_anchor_inputs = (
+        amc_share_anchors
+        if amc_share_anchors is not None
+        else ([amc_share_anchor] if isinstance(amc_share_anchor, dict) else [])
     )
+    share_anchor_summary = same_week_amc_share_anchor_for_day(share_anchor_inputs)
     for date_str, rows in sorted(snapshot_data.items()):
         if not rows:
             continue
         day_name = _snapshot_day_name(date_str, rows)
         if day_name not in OPENING_WEEKEND_DAYS:
             continue
+        share_anchor_for_day = same_week_amc_share_anchor_for_day(
+            share_anchor_inputs,
+            target_day=day_name,
+        )
+        share_override = (
+            share_anchor_for_day.get("blended_share")
+            if share_anchor_for_day else None
+        )
         details = estimate_snapshot_day(
             rows,
             date_str,
@@ -3018,6 +3128,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             share_override=share_override,
         )
         if details:
+            if share_anchor_for_day:
+                details["amc_market_share_anchor"] = share_anchor_for_day
             all_snapshot_details[day_name] = details
 
     aggregate_same_week_scale, aggregate_same_week_anchors = same_week_snapshot_scale(
@@ -3108,7 +3220,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             },
             "snapshot_same_week_scale_source": same_week_scale_source,
             "snapshot_pickup_profile": pickup_profile or {},
-            "snapshot_amc_market_share_anchor": amc_share_anchor or {},
+            "snapshot_amc_market_share_anchor": share_anchor_summary or {},
         }
 
     day_weights = get_day_weights(cal)
@@ -3231,7 +3343,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         },
         "snapshot_same_week_scale_source": same_week_scale_source,
         "snapshot_pickup_profile": pickup_profile or {},
-        "snapshot_amc_market_share_anchor": amc_share_anchor or {},
+        "snapshot_amc_market_share_anchor": share_anchor_summary or {},
     }
 
 
@@ -3628,6 +3740,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             national_theatre_count=int(national_theatre_count),
         )
 
+    dynamic_amc_share_anchors = []
     dynamic_amc_share_anchor = None
     for date_str in opening_dates:
         rows = seat_data[date_str]
@@ -3769,8 +3882,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         # days so this movie calibrates itself instead of leaning on one global
         # AMC share prior.
         share_anchor_for_day = (
-            dynamic_amc_share_anchor
-            if dynamic_amc_share_anchor and not actual_override else None
+            same_week_amc_share_anchor_for_day(
+                dynamic_amc_share_anchors,
+                target_day=day_name,
+            )
+            if dynamic_amc_share_anchors and not actual_override else None
         )
         share_override = (
             share_anchor_for_day["blended_share"]
@@ -3808,6 +3924,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         seat_implied_domestic_high = domestic_high
         coverage_for_share_anchor = effective_coverage_ratio
         actual_gross_m = None
+        actual_day_anchor = None
         if actual_override:
             actual_gross_m = _positive_float(actual_override.get("gross_m"))
             if actual_gross_m is not None:
@@ -3831,7 +3948,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                     coverage_ratio=coverage_for_share_anchor,
                 )
                 if anchor:
-                    dynamic_amc_share_anchor = anchor
+                    actual_day_anchor = anchor
+                    dynamic_amc_share_anchors.append(anchor)
+                    dynamic_amc_share_anchor = same_week_amc_share_anchor_for_day(
+                        dynamic_amc_share_anchors,
+                    )
 
         daily_estimates[day_name] = domestic_mid
         details = {
@@ -3906,12 +4027,12 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                     seat_implied_domestic_mid * get_day_scale(cal, day_name)
                 ),
             })
-            if dynamic_amc_share_anchor and dynamic_amc_share_anchor.get("day") == day_name:
+            if actual_day_anchor:
                 details.update({
-                    "amc_market_share_implied": dynamic_amc_share_anchor["implied_share"],
-                    "amc_market_share_raw_implied": dynamic_amc_share_anchor["raw_implied_share"],
-                    "amc_market_share_anchor_weight": dynamic_amc_share_anchor["anchor_weight"],
-                    "amc_market_share_blended": dynamic_amc_share_anchor["blended_share"],
+                    "amc_market_share_implied": actual_day_anchor["implied_share"],
+                    "amc_market_share_raw_implied": actual_day_anchor["raw_implied_share"],
+                    "amc_market_share_anchor_weight": actual_day_anchor["anchor_weight"],
+                    "amc_market_share_blended": actual_day_anchor["blended_share"],
                 })
         else:
             details["actual_override"] = False
@@ -3978,6 +4099,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             if date_str in seat_data
         },
         amc_share_anchor=dynamic_amc_share_anchor,
+        amc_share_anchors=dynamic_amc_share_anchors,
     )
     data_profile = missing_data_profile(
         daily_details,
@@ -4154,6 +4276,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         )[1],
         "national_theatre_count": national_theatre_count,
         "dynamic_amc_share_anchor": dynamic_amc_share_anchor,
+        "dynamic_amc_share_anchors": dynamic_amc_share_anchors,
         "avg_showings_per_cinema": round(avg_showings_total, 1),
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
@@ -4983,8 +5106,22 @@ def print_prediction(pred, verbose=False):
                 print(f"    Day-aware pickup scales: {', '.join(scale_bits)}")
         share_anchor = pred.get("snapshot_amc_market_share_anchor") or {}
         if share_anchor.get("blended_share"):
-            print(f"    Same-week AMC share: {share_anchor['blended_share']:.1%} "
-                  f"from {share_anchor.get('day', 'reported actual')}")
+            daily_share_bits = []
+            for day, details in sorted(
+                pred.get("snapshot_daily_details", {}).items(),
+                key=lambda item: OPENING_WEEKEND_DAYS.index(item[0])
+                if item[0] in OPENING_WEEKEND_DAYS else 99,
+            ):
+                target_anchor = details.get("amc_market_share_anchor") or {}
+                target_share = target_anchor.get("blended_share")
+                if target_share:
+                    daily_share_bits.append(f"{day[:3]} {target_share:.1%}")
+            if daily_share_bits:
+                print(f"    Same-week AMC share: {', '.join(daily_share_bits)} "
+                      f"from {share_anchor.get('day', 'reported actual')}")
+            else:
+                print(f"    Same-week AMC share: {share_anchor['blended_share']:.1%} "
+                      f"from {share_anchor.get('day', 'reported actual')}")
         pickup = pred.get("snapshot_pickup_profile") or {}
         if pickup.get("n_matched_showtimes"):
             print(
