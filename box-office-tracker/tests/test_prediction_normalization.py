@@ -1998,6 +1998,69 @@ class PredictionNormalizationTest(unittest.TestCase):
             current_pred["historical_residual_factor"],
         )
 
+    def test_historical_residual_weights_metadata_similar_movies(self):
+        pred = {
+            "movie": "Target Horror",
+            "seat_comp_mid_m": 100.0,
+            "seat_comp_low_m": 90.0,
+            "seat_comp_high_m": 110.0,
+            "n_theatres_total": 425,
+            "n_days": 4,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 1.0,
+            "seat_data_quality": 1.0,
+            "model_cohort_key": "core,expansion",
+            "model_version": predict.MODEL_VERSION,
+        }
+        cal = {
+            "history": [
+                {
+                    "movie": "Similar Horror",
+                    "predicted_mid": 100.0,
+                    "actual_total": 60.0,
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                    "model_version": predict.MODEL_VERSION,
+                },
+                {
+                    "movie": "Different Comedy",
+                    "predicted_mid": 100.0,
+                    "actual_total": 150.0,
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                    "model_version": predict.MODEL_VERSION,
+                },
+            ],
+        }
+        metadata = {
+            "target horror": TargetMetadata(
+                "Target Horror", "horror", "horror_fan", "original", "R",
+            ),
+            "similar horror": TargetMetadata(
+                "Similar Horror", "horror", "horror_fan", "original", "R",
+            ),
+            "different comedy": TargetMetadata(
+                "Different Comedy", "comedy", "female_skewing", "sequel", "PG-13",
+            ),
+        }
+        old_loader = predict.load_movie_metadata
+        predict.load_movie_metadata = lambda: metadata
+        try:
+            select_regression_prediction(pred, cal)
+        finally:
+            predict.load_movie_metadata = old_loader
+
+        weights = {
+            item["movie"]: item["weight"]
+            for item in pred["historical_residual_examples"]
+        }
+        self.assertGreater(weights["Similar Horror"], weights["Different Comedy"])
+        self.assertLess(pred["regression_mid_m"], 100.0)
+
     def test_regression_residual_skips_target_and_provisional_actuals(self):
         pred = {
             "movie": "Future Movie",

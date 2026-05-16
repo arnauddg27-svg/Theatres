@@ -83,6 +83,8 @@ RESIDUAL_REGRESSION_FACTOR_MAX = 1.15
 RESIDUAL_SAME_MODEL_VERSION_WEIGHT = 1.0
 RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT = 0.60
 RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT = 0.35
+RESIDUAL_METADATA_MIN_WEIGHT = 0.55
+RESIDUAL_METADATA_MAX_WEIGHT = 1.15
 PREVIEW_SEAT_RESIDUAL_MIN_OBS = 1
 PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT = 4.0
 PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH = 0.60
@@ -1859,7 +1861,23 @@ def _actual_status_is_final(entry):
     return (entry.get("actual_status") or "final") != "provisional"
 
 
-def _historical_residual_weight(pred, entry):
+def _historical_residual_metadata_weight(pred, entry, metadata):
+    if not metadata:
+        return 1.0
+    target_metadata = metadata_for_movie(pred.get("movie", ""), metadata)
+    entry_metadata = metadata_for_movie(entry.get("movie", ""), metadata)
+    if not target_metadata or not entry_metadata:
+        return 1.0
+    similarity = _metadata_preview_similarity(target_metadata, entry_metadata)
+    return _clamp(
+        RESIDUAL_METADATA_MIN_WEIGHT
+        + ((RESIDUAL_METADATA_MAX_WEIGHT - RESIDUAL_METADATA_MIN_WEIGHT) * similarity),
+        RESIDUAL_METADATA_MIN_WEIGHT,
+        RESIDUAL_METADATA_MAX_WEIGHT,
+    )
+
+
+def _historical_residual_weight(pred, entry, metadata=None):
     current_quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
     current_days = int(_positive_float(pred.get("n_days")) or 0)
     current_coverage = _coverage_value(
@@ -1896,13 +1914,15 @@ def _historical_residual_weight(pred, entry):
 
     day_similarity = 1.0 - min(1.0, abs(current_days - entry_days) / 4.0) * 0.45
     coverage_similarity = 1.0 - abs(current_coverage - entry_coverage) * 0.45
+    metadata_weight = _historical_residual_metadata_weight(pred, entry, metadata)
     return max(
         0.0,
         entry_quality
         * cohort_weight
         * version_weight
         * day_similarity
-        * coverage_similarity,
+        * coverage_similarity
+        * metadata_weight,
     )
 
 
@@ -1917,6 +1937,7 @@ def historical_residual_regression(pred, cal):
         return None
 
     values = []
+    metadata = load_movie_metadata()
     for entry in (cal or {}).get("history", [])[-20:]:
         if not _actual_status_is_final(entry):
             continue
@@ -1926,7 +1947,7 @@ def historical_residual_regression(pred, cal):
         actual = _positive_float(entry.get("actual_total", entry.get("actual")))
         if not predicted or not actual:
             continue
-        weight = _historical_residual_weight(pred, entry)
+        weight = _historical_residual_weight(pred, entry, metadata=metadata)
         if weight <= 0:
             continue
         ratio = _clamp(
