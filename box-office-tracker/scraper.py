@@ -789,6 +789,15 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
     return [current_date]
 
 
+def phase1_target_date_is_repairable(tz_group, target_date):
+    """True when AMC can still plausibly expose showtime links for target_date."""
+    try:
+        target_day = datetime.strptime(target_date, "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return False
+    return target_day >= local_now(tz_group).date()
+
+
 # ─── Polymarket Scraper ─────────────────────────────────────────────────────
 
 def _market_question_ceiling(question):
@@ -2540,6 +2549,34 @@ def require_active_market_phase1_links(poly_markets, saved_links, groups, expect
     )
 
 
+def warn_active_market_phase1_link_gaps(poly_markets, saved_links, groups, expected_date_sets,
+                                        label,
+                                        min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                        required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Log active movie link gaps without blocking partial regular seat data."""
+    gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        saved_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    if not gaps:
+        return []
+
+    print(f"\n⚠️  {label}: active movie Phase 1 link gap(s); continuing with linked movies")
+    for gap in gaps[:20]:
+        print(
+            "    - "
+            f"{gap['movie_title']} {gap['show_date']} {gap['timezone']}: "
+            f"{gap['fresh_theatres']}/{gap['required_theatres']} theatres"
+        )
+    if len(gaps) > 20:
+        print(f"    ... and {len(gaps) - 20} more")
+    return gaps
+
+
 def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
                               min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                               required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -3433,6 +3470,19 @@ async def ensure_phase1_links_async(tz_group="ALL"):
             )
         if len(movie_gaps) > 20:
             print(f"    ... and {len(movie_gaps) - 20} more")
+    if not phase1_target_date_is_repairable(tz_group, target_date):
+        if report["fresh_count"]:
+            print(
+                f"\n↷ Skipping Phase 1 repair for {tz_group} {target_date}: "
+                "the show date has already rolled off AMC. Regular Phase 2 "
+                "will use cached links and filter any unlinked active movie."
+            )
+            return
+        fail_phase(
+            f"❌ Phase 1 links for {tz_group} {target_date} are missing or stale, "
+            "and the show date has already rolled off AMC, so an automatic "
+            "repair cannot rebuild them."
+        )
     print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
     await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
 
@@ -3768,7 +3818,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             if len(active_link_gaps) > 20:
                 print(f"    ... and {len(active_link_gaps) - 20} more")
     else:
-        require_active_market_phase1_links(
+        warn_active_market_phase1_link_gaps(
             poly_markets,
             phase1_validation_links,
             groups_to_check,

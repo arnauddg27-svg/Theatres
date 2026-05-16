@@ -901,23 +901,64 @@ class ScraperLoggingTest(unittest.TestCase):
                 "Phase 1 scrape preflight for PT",
             )
 
+    def test_regular_phase2_can_warn_and_filter_unlinked_movie_gaps(self):
+        saved_links = {
+            "AMC Central": {
+                "tz": "CT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-05-15": {
+                        "movies": {
+                            "Obsession": [
+                                {"showtime": "7:00pm", "showtime_id": "obs-ct-1"}
+                            ]
+                        }
+                    }
+                },
+            },
+        }
+        markets = [
+            {"movie_title": "Obsession"},
+            {"movie_title": "In the Grey"},
+        ]
+
+        gaps = scraper.warn_active_market_phase1_link_gaps(
+            markets,
+            saved_links,
+            ["CT"],
+            {"CT": ["2026-05-15"]},
+            "Phase 1 scrape preflight for CT",
+        )
+        filtered = scraper.filter_markets_with_phase1_links(
+            markets,
+            saved_links,
+            groups=["CT"],
+            expected_dates={"CT": "2026-05-15"},
+        )
+
+        self.assertEqual(["In the Grey"], [gap["movie_title"] for gap in gaps])
+        self.assertEqual(["Obsession"], [market["movie_title"] for market in filtered])
+
     def test_ensure_links_repairs_active_movie_gaps_even_when_coverage_is_high(self):
         with tempfile.TemporaryDirectory() as tmp:
             old_links_json = scraper.LINKS_JSON
             old_load_theatres = scraper.load_theatres
             old_phase1_expected_date = scraper.phase1_expected_date
+            old_local_now = scraper.local_now
             old_fetch = scraper.fetch_polymarket_box_office
             old_select = scraper.select_collection_markets
             old_run_collect = scraper.run_collect_links_async
             tmp_links = Path(tmp) / "showtime-links.json"
             tmp_links.write_text(json.dumps({
                 "weekend_of": "2026-05-08",
+                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
                 "theatres": {
                     "AMC West": {
                         "tz": "PT",
                         "cohort": scraper.CORE_COHORT,
                         "dates": {
                             "2026-05-08": {
+                                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
                                 "movies": {
                                     "Mortal Kombat II": [
                                         {"showtime": "7:00pm", "showtime_id": "west-1"}
@@ -950,6 +991,7 @@ class ScraperLoggingTest(unittest.TestCase):
                     ]
                 }
                 scraper.phase1_expected_date = lambda tz: "2026-05-08"
+                scraper.local_now = lambda tz: datetime(2026, 5, 8, 10, 0)
                 scraper.fetch_polymarket_box_office = lambda: [
                     {"movie_title": "Mortal Kombat II"},
                     {"movie_title": "The Sheep Detectives"},
@@ -965,11 +1007,83 @@ class ScraperLoggingTest(unittest.TestCase):
                 scraper.LINKS_JSON = old_links_json
                 scraper.load_theatres = old_load_theatres
                 scraper.phase1_expected_date = old_phase1_expected_date
+                scraper.local_now = old_local_now
                 scraper.fetch_polymarket_box_office = old_fetch
                 scraper.select_collection_markets = old_select
                 scraper.run_collect_links_async = old_run_collect
 
             self.assertEqual([("PT", "2026-05-08", False)], calls)
+
+    def test_ensure_links_does_not_repair_past_movie_gaps_when_cached_links_are_usable(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_links_json = scraper.LINKS_JSON
+            old_load_theatres = scraper.load_theatres
+            old_phase1_expected_date = scraper.phase1_expected_date
+            old_local_now = scraper.local_now
+            old_fetch = scraper.fetch_polymarket_box_office
+            old_select = scraper.select_collection_markets
+            old_run_collect = scraper.run_collect_links_async
+            tmp_links = Path(tmp) / "showtime-links.json"
+            tmp_links.write_text(json.dumps({
+                "weekend_of": "2026-05-08",
+                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                "theatres": {
+                    "AMC West": {
+                        "tz": "PT",
+                        "cohort": scraper.CORE_COHORT,
+                        "dates": {
+                            "2026-05-08": {
+                                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                                "movies": {
+                                    "Mortal Kombat II": [
+                                        {"showtime": "7:00pm", "showtime_id": "west-1"}
+                                    ]
+                                },
+                            }
+                        },
+                    }
+                },
+            }))
+            calls = []
+
+            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+                calls.append((tz_group, target_date, full_weekend))
+                raise AssertionError("past-date repair should not run")
+
+            try:
+                scraper.LINKS_JSON = tmp_links
+                scraper.load_theatres = lambda: {
+                    "PT": [
+                        {
+                            "name": "AMC West",
+                            "slug": "amc-west",
+                            "cohort": scraper.CORE_COHORT,
+                        }
+                    ]
+                }
+                scraper.phase1_expected_date = lambda tz: "2026-05-08"
+                scraper.local_now = lambda tz: datetime(2026, 5, 9, 2, 30)
+                scraper.fetch_polymarket_box_office = lambda: [
+                    {"movie_title": "Mortal Kombat II"},
+                    {"movie_title": "The Sheep Detectives"},
+                ]
+                scraper.select_collection_markets = (
+                    lambda live_markets, ref_dt, phase_label,
+                    weekend_override=None, prefer_live_markets=False: live_markets
+                )
+                scraper.run_collect_links_async = fake_collect
+
+                asyncio.run(scraper.ensure_phase1_links_async("PT"))
+            finally:
+                scraper.LINKS_JSON = old_links_json
+                scraper.load_theatres = old_load_theatres
+                scraper.phase1_expected_date = old_phase1_expected_date
+                scraper.local_now = old_local_now
+                scraper.fetch_polymarket_box_office = old_fetch
+                scraper.select_collection_markets = old_select
+                scraper.run_collect_links_async = old_run_collect
+
+            self.assertEqual([], calls)
 
     def test_snapshot_repair_attempts_missing_movie_links_and_keeps_partial_data(self):
         with tempfile.TemporaryDirectory() as tmp:
