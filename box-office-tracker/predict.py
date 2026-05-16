@@ -68,7 +68,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v18-snapshot-priority"
+MODEL_VERSION = "seat-regression-v19-strategic-snapshot"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -105,6 +105,7 @@ SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
 SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR = 0.55
 SNAPSHOT_TWO_ANCHOR_SUPPORT_FLOOR = 0.70
 SNAPSHOT_MISSING_SHARE_SIGNAL_FLOOR = 0.50
+SNAPSHOT_STRATEGIC_THEATRE_CAP = 100
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
 MAX_REASONABLE_PRE_SHOW_MINUTES = 360
@@ -1463,6 +1464,19 @@ def weighted_weekend_coverage_ratio(day_coverage_ratios, cal):
     return _clamp(weighted / total_weight, 0.0, 1.0)
 
 
+def snapshot_strategic_expected_theatres(expected_amc_theatres):
+    """Expected theatre denominator for capped top-theatre snapshot probes."""
+    expected = int(_positive_float(expected_amc_theatres) or 0)
+    cap = int(
+        _positive_float(os.environ.get("SNAPSHOT_TOP_THEATRE_CAP"))
+        or SNAPSHOT_STRATEGIC_THEATRE_CAP
+    )
+    cap = max(1, cap)
+    if expected <= 0:
+        return cap
+    return min(expected, cap)
+
+
 def missing_data_profile(daily_details, cal, snapshot_layer=None):
     """Summarize missing/partial data using weekend day weights."""
     day_weights = get_day_weights(cal)
@@ -2697,9 +2711,21 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         min(1.0, n_amc_theatres / expected_amc_theatres)
         if expected_amc_theatres else None
     )
+    strategic_expected_theatres = snapshot_strategic_expected_theatres(
+        expected_amc_theatres
+    )
+    strategic_coverage_ratio = (
+        min(1.0, n_amc_theatres / strategic_expected_theatres)
+        if strategic_expected_theatres else coverage_ratio
+    )
     effective_coverage_ratio = coverage_ratio
     if coverage_ratio is not None and tz_profile["missing_timezones"]:
         effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
+    effective_strategic_coverage_ratio = strategic_coverage_ratio
+    if strategic_coverage_ratio is not None and tz_profile["missing_timezones"]:
+        effective_strategic_coverage_ratio = (
+            strategic_coverage_ratio * tz_profile["coverage_factor"]
+        )
 
     domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
     pre_footprint_mid = domestic_mid
@@ -2751,6 +2777,9 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "expected_theatres": expected_amc_theatres,
         "coverage_ratio": coverage_ratio,
         "effective_coverage_ratio": effective_coverage_ratio,
+        "strategic_expected_theatres": strategic_expected_theatres,
+        "strategic_coverage_ratio": strategic_coverage_ratio,
+        "effective_strategic_coverage_ratio": effective_strategic_coverage_ratio,
         "observed_timezones": tz_profile["observed_timezones"],
         "expected_timezones": tz_profile["expected_timezones"],
         "missing_timezones": tz_profile["missing_timezones"],
@@ -2905,7 +2934,10 @@ def apply_snapshot_day_shape_prior(details, day_shape_prior,
         return details
 
     coverage = _coverage_value(
-        details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+        details.get(
+            "effective_strategic_coverage_ratio",
+            details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+        ),
         default=0.0,
     )
     support = _coverage_value(
@@ -3115,6 +3147,13 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         day: details.get("effective_coverage_ratio", details.get("coverage_ratio"))
         for day, details in snapshot_details.items()
     })
+    snapshot_model_coverage = _coverage_average({
+        day: details.get(
+            "effective_strategic_coverage_ratio",
+            details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+        )
+        for day, details in snapshot_details.items()
+    })
     support_values = []
     for day, details in snapshot_details.items():
         support_factor = _positive_float(
@@ -3140,7 +3179,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
     else:
         snapshot_support_factor = 1.0
     weight_info = snapshot_layer_model_weight(
-        snapshot_coverage,
+        snapshot_model_coverage,
         snapshot_missing_share,
         snapshot_support_factor,
         same_week_anchors,
@@ -3161,6 +3200,10 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_same_week_support_floor": round(weight_info["same_week_support_floor"], 4),
         "snapshot_calibration_support_factor": round(snapshot_support_factor, 4),
         "snapshot_coverage_ratio": round(snapshot_coverage, 3) if snapshot_coverage is not None else None,
+        "snapshot_model_coverage_ratio": (
+            round(snapshot_model_coverage, 3)
+            if snapshot_model_coverage is not None else None
+        ),
         "snapshot_days": sorted(snapshot_details),
         "snapshot_same_week_scale": round(same_week_scale, 4),
         "snapshot_same_week_anchors": same_week_anchors,
@@ -4010,6 +4053,26 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             snapshot_layer.get("snapshot_coverage_ratio")
             if snapshot_layer else None
         ),
+        "snapshot_model_coverage_ratio": (
+            snapshot_layer.get("snapshot_model_coverage_ratio")
+            if snapshot_layer else None
+        ),
+        "snapshot_weight_coverage_signal": (
+            snapshot_layer.get("snapshot_weight_coverage_signal")
+            if snapshot_layer else None
+        ),
+        "snapshot_weight_missing_share_signal": (
+            snapshot_layer.get("snapshot_weight_missing_share_signal")
+            if snapshot_layer else None
+        ),
+        "snapshot_weight_support_signal": (
+            snapshot_layer.get("snapshot_weight_support_signal")
+            if snapshot_layer else None
+        ),
+        "snapshot_same_week_support_floor": (
+            snapshot_layer.get("snapshot_same_week_support_floor")
+            if snapshot_layer else None
+        ),
         "snapshot_days": (
             snapshot_layer.get("snapshot_days", [])
             if snapshot_layer else []
@@ -4856,10 +4919,21 @@ def print_prediction(pred, verbose=False):
 
     if pred.get("snapshot_mid_m") is not None:
         days = ", ".join(pred.get("snapshot_days") or [])
+        raw_snapshot_cov = pred.get("snapshot_coverage_ratio") or 0
+        model_snapshot_cov = pred.get("snapshot_model_coverage_ratio")
+        if model_snapshot_cov is None:
+            coverage_note = f"coverage {raw_snapshot_cov:.0%}"
+        elif abs(model_snapshot_cov - raw_snapshot_cov) >= 0.05:
+            coverage_note = (
+                f"model coverage {model_snapshot_cov:.0%} "
+                f"(raw AMC {raw_snapshot_cov:.0%})"
+            )
+        else:
+            coverage_note = f"coverage {raw_snapshot_cov:.0%}"
         print(f"  Snapshot layer:   {fmt_m(pred['snapshot_mid_m']):>7}  "
               f"({fmt_m(pred['snapshot_low_m'])} - {fmt_m(pred['snapshot_high_m'])})")
         print(f"    Future days: {days or '-'}; "
-              f"coverage {pred.get('snapshot_coverage_ratio') or 0:.0%}; "
+              f"{coverage_note}; "
               f"calibration support {pred.get('snapshot_calibration_support_factor', 1):.0%}; "
               f"model weight {pred.get('snapshot_model_weight', 0):.0%}")
         snapshot_scale = pred.get("snapshot_same_week_scale")

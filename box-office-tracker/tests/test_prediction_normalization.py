@@ -1216,6 +1216,7 @@ class PredictionNormalizationTest(unittest.TestCase):
             "domestic_low": 10_000_000,
             "domestic_high": 14_000_000,
             "effective_coverage_ratio": 0.25,
+            "effective_strategic_coverage_ratio": 1.0,
             "snapshot_calibration_support_factor": 0.70,
         }
 
@@ -1224,8 +1225,72 @@ class PredictionNormalizationTest(unittest.TestCase):
             8_000_000,
         )
 
-        self.assertGreater(adjusted["snapshot_day_shape_signal_weight"], 0.20)
-        self.assertLess(adjusted["snapshot_day_shape_prior_weight"], 0.80)
+        self.assertGreater(adjusted["snapshot_day_shape_signal_weight"], 0.40)
+        self.assertLess(adjusted["snapshot_day_shape_prior_weight"], 0.60)
+
+    def test_snapshot_day_tracks_raw_and_strategic_coverage(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+            },
+        }
+        rows = [
+            self._snapshot_row(f"AMC {idx}", "Saturday", "2026-05-16")
+            for idx in range(100)
+        ]
+
+        details = predict.estimate_snapshot_day(
+            rows,
+            "2026-05-16",
+            cal,
+            expected_amc_theatres=425,
+        )
+
+        self.assertAlmostEqual(100 / 425, details["coverage_ratio"], places=6)
+        self.assertEqual(100, details["strategic_expected_theatres"])
+        self.assertAlmostEqual(1.0, details["strategic_coverage_ratio"], places=6)
+        self.assertAlmostEqual(
+            1.0,
+            details["effective_strategic_coverage_ratio"],
+            places=6,
+        )
+
+    def test_snapshot_layer_weight_uses_strategic_coverage_not_raw_amc_share(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {
+                    "Thursday": 0.12,
+                    "Friday": 0.32,
+                    "Saturday": 0.33,
+                    "Sunday": 0.23,
+                },
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+                "snapshot_calibration_support": {
+                    "days": {"Saturday": {"support": 10.0, "n": 2}},
+                    "leads": {"same_day": {"support": 10.0, "n": 2}},
+                },
+            },
+        }
+        rows = [
+            self._snapshot_row(f"AMC {idx}", "Saturday", "2026-05-16")
+            for idx in range(100)
+        ]
+
+        layer = predict.build_snapshot_future_layer(
+            {"2026-05-16": rows},
+            {},
+            cal,
+            expected_amc_theatres=425,
+        )
+
+        self.assertLess(layer["snapshot_coverage_ratio"], 0.30)
+        self.assertAlmostEqual(1.0, layer["snapshot_model_coverage_ratio"], places=6)
+        self.assertAlmostEqual(1.0, layer["snapshot_weight_coverage_signal"], places=6)
+        self.assertGreater(layer["snapshot_model_weight"], 0.30)
 
     def test_snapshot_calibration_support_tracks_day_and_lead_history(self):
         history = [
