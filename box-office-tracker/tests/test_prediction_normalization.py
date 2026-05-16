@@ -653,6 +653,63 @@ class PredictionNormalizationTest(unittest.TestCase):
             0.75,
         )
 
+    def test_same_week_calibrated_partial_snapshot_gets_meaningful_weight(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {
+                    "Thursday": 0.12,
+                    "Friday": 0.32,
+                    "Saturday": 0.33,
+                    "Sunday": 0.23,
+                },
+                "snapshot_to_day_scale_factors": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
+                "snapshot_to_lead_scale_factors": {
+                    "same_day": 1.0,
+                    "next_day": 1.0,
+                    "multi_day": 1.0,
+                },
+            },
+        }
+        theatre_names = [f"AMC Signal {idx:02d}" for idx in range(24)]
+        snapshot_data = {}
+        for day, date_str in (
+            ("Thursday", "2026-05-07"),
+            ("Friday", "2026-05-08"),
+            ("Saturday", "2026-05-09"),
+            ("Sunday", "2026-05-10"),
+        ):
+            snapshot_data[date_str] = [
+                self._snapshot_row(name, day, date_str, timezone="ET")
+                for name in theatre_names
+            ]
+        regular_daily_details = {
+            "Thursday": {"domestic_mid": 2_600_000, "coverage_ratio": 0.8},
+            "Friday": {"domestic_mid": 7_500_000, "coverage_ratio": 0.6},
+        }
+
+        layer = predict.build_snapshot_future_layer(
+            snapshot_data,
+            regular_daily_details,
+            cal,
+            expected_amc_theatres=100,
+        )
+
+        self.assertEqual(
+            ["Friday", "Thursday"],
+            sorted(anchor["day"] for anchor in layer["snapshot_same_week_anchors"]),
+        )
+        self.assertAlmostEqual(0.24, layer["snapshot_coverage_ratio"], places=6)
+        self.assertAlmostEqual(0.70, layer["snapshot_same_week_support_floor"], places=6)
+        self.assertGreaterEqual(layer["snapshot_model_weight"], 0.12)
+
     def test_snapshot_layer_never_overrides_actual_seat_count_day(self):
         cal = {
             "history": [],

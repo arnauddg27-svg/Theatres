@@ -68,8 +68,8 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v17-snapshot-support-weight"
-SNAPSHOT_LAYER_MAX_WEIGHT = 0.45
+MODEL_VERSION = "seat-regression-v18-snapshot-priority"
+SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
 DYNAMIC_AMC_SHARE_MAX_SHARE = 0.50
@@ -102,6 +102,9 @@ SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
 SNAPSHOT_SUPPORT_PRIOR_WEIGHT = 2.0
 SNAPSHOT_UNTRAINED_DAY_SUPPORT_FLOOR = 0.20
 SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
+SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR = 0.55
+SNAPSHOT_TWO_ANCHOR_SUPPORT_FLOOR = 0.70
+SNAPSHOT_MISSING_SHARE_SIGNAL_FLOOR = 0.50
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
 MAX_REASONABLE_PRE_SHOW_MINUTES = 360
@@ -2541,6 +2544,65 @@ def same_week_snapshot_scale(snapshot_details, regular_daily_details):
     return scale, anchors
 
 
+def snapshot_same_week_support_floor(same_week_anchors):
+    """Same-week actual days make snapshot calibration materially more trusted."""
+    anchors_by_day = {}
+    for anchor in same_week_anchors or []:
+        day = anchor.get("day")
+        if day not in OPENING_WEEKEND_DAYS:
+            continue
+        anchors_by_day[day] = max(
+            anchors_by_day.get(day, 0.0),
+            _coverage_value(anchor.get("weight"), default=0.0),
+        )
+    anchor_days = set(anchors_by_day)
+    anchor_weight = sum(anchors_by_day.values())
+    if len(anchor_days) >= 2:
+        confidence = _clamp(anchor_weight / 0.45, 0.0, 1.0)
+        return SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR + (
+            (SNAPSHOT_TWO_ANCHOR_SUPPORT_FLOOR - SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR)
+            * confidence
+        )
+    if len(anchor_days) == 1:
+        confidence = _clamp(anchor_weight / 0.25, 0.0, 1.0)
+        return SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR * confidence
+    return 0.0
+
+
+def snapshot_layer_model_weight(snapshot_coverage, snapshot_missing_share,
+                                snapshot_support_factor, same_week_anchors):
+    """Blend weight for snapshot future-day demand.
+
+    Snapshot runs intentionally sample a smaller high-signal theatre set, so
+    linear theatre coverage understates their value. Use sqrt coverage and
+    same-week actual anchors to make calibrated future-day snapshots matter.
+    """
+    coverage = _coverage_value(snapshot_coverage, default=0.0)
+    coverage_signal = sqrt(coverage) if coverage > 0 else 0.0
+    missing_share = _clamp(snapshot_missing_share, 0.0, 1.0)
+    missing_signal = SNAPSHOT_MISSING_SHARE_SIGNAL_FLOOR + (
+        (1.0 - SNAPSHOT_MISSING_SHARE_SIGNAL_FLOOR) * missing_share
+    )
+    same_week_floor = snapshot_same_week_support_floor(same_week_anchors)
+    support_signal = max(
+        _clamp(snapshot_support_factor, 0.0, 1.0),
+        same_week_floor,
+    )
+    weight = (
+        SNAPSHOT_LAYER_MAX_WEIGHT
+        * coverage_signal
+        * missing_signal
+        * support_signal
+    )
+    return {
+        "weight": _clamp(weight, 0.0, SNAPSHOT_LAYER_MAX_WEIGHT),
+        "coverage_signal": coverage_signal,
+        "missing_share_signal": missing_signal,
+        "support_signal": support_signal,
+        "same_week_support_floor": same_week_floor,
+    }
+
+
 def apply_same_week_snapshot_scale(details, scale):
     if not details or abs(scale - 1.0) < 1e-9:
         return details
@@ -2744,10 +2806,13 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         )
     else:
         snapshot_support_factor = 1.0
-    model_weight = SNAPSHOT_LAYER_MAX_WEIGHT
-    model_weight *= _coverage_value(snapshot_coverage)
-    model_weight *= _clamp(snapshot_missing_share, 0.0, 1.0)
-    model_weight *= _clamp(snapshot_support_factor, 0.0, 1.0)
+    weight_info = snapshot_layer_model_weight(
+        snapshot_coverage,
+        snapshot_missing_share,
+        snapshot_support_factor,
+        same_week_anchors,
+    )
+    model_weight = weight_info["weight"]
 
     return {
         "snapshot_daily_details": snapshot_details,
@@ -2757,6 +2822,10 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_low_m": (mid * low_factor) / 1_000_000,
         "snapshot_high_m": (mid * high_factor) / 1_000_000,
         "snapshot_model_weight": round(_clamp(model_weight, 0.0, SNAPSHOT_LAYER_MAX_WEIGHT), 4),
+        "snapshot_weight_coverage_signal": round(weight_info["coverage_signal"], 4),
+        "snapshot_weight_missing_share_signal": round(weight_info["missing_share_signal"], 4),
+        "snapshot_weight_support_signal": round(weight_info["support_signal"], 4),
+        "snapshot_same_week_support_floor": round(weight_info["same_week_support_floor"], 4),
         "snapshot_calibration_support_factor": round(snapshot_support_factor, 4),
         "snapshot_coverage_ratio": round(snapshot_coverage, 3) if snapshot_coverage is not None else None,
         "snapshot_days": sorted(snapshot_details),
