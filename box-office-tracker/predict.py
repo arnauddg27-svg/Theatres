@@ -2659,7 +2659,8 @@ def snapshot_pickup_scale_for_day(day_name, anchors, fallback_scale=1.0):
 def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           expected_timezone_counts=None,
                           theatre_timezone_map=None,
-                          national_theatre_count=None):
+                          national_theatre_count=None,
+                          share_override=None):
     """Estimate one future day from pre-reservation snapshots only."""
     day_name = _snapshot_day_name(date_str, rows)
     latest_rows = _latest_snapshot_showtime_rows(latest_snapshot_window_rows(rows))
@@ -2727,7 +2728,11 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
             strategic_coverage_ratio * tz_profile["coverage_factor"]
         )
 
-    domestic_mid, domestic_low, domestic_high = amc_to_domestic(amc_total, cal)
+    domestic_mid, domestic_low, domestic_high = amc_to_domestic(
+        amc_total,
+        cal,
+        share_override=share_override,
+    )
     pre_footprint_mid = domestic_mid
     pre_footprint_low = domestic_low
     pre_footprint_high = domestic_high
@@ -2768,6 +2773,12 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "domestic_low": domestic_low * snapshot_scale,
         "domestic_high": domestic_high * snapshot_scale,
         "national_footprint_factor": footprint_factor,
+        "amc_market_share_used": (
+            share_override if share_override else calibrated_amc_market_share(cal)
+        ),
+        "amc_market_share_source": (
+            "same_week_actual_anchor" if share_override else "calibration"
+        ),
         "snapshot_scale": snapshot_scale,
         "snapshot_day_scale": snapshot_day_scale,
         "snapshot_lead_scale": snapshot_lead_scale,
@@ -2978,13 +2989,18 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 expected_amc_theatres, expected_timezone_counts=None,
                                 theatre_timezone_map=None,
                                 national_theatre_count=None,
-                                regular_seat_data=None):
+                                regular_seat_data=None,
+                                amc_share_anchor=None):
     """Use snapshots only for opening-weekend days without seat-count actuals."""
     if not snapshot_data:
         return None
 
     all_snapshot_details = {}
     ignored_days = []
+    share_override = (
+        amc_share_anchor.get("blended_share")
+        if isinstance(amc_share_anchor, dict) else None
+    )
     for date_str, rows in sorted(snapshot_data.items()):
         if not rows:
             continue
@@ -2999,6 +3015,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             expected_timezone_counts=expected_timezone_counts,
             theatre_timezone_map=theatre_timezone_map,
             national_theatre_count=national_theatre_count,
+            share_override=share_override,
         )
         if details:
             all_snapshot_details[day_name] = details
@@ -3091,6 +3108,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             },
             "snapshot_same_week_scale_source": same_week_scale_source,
             "snapshot_pickup_profile": pickup_profile or {},
+            "snapshot_amc_market_share_anchor": amc_share_anchor or {},
         }
 
     day_weights = get_day_weights(cal)
@@ -3213,6 +3231,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         },
         "snapshot_same_week_scale_source": same_week_scale_source,
         "snapshot_pickup_profile": pickup_profile or {},
+        "snapshot_amc_market_share_anchor": amc_share_anchor or {},
     }
 
 
@@ -3958,6 +3977,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             for date_str in opening_dates
             if date_str in seat_data
         },
+        amc_share_anchor=dynamic_amc_share_anchor,
     )
     data_profile = missing_data_profile(
         daily_details,
@@ -4095,6 +4115,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         ),
         "snapshot_pickup_profile": (
             snapshot_layer.get("snapshot_pickup_profile", {})
+            if snapshot_layer else {}
+        ),
+        "snapshot_amc_market_share_anchor": (
+            snapshot_layer.get("snapshot_amc_market_share_anchor", {})
             if snapshot_layer else {}
         ),
         "n_days": n_days,
@@ -4957,6 +4981,10 @@ def print_prediction(pred, verbose=False):
             ]
             if scale_bits:
                 print(f"    Day-aware pickup scales: {', '.join(scale_bits)}")
+        share_anchor = pred.get("snapshot_amc_market_share_anchor") or {}
+        if share_anchor.get("blended_share"):
+            print(f"    Same-week AMC share: {share_anchor['blended_share']:.1%} "
+                  f"from {share_anchor.get('day', 'reported actual')}")
         pickup = pred.get("snapshot_pickup_profile") or {}
         if pickup.get("n_matched_showtimes"):
             print(

@@ -1292,6 +1292,40 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, layer["snapshot_weight_coverage_signal"], places=6)
         self.assertGreater(layer["snapshot_model_weight"], 0.30)
 
+    def test_snapshot_layer_uses_same_week_actual_amc_share_anchor(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Saturday": 1.0},
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+            },
+        }
+        rows = [self._snapshot_row("AMC One", "Saturday", "2026-05-16")]
+
+        prior_layer = predict.build_snapshot_future_layer(
+            {"2026-05-16": rows},
+            {},
+            cal,
+            expected_amc_theatres=1,
+        )
+        anchored_layer = predict.build_snapshot_future_layer(
+            {"2026-05-16": rows},
+            {},
+            cal,
+            expected_amc_theatres=1,
+            amc_share_anchor={"day": "Friday", "blended_share": 0.20},
+        )
+
+        prior_mid = prior_layer["snapshot_daily_details"]["Saturday"]["raw_domestic_mid"]
+        anchored_details = anchored_layer["snapshot_daily_details"]["Saturday"]
+        self.assertAlmostEqual(0.20, anchored_details["amc_market_share_used"])
+        self.assertEqual(
+            "same_week_actual_anchor",
+            anchored_details["amc_market_share_source"],
+        )
+        self.assertGreater(anchored_details["raw_domestic_mid"], prior_mid * 1.20)
+
     def test_snapshot_calibration_support_tracks_day_and_lead_history(self):
         history = [
             {
