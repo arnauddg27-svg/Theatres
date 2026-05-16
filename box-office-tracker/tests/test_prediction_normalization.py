@@ -1153,6 +1153,44 @@ class PredictionNormalizationTest(unittest.TestCase):
             places=6,
         )
 
+    def test_snapshot_pickup_scale_for_weekend_days_prefers_friday_anchor(self):
+        anchors = [
+            {"day": "Thursday", "scale": 0.80, "weight": 1.0},
+            {"day": "Friday", "scale": 1.20, "weight": 1.0},
+        ]
+
+        saturday_scale = predict.snapshot_pickup_scale_for_day(
+            "Saturday",
+            anchors,
+            fallback_scale=1.0,
+        )
+        sunday_scale = predict.snapshot_pickup_scale_for_day(
+            "Sunday",
+            anchors,
+            fallback_scale=1.0,
+        )
+
+        self.assertGreater(saturday_scale, 1.08)
+        self.assertGreater(sunday_scale, 1.05)
+        self.assertLess(saturday_scale, 1.20)
+
+    def test_snapshot_day_shape_signal_uses_strategic_sample_confidence(self):
+        details = {
+            "domestic_mid": 12_000_000,
+            "domestic_low": 10_000_000,
+            "domestic_high": 14_000_000,
+            "effective_coverage_ratio": 0.25,
+            "snapshot_calibration_support_factor": 0.70,
+        }
+
+        adjusted = predict.apply_snapshot_day_shape_prior(
+            details,
+            8_000_000,
+        )
+
+        self.assertGreater(adjusted["snapshot_day_shape_signal_weight"], 0.20)
+        self.assertLess(adjusted["snapshot_day_shape_prior_weight"], 0.80)
+
     def test_snapshot_calibration_support_tracks_day_and_lead_history(self):
         history = [
             {

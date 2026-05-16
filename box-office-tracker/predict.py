@@ -98,7 +98,7 @@ SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
-SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.50
+SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.65
 SNAPSHOT_SUPPORT_PRIOR_WEIGHT = 2.0
 SNAPSHOT_UNTRAINED_DAY_SUPPORT_FLOOR = 0.20
 SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
@@ -2559,6 +2559,60 @@ def snapshot_pickup_profile(snapshot_rows, seat_rows, cal):
     }
 
 
+def snapshot_day_similarity(anchor_day, target_day):
+    """How transferable one same-week pickup anchor is to another day."""
+    anchor = anchor_day if anchor_day in OPENING_WEEKEND_DAYS else None
+    target = target_day if target_day in OPENING_WEEKEND_DAYS else None
+    if not anchor or not target:
+        return 0.0
+    if anchor == target:
+        return 1.0
+    if anchor == "Thursday":
+        return {
+            "Friday": 0.45,
+            "Saturday": 0.08,
+            "Sunday": 0.05,
+        }.get(target, 0.0)
+    if target == "Thursday":
+        return {
+            "Friday": 0.35,
+            "Saturday": 0.20,
+            "Sunday": 0.15,
+        }.get(anchor, 0.0)
+    pair = frozenset((anchor, target))
+    if pair == frozenset(("Friday", "Saturday")):
+        return 0.90
+    if pair == frozenset(("Saturday", "Sunday")):
+        return 0.85
+    if pair == frozenset(("Friday", "Sunday")):
+        return 0.75
+    return 0.35
+
+
+def snapshot_pickup_scale_for_day(day_name, anchors, fallback_scale=1.0):
+    """Day-aware pickup scale for future snapshot rows."""
+    weighted = []
+    for anchor in anchors or []:
+        scale = _positive_float(anchor.get("scale"))
+        if not scale:
+            continue
+        similarity = snapshot_day_similarity(anchor.get("day"), day_name)
+        if similarity <= 0:
+            continue
+        weight = (_positive_float(anchor.get("weight")) or 1.0) * similarity
+        if weight > 0:
+            weighted.append((scale, weight))
+    if not weighted:
+        return _clamp(
+            _positive_float(fallback_scale) or 1.0,
+            SNAPSHOT_SAME_WEEK_SCALE_MIN,
+            SNAPSHOT_SAME_WEEK_SCALE_MAX,
+        )
+    total = sum(weight for _, weight in weighted)
+    scale = sum(scale * weight for scale, weight in weighted) / total
+    return _clamp(scale, SNAPSHOT_SAME_WEEK_SCALE_MIN, SNAPSHOT_SAME_WEEK_SCALE_MAX)
+
+
 def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           expected_timezone_counts=None,
                           theatre_timezone_map=None,
@@ -2814,7 +2868,8 @@ def regular_day_shape_priors(regular_daily_details, cal):
     }
 
 
-def apply_snapshot_day_shape_prior(details, day_shape_prior):
+def apply_snapshot_day_shape_prior(details, day_shape_prior,
+                                   support_factor=None):
     """Anchor partial pre-reservation reads to the seat-derived day shape."""
     prior_mid = _positive_float(day_shape_prior)
     if not details or not prior_mid:
@@ -2824,8 +2879,14 @@ def apply_snapshot_day_shape_prior(details, day_shape_prior):
         details.get("effective_coverage_ratio", details.get("coverage_ratio")),
         default=0.0,
     )
+    support = _coverage_value(
+        support_factor
+        if support_factor is not None
+        else details.get("snapshot_calibration_support_factor"),
+        default=0.50,
+    )
     signal_weight = _clamp(
-        coverage * SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT,
+        sqrt(coverage) * SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT * support,
         0.0,
         SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT,
     )
@@ -2902,31 +2963,53 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         same_week_scale = pickup_profile["projected_revenue_scale"]
         same_week_anchors = pickup_profile.get("anchors", [])
         same_week_scale_source = "matched_showtime_pickup"
+        same_week_day_scales = {
+            day: snapshot_pickup_scale_for_day(
+                day,
+                same_week_anchors,
+                fallback_scale=same_week_scale,
+            )
+            for day in all_snapshot_details
+        }
     else:
         same_week_scale = aggregate_same_week_scale
         same_week_anchors = aggregate_same_week_anchors
         same_week_scale_source = "aggregate_day_estimate"
+        same_week_day_scales = {
+            day: same_week_scale
+            for day in all_snapshot_details
+        }
 
     snapshot_details = {}
     day_shape_priors = regular_day_shape_priors(regular_daily_details, cal)
+    same_week_support_floor = snapshot_same_week_support_floor(same_week_anchors)
     for day_name, details in all_snapshot_details.items():
         if day_name in regular_daily_details:
             ignored_days.append(day_name)
             continue
+        day_same_week_scale = same_week_day_scales.get(day_name, same_week_scale)
         scaled_details = apply_same_week_snapshot_scale(
             details,
-            same_week_scale,
-        )
-        adjusted_details = apply_snapshot_day_shape_prior(
-            scaled_details,
-            day_shape_priors.get(day_name),
+            day_same_week_scale,
         )
         support_info = snapshot_calibration_support_factor(
             cal,
             day_name,
-            adjusted_details.get("lead_bucket"),
+            scaled_details.get("lead_bucket"),
+        )
+        shape_support = max(
+            support_info["factor"],
+            same_week_support_floor,
+        )
+        scaled_details = dict(scaled_details)
+        scaled_details["same_week_snapshot_day_scale"] = round(day_same_week_scale, 4)
+        adjusted_details = apply_snapshot_day_shape_prior(
+            scaled_details,
+            day_shape_priors.get(day_name),
+            support_factor=shape_support,
         )
         adjusted_details = dict(adjusted_details)
+        adjusted_details["snapshot_day_shape_support_factor"] = round(shape_support, 4)
         adjusted_details["snapshot_calibration_support_factor"] = support_info["factor"]
         adjusted_details["snapshot_day_calibration_support"] = support_info["day_support"]
         adjusted_details["snapshot_day_calibration_n"] = support_info["day_n"]
@@ -2941,11 +3024,31 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             "snapshot_ignored_days": sorted(set(ignored_days)),
             "snapshot_same_week_scale": round(same_week_scale, 4),
             "snapshot_same_week_anchors": same_week_anchors,
+            "snapshot_same_week_day_scales": {
+                day: round(scale, 4)
+                for day, scale in same_week_day_scales.items()
+            },
             "snapshot_same_week_scale_source": same_week_scale_source,
             "snapshot_pickup_profile": pickup_profile or {},
         }
 
     day_weights = get_day_weights(cal)
+    scale_weight_values = [
+        (
+            details.get("same_week_snapshot_day_scale", same_week_scale),
+            _positive_float(day_weights.get(day)) or 0.0,
+        )
+        for day, details in snapshot_details.items()
+    ]
+    positive_scale_weights = [
+        (scale, weight) for scale, weight in scale_weight_values
+        if weight > 0 and scale
+    ]
+    if positive_scale_weights:
+        same_week_scale = (
+            sum(scale * weight for scale, weight in positive_scale_weights)
+            / sum(weight for _, weight in positive_scale_weights)
+        )
     combined_days = {}
     coverage = {}
     for day, details in regular_daily_details.items():
@@ -3032,6 +3135,10 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_days": sorted(snapshot_details),
         "snapshot_same_week_scale": round(same_week_scale, 4),
         "snapshot_same_week_anchors": same_week_anchors,
+        "snapshot_same_week_day_scales": {
+            day: round(scale, 4)
+            for day, scale in same_week_day_scales.items()
+        },
         "snapshot_same_week_scale_source": same_week_scale_source,
         "snapshot_pickup_profile": pickup_profile or {},
     }
@@ -3885,6 +3992,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             snapshot_layer.get("snapshot_same_week_anchors", [])
             if snapshot_layer else []
         ),
+        "snapshot_same_week_day_scales": (
+            snapshot_layer.get("snapshot_same_week_day_scales", {})
+            if snapshot_layer else {}
+        ),
         "snapshot_same_week_scale_source": (
             snapshot_layer.get("snapshot_same_week_scale_source")
             if snapshot_layer else None
@@ -4733,6 +4844,14 @@ def print_prediction(pred, verbose=False):
             )
             print(f"    Same-week calibration: x{snapshot_scale:.2f}"
                   f"{source_note}{f' from {anchors}' if anchors else ''}")
+            day_scales = pred.get("snapshot_same_week_day_scales") or {}
+            scale_bits = [
+                f"{day[:3]} x{day_scales[day]:.2f}"
+                for day in (pred.get("snapshot_days") or [])
+                if day in day_scales and abs(day_scales[day] - snapshot_scale) >= 0.01
+            ]
+            if scale_bits:
+                print(f"    Day-aware pickup scales: {', '.join(scale_bits)}")
         pickup = pred.get("snapshot_pickup_profile") or {}
         if pickup.get("n_matched_showtimes"):
             print(
