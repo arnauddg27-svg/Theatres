@@ -1061,6 +1061,98 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertGreater(scales["same_day"], 1.0)
 
+    def test_snapshot_pickup_profile_matches_final_seat_rows(self):
+        snapshot_row = self._snapshot_row(
+            "AMC One",
+            "Friday",
+            "2026-05-08",
+            snapshot_time="2026-05-08T20:00:00+00:00",
+        )
+        snapshot_row["reserved_seats"] = "20"
+        snapshot_row["minutes_until_showtime"] = "180"
+        snapshot_row["amc_seat_map_url"] = "https://www.amctheatres.com/showtimes/123/seats"
+        seat_row = self._row("AMC One", date="2026-05-08", day="Friday")
+        seat_row["seats_sold"] = "54"
+        seat_row["amc_seat_map_url"] = "https://www.amctheatres.com/showtimes/123/seats"
+
+        profile = predict.snapshot_pickup_profile([snapshot_row], [seat_row], {})
+
+        self.assertEqual(1, profile["n_matched_showtimes"])
+        self.assertEqual(20, profile["reserved_seats_at_snapshot"])
+        self.assertEqual(54, profile["final_sold_seats"])
+        self.assertEqual(34, profile["post_snapshot_pickup_seats"])
+        self.assertAlmostEqual(2.0, profile["projected_revenue_scale"], places=6)
+        self.assertAlmostEqual(0.6296, profile["post_snapshot_pickup_share"], places=4)
+
+    def test_snapshot_future_layer_uses_matched_pickup_scale(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 0.5, "Saturday": 0.5},
+                "day_scale_factors": {"Friday": 1.0, "Saturday": 1.0},
+                "snapshot_to_day_scale_factors": {"Friday": 1.0, "Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+                "reference_amc_theatres": 1,
+                "reference_amc_theatres_by_cohort": {"core,expansion": 1},
+            },
+        }
+        friday_snapshot = self._snapshot_row(
+            "AMC One",
+            "Friday",
+            "2026-05-08",
+            snapshot_time="2026-05-08T20:00:00+00:00",
+        )
+        friday_snapshot["reserved_seats"] = "20"
+        friday_snapshot["minutes_until_showtime"] = "180"
+        friday_snapshot["amc_seat_map_url"] = "https://www.amctheatres.com/showtimes/123/seats"
+        saturday_snapshot = self._snapshot_row(
+            "AMC One",
+            "Saturday",
+            "2026-05-09",
+            snapshot_time="2026-05-09T20:00:00+00:00",
+        )
+        saturday_snapshot["reserved_seats"] = "20"
+        saturday_snapshot["minutes_until_showtime"] = "180"
+        saturday_snapshot["amc_seat_map_url"] = "https://www.amctheatres.com/showtimes/456/seats"
+        friday_seat = self._row("AMC One", date="2026-05-08", day="Friday")
+        friday_seat["seats_sold"] = "54"
+        friday_seat["amc_seat_map_url"] = "https://www.amctheatres.com/showtimes/123/seats"
+
+        raw_saturday = predict.estimate_snapshot_day(
+            [saturday_snapshot],
+            "2026-05-09",
+            cal,
+            expected_amc_theatres=1,
+        )
+        layer = predict.build_snapshot_future_layer(
+            {
+                "2026-05-08": [friday_snapshot],
+                "2026-05-09": [saturday_snapshot],
+            },
+            {
+                "Friday": {
+                    "date": "2026-05-08",
+                    "domestic_mid": 540,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                }
+            },
+            cal,
+            expected_amc_theatres=1,
+            regular_seat_data={"2026-05-08": [friday_seat]},
+        )
+
+        self.assertAlmostEqual(2.0, layer["snapshot_same_week_scale"], places=6)
+        self.assertEqual("matched_showtime_pickup", layer["snapshot_same_week_scale_source"])
+        self.assertEqual(1, layer["snapshot_pickup_profile"]["n_matched_showtimes"])
+        self.assertAlmostEqual(
+            raw_saturday["domestic_mid"] * 2.0,
+            layer["snapshot_daily_details"]["Saturday"]["pre_day_shape_domestic_mid"],
+            places=6,
+        )
+
     def test_snapshot_calibration_support_tracks_day_and_lead_history(self):
         history = [
             {

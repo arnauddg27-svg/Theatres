@@ -2382,6 +2382,183 @@ def _latest_snapshot_showtime_rows(rows):
     return [row for _, row in latest.values()]
 
 
+def _showtime_id_from_url(value):
+    match = re.search(r"/showtimes/([^/?#]+)/seats", value or "")
+    return match.group(1) if match else ""
+
+
+def _showtime_match_key(row):
+    """Stable identity for joining snapshot rows to later seat-count rows."""
+    movie_key = _movie_lookup_key(row.get("movie_title", ""))
+    date_str = row.get("show_date") or row.get("date") or ""
+    showtime_id = _showtime_id_from_url(row.get("amc_seat_map_url", "")) or row.get("showtime_id")
+    if showtime_id:
+        return ("id", movie_key, date_str, str(showtime_id))
+
+    theatre = re.sub(r"\s+", " ", (row.get("theatre_name") or "").strip().lower())
+    showtime = re.sub(r"\s+", "", (row.get("showtime") or "").strip().lower())
+    fmt = re.sub(
+        r"\s+",
+        " ",
+        (
+            row.get("auditorium_type")
+            or row.get("auditorium_name")
+            or row.get("format")
+            or ""
+        ).strip().lower(),
+    )
+    total_seats = str(_parse_numeric(row.get("total_seats", ""), default=0))
+    return ("fallback", movie_key, date_str, theatre, showtime, fmt, total_seats)
+
+
+def _latest_seat_showtime_rows(rows):
+    latest = {}
+    for row in rows or []:
+        key = _showtime_match_key(row)
+        sort_key = (
+            row.get("run_id", ""),
+            row.get("check_time", ""),
+            row.get("minutes_after_showtime", ""),
+        )
+        prev = latest.get(key)
+        if not prev or sort_key > prev[0]:
+            latest[key] = (sort_key, row)
+    return {key: row for key, (_, row) in latest.items()}
+
+
+def snapshot_pickup_profile(snapshot_rows, seat_rows, cal):
+    """Compare pre-reservation snapshots to later seat-count rows.
+
+    The delta between reserved seats at snapshot time and final/projected
+    seats sold is the combined late-reservation + walk-in pickup signal. We
+    use it as a same-week calibration layer before comparing the resulting
+    daily estimates to reported box-office actuals.
+    """
+    # Unlike forward-looking prediction, pickup calibration intentionally uses
+    # earlier same-week snapshot slices that now have final seat-count rows.
+    latest_snapshots = _latest_snapshot_showtime_rows(snapshot_rows or [])
+    latest_seats = _latest_seat_showtime_rows(seat_rows or [])
+    if not latest_snapshots or not latest_seats:
+        return None
+
+    matched = []
+    per_day = {}
+    snapshot_candidate_counts = {}
+    for snapshot in latest_snapshots:
+        day = snapshot.get("day_of_week") or _snapshot_day_name(
+            snapshot.get("show_date", ""), [snapshot]
+        )
+        if day:
+            snapshot_candidate_counts[day] = snapshot_candidate_counts.get(day, 0) + 1
+        seat = latest_seats.get(_showtime_match_key(snapshot))
+        if not seat:
+            continue
+        snapshot_result = estimate_snapshot_showtime_revenue(snapshot)
+        seat_result = estimate_theatre_daily_revenue(seat, cal)
+        if not snapshot_result or not seat_result:
+            continue
+        snapshot_revenue = _positive_float(snapshot_result.get("revenue"))
+        final_revenue = _positive_float(seat_result.get("revenue"))
+        if not snapshot_revenue or not final_revenue:
+            continue
+
+        reserved = _parse_numeric(snapshot.get("reserved_seats", 0), default=0)
+        total = _parse_numeric(snapshot.get("total_seats", 0), default=0)
+        final_sold_raw = _parse_numeric(seat.get("seats_sold", 0), default=0)
+        final_projected_sold = seat_result["projected_occ"] * seat_result["total_seats"]
+        projected_reserved = snapshot_result["projected_occ"] * snapshot_result["total_seats"]
+        day = day or seat.get("day_of_week", "")
+        item = {
+            "day": day,
+            "snapshot_revenue": snapshot_revenue,
+            "final_revenue": final_revenue,
+            "reserved": reserved,
+            "total_seats": total,
+            "projected_reserved": projected_reserved,
+            "final_sold_raw": final_sold_raw,
+            "final_projected_sold": final_projected_sold,
+            "post_snapshot_pickup": max(0.0, final_projected_sold - reserved),
+        }
+        matched.append(item)
+        bucket = per_day.setdefault(day, {
+            "snapshot_revenue": 0.0,
+            "final_revenue": 0.0,
+            "projected_reserved": 0.0,
+            "final_projected_sold": 0.0,
+            "matched": 0,
+        })
+        bucket["snapshot_revenue"] += snapshot_revenue
+        bucket["final_revenue"] += final_revenue
+        bucket["projected_reserved"] += projected_reserved
+        bucket["final_projected_sold"] += final_projected_sold
+        bucket["matched"] += 1
+
+    if not matched:
+        return None
+
+    snapshot_revenue = sum(item["snapshot_revenue"] for item in matched)
+    final_revenue = sum(item["final_revenue"] for item in matched)
+    reserved_total = sum(item["reserved"] for item in matched)
+    final_sold_raw_total = sum(item["final_sold_raw"] for item in matched)
+    projected_reserved_total = sum(item["projected_reserved"] for item in matched)
+    final_projected_total = sum(item["final_projected_sold"] for item in matched)
+    pickup_total = max(0.0, final_projected_total - reserved_total)
+    raw_seat_scale = (
+        final_projected_total / projected_reserved_total
+        if projected_reserved_total > 0 else 1.0
+    )
+    raw_revenue_scale = final_revenue / snapshot_revenue if snapshot_revenue > 0 else 1.0
+    anchors = []
+    for day, bucket in sorted(per_day.items()):
+        day_snapshot_revenue = bucket["snapshot_revenue"]
+        if day_snapshot_revenue <= 0:
+            continue
+        candidates = max(1, snapshot_candidate_counts.get(day, bucket["matched"]))
+        weight = _clamp(bucket["matched"] / candidates, 0.0, 1.0)
+        # The pickup layer estimates seat growth after the snapshot. Ticket
+        # price and national box-office conversion are calibrated separately.
+        day_raw_scale = (
+            bucket["final_projected_sold"] / bucket["projected_reserved"]
+            if bucket["projected_reserved"] > 0 else raw_seat_scale
+        )
+        anchors.append({
+            "day": day,
+            "scale": _clamp(
+                day_raw_scale,
+                SNAPSHOT_SAME_WEEK_SCALE_MIN,
+                SNAPSHOT_SAME_WEEK_SCALE_MAX,
+            ),
+            "raw_scale": day_raw_scale,
+            "weight": weight,
+            "matched_showtimes": bucket["matched"],
+        })
+
+    return {
+        "n_matched_showtimes": len(matched),
+        "reserved_seats_at_snapshot": int(round(reserved_total)),
+        "projected_reserved_seats": round(projected_reserved_total, 2),
+        "final_sold_seats": int(round(final_sold_raw_total)),
+        "final_projected_sold_seats": round(final_projected_total, 2),
+        "post_snapshot_pickup_seats": int(round(pickup_total)),
+        "post_snapshot_pickup_share": (
+            pickup_total / final_projected_total if final_projected_total > 0 else 0.0
+        ),
+        "raw_projected_revenue_scale": raw_seat_scale,
+        "raw_revenue_scale": raw_revenue_scale,
+        "projected_revenue_scale": _clamp(
+            raw_seat_scale,
+            SNAPSHOT_SAME_WEEK_SCALE_MIN,
+            SNAPSHOT_SAME_WEEK_SCALE_MAX,
+        ),
+        "reservation_pickup_multiplier": (
+            final_projected_total / reserved_total if reserved_total > 0 else None
+        ),
+        "snapshot_projected_revenue": snapshot_revenue,
+        "final_seat_revenue": final_revenue,
+        "anchors": anchors,
+    }
+
+
 def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           expected_timezone_counts=None,
                           theatre_timezone_map=None,
@@ -2678,7 +2855,8 @@ def apply_snapshot_day_shape_prior(details, day_shape_prior):
 def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 expected_amc_theatres, expected_timezone_counts=None,
                                 theatre_timezone_map=None,
-                                national_theatre_count=None):
+                                national_theatre_count=None,
+                                regular_seat_data=None):
     """Use snapshots only for opening-weekend days without seat-count actuals."""
     if not snapshot_data:
         return None
@@ -2703,10 +2881,31 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         if details:
             all_snapshot_details[day_name] = details
 
-    same_week_scale, same_week_anchors = same_week_snapshot_scale(
+    aggregate_same_week_scale, aggregate_same_week_anchors = same_week_snapshot_scale(
         all_snapshot_details,
         regular_daily_details,
     )
+    pickup_profile = snapshot_pickup_profile(
+        [
+            row
+            for rows in snapshot_data.values()
+            for row in rows
+        ],
+        [
+            row
+            for rows in (regular_seat_data or {}).values()
+            for row in rows
+        ],
+        cal,
+    )
+    if pickup_profile and pickup_profile.get("n_matched_showtimes", 0) > 0:
+        same_week_scale = pickup_profile["projected_revenue_scale"]
+        same_week_anchors = pickup_profile.get("anchors", [])
+        same_week_scale_source = "matched_showtime_pickup"
+    else:
+        same_week_scale = aggregate_same_week_scale
+        same_week_anchors = aggregate_same_week_anchors
+        same_week_scale_source = "aggregate_day_estimate"
 
     snapshot_details = {}
     day_shape_priors = regular_day_shape_priors(regular_daily_details, cal)
@@ -2742,6 +2941,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             "snapshot_ignored_days": sorted(set(ignored_days)),
             "snapshot_same_week_scale": round(same_week_scale, 4),
             "snapshot_same_week_anchors": same_week_anchors,
+            "snapshot_same_week_scale_source": same_week_scale_source,
+            "snapshot_pickup_profile": pickup_profile or {},
         }
 
     day_weights = get_day_weights(cal)
@@ -2831,6 +3032,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_days": sorted(snapshot_details),
         "snapshot_same_week_scale": round(same_week_scale, 4),
         "snapshot_same_week_anchors": same_week_anchors,
+        "snapshot_same_week_scale_source": same_week_scale_source,
+        "snapshot_pickup_profile": pickup_profile or {},
     }
 
 
@@ -3571,6 +3774,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         expected_timezone_counts=expected_timezone_counts,
         theatre_timezone_map=theatre_timezone_map,
         national_theatre_count=national_theatre_count,
+        regular_seat_data={
+            date_str: seat_data[date_str]
+            for date_str in opening_dates
+            if date_str in seat_data
+        },
     )
     data_profile = missing_data_profile(
         daily_details,
@@ -3676,6 +3884,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "snapshot_same_week_anchors": (
             snapshot_layer.get("snapshot_same_week_anchors", [])
             if snapshot_layer else []
+        ),
+        "snapshot_same_week_scale_source": (
+            snapshot_layer.get("snapshot_same_week_scale_source")
+            if snapshot_layer else None
+        ),
+        "snapshot_pickup_profile": (
+            snapshot_layer.get("snapshot_pickup_profile", {})
+            if snapshot_layer else {}
         ),
         "n_days": n_days,
         "n_theatres_total": n_theatres_total,
@@ -4510,8 +4726,21 @@ def print_prediction(pred, verbose=False):
                 anchor.get("day", "?")
                 for anchor in pred.get("snapshot_same_week_anchors", [])
             )
+            source = pred.get("snapshot_same_week_scale_source")
+            source_note = (
+                " matched pickup"
+                if source == "matched_showtime_pickup" else " aggregate"
+            )
             print(f"    Same-week calibration: x{snapshot_scale:.2f}"
-                  f"{f' from {anchors}' if anchors else ''}")
+                  f"{source_note}{f' from {anchors}' if anchors else ''}")
+        pickup = pred.get("snapshot_pickup_profile") or {}
+        if pickup.get("n_matched_showtimes"):
+            print(
+                f"    Pickup/walk-in anchor: {pickup['n_matched_showtimes']} showtimes, "
+                f"{pickup.get('reserved_seats_at_snapshot', 0)} reserved → "
+                f"{pickup.get('final_sold_seats', 0)} final seats; "
+                f"+{pickup.get('post_snapshot_pickup_seats', 0)} after snapshot"
+            )
         for day, details in sorted(
             pred.get("snapshot_daily_details", {}).items(),
             key=lambda item: item[1].get("date", ""),
