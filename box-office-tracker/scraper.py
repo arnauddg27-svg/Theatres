@@ -1752,7 +1752,11 @@ def merge_showtime_entries(*entry_lists):
             key = _showtime_entry_key(entry)
             if key in by_key:
                 existing = by_key[key]
+                if "source" not in entry and existing.get("source"):
+                    existing.pop("source", None)
                 for field, value in entry.items():
+                    if field == "source" and not existing.get("source"):
+                        continue
                     if value not in (None, ""):
                         existing[field] = value
                 continue
@@ -2280,8 +2284,10 @@ def merge_phase1_entries(old_entry, new_entry):
     if not old_entry:
         return new_entry
     merged = dict(old_entry)
-    merged["tz"] = new_entry.get("tz", merged.get("tz"))
-    merged["cohort"] = new_entry.get("cohort", merged.get("cohort"))
+    if new_entry.get("tz"):
+        merged["tz"] = new_entry["tz"]
+    if new_entry.get("cohort"):
+        merged["cohort"] = new_entry["cohort"]
     merged_dates = dict(old_entry.get("dates") or {})
     old_top_level = _phase1_date_entry_from_top_level(old_entry)
     if old_top_level:
@@ -2314,6 +2320,15 @@ def merge_phase1_entries(old_entry, new_entry):
         merged.get("showtime_window_version", SHOWTIME_WINDOW_VERSION),
     )
     return merged
+
+
+def _cohort_from_snapshot_note(note):
+    note = str(note or "").lower()
+    if "cohort=expansion" in note:
+        return EXPANSION_COHORT
+    if "cohort=core" in note:
+        return CORE_COHORT
+    return ""
 
 
 def load_pre_reservation_showtime_links(weekend_of, movie_titles=None,
@@ -2353,9 +2368,14 @@ def load_pre_reservation_showtime_links(weekend_of, movie_titles=None,
                     or "Standard"
                 )
                 theatre_metadata = theatre_metadata_by_name.get(theatre_name) or {}
+                cohort = (
+                    theatre_metadata.get("cohort")
+                    or _cohort_from_snapshot_note(row.get("notes", ""))
+                    or ""
+                )
                 snapshot_entry = {
                     "tz": str(row.get("timezone", "") or "").strip(),
-                    "cohort": theatre_metadata.get("cohort", CORE_COHORT),
+                    "cohort": cohort,
                     "showtime_window_version": SHOWTIME_WINDOW_VERSION,
                     "dates": {
                         show_date: {

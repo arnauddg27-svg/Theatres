@@ -409,6 +409,63 @@ class ScraperLoggingTest(unittest.TestCase):
         )
         self.assertEqual(1, len(gaps))
 
+    def test_snapshot_preserved_links_use_cohort_note_when_metadata_missing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.PRE_RESERVATION_CSV
+            scraper.PRE_RESERVATION_CSV = Path(tmp) / "pre-reservation-snapshots.csv"
+            try:
+                scraper.ensure_pre_reservation_header()
+                row = {field: "" for field in scraper.PRE_RESERVATION_FIELDS}
+                row.update(
+                    {
+                        "weekend_of": "2026-05-15",
+                        "snapshot_bucket": "2026-05-16T02:00Z",
+                        "show_date": "2026-05-16",
+                        "theatre_name": "AMC Expansion",
+                        "timezone": "ET",
+                        "movie_title": "Obsession",
+                        "showtime": "11:15am",
+                        "showtime_id": "expansion-snapshot",
+                        "auditorium_type": "Standard",
+                        "notes": "Standard @ 11:15am; cohort=expansion",
+                    }
+                )
+                scraper.append_unique_pre_reservation_rows([row])
+
+                snapshot_links = scraper.load_pre_reservation_showtime_links(
+                    "2026-05-15",
+                    movie_titles=["Obsession"],
+                )
+            finally:
+                scraper.PRE_RESERVATION_CSV = old_csv
+
+        self.assertEqual(
+            scraper.EXPANSION_COHORT,
+            snapshot_links["AMC Expansion"]["cohort"],
+        )
+
+    def test_snapshot_duplicate_does_not_overwrite_saved_link_source(self):
+        saved_entries = [
+            {
+                "showtime": "7:00pm",
+                "showtime_id": "same-seat-map",
+                "format": "Laser at AMC",
+            }
+        ]
+        snapshot_entries = [
+            {
+                "showtime": "7:00pm",
+                "showtime_id": "same-seat-map",
+                "format": "Laser at AMC",
+                "source": "snapshot-preserved link",
+            }
+        ]
+
+        merged = scraper.merge_showtime_entries(saved_entries, snapshot_entries)
+
+        self.assertEqual(1, len(merged))
+        self.assertNotIn("source", merged[0])
+
     def test_phase1_cache_requires_current_showtime_window_before_merge(self):
         old_window_cache = {
             "weekend_of": "2026-05-08",
