@@ -136,6 +136,53 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(partial["seat_data_quality"], full["seat_data_quality"])
         self.assertAlmostEqual(1.0, full_sat["effective_coverage_ratio"], places=6)
 
+    def test_late_skew_horror_weekend_schedule_is_not_treated_as_missing_matinees(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Saturday": 1.0},
+                "day_scale_factors": {"Saturday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 2,
+                },
+            },
+        }
+        rows = []
+        for theatre in ("AMC One", "AMC Two"):
+            for showtime in ("4:00 PM", "7:00 PM", "10:00 PM"):
+                row = self._row(theatre, date="2026-05-09", day="Saturday")
+                row["showtime"] = showtime
+                rows.append(row)
+        metadata = {
+            "sample movie": TargetMetadata(
+                movie="Sample Movie",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            )
+        }
+
+        old_loader = predict.load_movie_metadata
+        try:
+            predict.load_movie_metadata = lambda: metadata
+            pred = predict_movie(
+                "Sample Movie",
+                {"2026-05-09": rows},
+                [],
+                cal,
+            )
+        finally:
+            predict.load_movie_metadata = old_loader
+
+        saturday = pred["daily_details"]["Saturday"]
+        self.assertAlmostEqual(0.0, saturday["full_day_window_coverage_ratio"], places=6)
+        self.assertAlmostEqual(1.0, saturday["daypart_coverage_factor"], places=6)
+        self.assertAlmostEqual(1.0, saturday["effective_coverage_ratio"], places=6)
+
     def test_snapshot_supports_partial_weekend_regular_day(self):
         cal = {
             "calibration_factors": {

@@ -160,6 +160,10 @@ WEEKEND_FULL_DAY_START_HOUR = 10.0
 WEEKEND_FULL_DAY_LATEST_EARLY_HOUR = WEEKEND_FULL_DAY_START_HOUR + 4.0
 WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE = 0.60
 WEEKEND_DAYPART_COVERAGE_FLOOR = 0.45
+WEEKEND_LATE_SKEW_DAYPART_COVERAGE_FLOOR = 0.85
+WEEKEND_ADULT_DAYPART_COVERAGE_FLOOR = 0.70
+WEEKEND_LATE_SKEW_MIN_SHOWINGS = 2.5
+WEEKEND_LATE_SKEW_LATEST_START_HOUR = 18.0
 WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
 FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
@@ -226,12 +230,51 @@ def _row_has_full_day_showtime_window(row):
     return FULL_DAY_SHOWTIME_WINDOW_NOTE in str((row or {}).get("notes", ""))
 
 
-def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio):
+def _metadata_text(target_metadata):
+    if target_metadata is None:
+        return ""
+    fields = (
+        getattr(target_metadata, "genre", ""),
+        getattr(target_metadata, "audience_type", ""),
+        getattr(target_metadata, "franchise_type", ""),
+        getattr(target_metadata, "rating", ""),
+        getattr(target_metadata, "notes", ""),
+    )
+    return " ".join(str(value or "").lower() for value in fields)
+
+
+def is_family_title(target_metadata):
+    metadata_text = _metadata_text(target_metadata)
+    rating = (getattr(target_metadata, "rating", "") or "").upper() if target_metadata else ""
+    return "family" in metadata_text or rating in {"G", "PG"}
+
+
+def is_late_skew_title(target_metadata):
+    """Titles where a mid-afternoon/evening-heavy schedule is expected."""
+    metadata_text = _metadata_text(target_metadata)
+    rating = (getattr(target_metadata, "rating", "") or "").upper() if target_metadata else ""
+    late_skew_terms = (
+        "horror",
+        "thriller",
+        "fan",
+        "adult",
+        "r-rated",
+        "r rated",
+    )
+    return rating in {"R", "NC-17"} or any(term in metadata_text for term in late_skew_terms)
+
+
+def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio,
+                                    target_metadata=None,
+                                    earliest_showtime_hour=None,
+                                    avg_showings=None):
     """How complete a Sat/Sun regular scrape is across the 10am-11pm daypart.
 
     Theatre count alone can look healthy even when every collected seat map is
-    late afternoon/evening. For weekend days, discount effective coverage unless
-    enough theatres have an early-day showtime in the regular scrape.
+    late afternoon/evening. For broad/family titles, missing matinees are a real
+    gap. For niche horror/adult-skewing titles, a late-heavy schedule can be the
+    actual full playable day, so avoid penalizing healthy theatre/showtime
+    coverage merely because AMC did not schedule 10am/noon shows.
     """
     if day_name not in {"Saturday", "Sunday"}:
         return 1.0
@@ -243,11 +286,30 @@ def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio):
     threshold = max(WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE, 1e-9)
     if full_day_coverage >= threshold:
         return 1.0
+    try:
+        show_count = float(avg_showings)
+    except (TypeError, ValueError):
+        show_count = 0.0
+    try:
+        earliest_hour = float(earliest_showtime_hour)
+    except (TypeError, ValueError):
+        earliest_hour = None
+    if (
+        is_late_skew_title(target_metadata)
+        and show_count >= WEEKEND_LATE_SKEW_MIN_SHOWINGS
+        and earliest_hour is not None
+        and earliest_hour <= WEEKEND_LATE_SKEW_LATEST_START_HOUR
+    ):
+        return 1.0
+    floor = WEEKEND_DAYPART_COVERAGE_FLOOR
+    if is_late_skew_title(target_metadata):
+        floor = WEEKEND_LATE_SKEW_DAYPART_COVERAGE_FLOOR
+    elif target_metadata is not None and not is_family_title(target_metadata):
+        floor = WEEKEND_ADULT_DAYPART_COVERAGE_FLOOR
     progress = full_day_coverage / threshold
     return _clamp(
-        WEEKEND_DAYPART_COVERAGE_FLOOR
-        + ((1.0 - WEEKEND_DAYPART_COVERAGE_FLOOR) * progress),
-        WEEKEND_DAYPART_COVERAGE_FLOOR,
+        floor + ((1.0 - floor) * progress),
+        floor,
         1.0,
     )
 
@@ -290,10 +352,7 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
     if target_metadata is None:
         return base_multiplier
 
-    audience_type = (getattr(target_metadata, "audience_type", "") or "").lower()
-    rating = (getattr(target_metadata, "rating", "") or "").upper()
-    is_family_title = "family" in audience_type or rating in {"G", "PG"}
-    if not is_family_title:
+    if not is_family_title(target_metadata):
         return base_multiplier
 
     try:
@@ -3925,6 +3984,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         daypart_coverage_factor = weekend_daypart_coverage_factor(
             day_name,
             full_day_window_coverage_ratio,
+            target_metadata=movie_metadata,
+            earliest_showtime_hour=earliest_showtime_hour,
+            avg_showings=avg_showings,
         )
 
         # Per-theatre full-day revenue:
