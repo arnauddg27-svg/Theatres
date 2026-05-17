@@ -363,6 +363,52 @@ class ScraperLoggingTest(unittest.TestCase):
         )
         self.assertEqual("snapshot-preserved link", movies["Obsession"][0]["source"])
 
+    def test_snapshot_preserved_links_keep_theatre_cohort(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.PRE_RESERVATION_CSV
+            scraper.PRE_RESERVATION_CSV = Path(tmp) / "pre-reservation-snapshots.csv"
+            try:
+                scraper.ensure_pre_reservation_header()
+                row = {field: "" for field in scraper.PRE_RESERVATION_FIELDS}
+                row.update(
+                    {
+                        "weekend_of": "2026-05-15",
+                        "snapshot_bucket": "2026-05-16T02:00Z",
+                        "show_date": "2026-05-16",
+                        "theatre_name": "AMC Expansion",
+                        "timezone": "ET",
+                        "movie_title": "Obsession",
+                        "showtime": "11:15am",
+                        "showtime_id": "expansion-snapshot",
+                        "auditorium_type": "Standard",
+                    }
+                )
+                scraper.append_unique_pre_reservation_rows([row])
+
+                snapshot_links = scraper.load_pre_reservation_showtime_links(
+                    "2026-05-15",
+                    movie_titles=["Obsession"],
+                    theatre_metadata_by_name={
+                        "AMC Expansion": {"cohort": scraper.EXPANSION_COHORT}
+                    },
+                )
+            finally:
+                scraper.PRE_RESERVATION_CSV = old_csv
+
+        self.assertEqual(
+            scraper.EXPANSION_COHORT,
+            snapshot_links["AMC Expansion"]["cohort"],
+        )
+        gaps = scraper.active_market_phase1_link_gaps(
+            [{"movie_title": "Obsession"}],
+            snapshot_links,
+            ["ET"],
+            {"ET": ["2026-05-16"]},
+            min_theatres=1,
+            required_cohorts=(scraper.CORE_COHORT,),
+        )
+        self.assertEqual(1, len(gaps))
+
     def test_phase1_cache_requires_current_showtime_window_before_merge(self):
         old_window_cache = {
             "weekend_of": "2026-05-08",

@@ -2316,10 +2316,12 @@ def merge_phase1_entries(old_entry, new_entry):
     return merged
 
 
-def load_pre_reservation_showtime_links(weekend_of, movie_titles=None):
+def load_pre_reservation_showtime_links(weekend_of, movie_titles=None,
+                                        theatre_metadata_by_name=None):
     """Return Phase1-like links preserved by prior snapshot rows."""
     if not PRE_RESERVATION_CSV.exists():
         return {}
+    theatre_metadata_by_name = theatre_metadata_by_name or {}
     requested = {
         str(title or "").strip().lower(): str(title or "").strip()
         for title in (movie_titles or [])
@@ -2350,8 +2352,10 @@ def load_pre_reservation_showtime_links(weekend_of, movie_titles=None):
                     or str(row.get("auditorium_name", "") or "").strip()
                     or "Standard"
                 )
+                theatre_metadata = theatre_metadata_by_name.get(theatre_name) or {}
                 snapshot_entry = {
                     "tz": str(row.get("timezone", "") or "").strip(),
+                    "cohort": theatre_metadata.get("cohort", CORE_COHORT),
                     "showtime_window_version": SHOWTIME_WINDOW_VERSION,
                     "dates": {
                         show_date: {
@@ -3854,9 +3858,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
     if not snapshots_only:
+        theatre_metadata_by_name = {
+            theatre.get("name"): theatre
+            for group_theatres in theatres_map.values()
+            for theatre in group_theatres
+            if theatre.get("name")
+        }
         snapshot_preserved_links = load_pre_reservation_showtime_links(
             weekend,
             movie_titles=_unique_market_titles(poly_markets),
+            theatre_metadata_by_name=theatre_metadata_by_name,
         )
         if snapshot_preserved_links:
             snapshot_link_count = count_phase1_showtime_links(snapshot_preserved_links)
