@@ -165,6 +165,7 @@ WEEKEND_LATE_SKEW_DAYPART_COVERAGE_FLOOR = 0.85
 WEEKEND_ADULT_DAYPART_COVERAGE_FLOOR = 0.70
 WEEKEND_LATE_SKEW_MIN_SHOWINGS = 2.5
 WEEKEND_LATE_SKEW_LATEST_START_HOUR = 18.0
+WEEKEND_SCHEDULE_PROFILE_MIN_THEATRES = 10
 WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
 FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
@@ -835,6 +836,84 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     return data
 
 
+def daypart_profile_from_rows(rows, *, source=None):
+    """Summarize showtime daypart shape from regular or snapshot rows."""
+    theatre_hours = {}
+    for row in rows or []:
+        theatre_name = (row.get("theatre_name") or "").strip()
+        if not theatre_name:
+            continue
+        parsed_hour = _parse_showtime_hour(row.get("showtime", ""))
+        if parsed_hour is None:
+            continue
+        theatre_hours.setdefault(theatre_name, []).append(parsed_hour)
+    return daypart_profile_from_theatre_hours(theatre_hours, source=source)
+
+
+def daypart_profile_from_theatre_hours(theatre_hours, *, source=None):
+    """Summarize showtime daypart shape from theatre → hour lists."""
+    n_theatres = len(theatre_hours)
+    if not n_theatres:
+        return {}
+    all_hours = [hour for hours in theatre_hours.values() for hour in hours]
+    if not all_hours:
+        return {}
+    full_day_theatres = sum(
+        1
+        for hours in theatre_hours.values()
+        if min(hours) <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
+    )
+    profile = {
+        "n_theatres": n_theatres,
+        "avg_showings": len(all_hours) / n_theatres,
+        "earliest_showtime_hour": min(all_hours),
+        "full_day_window_coverage_ratio": full_day_theatres / n_theatres,
+    }
+    if source:
+        profile["source"] = source
+    return profile
+
+
+def combine_daypart_profiles(*profiles):
+    """Combine schedule evidence, preserving early-showtime evidence.
+
+    Phase 1 link caches can be rebuilt after early showtimes roll off. Snapshot
+    rows preserve the schedule seen before the day started, so any reliable
+    profile that proves early showtimes existed should influence daypart
+    coverage.
+    """
+    usable = [
+        profile for profile in profiles
+        if profile and profile.get("n_theatres", 0) >= WEEKEND_SCHEDULE_PROFILE_MIN_THEATRES
+    ]
+    if not usable:
+        usable = [profile for profile in profiles if profile]
+    if not usable:
+        return {}
+    earliest_values = [
+        profile.get("earliest_showtime_hour")
+        for profile in usable
+        if profile.get("earliest_showtime_hour") is not None
+    ]
+    combined = {
+        "n_theatres": max(profile.get("n_theatres", 0) for profile in usable),
+        "avg_showings": max(profile.get("avg_showings", 0) for profile in usable),
+        "full_day_window_coverage_ratio": max(
+            profile.get("full_day_window_coverage_ratio", 0)
+            for profile in usable
+        ),
+        "source": "+".join(
+            sorted({
+                str(profile.get("source") or "unknown")
+                for profile in usable
+            })
+        ),
+    }
+    if earliest_values:
+        combined["earliest_showtime_hour"] = min(earliest_values)
+    return combined
+
+
 def load_showtime_link_daypart_profiles(weekend_of=None):
     """Summarize Phase 1 scheduled showtime shape by movie/date.
 
@@ -891,24 +970,12 @@ def load_showtime_link_daypart_profiles(weekend_of=None):
 
     profiles = {}
     for (movie, date_str), profile in by_movie_date.items():
-        theatre_hours = profile.get("theatres") or {}
-        n_theatres = len(theatre_hours)
-        if not n_theatres:
-            continue
-        all_hours = [hour for hours in theatre_hours.values() for hour in hours]
-        if not all_hours:
-            continue
-        full_day_theatres = sum(
-            1
-            for hours in theatre_hours.values()
-            if min(hours) <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
+        daypart_profile = daypart_profile_from_theatre_hours(
+            profile.get("theatres") or {},
+            source="showtime_links",
         )
-        profiles.setdefault(movie, {})[date_str] = {
-            "n_theatres": n_theatres,
-            "avg_showings": len(all_hours) / n_theatres,
-            "earliest_showtime_hour": min(all_hours),
-            "full_day_window_coverage_ratio": full_day_theatres / n_theatres,
-        }
+        if daypart_profile:
+            profiles.setdefault(movie, {})[date_str] = daypart_profile
     return profiles
 
 
@@ -4026,6 +4093,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             national_theatre_count=int(national_theatre_count),
         )
 
+    snapshot_daypart_profiles = {
+        date_str: daypart_profile_from_rows(rows, source="snapshot")
+        for date_str, rows in (snapshot_data or {}).items()
+    }
+
     dynamic_amc_share_anchors = []
     dynamic_amc_share_anchor = None
     for date_str in opening_dates:
@@ -4108,7 +4180,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             len(showtime_window_tagged_theatre_names) / len(captured_by_theatre)
             if captured_by_theatre else 0.0
         )
-        schedule_profile = (showtime_link_profiles or {}).get(date_str, {})
+        schedule_profile = combine_daypart_profiles(
+            (showtime_link_profiles or {}).get(date_str, {}),
+            snapshot_daypart_profiles.get(date_str, {}),
+        )
         scheduled_full_day_window_coverage_ratio = schedule_profile.get(
             "full_day_window_coverage_ratio"
         )
@@ -4310,6 +4385,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "scheduled_full_day_window_coverage_ratio": (
                 scheduled_full_day_window_coverage_ratio
             ),
+            "scheduled_daypart_source": schedule_profile.get("source"),
             "daypart_coverage_factor": daypart_coverage_factor,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
@@ -5273,7 +5349,11 @@ def print_prediction(pred, verbose=False):
             full_day_window_str = f", full-window theatres {full_day_window_coverage:.0%}"
             scheduled_full_day = details.get("scheduled_full_day_window_coverage_ratio")
             if scheduled_full_day is not None:
-                full_day_window_str += f", scheduled early theatres {scheduled_full_day:.0%}"
+                source = details.get("scheduled_daypart_source")
+                source_str = f" via {source}" if source else ""
+                full_day_window_str += (
+                    f", scheduled early theatres {scheduled_full_day:.0%}{source_str}"
+                )
             daypart_factor = details.get("daypart_coverage_factor")
             if daypart_factor is not None and daypart_factor < 0.995:
                 full_day_window_str += f", daypart coverage {daypart_factor:.0%}"

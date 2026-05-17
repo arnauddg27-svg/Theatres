@@ -227,6 +227,68 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, no_scheduled_matinees, places=6)
         self.assertLess(scheduled_matinees_missing, 0.50)
 
+    def test_snapshot_schedule_profile_can_restore_rolled_off_early_showtimes(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Saturday": 1.0},
+                "day_scale_factors": {"Saturday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 2,
+                },
+            },
+        }
+        regular_rows = []
+        snapshot_rows = []
+        for theatre in ("AMC One", "AMC Two"):
+            regular = self._row(theatre, date="2026-05-09", day="Saturday")
+            regular["showtime"] = "7:00 PM"
+            regular_rows.append(regular)
+            early = self._snapshot_row(theatre, "Saturday", "2026-05-09")
+            early["showtime"] = "11:00 AM"
+            evening = self._snapshot_row(theatre, "Saturday", "2026-05-09")
+            evening["showtime"] = "7:00 PM"
+            snapshot_rows.extend([early, evening])
+        metadata = {
+            "sample movie": TargetMetadata(
+                movie="Sample Movie",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            )
+        }
+
+        old_loader = predict.load_movie_metadata
+        try:
+            predict.load_movie_metadata = lambda: metadata
+            pred = predict_movie(
+                "Sample Movie",
+                {"2026-05-09": regular_rows},
+                [],
+                cal,
+                snapshot_data={"2026-05-09": snapshot_rows},
+                showtime_link_profiles={
+                    "2026-05-09": {
+                        "n_theatres": 2,
+                        "avg_showings": 1.0,
+                        "earliest_showtime_hour": 19.0,
+                        "full_day_window_coverage_ratio": 0.0,
+                        "source": "showtime_links",
+                    },
+                },
+            )
+        finally:
+            predict.load_movie_metadata = old_loader
+
+        saturday = pred["daily_details"]["Saturday"]
+        self.assertAlmostEqual(1.0, saturday["scheduled_full_day_window_coverage_ratio"])
+        self.assertIn("snapshot", saturday["scheduled_daypart_source"])
+        self.assertLess(saturday["daypart_coverage_factor"], 0.50)
+
     def test_showtime_link_profiles_capture_scheduled_daypart_shape(self):
         old_path = predict.SHOWTIME_LINKS_JSON
         try:
