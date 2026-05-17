@@ -231,6 +231,138 @@ class ScraperLoggingTest(unittest.TestCase):
             [entry["showtime_id"] for entry in kept],
         )
 
+    def test_phase1_merge_preserves_rolled_off_same_day_showtimes(self):
+        old_entry = {
+            "tz": "ET",
+            "show_date": "2026-05-16",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "movies": {
+                "Obsession": [
+                    {
+                        "showtime": "11:15am",
+                        "showtime_id": "early-saturday",
+                        "format": "Laser at AMC",
+                    },
+                ],
+            },
+            "dates": {
+                "2026-05-16": {
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "movies": {
+                        "Obsession": [
+                            {
+                                "showtime": "11:15am",
+                                "showtime_id": "early-saturday",
+                                "format": "Laser at AMC",
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+        new_entry = {
+            "tz": "ET",
+            "show_date": "2026-05-16",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "movies": {
+                "Obsession": [
+                    {
+                        "showtime": "7:00pm",
+                        "showtime_id": "late-saturday",
+                        "format": "Laser at AMC",
+                    },
+                ],
+            },
+            "dates": {
+                "2026-05-16": {
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "movies": {
+                        "Obsession": [
+                            {
+                                "showtime": "7:00pm",
+                                "showtime_id": "late-saturday",
+                                "format": "Laser at AMC",
+                            },
+                        ],
+                    },
+                },
+            },
+        }
+
+        merged = scraper.merge_phase1_entries(old_entry, new_entry)
+
+        merged_ids = [
+            show["showtime_id"]
+            for show in merged["dates"]["2026-05-16"]["movies"]["Obsession"]
+        ]
+        self.assertEqual(["early-saturday", "late-saturday"], merged_ids)
+        self.assertEqual(
+            merged_ids,
+            [
+                show["showtime_id"]
+                for show in merged["movies"]["Obsession"]
+            ],
+        )
+
+    def test_snapshot_preserved_links_restore_regular_phase2_work(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.PRE_RESERVATION_CSV
+            scraper.PRE_RESERVATION_CSV = Path(tmp) / "pre-reservation-snapshots.csv"
+            try:
+                scraper.ensure_pre_reservation_header()
+                row = {field: "" for field in scraper.PRE_RESERVATION_FIELDS}
+                row.update(
+                    {
+                        "weekend_of": "2026-05-15",
+                        "snapshot_bucket": "2026-05-16T02:00Z",
+                        "show_date": "2026-05-16",
+                        "theatre_name": "AMC DINE-IN Disney Springs 24",
+                        "timezone": "ET",
+                        "movie_title": "Obsession",
+                        "showtime": "11:15am",
+                        "showtime_id": "early-disney-springs",
+                        "auditorium_type": "Laser at AMC",
+                    }
+                )
+                scraper.append_unique_pre_reservation_rows([row])
+
+                saved_links = {
+                    "AMC DINE-IN Disney Springs 24": {
+                        "tz": "ET",
+                        "show_date": "2026-05-16",
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "Obsession": [
+                                {
+                                    "showtime": "7:00pm",
+                                    "showtime_id": "late-disney-springs",
+                                    "format": "Laser at AMC",
+                                },
+                            ],
+                        },
+                    },
+                }
+                snapshot_links = scraper.load_pre_reservation_showtime_links(
+                    "2026-05-15",
+                    movie_titles=["Obsession"],
+                )
+                merged_links = scraper.merge_snapshot_links_into_phase1_saved_links(
+                    saved_links,
+                    snapshot_links,
+                )
+            finally:
+                scraper.PRE_RESERVATION_CSV = old_csv
+
+        movies = scraper.phase1_entry_movies(
+            merged_links["AMC DINE-IN Disney Springs 24"],
+            "2026-05-16",
+        )
+        self.assertEqual(
+            ["early-disney-springs", "late-disney-springs"],
+            [show["showtime_id"] for show in movies["Obsession"]],
+        )
+        self.assertEqual("snapshot-preserved link", movies["Obsession"][0]["source"])
+
     def test_phase1_cache_requires_current_showtime_window_before_merge(self):
         old_window_cache = {
             "weekend_of": "2026-05-08",

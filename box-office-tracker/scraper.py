@@ -1729,6 +1729,56 @@ def filter_showtime_entries_for_collection_window(entries, date_str):
     ]
 
 
+def _showtime_entry_key(entry):
+    showtime_id = str(entry.get("showtime_id", "") or "").strip()
+    if showtime_id:
+        return ("id", showtime_id)
+    showtime = str(entry.get("showtime", "") or "").strip().lower()
+    fmt = str(entry.get("format", entry.get("auditorium_type", "")) or "").strip().lower()
+    return ("time-format", showtime, fmt)
+
+
+def merge_showtime_entries(*entry_lists):
+    """Merge showtime link rows without losing older same-date seat-map IDs."""
+    merged = []
+    by_key = {}
+    for entries in entry_lists:
+        for raw in entries or []:
+            if not raw:
+                continue
+            entry = dict(raw)
+            if not entry.get("format") and entry.get("auditorium_type"):
+                entry["format"] = entry.get("auditorium_type")
+            key = _showtime_entry_key(entry)
+            if key in by_key:
+                existing = by_key[key]
+                for field, value in entry.items():
+                    if value not in (None, ""):
+                        existing[field] = value
+                continue
+            by_key[key] = entry
+            merged.append(entry)
+
+    def sort_key(entry):
+        hour = parse_showtime_hour(entry.get("showtime", ""))
+        return (
+            hour if hour is not None else 99,
+            str(entry.get("format", "") or ""),
+            str(entry.get("showtime_id", "") or ""),
+        )
+
+    return sorted(merged, key=sort_key)
+
+
+def merge_saved_movie_maps(*movie_maps):
+    """Merge {movie: [showtime entries]} maps movie-by-movie."""
+    merged = {}
+    for movie_map in movie_maps:
+        for movie, entries in (movie_map or {}).items():
+            merged[movie] = merge_showtime_entries(merged.get(movie, []), entries)
+    return merged
+
+
 # ─── Data Logging ────────────────────────────────────────────────────────────
 
 SEAT_FIELDS = [
@@ -2190,21 +2240,167 @@ def _phase1_entry_has_any_movies(entry):
     return False
 
 
+def _phase1_date_entry_from_top_level(entry):
+    if not entry or not entry.get("show_date") or not entry.get("movies"):
+        return None
+    return {
+        "collected_at": entry.get("collected_at"),
+        "showtime_window_version": entry.get(
+            "showtime_window_version",
+            SHOWTIME_WINDOW_VERSION,
+        ),
+        "movies": entry.get("movies", {}),
+    }
+
+
+def merge_phase1_date_entries(old_date_entry, new_date_entry):
+    """Merge one show_date payload while preserving rolled-off same-day links."""
+    if not old_date_entry:
+        return dict(new_date_entry or {})
+    if not new_date_entry:
+        return dict(old_date_entry or {})
+    merged = dict(old_date_entry)
+    movies = merge_saved_movie_maps(
+        old_date_entry.get("movies") or {},
+        new_date_entry.get("movies") or {},
+    )
+    merged.update({k: v for k, v in new_date_entry.items() if k != "movies"})
+    merged["movies"] = movies
+    merged["showtime_window_version"] = new_date_entry.get(
+        "showtime_window_version",
+        old_date_entry.get("showtime_window_version", SHOWTIME_WINDOW_VERSION),
+    )
+    return merged
+
+
 def merge_phase1_entries(old_entry, new_entry):
     """Merge multi-date Phase 1 entries without dropping unrefreshed dates."""
+    if not new_entry:
+        return old_entry
     if not old_entry:
         return new_entry
     merged = dict(old_entry)
     merged["tz"] = new_entry.get("tz", merged.get("tz"))
     merged["cohort"] = new_entry.get("cohort", merged.get("cohort"))
     merged_dates = dict(old_entry.get("dates") or {})
-    merged_dates.update(new_entry.get("dates") or {})
+    old_top_level = _phase1_date_entry_from_top_level(old_entry)
+    if old_top_level:
+        old_show_date = old_entry.get("show_date")
+        merged_dates[old_show_date] = merge_phase1_date_entries(
+            merged_dates.get(old_show_date),
+            old_top_level,
+        )
+    for date_str, date_entry in (new_entry.get("dates") or {}).items():
+        merged_dates[date_str] = merge_phase1_date_entries(
+            merged_dates.get(date_str),
+            date_entry,
+        )
+    new_top_level = _phase1_date_entry_from_top_level(new_entry)
+    if new_top_level:
+        new_show_date = new_entry.get("show_date")
+        merged_dates[new_show_date] = merge_phase1_date_entries(
+            merged_dates.get(new_show_date),
+            new_top_level,
+        )
     if merged_dates:
         merged["dates"] = merged_dates
     if new_entry.get("show_date"):
         merged["show_date"] = new_entry["show_date"]
-        merged["movies"] = new_entry.get("movies", {})
+        merged["movies"] = (merged_dates.get(new_entry["show_date"]) or {}).get("movies", {})
+    elif old_entry.get("show_date") in merged_dates:
+        merged["movies"] = (merged_dates.get(old_entry["show_date"]) or {}).get("movies", {})
+    merged["showtime_window_version"] = new_entry.get(
+        "showtime_window_version",
+        merged.get("showtime_window_version", SHOWTIME_WINDOW_VERSION),
+    )
     return merged
+
+
+def load_pre_reservation_showtime_links(weekend_of, movie_titles=None):
+    """Return Phase1-like links preserved by prior snapshot rows."""
+    if not PRE_RESERVATION_CSV.exists():
+        return {}
+    requested = {
+        str(title or "").strip().lower(): str(title or "").strip()
+        for title in (movie_titles or [])
+        if str(title or "").strip()
+    }
+    links = {}
+    try:
+        with open(PRE_RESERVATION_CSV, "r", newline="") as f:
+            for row in csv.DictReader(f):
+                if weekend_of and str(row.get("weekend_of", "") or "") != weekend_of:
+                    continue
+                show_date = str(row.get("show_date", "") or "").strip()
+                theatre_name = str(row.get("theatre_name", "") or "").strip()
+                movie_title = str(row.get("movie_title", "") or "").strip()
+                showtime = str(row.get("showtime", "") or "").strip()
+                showtime_id = str(row.get("showtime_id", "") or "").strip()
+                if not theatre_name or not show_date or not movie_title or not showtime_id:
+                    continue
+                movie_key = movie_title.lower()
+                if requested and movie_key not in requested:
+                    continue
+                if requested:
+                    movie_title = requested[movie_key]
+                if not showtime_in_collection_window(showtime, show_date):
+                    continue
+                fmt = (
+                    str(row.get("auditorium_type", "") or "").strip()
+                    or str(row.get("auditorium_name", "") or "").strip()
+                    or "Standard"
+                )
+                snapshot_entry = {
+                    "tz": str(row.get("timezone", "") or "").strip(),
+                    "showtime_window_version": SHOWTIME_WINDOW_VERSION,
+                    "dates": {
+                        show_date: {
+                            "showtime_window_version": SHOWTIME_WINDOW_VERSION,
+                            "movies": {
+                                movie_title: [
+                                    {
+                                        "showtime": showtime,
+                                        "showtime_id": showtime_id,
+                                        "format": fmt,
+                                        "source": "snapshot-preserved link",
+                                    }
+                                ]
+                            },
+                        }
+                    },
+                }
+                links[theatre_name] = merge_phase1_entries(
+                    links.get(theatre_name),
+                    snapshot_entry,
+                )
+    except Exception as exc:
+        print(f"  ⚠️  Could not load snapshot-preserved showtime links: {exc}")
+        return {}
+    return links
+
+
+def merge_snapshot_links_into_phase1_saved_links(saved_links, snapshot_links):
+    """Augment regular Phase 2 links with showtime IDs captured by snapshots."""
+    merged = dict(saved_links or {})
+    for theatre_name, snapshot_entry in (snapshot_links or {}).items():
+        if not snapshot_entry:
+            continue
+        merged[theatre_name] = merge_phase1_entries(
+            merged.get(theatre_name),
+            snapshot_entry,
+        )
+    return merged
+
+
+def count_phase1_showtime_links(saved_links):
+    count = 0
+    for entry in (saved_links or {}).values():
+        for date_entry in (entry.get("dates") or {}).values():
+            for entries in (date_entry.get("movies") or {}).values():
+                count += len(entries or [])
+        for entries in (entry.get("movies") or {}).values():
+            count += len(entries or [])
+    return count
 
 
 def phase1_cache_is_mergeable(existing, current_weekend):
@@ -2849,10 +3045,11 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 if key in seen:
                     continue
                 seen.add(key)
+                source = e.get("source") or "saved link"
                 shows.append((
                     {"showtime": e["showtime"], "showtime_id": e["showtime_id"],
-                     "format": e.get("format", "Standard"), "flags": ""},
-                    f"{e.get('format','Standard')} @ {e['showtime']} (saved link)",
+                     "format": e.get("format", "Standard"), "flags": "", "source": source},
+                    f"{e.get('format','Standard')} @ {e['showtime']} ({source})",
                 ))
             shows.sort(key=lambda x: -get_format_priority(x[0].get("format", "")))
             # In test mode, only try the single highest-priority show per movie
@@ -3336,41 +3533,13 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
             existing = {}
 
-    # Drop stale same-TZ entries before merging. Theatres from OTHER TZ groups
-    # (i.e. ETs that ran 6h ago on this same Friday) are kept, but anything in
-    # the TZ group(s) we just refreshed is replaced wholesale — even theatres
-    # that returned no showtimes in this run get dropped.
-    #
-    # Why: Phase 1 yesterday (Thursday) collected Thursday-evening showtime IDs
-    # with show_date=2026-04-23. If today's Phase 1 fails to refresh some of
-    # those same-TZ theatres (rate-limit, timeout, 0 showtimes), the old
-    # Thursday entries would otherwise carry into showtime-links.json and
-    # Phase 2 would scrape Thursday's already-elapsed showtime IDs — yielding
-    # duplicate Thursday seat snapshots tagged with stale dates while skipping
-    # the Friday showtimes those theatres should have produced.
-    refreshed_dates_by_tz = {
-        group: set(dates)
-        for group, dates in collection_dates_by_group.items()
-    }
-    merged_theatres = {}
-    for name, entry in existing.get("theatres", {}).items():
-        tz = entry.get("tz")
-        refreshed_dates = refreshed_dates_by_tz.get(tz)
-        if not refreshed_dates:
-            merged_theatres[name] = entry
-            continue
-        dates = dict(entry.get("dates") or {})
-        for refreshed_date in refreshed_dates:
-            dates.pop(refreshed_date, None)
-        if dates:
-            kept = dict(entry)
-            kept["dates"] = dates
-            if kept.get("show_date") in refreshed_dates:
-                kept.pop("show_date", None)
-                kept.pop("movies", None)
-            merged_theatres[name] = kept
-        elif entry.get("show_date") not in refreshed_dates:
-            merged_theatres[name] = entry
+    # Preserve same-date links while merging. AMC can roll earlier showtimes off
+    # the public listing after they start; a later Phase 1 refresh may therefore
+    # see only evening shows. The old same-date IDs are still valid seat-map IDs
+    # and are exactly what Phase 2 needs for a full Saturday/Sunday day sample.
+    # Different show dates remain harmless because Phase 2 asks for a concrete
+    # expected date before it uses a theatre entry.
+    merged_theatres = dict(existing.get("theatres", {}) or {})
     for name, new_entry in links["theatres"].items():
         merged_theatres[name] = merge_phase1_entries(merged_theatres.get(name), new_entry)
     links["theatres"] = merged_theatres
@@ -3683,6 +3852,23 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
+
+    if not snapshots_only:
+        snapshot_preserved_links = load_pre_reservation_showtime_links(
+            weekend,
+            movie_titles=_unique_market_titles(poly_markets),
+        )
+        if snapshot_preserved_links:
+            snapshot_link_count = count_phase1_showtime_links(snapshot_preserved_links)
+            saved_links = merge_snapshot_links_into_phase1_saved_links(
+                saved_links,
+                snapshot_preserved_links,
+            )
+            print(
+                "\n📎 Added "
+                f"{snapshot_link_count} snapshot-preserved showtime links "
+                "to regular Phase 2 input."
+            )
 
     snapshot_skipped_slice_issues = []
     phase1_validation_links = (
