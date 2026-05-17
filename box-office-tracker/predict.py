@@ -159,6 +159,8 @@ FAMILY_DAYPART_MAX_EVENING_TO_DAILY = 3.8
 WEEKEND_FULL_DAY_START_HOUR = 10.0
 WEEKEND_FULL_DAY_LATEST_EARLY_HOUR = WEEKEND_FULL_DAY_START_HOUR + 4.0
 WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE = 0.60
+WEEKEND_DAYPART_COVERAGE_FLOOR = 0.45
+WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
 FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
@@ -222,6 +224,44 @@ def _parse_showtime_hour(time_str):
 
 def _row_has_full_day_showtime_window(row):
     return FULL_DAY_SHOWTIME_WINDOW_NOTE in str((row or {}).get("notes", ""))
+
+
+def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio):
+    """How complete a Sat/Sun regular scrape is across the 10am-11pm daypart.
+
+    Theatre count alone can look healthy even when every collected seat map is
+    late afternoon/evening. For weekend days, discount effective coverage unless
+    enough theatres have an early-day showtime in the regular scrape.
+    """
+    if day_name not in {"Saturday", "Sunday"}:
+        return 1.0
+    try:
+        full_day_coverage = float(full_day_window_coverage_ratio)
+    except (TypeError, ValueError):
+        full_day_coverage = 0.0
+    full_day_coverage = _clamp(full_day_coverage, 0.0, 1.0)
+    threshold = max(WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE, 1e-9)
+    if full_day_coverage >= threshold:
+        return 1.0
+    progress = full_day_coverage / threshold
+    return _clamp(
+        WEEKEND_DAYPART_COVERAGE_FLOOR
+        + ((1.0 - WEEKEND_DAYPART_COVERAGE_FLOOR) * progress),
+        WEEKEND_DAYPART_COVERAGE_FLOOR,
+        1.0,
+    )
+
+
+def regular_day_needs_snapshot_support(day_name, details):
+    """Whether same-day snapshot demand should support a partial regular day."""
+    if day_name not in {"Saturday", "Sunday"} or not details:
+        return False
+    if details.get("actual_override"):
+        return False
+    return _coverage_value(
+        details.get("daypart_coverage_factor"),
+        default=1.0,
+    ) < WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD
 
 
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
@@ -1501,6 +1541,7 @@ def missing_data_profile(daily_details, cal, snapshot_layer=None):
     ]
     day_coverages = {}
     missing_timezone_days = []
+    partial_daypart_days = []
     for day, details in (daily_details or {}).items():
         coverage = details.get(
             "effective_coverage_ratio",
@@ -1509,6 +1550,8 @@ def missing_data_profile(daily_details, cal, snapshot_layer=None):
         day_coverages[day] = coverage
         if details.get("missing_timezones"):
             missing_timezone_days.append(day)
+        if regular_day_needs_snapshot_support(day, details):
+            partial_daypart_days.append(day)
 
     observed_day_share = sum(day_weights.get(day, 0) for day in observed_days) / total_weight
     missing_day_share = sum(day_weights.get(day, 0) for day in missing_days) / total_weight
@@ -1526,6 +1569,7 @@ def missing_data_profile(daily_details, cal, snapshot_layer=None):
         "missing_day_share": _clamp(missing_day_share, 0.0, 1.0),
         "seat_weighted_coverage_ratio": weighted_coverage,
         "missing_timezone_days": sorted(set(missing_timezone_days)),
+        "partial_daypart_days": sorted(set(partial_daypart_days)),
         "snapshot_days": snapshot_days,
         "snapshot_coverage_ratio": snapshot_coverage,
     }
@@ -2948,6 +2992,8 @@ def same_week_snapshot_scale(snapshot_details, regular_daily_details):
         regular = regular_daily_details.get(day_name)
         if not regular:
             continue
+        if regular_day_needs_snapshot_support(day_name, regular):
+            continue
         snapshot_mid = _positive_float(details.get("domestic_mid"))
         regular_mid = _positive_float(regular.get("domestic_mid"))
         if not snapshot_mid or not regular_mid:
@@ -3214,7 +3260,12 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
     day_shape_priors = regular_day_shape_priors(regular_daily_details, cal)
     same_week_support_floor = snapshot_same_week_support_floor(same_week_anchors)
     for day_name, details in all_snapshot_details.items():
-        if day_name in regular_daily_details:
+        regular_details = regular_daily_details.get(day_name)
+        supports_partial_regular_day = regular_day_needs_snapshot_support(
+            day_name,
+            regular_details,
+        )
+        if regular_details and not supports_partial_regular_day:
             ignored_days.append(day_name)
             continue
         day_same_week_scale = same_week_day_scales.get(day_name, same_week_scale)
@@ -3240,6 +3291,15 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         )
         adjusted_details = dict(adjusted_details)
         adjusted_details["snapshot_day_shape_support_factor"] = round(shape_support, 4)
+        if supports_partial_regular_day:
+            adjusted_details["supports_partial_regular_day"] = True
+            adjusted_details["regular_daypart_coverage_factor"] = round(
+                _coverage_value(
+                    regular_details.get("daypart_coverage_factor"),
+                    default=1.0,
+                ),
+                4,
+            )
         adjusted_details["snapshot_calibration_support_factor"] = support_info["factor"]
         adjusted_details["snapshot_day_calibration_support"] = support_info["day_support"]
         adjusted_details["snapshot_day_calibration_n"] = support_info["day_n"]
@@ -3862,6 +3922,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             len(showtime_window_tagged_theatre_names) / len(captured_by_theatre)
             if captured_by_theatre else 0.0
         )
+        daypart_coverage_factor = weekend_daypart_coverage_factor(
+            day_name,
+            full_day_window_coverage_ratio,
+        )
 
         # Per-theatre full-day revenue:
         #   captured_revenue  = sum of per-showtime revenues across captured
@@ -3916,6 +3980,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         effective_coverage_ratio = coverage_ratio
         if coverage_ratio is not None and tz_profile["missing_timezones"]:
             effective_coverage_ratio = coverage_ratio * tz_profile["coverage_factor"]
+        if effective_coverage_ratio is not None:
+            effective_coverage_ratio *= daypart_coverage_factor
 
         # Stage C: AMC → domestic. Once a reliable same-week reported actual
         # exists, use its implied tracked-AMC share for later regular seat
@@ -4042,6 +4108,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "earliest_showtime_hour": earliest_showtime_hour,
             "full_day_window_coverage_ratio": full_day_window_coverage_ratio,
             "showtime_window_tagged_coverage_ratio": showtime_window_tagged_coverage_ratio,
+            "daypart_coverage_factor": daypart_coverage_factor,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
             "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,
@@ -4927,13 +4994,15 @@ def print_prediction(pred, verbose=False):
     profile = pred.get("missing_data_profile") or {}
     missing_days = profile.get("missing_days") or []
     missing_tz_days = profile.get("missing_timezone_days") or []
-    if missing_days or missing_tz_days:
+    partial_daypart_days = profile.get("partial_daypart_days") or []
+    if missing_days or missing_tz_days or partial_daypart_days:
         coverage = pred.get("seat_weighted_coverage_ratio")
         coverage_str = f"{coverage:.0%}" if coverage is not None else "n/a"
         print(f"    Completeness: {profile.get('observed_day_share', 0):.0%} day-share, "
               f"{coverage_str} weighted seat coverage"
               f"{'; missing ' + '/'.join(missing_days) if missing_days else ''}"
-              f"{'; missing TZ on ' + '/'.join(missing_tz_days) if missing_tz_days else ''}")
+              f"{'; missing TZ on ' + '/'.join(missing_tz_days) if missing_tz_days else ''}"
+              f"{'; partial daypart on ' + '/'.join(partial_daypart_days) if partial_daypart_days else ''}")
 
     # Per-day breakdown
     for day, details in sorted(pred["daily_details"].items(),
@@ -5000,6 +5069,9 @@ def print_prediction(pred, verbose=False):
         full_day_window_str = ""
         if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
             full_day_window_str = f", full-window theatres {full_day_window_coverage:.0%}"
+            daypart_factor = details.get("daypart_coverage_factor")
+            if daypart_factor is not None and daypart_factor < 0.995:
+                full_day_window_str += f", daypart coverage {daypart_factor:.0%}"
         share_note = ""
         if details.get("actual_override") and details.get("amc_market_share_implied"):
             share_note = (

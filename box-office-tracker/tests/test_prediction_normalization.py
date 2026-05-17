@@ -89,6 +89,84 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(sparse_low, full_low)
         self.assertGreater(sparse_high, full_high)
 
+    def test_weekend_daypart_gap_reduces_effective_coverage(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Saturday": 1.0},
+                "day_scale_factors": {"Saturday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 2,
+                },
+            },
+        }
+        evening_rows = [
+            self._row("AMC One", date="2026-05-09", day="Saturday"),
+            self._row("AMC Two", date="2026-05-09", day="Saturday"),
+        ]
+        full_day_rows = []
+        for theatre in ("AMC One", "AMC Two"):
+            early = self._row(theatre, date="2026-05-09", day="Saturday")
+            early["showtime"] = "10:00 AM"
+            evening = self._row(theatre, date="2026-05-09", day="Saturday")
+            evening["showtime"] = "7:00 PM"
+            full_day_rows.extend([early, evening])
+
+        partial = predict_movie(
+            "Sample Movie",
+            {"2026-05-09": evening_rows},
+            [],
+            cal,
+        )
+        full = predict_movie(
+            "Sample Movie",
+            {"2026-05-09": full_day_rows},
+            [],
+            cal,
+        )
+
+        partial_sat = partial["daily_details"]["Saturday"]
+        full_sat = full["daily_details"]["Saturday"]
+        self.assertAlmostEqual(1.0, partial_sat["coverage_ratio"], places=6)
+        self.assertAlmostEqual(0.0, partial_sat["full_day_window_coverage_ratio"], places=6)
+        self.assertLess(partial_sat["effective_coverage_ratio"], 0.50)
+        self.assertLess(partial["seat_data_quality"], full["seat_data_quality"])
+        self.assertAlmostEqual(1.0, full_sat["effective_coverage_ratio"], places=6)
+
+    def test_snapshot_supports_partial_weekend_regular_day(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Saturday": 1.0},
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+            },
+        }
+        rows = [self._snapshot_row("AMC One", "Saturday", "2026-05-09")]
+        layer = predict.build_snapshot_future_layer(
+            {"2026-05-09": rows},
+            {
+                "Saturday": {
+                    "domestic_mid": 4_000_000,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 0.45,
+                    "daypart_coverage_factor": 0.45,
+                    "actual_override": False,
+                }
+            },
+            cal,
+            expected_amc_theatres=1,
+        )
+
+        self.assertIn("Saturday", layer["snapshot_days"])
+        self.assertEqual([], layer["snapshot_ignored_days"])
+        self.assertTrue(
+            layer["snapshot_daily_details"]["Saturday"]["supports_partial_regular_day"]
+        )
+
     def test_prediction_normalizes_sampled_amc_total_to_reference_theatre_count(self):
         cal = {
             "history": [],
