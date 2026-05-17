@@ -923,6 +923,21 @@ def _movie_lookup_key(value):
     return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
 
 
+def movie_mapping_get(mapping, movie, default=None):
+    """Fetch a movie-keyed side input with punctuation/case-tolerant matching."""
+    if not isinstance(mapping, dict):
+        return default
+    if movie in mapping:
+        return mapping[movie]
+    target_key = _movie_lookup_key(movie)
+    if not target_key:
+        return default
+    for title, value in mapping.items():
+        if _movie_lookup_key(title) == target_key:
+            return value
+    return default
+
+
 def load_daily_actual_overrides(weekend_of=None, through_date=None):
     """Load reported partial actuals, e.g. Thursday previews.
 
@@ -1346,7 +1361,7 @@ def load_theatre_counts():
 
 def national_theatre_count_for_movie(movie, theatre_counts, metadata=None):
     """Find the BOM theatre count for a movie, allowing simple fuzzy matches."""
-    nat_count = theatre_counts.get(movie)
+    nat_count = movie_mapping_get(theatre_counts, movie)
     if nat_count:
         return nat_count
     for tc_movie, count in theatre_counts.items():
@@ -2238,7 +2253,7 @@ def build_social_signal_layer(movie, social_data):
     multiplicative adjustment to the seat/comp/snapshot forecast, and missing
     social data returns None so the core seat model is unchanged.
     """
-    signal = (social_data or {}).get(movie)
+    signal = movie_mapping_get(social_data, movie)
     if not signal:
         return None
 
@@ -5672,12 +5687,12 @@ def main():
 
         nat_count = national_theatre_count_for_movie(movie_match, theatre_counts, metadata=metadata)
         pred = predict_movie(movie_match, seat_data[movie_match],
-                            poly_data.get(movie_match, []), cal,
+                            movie_mapping_get(poly_data, movie_match, []), cal,
                             national_theatre_count=nat_count,
-                            snapshot_data=snapshot_data.get(movie_match, {}),
+                            snapshot_data=movie_mapping_get(snapshot_data, movie_match, {}),
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
-                            showtime_link_profiles=showtime_link_profiles.get(movie_match, {}))
+                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie_match, {}))
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -5798,12 +5813,12 @@ def main():
     for movie in movies_to_predict:
         nat_count = national_theatre_count_for_movie(movie, theatre_counts, metadata=metadata)
         pred = predict_movie(movie, seat_data[movie],
-                            poly_data.get(movie, []), cal, verbose=verbose,
+                            movie_mapping_get(poly_data, movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count,
-                            snapshot_data=snapshot_data.get(movie, {}),
+                            snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
-                            showtime_link_profiles=showtime_link_profiles.get(movie, {}))
+                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}))
         if pred:
             print_prediction(pred, verbose=verbose)
 

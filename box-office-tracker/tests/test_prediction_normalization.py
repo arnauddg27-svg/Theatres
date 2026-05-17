@@ -34,6 +34,16 @@ from predict import (
 
 
 class PredictionNormalizationTest(unittest.TestCase):
+    def test_movie_mapping_get_normalizes_title_keys(self):
+        mapping = {
+            '"Sample: Movie!"': {"value": 42},
+        }
+
+        self.assertEqual(
+            {"value": 42},
+            predict.movie_mapping_get(mapping, "Sample Movie"),
+        )
+
     def test_parse_manual_daily_actuals(self):
         parsed = calibrate.parse_daily_actuals_arg(
             "Thursday=10.0,Friday=22.5,Saturday=25.9,Sunday=18.6"
