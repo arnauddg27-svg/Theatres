@@ -1,4 +1,5 @@
 import unittest
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -182,6 +183,90 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(0.0, saturday["full_day_window_coverage_ratio"], places=6)
         self.assertAlmostEqual(1.0, saturday["daypart_coverage_factor"], places=6)
         self.assertAlmostEqual(1.0, saturday["effective_coverage_ratio"], places=6)
+
+    def test_phase1_schedule_shape_overrides_genre_daypart_guess(self):
+        metadata = TargetMetadata(
+            movie="Sample Movie",
+            genre="horror",
+            audience_type="horror_fan",
+            franchise_type="original",
+            rating="R",
+        )
+
+        no_scheduled_matinees = predict.weekend_daypart_coverage_factor(
+            "Saturday",
+            0.0,
+            target_metadata=metadata,
+            earliest_showtime_hour=16.0,
+            avg_showings=3.0,
+            scheduled_full_day_window_coverage_ratio=0.0,
+            scheduled_earliest_showtime_hour=16.0,
+            scheduled_avg_showings=3.0,
+        )
+        scheduled_matinees_missing = predict.weekend_daypart_coverage_factor(
+            "Saturday",
+            0.0,
+            target_metadata=metadata,
+            earliest_showtime_hour=16.0,
+            avg_showings=3.0,
+            scheduled_full_day_window_coverage_ratio=1.0,
+            scheduled_earliest_showtime_hour=10.0,
+            scheduled_avg_showings=5.0,
+        )
+
+        self.assertAlmostEqual(1.0, no_scheduled_matinees, places=6)
+        self.assertLess(scheduled_matinees_missing, 0.50)
+
+    def test_showtime_link_profiles_capture_scheduled_daypart_shape(self):
+        old_path = predict.SHOWTIME_LINKS_JSON
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                path = Path(tmpdir) / "showtime-links.json"
+                path.write_text(json.dumps({
+                    "weekend_of": "2026-05-08",
+                    "theatres": {
+                        "AMC One": {
+                            "tz": "ET",
+                            "dates": {
+                                "2026-05-09": {
+                                    "movies": {
+                                        "Sample Movie": [
+                                            {"showtime": "4:00pm"},
+                                            {"showtime": "7:00pm"},
+                                            {"showtime": "10:00pm"},
+                                        ]
+                                    }
+                                }
+                            },
+                        },
+                        "AMC Two": {
+                            "tz": "ET",
+                            "dates": {
+                                "2026-05-09": {
+                                    "movies": {
+                                        "Sample Movie": [
+                                            {"showtime": "10:00am"},
+                                            {"showtime": "1:00pm"},
+                                            {"showtime": "7:00pm"},
+                                        ]
+                                    }
+                                }
+                            },
+                        },
+                    },
+                }))
+                predict.SHOWTIME_LINKS_JSON = str(path)
+
+                profiles = predict.load_showtime_link_daypart_profiles(
+                    weekend_of="2026-05-08",
+                )
+        finally:
+            predict.SHOWTIME_LINKS_JSON = old_path
+
+        profile = profiles["Sample Movie"]["2026-05-09"]
+        self.assertEqual(2, profile["n_theatres"])
+        self.assertAlmostEqual(3.0, profile["avg_showings"])
+        self.assertAlmostEqual(0.5, profile["full_day_window_coverage_ratio"])
 
     def test_snapshot_supports_partial_weekend_regular_day(self):
         cal = {

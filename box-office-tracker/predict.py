@@ -53,6 +53,7 @@ PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
 DAILY_ACTUALS_CSV   = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 SOCIAL_SIGNALS_CSV  = os.path.join(DATA_DIR, "social-signals.csv")
+SHOWTIME_LINKS_JSON = os.path.join(DATA_DIR, "showtime-links.json")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 THEATRES_JSON       = os.path.join(DATA_DIR, "theatres-all.json")
@@ -267,7 +268,10 @@ def is_late_skew_title(target_metadata):
 def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio,
                                     target_metadata=None,
                                     earliest_showtime_hour=None,
-                                    avg_showings=None):
+                                    avg_showings=None,
+                                    scheduled_full_day_window_coverage_ratio=None,
+                                    scheduled_earliest_showtime_hour=None,
+                                    scheduled_avg_showings=None):
     """How complete a Sat/Sun regular scrape is across the 10am-11pm daypart.
 
     Theatre count alone can look healthy even when every collected seat map is
@@ -286,6 +290,36 @@ def weekend_daypart_coverage_factor(day_name, full_day_window_coverage_ratio,
     threshold = max(WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE, 1e-9)
     if full_day_coverage >= threshold:
         return 1.0
+    schedule_has_profile = scheduled_full_day_window_coverage_ratio is not None
+    if schedule_has_profile:
+        try:
+            scheduled_full_day_coverage = float(scheduled_full_day_window_coverage_ratio)
+        except (TypeError, ValueError):
+            scheduled_full_day_coverage = 0.0
+        scheduled_full_day_coverage = _clamp(scheduled_full_day_coverage, 0.0, 1.0)
+        try:
+            scheduled_show_count = float(scheduled_avg_showings)
+        except (TypeError, ValueError):
+            scheduled_show_count = 0.0
+        try:
+            scheduled_earliest_hour = float(scheduled_earliest_showtime_hour)
+        except (TypeError, ValueError):
+            scheduled_earliest_hour = None
+        if (
+            scheduled_full_day_coverage < threshold
+            and scheduled_show_count >= WEEKEND_LATE_SKEW_MIN_SHOWINGS
+            and scheduled_earliest_hour is not None
+            and scheduled_earliest_hour <= WEEKEND_LATE_SKEW_LATEST_START_HOUR
+        ):
+            return 1.0
+        if scheduled_full_day_coverage >= threshold:
+            floor = WEEKEND_DAYPART_COVERAGE_FLOOR
+            progress = full_day_coverage / threshold
+            return _clamp(
+                floor + ((1.0 - floor) * progress),
+                floor,
+                1.0,
+            )
     try:
         show_count = float(avg_showings)
     except (TypeError, ValueError):
@@ -799,6 +833,83 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
                 continue
             data.setdefault(movie, {}).setdefault(show_date, []).append(row)
     return data
+
+
+def load_showtime_link_daypart_profiles(weekend_of=None):
+    """Summarize Phase 1 scheduled showtime shape by movie/date.
+
+    The regular scrape can only collect seat maps for showtimes Phase 1 found.
+    If Phase 1 itself found no morning/noon Saturday shows for a niche title,
+    that is a release schedule signal, not missing regular scrape coverage.
+    """
+    if not os.path.exists(SHOWTIME_LINKS_JSON):
+        return {}
+    try:
+        with open(SHOWTIME_LINKS_JSON, "r") as f:
+            links = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    links_weekend = links.get("weekend_of") or links.get("date")
+    if weekend_of and links_weekend and links_weekend != weekend_of:
+        return {}
+
+    cohort_sets = load_theatre_cohort_sets()
+    model_cohorts = active_model_cohorts()
+    by_movie_date = {}
+    for theatre_name, theatre_entry in (links.get("theatres") or {}).items():
+        if not model_allows_theatre(
+            theatre_name,
+            cohort_sets=cohort_sets,
+            model_cohorts=model_cohorts,
+        ):
+            continue
+        for date_str, date_entry in (theatre_entry.get("dates") or {}).items():
+            movies = date_entry.get("movies") or {}
+            for movie, showtimes in movies.items():
+                if not movie or not isinstance(showtimes, list):
+                    continue
+                hours = [
+                    hour
+                    for hour in (
+                        _parse_showtime_hour(show.get("showtime", ""))
+                        for show in showtimes
+                        if isinstance(show, dict)
+                    )
+                    if hour is not None
+                ]
+                if not hours:
+                    continue
+                key = (movie, date_str)
+                profile = by_movie_date.setdefault(
+                    key,
+                    {
+                        "theatres": {},
+                    },
+                )
+                profile["theatres"][theatre_name] = hours
+
+    profiles = {}
+    for (movie, date_str), profile in by_movie_date.items():
+        theatre_hours = profile.get("theatres") or {}
+        n_theatres = len(theatre_hours)
+        if not n_theatres:
+            continue
+        all_hours = [hour for hours in theatre_hours.values() for hour in hours]
+        if not all_hours:
+            continue
+        full_day_theatres = sum(
+            1
+            for hours in theatre_hours.values()
+            if min(hours) <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
+        )
+        profiles.setdefault(movie, {})[date_str] = {
+            "n_theatres": n_theatres,
+            "avg_showings": len(all_hours) / n_theatres,
+            "earliest_showtime_hour": min(all_hours),
+            "full_day_window_coverage_ratio": full_day_theatres / n_theatres,
+        }
+    return profiles
 
 
 def normalize_opening_day_name(value):
@@ -3832,7 +3943,8 @@ def daily_actual_override_for(movie, day_name, daily_actual_overrides):
 
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
-                  social_data=None, daily_actual_overrides=None):
+                  social_data=None, daily_actual_overrides=None,
+                  showtime_link_profiles=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -3981,12 +4093,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             len(showtime_window_tagged_theatre_names) / len(captured_by_theatre)
             if captured_by_theatre else 0.0
         )
+        schedule_profile = (showtime_link_profiles or {}).get(date_str, {})
+        scheduled_full_day_window_coverage_ratio = schedule_profile.get(
+            "full_day_window_coverage_ratio"
+        )
         daypart_coverage_factor = weekend_daypart_coverage_factor(
             day_name,
             full_day_window_coverage_ratio,
             target_metadata=movie_metadata,
             earliest_showtime_hour=earliest_showtime_hour,
             avg_showings=avg_showings,
+            scheduled_full_day_window_coverage_ratio=scheduled_full_day_window_coverage_ratio,
+            scheduled_earliest_showtime_hour=schedule_profile.get("earliest_showtime_hour"),
+            scheduled_avg_showings=schedule_profile.get("avg_showings"),
         )
 
         # Per-theatre full-day revenue:
@@ -4170,6 +4289,12 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "earliest_showtime_hour": earliest_showtime_hour,
             "full_day_window_coverage_ratio": full_day_window_coverage_ratio,
             "showtime_window_tagged_coverage_ratio": showtime_window_tagged_coverage_ratio,
+            "scheduled_theatre_count": schedule_profile.get("n_theatres"),
+            "scheduled_avg_showings_per_cinema": schedule_profile.get("avg_showings"),
+            "scheduled_earliest_showtime_hour": schedule_profile.get("earliest_showtime_hour"),
+            "scheduled_full_day_window_coverage_ratio": (
+                scheduled_full_day_window_coverage_ratio
+            ),
             "daypart_coverage_factor": daypart_coverage_factor,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
@@ -5131,9 +5256,18 @@ def print_prediction(pred, verbose=False):
         full_day_window_str = ""
         if day in {"Saturday", "Sunday"} and full_day_window_coverage is not None:
             full_day_window_str = f", full-window theatres {full_day_window_coverage:.0%}"
+            scheduled_full_day = details.get("scheduled_full_day_window_coverage_ratio")
+            if scheduled_full_day is not None:
+                full_day_window_str += f", scheduled early theatres {scheduled_full_day:.0%}"
             daypart_factor = details.get("daypart_coverage_factor")
             if daypart_factor is not None and daypart_factor < 0.995:
                 full_day_window_str += f", daypart coverage {daypart_factor:.0%}"
+            elif (
+                scheduled_full_day is not None
+                and full_day_window_coverage < WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
+                and scheduled_full_day < WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
+            ):
+                full_day_window_str += ", schedule-limited"
         share_note = ""
         if details.get("actual_override") and details.get("amc_market_share_implied"):
             share_note = (
@@ -5523,6 +5657,7 @@ def main():
         snapshot_data = load_pre_reservation_data()
         social_data = load_social_signal_data()
         daily_actual_overrides = load_daily_actual_overrides()
+        showtime_link_profiles = load_showtime_link_daypart_profiles()
         theatre_counts = load_theatre_counts()
         metadata = load_movie_metadata()
         movie_match = None
@@ -5541,7 +5676,8 @@ def main():
                             national_theatre_count=nat_count,
                             snapshot_data=snapshot_data.get(movie_match, {}),
                             social_data=social_data,
-                            daily_actual_overrides=daily_actual_overrides)
+                            daily_actual_overrides=daily_actual_overrides,
+                            showtime_link_profiles=showtime_link_profiles.get(movie_match, {}))
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -5614,6 +5750,9 @@ def main():
         weekend_of=replay_weekend,
         through_date=through_date,
     )
+    showtime_link_profiles = load_showtime_link_daypart_profiles(
+        weekend_of=replay_weekend,
+    )
     theatre_counts = load_theatre_counts()
     metadata = load_movie_metadata()
 
@@ -5663,7 +5802,8 @@ def main():
                             national_theatre_count=nat_count,
                             snapshot_data=snapshot_data.get(movie, {}),
                             social_data=social_data,
-                            daily_actual_overrides=daily_actual_overrides)
+                            daily_actual_overrides=daily_actual_overrides,
+                            showtime_link_profiles=showtime_link_profiles.get(movie, {}))
         if pred:
             print_prediction(pred, verbose=verbose)
 
