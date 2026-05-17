@@ -1413,7 +1413,12 @@ class ScraperLoggingTest(unittest.TestCase):
             ],
         }
 
-        groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+        old_local_now = scraper.local_now
+        try:
+            scraper.local_now = lambda tz: datetime(2026, 5, 6, 22, 30)
+            groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+        finally:
+            scraper.local_now = old_local_now
 
         self.assertEqual(["ET", "CT", "PT"], groups)
         self.assertEqual({"ET", "CT", "PT"}, set(date_sets))
@@ -1434,7 +1439,12 @@ class ScraperLoggingTest(unittest.TestCase):
                 {"name": "PT B", "dma": "LA", "cohort": scraper.CORE_COHORT},
             ],
         }
-        groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+        old_local_now = scraper.local_now
+        try:
+            scraper.local_now = lambda tz: datetime(2026, 5, 6, 22, 30)
+            groups, date_sets = scraper.snapshot_global_selection_inputs(theatres_map)
+        finally:
+            scraper.local_now = old_local_now
         saved_links = {}
         for group, theatres in theatres_map.items():
             date_str = date_sets[group][0]

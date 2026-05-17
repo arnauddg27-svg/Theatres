@@ -13,6 +13,8 @@
 #   FORCE=true                   Pass force=true to the workflow
 #   TEST=5                       Pass test=N to the workflow
 #   GH_TOKEN_FILE=/path/.env      Optional env file containing GH_TOKEN
+#   DISPATCH_STATE_DIR=/var/tmp/box-office-dispatch
+#   DISPATCH_DEDUP_WINDOW_SEC=900
 
 set -euo pipefail
 
@@ -21,6 +23,8 @@ GH_REPO="${GH_REPO:-}"
 FORCE="${FORCE:-false}"
 TEST="${TEST:-}"
 GH_TOKEN_FILE="${GH_TOKEN_FILE:-}"
+DISPATCH_STATE_DIR="${DISPATCH_STATE_DIR:-/var/tmp/box-office-dispatch}"
+DISPATCH_DEDUP_WINDOW_SEC="${DISPATCH_DEDUP_WINDOW_SEC:-900}"
 
 if [[ -n "$GH_TOKEN_FILE" ]]; then
   if [[ ! -f "$GH_TOKEN_FILE" ]]; then
@@ -46,6 +50,68 @@ run_workflow() {
   "${cmd[@]}"
 }
 
+slot_key_for() {
+  local mode="$1"
+  local tz="${2:-ALL}"
+  local repo="${GH_REPO:-default-repo}"
+  printf '%s' "${repo}_${WORKFLOW_FILE}_${mode}_${tz}" \
+    | tr -c 'A-Za-z0-9._=-' '_'
+}
+
+path_age_seconds() {
+  python3 -c 'import os, sys, time; p=sys.argv[1]; print(int(time.time() - os.path.getmtime(p)) if os.path.exists(p) else 0)' "$1"
+}
+
+run_once_per_slot() {
+  local mode="$1"
+  local tz="${2:-ALL}"
+  shift 2 || true
+
+  mkdir -p "$DISPATCH_STATE_DIR"
+
+  local slot_key lock_dir stamp_file now last age lock_age
+  slot_key="$(slot_key_for "$mode" "$tz")"
+  lock_dir="$DISPATCH_STATE_DIR/${slot_key}.lockdir"
+  stamp_file="$DISPATCH_STATE_DIR/${slot_key}.stamp"
+  now="$(date -u '+%s')"
+
+  if ! mkdir "$lock_dir" 2>/dev/null; then
+    lock_age="$(path_age_seconds "$lock_dir")"
+    if [[ "$lock_age" =~ ^[0-9]+$ ]] && (( lock_age > DISPATCH_DEDUP_WINDOW_SEC )); then
+      echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: removing stale slot lock (${mode} ${tz}, age ${lock_age}s)"
+      rmdir "$lock_dir" 2>/dev/null || true
+      if ! mkdir "$lock_dir" 2>/dev/null; then
+        echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: duplicate slot already active (${mode} ${tz}); skipping"
+        return 0
+      fi
+    else
+      echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: duplicate slot already active (${mode} ${tz}); skipping"
+      return 0
+    fi
+  fi
+  trap "rmdir $(printf '%q' "$lock_dir") 2>/dev/null || true" EXIT
+
+  if [[ -f "$stamp_file" ]]; then
+    last="$(head -n 1 "$stamp_file" 2>/dev/null || true)"
+    if [[ "$last" =~ ^[0-9]+$ ]]; then
+      age=$((now - last))
+      if (( age >= 0 && age < DISPATCH_DEDUP_WINDOW_SEC )); then
+        echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: recent dispatch already sent for ${mode} ${tz} ${slot_key}; skipping"
+        return 0
+      fi
+    fi
+  fi
+
+  run_workflow "$@"
+  {
+    echo "$now"
+    echo "mode=$mode"
+    echo "tz=$tz"
+    echo "workflow=$WORKFLOW_FILE"
+    echo "repo=$GH_REPO"
+  } > "$stamp_file"
+}
+
 mode="${1:-}"
 case "$mode" in
   collect-links)
@@ -54,13 +120,13 @@ case "$mode" in
       ET|CT|PT|ALL) ;;
       *) usage ;;
     esac
-    run_workflow \
+    run_once_per_slot "$mode" "$tz" \
       -f phase=collect-links \
       -f tz_group="$tz" \
       -f force="$FORCE"
     ;;
   scrape)
-    run_workflow \
+    run_once_per_slot "$mode" "ALL" \
       -f phase=scrape \
       -f tz_group=ALL \
       -f force="$FORCE" \
@@ -69,7 +135,7 @@ case "$mode" in
       -f snapshots_only=false
     ;;
   snapshot)
-    run_workflow \
+    run_once_per_slot "$mode" "ALL" \
       -f phase=scrape \
       -f tz_group=ALL \
       -f force=true \
@@ -78,7 +144,7 @@ case "$mode" in
       -f snapshots_only=true
     ;;
   calibrate)
-    run_workflow \
+    run_once_per_slot "$mode" "ALL" \
       -f phase=calibrate \
       -f tz_group=ALL \
       -f force=false

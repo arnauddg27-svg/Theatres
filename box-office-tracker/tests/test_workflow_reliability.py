@@ -351,6 +351,20 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("4-0", cron)
         self.assertNotIn("5-1", cron)
 
+    def test_vps_dispatcher_dedupes_duplicate_dispatch_slots(self):
+        dispatcher = DISPATCHER.read_text()
+
+        self.assertIn("DISPATCH_STATE_DIR", dispatcher)
+        self.assertIn("DISPATCH_DEDUP_WINDOW_SEC", dispatcher)
+        self.assertIn("run_once_per_slot", dispatcher)
+        self.assertIn("slot_key_for", dispatcher)
+        self.assertIn(".lockdir", dispatcher)
+        self.assertIn('mkdir "$lock_dir"', dispatcher)
+        self.assertIn("duplicate slot already active", dispatcher)
+        self.assertIn("recent dispatch already sent", dispatcher)
+        self.assertIn('run_once_per_slot "$mode" "ALL"', dispatcher)
+        self.assertIn('run_once_per_slot "$mode" "$tz"', dispatcher)
+
 
 if __name__ == "__main__":
     unittest.main()
