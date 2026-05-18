@@ -70,11 +70,15 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v21-audited-layered-model-card"
+MODEL_VERSION = "seat-regression-v22-explicit-amc-share-chain"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
 DYNAMIC_AMC_SHARE_MAX_SHARE = 0.50
+MOVIE_AMC_SHARE_HISTORY_PRIOR_WEIGHT = 2.0
+MOVIE_AMC_SHARE_HISTORY_MAX_STRENGTH = 0.55
+MOVIE_AMC_SHARE_HISTORY_FACTOR_MIN = 0.70
+MOVIE_AMC_SHARE_HISTORY_FACTOR_MAX = 1.80
 RESIDUAL_REGRESSION_MIN_OBS = 2
 RESIDUAL_REGRESSION_PRIOR_WEIGHT = 6.0
 RESIDUAL_REGRESSION_MAX_STRENGTH = 0.35
@@ -2554,6 +2558,158 @@ def calibrated_amc_market_share(cal):
     return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, share))
 
 
+def movie_specific_amc_share_model(cal, movie, day_name, target_metadata=None,
+                                   metadata=None, same_week_anchor=None):
+    """Estimate the movie/day AMC share used for national extrapolation.
+
+    Seat rows first estimate sampled AMC gross. This model is the explicit
+    bridge from coverage-adjusted AMC gross to national gross: start with the
+    calibrated global AMC share, prefer same-week actual anchors when they
+    exist, then use shrunken similar-movie history as a movie-specific prior.
+    """
+    base_share = calibrated_amc_market_share(cal)
+    if same_week_anchor:
+        share = _positive_float(same_week_anchor.get("blended_share"))
+        if share:
+            return {
+                "chain_share": _clamp(
+                    share,
+                    DYNAMIC_AMC_SHARE_MIN_SHARE,
+                    DYNAMIC_AMC_SHARE_MAX_SHARE,
+                ),
+                "source": "same_week_actual_anchor",
+                "base_share": base_share,
+                "raw_factor": share / base_share if base_share else 1.0,
+                "factor": share / base_share if base_share else 1.0,
+                "strength": 1.0,
+                "n": 1,
+                "effective_weight": same_week_anchor.get("anchor_weight", 1.0),
+                "anchor": same_week_anchor,
+            }
+
+    values = []
+    for entry in (cal or {}).get("history", [])[-40:]:
+        if not _actual_status_is_final(entry):
+            continue
+        if _movie_matches(movie, entry.get("movie", "")):
+            continue
+        daily_predictions = entry.get("daily_predictions") or {}
+        daily_actuals = entry.get("daily_actuals") or {}
+        if not daily_predictions or not daily_actuals:
+            continue
+
+        entry_metadata = metadata_for_movie(entry.get("movie", ""), metadata or {})
+        similarity = (
+            _metadata_preview_similarity(target_metadata, entry_metadata)
+            if target_metadata and entry_metadata else 0.50
+        )
+        metadata_weight = _clamp(0.35 + similarity, 0.35, 1.25)
+        entry_version = entry.get("model_version")
+        if entry_version == MODEL_VERSION:
+            version_weight = RESIDUAL_SAME_MODEL_VERSION_WEIGHT
+        elif entry_version:
+            version_weight = RESIDUAL_DIFFERENT_MODEL_VERSION_WEIGHT
+        else:
+            version_weight = RESIDUAL_LEGACY_MODEL_VERSION_WEIGHT
+        coverage_by_day = entry.get("daily_coverage_ratios") or {}
+        for entry_day, predicted_m in daily_predictions.items():
+            actual_m = _positive_float(daily_actuals.get(entry_day))
+            predicted_m = _positive_float(predicted_m)
+            if not actual_m or not predicted_m:
+                continue
+            coverage = _coverage_value(
+                coverage_by_day.get(entry_day),
+                default=entry.get("coverage_ratio", 0.0),
+            )
+            if coverage < MIN_DAILY_CALIBRATION_COVERAGE:
+                continue
+            day_weight = snapshot_day_similarity(entry_day, day_name)
+            weight = coverage * day_weight * metadata_weight * version_weight
+            if weight <= 0:
+                continue
+            # If the old national prediction was above actual, AMC likely
+            # represented a larger share of national demand for that movie/day.
+            share_factor = _clamp(
+                predicted_m / actual_m,
+                MOVIE_AMC_SHARE_HISTORY_FACTOR_MIN,
+                MOVIE_AMC_SHARE_HISTORY_FACTOR_MAX,
+            )
+            values.append((share_factor, weight, entry, entry_day))
+
+    if not values:
+        return {
+            "chain_share": base_share,
+            "source": "calibration",
+            "base_share": base_share,
+            "raw_factor": 1.0,
+            "factor": 1.0,
+            "strength": 0.0,
+            "n": 0,
+            "effective_weight": 0.0,
+            "examples": [],
+        }
+
+    total_weight = sum(weight for _, weight, _, _ in values)
+    raw_factor = exp(
+        sum(log(factor) * weight for factor, weight, _, _ in values)
+        / total_weight
+    )
+    strength = min(
+        MOVIE_AMC_SHARE_HISTORY_MAX_STRENGTH,
+        total_weight / (total_weight + MOVIE_AMC_SHARE_HISTORY_PRIOR_WEIGHT),
+    )
+    factor = 1.0 + (raw_factor - 1.0) * strength
+    share = _clamp(
+        base_share * factor,
+        DYNAMIC_AMC_SHARE_MIN_SHARE,
+        DYNAMIC_AMC_SHARE_MAX_SHARE,
+    )
+    return {
+        "chain_share": share,
+        "source": "movie_specific_history",
+        "base_share": base_share,
+        "raw_factor": raw_factor,
+        "factor": factor,
+        "strength": strength,
+        "n": len(values),
+        "effective_weight": total_weight,
+        "examples": [
+            {
+                "movie": entry.get("movie"),
+                "day": entry_day,
+                "share_factor": share_factor,
+                "weight": weight,
+            }
+            for share_factor, weight, entry, entry_day in sorted(
+                values,
+                key=lambda item: item[1],
+                reverse=True,
+            )[:5]
+        ],
+    }
+
+
+def national_effective_amc_share(chain_share, footprint_factor=1.0):
+    """Fold national footprint into the AMC-share denominator.
+
+    A sub-wide release can over-index the sampled AMC chain footprint. Applying
+    a 0.90 footprint factor to national gross is equivalent to using a higher
+    effective AMC share denominator. Keeping it explicit makes the pipeline:
+    sampled AMC → coverage-adjusted AMC → movie-specific AMC share → national.
+    """
+    share = _clamp(
+        float(chain_share),
+        DYNAMIC_AMC_SHARE_MIN_SHARE,
+        DYNAMIC_AMC_SHARE_MAX_SHARE,
+    )
+    footprint = _positive_float(footprint_factor) or 1.0
+    return _clamp(
+        share / footprint,
+        DYNAMIC_AMC_SHARE_MIN_SHARE,
+        DYNAMIC_AMC_SHARE_MAX_SHARE,
+    )
+
+
 def amc_to_domestic(amc_revenue, cal, share_override=None):
     """Stage C: scale AMC revenue to total domestic market."""
     if share_override is None:
@@ -4236,6 +4392,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             })
 
         # Stage B: sum all AMC
+        observed_sampled_amc_total = sum(
+            t.get("captured_revenue", 0)
+            for t in theatre_results
+        )
         sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
         n_amc_theatres = amc_stats.get("n_theatres", 0)
         tz_profile = timezone_coverage_profile(
@@ -4270,23 +4430,30 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             )
             if dynamic_amc_share_anchors and not actual_override else None
         )
-        share_override = (
-            share_anchor_for_day["blended_share"]
-            if share_anchor_for_day else None
+        share_model = movie_specific_amc_share_model(
+            cal,
+            movie,
+            day_name,
+            target_metadata=movie_metadata,
+            metadata=movie_metadata_map,
+            same_week_anchor=share_anchor_for_day,
+        )
+        chain_share = share_model["chain_share"]
+        footprint_factor = national_release_footprint_factor(national_theatre_count)
+        pre_footprint_mid, pre_footprint_low, pre_footprint_high = amc_to_domestic(
+            amc_total,
+            cal,
+            share_override=chain_share,
+        )
+        effective_share = national_effective_amc_share(
+            chain_share,
+            footprint_factor if national_theatre_count and n_amc_theatres > 0 else 1.0,
         )
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(
             amc_total,
             cal,
-            share_override=share_override,
+            share_override=effective_share,
         )
-        pre_footprint_mid = domestic_mid
-        pre_footprint_low = domestic_low
-        pre_footprint_high = domestic_high
-        footprint_factor = national_release_footprint_factor(national_theatre_count)
-        if national_theatre_count and n_amc_theatres > 0:
-            domestic_mid *= footprint_factor
-            domestic_low *= footprint_factor
-            domestic_high *= footprint_factor
 
         preview_residual = learned_preview_seat_residual(
             cal,
@@ -4340,6 +4507,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         details = {
             "date": date_str,
             "amc_total": amc_total,
+            "observed_sampled_amc_total": observed_sampled_amc_total,
             "sampled_amc_total": sampled_amc_total,
             "sample_normalization_factor": sample_norm_factor,
             "domestic_mid": domestic_mid,
@@ -4364,10 +4532,29 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "preview_seat_residual_source": (
                 preview_residual["source"] if preview_residual else None
             ),
-            "amc_market_share_used": share_override or calibrated_amc_market_share(cal),
-            "amc_market_share_source": (
-                "same_week_actual_anchor" if share_anchor_for_day else "calibration"
-            ),
+            "amc_market_share_used": chain_share,
+            "effective_national_amc_share_used": effective_share,
+            "amc_market_share_source": share_model["source"],
+            "movie_specific_amc_share_model": share_model,
+            "amc_to_national_chain": {
+                "steps": [
+                    "observed_sampled_amc_gross",
+                    "coverage_adjusted_amc_gross",
+                    "movie_specific_amc_share",
+                    "national_gross",
+                ],
+                "observed_sampled_amc_gross": observed_sampled_amc_total,
+                "daypart_adjusted_sampled_amc_gross": sampled_amc_total,
+                "coverage_adjusted_amc_gross": amc_total,
+                "sample_normalization_factor": sample_norm_factor,
+                "movie_specific_amc_share": chain_share,
+                "movie_specific_amc_share_source": share_model["source"],
+                "national_footprint_factor": footprint_factor,
+                "effective_national_amc_share": effective_share,
+                "national_gross_mid": domestic_mid,
+                "national_gross_low": domestic_low,
+                "national_gross_high": domestic_high,
+            },
             "amc_market_share_anchor_day": (
                 share_anchor_for_day.get("day") if share_anchor_for_day else None
             ),

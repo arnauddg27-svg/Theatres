@@ -2775,6 +2775,144 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1700 / 0.14375, friday["domestic_mid"], places=6)
         self.assertGreater(friday["domestic_mid"], 1700 / 0.25)
 
+    def test_prediction_exposes_observed_to_national_chain(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 1.0},
+                "day_scale_factors": {"Friday": 1.0},
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 4,
+                },
+            },
+        }
+        rows = [
+            self._row("AMC One", date="2026-05-08", day="Friday"),
+            self._row("AMC Two", date="2026-05-08", day="Friday"),
+        ]
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-08": rows},
+            [],
+            cal,
+            daily_actual_overrides={},
+        )
+
+        friday = pred["daily_details"]["Friday"]
+        self.assertEqual(
+            [
+                "observed_sampled_amc_gross",
+                "coverage_adjusted_amc_gross",
+                "movie_specific_amc_share",
+                "national_gross",
+            ],
+            friday["amc_to_national_chain"]["steps"],
+        )
+        self.assertAlmostEqual(1000.0, friday["observed_sampled_amc_total"], places=6)
+        self.assertAlmostEqual(1700.0, friday["sampled_amc_total"], places=6)
+        self.assertAlmostEqual(3400.0, friday["amc_total"], places=6)
+        self.assertAlmostEqual(
+            friday["observed_sampled_amc_total"],
+            friday["amc_to_national_chain"]["observed_sampled_amc_gross"],
+            places=6,
+        )
+        self.assertAlmostEqual(
+            friday["amc_total"],
+            friday["amc_to_national_chain"]["coverage_adjusted_amc_gross"],
+            places=6,
+        )
+        self.assertAlmostEqual(
+            0.25,
+            friday["amc_to_national_chain"]["movie_specific_amc_share"],
+            places=6,
+        )
+        self.assertAlmostEqual(13600.0, friday["domestic_mid"], places=6)
+        self.assertAlmostEqual(
+            friday["domestic_mid"],
+            friday["amc_to_national_chain"]["national_gross_mid"],
+            places=6,
+        )
+
+    def test_similar_history_can_raise_movie_specific_amc_share(self):
+        cal = {
+            "history": [
+                {
+                    "movie": "Similar Horror",
+                    "actual_status": "final",
+                    "daily_actuals": {"Friday": 10.0},
+                    "daily_predictions": {"Friday": 20.0},
+                    "daily_coverage_ratios": {"Friday": 1.0},
+                    "n_days": 1,
+                    "model_version": predict.MODEL_VERSION,
+                },
+            ],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Friday": 1.0},
+                "day_scale_factors": {"Friday": 1.0},
+                "reference_amc_theatres_by_cohort": {
+                    "core,expansion": 1,
+                },
+            },
+        }
+        metadata = {
+            "sample movie": TargetMetadata(
+                movie="Sample Movie",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            ),
+            "similar horror": TargetMetadata(
+                movie="Similar Horror",
+                genre="horror",
+                audience_type="horror_fan",
+                franchise_type="original",
+                rating="R",
+            ),
+        }
+        rows = [self._row("AMC One", date="2026-05-08", day="Friday")]
+
+        old_load_metadata = predict.load_movie_metadata
+        predict.load_movie_metadata = lambda: metadata
+        try:
+            baseline = predict_movie(
+                "Sample Movie",
+                {"2026-05-08": rows},
+                [],
+                {**cal, "history": []},
+                daily_actual_overrides={},
+            )
+            adjusted = predict_movie(
+                "Sample Movie",
+                {"2026-05-08": rows},
+                [],
+                cal,
+                daily_actual_overrides={},
+            )
+        finally:
+            predict.load_movie_metadata = old_load_metadata
+
+        baseline_friday = baseline["daily_details"]["Friday"]
+        adjusted_friday = adjusted["daily_details"]["Friday"]
+        self.assertEqual(
+            "movie_specific_history",
+            adjusted_friday["amc_market_share_source"],
+        )
+        self.assertGreater(adjusted_friday["amc_market_share_used"], 0.25)
+        self.assertLess(
+            adjusted_friday["domestic_mid"],
+            baseline_friday["domestic_mid"],
+        )
+        self.assertGreater(
+            adjusted_friday["movie_specific_amc_share_model"]["n"],
+            0,
+        )
+
     def test_thursday_preview_residual_learns_from_local_history(self):
         cal = {
             "history": [
