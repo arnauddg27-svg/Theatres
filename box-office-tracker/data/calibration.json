@@ -246,26 +246,27 @@
       "predicted_mid": 17.24,
       "predicted_low": 13.84,
       "predicted_high": 22.37,
-      "actual_total": 16.1,
+      "actual_total": 17.2,
       "daily_actuals": {
         "Thursday": 2.6,
         "Friday": 4.37,
         "Saturday": 5.4,
-        "Sunday": 3.73
+        "Sunday": 3.73,
+        "WeekendRemainder": 1.1
       },
       "daily_predictions": {
         "Thursday": 1.73,
         "Friday": 3.55,
         "Saturday": 4.61
       },
-      "error_pct": 7.1,
+      "error_pct": 0.2,
       "n_theatres": 416,
       "n_days": 4,
       "model_version": "seat-regression-v20-multi-anchor-snapshot",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers daily table backfill",
-      "actual_status": "provisional",
+      "actual_source": "User-provided final weekend total",
+      "actual_status": "final",
       "raw_daily_predictions": {
         "Thursday": 1.57,
         "Friday": 4.78,
@@ -314,10 +315,10 @@
     },
     "overall_scale_factor": 0.9385,
     "day_weights": {
-      "Thursday": 0.1093,
-      "Friday": 0.2801,
-      "Saturday": 0.3475,
-      "Sunday": 0.2631
+      "Thursday": 0.1159,
+      "Friday": 0.2686,
+      "Saturday": 0.3379,
+      "Sunday": 0.2776
     },
     "day_scale_factors": {
       "Thursday": 1.278,
@@ -418,7 +419,7 @@
       {
         "movie": "Obsession",
         "weekend_of": "2026-05-15",
-        "abs_error_pct": 7.1,
+        "abs_error_pct": 0.2,
         "n_theatres": 416,
         "n_days": 4,
         "coverage_ratio": 0.813,

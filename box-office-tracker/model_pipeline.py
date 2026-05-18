@@ -32,6 +32,8 @@ MODEL_AUDIT_DIR = DATA_DIR / "model-audits"
 OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 TIMEZONE_GROUPS = ("ET", "CT", "PT")
 EXCLUDED_THEATRE_NAME_PREFIXES = ("AMC CLASSIC",)
+RECORDED_PRE_ACTUAL_CUT = "recorded_pre_actual"
+POST_REGULAR_RUN_CUT = "post_regular_run"
 FORECAST_CUTS = (
     ("thursday_morning", -1, "10:00"),
     ("thursday_night", -1, "23:59"),
@@ -39,6 +41,7 @@ FORECAST_CUTS = (
     ("saturday_morning", 1, "10:00"),
     ("sunday_morning", 2, "10:00"),
     ("final_pre_estimate", 2, "23:59"),
+    (POST_REGULAR_RUN_CUT, 3, "10:00"),
 )
 WIDE_RELEASE_BASELINE_THEATRES = 4000
 FOOTPRINT_EXPONENT = 0.18
@@ -482,6 +485,8 @@ def stage_expected_days(forecast_cut: str | None) -> tuple[str, ...]:
         "saturday_morning": ("Thursday", "Friday"),
         "sunday_morning": ("Thursday", "Friday", "Saturday"),
         "final_pre_estimate": ("Thursday", "Friday", "Saturday", "Sunday"),
+        POST_REGULAR_RUN_CUT: ("Thursday", "Friday", "Saturday", "Sunday"),
+        RECORDED_PRE_ACTUAL_CUT: ("Thursday", "Friday", "Saturday", "Sunday"),
     }.get(str(forecast_cut or ""), ())
 
 
@@ -753,5 +758,9 @@ def weekend_forecast_cuts(weekend_of: str) -> list[dict]:
         hour, minute = [int(part) for part in clock.split(":", 1)]
         ts = friday + timedelta(days=offset)
         ts = ts.replace(hour=hour, minute=minute)
-        cuts.append({"cut": name, "as_of": ts.isoformat()})
+        cuts.append({
+            "cut": name,
+            "as_of": ts.isoformat(),
+            "allow_daily_actual_overrides": name != POST_REGULAR_RUN_CUT,
+        })
     return cuts

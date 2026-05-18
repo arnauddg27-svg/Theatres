@@ -347,6 +347,74 @@ class ModelPipelineTest(unittest.TestCase):
             {row["forecast_cut"] for row in rows},
         )
 
+    def test_post_regular_run_cut_is_model_only(self):
+        cuts = {
+            row["cut"]: row
+            for row in model_pipeline.weekend_forecast_cuts("2026-05-15")
+        }
+
+        self.assertIn(model_pipeline.POST_REGULAR_RUN_CUT, cuts)
+        self.assertFalse(
+            cuts[model_pipeline.POST_REGULAR_RUN_CUT][
+                "allow_daily_actual_overrides"
+            ]
+        )
+        self.assertEqual(
+            ("Thursday", "Friday", "Saturday", "Sunday"),
+            model_pipeline.stage_expected_days(model_pipeline.POST_REGULAR_RUN_CUT),
+        )
+
+    def test_recorded_pre_actual_replay_preserves_saved_forecast(self):
+        calibration = {
+            "history": [
+                {
+                    "movie": "Obsession",
+                    "weekend_of": "2026-05-15",
+                    "date": "2026-05-18",
+                    "predicted_mid": 17.24,
+                    "predicted_low": 13.84,
+                    "predicted_high": 22.37,
+                    "actual_total": 17.2,
+                    "coverage_ratio": 0.813,
+                    "n_days": 4,
+                    "n_theatres": 416,
+                }
+            ],
+        }
+
+        rows = model_audit.recorded_prediction_replay_rows(calibration)
+
+        self.assertEqual(1, len(rows))
+        row = rows[0]
+        self.assertEqual(model_pipeline.RECORDED_PRE_ACTUAL_CUT, row["forecast_cut"])
+        self.assertEqual(17.24, row["predicted_m"])
+        self.assertEqual(17.2, row["actual_m"])
+        self.assertEqual(1, row["model_only_replay"])
+
+    def test_model_only_replay_suppresses_daily_actual_overrides(self):
+        class FakePredict:
+            @staticmethod
+            def load_daily_actual_overrides(weekend_of=None, through_date=None):
+                return {"Obsession": {"Sunday": {"gross_m": 17.2}}}
+
+        blocked, blocked_used = model_audit._daily_actual_overrides_for_replay(
+            FakePredict,
+            "2026-05-15",
+            "2026-05-18",
+            allow=False,
+        )
+        allowed, allowed_used = model_audit._daily_actual_overrides_for_replay(
+            FakePredict,
+            "2026-05-15",
+            "2026-05-18",
+            allow=True,
+        )
+
+        self.assertEqual({}, blocked)
+        self.assertFalse(blocked_used)
+        self.assertTrue(allowed_used)
+        self.assertIn("Obsession", allowed)
+
     def test_precision_quality_flags_unusable_replay_rows(self):
         rows = [
             {

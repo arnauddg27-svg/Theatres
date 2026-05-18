@@ -67,6 +67,8 @@ def _included_days_for_cut(cut_name: str) -> list[str]:
         "saturday_morning": ["Thursday", "Friday"],
         "sunday_morning": ["Thursday", "Friday", "Saturday"],
         "final_pre_estimate": ["Thursday", "Friday", "Saturday", "Sunday"],
+        model_pipeline.POST_REGULAR_RUN_CUT: ["Thursday", "Friday", "Saturday", "Sunday"],
+        model_pipeline.RECORDED_PRE_ACTUAL_CUT: ["Thursday", "Friday", "Saturday", "Sunday"],
     }.get(cut_name, [])
 
 
@@ -253,6 +255,83 @@ def _safe_frozen_calibration(predict_module, weekend_of: str):
         return predict_module.load_calibration(), "live-fallback"
 
 
+def _daily_actual_overrides_for_replay(predict_module, weekend_of: str,
+                                       through_date: str,
+                                       allow: bool) -> tuple[dict, bool]:
+    """Load partial actual inputs only for cuts where they are legitimate.
+
+    The post-regular-run cut is a model-only replay: it should include late seat
+    rows, but not Monday public daily actual rows that were reported after the
+    weekend. That keeps the audit from explaining an exact prediction with data
+    the model did not have at trade time.
+    """
+    if not allow:
+        return {}, False
+    overrides = predict_module.load_daily_actual_overrides(
+        weekend_of=weekend_of,
+        through_date=through_date,
+    )
+    return overrides, bool(overrides)
+
+
+def recorded_prediction_replay_rows(calibration: dict,
+                                    weekend_of: str | None = None) -> list[dict]:
+    """Add the actual production forecast recorded before actuals were known."""
+    rows = []
+    for entry in sorted(
+        calibration.get("history", []) or [],
+        key=lambda row: (row.get("weekend_of", ""), row.get("movie", "")),
+    ):
+        entry_weekend = entry.get("weekend_of", "")
+        if weekend_of and entry_weekend != weekend_of:
+            continue
+        actual = _float(entry.get("actual_total", entry.get("actual")), 0.0)
+        predicted = _float(entry.get("predicted_mid"), 0.0)
+        if not entry_weekend or actual <= 0 or predicted <= 0:
+            continue
+        low80 = _float(entry.get("predicted_low"), 0.0)
+        high80 = _float(entry.get("predicted_high"), 0.0)
+        if low80 <= 0 or high80 <= 0:
+            intervals = model_pipeline.calibrated_intervals(
+                predicted,
+                residual_errors=model_pipeline.residual_errors_from_history(calibration),
+                coverage_ratio=_float(entry.get("coverage_ratio")),
+            )
+            low80 = intervals["80"]["low_m"]
+            high80 = intervals["80"]["high_m"]
+        stage_days = model_pipeline.stage_expected_days(
+            model_pipeline.RECORDED_PRE_ACTUAL_CUT,
+        )
+        rows.append({
+            "movie": entry.get("movie", ""),
+            "weekend_of": entry_weekend,
+            "forecast_cut": model_pipeline.RECORDED_PRE_ACTUAL_CUT,
+            "as_of": entry.get("date", ""),
+            "replay_mode": "recorded_prediction",
+            "calibration_source": "recorded",
+            "predicted_m": round(predicted, 3),
+            "actual_m": round(actual, 3),
+            "error_m": round(predicted - actual, 3),
+            "ape": round(abs(predicted - actual) / actual, 4),
+            "bias_pct": round((predicted - actual) / actual, 4),
+            "coverage_ratio": _float(entry.get("coverage_ratio")),
+            "stage_coverage_ratio": _float(entry.get("coverage_ratio")),
+            "stage_expected_days": "|".join(stage_days),
+            "coverage_tier": _coverage_tier(_float(entry.get("coverage_ratio"))),
+            "interval80_low_m": low80,
+            "interval80_high_m": high80,
+            "interval80_hit": int(low80 <= actual <= high80),
+            "model_source": entry.get("model_version", ""),
+            "snapshot_weight": "",
+            "seat_days": entry.get("n_days", 0),
+            "seat_theatres": entry.get("n_theatres", 0),
+            "daily_actual_overrides_used": 0,
+            "model_only_replay": 1,
+            "excluded_day_count": len(entry.get("calibration_excluded_days", []) or []),
+        })
+    return rows
+
+
 def current_model_replay_rows(calibration: dict,
                               weekend_of: str | None = None) -> list[dict]:
     """Replay current production predictor at standard as-of cuts.
@@ -313,9 +392,11 @@ def current_model_replay_rows(calibration: dict,
                 weekend_of=entry_weekend,
                 through_date=through_date,
             )
-            daily_actual_overrides = predict.load_daily_actual_overrides(
-                weekend_of=entry_weekend,
-                through_date=through_date,
+            daily_actual_overrides, overrides_used = _daily_actual_overrides_for_replay(
+                predict,
+                entry_weekend,
+                through_date,
+                bool(cut.get("allow_daily_actual_overrides", True)),
             )
             social_data = predict.load_social_signal_data(
                 weekend_of=entry_weekend,
@@ -379,6 +460,8 @@ def current_model_replay_rows(calibration: dict,
                 "snapshot_weight": pred.get("snapshot_model_weight", 0.0),
                 "seat_days": pred.get("n_days", 0),
                 "seat_theatres": pred.get("n_theatres_total", 0),
+                "daily_actual_overrides_used": int(overrides_used),
+                "model_only_replay": int(not cut.get("allow_daily_actual_overrides", True)),
                 "excluded_day_count": len(entry.get("calibration_excluded_days", []) or []),
             })
     return all_rows
@@ -435,6 +518,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.as_of_grid or args.replay_weekend:
         calibration = _load_json(data_dir / "calibration.json")
         rows = current_model_replay_rows(calibration, weekend_of=args.replay_weekend)
+        rows.extend(recorded_prediction_replay_rows(
+            calibration,
+            weekend_of=args.replay_weekend,
+        ))
         if not rows:
             rows = history_replay_rows(calibration, weekend_of=args.replay_weekend)
         rows = model_pipeline.apply_precision_quality(rows)

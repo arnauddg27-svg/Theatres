@@ -54,6 +54,34 @@ def opening_day_actuals(daily_actuals: dict) -> dict[str, float]:
     return actuals
 
 
+def complete_opening_day_actuals_for_weights(entry: dict,
+                                             tolerance: float = 0.02
+                                             ) -> dict[str, float]:
+    """Daily actuals eligible for day-shape calibration.
+
+    Manual weekend totals can arrive before the public daily table is final. In
+    that case calibration stores the unresolved balance in ``WeekendRemainder``
+    so the weekend total is correct, but the Thu/Fri/Sat/Sun split is not yet a
+    complete day-shape datapoint. Do not let those partial splits move learned
+    day weights.
+    """
+    daily_actuals = opening_day_actuals(entry.get("daily_actuals", {}) or {})
+    if len(daily_actuals) < 3:
+        return {}
+
+    total_actual = _total_actual_for_entry(entry)
+    if total_actual <= 0:
+        return daily_actuals
+
+    known_total = sum(daily_actuals.values())
+    if known_total <= 0:
+        return {}
+    allowed_gap = max(0.05, total_actual * max(0.0, tolerance))
+    if abs(total_actual - known_total) > allowed_gap:
+        return {}
+    return daily_actuals
+
+
 def _total_actual_for_entry(entry: dict) -> float:
     total = _as_float(entry.get("actual_total", entry.get("actual")), 0.0)
     if total > 0:

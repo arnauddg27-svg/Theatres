@@ -36,7 +36,8 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                recalibrate_day_scale_factors,
                                recalibrate_snapshot_day_scale_factors,
                                recalibrate_snapshot_lead_scale_factors,
-                               snapshot_calibration_support)
+                               snapshot_calibration_support,
+                               complete_opening_day_actuals_for_weights)
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -690,12 +691,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     #    Average the actual day splits across all movies with daily data
     all_day_weights = []
     for h in cal["history"]:
-        da = h.get("daily_actuals", {})
-        opening_da = {
-            day: _positive_float(da.get(day))
-            for day in OPENING_WEEKEND_DAYS
-            if _positive_float(da.get(day)) is not None
-        }
+        opening_da = complete_opening_day_actuals_for_weights(h)
         total = sum(opening_da.values())
         if total > 0 and len(opening_da) >= 3:
             all_day_weights.append({d: g / total for d, g in opening_da.items()})

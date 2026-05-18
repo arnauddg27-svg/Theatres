@@ -18,6 +18,7 @@ from historical_comps import (
     release_footprint_factor,
 )
 from model_calibration import (
+    complete_opening_day_actuals_for_weights,
     recalibrate_snapshot_day_scale_factors,
     recalibrate_snapshot_lead_scale_factors,
     snapshot_calibration_actual_for_day,
@@ -1471,6 +1472,33 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(4.0, daily_actuals["Friday"])
         self.assertAlmostEqual(9.5, daily_actuals["WeekendRemainder"])
         self.assertNotIn("Saturday", daily_actuals)
+
+    def test_incomplete_daily_split_does_not_train_day_weights(self):
+        partial = {
+            "actual_total": 17.2,
+            "daily_actuals": {
+                "Thursday": 2.6,
+                "Friday": 4.37,
+                "Saturday": 5.4,
+                "Sunday": 3.73,
+                "WeekendRemainder": 1.1,
+            },
+        }
+        complete = {
+            "actual_total": 16.1,
+            "daily_actuals": {
+                "Thursday": 2.6,
+                "Friday": 4.37,
+                "Saturday": 5.4,
+                "Sunday": 3.73,
+            },
+        }
+
+        self.assertEqual({}, complete_opening_day_actuals_for_weights(partial))
+        self.assertEqual(
+            {"Thursday": 2.6, "Friday": 4.37, "Saturday": 5.4, "Sunday": 3.73},
+            complete_opening_day_actuals_for_weights(complete),
+        )
 
     def test_snapshot_calibration_infers_missing_days_from_weekend_remainder(self):
         entry = {
