@@ -95,6 +95,34 @@ class StageFinalizeOutputsTest(unittest.TestCase):
             staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
             self.assertIn("box-office-tracker/data/seat-counts.csv", staged)
 
+    def test_stages_model_audit_outputs_when_present(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = self._repo(root)
+            summary = root / "summary.json"
+            marker = root / "markers.txt"
+            summary.write_text(json.dumps({"seat_added": 0, "pre_reservation_added": 0, "polymarket_added": 0}))
+            marker.write_text("")
+            audit_dir = repo / "box-office-tracker" / "data" / "model-audits"
+            audit_dir.mkdir()
+            (audit_dir / "as-of-grid-summary.json").write_text('{"overall":{"n":1}}\n')
+
+            run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--repo-root",
+                    str(repo),
+                    "--summary-file",
+                    str(summary),
+                    "--marker-file",
+                    str(marker),
+                ]
+            )
+
+            staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
+            self.assertIn("box-office-tracker/data/model-audits/as-of-grid-summary.json", staged)
+
     def test_refuses_marker_only_commit(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

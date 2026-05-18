@@ -468,6 +468,17 @@ def load_run_log_summaries(data_dir: Path) -> dict[str, dict]:
     return summaries
 
 
+def load_model_audit_summary(data_dir: Path) -> dict:
+    summary_path = data_dir / "model-audits" / "as-of-grid-summary.json"
+    if not summary_path.exists():
+        return {}
+    try:
+        data = json.loads(summary_path.read_text())
+    except json.JSONDecodeError:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict]:
     if data_dir.resolve() != DATA_DIR.resolve():
         return {}
@@ -510,6 +521,7 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 "mid_m": round(mid, 1),
                 "low_m": round(low, 1),
                 "high_m": round(high, 1),
+                "model_card": pred.get("model_card", {}),
                 "source": pred.get("regression_source", ""),
                 "basis": pred.get("regression_basis", ""),
                 "uses_polymarket": bool(pred.get("regression_uses_polymarket")),
@@ -692,6 +704,7 @@ def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
     snapshot_rows = read_csv(data_dir / "pre-reservation-snapshots.csv")
     poly_rows = read_csv(data_dir / "polymarket-markets.csv")
     showtime_links = read_json(data_dir / "showtime-links.json")
+    model_audit = load_model_audit_summary(data_dir)
     run_logs = load_run_log_summaries(data_dir)
     current_weekend = latest_weekend(seat_rows, snapshot_rows, poly_rows)
 
@@ -759,6 +772,7 @@ def build_dashboard_data(data_dir: Path = DATA_DIR, auto_pull=False,
             "regular": run_status(seat_rows, current_weekend, "regular"),
         },
         "movies": movie_cards,
+        "model_audit": model_audit,
         "totals": {
             "seat_rows": len(seat_rows),
             "snapshot_rows": len(snapshot_rows),
@@ -1032,10 +1046,17 @@ HTML_PAGE = r"""<!doctype html>
       const phase1LowCoverage = phase1.low_coverage?.length
         ? ` | weak ${phase1.low_coverage.slice(0, 3).join(", ")}${phase1.low_coverage.length > 3 ? "..." : ""}`
         : "";
+      const audit = data.model_audit || {};
+      const auditOverall = audit.overall || {};
+      const auditCut = audit.by_forecast_cut || {};
+      const cutBits = Object.entries(auditCut).slice(0, 3).map(([cut, stats]) =>
+        `${cut.replaceAll("_", " ")} ${fmtPct(stats.mape)} MAPE`
+      ).join(" | ");
       document.getElementById("runGrid").innerHTML = [
         panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}${phase1LowCoverage}`, phase1),
         panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}${snapshotMissingSlices}${snapshotLowCoverage}`, snapshot),
         panel("Regular scrape", `${regular.rows || 0} rows`, `${fmtTime(regular.latest_time)} | ${tzText(regular.timezone_rows)}`, regular),
+        panel("Model precision", auditOverall.n ? `${fmtPct(auditOverall.mape)} MAPE` : "No audit yet", auditOverall.n ? `${auditOverall.n} replays | bias ${fmtMoney(auditOverall.bias_m || 0)} | ${cutBits || "run model_audit.py --as-of-grid"}` : "Run model_audit.py --as-of-grid", {status: auditOverall.n ? "ok" : "pending", label: auditOverall.n ? "Audited" : "Pending"}),
         panel("Local data", `${data.totals.seat_rows.toLocaleString()} seat rows`, `${data.totals.snapshot_rows.toLocaleString()} snapshot rows | pull: ${esc(data.pull.output || "-")}`, {status: data.git.dirty ? "partial" : "ok", label: data.git.dirty ? "Dirty" : "Clean"}),
       ].join("");
 
@@ -1046,8 +1067,16 @@ HTML_PAGE = r"""<!doctype html>
 
     function renderMovie(movie) {
       const p = movie.prediction;
+      const card = p?.model_card || {};
+      const interval80 = card.intervals?.["80"];
       const estimate = p && !p.error ? fmtMoney(p.mid_m) : "Pending";
-      const range = p && !p.error ? `${fmtMoney(p.low_m)} - ${fmtMoney(p.high_m)}` : "No seat-count model yet";
+      const range = p && !p.error
+        ? interval80
+          ? `80% ${fmtMoney(interval80.low_m)} - ${fmtMoney(interval80.high_m)}`
+          : `${fmtMoney(p.low_m)} - ${fmtMoney(p.high_m)}`
+        : "No seat-count model yet";
+      const grade = card.coverage_grade ? ` | ${card.coverage_grade} confidence` : "";
+      const risks = (card.biggest_missing_data_risks || []).slice(0, 2).join("; ");
       const snapshotSupport = p && p.snapshot_support !== null && p.snapshot_support !== undefined
         ? `${Math.round(p.snapshot_support * 100)}%`
         : "n/a";
@@ -1076,7 +1105,7 @@ HTML_PAGE = r"""<!doctype html>
           <div class="cell">
             <div class="label">Model estimate</div>
             <div class="metric">${estimate}</div>
-            <div class="small">${range}<br>${p && !p.error ? esc(p.source) : ""}${snapshotLine}</div>
+            <div class="small">${range}${grade}<br>${p && !p.error ? esc(p.source) : ""}${risks ? `<br>Risks: ${esc(risks)}` : ""}${snapshotLine}</div>
           </div>
           <div class="cell">
             <div class="label">Seat data</div>

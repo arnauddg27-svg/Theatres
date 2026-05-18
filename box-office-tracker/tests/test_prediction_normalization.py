@@ -10,6 +10,7 @@ sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
 import predict
 import calibrate
+import model_pipeline
 from historical_comps import (
     HistoricalComp,
     TargetMetadata,
@@ -35,6 +36,37 @@ from predict import (
 
 
 class PredictionNormalizationTest(unittest.TestCase):
+    def test_select_regression_prediction_attaches_model_card_without_polymarket(self):
+        cal = {
+            "history": [
+                {"predicted_mid": 10.0, "actual_total": 9.0},
+                {"predicted_mid": 20.0, "actual_total": 22.0},
+            ],
+            "calibration_factors": {},
+        }
+        pred = {
+            "movie": "Sample Movie",
+            "model_version": "test-model",
+            "seat_mid_m": 20.0,
+            "seat_low_m": 18.0,
+            "seat_high_m": 22.0,
+            "seat_weighted_coverage_ratio": 0.40,
+            "missing_data_profile": {
+                "missing_days": ["Sunday"],
+                "missing_timezone_days": ["Saturday"],
+            },
+            "poly_result": {"ev": 60.0},
+        }
+
+        select_regression_prediction(pred, cal)
+
+        self.assertIn("model_card", pred)
+        self.assertEqual(20.0, pred["model_card"]["point_estimate_m"])
+        self.assertFalse(pred["model_card"]["uses_polymarket"])
+        self.assertEqual("low", pred["model_card"]["coverage_grade"])
+        self.assertIn("missing Sunday", pred["model_card"]["biggest_missing_data_risks"])
+        self.assertGreater(pred["model_card"]["intervals"]["80"]["width_m"], 0)
+
     def test_movie_mapping_get_normalizes_title_keys(self):
         mapping = {
             '"Sample: Movie!"': {"value": 42},

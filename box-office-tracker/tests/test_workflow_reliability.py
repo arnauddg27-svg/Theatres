@@ -192,6 +192,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
             block,
         )
         self.assertIn("scripts/stage_finalize_outputs.py", block)
+        self.assertIn("python model_audit.py --export-training-data --as-of-grid", block)
+        self.assertIn("box-office-tracker/data/model-audits", block)
         self.assertNotIn("git add box-office-tracker/data/seat-counts.csv \\", block)
         self.assertIn("data: box office scrape merge + predictions", block)
 

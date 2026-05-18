@@ -18,6 +18,7 @@ OUTPUT_FILES = [
     "box-office-tracker/data/seat-counts.xlsx",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
+MODEL_AUDIT_DIR = "box-office-tracker/data/model-audits"
 
 
 def _run(cmd: list[str], cwd: Path, check: bool = False) -> subprocess.CompletedProcess[str]:
@@ -87,6 +88,7 @@ def main() -> int:
         for rel_path in OUTPUT_FILES:
             _stage_if_exists(repo_root, rel_path)
         _stage_if_exists(repo_root, RUN_LOG_DIR)
+        _stage_if_exists(repo_root, MODEL_AUDIT_DIR)
 
         _fail_if_expected_change_not_staged(
             repo_root,

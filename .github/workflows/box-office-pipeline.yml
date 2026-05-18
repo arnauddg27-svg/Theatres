@@ -408,7 +408,8 @@ jobs:
             box-office-tracker/data/seat-counts.csv \
             box-office-tracker/data/pre-reservation-snapshots.csv \
             box-office-tracker/data/polymarket-markets.csv \
-            box-office-tracker/data/run-logs)" ]; then
+            box-office-tracker/data/run-logs \
+            box-office-tracker/data/model-audits)" ]; then
             echo "Merged scrape artifacts changed canonical data; finalize required."
             echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
             exit 0
@@ -448,6 +449,11 @@ jobs:
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         run: python export_seat_counts_xlsx.py
+
+      - name: Refresh model audit
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        run: python model_audit.py --export-training-data --as-of-grid
 
       - name: Commit merged scrape data + predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'

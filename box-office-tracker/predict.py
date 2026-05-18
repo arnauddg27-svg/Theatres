@@ -45,6 +45,7 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                recalibrate_snapshot_day_scale_factors,
                                recalibrate_snapshot_lead_scale_factors,
                                snapshot_calibration_support)
+from model_pipeline import build_model_card, residual_errors_from_history
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -69,7 +70,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v20-multi-anchor-snapshot"
+MODEL_VERSION = "seat-regression-v21-audited-layered-model-card"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -2531,6 +2532,10 @@ def select_regression_prediction(pred, cal=None):
     pred["model_forecast_source"] = source
     pred["model_forecast_basis"] = basis
     pred["model_forecast_uses_polymarket"] = False
+    pred["model_card"] = build_model_card(
+        pred,
+        residual_errors=residual_errors_from_history(cal or {}),
+    )
     return pred
 
 
@@ -5588,6 +5593,25 @@ def print_prediction(pred, verbose=False):
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
+    card = pred.get("model_card") or {}
+    intervals = card.get("intervals") or {}
+    if intervals:
+        i50 = intervals.get("50", {})
+        i80 = intervals.get("80", {})
+        i90 = intervals.get("90", {})
+        print(
+            "    Calibrated intervals: "
+            f"50% {fmt_m(i50.get('low_m', regression_low))}-{fmt_m(i50.get('high_m', regression_high))}; "
+            f"80% {fmt_m(i80.get('low_m', regression_low))}-{fmt_m(i80.get('high_m', regression_high))}; "
+            f"90% {fmt_m(i90.get('low_m', regression_low))}-{fmt_m(i90.get('high_m', regression_high))}"
+        )
+        risks = card.get("biggest_missing_data_risks") or []
+        risk_text = "; ".join(risks[:3]) if risks else "none"
+        confidence = "high-confidence" if card.get("high_confidence") else "partial-data"
+        print(
+            f"    Model card: {card.get('coverage_grade', 'unknown')} coverage, "
+            f"{confidence}; risks: {risk_text}"
+        )
     if pred.get("historical_residual_factor") is not None:
         print(f"    Historical residual: x{pred['historical_residual_factor']:.3f} "
               f"(raw x{pred['historical_residual_raw_factor']:.3f}, "

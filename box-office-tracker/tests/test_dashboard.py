@@ -196,6 +196,50 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual("Mortal Kombat II", data["movies"][0]["movie"])
         self.assertEqual(3, data["movies"][0]["seat_data"]["rows"])
 
+    def test_dashboard_includes_model_audit_summary_when_present(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            data_dir = Path(tmp)
+            write_csv(data_dir / "pre-reservation-snapshots.csv", dashboard.PRE_RESERVATION_FIELDS, [])
+            write_csv(
+                data_dir / "seat-counts.csv",
+                dashboard.SEAT_FIELDS,
+                [
+                    {
+                        "weekend_of": "2026-05-15",
+                        "run_id": "seat-et",
+                        "date": "2026-05-15",
+                        "day_of_week": "Friday",
+                        "theatre_name": "AMC A",
+                        "timezone": "ET",
+                        "movie_title": "Obsession",
+                        "showtime": "7:00pm",
+                        "check_time": "2026-05-16T07:00:00+00:00",
+                        "total_seats": "100",
+                        "seats_sold": "50",
+                    },
+                ],
+            )
+            write_csv(data_dir / "polymarket-markets.csv", dashboard.POLY_FIELDS, [])
+            (data_dir / "showtime-links.json").write_text("{}")
+            audit_dir = data_dir / "model-audits"
+            audit_dir.mkdir()
+            (audit_dir / "as-of-grid-summary.json").write_text(json.dumps({
+                "overall": {"n": 7, "mape": 0.18, "bias_m": 1.2},
+                "by_forecast_cut": {
+                    "saturday_morning": {"n": 4, "mape": 0.12, "bias_m": -0.4}
+                },
+            }))
+
+            data = dashboard.build_dashboard_data(
+                data_dir=data_dir,
+                auto_pull=False,
+                include_predictions=False,
+                now=datetime(2026, 5, 16, 12, 0),
+            )
+
+        self.assertEqual(7, data["model_audit"]["overall"]["n"])
+        self.assertIn("saturday_morning", data["model_audit"]["by_forecast_cut"])
+
     def test_dashboard_snapshot_status_requires_each_date_timezone_slice(self):
         with tempfile.TemporaryDirectory() as tmp:
             data_dir = Path(tmp)

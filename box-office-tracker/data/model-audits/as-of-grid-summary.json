@@ -1,0 +1,122 @@
+{
+  "overall": {
+    "n": 22,
+    "mae_m": 13.276,
+    "mape": 1.0712,
+    "bias_m": -6.195,
+    "interval_80_coverage": 0.8947
+  },
+  "by_forecast_cut": {
+    "final_pre_estimate": {
+      "n": 6,
+      "mae_m": 14.15,
+      "mape": 1.7125,
+      "bias_m": -3.252,
+      "interval_80_coverage": 1.0
+    },
+    "friday_morning": {
+      "n": 5,
+      "mae_m": 15.82,
+      "mape": 0.3178,
+      "bias_m": -12.361,
+      "interval_80_coverage": 0.5
+    },
+    "saturday_morning": {
+      "n": 5,
+      "mae_m": 7.954,
+      "mape": 0.115,
+      "bias_m": -7.502,
+      "interval_80_coverage": 1.0
+    },
+    "sunday_morning": {
+      "n": 6,
+      "mae_m": 14.717,
+      "mape": 1.8545,
+      "bias_m": -2.91,
+      "interval_80_coverage": 0.8333
+    }
+  },
+  "by_coverage_tier": {
+    "low": {
+      "n": 18,
+      "mae_m": 15.775,
+      "mape": 1.2941,
+      "bias_m": -7.12,
+      "interval_80_coverage": 0.8667
+    },
+    "medium": {
+      "n": 4,
+      "mae_m": 2.031,
+      "mape": 0.0679,
+      "bias_m": -2.031,
+      "interval_80_coverage": 1.0
+    }
+  },
+  "by_movie": {
+    "Animal Farm": {
+      "n": 2,
+      "mae_m": 32.916,
+      "mape": 9.9744,
+      "bias_m": 32.916,
+      "interval_80_coverage": 0.5
+    },
+    "Michael": {
+      "n": 4,
+      "mae_m": 40.566,
+      "mape": 0.4182,
+      "bias_m": -40.566,
+      "interval_80_coverage": 0.75
+    },
+    "Mortal Kombat II": {
+      "n": 4,
+      "mae_m": 1.737,
+      "mape": 0.0451,
+      "bias_m": -1.69,
+      "interval_80_coverage": 1.0
+    },
+    "Obsession": {
+      "n": 4,
+      "mae_m": 2.991,
+      "mape": 0.1858,
+      "bias_m": 2.991,
+      "interval_80_coverage": 1.0
+    },
+    "The Devil Wears Prada 2": {
+      "n": 4,
+      "mae_m": 9.228,
+      "mape": 0.1202,
+      "bias_m": -9.228,
+      "interval_80_coverage": 1.0
+    },
+    "The Sheep Detectives": {
+      "n": 4,
+      "mae_m": 2.038,
+      "mape": 0.1351,
+      "bias_m": -2.038,
+      "interval_80_coverage": 1.0
+    }
+  },
+  "by_segment": {
+    "low_gross": {
+      "n": 2,
+      "mae_m": 32.916,
+      "mape": 9.9744,
+      "bias_m": 32.916,
+      "interval_80_coverage": 0.5
+    },
+    "material_medium_plus_coverage": {
+      "n": 4,
+      "mae_m": 2.031,
+      "mape": 0.0679,
+      "bias_m": -2.031,
+      "interval_80_coverage": 1.0
+    },
+    "wide_or_material": {
+      "n": 20,
+      "mae_m": 11.312,
+      "mape": 0.1809,
+      "bias_m": -10.106,
+      "interval_80_coverage": 0.9412
+    }
+  }
+}

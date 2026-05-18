@@ -1,0 +1,14 @@
+{
+  "snapshot_to_final_showtimes": {
+    "path": "/Users/arnauddurand/Documents/Code Projects/Theatre 2.0/box-office-tracker/data/model-audits/snapshot_to_final_showtimes.csv",
+    "rows": 32798
+  },
+  "seat_to_amc_day": {
+    "path": "/Users/arnauddurand/Documents/Code Projects/Theatre 2.0/box-office-tracker/data/model-audits/seat_to_amc_day.csv",
+    "rows": 29
+  },
+  "movie_weekend_actuals": {
+    "path": "/Users/arnauddurand/Documents/Code Projects/Theatre 2.0/box-office-tracker/data/model-audits/movie_weekend_actuals.csv",
+    "rows": 7
+  }
+}
