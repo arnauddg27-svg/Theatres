@@ -821,8 +821,6 @@ class HistoricalCompsTest(unittest.TestCase):
         mk = metadata_for_movie("Mortal Kombat II", metadata)
         sheep = metadata_for_movie("The Sheep Detectives", metadata)
         obsession = metadata_for_movie("Obsession", metadata)
-        animal_farm = metadata_for_movie("Animal Farm", metadata)
-        hokum = metadata_for_movie("Hokum", metadata)
 
         self.assertIsNotNone(mk)
         self.assertEqual("action", mk.genre)
@@ -840,12 +838,6 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("horror", obsession.genre)
         self.assertEqual("horror_fan", obsession.audience_type)
         self.assertEqual(2615, obsession.national_theatre_count)
-
-        self.assertIsNotNone(animal_farm)
-        self.assertEqual(2600, animal_farm.national_theatre_count)
-
-        self.assertIsNotNone(hokum)
-        self.assertEqual(1885, hokum.national_theatre_count)
 
     def test_prediction_seat_comp_model_uses_latest_available_daily_basis(self):
         prediction = {

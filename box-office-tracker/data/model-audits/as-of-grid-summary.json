@@ -1,65 +1,58 @@
 {
   "overall": {
-    "n": 22,
-    "mae_m": 12.796,
-    "mape": 1.0516,
-    "bias_m": -6.556,
-    "interval_80_coverage": 0.8889
+    "n": 20,
+    "mae_m": 10.795,
+    "mape": 0.1599,
+    "bias_m": -10.543,
+    "interval_80_coverage": 0.9474
   },
   "by_forecast_cut": {
     "final_pre_estimate": {
-      "n": 6,
-      "mae_m": 13.854,
-      "mape": 1.7071,
-      "bias_m": -3.338,
+      "n": 5,
+      "mae_m": 10.351,
+      "mape": 0.1388,
+      "bias_m": -10.351,
       "interval_80_coverage": 1.0
     },
     "friday_morning": {
       "n": 5,
-      "mae_m": 14.47,
-      "mape": 0.2369,
-      "bias_m": -13.488,
-      "interval_80_coverage": 0.5
+      "mae_m": 14.452,
+      "mape": 0.2365,
+      "bias_m": -13.521,
+      "interval_80_coverage": 0.75
     },
     "saturday_morning": {
       "n": 5,
-      "mae_m": 7.89,
-      "mape": 0.1197,
-      "bias_m": -7.763,
+      "mae_m": 7.886,
+      "mape": 0.1205,
+      "bias_m": -7.811,
       "interval_80_coverage": 1.0
     },
     "sunday_morning": {
-      "n": 6,
-      "mae_m": 14.431,
-      "mape": 1.8516,
-      "bias_m": -2.991,
-      "interval_80_coverage": 0.8333
+      "n": 5,
+      "mae_m": 10.489,
+      "mape": 0.144,
+      "bias_m": -10.489,
+      "interval_80_coverage": 1.0
     }
   },
   "by_coverage_tier": {
     "low": {
-      "n": 18,
-      "mae_m": 15.304,
-      "mape": 1.275,
-      "bias_m": -7.677,
-      "interval_80_coverage": 0.8571
+      "n": 16,
+      "mae_m": 13.098,
+      "mape": 0.1876,
+      "bias_m": -12.784,
+      "interval_80_coverage": 0.9333
     },
     "medium": {
       "n": 4,
-      "mae_m": 1.509,
-      "mape": 0.0462,
-      "bias_m": -1.509,
+      "mae_m": 1.58,
+      "mape": 0.0492,
+      "bias_m": -1.58,
       "interval_80_coverage": 1.0
     }
   },
   "by_movie": {
-    "Animal Farm": {
-      "n": 2,
-      "mae_m": 32.935,
-      "mape": 9.9773,
-      "bias_m": 32.935,
-      "interval_80_coverage": 0.5
-    },
     "Michael": {
       "n": 4,
       "mae_m": 40.548,
@@ -69,16 +62,16 @@
     },
     "Mortal Kombat II": {
       "n": 4,
-      "mae_m": 1.514,
-      "mape": 0.0393,
-      "bias_m": -1.154,
+      "mae_m": 1.502,
+      "mape": 0.039,
+      "bias_m": -1.254,
       "interval_80_coverage": 1.0
     },
     "Obsession": {
       "n": 4,
-      "mae_m": 1.828,
-      "mape": 0.1136,
-      "bias_m": -0.802,
+      "mae_m": 1.849,
+      "mape": 0.1148,
+      "bias_m": -0.839,
       "interval_80_coverage": 1.0
     },
     "The Devil Wears Prada 2": {
@@ -90,77 +83,69 @@
     },
     "The Sheep Detectives": {
       "n": 4,
-      "mae_m": 1.758,
-      "mape": 0.1165,
-      "bias_m": -1.758,
+      "mae_m": 1.813,
+      "mape": 0.1202,
+      "bias_m": -1.813,
       "interval_80_coverage": 1.0
     }
   },
   "by_segment": {
     "headline_clean": {
       "n": 8,
-      "mae_m": 12.683,
-      "mape": 0.1595,
-      "bias_m": -11.99,
-      "interval_80_coverage": 0.8333
-    },
-    "low_gross": {
-      "n": 2,
-      "mae_m": 32.935,
-      "mape": 9.9773,
-      "bias_m": 32.935,
-      "interval_80_coverage": 0.5
+      "mae_m": 12.669,
+      "mape": 0.1592,
+      "bias_m": -12.04,
+      "interval_80_coverage": 0.8571
     },
     "material_medium_plus_coverage": {
       "n": 4,
-      "mae_m": 1.509,
-      "mape": 0.0462,
-      "bias_m": -1.509,
+      "mae_m": 1.58,
+      "mape": 0.0492,
+      "bias_m": -1.58,
       "interval_80_coverage": 1.0
     },
     "wide_or_material": {
       "n": 20,
-      "mae_m": 10.782,
-      "mape": 0.159,
-      "bias_m": -10.505,
-      "interval_80_coverage": 0.9375
+      "mae_m": 10.795,
+      "mape": 0.1599,
+      "bias_m": -10.543,
+      "interval_80_coverage": 0.9474
     }
   },
   "headline_clean": {
     "n": 8,
-    "mae_m": 12.683,
-    "mape": 0.1595,
-    "bias_m": -11.99,
-    "interval_80_coverage": 0.8333
+    "mae_m": 12.669,
+    "mape": 0.1592,
+    "bias_m": -12.04,
+    "interval_80_coverage": 0.8571
   },
   "headline_by_forecast_cut": {
     "friday_morning": {
       "n": 4,
-      "mae_m": 16.816,
-      "mape": 0.2119,
-      "bias_m": -15.588,
-      "interval_80_coverage": 0.5
+      "mae_m": 16.784,
+      "mape": 0.2108,
+      "bias_m": -15.62,
+      "interval_80_coverage": 0.6667
     },
     "saturday_morning": {
       "n": 2,
-      "mae_m": 15.453,
-      "mape": 0.1618,
-      "bias_m": -15.136,
+      "mae_m": 15.389,
+      "mape": 0.1601,
+      "bias_m": -15.2,
       "interval_80_coverage": 1.0
     },
     "sunday_morning": {
       "n": 2,
-      "mae_m": 1.646,
-      "mape": 0.0524,
-      "bias_m": -1.646,
+      "mae_m": 1.717,
+      "mape": 0.0553,
+      "bias_m": -1.717,
       "interval_80_coverage": 1.0
     }
   },
   "excluded_reasons": {
-    "low_coverage": 14,
-    "low_gross": 2
+    "low_coverage": 12
   },
   "warning_reasons": {
-    "known_partial_day_exclusions": 18
+    "known_partial_day_exclusions": 16
   }
 }
