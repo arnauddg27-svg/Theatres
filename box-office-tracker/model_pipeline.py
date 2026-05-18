@@ -31,6 +31,7 @@ DATA_DIR = BASE_DIR / "data"
 MODEL_AUDIT_DIR = DATA_DIR / "model-audits"
 OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 TIMEZONE_GROUPS = ("ET", "CT", "PT")
+EXCLUDED_THEATRE_NAME_PREFIXES = ("AMC CLASSIC",)
 FORECAST_CUTS = (
     ("thursday_morning", -1, "10:00"),
     ("thursday_night", -1, "23:59"),
@@ -624,6 +625,11 @@ def _read_json(path: Path) -> dict:
         return {}
 
 
+def theatre_name_is_excluded(name: str) -> bool:
+    normalized = (name or "").strip().upper()
+    return any(normalized.startswith(prefix) for prefix in EXCLUDED_THEATRE_NAME_PREFIXES)
+
+
 def expected_timezone_counts_from_theatres(data_dir: Path | str = DATA_DIR) -> dict[str, int]:
     """Count configured AMC theatres by timezone from core + expansion files."""
     data_dir = Path(data_dir)
@@ -636,7 +642,7 @@ def expected_timezone_counts_from_theatres(data_dir: Path | str = DATA_DIR) -> d
                 if not isinstance(item, dict):
                     continue
                 name = (item.get("name") or "").strip()
-                if name:
+                if name and not theatre_name_is_excluded(name):
                     seen[tz].add(name)
     for tz in TIMEZONE_GROUPS:
         counts[tz] = len(seen[tz])

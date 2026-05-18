@@ -67,6 +67,7 @@ EXPANSION_COHORT = "expansion"
 DEFAULT_MODEL_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
 KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT}
 MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
+EXCLUDED_THEATRE_NAME_PREFIXES = ("AMC CLASSIC",)
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
@@ -658,8 +659,15 @@ def _add_theatre_cohorts(cohort_sets, path, default_cohort):
             name = (theatre.get("name") or "").strip()
             if not name:
                 continue
+            if theatre_name_is_excluded(name):
+                continue
             cohort = (theatre.get("cohort") or default_cohort).strip().lower()
             cohort_sets.setdefault(cohort, set()).add(name)
+
+
+def theatre_name_is_excluded(name):
+    normalized = (name or "").strip().upper()
+    return any(normalized.startswith(prefix) for prefix in EXCLUDED_THEATRE_NAME_PREFIXES)
 
 
 def _theatre_cohort(theatre, default_cohort):
@@ -681,6 +689,8 @@ def _add_theatre_timezone_reference(name_to_tz, tz_counts, path, default_cohort,
         for theatre in theatres:
             name = (theatre.get("name") or "").strip()
             if not name:
+                continue
+            if theatre_name_is_excluded(name):
                 continue
             cohort = _theatre_cohort(theatre, default_cohort)
             if cohort not in allowed_cohorts:

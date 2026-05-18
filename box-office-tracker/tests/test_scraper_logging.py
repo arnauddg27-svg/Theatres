@@ -117,6 +117,34 @@ class ScraperLoggingTest(unittest.TestCase):
             scraper.phase1_weekend_anchor(datetime(2026, 5, 6, 12, 0), full_weekend=True),
         )
 
+    def test_load_theatres_excludes_amc_classic_locations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            old_theatres_json = scraper.THEATRES_JSON
+            old_expansion_json = scraper.THEATRES_EXPANSION_JSON
+            scraper.THEATRES_JSON = tmp_path / "theatres-all.json"
+            scraper.THEATRES_EXPANSION_JSON = tmp_path / "theatres-expansion.json"
+            scraper.THEATRES_JSON.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC Empire 25", "slug": "amc-empire-25"},
+                    {"name": "AMC CLASSIC Foothills 12", "slug": "amc-classic-foothills-12"},
+                ]
+            }))
+            scraper.THEATRES_EXPANSION_JSON.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC CLASSIC Apple Blossom 12", "slug": "amc-classic-apple-blossom-12"},
+                    {"name": "AMC Garden State 16", "slug": "amc-garden-state-16"},
+                ]
+            }))
+            try:
+                theatres = scraper.load_theatres()
+            finally:
+                scraper.THEATRES_JSON = old_theatres_json
+                scraper.THEATRES_EXPANSION_JSON = old_expansion_json
+
+        names = [theatre["name"] for theatre in theatres["ET"]]
+        self.assertEqual(["AMC Empire 25", "AMC Garden State 16"], names)
+
     def test_polymarket_fetch_uses_public_search_for_low_volume_opening_markets(self):
         class FakeResponse:
             def __init__(self, payload):

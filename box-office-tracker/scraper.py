@@ -49,6 +49,7 @@ EXPANSION_COHORT = "expansion"
 DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
 KNOWN_THEATRE_COHORTS = set(DEFAULT_COLLECTION_COHORTS)
 REQUIRED_PHASE1_COHORTS = (CORE_COHORT,)
+EXCLUDED_THEATRE_NAME_PREFIXES = ("AMC CLASSIC",)
 
 
 def _env_bool(name, default=False):
@@ -85,6 +86,11 @@ def _theatre_cohort(theatre):
     return (theatre.get("cohort") or CORE_COHORT).strip().lower()
 
 
+def theatre_is_excluded(theatre):
+    name = (theatre.get("name") or "").strip().upper()
+    return any(name.startswith(prefix) for prefix in EXCLUDED_THEATRE_NAME_PREFIXES)
+
+
 def _copy_theatre(theatre, cohort):
     copied = dict(theatre)
     copied["cohort"] = (copied.get("cohort") or cohort).strip().lower()
@@ -101,6 +107,8 @@ def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohort
     }
     for theatre in theatres:
         if not theatre.get("name") or not theatre.get("slug"):
+            continue
+        if theatre_is_excluded(theatre):
             continue
         copied = _copy_theatre(theatre, default_cohort)
         if _theatre_cohort(copied) not in allowed_cohorts:

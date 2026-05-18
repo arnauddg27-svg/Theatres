@@ -77,6 +77,73 @@ class PredictionNormalizationTest(unittest.TestCase):
             predict.movie_mapping_get(mapping, "Sample Movie"),
         )
 
+    def test_prediction_theatre_references_exclude_amc_classic_locations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            core = tmp_path / "theatres-all.json"
+            expansion = tmp_path / "theatres-expansion.json"
+            core.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC Empire 25", "slug": "amc-empire-25"},
+                    {"name": "AMC CLASSIC Foothills 12", "slug": "amc-classic-foothills-12"},
+                ],
+                "CT": [
+                    {"name": "AMC River East 21", "slug": "amc-river-east-21"},
+                ],
+            }))
+            expansion.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC CLASSIC Apple Blossom 12", "slug": "amc-classic-apple-blossom-12"},
+                    {"name": "AMC Garden State 16", "slug": "amc-garden-state-16"},
+                ]
+            }))
+            old_core = predict.THEATRES_JSON
+            old_expansion = predict.THEATRES_EXPANSION_JSON
+            predict.THEATRES_JSON = str(core)
+            predict.THEATRES_EXPANSION_JSON = str(expansion)
+            try:
+                cohort_sets = predict.load_theatre_cohort_sets()
+                name_to_tz, tz_counts = predict.load_theatre_timezone_reference()
+            finally:
+                predict.THEATRES_JSON = old_core
+                predict.THEATRES_EXPANSION_JSON = old_expansion
+
+        all_names = cohort_sets[predict.CORE_COHORT] | cohort_sets[predict.EXPANSION_COHORT]
+        self.assertNotIn("AMC CLASSIC Foothills 12", all_names)
+        self.assertNotIn("AMC CLASSIC Apple Blossom 12", all_names)
+        self.assertEqual(
+            {
+                "AMC Empire 25": "ET",
+                "AMC River East 21": "CT",
+                "AMC Garden State 16": "ET",
+            },
+            name_to_tz,
+        )
+        self.assertEqual({"ET": 2, "CT": 1}, tz_counts)
+
+    def test_model_pipeline_expected_counts_exclude_amc_classic_locations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            (tmp_path / "theatres-all.json").write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC Empire 25", "slug": "amc-empire-25"},
+                    {"name": "AMC CLASSIC Foothills 12", "slug": "amc-classic-foothills-12"},
+                ],
+                "PT": [
+                    {"name": "AMC The Grove 14", "slug": "amc-the-grove-14"},
+                ],
+            }))
+            (tmp_path / "theatres-expansion.json").write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC CLASSIC Apple Blossom 12", "slug": "amc-classic-apple-blossom-12"},
+                    {"name": "AMC Garden State 16", "slug": "amc-garden-state-16"},
+                ]
+            }))
+
+            counts = model_pipeline.expected_timezone_counts_from_theatres(tmp_path)
+
+        self.assertEqual({"ET": 2, "PT": 1}, counts)
+
     def test_parse_manual_daily_actuals(self):
         parsed = calibrate.parse_daily_actuals_arg(
             "Thursday=10.0,Friday=22.5,Saturday=25.9,Sunday=18.6"
