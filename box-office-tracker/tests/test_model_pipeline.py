@@ -351,9 +351,11 @@ class ModelPipelineTest(unittest.TestCase):
         rows = [
             {
                 "movie": "Clean",
+                "forecast_cut": "friday_morning",
                 "actual_m": 20.0,
                 "predicted_m": 18.0,
-                "coverage_ratio": 0.75,
+                "coverage_ratio": 0.07,
+                "stage_coverage_ratio": 0.92,
                 "calibration_source": "freeze",
                 "excluded_day_count": 0,
             },
@@ -362,6 +364,7 @@ class ModelPipelineTest(unittest.TestCase):
                 "actual_m": 3.0,
                 "predicted_m": 9.0,
                 "coverage_ratio": 0.90,
+                "stage_coverage_ratio": 0.90,
                 "calibration_source": "freeze",
                 "excluded_day_count": 0,
             },
@@ -369,7 +372,8 @@ class ModelPipelineTest(unittest.TestCase):
                 "movie": "Thin Coverage",
                 "actual_m": 30.0,
                 "predicted_m": 40.0,
-                "coverage_ratio": 0.20,
+                "coverage_ratio": 0.60,
+                "stage_coverage_ratio": 0.20,
                 "calibration_source": "freeze",
                 "excluded_day_count": 0,
             },
@@ -378,6 +382,7 @@ class ModelPipelineTest(unittest.TestCase):
                 "actual_m": 30.0,
                 "predicted_m": 40.0,
                 "coverage_ratio": 0.90,
+                "stage_coverage_ratio": 0.90,
                 "calibration_source": "live-fallback",
                 "excluded_day_count": 1,
             },
@@ -386,6 +391,7 @@ class ModelPipelineTest(unittest.TestCase):
                 "actual_m": 30.0,
                 "predicted_m": 29.0,
                 "coverage_ratio": 0.90,
+                "stage_coverage_ratio": 0.90,
                 "calibration_source": "freeze",
                 "excluded_day_count": 1,
             },
@@ -394,6 +400,7 @@ class ModelPipelineTest(unittest.TestCase):
         cleaned = model_pipeline.apply_precision_quality(rows)
 
         self.assertEqual(1, cleaned[0]["headline_eligible"])
+        self.assertEqual("stage", cleaned[0]["quality_basis"])
         self.assertEqual("", cleaned[0]["quality_reasons"])
         self.assertEqual(0, cleaned[1]["headline_eligible"])
         self.assertIn("low_gross", cleaned[1]["quality_reasons"])
@@ -405,6 +412,26 @@ class ModelPipelineTest(unittest.TestCase):
         self.assertEqual(1, cleaned[4]["headline_eligible"])
         self.assertEqual("", cleaned[4]["quality_reasons"])
         self.assertIn("known_partial_day_exclusions", cleaned[4]["quality_warnings"])
+
+    def test_stage_coverage_ratio_uses_expected_forecast_cut_days(self):
+        details = {
+            "Thursday": {"effective_coverage_ratio": 0.95},
+            "Friday": {"effective_coverage_ratio": 0.85},
+            "Saturday": {"effective_coverage_ratio": 0.75},
+            # Sunday is intentionally missing.
+        }
+
+        saturday_stage = model_pipeline.stage_coverage_ratio(
+            details,
+            model_pipeline.stage_expected_days("saturday_morning"),
+        )
+        final_stage = model_pipeline.stage_coverage_ratio(
+            details,
+            model_pipeline.stage_expected_days("final_pre_estimate"),
+        )
+
+        self.assertAlmostEqual(0.90, saturday_stage, places=2)
+        self.assertAlmostEqual(0.6375, final_stage, places=4)
 
     def test_replay_summary_uses_headline_clean_slice(self):
         rows = model_pipeline.apply_precision_quality([
@@ -434,6 +461,7 @@ class ModelPipelineTest(unittest.TestCase):
 
         self.assertEqual(2, summary["overall"]["n"])
         self.assertEqual(1, summary["headline_clean"]["n"])
+        self.assertEqual(1, summary["headline_by_forecast_cut"]["saturday_morning"]["n"])
         self.assertLess(summary["headline_clean"]["mape"], summary["overall"]["mape"])
         self.assertEqual(1, summary["excluded_reasons"]["low_gross"])
         self.assertEqual(1, summary["excluded_reasons"]["low_coverage"])

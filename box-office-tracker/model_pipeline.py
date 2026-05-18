@@ -45,6 +45,7 @@ MIN_FOOTPRINT_FACTOR = 0.55
 MAX_FOOTPRINT_FACTOR = 1.08
 HEADLINE_MIN_ACTUAL_M = 10.0
 HEADLINE_MIN_COVERAGE_RATIO = 0.60
+HEADLINE_MIN_STAGE_COVERAGE_RATIO = 0.80
 
 
 def _clean_key(value: str | None) -> str:
@@ -472,6 +473,39 @@ def coverage_grade(coverage_ratio: float | None) -> str:
     return "low"
 
 
+def stage_expected_days(forecast_cut: str | None) -> tuple[str, ...]:
+    """Days that should be available for a forecast cut."""
+    return {
+        "thursday_night": ("Thursday",),
+        "friday_morning": ("Thursday",),
+        "saturday_morning": ("Thursday", "Friday"),
+        "sunday_morning": ("Thursday", "Friday", "Saturday"),
+        "final_pre_estimate": ("Thursday", "Friday", "Saturday", "Sunday"),
+    }.get(str(forecast_cut or ""), ())
+
+
+def stage_coverage_ratio(daily_details: dict | None,
+                         expected_days: Iterable[str]) -> float:
+    """Average coverage for only the days expected at this forecast stage.
+
+    Missing expected days count as zero. This prevents Friday-morning audits
+    from being penalized for not having Saturday/Sunday while still penalizing a
+    final-pre-estimate replay that lacks Sunday.
+    """
+    expected = [day for day in expected_days if day]
+    if not expected:
+        return 0.0
+    details = daily_details or {}
+    coverages = []
+    for day in expected:
+        detail = details.get(day) or {}
+        coverage = detail.get("effective_coverage_ratio")
+        if coverage is None:
+            coverage = detail.get("coverage_ratio")
+        coverages.append(max(0.0, min(1.0, _float(coverage))))
+    return round(sum(coverages) / len(coverages), 4)
+
+
 def missing_data_risks(profile: dict | None) -> list[str]:
     profile = profile or {}
     risks = []
@@ -547,6 +581,13 @@ def precision_quality(row: dict) -> dict:
     actual = _float(row.get("actual_m"))
     predicted = _float(row.get("predicted_m"))
     coverage = _float(row.get("coverage_ratio"))
+    stage_coverage = _float(row.get("stage_coverage_ratio"), -1.0)
+    coverage_basis = stage_coverage if stage_coverage >= 0 else coverage
+    min_coverage = (
+        HEADLINE_MIN_STAGE_COVERAGE_RATIO
+        if stage_coverage >= 0
+        else HEADLINE_MIN_COVERAGE_RATIO
+    )
     excluded_day_count = _int(row.get("excluded_day_count"))
     calibration_source = str(row.get("calibration_source") or "")
     reasons = []
@@ -555,7 +596,7 @@ def precision_quality(row: dict) -> dict:
         reasons.append("missing_prediction_or_actual")
     if 0 < actual < HEADLINE_MIN_ACTUAL_M:
         reasons.append("low_gross")
-    if coverage < HEADLINE_MIN_COVERAGE_RATIO:
+    if coverage_basis < min_coverage:
         reasons.append("low_coverage")
     if calibration_source == "live-fallback":
         reasons.append("missing_pre_actual_freeze")
@@ -566,6 +607,7 @@ def precision_quality(row: dict) -> dict:
         "quality_segment": "headline_clean" if not reasons else "excluded",
         "quality_reasons": ";".join(reasons),
         "quality_warnings": ";".join(warnings),
+        "quality_basis": "stage" if stage_coverage >= 0 else "weekend",
     }
 
 

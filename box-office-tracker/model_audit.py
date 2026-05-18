@@ -141,6 +141,7 @@ def history_replay_rows(calibration: dict,
                 coverage_ratio=coverage,
                 missing_risk_count=len(model_pipeline.missing_data_risks(missing_profile)),
             )
+            stage_days = model_pipeline.stage_expected_days(cut_name)
             low80 = intervals["80"]["low_m"]
             high80 = intervals["80"]["high_m"]
             rows.append({
@@ -160,6 +161,7 @@ def history_replay_rows(calibration: dict,
                 "prior_actual_count": len(prior_errors),
                 "calibration_source": "history",
                 "excluded_day_count": len(entry.get("calibration_excluded_days", []) or []),
+                "stage_expected_days": "|".join(stage_days),
             })
         final_pred = _float(entry.get("predicted_mid"), 0.0)
         if final_pred <= 0:
@@ -174,6 +176,7 @@ def summarize_replay(rows: list[dict]) -> dict:
     by_coverage: dict[str, list[dict]] = defaultdict(list)
     by_movie: dict[str, list[dict]] = defaultdict(list)
     segments: dict[str, list[dict]] = defaultdict(list)
+    clean_by_cut: dict[str, list[dict]] = defaultdict(list)
     excluded_reasons: dict[str, int] = defaultdict(int)
     warning_reasons: dict[str, int] = defaultdict(int)
     for row in rows:
@@ -184,6 +187,7 @@ def summarize_replay(rows: list[dict]) -> dict:
         coverage = _float(row.get("coverage_ratio"))
         if _float(row.get("headline_eligible"), 0.0) >= 1:
             segments["headline_clean"].append(row)
+            clean_by_cut[row["forecast_cut"]].append(row)
         else:
             for reason in str(row.get("quality_reasons") or "").split(";"):
                 if reason:
@@ -220,6 +224,10 @@ def summarize_replay(rows: list[dict]) -> dict:
         "headline_clean": model_pipeline.summarize_backtest_rows(
             segments.get("headline_clean", [])
         ),
+        "headline_by_forecast_cut": {
+            key: model_pipeline.summarize_backtest_rows(value)
+            for key, value in sorted(clean_by_cut.items())
+        },
         "excluded_reasons": dict(sorted(excluded_reasons.items())),
         "warning_reasons": dict(sorted(warning_reasons.items())),
     }
@@ -343,6 +351,11 @@ def current_model_replay_rows(calibration: dict,
             interval80 = (card.get("intervals") or {}).get("80") or {}
             low80 = _float(interval80.get("low_m"))
             high80 = _float(interval80.get("high_m"))
+            stage_days = model_pipeline.stage_expected_days(cut_name)
+            stage_coverage = model_pipeline.stage_coverage_ratio(
+                pred.get("daily_details") or {},
+                stage_days,
+            )
             all_rows.append({
                 "movie": movie,
                 "weekend_of": entry_weekend,
@@ -356,6 +369,8 @@ def current_model_replay_rows(calibration: dict,
                 "ape": round(abs(mid - actual) / actual, 4),
                 "bias_pct": round((mid - actual) / actual, 4),
                 "coverage_ratio": pred.get("seat_weighted_coverage_ratio") or pred.get("coverage_ratio"),
+                "stage_coverage_ratio": stage_coverage,
+                "stage_expected_days": "|".join(stage_days),
                 "coverage_tier": card.get("coverage_grade") or _coverage_tier(_float(pred.get("coverage_ratio"))),
                 "interval80_low_m": low80,
                 "interval80_high_m": high80,

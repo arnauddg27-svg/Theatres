@@ -98,11 +98,11 @@
   },
   "by_segment": {
     "headline_clean": {
-      "n": 4,
-      "mae_m": 2.031,
-      "mape": 0.0679,
-      "bias_m": -2.031,
-      "interval_80_coverage": 1.0
+      "n": 10,
+      "mae_m": 11.138,
+      "mape": 0.186,
+      "bias_m": -8.955,
+      "interval_80_coverage": 0.875
     },
     "low_gross": {
       "n": 2,
@@ -127,14 +127,37 @@
     }
   },
   "headline_clean": {
-    "n": 4,
-    "mae_m": 2.031,
-    "mape": 0.0679,
-    "bias_m": -2.031,
-    "interval_80_coverage": 1.0
+    "n": 10,
+    "mae_m": 11.138,
+    "mape": 0.186,
+    "bias_m": -8.955,
+    "interval_80_coverage": 0.875
+  },
+  "headline_by_forecast_cut": {
+    "friday_morning": {
+      "n": 4,
+      "mae_m": 18.496,
+      "mape": 0.3126,
+      "bias_m": -14.173,
+      "interval_80_coverage": 0.5
+    },
+    "saturday_morning": {
+      "n": 3,
+      "mae_m": 10.639,
+      "mape": 0.1304,
+      "bias_m": -9.887,
+      "interval_80_coverage": 1.0
+    },
+    "sunday_morning": {
+      "n": 3,
+      "mae_m": 1.825,
+      "mape": 0.073,
+      "bias_m": -1.065,
+      "interval_80_coverage": 1.0
+    }
   },
   "excluded_reasons": {
-    "low_coverage": 18,
+    "low_coverage": 12,
     "low_gross": 2
   },
   "warning_reasons": {
