@@ -141,6 +141,38 @@ def parse_daily_actuals_arg(raw):
     return {day: parsed[day] for day in OPENING_WEEKEND_DAYS if day in parsed}
 
 
+def daily_actuals_from_reported_total(movie, actual_total, daily_actual_overrides,
+                                      daily_actual_override_for):
+    """Use known daily reports plus an unlabeled weekend remainder.
+
+    A manual total often arrives before the final daily table is available.
+    If we already have reported Thursday/Friday overrides, keep those real
+    daily actuals for calibration and put the unresolved balance in a
+    non-day bucket. That preserves the true weekend total without inventing a
+    Saturday/Sunday split.
+    """
+    known = {}
+    for day in OPENING_WEEKEND_DAYS:
+        override = daily_actual_override_for(movie, day, daily_actual_overrides)
+        if not override:
+            continue
+        gross = _positive_float(override.get("gross_m"))
+        if gross is None:
+            continue
+        known[day] = gross
+
+    known_total = sum(known.values())
+    if not known or known_total <= 0 or known_total >= actual_total:
+        return {"Weekend": actual_total}
+
+    remainder = actual_total - known_total
+    if remainder <= max(0.05, actual_total * 0.005):
+        return known
+
+    known["WeekendRemainder"] = remainder
+    return known
+
+
 def actual_status_is_final(entry):
     """Legacy calibration rows without status are treated as final actuals."""
     return (entry.get("actual_status") or "final") != "provisional"
@@ -637,9 +669,14 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     all_day_weights = []
     for h in cal["history"]:
         da = h.get("daily_actuals", {})
-        total = sum(da.values())
-        if total > 0 and len(da) >= 3:
-            all_day_weights.append({d: g / total for d, g in da.items()})
+        opening_da = {
+            day: _positive_float(da.get(day))
+            for day in OPENING_WEEKEND_DAYS
+            if _positive_float(da.get(day)) is not None
+        }
+        total = sum(opening_da.values())
+        if total > 0 and len(opening_da) >= 3:
+            all_day_weights.append({d: g / total for d, g in opening_da.items()})
 
     if all_day_weights:
         new_weights = {}
@@ -1039,6 +1076,8 @@ if __name__ == "__main__":
                              load_pre_reservation_data,
                              load_social_signal_data,
                              load_movie_metadata,
+                             load_daily_actual_overrides,
+                             daily_actual_override_for,
                              daily_calibration_fields_from_prediction,
                              national_theatre_count_for_movie,
                              predict_movie)
@@ -1120,7 +1159,12 @@ if __name__ == "__main__":
             # Try fetching daily breakdown, fall back to total-only
             daily_actuals = fetch_opening_weekend_daily(matched_movie, _last_friday())
             if not daily_actuals:
-                daily_actuals = {"Weekend": actual_val}
+                daily_actuals = daily_actuals_from_reported_total(
+                    matched_movie,
+                    actual_val,
+                    load_daily_actual_overrides(weekend_of=_last_friday()),
+                    daily_actual_override_for,
+                )
                 actual_status = "provisional"
             else:
                 actual_status = "final"

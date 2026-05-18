@@ -17,6 +17,8 @@ MIN_DAILY_CALIBRATION_COVERAGE = 0.80
 SNAPSHOT_LEAD_BUCKETS = ("same_day", "next_day", "multi_day", "long_lead")
 SNAPSHOT_DAY_SCALE_PRIOR_WEIGHT = 4.0
 SNAPSHOT_LEAD_SCALE_PRIOR_WEIGHT = 4.0
+SNAPSHOT_INFERRED_DAILY_ACTUAL_WEIGHT = 0.50
+OPENING_WEEKEND_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 
 
 def clamp(value: float, low: float, high: float) -> float:
@@ -38,6 +40,72 @@ def excluded_calibration_days(entry: dict) -> set[str]:
         if _as_float(ratio, 0.0) < MIN_DAILY_CALIBRATION_COVERAGE:
             excluded.add(day)
     return excluded
+
+
+def opening_day_actuals(daily_actuals: dict) -> dict[str, float]:
+    """Return only real Thu/Fri/Sat/Sun daily actuals from a history row."""
+    if not isinstance(daily_actuals, dict):
+        return {}
+    actuals = {}
+    for day in OPENING_WEEKEND_DAYS:
+        value = _as_float(daily_actuals.get(day), 0.0)
+        if value > 0:
+            actuals[day] = value
+    return actuals
+
+
+def _total_actual_for_entry(entry: dict) -> float:
+    total = _as_float(entry.get("actual_total", entry.get("actual")), 0.0)
+    if total > 0:
+        return total
+    return sum(_as_float(v, 0.0) for v in (entry.get("daily_actuals", {}) or {}).values())
+
+
+def snapshot_calibration_actual_for_day(entry: dict, day: str) -> tuple[float, float]:
+    """Actual gross and confidence multiplier for snapshot-day calibration.
+
+    Prefer direct day actuals. If a row has only a weekend total plus some
+    known reported days, allocate the remaining total across missing
+    snapshot-covered days by the snapshot's own raw day proportions. This
+    lets total-only weekend actuals teach the future snapshot layer without
+    writing fabricated public daily grosses into history.
+    """
+    daily_actuals = opening_day_actuals(entry.get("daily_actuals", {}) or {})
+    direct = _as_float(daily_actuals.get(day), 0.0)
+    if direct > 0:
+        return direct, 1.0
+
+    total_actual = _total_actual_for_entry(entry)
+    if total_actual <= 0:
+        return 0.0, 0.0
+
+    known_total = sum(daily_actuals.values())
+    remaining_actual = total_actual - known_total
+    if remaining_actual <= 0:
+        return 0.0, 0.0
+
+    snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+    if day not in snapshot_predictions:
+        return 0.0, 0.0
+
+    missing_days = [
+        candidate
+        for candidate in OPENING_WEEKEND_DAYS
+        if candidate not in daily_actuals
+        and _as_float(snapshot_predictions.get(candidate), 0.0) > 0
+    ]
+    predicted_remaining = sum(
+        _as_float(snapshot_predictions.get(candidate), 0.0)
+        for candidate in missing_days
+    )
+    predicted_day = _as_float(snapshot_predictions.get(day), 0.0)
+    if predicted_remaining <= 0 or predicted_day <= 0:
+        return 0.0, 0.0
+
+    inferred_actual = remaining_actual * (predicted_day / predicted_remaining)
+    if inferred_actual <= 0:
+        return 0.0, 0.0
+    return inferred_actual, SNAPSHOT_INFERRED_DAILY_ACTUAL_WEIGHT
 
 
 def coverage_score(n_theatres: int | float = 0,
@@ -99,7 +167,7 @@ def recalibrate_scale_factor(history: list[dict],
         )
         if daily_actuals and daily_predictions and excluded_days:
             eligible_days = [
-                day for day in ("Thursday", "Friday", "Saturday", "Sunday")
+                day for day in OPENING_WEEKEND_DAYS
                 if day not in excluded_days
                 and _as_float(daily_actuals.get(day), 0.0) > 0
                 and _as_float(daily_predictions.get(day), 0.0) > 0
@@ -148,9 +216,7 @@ def recalibrate_day_scale_factors(history: list[dict],
 
     Returns a dict {day_name: scale_factor} for Thu/Fri/Sat/Sun.
     """
-    scales: dict[str, float] = {
-        day: 1.0 for day in ("Thursday", "Friday", "Saturday", "Sunday")
-    }
+    scales: dict[str, float] = {day: 1.0 for day in OPENING_WEEKEND_DAYS}
 
     if not history:
         return {d: round(s, 4) for d, s in scales.items()}
@@ -167,7 +233,7 @@ def recalibrate_day_scale_factors(history: list[dict],
         excluded_days = excluded_calibration_days(entry)
         n_theatres = entry.get("n_theatres", 0)
 
-        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
+        for day in OPENING_WEEKEND_DAYS:
             if day in excluded_days:
                 continue
             actual = _as_float(da.get(day), 0.0)
@@ -200,24 +266,22 @@ def recalibrate_snapshot_day_scale_factors(history: list[dict],
     coverage. It is separate from day_scale_factors so early reservation probes
     cannot contaminate post-show seat-count calibration.
     """
-    scales: dict[str, float] = {
-        day: 1.0 for day in ("Thursday", "Friday", "Saturday", "Sunday")
-    }
+    scales: dict[str, float] = {day: 1.0 for day in OPENING_WEEKEND_DAYS}
     if not history:
         return {d: round(s, 4) for d, s in scales.items()}
 
     ratios: dict[str, list[tuple[float, float]]] = {day: [] for day in scales}
     for entry in history[-20:]:
-        daily_actuals = entry.get("daily_actuals", {}) or {}
         snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
         snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
 
-        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
-            actual = _as_float(daily_actuals.get(day), 0.0)
+        for day in OPENING_WEEKEND_DAYS:
+            actual, actual_weight = snapshot_calibration_actual_for_day(entry, day)
             predicted = _as_float(snapshot_predictions.get(day), 0.0)
             if actual <= 0 or predicted <= 0:
                 continue
             coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            coverage *= actual_weight
             if coverage < 0.10:
                 continue
             raw_ratio = actual / predicted
@@ -257,18 +321,18 @@ def recalibrate_snapshot_lead_scale_factors(history: list[dict],
     day_scales = day_scales or {}
     ratios: dict[str, list[tuple[float, float]]] = {bucket: [] for bucket in scales}
     for entry in history[-20:]:
-        daily_actuals = entry.get("daily_actuals", {}) or {}
         snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
         snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
         snapshot_leads = entry.get("snapshot_daily_lead_buckets", {}) or {}
 
-        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
-            actual = _as_float(daily_actuals.get(day), 0.0)
+        for day in OPENING_WEEKEND_DAYS:
+            actual, actual_weight = snapshot_calibration_actual_for_day(entry, day)
             predicted = _as_float(snapshot_predictions.get(day), 0.0)
             bucket = str(snapshot_leads.get(day, "") or "").strip()
             if bucket not in scales or actual <= 0 or predicted <= 0:
                 continue
             coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            coverage *= actual_weight
             if coverage < 0.10:
                 continue
             baseline = predicted * _as_float(day_scales.get(day), 1.0)
@@ -305,7 +369,7 @@ def snapshot_calibration_support(history: list[dict]) -> dict[str, dict[str, dic
     """
     days = {
         day: {"n": 0, "support": 0.0}
-        for day in ("Thursday", "Friday", "Saturday", "Sunday")
+        for day in OPENING_WEEKEND_DAYS
     }
     leads = {
         bucket: {"n": 0, "support": 0.0}
@@ -313,17 +377,17 @@ def snapshot_calibration_support(history: list[dict]) -> dict[str, dict[str, dic
     }
 
     for entry in (history or [])[-20:]:
-        daily_actuals = entry.get("daily_actuals", {}) or {}
         snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
         snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
         snapshot_leads = entry.get("snapshot_daily_lead_buckets", {}) or {}
 
-        for day in ("Thursday", "Friday", "Saturday", "Sunday"):
-            actual = _as_float(daily_actuals.get(day), 0.0)
+        for day in OPENING_WEEKEND_DAYS:
+            actual, actual_weight = snapshot_calibration_actual_for_day(entry, day)
             predicted = _as_float(snapshot_predictions.get(day), 0.0)
             if actual <= 0 or predicted <= 0:
                 continue
             coverage = clamp(_as_float(snapshot_coverage.get(day), 0.0), 0.0, 1.0)
+            coverage *= actual_weight
             if coverage < 0.10:
                 continue
 

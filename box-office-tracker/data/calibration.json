@@ -325,16 +325,80 @@
         "Saturday": "same_day",
         "Sunday": "same_day"
       }
+    },
+    {
+      "movie": "Obsession",
+      "weekend_of": "2026-05-15",
+      "date": "2026-05-18",
+      "predicted_mid": 17.24,
+      "predicted_low": 13.84,
+      "predicted_high": 22.37,
+      "actual_total": 16.1,
+      "daily_actuals": {
+        "Thursday": 2.6,
+        "Friday": 4.0,
+        "WeekendRemainder": 9.5
+      },
+      "daily_predictions": {
+        "Thursday": 1.73,
+        "Friday": 3.55,
+        "Saturday": 4.61
+      },
+      "error_pct": 7.1,
+      "n_theatres": 416,
+      "n_days": 3,
+      "model_version": "seat-regression-v20-multi-anchor-snapshot",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "user reported opening weekend actual",
+      "actual_status": "provisional",
+      "raw_daily_predictions": {
+        "Thursday": 1.57,
+        "Friday": 4.78,
+        "Saturday": 5.48
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 2.89,
+        "Friday": 4.86,
+        "Saturday": 5.1,
+        "Sunday": 4.07
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.085,
+        "Friday": 0.235,
+        "Saturday": 0.238,
+        "Sunday": 0.238
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 410,
+        "Friday": 287,
+        "Saturday": 416
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 1.0,
+        "Friday": 1.0,
+        "Saturday": 0.44
+      },
+      "coverage_ratio": 0.813,
+      "calibration_excluded_days": [
+        "Saturday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.3508,
+    "amc_market_share": 0.3377,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 0.8859,
+    "overall_scale_factor": 0.9425,
     "day_weights": {
       "Thursday": 0.0675,
       "Friday": 0.3149,
@@ -342,8 +406,8 @@
       "Sunday": 0.2682
     },
     "day_scale_factors": {
-      "Thursday": 1.1001,
-      "Friday": 0.7423,
+      "Thursday": 1.3225,
+      "Friday": 0.7801,
       "Saturday": 0.8411,
       "Sunday": 1.042
     },
@@ -440,9 +504,9 @@
           "Sunday": 1.0
         },
         "daily_errors": {
-          "Thursday": 6.1,
-          "Friday": 57.6,
-          "Saturday": 13.9,
+          "Thursday": 6.2,
+          "Friday": 57.7,
+          "Saturday": 13.8,
           "Sunday": 1.7
         },
         "model_cohort_key": "core,expansion",
@@ -462,23 +526,42 @@
           "Sunday": 0.976
         },
         "daily_errors": {
-          "Friday": 76.9,
-          "Saturday": 50.1,
+          "Friday": 77.1,
+          "Saturday": 49.9,
           "Sunday": 3.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Obsession",
+        "weekend_of": "2026-05-15",
+        "abs_error_pct": 7.1,
+        "n_theatres": 416,
+        "n_days": 3,
+        "coverage_ratio": 0.813,
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 1.0,
+          "Saturday": 0.44
+        },
+        "daily_errors": {
+          "Thursday": 33.6,
+          "Friday": 11.3
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-05-12",
+    "last_updated": "2026-05-18",
     "snapshot_to_day_scale_factors": {
       "Thursday": 1.0481,
-      "Friday": 1.2471,
-      "Saturday": 1.3304,
-      "Sunday": 1.3304
+      "Friday": 1.2292,
+      "Saturday": 1.3247,
+      "Sunday": 1.3247
     },
     "snapshot_to_lead_scale_factors": {
-      "same_day": 1.2997,
+      "same_day": 1.2695,
       "next_day": 1.0,
       "multi_day": 1.0,
       "long_lead": 1.0
@@ -491,22 +574,22 @@
           "support": 0.202
         },
         "Friday": {
-          "n": 2,
-          "support": 1.313
+          "n": 3,
+          "support": 1.548
         },
         "Saturday": {
-          "n": 2,
-          "support": 1.974
+          "n": 3,
+          "support": 2.093
         },
         "Sunday": {
-          "n": 2,
-          "support": 1.974
+          "n": 3,
+          "support": 2.093
         }
       },
       "leads": {
         "same_day": {
-          "n": 7,
-          "support": 5.463
+          "n": 10,
+          "support": 5.936
         },
         "next_day": {
           "n": 0,

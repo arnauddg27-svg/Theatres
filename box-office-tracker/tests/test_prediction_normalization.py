@@ -19,6 +19,7 @@ from historical_comps import (
 from model_calibration import (
     recalibrate_snapshot_day_scale_factors,
     recalibrate_snapshot_lead_scale_factors,
+    snapshot_calibration_actual_for_day,
     snapshot_calibration_support,
 )
 from predict import (
@@ -1282,6 +1283,61 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertIn("Friday", scales)
         self.assertNotEqual(1.0, scales["Friday"])
+
+    def test_manual_total_actual_preserves_known_daily_overrides_as_remainder(self):
+        overrides = {
+            "Obsession": {
+                "Thursday": {"gross_m": 2.6},
+                "Friday": {"gross_m": 4.0},
+            }
+        }
+
+        daily_actuals = calibrate.daily_actuals_from_reported_total(
+            "Obsession",
+            16.1,
+            overrides,
+            predict.daily_actual_override_for,
+        )
+
+        self.assertAlmostEqual(2.6, daily_actuals["Thursday"])
+        self.assertAlmostEqual(4.0, daily_actuals["Friday"])
+        self.assertAlmostEqual(9.5, daily_actuals["WeekendRemainder"])
+        self.assertNotIn("Saturday", daily_actuals)
+
+    def test_snapshot_calibration_infers_missing_days_from_weekend_remainder(self):
+        entry = {
+            "actual_total": 16.1,
+            "daily_actuals": {
+                "Thursday": 2.6,
+                "Friday": 4.0,
+                "WeekendRemainder": 9.5,
+            },
+            "snapshot_daily_predictions": {
+                "Saturday": 6.0,
+                "Sunday": 4.0,
+            },
+            "snapshot_daily_coverage_ratios": {
+                "Saturday": 0.8,
+                "Sunday": 0.8,
+            },
+            "snapshot_daily_lead_buckets": {
+                "Saturday": "same_day",
+                "Sunday": "same_day",
+            },
+        }
+
+        saturday_actual, saturday_weight = snapshot_calibration_actual_for_day(
+            entry,
+            "Saturday",
+        )
+        scales = recalibrate_snapshot_day_scale_factors([entry], alpha=1.0)
+        support = snapshot_calibration_support([entry])
+
+        self.assertAlmostEqual(5.7, saturday_actual)
+        self.assertAlmostEqual(0.5, saturday_weight)
+        self.assertLess(scales["Saturday"], 1.0)
+        self.assertEqual(1, support["days"]["Saturday"]["n"])
+        self.assertAlmostEqual(0.4, support["days"]["Saturday"]["support"])
 
     def test_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
         snapshot_predictions, snapshot_coverage, snapshot_leads = (
