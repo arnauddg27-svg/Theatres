@@ -43,6 +43,8 @@ WIDE_RELEASE_BASELINE_THEATRES = 4000
 FOOTPRINT_EXPONENT = 0.18
 MIN_FOOTPRINT_FACTOR = 0.55
 MAX_FOOTPRINT_FACTOR = 1.08
+HEADLINE_MIN_ACTUAL_M = 10.0
+HEADLINE_MIN_COVERAGE_RATIO = 0.60
 
 
 def _clean_key(value: str | None) -> str:
@@ -127,7 +129,7 @@ def write_csv_rows(path: Path | str, rows: list[dict]) -> None:
             if key not in fieldnames:
                 fieldnames.append(key)
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -532,6 +534,43 @@ def build_model_card(prediction: dict,
     if audit_summary:
         card["backtest"] = audit_summary
     return card
+
+
+def precision_quality(row: dict) -> dict:
+    """Classify whether a replay row belongs in headline precision metrics.
+
+    Raw rows remain exported for transparency. The headline slice excludes rows
+    that are not comparable to the current trading target: very low-gross films,
+    very thin data coverage, missing pre-actual freezes, or known partial-day
+    calibration exclusions.
+    """
+    actual = _float(row.get("actual_m"))
+    predicted = _float(row.get("predicted_m"))
+    coverage = _float(row.get("coverage_ratio"))
+    excluded_day_count = _int(row.get("excluded_day_count"))
+    calibration_source = str(row.get("calibration_source") or "")
+    reasons = []
+    warnings = []
+    if actual <= 0 or predicted <= 0:
+        reasons.append("missing_prediction_or_actual")
+    if 0 < actual < HEADLINE_MIN_ACTUAL_M:
+        reasons.append("low_gross")
+    if coverage < HEADLINE_MIN_COVERAGE_RATIO:
+        reasons.append("low_coverage")
+    if calibration_source == "live-fallback":
+        reasons.append("missing_pre_actual_freeze")
+    if excluded_day_count > 0:
+        warnings.append("known_partial_day_exclusions")
+    return {
+        "headline_eligible": int(not reasons),
+        "quality_segment": "headline_clean" if not reasons else "excluded",
+        "quality_reasons": ";".join(reasons),
+        "quality_warnings": ";".join(warnings),
+    }
+
+
+def apply_precision_quality(rows: Iterable[dict]) -> list[dict]:
+    return [{**row, **precision_quality(row)} for row in rows]
 
 
 def _read_json(path: Path) -> dict:

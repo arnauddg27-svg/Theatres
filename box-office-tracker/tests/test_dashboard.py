@@ -240,6 +240,10 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual(7, data["model_audit"]["overall"]["n"])
         self.assertIn("saturday_morning", data["model_audit"]["by_forecast_cut"])
 
+    def test_dashboard_model_precision_panel_uses_clean_headline_metric(self):
+        self.assertIn("audit.headline_clean", dashboard.HTML_PAGE)
+        self.assertIn("clean replays", dashboard.HTML_PAGE)
+
     def test_dashboard_snapshot_status_requires_each_date_timezone_slice(self):
         with tempfile.TemporaryDirectory() as tmp:
             data_dir = Path(tmp)

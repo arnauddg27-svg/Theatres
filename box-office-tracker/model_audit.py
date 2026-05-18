@@ -158,6 +158,8 @@ def history_replay_rows(calibration: dict,
                 "interval80_high_m": high80,
                 "interval80_hit": int(low80 <= actual <= high80),
                 "prior_actual_count": len(prior_errors),
+                "calibration_source": "history",
+                "excluded_day_count": len(entry.get("calibration_excluded_days", []) or []),
             })
         final_pred = _float(entry.get("predicted_mid"), 0.0)
         if final_pred <= 0:
@@ -172,12 +174,23 @@ def summarize_replay(rows: list[dict]) -> dict:
     by_coverage: dict[str, list[dict]] = defaultdict(list)
     by_movie: dict[str, list[dict]] = defaultdict(list)
     segments: dict[str, list[dict]] = defaultdict(list)
+    excluded_reasons: dict[str, int] = defaultdict(int)
+    warning_reasons: dict[str, int] = defaultdict(int)
     for row in rows:
         by_cut[row["forecast_cut"]].append(row)
         by_coverage[row["coverage_tier"]].append(row)
         by_movie[row["movie"]].append(row)
         actual = _float(row.get("actual_m"))
         coverage = _float(row.get("coverage_ratio"))
+        if _float(row.get("headline_eligible"), 0.0) >= 1:
+            segments["headline_clean"].append(row)
+        else:
+            for reason in str(row.get("quality_reasons") or "").split(";"):
+                if reason:
+                    excluded_reasons[reason] += 1
+        for warning in str(row.get("quality_warnings") or "").split(";"):
+            if warning:
+                warning_reasons[warning] += 1
         if actual >= 10:
             segments["wide_or_material"].append(row)
         else:
@@ -204,6 +217,11 @@ def summarize_replay(rows: list[dict]) -> dict:
             key: model_pipeline.summarize_backtest_rows(value)
             for key, value in sorted(segments.items())
         },
+        "headline_clean": model_pipeline.summarize_backtest_rows(
+            segments.get("headline_clean", [])
+        ),
+        "excluded_reasons": dict(sorted(excluded_reasons.items())),
+        "warning_reasons": dict(sorted(warning_reasons.items())),
     }
 
 
@@ -346,6 +364,7 @@ def current_model_replay_rows(calibration: dict,
                 "snapshot_weight": pred.get("snapshot_model_weight", 0.0),
                 "seat_days": pred.get("n_days", 0),
                 "seat_theatres": pred.get("n_theatres_total", 0),
+                "excluded_day_count": len(entry.get("calibration_excluded_days", []) or []),
             })
     return all_rows
 
@@ -358,7 +377,7 @@ def _write_rows(path: Path, rows: list[dict]) -> None:
             if key not in fieldnames:
                 fieldnames.append(key)
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -403,6 +422,7 @@ def main(argv: list[str] | None = None) -> int:
         rows = current_model_replay_rows(calibration, weekend_of=args.replay_weekend)
         if not rows:
             rows = history_replay_rows(calibration, weekend_of=args.replay_weekend)
+        rows = model_pipeline.apply_precision_quality(rows)
         summary = summarize_replay(rows)
         results["replay"] = write_replay_outputs(rows, summary, output_dir)
         results["summary"] = summary

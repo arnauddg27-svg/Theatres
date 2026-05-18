@@ -97,6 +97,13 @@
     }
   },
   "by_segment": {
+    "headline_clean": {
+      "n": 4,
+      "mae_m": 2.031,
+      "mape": 0.0679,
+      "bias_m": -2.031,
+      "interval_80_coverage": 1.0
+    },
     "low_gross": {
       "n": 2,
       "mae_m": 32.916,
@@ -118,5 +125,19 @@
       "bias_m": -10.106,
       "interval_80_coverage": 0.9412
     }
+  },
+  "headline_clean": {
+    "n": 4,
+    "mae_m": 2.031,
+    "mape": 0.0679,
+    "bias_m": -2.031,
+    "interval_80_coverage": 1.0
+  },
+  "excluded_reasons": {
+    "low_coverage": 18,
+    "low_gross": 2
+  },
+  "warning_reasons": {
+    "known_partial_day_exclusions": 18
   }
 }

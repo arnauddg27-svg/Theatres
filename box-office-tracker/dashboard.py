@@ -1048,15 +1048,21 @@ HTML_PAGE = r"""<!doctype html>
         : "";
       const audit = data.model_audit || {};
       const auditOverall = audit.overall || {};
+      const auditHeadline = audit.headline_clean || {};
       const auditCut = audit.by_forecast_cut || {};
+      const auditMetric = auditHeadline.n ? auditHeadline : auditOverall;
+      const auditLabel = auditHeadline.n ? "Clean audit" : "Audited";
       const cutBits = Object.entries(auditCut).slice(0, 3).map(([cut, stats]) =>
         `${cut.replaceAll("_", " ")} ${fmtPct(stats.mape)} MAPE`
       ).join(" | ");
+      const excludedReasons = audit.excluded_reasons
+        ? Object.entries(audit.excluded_reasons).map(([reason, count]) => `${reason.replaceAll("_", " ")} ${count}`).join(" | ")
+        : "";
       document.getElementById("runGrid").innerHTML = [
         panel("Phase 1 links", `${phase1.theatres || 0} theatres`, `${fmtTime(phase1.collected_at)} | ${esc((phase1.movies || []).join(", ") || "-")}${phase1LowCoverage}`, phase1),
         panel("Snapshot", `${snapshot.rows || 0} rows`, `${fmtTime(snapshot.latest_time)} | ${tzText(snapshot.timezone_rows)} | ${snapshotDates}${snapshotMissingSlices}${snapshotLowCoverage}`, snapshot),
         panel("Regular scrape", `${regular.rows || 0} rows`, `${fmtTime(regular.latest_time)} | ${tzText(regular.timezone_rows)}`, regular),
-        panel("Model precision", auditOverall.n ? `${fmtPct(auditOverall.mape)} MAPE` : "No audit yet", auditOverall.n ? `${auditOverall.n} replays | bias ${fmtMoney(auditOverall.bias_m || 0)} | ${cutBits || "run model_audit.py --as-of-grid"}` : "Run model_audit.py --as-of-grid", {status: auditOverall.n ? "ok" : "pending", label: auditOverall.n ? "Audited" : "Pending"}),
+        panel("Model precision", auditMetric.n ? `${fmtPct(auditMetric.mape)} MAPE` : "No audit yet", auditMetric.n ? `${auditMetric.n} clean replays | bias ${fmtMoney(auditMetric.bias_m || 0)} | ${cutBits || "run model_audit.py --as-of-grid"}${excludedReasons ? ` | excluded: ${excludedReasons}` : ""}` : "Run model_audit.py --as-of-grid", {status: auditMetric.n ? "ok" : "pending", label: auditMetric.n ? auditLabel : "Pending"}),
         panel("Local data", `${data.totals.seat_rows.toLocaleString()} seat rows`, `${data.totals.snapshot_rows.toLocaleString()} snapshot rows | pull: ${esc(data.pull.output || "-")}`, {status: data.git.dirty ? "partial" : "ok", label: data.git.dirty ? "Dirty" : "Clean"}),
       ].join("");
 

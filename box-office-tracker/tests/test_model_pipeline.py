@@ -347,6 +347,97 @@ class ModelPipelineTest(unittest.TestCase):
             {row["forecast_cut"] for row in rows},
         )
 
+    def test_precision_quality_flags_unusable_replay_rows(self):
+        rows = [
+            {
+                "movie": "Clean",
+                "actual_m": 20.0,
+                "predicted_m": 18.0,
+                "coverage_ratio": 0.75,
+                "calibration_source": "freeze",
+                "excluded_day_count": 0,
+            },
+            {
+                "movie": "Low Gross",
+                "actual_m": 3.0,
+                "predicted_m": 9.0,
+                "coverage_ratio": 0.90,
+                "calibration_source": "freeze",
+                "excluded_day_count": 0,
+            },
+            {
+                "movie": "Thin Coverage",
+                "actual_m": 30.0,
+                "predicted_m": 40.0,
+                "coverage_ratio": 0.20,
+                "calibration_source": "freeze",
+                "excluded_day_count": 0,
+            },
+            {
+                "movie": "Partial",
+                "actual_m": 30.0,
+                "predicted_m": 40.0,
+                "coverage_ratio": 0.90,
+                "calibration_source": "live-fallback",
+                "excluded_day_count": 1,
+            },
+            {
+                "movie": "Partial But Covered",
+                "actual_m": 30.0,
+                "predicted_m": 29.0,
+                "coverage_ratio": 0.90,
+                "calibration_source": "freeze",
+                "excluded_day_count": 1,
+            },
+        ]
+
+        cleaned = model_pipeline.apply_precision_quality(rows)
+
+        self.assertEqual(1, cleaned[0]["headline_eligible"])
+        self.assertEqual("", cleaned[0]["quality_reasons"])
+        self.assertEqual(0, cleaned[1]["headline_eligible"])
+        self.assertIn("low_gross", cleaned[1]["quality_reasons"])
+        self.assertEqual(0, cleaned[2]["headline_eligible"])
+        self.assertIn("low_coverage", cleaned[2]["quality_reasons"])
+        self.assertEqual(0, cleaned[3]["headline_eligible"])
+        self.assertIn("missing_pre_actual_freeze", cleaned[3]["quality_reasons"])
+        self.assertIn("known_partial_day_exclusions", cleaned[3]["quality_warnings"])
+        self.assertEqual(1, cleaned[4]["headline_eligible"])
+        self.assertEqual("", cleaned[4]["quality_reasons"])
+        self.assertIn("known_partial_day_exclusions", cleaned[4]["quality_warnings"])
+
+    def test_replay_summary_uses_headline_clean_slice(self):
+        rows = model_pipeline.apply_precision_quality([
+            {
+                "movie": "Clean",
+                "forecast_cut": "saturday_morning",
+                "actual_m": 20.0,
+                "predicted_m": 18.0,
+                "coverage_ratio": 0.75,
+                "coverage_tier": "medium",
+                "interval80_low_m": 10.0,
+                "interval80_high_m": 25.0,
+            },
+            {
+                "movie": "Bad",
+                "forecast_cut": "saturday_morning",
+                "actual_m": 3.0,
+                "predicted_m": 30.0,
+                "coverage_ratio": 0.10,
+                "coverage_tier": "low",
+                "interval80_low_m": 1.0,
+                "interval80_high_m": 40.0,
+            },
+        ])
+
+        summary = model_audit.summarize_replay(rows)
+
+        self.assertEqual(2, summary["overall"]["n"])
+        self.assertEqual(1, summary["headline_clean"]["n"])
+        self.assertLess(summary["headline_clean"]["mape"], summary["overall"]["mape"])
+        self.assertEqual(1, summary["excluded_reasons"]["low_gross"])
+        self.assertEqual(1, summary["excluded_reasons"]["low_coverage"])
+
 
 if __name__ == "__main__":
     unittest.main()
