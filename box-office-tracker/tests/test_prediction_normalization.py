@@ -92,6 +92,75 @@ class PredictionNormalizationTest(unittest.TestCase):
             parsed,
         )
 
+    def test_the_numbers_article_suffix_slug_and_preview_split(self):
+        html = """
+        <h2>Daily Box Office Performance</h2>
+        <table>
+          <tr><th>Date</th><th>Rank</th><th>Gross</th></tr>
+          <tr><td>Apr&nbsp;30,&nbsp;2026</td><td>P</td><td>$10,000,000</td></tr>
+          <tr><td>May&nbsp;1,&nbsp;2026</td><td>1</td><td>$32,900,084</td></tr>
+          <tr><td>May&nbsp;2,&nbsp;2026</td><td>1</td><td>$25,105,540</td></tr>
+          <tr><td>May&nbsp;3,&nbsp;2026</td><td>1</td><td>$18,741,451</td></tr>
+        </table>
+        """
+        calls = []
+
+        class Response:
+            status_code = 200
+            text = html
+
+        def fake_get(url, **_kwargs):
+            calls.append(url)
+            if "Devil-Wears-Prada-2-The" in url:
+                return Response()
+            return types.SimpleNamespace(status_code=404, text="")
+
+        old_requests = calibrate.requests
+        calibrate.requests = types.SimpleNamespace(get=fake_get)
+        try:
+            daily = calibrate.fetch_movie_daily_history(
+                "The Devil Wears Prada 2",
+                "2026-05-01",
+            )
+        finally:
+            calibrate.requests = old_requests
+
+        self.assertTrue(any("The-Devil-Wears-Prada-2" in url for url in calls))
+        self.assertTrue(any("Devil-Wears-Prada-2-The" in url for url in calls))
+        self.assertAlmostEqual(10.0, daily["Thursday"])
+        self.assertAlmostEqual(22.900084, daily["Friday"])
+        self.assertAlmostEqual(25.10554, daily["Saturday"])
+        self.assertAlmostEqual(18.741451, daily["Sunday"])
+
+    def test_the_numbers_complete_weekend_without_previews_records_zero_thursday(self):
+        html = """
+        <h2>Daily Box Office Performance</h2>
+        <table>
+          <tr><th>Date</th><th>Rank</th><th>Gross</th></tr>
+          <tr><td>May&nbsp;1,&nbsp;2026</td><td>6</td><td>$1,145,988</td></tr>
+          <tr><td>May&nbsp;2,&nbsp;2026</td><td>6</td><td>$1,304,466</td></tr>
+          <tr><td>May&nbsp;3,&nbsp;2026</td><td>6</td><td>$850,909</td></tr>
+        </table>
+        """
+
+        class Response:
+            status_code = 200
+            text = html
+
+        old_requests = calibrate.requests
+        calibrate.requests = types.SimpleNamespace(
+            get=lambda *_args, **_kwargs: Response()
+        )
+        try:
+            daily = calibrate.fetch_movie_daily_history("Animal Farm", "2026-05-01")
+        finally:
+            calibrate.requests = old_requests
+
+        self.assertEqual(0.0, daily["Thursday"])
+        self.assertAlmostEqual(1.145988, daily["Friday"])
+        self.assertAlmostEqual(1.304466, daily["Saturday"])
+        self.assertAlmostEqual(0.850909, daily["Sunday"])
+
     def test_polymarket_expected_value_normalizes_interval_prices(self):
         result = polymarket_expected_value([
             {

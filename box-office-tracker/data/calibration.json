@@ -56,11 +56,12 @@
       "predicted_mid": 95.93,
       "predicted_low": 95.93,
       "predicted_high": 95.93,
-      "actual_total": 76.75,
+      "actual_total": 76.747075,
       "daily_actuals": {
-        "Friday": 32.9,
-        "Saturday": 25.11,
-        "Sunday": 18.74
+        "Thursday": 10.0,
+        "Friday": 22.900084,
+        "Saturday": 25.10554,
+        "Sunday": 18.741451
       },
       "daily_predictions": {
         "Thursday": 14.04,
@@ -73,7 +74,7 @@
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
+      "actual_source": "The Numbers daily table backfill",
       "actual_status": "final",
       "raw_daily_predictions": {
         "Thursday": 13.07,
@@ -115,22 +116,23 @@
       "predicted_mid": 2.3,
       "predicted_low": 1.51,
       "predicted_high": 3.75,
-      "actual_total": 3.3,
+      "actual_total": 3.301363,
       "daily_actuals": {
-        "Friday": 1.15,
-        "Saturday": 1.3,
-        "Sunday": 0.85
+        "Thursday": 0.0,
+        "Friday": 1.145988,
+        "Saturday": 1.304466,
+        "Sunday": 0.850909
       },
       "daily_predictions": {
         "Saturday": 0.83,
         "Sunday": 0.53
       },
-      "error_pct": -30.4,
+      "error_pct": -30.3,
       "n_theatres": 292,
       "n_days": 2,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
+      "actual_source": "The Numbers daily table backfill",
       "actual_status": "final",
       "raw_daily_predictions": {
         "Saturday": 0.83,
@@ -269,11 +271,12 @@
       "predicted_mid": 21.14,
       "predicted_low": 20.17,
       "predicted_high": 22.14,
-      "actual_total": 15.09,
+      "actual_total": 15.087796,
       "daily_actuals": {
-        "Friday": 4.01,
-        "Saturday": 5.19,
-        "Sunday": 5.89
+        "Thursday": 1.03,
+        "Friday": 2.980418,
+        "Saturday": 5.187014,
+        "Sunday": 5.890364
       },
       "daily_predictions": {
         "Thursday": 0.45,
@@ -286,7 +289,7 @@
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
+      "actual_source": "The Numbers daily table backfill",
       "actual_status": "final",
       "raw_daily_predictions": {
         "Thursday": 0.42,
@@ -336,8 +339,9 @@
       "actual_total": 16.1,
       "daily_actuals": {
         "Thursday": 2.6,
-        "Friday": 4.0,
-        "WeekendRemainder": 9.5
+        "Friday": 4.37,
+        "Saturday": 5.4,
+        "Sunday": 3.73
       },
       "daily_predictions": {
         "Thursday": 1.73,
@@ -346,11 +350,11 @@
       },
       "error_pct": 7.1,
       "n_theatres": 416,
-      "n_days": 3,
+      "n_days": 4,
       "model_version": "seat-regression-v20-multi-anchor-snapshot",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "user reported opening weekend actual",
+      "actual_source": "The Numbers daily table backfill",
       "actual_status": "provisional",
       "raw_daily_predictions": {
         "Thursday": 1.57,
@@ -398,17 +402,17 @@
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 0.9425,
+    "overall_scale_factor": 0.9453,
     "day_weights": {
-      "Thursday": 0.0675,
-      "Friday": 0.3149,
-      "Saturday": 0.3493,
-      "Sunday": 0.2682
+      "Thursday": 0.1093,
+      "Friday": 0.2801,
+      "Saturday": 0.3475,
+      "Sunday": 0.2631
     },
     "day_scale_factors": {
-      "Thursday": 1.3225,
-      "Friday": 0.7801,
-      "Saturday": 0.8411,
+      "Thursday": 1.278,
+      "Friday": 0.793,
+      "Saturday": 0.841,
       "Sunday": 1.042
     },
     "format_scale_factors": {},
@@ -449,9 +453,10 @@
           "Sunday": 1.0
         },
         "daily_errors": {
-          "Friday": 10.2,
+          "Thursday": 40.4,
+          "Friday": 58.4,
           "Saturday": 22.4,
-          "Sunday": 20.5
+          "Sunday": 20.6
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -468,8 +473,8 @@
           "Sunday": 0.675
         },
         "daily_errors": {
-          "Saturday": 36.2,
-          "Sunday": 37.6
+          "Saturday": 36.4,
+          "Sunday": 37.7
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -526,8 +531,9 @@
           "Sunday": 0.976
         },
         "daily_errors": {
-          "Friday": 77.1,
-          "Saturday": 49.9,
+          "Thursday": 56.3,
+          "Friday": 138.2,
+          "Saturday": 50.0,
           "Sunday": 3.9
         },
         "model_cohort_key": "core,expansion",
@@ -538,7 +544,7 @@
         "weekend_of": "2026-05-15",
         "abs_error_pct": 7.1,
         "n_theatres": 416,
-        "n_days": 3,
+        "n_days": 4,
         "coverage_ratio": 0.813,
         "daily_coverage_ratios": {
           "Thursday": 1.0,
@@ -546,8 +552,9 @@
           "Saturday": 0.44
         },
         "daily_errors": {
-          "Thursday": 33.6,
-          "Friday": 11.3
+          "Thursday": 33.5,
+          "Friday": 18.8,
+          "Saturday": 14.6
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -556,12 +563,12 @@
     "last_updated": "2026-05-18",
     "snapshot_to_day_scale_factors": {
       "Thursday": 1.0481,
-      "Friday": 1.2292,
-      "Saturday": 1.3247,
-      "Sunday": 1.3247
+      "Friday": 1.2324,
+      "Saturday": 1.3146,
+      "Sunday": 1.3092
     },
     "snapshot_to_lead_scale_factors": {
-      "same_day": 1.2695,
+      "same_day": 1.2566,
       "next_day": 1.0,
       "multi_day": 1.0,
       "long_lead": 1.0
@@ -579,17 +586,17 @@
         },
         "Saturday": {
           "n": 3,
-          "support": 2.093
+          "support": 2.212
         },
         "Sunday": {
           "n": 3,
-          "support": 2.093
+          "support": 2.212
         }
       },
       "leads": {
         "same_day": {
           "n": 10,
-          "support": 5.936
+          "support": 6.174
         },
         "next_day": {
           "n": 0,

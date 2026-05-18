@@ -443,13 +443,27 @@ def fetch_movie_daily_history(movie_title, friday_date):
     friday = datetime.strptime(friday_date, "%Y-%m-%d")
     year = friday.year
 
-    # Try common URL patterns with year suffix to disambiguate remakes
-    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', movie_title).strip().replace(' ', '-')
-    candidates = [
-        f"https://www.the-numbers.com/movie/{slug}-({year})",
-        f"https://www.the-numbers.com/movie/{slug}-({year - 1})",
-        f"https://www.the-numbers.com/movie/{slug}",
-    ]
+    # Try common URL patterns with year suffix to disambiguate remakes.
+    # The Numbers often moves leading articles to the end of the slug:
+    # "The Devil Wears Prada 2" -> "Devil-Wears-Prada-2-The".
+    def title_slugs(title):
+        clean = re.sub(r'[^a-zA-Z0-9\s-]', '', title).strip()
+        if not clean:
+            return []
+        slugs = [clean.replace(' ', '-')]
+        words = clean.split()
+        if len(words) > 1 and words[0].lower() in {"the", "a", "an"}:
+            slugs.append("-".join(words[1:] + [words[0]]))
+        # Preserve order while de-duping.
+        return list(dict.fromkeys(slugs))
+
+    candidates = []
+    for slug in title_slugs(movie_title):
+        candidates.extend([
+            f"https://www.the-numbers.com/movie/{slug}-({year})",
+            f"https://www.the-numbers.com/movie/{slug}-({year - 1})",
+            f"https://www.the-numbers.com/movie/{slug}",
+        ])
 
     for url in candidates:
         try:
@@ -508,6 +522,14 @@ def fetch_movie_daily_history(movie_title, friday_date):
             if d in date_grosses:
                 rank, gross = date_grosses[d]
                 daily[day_name] = gross
+            elif day_name == "Thursday" and all(
+                (friday + timedelta(days=offset)).strftime("%Y-%m-%d") in date_grosses
+                for offset in (0, 1, 2)
+            ):
+                # If the movie page has a complete Fri/Sat/Sun opening
+                # weekend but no preview row, record Thursday as an explicit
+                # zero rather than leaving the daily actual missing.
+                daily[day_name] = 0.0
         thursday_rank = date_grosses.get(thursday, ("", 0))[0]
         if (
             str(thursday_rank).strip().upper() == "P"
