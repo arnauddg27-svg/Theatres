@@ -4980,21 +4980,13 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         if effective_coverage_ratio is not None:
             effective_coverage_ratio *= daypart_coverage_factor
 
-        # Stage C: AMC → domestic. Once a reliable same-week reported actual
-        # exists, use its implied tracked-AMC share for later regular seat
-        # days so this movie calibrates itself instead of leaning on one global
-        # AMC share prior.
-        share_anchor_for_day = (
-            same_week_amc_share_anchor_for_day(
-                dynamic_amc_share_anchors,
-                target_day=day_name,
-            )
-            if dynamic_amc_share_anchors and not actual_override else None
-        )
-        share_override = (
-            share_anchor_for_day["blended_share"]
-            if share_anchor_for_day else None
-        )
+        # Stage C: AMC → domestic. Reported actuals should not rewrite this
+        # movie's AMC share for future days; a single preview report can reflect
+        # release footprint, premium screens, or timing more than actual AMC
+        # share. Keep the calibrated share stable and record the actual-vs-seat
+        # scale on the seat layer instead.
+        share_anchor_for_day = None
+        share_override = None
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(
             amc_total,
             cal,
@@ -5025,37 +5017,30 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         seat_implied_domestic_mid = domestic_mid
         seat_implied_domestic_low = domestic_low
         seat_implied_domestic_high = domestic_high
-        coverage_for_share_anchor = effective_coverage_ratio
         actual_gross_m = None
-        actual_day_anchor = None
+        seat_model_actual_scale = None
+        seat_model_actual_raw_scale = None
         if actual_override:
             actual_gross_m = _positive_float(actual_override.get("gross_m"))
             if actual_gross_m is not None:
                 actual_gross = actual_gross_m * 1_000_000
                 day_scale = get_day_scale(cal, day_name)
+                scaled_seat_implied = seat_implied_domestic_mid * day_scale
+                if scaled_seat_implied and scaled_seat_implied > 0:
+                    seat_model_actual_scale = actual_gross / scaled_seat_implied
                 raw_actual_gross = (
                     actual_gross / day_scale
                     if day_scale and abs(day_scale) > 1e-9 else actual_gross
                 )
+                if seat_implied_domestic_mid and seat_implied_domestic_mid > 0:
+                    seat_model_actual_raw_scale = (
+                        raw_actual_gross / seat_implied_domestic_mid
+                    )
                 domestic_mid = raw_actual_gross
                 domestic_low = raw_actual_gross
                 domestic_high = raw_actual_gross
                 coverage_ratio = 1.0
                 effective_coverage_ratio = 1.0
-                anchor = same_week_amc_share_anchor(
-                    day_name,
-                    amc_total,
-                    actual_gross,
-                    cal,
-                    footprint_factor=footprint_factor,
-                    coverage_ratio=coverage_for_share_anchor,
-                )
-                if anchor:
-                    actual_day_anchor = anchor
-                    dynamic_amc_share_anchors.append(anchor)
-                    dynamic_amc_share_anchor = same_week_amc_share_anchor_for_day(
-                        dynamic_amc_share_anchors,
-                    )
 
         daily_estimates[day_name] = domestic_mid
         details = {
@@ -5137,14 +5122,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 "seat_implied_scaled_domestic_mid": (
                     seat_implied_domestic_mid * get_day_scale(cal, day_name)
                 ),
+                "seat_model_actual_scale": seat_model_actual_scale,
+                "seat_model_actual_raw_scale": seat_model_actual_raw_scale,
+                "seat_model_actual_scale_source": (
+                    "reported_actual_vs_seat_implied"
+                    if seat_model_actual_scale is not None else None
+                ),
+                "seat_model_actual_showings_per_cinema": round(avg_showings, 1),
+                "seat_model_actual_daypart_factor": daypart_coverage_factor,
+                "seat_model_actual_evening_to_daily": ev_to_daily,
             })
-            if actual_day_anchor:
-                details.update({
-                    "amc_market_share_implied": actual_day_anchor["implied_share"],
-                    "amc_market_share_raw_implied": actual_day_anchor["raw_implied_share"],
-                    "amc_market_share_anchor_weight": actual_day_anchor["anchor_weight"],
-                    "amc_market_share_blended": actual_day_anchor["blended_share"],
-                })
         else:
             details["actual_override"] = False
         daily_details[day_name] = details
@@ -6190,9 +6177,10 @@ def print_prediction(pred, verbose=False):
             ):
                 full_day_window_str += ", schedule-limited"
         share_note = ""
-        if details.get("actual_override") and details.get("amc_market_share_implied"):
+        if details.get("actual_override") and details.get("seat_model_actual_scale"):
             share_note = (
-                f", implied AMC share {details['amc_market_share_implied']:.1%}"
+                f", seat scale x{details['seat_model_actual_scale']:.2f} "
+                "from reported actual"
             )
         elif details.get("amc_market_share_source") == "same_week_actual_anchor":
             share_note = (

@@ -3292,12 +3292,18 @@ class PredictionNormalizationTest(unittest.TestCase):
             places=6,
         )
 
-    def test_daily_actual_override_calibrates_future_day_amc_share(self):
+    def test_daily_actual_override_keeps_calibrated_share_and_records_seat_scale(self):
         cal = {
             "calibration_factors": {
                 "amc_market_share": 0.25,
-                "day_weights": {"Thursday": 0.5, "Friday": 0.5},
-                "day_scale_factors": {"Thursday": 1.0, "Friday": 1.0},
+                "day_weights": {"Thursday": 0.5, "Friday": 0.5, "Saturday": 0.5},
+                "day_scale_factors": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                },
+                "snapshot_to_day_scale_factors": {"Saturday": 1.0},
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
                 "reference_amc_theatres": 2,
             }
         }
@@ -3311,12 +3317,19 @@ class PredictionNormalizationTest(unittest.TestCase):
                 self._row("AMC Two", date="2026-05-15", day="Friday"),
             ],
         }
+        snapshot_data = {
+            "2026-05-16": [
+                self._snapshot_row("AMC One", "Saturday", "2026-05-16"),
+                self._snapshot_row("AMC Two", "Saturday", "2026-05-16"),
+            ],
+        }
 
         pred = predict_movie(
             "Sample Movie",
             seat_data,
             [],
             cal,
+            snapshot_data=snapshot_data,
             daily_actual_overrides={
                 "Sample Movie": {
                     "Thursday": {
@@ -3329,15 +3342,28 @@ class PredictionNormalizationTest(unittest.TestCase):
             },
         )
 
-        anchor = pred["dynamic_amc_share_anchor"]
+        thursday = pred["daily_details"]["Thursday"]
         friday = pred["daily_details"]["Friday"]
-        self.assertAlmostEqual(0.125, anchor["implied_share"], places=6)
-        self.assertAlmostEqual(0.14375, anchor["blended_share"], places=6)
-        self.assertEqual("Thursday", anchor["day"])
-        self.assertEqual("same_week_actual_anchor", friday["amc_market_share_source"])
-        self.assertAlmostEqual(0.14375, friday["amc_market_share_used"], places=6)
-        self.assertAlmostEqual(1700 / 0.14375, friday["domestic_mid"], places=6)
-        self.assertGreater(friday["domestic_mid"], 1700 / 0.25)
+        saturday_snapshot = pred["snapshot_daily_details"]["Saturday"]
+
+        self.assertIsNone(pred["dynamic_amc_share_anchor"])
+        self.assertEqual([], pred["dynamic_amc_share_anchors"])
+        self.assertAlmostEqual(2.0, thursday["seat_model_actual_scale"], places=6)
+        self.assertEqual(
+            "reported_actual_vs_seat_implied",
+            thursday["seat_model_actual_scale_source"],
+        )
+        self.assertAlmostEqual(0.25, thursday["amc_market_share_used"], places=6)
+        self.assertEqual("calibration", thursday["amc_market_share_source"])
+        self.assertEqual("calibration", friday["amc_market_share_source"])
+        self.assertAlmostEqual(0.25, friday["amc_market_share_used"], places=6)
+        self.assertAlmostEqual(1700 / 0.25, friday["domestic_mid"], places=6)
+        self.assertEqual("calibration", saturday_snapshot["amc_market_share_source"])
+        self.assertAlmostEqual(
+            0.25,
+            saturday_snapshot["amc_market_share_used"],
+            places=6,
+        )
 
     def test_thursday_preview_residual_learns_from_local_history(self):
         cal = {
