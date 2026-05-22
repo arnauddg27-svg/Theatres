@@ -72,7 +72,8 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v21-frontload-snapshot"
+MODEL_VERSION = "seat-regression-v22-seat-snapshot-no-comps"
+COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -2045,11 +2046,19 @@ def component_ratio(high_signal, low_signal):
     return max(a, b) / max(0.001, min(a, b))
 
 
-def model_component_disagreement_profile(pred, base_mid=None, snapshot_mid=None):
+def model_component_disagreement_profile(
+    pred,
+    base_mid=None,
+    snapshot_mid=None,
+    include_comp=True,
+):
     """Describe how far the model's independent anchors are from each other."""
     direct_mid = _positive_float(pred.get("seat_mid_m"))
-    comp_mid = _positive_float(
-        pred.get("seat_comp_adjusted_mid_m", pred.get("seat_comp_mid_m"))
+    comp_mid = (
+        _positive_float(
+            pred.get("seat_comp_adjusted_mid_m", pred.get("seat_comp_mid_m"))
+        )
+        if include_comp else None
     )
     base_mid = _positive_float(base_mid or pred.get("seat_primary_mid_m"))
     snapshot_mid = _positive_float(snapshot_mid or pred.get("snapshot_mid_m"))
@@ -2494,6 +2503,7 @@ def forecast_feature_importance(pred):
     """
     daily_details = pred.get("daily_details") or {}
     thursday = daily_details.get("Thursday") or {}
+    comps_active = bool(COMPS_IN_FORECAST and not pred.get("comp_model_excluded"))
 
     thursday_amc = _positive_float(
         thursday.get("sampled_amc_total", thursday.get("amc_total"))
@@ -2610,7 +2620,7 @@ def forecast_feature_importance(pred):
 
     national_count = _positive_float(pred.get("national_theatre_count"))
     if national_count:
-        integrated = bool(pred.get("theatre_count_model_integrated"))
+        integrated = bool(pred.get("theatre_count_model_integrated") and comps_active)
         footprint = national_release_footprint_factor(national_count)
         national_importance = 55.0 + (8.0 if integrated else 0.0)
         national_available = True
@@ -2628,7 +2638,12 @@ def forecast_feature_importance(pred):
 
     thursday_share = _positive_float(pred.get("seat_comp_thursday_share"))
     external_share = _positive_float(pred.get("seat_comp_external_thursday_share"))
-    if thursday_share:
+    if not comps_active:
+        comp_importance = 10.0
+        comp_available = False
+        comp_confidence = 0.0
+        comp_evidence = "historical comps disabled for production forecast"
+    elif thursday_share:
         local_share = _positive_float(pred.get("seat_comp_local_thursday_share"))
         local_n = int(pred.get("seat_comp_local_thursday_n") or 0)
         local_weight = _coverage_value(
@@ -2654,7 +2669,12 @@ def forecast_feature_importance(pred):
 
     top_comps = pred.get("seat_comp_top_comps") or []
     audience_features = pred.get("seat_comp_audience_features") or ""
-    if top_comps:
+    if not comps_active:
+        metadata_importance = 16.0
+        metadata_available = False
+        metadata_confidence = 0.0
+        metadata_evidence = "comp metadata disabled for production forecast"
+    elif top_comps:
         comp_names = ", ".join(comp.get("movie", "") for comp in top_comps[:3])
         metadata_importance = 45.0 + min(8.0, len(top_comps) * 1.5)
         metadata_available = True
@@ -2677,7 +2697,7 @@ def forecast_feature_importance(pred):
     social = pred.get("social_signal") or {}
     if social:
         quality = _coverage_value(social.get("signal_quality"), default=0.0)
-        integrated = bool(pred.get("social_signal_model_integrated"))
+        integrated = bool(pred.get("social_signal_model_integrated") and comps_active)
         social_importance = 24.0 + quality * 25.0 + (5.0 if integrated else 0.0)
         social_available = True
         social_confidence = quality * 100.0
@@ -2738,7 +2758,7 @@ def forecast_feature_importance(pred):
             "Release scale / tentpole flag",
             release_importance,
             release_evidence,
-            "Release class controls which comps and priors are allowed to pull the seat forecast.",
+            "Release class controls footprint and day-shape priors around the seat forecast.",
             "metadata plus observed AMC footprint",
             available=release_available,
             confidence=release_confidence,
@@ -2758,8 +2778,8 @@ def forecast_feature_importance(pred):
             "Historical comp Thursday share",
             comp_importance,
             comp_evidence,
-            "Preview share turns Thursday demand into an opening-weekend comp estimate.",
-            "weighted comps plus local settled Thursday history",
+            "Preview-share comps are tracked for diagnostics but excluded from the production forecast.",
+            "diagnostic weighted comps plus local settled Thursday history",
             available=comp_available,
             confidence=comp_confidence,
         ),
@@ -2768,7 +2788,7 @@ def forecast_feature_importance(pred):
             "Genre/franchise/audience metadata",
             metadata_importance,
             metadata_evidence,
-            "Metadata selects and weights comps and constrains the residual calibration.",
+            "Metadata remains diagnostic when comps are disabled; release scale is handled separately.",
             "genre, franchise, audience, rating, scores, and social metadata",
             available=metadata_available,
             confidence=metadata_confidence,
@@ -2826,12 +2846,24 @@ def select_regression_prediction(pred, cal=None):
     """Attach the model-driven regression forecast.
 
     Polymarket and published trade estimates remain context only. Calibration,
-    strategy, and reporting use the actual-predictive regression line. Prefer
-    the seat-primary ensemble when available, because it is the calibrated
-    blend of direct seat demand, comp priors, coverage quality, and missing-data
-    risk. Fall back to the lower-level seat+comp or direct seat lines.
+    strategy, and reporting use the actual-predictive regression line. Historical
+    comps are retained as diagnostics, but the production forecast is anchored
+    to observed seat demand plus snapshot, theatre-footprint, residual, and
+    social layers.
     """
-    if pred.get("seat_primary_mid_m") is not None:
+    use_comps = bool(COMPS_IN_FORECAST)
+    comp_line_present = any(
+        pred.get(key) is not None
+        for key in (
+            "seat_primary_mid_m",
+            "seat_comp_adjusted_mid_m",
+            "seat_comp_mid_m",
+        )
+    )
+    if comp_line_present and not use_comps:
+        pred["comp_model_excluded"] = True
+
+    if use_comps and pred.get("seat_primary_mid_m") is not None:
         source = "seat-primary-regression"
         mid = pred["seat_primary_mid_m"]
         low = pred["seat_primary_low_m"]
@@ -2842,30 +2874,35 @@ def select_regression_prediction(pred, cal=None):
             basis = f"direct seats ({w_direct:.0%}) + seat/comp prior ({w_comp:.0%})"
         else:
             basis = "direct seats + seat/comp prior"
-    elif pred.get("seat_comp_adjusted_mid_m") is not None:
+        uses_comps = True
+    elif use_comps and pred.get("seat_comp_adjusted_mid_m") is not None:
         source = "seat+comp-coverage-adjusted-regression"
         mid = pred["seat_comp_adjusted_mid_m"]
         low = pred["seat_comp_adjusted_low_m"]
         high = pred["seat_comp_adjusted_high_m"]
         basis = pred.get("seat_comp_adjusted_basis")
-    elif pred.get("seat_comp_mid_m") is not None:
+        uses_comps = True
+    elif use_comps and pred.get("seat_comp_mid_m") is not None:
         source = "seat+comp-regression"
         mid = pred["seat_comp_mid_m"]
         low = pred["seat_comp_low_m"]
         high = pred["seat_comp_high_m"]
         basis = pred.get("seat_comp_basis")
+        uses_comps = True
     else:
         source = "seat-only-regression"
         mid = pred["seat_mid_m"]
         low = pred["seat_low_m"]
         high = pred["seat_high_m"]
         basis = "seat-only"
+        uses_comps = False
 
     snapshot_mid = pred.get("snapshot_mid_m")
     disagreement_profile = model_component_disagreement_profile(
         pred,
         base_mid=mid,
         snapshot_mid=snapshot_mid,
+        include_comp=use_comps,
     )
     pred["model_component_disagreement"] = disagreement_profile
     snapshot_weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
@@ -2966,12 +3003,14 @@ def select_regression_prediction(pred, cal=None):
     pred["regression_high_m"] = high
     pred["regression_source"] = source
     pred["regression_basis"] = basis
+    pred["regression_uses_comps"] = uses_comps
     pred["regression_uses_polymarket"] = False
     pred["model_forecast_mid_m"] = mid
     pred["model_forecast_low_m"] = low
     pred["model_forecast_high_m"] = high
     pred["model_forecast_source"] = source
     pred["model_forecast_basis"] = basis
+    pred["model_forecast_uses_comps"] = uses_comps
     pred["model_forecast_uses_polymarket"] = False
     pred["forecast_feature_importance"] = forecast_feature_importance(pred)
     return pred
@@ -5563,19 +5602,19 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
             feature_parts.append(f"RT audience {features['rt_audience_score']:.0f}%")
         if features.get("social_media_universe_m"):
             feature_parts.append(f"RelishMix SMU {features['social_media_universe_m']:.0f}M")
-            if "log_social_media_universe_m" in model_features:
+            if COMPS_IN_FORECAST and "log_social_media_universe_m" in model_features:
                 pred["social_signal_model_integrated"] = True
         if features.get("social_sentiment_score"):
             feature_parts.append(f"social sentiment {features['social_sentiment_score']:+.2f}")
-            if "social_sentiment_score" in model_features:
+            if COMPS_IN_FORECAST and "social_sentiment_score" in model_features:
                 pred["social_signal_model_integrated"] = True
         if features.get("social_buzz_score"):
             feature_parts.append(f"social buzz {features['social_buzz_score']:+.2f}")
-            if "social_buzz_score" in model_features:
+            if COMPS_IN_FORECAST and "social_buzz_score" in model_features:
                 pred["social_signal_model_integrated"] = True
         if features.get("national_theatre_count"):
             feature_parts.append(f"{int(features['national_theatre_count']):,} theatres")
-            if "release_footprint_factor" in model_features:
+            if COMPS_IN_FORECAST and "release_footprint_factor" in model_features:
                 pred["theatre_count_model_integrated"] = True
         pred["seat_comp_audience_factor"] = estimate.audience_regression_factor
         pred["seat_comp_audience_regression_n"] = estimate.audience_regression_n
@@ -5631,7 +5670,8 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["comp_w_model"] = 1.0
     pred["comp_w_poly"] = 0.0
 
-    primary = seat_primary_ensemble(pred)
+    pred["comp_model_excluded"] = not COMPS_IN_FORECAST
+    primary = seat_primary_ensemble(pred) if COMPS_IN_FORECAST else None
     if primary:
         pred["seat_primary_mid_m"] = primary["mid_m"]
         pred["seat_primary_low_m"] = primary["low_m"]
@@ -6185,8 +6225,16 @@ def print_prediction(pred, verbose=False):
               f"{missing_tz_str}"
               f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
 
-    # Seat + historical comps
-    if pred.get("seat_comp_mid_m") is not None:
+    # Seat + historical comps are diagnostics unless COMPS_IN_FORECAST is enabled.
+    comps_visible = (
+        pred.get("seat_comp_mid_m") is not None
+        and not pred.get("comp_model_excluded")
+    )
+    if pred.get("seat_comp_mid_m") is not None and pred.get("comp_model_excluded") and verbose:
+        print(f"  Comp diagnostic excluded from forecast: "
+              f"{fmt_m(pred['seat_comp_mid_m'])} "
+              f"({fmt_m(pred['seat_comp_low_m'])} - {fmt_m(pred['seat_comp_high_m'])})")
+    if comps_visible:
         print(f"  Model 2 seat+comp: {fmt_m(pred['seat_comp_mid_m']):>7}  "
               f"({fmt_m(pred['seat_comp_low_m'])} - {fmt_m(pred['seat_comp_high_m'])})")
         print(f"    Basis: {pred['seat_comp_basis']} "

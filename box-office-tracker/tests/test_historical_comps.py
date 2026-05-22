@@ -741,9 +741,9 @@ class HistoricalCompsTest(unittest.TestCase):
             "Space Franchise",
             prediction["seat_comp_top_comps"][0]["movie"],
         )
-        self.assertLess(prediction["seat_primary_w_comp"], 0.80)
-        self.assertGreater(prediction["seat_primary_w_direct"], 0.20)
-        self.assertIn("seat-primary", prediction["regression_source"])
+        self.assertTrue(prediction["comp_model_excluded"])
+        self.assertNotIn("seat_primary_mid_m", prediction)
+        self.assertEqual("seat-only-regression", prediction["regression_source"])
 
     def test_prediction_context_infers_tentpole_from_showings_and_theatre_breadth(self):
         target = TargetMetadata(
@@ -857,18 +857,15 @@ class HistoricalCompsTest(unittest.TestCase):
 
         attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
 
-        self.assertAlmostEqual(96.58, prediction["regression_mid_m"], places=6)
-        self.assertAlmostEqual(96.58, prediction["model_forecast_mid_m"], places=6)
-        self.assertEqual("seat-primary-regression", prediction["regression_source"])
+        self.assertAlmostEqual(88.6, prediction["regression_mid_m"], places=6)
+        self.assertAlmostEqual(88.6, prediction["model_forecast_mid_m"], places=6)
+        self.assertEqual("seat-only-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_polymarket"])
+        self.assertFalse(prediction["regression_uses_comps"])
         self.assertNotIn("headline_mid_m", prediction)
-        self.assertAlmostEqual(
-            prediction["model_forecast_mid_m"],
-            prediction["seat_primary_mid_m"],
-            places=6,
-        )
+        self.assertNotIn("seat_primary_mid_m", prediction)
 
-    def test_comp_model_reanchors_final_prediction_as_seat_primary(self):
+    def test_comp_model_does_not_reanchor_final_prediction(self):
         prediction = {
             "movie": "Michael",
             "seat_mid_m": 60.0,
@@ -915,11 +912,12 @@ class HistoricalCompsTest(unittest.TestCase):
 
         attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
 
-        self.assertAlmostEqual(88.0, prediction["seat_primary_mid_m"], places=6)
-        self.assertAlmostEqual(0.70, prediction["seat_primary_w_comp"], places=6)
-        self.assertAlmostEqual(88.0, prediction["blended_m"], places=6)
-        self.assertAlmostEqual(1.0, prediction["w_seat"], places=6)
-        self.assertAlmostEqual(0.0, prediction["w_poly"], places=6)
+        self.assertTrue(prediction["comp_model_excluded"])
+        self.assertNotIn("seat_primary_mid_m", prediction)
+        self.assertAlmostEqual(55.0, prediction["blended_m"], places=6)
+        self.assertAlmostEqual(60.0, prediction["model_forecast_mid_m"], places=6)
+        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertFalse(prediction["regression_uses_comps"])
 
     def test_comp_model_uses_friday_only_when_thursday_is_missing(self):
         prediction = {
@@ -977,7 +975,8 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertFalse(prediction["seat_comp_has_thursday_evidence"])
         self.assertAlmostEqual(10.0, prediction["seat_comp_mid_m"], places=6)
         self.assertAlmostEqual(0.40, prediction["seat_comp_evidence_share"], places=6)
-        self.assertEqual("seat-primary-regression", prediction["regression_source"])
+        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertFalse(prediction["regression_uses_comps"])
 
     def test_non_thursday_comp_model_applies_feature_adjustment_to_midpoint(self):
         def prediction():
@@ -1278,18 +1277,9 @@ class HistoricalCompsTest(unittest.TestCase):
             prediction["seat_comp_adjusted_mid_m"],
             prediction["seat_comp_prior_mid_m"],
         )
-        self.assertEqual("seat-primary-regression", prediction["regression_source"])
-        self.assertAlmostEqual(
-            prediction["seat_primary_mid_m"],
-            prediction["regression_mid_m"],
-            places=6,
-        )
-        self.assertAlmostEqual(
-            prediction["seat_mid_m"] * prediction["seat_primary_w_direct"]
-            + prediction["seat_comp_adjusted_mid_m"] * prediction["seat_primary_w_comp"],
-            prediction["seat_primary_mid_m"],
-            places=6,
-        )
+        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertFalse(prediction["regression_uses_comps"])
+        self.assertNotIn("seat_primary_mid_m", prediction)
 
     def test_prediction_exposes_audience_regression_adjustment(self):
         prediction = {
@@ -1386,10 +1376,10 @@ class HistoricalCompsTest(unittest.TestCase):
 
         attach_comp_model_prediction(prediction, {}, metadata=metadata, comps=comps)
 
-        self.assertTrue(prediction["social_signal_model_integrated"])
+        self.assertNotIn("social_signal_model_integrated", prediction)
         self.assertIn("RelishMix SMU 600M", prediction["seat_comp_audience_features"])
-        self.assertEqual(0.0, prediction["social_adjustment_m"])
-        self.assertNotIn("+social", prediction["regression_source"])
+        self.assertAlmostEqual(8.0, prediction["social_adjustment_m"], places=6)
+        self.assertIn("+social", prediction["regression_source"])
 
     def test_default_model_cohorts_include_expansion_data(self):
         old_value = os.environ.pop("THEATRE_MODEL_COHORTS", None)

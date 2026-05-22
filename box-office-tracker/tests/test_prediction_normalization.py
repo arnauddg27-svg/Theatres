@@ -532,7 +532,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, pred["w_seat"], places=6)
         self.assertAlmostEqual(0.0, pred["w_poly"], places=6)
 
-    def test_regression_selector_uses_seat_primary_line_when_available(self):
+    def test_regression_selector_excludes_comp_lines_from_forecast(self):
         pred = {
             "seat_mid_m": 30.0,
             "seat_low_m": 24.0,
@@ -550,12 +550,14 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         select_regression_prediction(pred, {"history": []})
 
-        self.assertAlmostEqual(22.8, pred["regression_mid_m"], places=6)
-        self.assertEqual("seat-primary-regression", pred["regression_source"])
-        self.assertIn("direct seats", pred["regression_basis"])
+        self.assertAlmostEqual(30.0, pred["regression_mid_m"], places=6)
+        self.assertEqual("seat-only-regression", pred["regression_source"])
+        self.assertEqual("seat-only", pred["regression_basis"])
+        self.assertTrue(pred["comp_model_excluded"])
+        self.assertFalse(pred["regression_uses_comps"])
         self.assertFalse(pred["regression_uses_polymarket"])
 
-    def test_regression_selector_downweights_snapshot_when_components_disagree(self):
+    def test_regression_selector_ignores_comp_disagreement_when_blending_snapshot(self):
         pred = {
             "seat_mid_m": 128.0,
             "seat_low_m": 60.0,
@@ -578,10 +580,16 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         select_regression_prediction(pred, {"history": []})
 
-        self.assertEqual("high", pred["model_component_disagreement"]["severity"])
-        self.assertLess(pred["snapshot_effective_model_weight"], 0.40)
-        self.assertLess(pred["regression_mid_m"], 90.5)
-        self.assertIn("component disagreement", pred["regression_basis"])
+        self.assertEqual("low", pred["model_component_disagreement"]["severity"])
+        self.assertNotIn(
+            "seat_vs_comp",
+            pred["model_component_disagreement"]["ratios"],
+        )
+        self.assertAlmostEqual(0.40, pred["snapshot_effective_model_weight"], places=6)
+        self.assertAlmostEqual(119.2, pred["regression_mid_m"], places=6)
+        self.assertEqual("seat+snapshot-regression", pred["regression_source"])
+        self.assertNotIn("component disagreement", pred["regression_basis"])
+        self.assertFalse(pred["regression_uses_comps"])
 
     def test_forecast_feature_importance_reports_current_driver_stack(self):
         pred = {
@@ -680,15 +688,23 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
         self.assertGreater(drivers[0]["importance"], drivers[1]["importance"])
         self.assertEqual(1, drivers[0]["strength_rank"])
-        self.assertTrue(all(driver["available"] for driver in drivers))
+        by_name = {driver["driver"]: driver for driver in drivers}
+        self.assertTrue(by_name["Thursday sampled AMC gross"]["available"])
+        self.assertTrue(by_name["Snapshot reserved seats for Fri/Sat/Sun"]["available"])
+        self.assertTrue(by_name["Showings per AMC theatre"]["available"])
+        self.assertTrue(by_name["Release scale / tentpole flag"]["available"])
+        self.assertTrue(by_name["National theatre count"]["available"])
+        self.assertFalse(by_name["Historical comp Thursday share"]["available"])
+        self.assertFalse(by_name["Genre/franchise/audience metadata"]["available"])
+        self.assertTrue(by_name["Social signal"]["available"])
         self.assertIn("$2.1M sampled AMC", drivers[0]["evidence"])
         self.assertIn("47,216 reserved", drivers[1]["evidence"])
         self.assertIn("7.2 showings", drivers[2]["evidence"])
         self.assertIn("tentpole", drivers[3]["evidence"])
         self.assertIn("4,000", drivers[4]["evidence"])
-        self.assertIn("14.4%", drivers[5]["evidence"])
-        self.assertIn("Avatar: The Way of Water", drivers[6]["evidence"])
-        self.assertIn("integrated", drivers[7]["evidence"])
+        self.assertIn("disabled", drivers[5]["evidence"])
+        self.assertIn("disabled", drivers[6]["evidence"])
+        self.assertIn("standalone", drivers[7]["evidence"])
 
     def test_forecast_feature_importance_marks_missing_inputs_as_inactive(self):
         pred = {
@@ -773,6 +789,56 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("strength #1", output)
         self.assertIn("confidence 90%", output)
         self.assertIn("$2.0M sampled AMC -> $8.0M day", output)
+
+    def test_print_prediction_hides_comp_models_when_excluded_from_forecast(self):
+        pred = {
+            "movie": "Sample Movie",
+            "seat_mid_m": 128.2,
+            "seat_low_m": 60.5,
+            "seat_high_m": 271.4,
+            "seat_comp_mid_m": 61.8,
+            "seat_comp_low_m": 40.0,
+            "seat_comp_high_m": 90.0,
+            "seat_comp_basis": "Thursday comps",
+            "seat_comp_evidence_m": 12.0,
+            "seat_comp_evidence_share": 0.144,
+            "seat_comp_external_thursday_share": 0.144,
+            "seat_comp_thursday_share": 0.144,
+            "seat_comp_has_thursday_evidence": True,
+            "seat_comp_thursday_gross_m": 12.0,
+            "comp_model_excluded": True,
+            "poly_result": None,
+            "daily_estimates": {"Thursday": 12_000_000},
+            "daily_details": {
+                "Thursday": {
+                    "date": "2026-05-21",
+                    "amc_total": 3_000_000,
+                    "sampled_amc_total": 3_000_000,
+                    "domestic_mid": 12_000_000,
+                    "n_theatres": 425,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                    "avg_showings_per_cinema": 7.0,
+                    "n_no_data": 0,
+                },
+            },
+            "n_theatres_total": 425,
+            "n_days": 1,
+            "regression_mid_m": 128.2,
+            "regression_low_m": 60.5,
+            "regression_high_m": 271.4,
+            "regression_source": "seat-only-regression",
+            "regression_basis": "seat-only",
+        }
+
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            predict.print_prediction(pred)
+
+        output = buffer.getvalue()
+        self.assertNotIn("Model 2 seat+comp", output)
+        self.assertNotIn("Seat+comp model", output)
+        self.assertNotIn("Seat primary", output)
 
     def test_seat_primary_dampens_direct_weight_for_sparse_partial_data(self):
         pred = {
@@ -2725,6 +2791,9 @@ class PredictionNormalizationTest(unittest.TestCase):
     def test_regression_uses_shrunk_historical_residuals(self):
         pred = {
             "movie": "Future Movie",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 110.0,
             "seat_comp_mid_m": 100.0,
             "seat_comp_low_m": 90.0,
             "seat_comp_high_m": 110.0,
@@ -2771,6 +2840,9 @@ class PredictionNormalizationTest(unittest.TestCase):
         def prediction():
             return {
                 "movie": "Future Movie",
+                "seat_mid_m": 100.0,
+                "seat_low_m": 90.0,
+                "seat_high_m": 110.0,
                 "seat_comp_mid_m": 100.0,
                 "seat_comp_low_m": 90.0,
                 "seat_comp_high_m": 110.0,
@@ -2825,6 +2897,9 @@ class PredictionNormalizationTest(unittest.TestCase):
     def test_historical_residual_weights_metadata_similar_movies(self):
         pred = {
             "movie": "Target Horror",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 110.0,
             "seat_comp_mid_m": 100.0,
             "seat_comp_low_m": 90.0,
             "seat_comp_high_m": 110.0,
@@ -2888,6 +2963,9 @@ class PredictionNormalizationTest(unittest.TestCase):
     def test_historical_residual_weights_similar_release_footprints(self):
         pred = {
             "movie": "Target Horror",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 110.0,
             "seat_comp_mid_m": 100.0,
             "seat_comp_low_m": 90.0,
             "seat_comp_high_m": 110.0,
@@ -2956,6 +3034,9 @@ class PredictionNormalizationTest(unittest.TestCase):
     def test_regression_residual_skips_target_and_provisional_actuals(self):
         pred = {
             "movie": "Future Movie",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 110.0,
             "seat_comp_mid_m": 100.0,
             "seat_comp_low_m": 90.0,
             "seat_comp_high_m": 110.0,
@@ -2998,6 +3079,9 @@ class PredictionNormalizationTest(unittest.TestCase):
     def test_social_signal_layer_is_capped_and_excludes_polymarket(self):
         pred = {
             "movie": "Future Movie",
+            "seat_mid_m": 100.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 110.0,
             "seat_comp_mid_m": 100.0,
             "seat_comp_low_m": 90.0,
             "seat_comp_high_m": 110.0,
