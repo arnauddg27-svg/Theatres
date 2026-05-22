@@ -668,7 +668,19 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8],
                          [driver["rank"] for driver in drivers])
         self.assertTrue(all(0 <= driver["importance"] <= 100 for driver in drivers))
+        self.assertTrue(all("priority_rank" in driver for driver in drivers))
+        self.assertTrue(all("strength_rank" in driver for driver in drivers))
+        self.assertTrue(all("available" in driver for driver in drivers))
+        self.assertTrue(all("confidence" in driver for driver in drivers))
+        self.assertTrue(all("basis" in driver for driver in drivers))
+        self.assertTrue(all("why" in driver for driver in drivers))
+        self.assertEqual(
+            sorted(driver["strength_rank"] for driver in drivers),
+            [1, 2, 3, 4, 5, 6, 7, 8],
+        )
         self.assertGreater(drivers[0]["importance"], drivers[1]["importance"])
+        self.assertEqual(1, drivers[0]["strength_rank"])
+        self.assertTrue(all(driver["available"] for driver in drivers))
         self.assertIn("$2.1M sampled AMC", drivers[0]["evidence"])
         self.assertIn("47,216 reserved", drivers[1]["evidence"])
         self.assertIn("7.2 showings", drivers[2]["evidence"])
@@ -677,6 +689,36 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("14.4%", drivers[5]["evidence"])
         self.assertIn("Avatar: The Way of Water", drivers[6]["evidence"])
         self.assertIn("integrated", drivers[7]["evidence"])
+
+    def test_forecast_feature_importance_marks_missing_inputs_as_inactive(self):
+        pred = {
+            "movie": "Sparse Movie",
+            "seat_data_quality": 0.10,
+            "daily_details": {
+                "Thursday": {
+                    "amc_total": 800_000,
+                    "domestic_mid": 3_000_000,
+                    "n_theatres": 120,
+                    "coverage_ratio": 0.30,
+                },
+            },
+            "seat_comp_thursday_share": 0.11,
+            "seat_comp_top_comps": [{"movie": "Comp One", "weight": 0.3}],
+            "seat_comp_metadata_source": "csv",
+        }
+
+        drivers = predict.forecast_feature_importance(pred)
+        by_name = {driver["driver"]: driver for driver in drivers}
+
+        self.assertFalse(by_name["Snapshot reserved seats for Fri/Sat/Sun"]["available"])
+        self.assertFalse(by_name["Showings per AMC theatre"]["available"])
+        self.assertFalse(by_name["National theatre count"]["available"])
+        self.assertFalse(by_name["Social signal"]["available"])
+        self.assertEqual(0, by_name["National theatre count"]["confidence"])
+        self.assertLess(
+            by_name["National theatre count"]["strength_rank"],
+            by_name["Social signal"]["strength_rank"],
+        )
 
     def test_print_prediction_includes_forecast_feature_importance(self):
         pred = {
@@ -713,6 +755,8 @@ class PredictionNormalizationTest(unittest.TestCase):
                     "rank": 1,
                     "driver": "Thursday sampled AMC gross",
                     "importance": 95,
+                    "confidence": 90,
+                    "strength_rank": 1,
                     "evidence": "$2.0M sampled AMC -> $8.0M day",
                     "why": "Observed seat demand anchors the forecast.",
                 },
@@ -724,8 +768,10 @@ class PredictionNormalizationTest(unittest.TestCase):
             predict.print_prediction(pred)
 
         output = buffer.getvalue()
-        self.assertIn("Feature importance for current forecast", output)
+        self.assertIn("Feature drivers for current forecast", output)
         self.assertIn("1. Thursday sampled AMC gross", output)
+        self.assertIn("strength #1", output)
+        self.assertIn("confidence 90%", output)
         self.assertIn("$2.0M sampled AMC -> $8.0M day", output)
 
     def test_seat_primary_dampens_direct_weight_for_sparse_partial_data(self):

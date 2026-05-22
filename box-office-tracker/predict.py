@@ -2467,14 +2467,20 @@ def attach_social_signal_prediction(pred, social_data):
     return layer
 
 
-def _importance_driver(rank, driver, importance, evidence, why, basis):
+def _importance_driver(rank, driver, importance, evidence, why, basis,
+                       available=True, confidence=None, model_impact_m=None):
+    confidence_value = importance if confidence is None else confidence
     return {
         "rank": rank,
+        "priority_rank": rank,
         "driver": driver,
         "importance": int(round(_clamp(float(importance), 0.0, 100.0))),
+        "available": bool(available),
+        "confidence": int(round(_clamp(float(confidence_value), 0.0, 100.0))),
         "evidence": evidence,
         "why": why,
         "basis": basis,
+        "model_impact_m": model_impact_m,
     }
 
 
@@ -2501,6 +2507,8 @@ def forecast_feature_importance(pred):
     )
     if thursday_amc and thursday_day:
         thursday_importance = 90.0 + min(8.0, thursday_coverage * 8.0)
+        thursday_available = True
+        thursday_confidence = thursday_coverage * 100.0
         thursday_evidence = (
             f"{fmt_m(thursday_amc / 1_000_000)} sampled AMC -> "
             f"{fmt_m(thursday_day / 1_000_000)} Thursday seat gross; "
@@ -2511,6 +2519,8 @@ def forecast_feature_importance(pred):
             thursday_evidence += " with reported actual override"
     else:
         thursday_importance = 20.0
+        thursday_available = False
+        thursday_confidence = 0.0
         thursday_evidence = "missing Thursday sampled AMC gross; forecast leans on priors"
 
     pickup = pred.get("snapshot_pickup_profile") or {}
@@ -2530,6 +2540,12 @@ def forecast_feature_importance(pred):
     )
     if pred.get("snapshot_mid_m") is not None and snapshot_days:
         snapshot_importance = 58.0 + snapshot_weight * 45.0 + snapshot_support * 8.0
+        snapshot_available = True
+        snapshot_confidence = (
+            snapshot_weight * 45.0
+            + snapshot_support * 35.0
+            + snapshot_coverage * 20.0
+        )
         reserved_text = (
             f"{int(reserved):,} reserved"
             if reserved is not None else "reserved-seat sample"
@@ -2537,12 +2553,14 @@ def forecast_feature_importance(pred):
         matched = int(pickup.get("n_matched_showtimes") or 0)
         matched_text = f", {matched:,} matched showtimes" if matched else ""
         snapshot_evidence = (
-            f"{reserved_text} for {','.join(snapshot_days)}; "
+            f"{reserved_text} for {', '.join(snapshot_days)}; "
             f"model coverage {snapshot_coverage:.0%}, support {snapshot_support:.0%}, "
             f"weight {snapshot_weight:.0%}{matched_text}"
         )
     else:
         snapshot_importance = 18.0
+        snapshot_available = False
+        snapshot_confidence = 0.0
         snapshot_evidence = "no usable future-day snapshot layer in this forecast"
 
     avg_showings = _positive_float(
@@ -2552,15 +2570,20 @@ def forecast_feature_importance(pred):
     if avg_showings:
         showing_signal = _clamp((avg_showings - 2.0) / 6.0, 0.0, 1.0)
         showing_importance = 55.0 + showing_signal * 22.0
+        showing_available = True
+        showing_confidence = 70.0 + showing_signal * 20.0
         showing_evidence = (
             f"{avg_showings:.1f} showings per AMC theatre; "
             "screens/room density informs release scale and daily capacity"
         )
     else:
         showing_importance = 24.0
+        showing_available = False
+        showing_confidence = 0.0
         showing_evidence = "missing showings-per-theatre density"
 
     release_scale = pred.get("seat_comp_release_scale") or "unknown"
+    metadata_source = pred.get("seat_comp_metadata_source") or "missing"
     if release_scale == "tentpole":
         release_importance = 71.0
     elif release_scale == "event":
@@ -2571,6 +2594,15 @@ def forecast_feature_importance(pred):
         release_importance = 42.0
     else:
         release_importance = 25.0
+    release_available = release_scale != "unknown"
+    if not release_available:
+        release_confidence = 0.0
+    elif metadata_source == "csv":
+        release_confidence = 85.0
+    elif metadata_source == "title_inferred":
+        release_confidence = 60.0
+    else:
+        release_confidence = 50.0
     release_evidence = (
         f"{release_scale} release profile"
         if release_scale != "unknown" else "missing release-scale metadata"
@@ -2581,6 +2613,8 @@ def forecast_feature_importance(pred):
         integrated = bool(pred.get("theatre_count_model_integrated"))
         footprint = national_release_footprint_factor(national_count)
         national_importance = 55.0 + (8.0 if integrated else 0.0)
+        national_available = True
+        national_confidence = 80.0 if integrated else 65.0
         national_evidence = (
             f"{int(national_count):,} national theatres; "
             f"non-linear footprint x{footprint:.3f}"
@@ -2588,6 +2622,8 @@ def forecast_feature_importance(pred):
         )
     else:
         national_importance = 22.0
+        national_available = False
+        national_confidence = 0.0
         national_evidence = "missing national theatre count; model uses release-scale fallback"
 
     thursday_share = _positive_float(pred.get("seat_comp_thursday_share"))
@@ -2595,8 +2631,13 @@ def forecast_feature_importance(pred):
     if thursday_share:
         local_share = _positive_float(pred.get("seat_comp_local_thursday_share"))
         local_n = int(pred.get("seat_comp_local_thursday_n") or 0)
-        local_weight = _coverage_value(pred.get("seat_comp_local_thursday_weight"), default=0.0)
+        local_weight = _coverage_value(
+            pred.get("seat_comp_local_thursday_weight"),
+            default=0.0,
+        )
         comp_importance = 48.0 + min(10.0, local_n * 2.0) + local_weight * 8.0
+        comp_available = True
+        comp_confidence = 55.0 + min(20.0, local_n * 3.0) + local_weight * 15.0
         share_bits = [f"used {thursday_share:.1%}"]
         if external_share:
             share_bits.append(f"external {external_share:.1%}")
@@ -2607,23 +2648,30 @@ def forecast_feature_importance(pred):
         comp_evidence = "; ".join(share_bits)
     else:
         comp_importance = 24.0
+        comp_available = False
+        comp_confidence = 0.0
         comp_evidence = "missing historical comp Thursday share"
 
     top_comps = pred.get("seat_comp_top_comps") or []
-    metadata_source = pred.get("seat_comp_metadata_source") or "missing"
     audience_features = pred.get("seat_comp_audience_features") or ""
     if top_comps:
         comp_names = ", ".join(comp.get("movie", "") for comp in top_comps[:3])
         metadata_importance = 45.0 + min(8.0, len(top_comps) * 1.5)
+        metadata_available = True
+        metadata_confidence = 72.0 if metadata_source == "csv" else 56.0
         metadata_evidence = (
             f"{metadata_source} metadata; comps {comp_names}"
             f"{f'; {audience_features}' if audience_features else ''}"
         )
     elif metadata_source != "missing":
         metadata_importance = 34.0
+        metadata_available = True
+        metadata_confidence = 45.0
         metadata_evidence = f"{metadata_source} metadata, but no weighted comps"
     else:
         metadata_importance = 18.0
+        metadata_available = False
+        metadata_confidence = 0.0
         metadata_evidence = "missing genre/franchise/audience metadata"
 
     social = pred.get("social_signal") or {}
@@ -2631,6 +2679,8 @@ def forecast_feature_importance(pred):
         quality = _coverage_value(social.get("signal_quality"), default=0.0)
         integrated = bool(pred.get("social_signal_model_integrated"))
         social_importance = 24.0 + quality * 25.0 + (5.0 if integrated else 0.0)
+        social_available = True
+        social_confidence = quality * 100.0
         platforms = ", ".join(social.get("platforms") or [])
         if integrated:
             social_evidence = "integrated into comp regression"
@@ -2644,6 +2694,8 @@ def forecast_feature_importance(pred):
         )
     else:
         social_importance = 12.0
+        social_available = False
+        social_confidence = 0.0
         social_evidence = "no current social signal; neutral in forecast"
 
     drivers = [
@@ -2654,6 +2706,11 @@ def forecast_feature_importance(pred):
             thursday_evidence,
             "Observed same-week paid-seat demand is the strongest anchor.",
             "seat rows -> sampled AMC gross -> national daily gross",
+            available=thursday_available,
+            confidence=thursday_confidence,
+            model_impact_m=(
+                thursday_day / 1_000_000 if thursday_day is not None else None
+            ),
         ),
         _importance_driver(
             2,
@@ -2662,6 +2719,9 @@ def forecast_feature_importance(pred):
             snapshot_evidence,
             "Future-day reservations indicate remaining weekend demand before final seat counts.",
             "pre-reservation rows -> pickup/frontload layer",
+            available=snapshot_available,
+            confidence=snapshot_confidence,
+            model_impact_m=pred.get("snapshot_mid_m"),
         ),
         _importance_driver(
             3,
@@ -2670,6 +2730,8 @@ def forecast_feature_importance(pred):
             showing_evidence,
             "Per-theatre show density captures room allocation and distributor/exhibitor confidence.",
             "captured showtimes divided by sampled AMC theatres",
+            available=showing_available,
+            confidence=showing_confidence,
         ),
         _importance_driver(
             4,
@@ -2678,6 +2740,8 @@ def forecast_feature_importance(pred):
             release_evidence,
             "Release class controls which comps and priors are allowed to pull the seat forecast.",
             "metadata plus observed AMC footprint",
+            available=release_available,
+            confidence=release_confidence,
         ),
         _importance_driver(
             5,
@@ -2686,6 +2750,8 @@ def forecast_feature_importance(pred):
             national_evidence,
             "National footprint converts tracked AMC demand to the wider market non-linearly.",
             "reported theatre count -> footprint factor",
+            available=national_available,
+            confidence=national_confidence,
         ),
         _importance_driver(
             6,
@@ -2694,6 +2760,8 @@ def forecast_feature_importance(pred):
             comp_evidence,
             "Preview share turns Thursday demand into an opening-weekend comp estimate.",
             "weighted comps plus local settled Thursday history",
+            available=comp_available,
+            confidence=comp_confidence,
         ),
         _importance_driver(
             7,
@@ -2702,6 +2770,8 @@ def forecast_feature_importance(pred):
             metadata_evidence,
             "Metadata selects and weights comps and constrains the residual calibration.",
             "genre, franchise, audience, rating, scores, and social metadata",
+            available=metadata_available,
+            confidence=metadata_confidence,
         ),
         _importance_driver(
             8,
@@ -2710,12 +2780,21 @@ def forecast_feature_importance(pred):
             social_evidence,
             "Social buzz/sentiment is secondary and capped unless trained into comp regression.",
             "social rows -> bounded adjustment or comp-regression feature",
+            available=social_available,
+            confidence=social_confidence,
         ),
     ]
 
-    # Keep the user-facing order stable and intentional. The score shows
-    # strength inside this forecast; the rank names the production priority
-    # order used by the model card.
+    strength_order = sorted(
+        drivers,
+        key=lambda item: (-item["importance"], item["priority_rank"]),
+    )
+    for strength_rank, driver in enumerate(strength_order, start=1):
+        driver["strength_rank"] = strength_rank
+
+    # Keep the user-facing order stable and intentional. `rank` is the model
+    # priority stack; `strength_rank` is where the current available evidence
+    # sorts by computed driver strength.
     return drivers
 
 
@@ -6353,11 +6432,24 @@ def print_prediction(pred, verbose=False):
         print(f"    vs Polymarket: {'+' if diff > 0 else ''}{diff:,.1f}M {direction}")
     drivers = pred.get("forecast_feature_importance") or forecast_feature_importance(pred)
     if drivers:
-        print("    Feature importance for current forecast:")
+        print("    Feature drivers for current forecast "
+              "(model priority; current strength):")
         for driver in drivers[:8]:
+            inactive = "" if driver.get("available", True) else ", inactive"
+            confidence = driver.get("confidence")
+            confidence_note = (
+                f", confidence {confidence:.0f}%"
+                if confidence is not None else ""
+            )
+            strength_rank = driver.get("strength_rank")
+            strength_note = (
+                f", strength #{strength_rank}"
+                if strength_rank is not None else ""
+            )
             print(
                 f"      {driver['rank']}. {driver['driver']} "
-                f"({driver['importance']}/100): {driver['evidence']}"
+                f"({driver['importance']}/100{confidence_note}"
+                f"{strength_note}{inactive}): {driver['evidence']}"
             )
 
     # Verbose: top theatres
