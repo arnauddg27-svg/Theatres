@@ -3365,6 +3365,55 @@ class PredictionNormalizationTest(unittest.TestCase):
             places=6,
         )
 
+    def test_reported_preview_actual_anchors_thursday_only_forecast_shape(self):
+        pred = {
+            "movie": "Sample Tentpole",
+            "model_version": predict.MODEL_VERSION,
+            "seat_mid_m": 172.7,
+            "seat_low_m": 150.0,
+            "seat_high_m": 210.0,
+            "daily_details": {
+                "Thursday": {
+                    "actual_override": True,
+                    "actual_override_m": 12.0,
+                }
+            },
+            "daily_estimates": {"Thursday": 12_000_000},
+            "seat_comp_mid_m": 83.2,
+            "seat_comp_low_m": 74.4,
+            "seat_comp_high_m": 94.7,
+            "seat_comp_basis": "Thursday",
+            "seat_comp_thursday_share": 0.144,
+            "comp_model_excluded": True,
+            "snapshot_mid_m": None,
+            "snapshot_model_weight": 0.0,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 1.0,
+            "seat_missing_day_share": 0.0,
+            "reported_actual_day_share": 0.12,
+        }
+
+        predict.select_regression_prediction(
+            pred,
+            {"history": [], "calibration_factors": {}},
+        )
+
+        self.assertEqual(
+            "reported-preview-frontload-regression",
+            pred["regression_source"],
+        )
+        self.assertAlmostEqual(83.2, pred["regression_mid_m"], places=6)
+        self.assertFalse(pred["regression_uses_comps"])
+        self.assertTrue(pred["reported_preview_frontload_anchor_applied"])
+        self.assertAlmostEqual(172.7, pred["reported_preview_raw_seat_mid_m"])
+        self.assertAlmostEqual(0.144, pred["reported_preview_frontload_share"])
+        drivers = {
+            driver["driver"]: driver
+            for driver in pred["forecast_feature_importance"]
+        }
+        self.assertIn("Reported preview frontload share", drivers)
+        self.assertTrue(drivers["Reported preview frontload share"]["available"])
+
     def test_thursday_preview_residual_learns_from_local_history(self):
         cal = {
             "history": [
