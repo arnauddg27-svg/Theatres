@@ -60,6 +60,8 @@ class HistoricalComp:
     social_source_url: str = ""
     social_notes: str = ""
     national_theatre_count: int = 0
+    release_scale: str = ""
+    avg_showings_per_cinema: float = 0.0
 
     @property
     def thursday_share(self) -> float:
@@ -103,6 +105,8 @@ class TargetMetadata:
     social_sentiment_score: float = 0.0
     social_buzz_score: float = 0.0
     national_theatre_count: int = 0
+    release_scale: str = ""
+    avg_showings_per_cinema: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -134,6 +138,7 @@ class CompEstimate:
     prior_weekend_high_m: float = 0.0
     raw_prior_weekend_mid_m: float = 0.0
     prior_footprint_factor: float = 1.0
+    target_release_scale: str = ""
 
 
 def _clean(value: str | None) -> str:
@@ -189,6 +194,8 @@ def load_historical_comps(path: Path | str = DEFAULT_COMPS_CSV) -> list[Historic
                 social_source_url=(row.get("social_source_url") or "").strip(),
                 social_notes=(row.get("social_notes") or "").strip(),
                 national_theatre_count=_int(row, "national_theatre_count") or 0,
+                release_scale=_clean(row.get("release_scale")),
+                avg_showings_per_cinema=_float(row, "avg_showings_per_cinema"),
             )
             if comp.movie and comp.thursday_share > 0:
                 comps.append(comp)
@@ -221,6 +228,8 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 social_sentiment_score=_float(row, "social_sentiment_score"),
                 social_buzz_score=_float(row, "social_buzz_score"),
                 national_theatre_count=_int(row, "national_theatre_count") or 0,
+                release_scale=_clean(row.get("release_scale")),
+                avg_showings_per_cinema=_float(row, "avg_showings_per_cinema"),
             )
             metadata[movie.lower()] = item
     return metadata
@@ -235,6 +244,42 @@ def metadata_for_movie(movie: str,
         if needle in key or key in needle:
             return item
     return None
+
+
+def release_scale_for_item(item) -> str:
+    """Classify release scale from explicit metadata, footprint, and intensity."""
+    explicit = _clean(getattr(item, "release_scale", ""))
+    if explicit:
+        return explicit
+
+    title = (getattr(item, "movie", "") or "").lower()
+    if any(token in title for token in (
+        "star wars",
+        "mandalorian",
+        "grogu",
+        "avatar",
+        "avengers",
+        "spider-man",
+        "spiderman",
+        "jurassic",
+    )):
+        return "tentpole"
+
+    opening = float(getattr(item, "opening_weekend_m", 0) or 0)
+    theatres = int(getattr(item, "national_theatre_count", 0) or 0)
+    showings = float(getattr(item, "avg_showings_per_cinema", 0) or 0)
+
+    if opening >= 80:
+        return "tentpole"
+    if showings >= 6.0 and (theatres >= 3600 or theatres <= 0):
+        return "tentpole"
+    if opening >= 55:
+        return "event"
+    if showings >= 4.25 and theatres >= 3300:
+        return "event"
+    if opening <= 25 and theatres and theatres < 3400:
+        return "niche"
+    return "standard"
 
 
 def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
@@ -254,6 +299,20 @@ def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
         score += 1.25
     if target.rating and target.rating == comp.rating:
         score += 0.75
+    target_scale = release_scale_for_item(target)
+    comp_scale = release_scale_for_item(comp)
+    same_genre = bool(target.genre and target.genre == comp.genre)
+    if target_scale and comp_scale:
+        if target_scale == comp_scale:
+            score += 2.25 if same_genre else 1.25
+        elif target_scale == "tentpole" and comp_scale == "event":
+            score += 1.50 if same_genre else 0.50
+        elif target_scale == "event" and comp_scale == "tentpole":
+            score += 0.75 if same_genre else 0.30
+        elif target_scale == "tentpole" and comp_scale in {"standard", "niche"}:
+            score -= 1.25 if same_genre else 1.75
+        elif target_scale == "niche" and comp_scale == "tentpole":
+            score -= 1.25
     if target.national_theatre_count and comp.national_theatre_count:
         low = min(target.national_theatre_count, comp.national_theatre_count)
         high = max(target.national_theatre_count, comp.national_theatre_count)
@@ -266,6 +325,15 @@ def score_comp(target: TargetMetadata, comp: HistoricalComp) -> float:
             score += 0.25
         else:
             score -= 0.20
+    if target_scale == "tentpole":
+        if comp.opening_weekend_m >= 85:
+            score += 0.75
+        elif comp.opening_weekend_m >= 60:
+            score += 0.25
+        elif comp.opening_weekend_m < 40:
+            score -= 0.75
+        if comp.national_theatre_count and comp.national_theatre_count < 3300:
+            score -= 0.50
     return score
 
 
@@ -685,6 +753,7 @@ def estimate_opening_weekend_from_thursday(
         prior_weekend_high_m=max(prior_low, prior_high),
         raw_prior_weekend_mid_m=raw_prior_mid,
         prior_footprint_factor=prior_footprint_factor,
+        target_release_scale=release_scale_for_item(target),
     )
 
 

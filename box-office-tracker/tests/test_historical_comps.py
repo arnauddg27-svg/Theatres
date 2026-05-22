@@ -19,12 +19,14 @@ from historical_comps import (
     load_historical_comps,
     load_movie_metadata,
     metadata_for_movie,
+    release_scale_for_item,
 )
 from predict import (
     CORE_COHORT,
     EXPANSION_COHORT,
     active_model_cohorts,
     attach_comp_model_prediction,
+    enrich_target_metadata_with_seat_context,
     learned_local_thursday_share,
 )
 
@@ -526,6 +528,60 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertGreater(estimate.prior_footprint_factor, 0.88)
         self.assertAlmostEqual(80.0, estimate.raw_prior_weekend_mid_m, places=6)
 
+    def test_release_scale_prior_prefers_tentpole_sci_fi_over_niche_fan_comps(self):
+        target = TargetMetadata(
+            movie="The Mandalorian and Grogu",
+            genre="sci_fi",
+            audience_type="fan_driven",
+            franchise_type="franchise",
+            rating="PG-13",
+            release_scale="tentpole",
+            avg_showings_per_cinema=7.2,
+        )
+        comps = [
+            HistoricalComp(
+                "Niche Fan Sci-Fi",
+                "sci_fi",
+                "fan_driven",
+                "franchise",
+                "PG-13",
+                2.0,
+                12.0,
+                national_theatre_count=2600,
+            ),
+            HistoricalComp(
+                "Tentpole Family Sci-Fi",
+                "sci_fi",
+                "broad_family",
+                "franchise",
+                "PG-13",
+                17.0,
+                134.0,
+                national_theatre_count=4300,
+            ),
+            HistoricalComp(
+                "Tentpole Fan Franchise",
+                "superhero",
+                "fan_driven",
+                "franchise",
+                "PG-13",
+                12.0,
+                90.0,
+                national_theatre_count=4250,
+            ),
+        ]
+
+        estimate = estimate_opening_weekend_from_thursday(
+            8.9,
+            target,
+            comps,
+            max_comps=3,
+        )
+
+        self.assertEqual("tentpole", release_scale_for_item(target))
+        self.assertEqual("Tentpole Family Sci-Fi", estimate.comps[0].movie)
+        self.assertGreater(estimate.prior_weekend_mid_m, 75.0)
+
     def test_social_regression_uses_historical_smu_when_available(self):
         target = TargetMetadata(
             movie="High Buzz Sequel",
@@ -688,6 +744,24 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertLess(prediction["seat_primary_w_comp"], 0.80)
         self.assertGreater(prediction["seat_primary_w_direct"], 0.20)
         self.assertIn("seat-primary", prediction["regression_source"])
+
+    def test_prediction_context_infers_tentpole_from_showings_and_theatre_breadth(self):
+        target = TargetMetadata(
+            movie="Premium Sci-Fi",
+            genre="sci_fi",
+            audience_type="fan_driven",
+            franchise_type="franchise",
+            rating="PG-13",
+        )
+        prediction = {
+            "avg_showings_per_cinema": 7.1,
+            "n_theatres_total": 420,
+        }
+
+        enriched = enrich_target_metadata_with_seat_context(target, prediction)
+
+        self.assertEqual("tentpole", enriched.release_scale)
+        self.assertAlmostEqual(7.1, enriched.avg_showings_per_cinema, places=6)
 
     def test_prediction_does_not_blend_polymarket_into_comp_model(self):
         prediction = {

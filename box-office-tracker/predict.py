@@ -39,7 +39,8 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
                               load_historical_comps,
                               load_movie_metadata,
                               metadata_for_movie,
-                              release_footprint_factor)
+                              release_footprint_factor,
+                              release_scale_for_item)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                SNAPSHOT_LEAD_BUCKETS,
                                sanitize_calibration, recalibrate_scale_factor,
@@ -5056,6 +5057,7 @@ def infer_target_metadata_from_title(movie, weekend_of=""):
                 "audience_type": "fan_driven",
                 "franchise_type": "franchise",
                 "rating": "PG-13",
+                "release_scale": "tentpole",
             },
         ),
         (
@@ -5065,6 +5067,7 @@ def infer_target_metadata_from_title(movie, weekend_of=""):
                 "audience_type": "fan_driven",
                 "franchise_type": "franchise",
                 "rating": "PG-13",
+                "release_scale": "tentpole",
             },
         ),
         (
@@ -5074,6 +5077,7 @@ def infer_target_metadata_from_title(movie, weekend_of=""):
                 "audience_type": "fan_driven",
                 "franchise_type": "franchise",
                 "rating": "PG-13",
+                "release_scale": "tentpole",
             },
         ),
     ]
@@ -5086,6 +5090,30 @@ def infer_target_metadata_from_title(movie, weekend_of=""):
                 **fields,
             )
     return None
+
+
+def enrich_target_metadata_with_seat_context(target, pred):
+    """Add observed theatre/showing intensity to the comp target metadata."""
+    if not target:
+        return target
+    avg_showings = _positive_float(pred.get("avg_showings_per_cinema")) or 0.0
+    release_scale = getattr(target, "release_scale", "") or ""
+    if not release_scale:
+        n_amc = int(_positive_float(pred.get("n_theatres_total")) or 0)
+        if avg_showings >= 6.0 and n_amc >= 350:
+            release_scale = "tentpole"
+        elif avg_showings >= 4.25 and n_amc >= 300:
+            release_scale = "event"
+    current_avg_showings = float(getattr(target, "avg_showings_per_cinema", 0) or 0)
+    if abs(avg_showings - current_avg_showings) < 0.001 and release_scale == (
+        getattr(target, "release_scale", "") or ""
+    ):
+        return target
+    return replace(
+        target,
+        avg_showings_per_cinema=avg_showings,
+        release_scale=release_scale,
+    )
 
 
 def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
@@ -5107,11 +5135,18 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_metadata_source"] = metadata_source
     if not target or not comps:
         return None
+    target = enrich_target_metadata_with_seat_context(target, pred)
     pred_nat_count = pred.get("national_theatre_count")
     if pred_nat_count and target.national_theatre_count != int(pred_nat_count):
         target = replace(target, national_theatre_count=int(pred_nat_count))
     if pred.get("social_signal"):
         target = _metadata_with_social_signal(target, pred.get("social_signal"))
+    pred["seat_comp_release_scale"] = release_scale_for_item(target)
+    pred["seat_comp_avg_showings_per_cinema"] = getattr(
+        target,
+        "avg_showings_per_cinema",
+        0.0,
+    )
 
     try:
         day_weights = get_day_weights(cal)
@@ -5181,6 +5216,7 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     pred["seat_comp_thursday_share"] = thursday_share
     pred["seat_comp_external_thursday_share"] = external_thursday_share
     pred["seat_comp_raw_external_thursday_share"] = estimate.weighted_thursday_share
+    pred["seat_comp_target_release_scale"] = estimate.target_release_scale
     if estimate.audience_regression_n:
         features = estimate.audience_regression_features or {}
         model_features = set(
@@ -5837,6 +5873,12 @@ def print_prediction(pred, verbose=False):
         else:
             print(f"    No Thursday seat data; using comp daily-shape shares "
                   f"({'; '.join(share_bits)})")
+        if pred.get("seat_comp_release_scale"):
+            avg_shows = pred.get("seat_comp_avg_showings_per_cinema") or 0
+            print(
+                f"    Comp release profile: {pred['seat_comp_release_scale']}"
+                f"{f', {avg_shows:.1f} showings/theatre' if avg_shows else ''}"
+            )
         if pred.get("seat_comp_audience_factor"):
             r2 = pred.get("seat_comp_audience_regression_r2")
             r2_str = f", R2 {r2:.2f}" if r2 is not None else ""
