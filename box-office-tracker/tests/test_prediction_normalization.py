@@ -583,6 +583,151 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(pred["regression_mid_m"], 90.5)
         self.assertIn("component disagreement", pred["regression_basis"])
 
+    def test_forecast_feature_importance_reports_current_driver_stack(self):
+        pred = {
+            "movie": "The Mandalorian and Grogu",
+            "seat_mid_m": 128.2,
+            "seat_low_m": 60.5,
+            "seat_high_m": 271.4,
+            "seat_comp_adjusted_mid_m": 102.2,
+            "seat_primary_mid_m": 110.0,
+            "seat_data_quality": 0.12,
+            "n_theatres_total": 426,
+            "expected_amc_theatres": 425,
+            "avg_showings_per_cinema": 7.2,
+            "national_theatre_count": 4000,
+            "daily_details": {
+                "Thursday": {
+                    "date": "2026-05-21",
+                    "amc_total": 2_100_000,
+                    "sampled_amc_total": 2_090_000,
+                    "domestic_mid": 8_900_000,
+                    "n_theatres": 426,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 0.99,
+                    "avg_showings_per_cinema": 7.2,
+                },
+            },
+            "snapshot_mid_m": 105.6,
+            "snapshot_model_weight": 0.37,
+            "snapshot_effective_model_weight": 0.30,
+            "snapshot_model_coverage_ratio": 0.99,
+            "snapshot_coverage_ratio": 0.23,
+            "snapshot_calibration_support_factor": 0.35,
+            "snapshot_days": ["Friday", "Saturday", "Sunday"],
+            "snapshot_pickup_profile": {
+                "n_matched_showtimes": 805,
+                "reserved_seats_at_snapshot": 47_216,
+                "final_sold_seats": 52_718,
+                "post_snapshot_pickup_seats": 5_502,
+            },
+            "snapshot_frontload_profile": {
+                "classification": "backloaded",
+                "frontload_ratio": 0.61,
+                "confidence": 0.55,
+            },
+            "seat_comp_release_scale": "tentpole",
+            "seat_comp_avg_showings_per_cinema": 7.2,
+            "seat_comp_thursday_share": 0.144,
+            "seat_comp_external_thursday_share": 0.146,
+            "seat_comp_local_thursday_share": 0.127,
+            "seat_comp_local_thursday_n": 1,
+            "seat_comp_local_thursday_weight": 0.11,
+            "seat_comp_top_comps": [
+                {"movie": "Avatar: The Way of Water", "weight": 0.36},
+                {"movie": "Dune: Part Two", "weight": 0.21},
+            ],
+            "seat_comp_audience_features": "4,000 theatres",
+            "seat_comp_metadata_source": "title_inferred",
+            "theatre_count_model_integrated": True,
+            "social_signal_model_integrated": True,
+            "social_signal": {
+                "signal_quality": 0.40,
+                "buzz_score": 0.60,
+                "sentiment_score": 0.20,
+                "reach": 1_000_000,
+                "platforms": ["x"],
+            },
+        }
+
+        drivers = predict.forecast_feature_importance(pred)
+
+        self.assertEqual(
+            [
+                "Thursday sampled AMC gross",
+                "Snapshot reserved seats for Fri/Sat/Sun",
+                "Showings per AMC theatre",
+                "Release scale / tentpole flag",
+                "National theatre count",
+                "Historical comp Thursday share",
+                "Genre/franchise/audience metadata",
+                "Social signal",
+            ],
+            [driver["driver"] for driver in drivers],
+        )
+        self.assertEqual([1, 2, 3, 4, 5, 6, 7, 8],
+                         [driver["rank"] for driver in drivers])
+        self.assertTrue(all(0 <= driver["importance"] <= 100 for driver in drivers))
+        self.assertGreater(drivers[0]["importance"], drivers[1]["importance"])
+        self.assertIn("$2.1M sampled AMC", drivers[0]["evidence"])
+        self.assertIn("47,216 reserved", drivers[1]["evidence"])
+        self.assertIn("7.2 showings", drivers[2]["evidence"])
+        self.assertIn("tentpole", drivers[3]["evidence"])
+        self.assertIn("4,000", drivers[4]["evidence"])
+        self.assertIn("14.4%", drivers[5]["evidence"])
+        self.assertIn("Avatar: The Way of Water", drivers[6]["evidence"])
+        self.assertIn("integrated", drivers[7]["evidence"])
+
+    def test_print_prediction_includes_forecast_feature_importance(self):
+        pred = {
+            "movie": "Sample Movie",
+            "seat_mid_m": 20.0,
+            "seat_low_m": 16.0,
+            "seat_high_m": 24.0,
+            "poly_result": None,
+            "daily_estimates": {"Thursday": 8_000_000},
+            "daily_details": {
+                "Thursday": {
+                    "date": "2026-05-21",
+                    "amc_total": 2_000_000,
+                    "sampled_amc_total": 2_000_000,
+                    "domestic_mid": 8_000_000,
+                    "n_theatres": 400,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                    "avg_showings_per_cinema": 6.5,
+                    "n_no_data": 0,
+                },
+            },
+            "n_theatres_total": 400,
+            "expected_amc_theatres": 400,
+            "n_days": 1,
+            "seat_data_quality": 0.20,
+            "regression_mid_m": 20.0,
+            "regression_low_m": 16.0,
+            "regression_high_m": 24.0,
+            "regression_source": "seat-only-regression",
+            "regression_basis": "seat-only",
+            "forecast_feature_importance": [
+                {
+                    "rank": 1,
+                    "driver": "Thursday sampled AMC gross",
+                    "importance": 95,
+                    "evidence": "$2.0M sampled AMC -> $8.0M day",
+                    "why": "Observed seat demand anchors the forecast.",
+                },
+            ],
+        }
+
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            predict.print_prediction(pred)
+
+        output = buffer.getvalue()
+        self.assertIn("Feature importance for current forecast", output)
+        self.assertIn("1. Thursday sampled AMC gross", output)
+        self.assertIn("$2.0M sampled AMC -> $8.0M day", output)
+
     def test_seat_primary_dampens_direct_weight_for_sparse_partial_data(self):
         pred = {
             "seat_mid_m": 30.0,
