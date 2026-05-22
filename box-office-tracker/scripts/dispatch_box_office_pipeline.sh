@@ -13,6 +13,7 @@
 #   FORCE=true                   Pass force=true to the workflow
 #   TEST=5                       Pass test=N to the workflow
 #   GH_TOKEN_FILE=/path/.env      Optional env file containing GH_TOKEN
+#   GH_REF=main                   Git ref passed to `gh workflow run --ref`
 #   DISPATCH_STATE_DIR=/var/tmp/box-office-dispatch
 #   DISPATCH_DEDUP_WINDOW_SEC=900
 
@@ -20,6 +21,7 @@ set -euo pipefail
 
 WORKFLOW_FILE="${WORKFLOW_FILE:-box-office-pipeline.yml}"
 GH_REPO="${GH_REPO:-}"
+GH_REF="${GH_REF:-main}"
 FORCE="${FORCE:-false}"
 TEST="${TEST:-}"
 GH_TOKEN_FILE="${GH_TOKEN_FILE:-}"
@@ -40,8 +42,28 @@ usage() {
   exit 2
 }
 
+validate_github_auth() {
+  if [[ -z "$GH_REPO" ]]; then
+    echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: GH_REPO is required" >&2
+    return 1
+  fi
+  if [[ -z "${GH_TOKEN:-}" ]]; then
+    echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: GH_TOKEN is missing; set it in GH_TOKEN_FILE=$GH_TOKEN_FILE" >&2
+    return 1
+  fi
+
+  local auth_probe
+  if ! auth_probe="$(gh api "repos/${GH_REPO}" --jq .default_branch 2>&1)"; then
+    echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: GitHub auth failed for ${GH_REPO}; refresh GH_TOKEN_FILE=$GH_TOKEN_FILE" >&2
+    echo "$auth_probe" >&2
+    return 1
+  fi
+}
+
 run_workflow() {
-  local -a cmd=(gh workflow run "$WORKFLOW_FILE")
+  validate_github_auth
+
+  local -a cmd=(gh workflow run "$WORKFLOW_FILE" --ref "$GH_REF")
   if [[ -n "$GH_REPO" ]]; then
     cmd+=(--repo "$GH_REPO")
   fi
