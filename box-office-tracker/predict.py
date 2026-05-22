@@ -93,6 +93,12 @@ RESIDUAL_FOOTPRINT_MAX_WEIGHT = 1.10
 RESIDUAL_METADATA_COMBINED_MIN_WEIGHT = 0.45
 RESIDUAL_METADATA_COMBINED_MAX_WEIGHT = 1.20
 INFERRED_METADATA_MAX_COMP_WEIGHT = 0.70
+INFERRED_METADATA_DISAGREE_MAX_COMP_WEIGHT = 0.85
+MODEL_DISAGREEMENT_MEDIUM_RATIO = 1.25
+MODEL_DISAGREEMENT_HIGH_RATIO = 1.55
+MODEL_DISAGREEMENT_SPARSE_QUALITY = 0.35
+MODEL_DISAGREEMENT_SNAPSHOT_MEDIUM_MULTIPLIER = 0.80
+MODEL_DISAGREEMENT_SNAPSHOT_HIGH_MULTIPLIER = 0.65
 PREVIEW_SEAT_RESIDUAL_MIN_OBS = 1
 PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT = 4.0
 PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH = 0.60
@@ -2029,17 +2035,88 @@ def comp_component_weight(n_days):
     return 0.10
 
 
+def component_ratio(high_signal, low_signal):
+    """Return max/min for two positive model anchors."""
+    a = _positive_float(high_signal)
+    b = _positive_float(low_signal)
+    if not a or not b:
+        return None
+    return max(a, b) / max(0.001, min(a, b))
+
+
+def model_component_disagreement_profile(pred, base_mid=None, snapshot_mid=None):
+    """Describe how far the model's independent anchors are from each other."""
+    direct_mid = _positive_float(pred.get("seat_mid_m"))
+    comp_mid = _positive_float(
+        pred.get("seat_comp_adjusted_mid_m", pred.get("seat_comp_mid_m"))
+    )
+    base_mid = _positive_float(base_mid or pred.get("seat_primary_mid_m"))
+    snapshot_mid = _positive_float(snapshot_mid or pred.get("snapshot_mid_m"))
+
+    ratios = {}
+    if direct_mid and comp_mid:
+        ratios["seat_vs_comp"] = component_ratio(direct_mid, comp_mid)
+    if base_mid and snapshot_mid:
+        ratios["snapshot_vs_base"] = component_ratio(snapshot_mid, base_mid)
+    if direct_mid and snapshot_mid:
+        ratios["seat_vs_snapshot"] = component_ratio(direct_mid, snapshot_mid)
+
+    max_ratio = max((value for value in ratios.values() if value), default=1.0)
+    if max_ratio >= MODEL_DISAGREEMENT_HIGH_RATIO:
+        severity = "high"
+        snapshot_multiplier = MODEL_DISAGREEMENT_SNAPSHOT_HIGH_MULTIPLIER
+    elif max_ratio >= MODEL_DISAGREEMENT_MEDIUM_RATIO:
+        severity = "medium"
+        snapshot_multiplier = MODEL_DISAGREEMENT_SNAPSHOT_MEDIUM_MULTIPLIER
+    else:
+        severity = "low"
+        snapshot_multiplier = 1.0
+
+    anchor_values = [
+        value for value in (direct_mid, comp_mid, base_mid, snapshot_mid)
+        if value and value > 0
+    ]
+    spread_m = max(anchor_values) - min(anchor_values) if len(anchor_values) >= 2 else 0.0
+    quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
+    sparse_multiplier = _clamp(1.0 - quality, 0.0, 1.0)
+    if severity == "high":
+        range_buffer_m = spread_m * (0.06 + 0.06 * sparse_multiplier)
+    elif severity == "medium":
+        range_buffer_m = spread_m * (0.03 + 0.04 * sparse_multiplier)
+    else:
+        range_buffer_m = 0.0
+
+    return {
+        "severity": severity,
+        "max_ratio": round(max_ratio, 4),
+        "ratios": {
+            key: round(value, 4)
+            for key, value in ratios.items()
+            if value is not None
+        },
+        "spread_m": round(spread_m, 3),
+        "seat_data_quality": round(quality, 4),
+        "snapshot_weight_multiplier": round(snapshot_multiplier, 4),
+        "range_buffer_m": round(range_buffer_m, 3),
+    }
+
+
 def seat_primary_ensemble(pred):
     """Blend direct seat totals with the comp-translated seat signal."""
     comp_mid = pred.get("seat_comp_adjusted_mid_m", pred.get("seat_comp_mid_m"))
     if comp_mid is None:
         return None
+    direct_mid = pred["seat_mid_m"]
+    direct_low = pred["seat_low_m"]
+    direct_high = pred["seat_high_m"]
+    comp_low = pred.get("seat_comp_adjusted_low_m", pred["seat_comp_low_m"])
+    comp_high = pred.get("seat_comp_adjusted_high_m", pred["seat_comp_high_m"])
 
     w_comp = comp_component_weight(pred.get("n_days", 0))
     w_direct = 1.0 - w_comp
     quality_raw = pred.get("seat_data_quality")
+    quality = _coverage_value(quality_raw, default=1.0)
     if quality_raw is not None:
-        quality = _coverage_value(quality_raw, default=1.0)
         # The base day-count weight says how many days were collected; quality
         # says whether those days represent enough of the weekend/theatre map to
         # trust a direct extrapolation. Keep a small floor so seats remain the
@@ -2051,14 +2128,18 @@ def seat_primary_ensemble(pred):
         actual_anchor_floor = min(0.70, 0.25 + 0.60 * actual_share)
         w_direct = max(w_direct, actual_anchor_floor)
         w_comp = 1.0 - w_direct
+    inferred_cap = None
     if pred.get("seat_comp_metadata_source") == "title_inferred":
-        w_comp = min(w_comp, INFERRED_METADATA_MAX_COMP_WEIGHT)
+        inferred_cap = INFERRED_METADATA_MAX_COMP_WEIGHT
+        ratio = component_ratio(direct_mid, comp_mid) or 1.0
+        if (
+            ratio >= MODEL_DISAGREEMENT_HIGH_RATIO
+            and quality < MODEL_DISAGREEMENT_SPARSE_QUALITY
+            and actual_share < 0.20
+        ):
+            inferred_cap = INFERRED_METADATA_DISAGREE_MAX_COMP_WEIGHT
+        w_comp = min(w_comp, inferred_cap)
         w_direct = 1.0 - w_comp
-    direct_mid = pred["seat_mid_m"]
-    direct_low = pred["seat_low_m"]
-    direct_high = pred["seat_high_m"]
-    comp_low = pred.get("seat_comp_adjusted_low_m", pred["seat_comp_low_m"])
-    comp_high = pred.get("seat_comp_adjusted_high_m", pred["seat_comp_high_m"])
 
     mid = direct_mid * w_direct + comp_mid * w_comp
     low = direct_low * w_direct + comp_low * w_comp
@@ -2077,6 +2158,7 @@ def seat_primary_ensemble(pred):
         "w_comp": w_comp,
         "reported_actual_day_share": actual_share,
         "disagreement_m": disagreement,
+        "inferred_metadata_comp_cap": inferred_cap,
     }
 
 
@@ -2448,8 +2530,20 @@ def select_regression_prediction(pred, cal=None):
         basis = "seat-only"
 
     snapshot_mid = pred.get("snapshot_mid_m")
+    disagreement_profile = model_component_disagreement_profile(
+        pred,
+        base_mid=mid,
+        snapshot_mid=snapshot_mid,
+    )
+    pred["model_component_disagreement"] = disagreement_profile
     snapshot_weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
     if snapshot_mid is not None and snapshot_weight > 0:
+        original_snapshot_weight = snapshot_weight
+        snapshot_weight = _clamp(
+            snapshot_weight * disagreement_profile.get("snapshot_weight_multiplier", 1.0),
+            0.0,
+            SNAPSHOT_LAYER_MAX_WEIGHT,
+        )
         seat_weight = 1.0 - snapshot_weight
         snapshot_low = pred.get("snapshot_low_m", snapshot_mid)
         snapshot_high = pred.get("snapshot_high_m", snapshot_mid)
@@ -2463,6 +2557,8 @@ def select_regression_prediction(pred, cal=None):
         pred["snapshot_blended_base_mid_m"] = base_mid
         pred["snapshot_blended_disagreement_m"] = disagreement
         pred["snapshot_blended_weight"] = snapshot_weight
+        pred["snapshot_original_model_weight"] = round(original_snapshot_weight, 4)
+        pred["snapshot_effective_model_weight"] = round(snapshot_weight, 4)
         if source == "seat-only-regression":
             source = "seat+snapshot-regression"
         elif "seat+comp" in source:
@@ -2472,6 +2568,12 @@ def select_regression_prediction(pred, cal=None):
         else:
             source = f"{source}+snapshot"
         basis = f"{basis} + snapshot future days"
+
+    range_buffer_m = _positive_float(disagreement_profile.get("range_buffer_m")) or 0.0
+    if disagreement_profile.get("severity") in {"medium", "high"} and range_buffer_m > 0:
+        low = max(0.0, low - range_buffer_m)
+        high = high + range_buffer_m
+        basis = f"{basis} + component disagreement penalty ({disagreement_profile['severity']})"
 
     residual = historical_residual_regression(pred, cal)
     if residual:
@@ -5169,6 +5271,10 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
         pred["seat_primary_w_direct"] = primary["w_direct"]
         pred["seat_primary_w_comp"] = primary["w_comp"]
         pred["seat_primary_disagreement_m"] = primary["disagreement_m"]
+        if primary.get("inferred_metadata_comp_cap") is not None:
+            pred["seat_primary_inferred_metadata_comp_cap"] = (
+                primary["inferred_metadata_comp_cap"]
+            )
         pred["blended_m"] = primary["mid_m"]
         pred["blend_low_m"] = primary["low_m"]
         pred["blend_high_m"] = primary["high_m"]
@@ -5916,6 +6022,31 @@ def print_prediction(pred, verbose=False):
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
+    disagreement = pred.get("model_component_disagreement") or {}
+    if disagreement.get("severity") in {"medium", "high"}:
+        ratios = disagreement.get("ratios") or {}
+        ratio_bits = []
+        if ratios.get("seat_vs_comp"):
+            ratio_bits.append(f"raw seats vs comps x{ratios['seat_vs_comp']:.2f}")
+        if ratios.get("snapshot_vs_base"):
+            ratio_bits.append(f"snapshot vs base x{ratios['snapshot_vs_base']:.2f}")
+        original_snapshot_weight = pred.get("snapshot_original_model_weight")
+        effective_snapshot_weight = pred.get("snapshot_effective_model_weight")
+        weight_note = ""
+        if (
+            original_snapshot_weight is not None
+            and effective_snapshot_weight is not None
+            and abs(original_snapshot_weight - effective_snapshot_weight) >= 0.005
+        ):
+            weight_note = (
+                f"; snapshot weight {original_snapshot_weight:.0%}"
+                f"→{effective_snapshot_weight:.0%}"
+            )
+        print(
+            f"    Model disagreement: {disagreement['severity']} "
+            f"({', '.join(ratio_bits) if ratio_bits else 'component spread'}"
+            f"{weight_note}); raw seat-only is diagnostic"
+        )
     if pred.get("historical_residual_factor") is not None:
         print(f"    Historical residual: x{pred['historical_residual_factor']:.3f} "
               f"(raw x{pred['historical_residual_raw_factor']:.3f}, "

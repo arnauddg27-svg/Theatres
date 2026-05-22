@@ -555,6 +555,34 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("direct seats", pred["regression_basis"])
         self.assertFalse(pred["regression_uses_polymarket"])
 
+    def test_regression_selector_downweights_snapshot_when_components_disagree(self):
+        pred = {
+            "seat_mid_m": 128.0,
+            "seat_low_m": 60.0,
+            "seat_high_m": 270.0,
+            "seat_comp_adjusted_mid_m": 61.0,
+            "seat_comp_adjusted_low_m": 42.0,
+            "seat_comp_adjusted_high_m": 79.0,
+            "seat_primary_mid_m": 80.0,
+            "seat_primary_low_m": 31.0,
+            "seat_primary_high_m": 154.0,
+            "seat_primary_w_direct": 0.30,
+            "seat_primary_w_comp": 0.70,
+            "snapshot_mid_m": 106.0,
+            "snapshot_low_m": 81.0,
+            "snapshot_high_m": 146.0,
+            "snapshot_model_weight": 0.40,
+            "n_days": 1,
+            "seat_data_quality": 0.12,
+        }
+
+        select_regression_prediction(pred, {"history": []})
+
+        self.assertEqual("high", pred["model_component_disagreement"]["severity"])
+        self.assertLess(pred["snapshot_effective_model_weight"], 0.40)
+        self.assertLess(pred["regression_mid_m"], 90.5)
+        self.assertIn("component disagreement", pred["regression_basis"])
+
     def test_seat_primary_dampens_direct_weight_for_sparse_partial_data(self):
         pred = {
             "seat_mid_m": 30.0,
@@ -576,6 +604,28 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertGreater(primary["w_comp"], 0.70)
         self.assertLess(primary["mid_m"], 19.5)
         self.assertGreater(primary["mid_m"], 15.0)
+
+    def test_inferred_metadata_cap_relaxes_when_sparse_direct_line_disagrees(self):
+        pred = {
+            "seat_mid_m": 128.0,
+            "seat_low_m": 60.0,
+            "seat_high_m": 270.0,
+            "seat_comp_adjusted_mid_m": 61.0,
+            "seat_comp_adjusted_low_m": 42.0,
+            "seat_comp_adjusted_high_m": 79.0,
+            "seat_comp_mid_m": 65.0,
+            "seat_comp_low_m": 61.0,
+            "seat_comp_high_m": 72.0,
+            "n_days": 1,
+            "seat_data_quality": 0.12,
+            "seat_comp_metadata_source": "title_inferred",
+        }
+
+        primary = predict.seat_primary_ensemble(pred)
+
+        self.assertAlmostEqual(0.85, primary["w_comp"], places=6)
+        self.assertAlmostEqual(0.15, primary["w_direct"], places=6)
+        self.assertLess(primary["mid_m"], 75.0)
 
     def test_reported_actual_days_raise_direct_weight_in_seat_primary(self):
         sparse_pred = {
