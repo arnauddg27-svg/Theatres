@@ -1,4 +1,6 @@
 import unittest
+import contextlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -598,6 +600,41 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertGreater(anchored["w_direct"], sparse["w_direct"])
         self.assertGreaterEqual(anchored["w_direct"], 0.45)
         self.assertGreater(anchored["mid_m"], sparse["mid_m"])
+
+    def test_seat_comp_friday_only_evidence_is_not_double_counted(self):
+        comp = types.SimpleNamespace(
+            movie="Friday Comp",
+            thursday_share=0.10,
+            daily_shares={"Friday": 0.40},
+            has_daily_breakdown=True,
+        )
+        estimate = types.SimpleNamespace(
+            weighted_thursday_share=0.10,
+            daily_shares={"Friday": 0.40},
+            comps=[comp],
+            weights={"Friday Comp": 1.0},
+            audience_adjusted_mid_m=20.0,
+            mid_m=20.0,
+            low_m=16.0,
+            high_m=24.0,
+            thursday_gross_m=0.0,
+        )
+        pred = {
+            "daily_details": {
+                "Friday": {"domestic_mid": 4_500_000},
+            }
+        }
+
+        model = predict._seat_comp_model_from_available_days(
+            pred,
+            estimate,
+            thursday_share=0.10,
+            audience_factor=1.0,
+        )
+
+        self.assertEqual("Friday only", model["basis"])
+        self.assertAlmostEqual(0.30, model["evidence_share"], places=6)
+        self.assertAlmostEqual(15.0, model["mid_m"], places=6)
 
     def test_actual_anchor_reduces_metadata_prior_weight(self):
         pred = {
@@ -1566,6 +1603,110 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertGreater(adjusted["snapshot_day_shape_signal_weight"], 0.40)
         self.assertLess(adjusted["snapshot_day_shape_prior_weight"], 0.60)
 
+    def test_snapshot_frontload_profile_shifts_priors_to_friday_heavy_mix(self):
+        snapshot_details = {
+            "Friday": {
+                "domestic_mid": 70_000_000,
+                "effective_strategic_coverage_ratio": 1.0,
+            },
+            "Saturday": {
+                "domestic_mid": 16_000_000,
+                "effective_strategic_coverage_ratio": 1.0,
+            },
+            "Sunday": {
+                "domestic_mid": 14_000_000,
+                "effective_strategic_coverage_ratio": 1.0,
+            },
+        }
+        priors = {
+            "Friday": 35_000_000,
+            "Saturday": 35_000_000,
+            "Sunday": 30_000_000,
+        }
+
+        profile = predict.snapshot_frontload_profile(
+            snapshot_details,
+            priors,
+            support_factor=0.80,
+        )
+
+        adjusted = profile["adjusted_day_shape_priors"]
+        self.assertEqual("frontloaded", profile["classification"])
+        self.assertGreater(adjusted["Friday"], priors["Friday"])
+        self.assertLess(adjusted["Saturday"], priors["Saturday"])
+        self.assertLess(adjusted["Sunday"], priors["Sunday"])
+        self.assertAlmostEqual(sum(priors.values()), sum(adjusted.values()), delta=1)
+
+    def test_snapshot_future_layer_uses_frontload_profile_for_day_shape(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {
+                    "Thursday": 0.10,
+                    "Friday": 0.30,
+                    "Saturday": 0.35,
+                    "Sunday": 0.25,
+                },
+                "snapshot_to_day_scale_factors": {
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
+                "snapshot_to_lead_scale_factors": {"same_day": 1.0},
+                "snapshot_calibration_support": {
+                    "days": {
+                        "Friday": {"support": 10.0, "n": 4},
+                        "Saturday": {"support": 10.0, "n": 4},
+                        "Sunday": {"support": 10.0, "n": 4},
+                    },
+                    "leads": {"same_day": {"support": 10.0, "n": 4}},
+                },
+            },
+        }
+        snapshot_data = {
+            "2026-05-08": [
+                self._snapshot_row(f"AMC Fri {idx}", "Friday", "2026-05-08")
+                for idx in range(3)
+            ],
+            "2026-05-09": [
+                self._snapshot_row(f"AMC Sat {idx}", "Saturday", "2026-05-09")
+                for idx in range(3)
+            ],
+            "2026-05-10": [
+                self._snapshot_row(f"AMC Sun {idx}", "Sunday", "2026-05-10")
+                for idx in range(3)
+            ],
+        }
+        for row in snapshot_data["2026-05-08"]:
+            row["reserved_seats"] = "90"
+        for show_date in ("2026-05-09", "2026-05-10"):
+            for row in snapshot_data[show_date]:
+                row["reserved_seats"] = "12"
+
+        layer = predict.build_snapshot_future_layer(
+            snapshot_data,
+            {
+                "Thursday": {
+                    "domestic_mid": 10_000_000,
+                    "coverage_ratio": 1.0,
+                    "effective_coverage_ratio": 1.0,
+                }
+            },
+            cal,
+            expected_amc_theatres=3,
+        )
+
+        profile = layer["snapshot_frontload_profile"]
+        self.assertEqual("frontloaded", profile["classification"])
+        self.assertGreater(
+            layer["snapshot_daily_details"]["Friday"]["day_shape_prior_domestic_mid"],
+            30_000_000,
+        )
+        self.assertLess(
+            layer["snapshot_daily_details"]["Saturday"]["day_shape_prior_domestic_mid"],
+            35_000_000,
+        )
+
     def test_snapshot_day_tracks_raw_and_strategic_coverage(self):
         cal = {
             "calibration_factors": {
@@ -1920,6 +2061,110 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(
             425,
             cal["calibration_factors"]["reference_amc_theatres_by_cohort"]["core,expansion"],
+        )
+
+    def test_record_actual_market_share_uses_legacy_actual_total(self):
+        cal = {
+            "history": [{
+                "movie": "Legacy Movie",
+                "predicted_mid": 19.0,
+                "actual_total": 20.0,
+                "seat_raw_estimate": 4.0,
+                "daily_predictions": {"Thursday": 5.0},
+                "daily_actuals": {"Thursday": 5.0},
+                "daily_coverage_ratios": {"Thursday": 1.0},
+            }],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [],
+            },
+        }
+        old_save_calibration = predict.save_calibration
+        predict.save_calibration = lambda _cal: None
+        try:
+            record_actual(
+                cal,
+                "New Movie",
+                10.0,
+                8.0,
+                12.0,
+                3.4,
+                0.0,
+                10.0,
+                425,
+                ["Thursday"],
+            )
+        finally:
+            predict.save_calibration = old_save_calibration
+
+        # Legacy calibration rows used actual_total before record_actual also
+        # wrote an "actual" alias. They must still train the AMC share prior.
+        self.assertAlmostEqual(
+            0.27,
+            cal["calibration_factors"]["amc_market_share"],
+            places=2,
+        )
+
+    def test_print_history_displays_actual_total_when_actual_alias_is_empty(self):
+        cal = {
+            "history": [{
+                "movie": "Sample Movie",
+                "predicted_mid": 16.2,
+                "actual": None,
+                "actual_total": 17.2,
+            }],
+            "calibration_factors": {},
+        }
+
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            predict.print_history(cal)
+
+        self.assertIn("$17.2M", out.getvalue())
+
+    def test_record_actual_recalibrates_day_scale_factors(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "historical_accuracy": [],
+            },
+        }
+        old_save_calibration = predict.save_calibration
+        predict.save_calibration = lambda _cal: None
+        try:
+            record_actual(
+                cal,
+                "Sample Movie",
+                10.0,
+                8.0,
+                12.0,
+                2.0,
+                0.0,
+                15.0,
+                425,
+                ["Thursday"],
+                daily_predictions={"Thursday": 10.0},
+                raw_daily_predictions={"Thursday": 10.0},
+                daily_actuals={"Thursday": 15.0},
+                daily_coverage_ratios={"Thursday": 1.0},
+                reference_amc_theatres=425,
+            )
+        finally:
+            predict.save_calibration = old_save_calibration
+
+        entry = cal["history"][-1]
+        self.assertEqual({"Thursday": 15.0}, entry["daily_actuals"])
+        self.assertEqual(15.0, entry["actual_total"])
+        self.assertGreater(
+            cal["calibration_factors"]["day_scale_factors"]["Thursday"],
+            1.0,
         )
 
     def test_record_result_stores_prediction_cohort_reference(self):
@@ -2633,6 +2878,32 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(2.6, loaded["Sample Movie"]["Thursday"]["gross_m"])
         self.assertEqual("manual", loaded["Sample Movie"]["Thursday"]["source"])
         self.assertNotIn("Friday", loaded["Sample Movie"])
+
+    def test_daily_actual_override_gross_helper_extracts_reported_value(self):
+        overrides = {
+            '"Sample: Movie!"': {
+                "Thursday": {
+                    "gross_m": 2.6,
+                    "source": "reported",
+                }
+            }
+        }
+
+        self.assertEqual(
+            2.6,
+            predict.daily_actual_override_gross_m_for(
+                "Sample Movie",
+                "Thursday",
+                overrides,
+            ),
+        )
+        self.assertIsNone(
+            predict.daily_actual_override_gross_m_for(
+                "Sample Movie",
+                "Friday",
+                overrides,
+            )
+        )
 
     def test_daily_actual_override_replaces_seat_implied_day(self):
         cal = {

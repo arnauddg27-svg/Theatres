@@ -24,10 +24,15 @@ from predict import (
     filter_seat_data_through,
     get_day_weights,
     load_calibration,
+    load_daily_actual_overrides,
     load_frozen_calibration,
     load_polymarket_data,
+    load_pre_reservation_data,
     load_seat_data,
+    load_showtime_link_daypart_profiles,
+    load_social_signal_data,
     load_theatre_counts,
+    movie_mapping_get,
     national_theatre_count_for_movie,
     predict_movie,
     regression_prediction_values,
@@ -93,6 +98,21 @@ def main(argv: list[str] | None = None) -> int:
     seat_data = load_seat_data(weekend_of=weekend_of)
     seat_data = filter_seat_data_through(seat_data, args.through_date)
     poly_data = load_polymarket_data(weekend_of=weekend_of, through_date=args.through_date)
+    snapshot_data = load_pre_reservation_data(
+        weekend_of=weekend_of,
+        through_date=args.through_date,
+    )
+    social_data = load_social_signal_data(
+        weekend_of=weekend_of,
+        through_date=args.through_date,
+    )
+    daily_actual_overrides = load_daily_actual_overrides(
+        weekend_of=weekend_of,
+        through_date=args.through_date,
+    )
+    showtime_link_profiles = load_showtime_link_daypart_profiles(
+        weekend_of=weekend_of,
+    )
     theatre_counts = load_theatre_counts()
 
     movie_match = None
@@ -111,6 +131,10 @@ def main(argv: list[str] | None = None) -> int:
         poly_data.get(movie_match, []),
         cal,
         national_theatre_count=nat_count,
+        snapshot_data=movie_mapping_get(snapshot_data, movie_match, {}),
+        social_data=social_data,
+        daily_actual_overrides=daily_actual_overrides,
+        showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie_match, {}),
     )
     if not prediction:
         print(f"Could not build prediction for {movie_match!r}.")

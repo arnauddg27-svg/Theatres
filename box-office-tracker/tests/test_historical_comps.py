@@ -1,7 +1,10 @@
 import unittest
 from pathlib import Path
+import contextlib
+import io
 import os
 import sys
+import types
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -50,6 +53,113 @@ class HistoricalCompsTest(unittest.TestCase):
         })
 
         self.assertEqual(("Seat primary", 76.5), line)
+
+    def test_backtest_passes_as_of_side_inputs_to_current_model(self):
+        target = types.SimpleNamespace(
+            movie="Target Movie",
+            weekend_of="2026-05-15",
+        )
+        comp = types.SimpleNamespace(
+            movie="Comp Movie",
+            thursday_share=0.10,
+            has_daily_breakdown=True,
+        )
+        estimate = types.SimpleNamespace(
+            mid_m=10.0,
+            low_m=8.0,
+            high_m=12.0,
+            adjusted_mid_m=None,
+            thursday_gross_m=1.0,
+            weighted_thursday_share=0.10,
+            daily_projection_m={},
+            daily_shares={},
+            comps=[comp],
+            weights={"Comp Movie": 1.0},
+        )
+        captured = {}
+        patches = {
+            "load_movie_metadata": lambda _path: {"Target Movie": target},
+            "metadata_for_movie": lambda movie, metadata: target,
+            "load_historical_comps": lambda _path: [comp],
+            "load_frozen_calibration": lambda _weekend: {"calibration_factors": {}},
+            "load_seat_data": lambda weekend_of=None: {
+                "Target Movie": {
+                    "2026-05-15": [{
+                        "movie_title": "Target Movie",
+                        "weekend_of": "2026-05-15",
+                        "day_of_week": "Friday",
+                    }],
+                },
+            },
+            "filter_seat_data_through": lambda data, through_date=None: data,
+            "load_polymarket_data": lambda weekend_of=None, through_date=None: {},
+            "load_pre_reservation_data": lambda weekend_of=None, through_date=None: (
+                captured.__setitem__("snapshot_loader", (weekend_of, through_date))
+                or {"Target Movie": {"2026-05-16": []}}
+            ),
+            "load_social_signal_data": lambda weekend_of=None, through_date=None: (
+                captured.__setitem__("social_loader", (weekend_of, through_date))
+                or {"Target Movie": {"factor": 1.0}}
+            ),
+            "load_daily_actual_overrides": lambda weekend_of=None, through_date=None: (
+                captured.__setitem__("actual_loader", (weekend_of, through_date))
+                or {"Target Movie": {"Friday": {"gross_m": 6.6}}}
+            ),
+            "load_showtime_link_daypart_profiles": lambda weekend_of=None: (
+                captured.__setitem__("links_loader", weekend_of)
+                or {"Target Movie": {"2026-05-16": {}}}
+            ),
+            "load_theatre_counts": lambda: {},
+            "national_theatre_count_for_movie": lambda movie, counts, metadata=None: 2615,
+            "get_day_weights": lambda cal: {"Thursday": 0.1},
+            "estimate_from_prediction": lambda prediction, target, comps, baseline_thursday_share=0.0: estimate,
+            "regression_prediction_values": lambda prediction: (10.0, 8.0, 12.0),
+            "active_model_cohorts": lambda: {"core"},
+        }
+
+        def fake_predict_movie(movie, seat_data, poly_data, cal, **kwargs):
+            captured["predict_kwargs"] = kwargs
+            return {
+                "seat_mid_m": 9.0,
+                "blended_m": 9.0,
+                "daily_details": {},
+            }
+
+        patches["predict_movie"] = fake_predict_movie
+        originals = {
+            name: getattr(comp_backtest, name)
+            for name in patches
+        }
+        for name, value in patches.items():
+            setattr(comp_backtest, name, value)
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = comp_backtest.main([
+                    "--movie",
+                    "Target",
+                    "--calibration-freeze",
+                    "2026-05-15",
+                    "--through-date",
+                    "2026-05-16",
+                ])
+        finally:
+            for name, value in originals.items():
+                setattr(comp_backtest, name, value)
+
+        self.assertEqual(0, rc)
+        self.assertEqual(("2026-05-15", "2026-05-16"), captured["snapshot_loader"])
+        self.assertEqual(("2026-05-15", "2026-05-16"), captured["social_loader"])
+        self.assertEqual(("2026-05-15", "2026-05-16"), captured["actual_loader"])
+        self.assertEqual("2026-05-15", captured["links_loader"])
+        self.assertEqual({"2026-05-16": []}, captured["predict_kwargs"]["snapshot_data"])
+        self.assertEqual(
+            {"Target Movie": {"Friday": {"gross_m": 6.6}}},
+            captured["predict_kwargs"]["daily_actual_overrides"],
+        )
+        self.assertEqual(
+            {"2026-05-16": {}},
+            captured["predict_kwargs"]["showtime_link_profiles"],
+        )
 
     def test_estimate_weights_matching_music_biopic_comps(self):
         target = TargetMetadata(
@@ -524,6 +634,60 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertEqual("Thursday", prediction["seat_comp_basis"])
         self.assertEqual("Comp", prediction["seat_comp_top_comps"][0]["movie"])
         self.assertAlmostEqual(38.545454545, prediction["seat_comp_daily_m"]["Friday"], places=6)
+
+    def test_prediction_uses_inferred_metadata_for_obvious_franchise_title(self):
+        prediction = {
+            "movie": "The Mandalorian and Grogu",
+            "seat_mid_m": 120.0,
+            "seat_low_m": 90.0,
+            "seat_high_m": 150.0,
+            "n_theatres_total": 426,
+            "n_days": 1,
+            "coverage_ratio": 0.25,
+            "seat_data_quality": 0.12,
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 8_000_000,
+                }
+            },
+        }
+        comps = [
+            HistoricalComp(
+                "Space Franchise",
+                "sci_fi",
+                "fan_driven",
+                "franchise",
+                "PG-13",
+                10.0,
+                100.0,
+                friday_m=45.0,
+                saturday_m=32.0,
+                sunday_m=23.0,
+            ),
+            HistoricalComp(
+                "Small Horror",
+                "horror",
+                "horror_fan",
+                "original",
+                "R",
+                2.0,
+                20.0,
+                friday_m=9.0,
+                saturday_m=6.0,
+                sunday_m=5.0,
+            ),
+        ]
+
+        attach_comp_model_prediction(prediction, {}, metadata={}, comps=comps)
+
+        self.assertEqual("title_inferred", prediction["seat_comp_metadata_source"])
+        self.assertEqual(
+            "Space Franchise",
+            prediction["seat_comp_top_comps"][0]["movie"],
+        )
+        self.assertLess(prediction["seat_primary_w_comp"], 0.80)
+        self.assertGreater(prediction["seat_primary_w_direct"], 0.20)
+        self.assertIn("seat-primary", prediction["regression_source"])
 
     def test_prediction_does_not_blend_polymarket_into_comp_model(self):
         prediction = {

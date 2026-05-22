@@ -33,6 +33,7 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
                               NATIONAL_FOOTPRINT_MAX_FACTOR,
                               NATIONAL_FOOTPRINT_MIN_FACTOR,
                               NATIONAL_WIDE_RELEASE_BASELINE_THEATRES,
+                              TargetMetadata,
                               estimate_from_prediction,
                               estimate_opening_weekend_from_thursday,
                               load_historical_comps,
@@ -42,6 +43,7 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                SNAPSHOT_LEAD_BUCKETS,
                                sanitize_calibration, recalibrate_scale_factor,
+                               recalibrate_day_scale_factors,
                                recalibrate_snapshot_day_scale_factors,
                                recalibrate_snapshot_lead_scale_factors,
                                snapshot_calibration_support)
@@ -69,7 +71,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v20-multi-anchor-snapshot"
+MODEL_VERSION = "seat-regression-v21-frontload-snapshot"
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
 DYNAMIC_AMC_SHARE_MIN_SHARE = 0.10
@@ -90,6 +92,7 @@ RESIDUAL_FOOTPRINT_MIN_WEIGHT = 0.65
 RESIDUAL_FOOTPRINT_MAX_WEIGHT = 1.10
 RESIDUAL_METADATA_COMBINED_MIN_WEIGHT = 0.45
 RESIDUAL_METADATA_COMBINED_MAX_WEIGHT = 1.20
+INFERRED_METADATA_MAX_COMP_WEIGHT = 0.70
 PREVIEW_SEAT_RESIDUAL_MIN_OBS = 1
 PREVIEW_SEAT_RESIDUAL_PRIOR_WEIGHT = 4.0
 PREVIEW_SEAT_RESIDUAL_MAX_STRENGTH = 0.60
@@ -106,6 +109,8 @@ SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.65
+SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT = 0.35
+SNAPSHOT_FRONTLOAD_MIN_CONFIDENCE = 0.10
 SNAPSHOT_SUPPORT_PRIOR_WEIGHT = 2.0
 SNAPSHOT_UNTRAINED_DAY_SUPPORT_FLOOR = 0.20
 SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
@@ -2046,6 +2051,9 @@ def seat_primary_ensemble(pred):
         actual_anchor_floor = min(0.70, 0.25 + 0.60 * actual_share)
         w_direct = max(w_direct, actual_anchor_floor)
         w_comp = 1.0 - w_direct
+    if pred.get("seat_comp_metadata_source") == "title_inferred":
+        w_comp = min(w_comp, INFERRED_METADATA_MAX_COMP_WEIGHT)
+        w_direct = 1.0 - w_comp
     direct_mid = pred["seat_mid_m"]
     direct_low = pred["seat_low_m"]
     direct_high = pred["seat_high_m"]
@@ -3422,6 +3430,155 @@ def apply_snapshot_day_shape_prior(details, day_shape_prior,
     return adjusted
 
 
+def snapshot_frontload_profile(snapshot_details, day_shape_priors,
+                               support_factor=None):
+    """Use the snapshot day mix to detect frontloaded/backloaded demand.
+
+    The snapshot layer should not only say "there are seats reserved"; it should
+    say where those reservations sit inside the weekend. A Friday-heavy mix is a
+    frontload warning, while stronger Saturday/Sunday reservations should pull
+    the missing-day priors away from a Friday-heavy shape.
+    """
+    candidate_days = [
+        day for day in ("Friday", "Saturday", "Sunday")
+        if day in snapshot_details and day in day_shape_priors
+    ]
+    snapshot_values = {}
+    prior_values = {}
+    coverage_values = {}
+    for day in candidate_days:
+        snapshot_mid = _positive_float(
+            (snapshot_details.get(day) or {}).get("domestic_mid")
+        )
+        prior_mid = _positive_float(day_shape_priors.get(day))
+        if not snapshot_mid or not prior_mid:
+            continue
+        snapshot_values[day] = snapshot_mid
+        prior_values[day] = prior_mid
+        coverage_values[day] = (
+            (snapshot_details.get(day) or {}).get(
+                "effective_strategic_coverage_ratio",
+                (snapshot_details.get(day) or {}).get(
+                    "effective_coverage_ratio",
+                    (snapshot_details.get(day) or {}).get("coverage_ratio"),
+                ),
+            )
+        )
+
+    if len(snapshot_values) < 2:
+        return {}
+
+    snapshot_total = sum(snapshot_values.values())
+    prior_total = sum(prior_values.values())
+    if snapshot_total <= 0 or prior_total <= 0:
+        return {}
+
+    snapshot_shares = {
+        day: value / snapshot_total
+        for day, value in snapshot_values.items()
+    }
+    prior_shares = {
+        day: value / prior_total
+        for day, value in prior_values.items()
+    }
+    relative_demand = {
+        day: (
+            snapshot_shares[day] / prior_shares[day]
+            if prior_shares.get(day) else 1.0
+        )
+        for day in snapshot_values
+    }
+
+    friday_snapshot_share = snapshot_shares.get("Friday")
+    friday_prior_share = prior_shares.get("Friday")
+    rest_days = [
+        day for day in ("Saturday", "Sunday")
+        if day in snapshot_shares and day in prior_shares
+    ]
+    if friday_snapshot_share is not None and friday_prior_share and rest_days:
+        snapshot_rest_share = sum(snapshot_shares[day] for day in rest_days)
+        prior_rest_share = sum(prior_shares[day] for day in rest_days)
+        if snapshot_rest_share > 0 and prior_rest_share > 0:
+            frontload_ratio = (
+                (friday_snapshot_share / snapshot_rest_share)
+                / (friday_prior_share / prior_rest_share)
+            )
+        else:
+            frontload_ratio = 1.0
+    else:
+        frontload_ratio = 1.0
+
+    if frontload_ratio >= 1.12:
+        classification = "frontloaded"
+    elif frontload_ratio <= 0.88:
+        classification = "backloaded"
+    else:
+        classification = "neutral"
+
+    avg_coverage = _coverage_average(coverage_values) or 0.0
+    support = _coverage_value(support_factor, default=0.50)
+    day_completeness = len(snapshot_values) / 3.0
+    confidence = _clamp(
+        sqrt(max(0.0, avg_coverage)) * support * day_completeness,
+        0.0,
+        1.0,
+    )
+
+    effective_confidence = (
+        confidence if confidence >= SNAPSHOT_FRONTLOAD_MIN_CONFIDENCE else 0.0
+    )
+    raw_shift = min(1.0, abs(frontload_ratio - 1.0) / 0.75)
+    adjustment_strength = (
+        SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT
+        * raw_shift
+        * effective_confidence
+    )
+    multipliers = {}
+    for day, relative in relative_demand.items():
+        multipliers[day] = _clamp(
+            1.0 + ((relative - 1.0) * adjustment_strength),
+            1.0 - SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT,
+            1.0 + SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT,
+        )
+
+    adjusted_priors = {
+        day: prior_values[day] * multipliers.get(day, 1.0)
+        for day in prior_values
+    }
+    adjusted_total = sum(adjusted_priors.values())
+    if adjusted_total > 0:
+        normalizer = prior_total / adjusted_total
+        adjusted_priors = {
+            day: value * normalizer
+            for day, value in adjusted_priors.items()
+        }
+
+    return {
+        "classification": classification,
+        "confidence": round(confidence, 4),
+        "frontload_ratio": round(frontload_ratio, 4),
+        "snapshot_shares": {
+            day: round(value, 4)
+            for day, value in snapshot_shares.items()
+        },
+        "prior_shares": {
+            day: round(value, 4)
+            for day, value in prior_shares.items()
+        },
+        "relative_demand": {
+            day: round(value, 4)
+            for day, value in relative_demand.items()
+        },
+        "day_multipliers": {
+            day: round(value, 4)
+            for day, value in multipliers.items()
+        },
+        "adjusted_day_shape_priors": adjusted_priors,
+        "average_coverage": round(avg_coverage, 4),
+        "support_factor": round(support, 4),
+    }
+
+
 def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 expected_amc_theatres, expected_timezone_counts=None,
                                 theatre_timezone_map=None,
@@ -3508,9 +3665,9 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             for day in all_snapshot_details
         }
 
-    snapshot_details = {}
     day_shape_priors = regular_day_shape_priors(regular_daily_details, cal)
     same_week_support_floor = snapshot_same_week_support_floor(same_week_anchors)
+    pending_snapshot_details = {}
     for day_name, details in all_snapshot_details.items():
         regular_details = regular_daily_details.get(day_name)
         supports_partial_regular_day = regular_day_needs_snapshot_support(
@@ -3536,13 +3693,83 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         )
         scaled_details = dict(scaled_details)
         scaled_details["same_week_snapshot_day_scale"] = round(day_same_week_scale, 4)
+        pending_snapshot_details[day_name] = {
+            "scaled_details": scaled_details,
+            "regular_details": regular_details,
+            "supports_partial_regular_day": supports_partial_regular_day,
+            "shape_support": shape_support,
+            "support_info": support_info,
+        }
+
+    profile_support_values = []
+    day_weights = get_day_weights(cal)
+    for day_name, pending in pending_snapshot_details.items():
+        weight = _positive_float(day_weights.get(day_name)) or 0.0
+        profile_support_values.append((pending["shape_support"], weight))
+    positive_profile_support = [
+        (factor, weight)
+        for factor, weight in profile_support_values
+        if factor is not None and weight > 0
+    ]
+    if positive_profile_support:
+        profile_support_factor = (
+            sum(factor * weight for factor, weight in positive_profile_support)
+            / sum(weight for _, weight in positive_profile_support)
+        )
+    elif profile_support_values:
+        profile_support_factor = (
+            sum(factor for factor, _ in profile_support_values if factor is not None)
+            / len(profile_support_values)
+        )
+    else:
+        profile_support_factor = same_week_support_floor or 0.0
+
+    frontload_profile = snapshot_frontload_profile(
+        {
+            day: pending["scaled_details"]
+            for day, pending in pending_snapshot_details.items()
+        },
+        day_shape_priors,
+        support_factor=profile_support_factor,
+    )
+    adjusted_day_shape_priors = (
+        frontload_profile.get("adjusted_day_shape_priors")
+        if frontload_profile else {}
+    )
+
+    snapshot_details = {}
+    for day_name, pending in pending_snapshot_details.items():
+        scaled_details = pending["scaled_details"]
+        regular_details = pending["regular_details"]
+        supports_partial_regular_day = pending["supports_partial_regular_day"]
+        shape_support = pending["shape_support"]
+        support_info = pending["support_info"]
+        day_shape_prior = adjusted_day_shape_priors.get(
+            day_name,
+            day_shape_priors.get(day_name),
+        )
         adjusted_details = apply_snapshot_day_shape_prior(
             scaled_details,
-            day_shape_priors.get(day_name),
+            day_shape_prior,
             support_factor=shape_support,
         )
         adjusted_details = dict(adjusted_details)
         adjusted_details["snapshot_day_shape_support_factor"] = round(shape_support, 4)
+        original_prior = _positive_float(day_shape_priors.get(day_name))
+        adjusted_prior = _positive_float(day_shape_prior)
+        if original_prior and adjusted_prior:
+            adjusted_details["snapshot_frontload_prior_multiplier"] = round(
+                adjusted_prior / original_prior,
+                4,
+            )
+            adjusted_details["snapshot_frontload_classification"] = (
+                frontload_profile.get("classification")
+                if frontload_profile else "neutral"
+            )
+            adjusted_details["snapshot_frontload_confidence"] = (
+                frontload_profile.get("confidence")
+                if frontload_profile else 0.0
+            )
         if supports_partial_regular_day:
             adjusted_details["supports_partial_regular_day"] = True
             adjusted_details["regular_daypart_coverage_factor"] = round(
@@ -3573,9 +3800,9 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             "snapshot_same_week_scale_source": same_week_scale_source,
             "snapshot_pickup_profile": pickup_profile or {},
             "snapshot_amc_market_share_anchor": share_anchor_summary or {},
+            "snapshot_frontload_profile": frontload_profile or {},
         }
 
-    day_weights = get_day_weights(cal)
     scale_weight_values = [
         (
             details.get("same_week_snapshot_day_scale", same_week_scale),
@@ -3696,6 +3923,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         "snapshot_same_week_scale_source": same_week_scale_source,
         "snapshot_pickup_profile": pickup_profile or {},
         "snapshot_amc_market_share_anchor": share_anchor_summary or {},
+        "snapshot_frontload_profile": frontload_profile or {},
     }
 
 
@@ -3807,6 +4035,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   seat_raw, poly_ev, actual, n_theatres, days_collected,
                   daily_theatre_counts=None, daily_coverage_ratios=None,
                   daily_predictions=None, raw_daily_predictions=None,
+                  daily_actuals=None,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
                   snapshot_daily_lead_buckets=None,
@@ -3817,6 +4046,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         n_days = len(days_collected)
     else:
         n_days = int(_positive_float(days_collected) or 0)
+    actual_value = _positive_float(actual) or 0.0
     entry = {
         "movie": movie,
         "date": datetime.now().strftime("%Y-%m-%d"),
@@ -3825,7 +4055,8 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         "predicted_high": round(predicted_high, 1),
         "seat_raw_estimate": round(seat_raw, 1) if seat_raw else None,
         "polymarket_ev": round(poly_ev, 1) if poly_ev else None,
-        "actual": actual,
+        "actual": round(actual_value, 2),
+        "actual_total": round(actual_value, 2),
         "n_theatres": n_theatres,
         "days_collected": n_days,
         "n_days": n_days,
@@ -3851,6 +4082,14 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
         }
+    if daily_actuals:
+        clean_daily_actuals = {}
+        for key, value in daily_actuals.items():
+            gross_m = _positive_float(value)
+            if gross_m is not None and gross_m > 0:
+                clean_daily_actuals[key] = round(gross_m, 2)
+        if clean_daily_actuals:
+            entry["daily_actuals"] = clean_daily_actuals
     if snapshot_daily_predictions:
         entry["snapshot_daily_predictions"] = {
             k: round(v, 2) for k, v in snapshot_daily_predictions.items()
@@ -3905,6 +4144,9 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
             history,
             default=1.0,
         )
+        cal["calibration_factors"]["day_scale_factors"] = (
+            recalibrate_day_scale_factors(history)
+        )
         cal["calibration_factors"]["snapshot_to_day_scale_factors"] = (
             recalibrate_snapshot_day_scale_factors(history)
         )
@@ -3921,8 +4163,10 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
     # Refine AMC market share from seat-based estimates
     share_estimates = []
     for h in history:
-        if h.get("seat_raw_estimate") and h.get("actual") and h["actual"] > 0:
-            implied = h["seat_raw_estimate"] / h["actual"]
+        actual_total = _positive_float(h.get("actual_total", h.get("actual")))
+        seat_raw_estimate = _positive_float(h.get("seat_raw_estimate"))
+        if seat_raw_estimate and actual_total and actual_total > 0:
+            implied = seat_raw_estimate / actual_total
             if 0.15 < implied < 0.40:
                 share_estimates.append(implied)
     if share_estimates:
@@ -4021,6 +4265,14 @@ def daily_actual_override_for(movie, day_name, daily_actual_overrides):
         if _movie_lookup_key(title) == target_key and daily_actuals.get(day_name):
             return daily_actuals[day_name]
     return None
+
+
+def daily_actual_override_gross_m_for(movie, day_name, daily_actual_overrides):
+    """Return the numeric reported daily gross in millions, if available."""
+    override = daily_actual_override_for(movie, day_name, daily_actual_overrides)
+    if isinstance(override, dict):
+        return _positive_float(override.get("gross_m"))
+    return _positive_float(override)
 
 
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
@@ -4624,6 +4876,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             snapshot_layer.get("snapshot_pickup_profile", {})
             if snapshot_layer else {}
         ),
+        "snapshot_frontload_profile": (
+            snapshot_layer.get("snapshot_frontload_profile", {})
+            if snapshot_layer else {}
+        ),
         "snapshot_amc_market_share_anchor": (
             snapshot_layer.get("snapshot_amc_market_share_anchor", {})
             if snapshot_layer else {}
@@ -4682,6 +4938,54 @@ def fmt_m(val):
     return "$0"
 
 
+def infer_target_metadata_from_title(movie, weekend_of=""):
+    """Conservative metadata fallback for obvious franchise titles.
+
+    This keeps the comp/regression layer alive for active markets whose CSV
+    metadata has not been entered yet. Only high-confidence title patterns are
+    inferred; unknown titles still return None rather than fabricating a genre.
+    """
+    title = (movie or "").lower()
+    rules = [
+        (
+            ("mandalorian", "grogu", "star wars"),
+            {
+                "genre": "sci_fi",
+                "audience_type": "fan_driven",
+                "franchise_type": "franchise",
+                "rating": "PG-13",
+            },
+        ),
+        (
+            ("marvel", "avengers", "spider-man", "spiderman", "x-men"),
+            {
+                "genre": "superhero",
+                "audience_type": "fan_driven",
+                "franchise_type": "franchise",
+                "rating": "PG-13",
+            },
+        ),
+        (
+            ("jurassic", "mission: impossible", "mission impossible", "fast furious", "fast & furious"),
+            {
+                "genre": "action",
+                "audience_type": "fan_driven",
+                "franchise_type": "franchise",
+                "rating": "PG-13",
+            },
+        ),
+    ]
+    for keywords, fields in rules:
+        if any(keyword in title for keyword in keywords):
+            return TargetMetadata(
+                movie=movie,
+                weekend_of=weekend_of or "",
+                notes="Title-inferred fallback metadata; replace with verified CSV row.",
+                **fields,
+            )
+    return None
+
+
 def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     """Attach the automated seat+historical-comp model to a prediction.
 
@@ -4691,6 +4995,14 @@ def attach_comp_model_prediction(pred, cal, metadata=None, comps=None):
     metadata = metadata if metadata is not None else load_movie_metadata()
     comps = comps if comps is not None else load_historical_comps()
     target = metadata_for_movie(pred.get("movie", ""), metadata)
+    metadata_source = "csv"
+    if not target:
+        target = infer_target_metadata_from_title(
+            pred.get("movie", ""),
+            weekend_of=pred.get("weekend_of", ""),
+        )
+        metadata_source = "title_inferred" if target else "missing"
+    pred["seat_comp_metadata_source"] = metadata_source
     if not target or not comps:
         return None
     pred_nat_count = pred.get("national_theatre_count")
@@ -5533,6 +5845,21 @@ def print_prediction(pred, verbose=False):
                 f"{pickup.get('final_sold_seats', 0)} final seats; "
                 f"+{pickup.get('post_snapshot_pickup_seats', 0)} after snapshot"
             )
+        frontload = pred.get("snapshot_frontload_profile") or {}
+        if frontload.get("classification"):
+            ratio = frontload.get("frontload_ratio", 1.0)
+            confidence = frontload.get("confidence", 0.0)
+            shares = frontload.get("snapshot_shares") or {}
+            share_bits = [
+                f"{day[:3]} {shares[day]:.0%}"
+                for day in ("Friday", "Saturday", "Sunday")
+                if day in shares
+            ]
+            print(
+                f"    Snapshot frontload: {frontload['classification']} "
+                f"(Fri/rest x{ratio:.2f} vs prior, confidence {confidence:.0%}"
+                f"{f'; mix {', '.join(share_bits)}' if share_bits else ''})"
+            )
         for day, details in sorted(
             pred.get("snapshot_daily_details", {}).items(),
             key=lambda item: item[1].get("date", ""),
@@ -5549,7 +5876,8 @@ def print_prediction(pred, verbose=False):
                   f"(snapshot {fmt_m(raw_mid / 1_000_000)}, "
                   f"day-shape prior {fmt_m(prior / 1_000_000)}, "
                   f"{signal_weight:.0%} snapshot signal, "
-                  f"{details.get('snapshot_calibration_support_factor', 1):.0%} calibrated support)")
+                  f"{details.get('snapshot_calibration_support_factor', 1):.0%} calibrated support"
+                  f"{', frontload prior x' + format(details['snapshot_frontload_prior_multiplier'], '.2f') if details.get('snapshot_frontload_prior_multiplier') not in (None, 1.0) else ''})")
 
     social = pred.get("social_signal")
     if social:
@@ -5634,7 +5962,9 @@ def print_history(cal):
     print(f"  {'─'*30} {'─'*10} {'─'*10} {'─'*8}")
     for h in history:
         predicted = h.get("predicted_mid", 0)
-        actual = h.get("actual", h.get("actual_total"))
+        actual = h.get("actual_total", h.get("actual"))
+        if actual is None:
+            actual = h.get("actual")
         pred_str = fmt_m(predicted)
         actual_str = fmt_m(actual) if actual else "—"
         if h.get("error_pct") is not None:
@@ -5807,6 +6137,15 @@ def main():
         ) = (
             snapshot_calibration_fields_from_prediction(pred)
         )
+        record_daily_actuals = {}
+        for day_name in daily_predictions:
+            actual_gross_m = daily_actual_override_gross_m_for(
+                movie_match,
+                day_name,
+                daily_actual_overrides,
+            )
+            if actual_gross_m is not None and actual_gross_m > 0:
+                record_daily_actuals[day_name] = actual_gross_m
 
         record_actual(cal, movie_match, pred_mid, pred_low, pred_high,
                      seat_raw, poly_ev, actual_val, n_th, days,
@@ -5814,6 +6153,7 @@ def main():
                      daily_coverage_ratios=daily_coverage_ratios,
                      daily_predictions=daily_predictions,
                      raw_daily_predictions=raw_daily_predictions,
+                     daily_actuals=record_daily_actuals or None,
                      snapshot_daily_predictions=snapshot_daily_predictions,
                      snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
                      snapshot_daily_lead_buckets=snapshot_daily_lead_buckets,
