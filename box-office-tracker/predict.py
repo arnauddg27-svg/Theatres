@@ -2638,30 +2638,7 @@ def forecast_feature_importance(pred):
 
     thursday_share = _positive_float(pred.get("seat_comp_thursday_share"))
     external_share = _positive_float(pred.get("seat_comp_external_thursday_share"))
-    preview_frontload_active = bool(pred.get("reported_preview_frontload_anchor_applied"))
-    if preview_frontload_active:
-        frontload_mid = _positive_float(pred.get("reported_preview_frontload_mid_m"))
-        raw_mid = _positive_float(pred.get("reported_preview_raw_seat_mid_m"))
-        comp_importance = 68.0
-        comp_available = True
-        comp_confidence = 70.0
-        share_bits = []
-        if thursday_share:
-            share_bits.append(f"frontload share {thursday_share:.1%}")
-        if external_share:
-            share_bits.append(f"external preview history {external_share:.1%}")
-        if frontload_mid:
-            share_bits.append(f"anchor {fmt_m(frontload_mid)}")
-        if raw_mid:
-            share_bits.append(f"raw seat-only {fmt_m(raw_mid)}")
-        comp_evidence = "; ".join(share_bits)
-        comp_driver = "Reported preview frontload share"
-        comp_why = (
-            "Known previews are converted through the movie's frontload day shape, "
-            "not the generic weekend day weights."
-        )
-        comp_basis = "reported Thursday actual + weighted preview-share history"
-    elif not comps_active:
+    if not comps_active:
         comp_importance = 10.0
         comp_available = False
         comp_confidence = 0.0
@@ -2874,54 +2851,6 @@ def _metadata_with_social_signal(target, social):
     )
 
 
-def reported_preview_frontload_anchor(pred):
-    """Use a reported Thursday preview to choose the right day shape.
-
-    The raw seat-only weekend projection uses the global calibrated day weights.
-    That is useful once multiple days are present, but a Thursday-only fan or
-    tentpole title needs a preview-frontload anchor: the question is not "what
-    AMC share did previews imply?" but "what weekend share do these previews
-    usually represent for this release profile?"
-    """
-    details = pred.get("daily_details") or {}
-    thursday = details.get("Thursday") or {}
-    observed_days = [
-        day
-        for day in OPENING_WEEKEND_DAYS
-        if day in details or day in (pred.get("daily_estimates") or {})
-    ]
-    if observed_days != ["Thursday"]:
-        return None
-    if not thursday.get("actual_override"):
-        return None
-    if pred.get("seat_comp_basis") != "Thursday":
-        return None
-
-    mid = _positive_float(pred.get("seat_comp_mid_m"))
-    if mid is None:
-        return None
-    low = _positive_float(pred.get("seat_comp_low_m")) or mid
-    high = _positive_float(pred.get("seat_comp_high_m")) or mid
-    share = _positive_float(pred.get("seat_comp_thursday_share"))
-    raw_seat_mid = _positive_float(pred.get("seat_mid_m"))
-    if raw_seat_mid is None or raw_seat_mid <= 0:
-        return None
-
-    # Only intervene when the generic seat day-shape is materially looser than
-    # the reported-preview frontload shape. This keeps normal films and later
-    # multi-day updates on the direct seat path.
-    if raw_seat_mid <= mid * 1.10:
-        return None
-
-    return {
-        "mid_m": mid,
-        "low_m": min(low, high),
-        "high_m": max(low, high),
-        "share": share,
-        "raw_seat_mid_m": raw_seat_mid,
-    }
-
-
 def select_regression_prediction(pred, cal=None):
     """Attach the model-driven regression forecast.
 
@@ -2976,26 +2905,6 @@ def select_regression_prediction(pred, cal=None):
         high = pred["seat_high_m"]
         basis = "seat-only"
         uses_comps = False
-
-    preview_anchor = None
-    if not use_comps:
-        preview_anchor = reported_preview_frontload_anchor(pred)
-        if preview_anchor:
-            pred["reported_preview_raw_seat_mid_m"] = preview_anchor["raw_seat_mid_m"]
-            pred["reported_preview_frontload_mid_m"] = preview_anchor["mid_m"]
-            pred["reported_preview_frontload_low_m"] = preview_anchor["low_m"]
-            pred["reported_preview_frontload_high_m"] = preview_anchor["high_m"]
-            pred["reported_preview_frontload_share"] = preview_anchor["share"]
-            pred["reported_preview_frontload_anchor_applied"] = True
-            mid = preview_anchor["mid_m"]
-            low = preview_anchor["low_m"]
-            high = preview_anchor["high_m"]
-            source = "reported-preview-frontload-regression"
-            basis = (
-                "reported Thursday actual + frontload day-shape anchor; "
-                "raw seat-only retained as diagnostic"
-            )
-            uses_comps = False
 
     snapshot_mid = pred.get("snapshot_mid_m")
     disagreement_profile = model_component_disagreement_profile(

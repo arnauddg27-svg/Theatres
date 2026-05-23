@@ -3365,7 +3365,7 @@ class PredictionNormalizationTest(unittest.TestCase):
             places=6,
         )
 
-    def test_reported_preview_actual_anchors_thursday_only_forecast_shape(self):
+    def test_comp_diagnostics_do_not_anchor_thursday_only_forecast_when_disabled(self):
         pred = {
             "movie": "Sample Tentpole",
             "model_version": predict.MODEL_VERSION,
@@ -3399,20 +3399,20 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            "reported-preview-frontload-regression",
+            "seat-only-regression",
             pred["regression_source"],
         )
-        self.assertAlmostEqual(83.2, pred["regression_mid_m"], places=6)
+        self.assertAlmostEqual(172.7, pred["regression_mid_m"], places=6)
         self.assertFalse(pred["regression_uses_comps"])
-        self.assertTrue(pred["reported_preview_frontload_anchor_applied"])
-        self.assertAlmostEqual(172.7, pred["reported_preview_raw_seat_mid_m"])
-        self.assertAlmostEqual(0.144, pred["reported_preview_frontload_share"])
+        self.assertNotIn("reported_preview_frontload_anchor_applied", pred)
+        self.assertNotIn("reported_preview_frontload_mid_m", pred)
         drivers = {
             driver["driver"]: driver
             for driver in pred["forecast_feature_importance"]
         }
-        self.assertIn("Reported preview frontload share", drivers)
-        self.assertTrue(drivers["Reported preview frontload share"]["available"])
+        self.assertNotIn("Reported preview frontload share", drivers)
+        self.assertIn("Historical comp Thursday share", drivers)
+        self.assertFalse(drivers["Historical comp Thursday share"]["available"])
 
     def test_thursday_preview_residual_learns_from_local_history(self):
         cal = {
