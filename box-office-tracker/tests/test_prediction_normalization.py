@@ -3650,13 +3650,89 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual("calibration", thursday["amc_market_share_source"])
         self.assertEqual("calibration", friday["amc_market_share_source"])
         self.assertAlmostEqual(0.25, friday["amc_market_share_used"], places=6)
-        self.assertAlmostEqual(1700 / 0.25, friday["domestic_mid"], places=6)
+        self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
+        self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"], places=6)
+        self.assertAlmostEqual((1700 / 0.25) * 2.0, friday["domestic_mid"], places=6)
         self.assertEqual("calibration", saturday_snapshot["amc_market_share_source"])
         self.assertAlmostEqual(
             0.25,
             saturday_snapshot["amc_market_share_used"],
             places=6,
         )
+
+    def test_friday_evening_only_inherits_thursday_actual_seat_scale(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Thursday": 0.12, "Friday": 0.32},
+                "day_scale_factors": {"Thursday": 1.0, "Friday": 0.8},
+                "reference_amc_theatres": 2,
+            }
+        }
+        seat_data = {
+            "2026-05-14": [
+                self._row("AMC One", date="2026-05-14", day="Thursday"),
+                self._row("AMC Two", date="2026-05-14", day="Thursday"),
+            ],
+            "2026-05-15": [
+                self._row("AMC One", date="2026-05-15", day="Friday"),
+                self._row("AMC Two", date="2026-05-15", day="Friday"),
+            ],
+        }
+
+        pred = predict_movie(
+            "Sample Movie",
+            seat_data,
+            [],
+            cal,
+            daily_actual_overrides={
+                "Sample Movie": {
+                    "Thursday": {
+                        "gross_m": 0.008,
+                        "source": "manual",
+                        "status": "reported",
+                        "as_of_date": "2026-05-15",
+                    }
+                }
+            },
+        )
+
+        friday = pred["daily_details"]["Friday"]
+
+        self.assertTrue(friday["partial_regular_daypart"])
+        self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
+        self.assertEqual("Thursday", friday["same_week_actual_seat_scale_anchor_day"])
+        self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"])
+        self.assertAlmostEqual((1700 / 0.25) * 2.0 * 0.8, friday["domestic_mid"])
+
+    def test_full_day_friday_does_not_use_evening_to_daily_multiplier(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {"Friday": 1.0},
+                "day_scale_factors": {"Friday": 1.0},
+                "reference_amc_theatres": 2,
+            }
+        }
+        friday_rows = [
+            self._row("AMC One", date="2026-05-15", day="Friday"),
+            self._row("AMC Two", date="2026-05-15", day="Friday"),
+        ]
+        for row in friday_rows:
+            row["showtime"] = "11:00 AM"
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-15": friday_rows},
+            [],
+            cal,
+        )
+
+        friday = pred["daily_details"]["Friday"]
+
+        self.assertFalse(friday["partial_regular_daypart"])
+        self.assertAlmostEqual(1.0, friday["evening_to_daily"], places=6)
+        self.assertAlmostEqual(1000 / 0.25, friday["domestic_mid"], places=6)
 
     def test_comp_diagnostics_do_not_anchor_thursday_only_forecast_when_disabled(self):
         pred = {

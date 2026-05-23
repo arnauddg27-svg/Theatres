@@ -74,7 +74,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v23-daily-seat-snapshot-no-comps"
+MODEL_VERSION = "seat-regression-v24-same-week-partial-day-seat-scale"
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -159,10 +159,10 @@ FORMAT_TICKET_PRICES = {
 }
 
 # Partial-day sample → full-day revenue multipliers, *per day of week*.
-# Friday still collects 5pm–11pm, so 1.7× extrapolates captured late-day
-# showings to a full day. Saturday/Sunday are intended to collect 10am–11pm;
-# when those rows are present, daypart_adjusted_evening_to_daily() removes the
-# uplift and treats the sample as full-day coverage.
+# Friday usually collects 5pm–11pm, so 1.7× extrapolates captured late-day
+# showings to a full day. If Friday or Sat/Sun rows prove a 10am–11pm style
+# window landed, daypart_adjusted_evening_to_daily() removes the uplift and
+# treats the sample as full-day coverage.
 #
 # Thursday is structurally different: a wide release that opens Friday has NO
 # Thursday daytime showings — only evening preview screenings. What we capture
@@ -194,6 +194,9 @@ WEEKEND_LATE_SKEW_MIN_SHOWINGS = 2.5
 WEEKEND_LATE_SKEW_LATEST_START_HOUR = 18.0
 WEEKEND_SCHEDULE_PROFILE_MIN_THEATRES = 10
 WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
+SAME_WEEK_ACTUAL_SEAT_SCALE_MIN = 0.65
+SAME_WEEK_ACTUAL_SEAT_SCALE_MAX = 2.25
+FRIDAY_PARTIAL_DAY_EARLIEST_HOUR = 15.0
 FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
 # Opening weekend = Thu-Sun. Weights MUST sum to 1.0 across these four days
@@ -388,17 +391,161 @@ def regular_day_needs_snapshot_support(day_name, details):
     ) < WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD
 
 
+def regular_day_has_partial_daypart(day_name, details):
+    """Whether a regular seat-count day is missing material daypart coverage."""
+    if not details or details.get("actual_override"):
+        return False
+    if day_name not in {"Friday", "Saturday", "Sunday"}:
+        return False
+    full_day_coverage = _coverage_value(
+        details.get("full_day_window_coverage_ratio"),
+        default=0.0,
+    )
+    try:
+        earliest_hour = float(details.get("earliest_showtime_hour"))
+    except (TypeError, ValueError):
+        earliest_hour = None
+    if day_name == "Friday":
+        # Friday regular scrapes can still be the old 5pm-11pm window. That is
+        # a valid evening read, but it is not a full Friday day sample.
+        if (
+            full_day_coverage >= WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
+            and earliest_hour is not None
+            and earliest_hour <= WEEKEND_FULL_DAY_LATEST_EARLY_HOUR
+        ):
+            return False
+        return (
+            full_day_coverage < WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
+            or earliest_hour is None
+            or earliest_hour >= FRIDAY_PARTIAL_DAY_EARLIEST_HOUR
+        )
+    return _coverage_value(
+        details.get("daypart_coverage_factor"),
+        default=1.0,
+    ) < WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD
+
+
+def same_week_actual_seat_scale_similarity(anchor_day, target_day):
+    """Transfer strength for same-movie actual-vs-seat residuals."""
+    anchor = anchor_day if anchor_day in OPENING_WEEKEND_DAYS else None
+    target = target_day if target_day in OPENING_WEEKEND_DAYS else None
+    if not anchor or not target or anchor == target:
+        return 0.0
+    anchor_idx = OPENING_WEEKEND_DAYS.index(anchor)
+    target_idx = OPENING_WEEKEND_DAYS.index(target)
+    if anchor_idx > target_idx:
+        return 0.0
+    if anchor == "Thursday" and target == "Friday":
+        return 1.0
+    if anchor == "Thursday" and target == "Saturday":
+        return 0.30
+    if anchor == "Thursday" and target == "Sunday":
+        return 0.20
+    if anchor == "Friday" and target == "Saturday":
+        return 0.85
+    if anchor == "Friday" and target == "Sunday":
+        return 0.70
+    if anchor == "Saturday" and target == "Sunday":
+        return 0.85
+    return 0.0
+
+
+def same_week_actual_seat_scale_for_day(day_name, anchors):
+    """Blend same-week reported-actual seat residuals for a target day."""
+    weighted = []
+    for anchor in anchors or []:
+        raw_factor = _positive_float(anchor.get("scale_factor"))
+        if raw_factor is None:
+            continue
+        similarity = same_week_actual_seat_scale_similarity(
+            anchor.get("day"),
+            day_name,
+        )
+        if similarity <= 0:
+            continue
+        clamped_factor = _clamp(
+            raw_factor,
+            SAME_WEEK_ACTUAL_SEAT_SCALE_MIN,
+            SAME_WEEK_ACTUAL_SEAT_SCALE_MAX,
+        )
+        effective_factor = 1.0 + ((clamped_factor - 1.0) * similarity)
+        weighted.append((anchor, effective_factor, similarity))
+    if not weighted:
+        return None
+    total_weight = sum(weight for _, _, weight in weighted)
+    if total_weight <= 0:
+        return None
+    factor = sum(factor * weight for _, factor, weight in weighted) / total_weight
+    return {
+        "factor": factor,
+        "anchors": [anchor for anchor, _, _ in weighted],
+        "anchor_days": [anchor.get("day") for anchor, _, _ in weighted],
+        "weight": _clamp(total_weight, 0.0, 1.0),
+    }
+
+
+def apply_same_week_actual_seat_scales(daily_estimates, daily_details):
+    """Use same-week actuals to repair partial regular seat-count days.
+
+    A reported Thursday preview can prove that this movie's seat-derived gross
+    is systematically low or high. When Friday is only an evening sample, that
+    same-movie residual is more relevant than the generic historical day scale.
+    This keeps AMC share stable while correcting the seat layer itself.
+    """
+    anchors = []
+    for day_name, details in daily_details.items():
+        scale = _positive_float(details.get("seat_model_actual_scale"))
+        if not details.get("actual_override") or scale is None:
+            continue
+        anchors.append({
+            "day": day_name,
+            "scale_factor": scale,
+            "raw_scale_factor": details.get("seat_model_actual_raw_scale"),
+            "n_theatres": details.get("n_theatres"),
+            "coverage_ratio": details.get("effective_coverage_ratio"),
+            "source": details.get("actual_override_source"),
+            "status": details.get("actual_override_status"),
+        })
+
+    for day_name, details in daily_details.items():
+        partial = regular_day_has_partial_daypart(day_name, details)
+        details["partial_regular_daypart"] = partial
+        if details.get("actual_override") or not partial:
+            continue
+        scale_info = same_week_actual_seat_scale_for_day(day_name, anchors)
+        if not scale_info:
+            continue
+        factor = scale_info["factor"]
+        if abs(factor - 1.0) < 0.001:
+            continue
+        for field in ("domestic_mid", "domestic_low", "domestic_high"):
+            value = details.get(field)
+            if value is None:
+                continue
+            details[f"pre_same_week_actual_scale_{field}"] = value
+            details[field] = value * factor
+        daily_estimates[day_name] = details["domestic_mid"]
+        details["same_week_actual_seat_scale_factor"] = factor
+        details["same_week_actual_seat_scale_anchor_day"] = (
+            scale_info["anchor_days"][0]
+            if len(scale_info["anchor_days"]) == 1 else ",".join(scale_info["anchor_days"])
+        )
+        details["same_week_actual_seat_scale_weight"] = scale_info["weight"]
+        details["same_week_actual_seat_scale_anchors"] = scale_info["anchors"]
+
+
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
                                       target_metadata=None,
                                       earliest_showtime_hour=None,
                                       full_day_window_coverage_ratio=None):
     """Adjust partial-day scaling when showtime mix misses matinee demand.
 
-    Saturday/Sunday are meant to collect 10am-11pm. When actual theatre-level
-    daytime rows prove that the full-day window landed, no evening-to-day uplift
-    should be applied. The showtime-window marker only describes the intended
-    link window; it is not enough by itself because AMC can drop earlier seat
-    maps before the post-show scrape runs.
+    Friday/Saturday/Sunday can be partial 5pm-11pm samples or full-day
+    10am-11pm samples. When actual theatre-level daytime rows prove that the
+    full-day window landed, no evening-to-day uplift should be applied. The
+    showtime-window marker only describes the intended link window; it is not
+    enough by itself because AMC can drop earlier seat maps before the
+    post-show scrape runs.
     """
     if day_name not in {"Friday", "Saturday", "Sunday"}:
         return base_multiplier
@@ -406,10 +553,7 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
         full_day_coverage = float(full_day_window_coverage_ratio)
     except (TypeError, ValueError):
         full_day_coverage = 0.0
-    if (
-        day_name in {"Saturday", "Sunday"}
-        and full_day_coverage >= WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE
-    ):
+    if full_day_coverage >= WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE:
         return 1.0
     if target_metadata is None:
         return base_multiplier
@@ -1829,7 +1973,7 @@ def missing_data_profile(daily_details, cal, snapshot_layer=None):
         day_coverages[day] = coverage
         if details.get("missing_timezones"):
             missing_timezone_days.append(day)
-        if regular_day_needs_snapshot_support(day, details):
+        if regular_day_has_partial_daypart(day, details):
             partial_daypart_days.append(day)
 
     observed_day_share = sum(day_weights.get(day, 0) for day in observed_days) / total_weight
@@ -5972,6 +6116,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if not daily_estimates:
         return None
 
+    apply_same_week_actual_seat_scales(daily_estimates, daily_details)
+
     daily_raw_coverage_ratios = {
         day: details["coverage_ratio"]
         for day, details in daily_details.items()
@@ -6962,6 +7108,8 @@ def print_prediction(pred, verbose=False):
             base_ev = details.get("base_evening_to_daily", details.get("evening_to_daily", 1.0))
             adj_ev = details.get("evening_to_daily", base_ev)
             daypart_str = f", daypart {base_ev:.1f}x→{adj_ev:.1f}x"
+        elif details.get("partial_regular_daypart"):
+            daypart_str = ", partial daypart"
         footprint_factor = details.get("national_footprint_factor", 1.0)
         footprint_note = ""
         preview_factor = details.get("preview_seat_residual_factor", 1.0)
@@ -7016,6 +7164,12 @@ def print_prediction(pred, verbose=False):
             share_note = (
                 f", seat scale x{details['seat_model_actual_scale']:.2f} "
                 "from reported actual"
+            )
+        elif details.get("same_week_actual_seat_scale_factor"):
+            share_note = (
+                f", same-week seat scale x"
+                f"{details['same_week_actual_seat_scale_factor']:.2f} "
+                f"from {details.get('same_week_actual_seat_scale_anchor_day')} actual"
             )
         elif details.get("amc_market_share_source") == "same_week_actual_anchor":
             share_note = (
