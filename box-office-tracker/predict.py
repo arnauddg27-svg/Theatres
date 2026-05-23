@@ -43,10 +43,12 @@ from historical_comps import (NATIONAL_FOOTPRINT_EXPONENT,
                               release_scale_for_item)
 from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
                                SNAPSHOT_LEAD_BUCKETS,
+                               excluded_calibration_days,
                                sanitize_calibration, recalibrate_scale_factor,
                                recalibrate_day_scale_factors,
                                recalibrate_snapshot_day_scale_factors,
                                recalibrate_snapshot_lead_scale_factors,
+                               snapshot_calibration_actual_for_day,
                                snapshot_calibration_support)
 
 # ── Paths ────────────────────────────────────────────────────────────────────
@@ -72,7 +74,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v22-seat-snapshot-no-comps"
+MODEL_VERSION = "seat-regression-v23-daily-seat-snapshot-no-comps"
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -94,6 +96,18 @@ RESIDUAL_FOOTPRINT_MIN_WEIGHT = 0.65
 RESIDUAL_FOOTPRINT_MAX_WEIGHT = 1.10
 RESIDUAL_METADATA_COMBINED_MIN_WEIGHT = 0.45
 RESIDUAL_METADATA_COMBINED_MAX_WEIGHT = 1.20
+EMPIRICAL_DAILY_REGRESSION_MIN_EXAMPLES = 5
+EMPIRICAL_SNAPSHOT_REGRESSION_MIN_EXAMPLES = 4
+EMPIRICAL_DAILY_REGRESSION_PRIOR_WEIGHT = 5.0
+EMPIRICAL_SNAPSHOT_REGRESSION_PRIOR_WEIGHT = 4.0
+EMPIRICAL_DAILY_REGRESSION_MAX_STRENGTH = 0.55
+EMPIRICAL_SNAPSHOT_REGRESSION_MAX_STRENGTH = 0.65
+EMPIRICAL_DAILY_FACTOR_MIN = 0.70
+EMPIRICAL_DAILY_FACTOR_MAX = 1.55
+EMPIRICAL_SNAPSHOT_FACTOR_MIN = 0.55
+EMPIRICAL_SNAPSHOT_FACTOR_MAX = 1.80
+EMPIRICAL_DAILY_TRAINING_MIN_COVERAGE = 0.45
+EMPIRICAL_SNAPSHOT_TRAINING_MIN_COVERAGE = 0.20
 INFERRED_METADATA_MAX_COMP_WEIGHT = 0.70
 INFERRED_METADATA_DISAGREE_MAX_COMP_WEIGHT = 0.85
 MODEL_DISAGREEMENT_MEDIUM_RATIO = 1.25
@@ -2413,6 +2427,764 @@ def historical_residual_regression(pred, cal):
     }
 
 
+EMPIRICAL_DAILY_FEATURES = (
+    "intercept",
+    "is_snapshot",
+    "is_thursday",
+    "is_friday",
+    "is_saturday",
+    "is_sunday",
+    "lead_same_day",
+    "lead_next_day",
+    "lead_multi_day",
+    "lead_long_lead",
+    "log_predicted_m",
+    "log_n_theatres",
+    "log_avg_showings_per_cinema",
+    "log_national_theatre_count",
+    "coverage_ratio",
+)
+
+
+def _empirical_feature_value(row, key):
+    if key == "intercept":
+        return 1.0
+    if key == "is_snapshot":
+        return 1.0 if row.get("is_snapshot") else 0.0
+    day = row.get("day") or row.get("day_of_week") or ""
+    if key == "is_thursday":
+        return 1.0 if day == "Thursday" else 0.0
+    if key == "is_friday":
+        return 1.0 if day == "Friday" else 0.0
+    if key == "is_saturday":
+        return 1.0 if day == "Saturday" else 0.0
+    if key == "is_sunday":
+        return 1.0 if day == "Sunday" else 0.0
+    lead_bucket = row.get("lead_bucket") or ""
+    if key == "lead_same_day":
+        return 1.0 if lead_bucket == "same_day" else 0.0
+    if key == "lead_next_day":
+        return 1.0 if lead_bucket == "next_day" else 0.0
+    if key == "lead_multi_day":
+        return 1.0 if lead_bucket == "multi_day" else 0.0
+    if key == "lead_long_lead":
+        return 1.0 if lead_bucket == "long_lead" else 0.0
+    if key == "log_predicted_m":
+        return log(max(_positive_float(row.get("predicted_m")) or 0.0, 0.05))
+    if key == "log_n_theatres":
+        return log(max(_positive_float(row.get("n_theatres")) or 1.0, 1.0) / 425.0)
+    if key == "log_avg_showings_per_cinema":
+        return log(max(_positive_float(row.get("avg_showings_per_cinema")) or 0.5, 0.5) / 4.0)
+    if key == "log_national_theatre_count":
+        count = _positive_float(row.get("national_theatre_count"))
+        return log(max(count or NATIONAL_WIDE_RELEASE_BASELINE_THEATRES, 1000.0) / NATIONAL_WIDE_RELEASE_BASELINE_THEATRES)
+    if key == "coverage_ratio":
+        return _coverage_value(
+            row.get("coverage_ratio", row.get("effective_coverage_ratio")),
+            default=0.0,
+        )
+    return 0.0
+
+
+def _empirical_feature_vector(row, features=EMPIRICAL_DAILY_FEATURES):
+    return [_empirical_feature_value(row, feature) for feature in features]
+
+
+def _log_similarity(a, b, *, scale=1.0, default=0.70):
+    a_value = _positive_float(a)
+    b_value = _positive_float(b)
+    if not a_value or not b_value:
+        return default
+    return exp(-abs(log(a_value / b_value)) * scale)
+
+
+def _empirical_day_similarity(current_day, example_day):
+    if current_day == example_day:
+        return 1.0
+    if current_day not in OPENING_WEEKEND_DAYS or example_day not in OPENING_WEEKEND_DAYS:
+        return 0.25
+    if {current_day, example_day} <= {"Friday", "Saturday", "Sunday"}:
+        return 0.55
+    return 0.25
+
+
+def _empirical_example_weight(current, example):
+    coverage = _coverage_value(
+        example.get("coverage_ratio", example.get("effective_coverage_ratio")),
+        default=0.0,
+    )
+    if coverage <= 0:
+        return 0.0
+    day_weight = _empirical_day_similarity(current.get("day"), example.get("day"))
+    theatre_weight = _log_similarity(
+        current.get("n_theatres"),
+        example.get("n_theatres"),
+        scale=0.50,
+    )
+    showings_weight = _log_similarity(
+        current.get("avg_showings_per_cinema"),
+        example.get("avg_showings_per_cinema"),
+        scale=0.80,
+    )
+    national_weight = _log_similarity(
+        current.get("national_theatre_count"),
+        example.get("national_theatre_count"),
+        scale=0.45,
+        default=0.80,
+    )
+    source_weight = 1.0
+    if bool(current.get("is_snapshot")) != bool(example.get("is_snapshot")):
+        source_weight = 0.70
+    lead_weight = 1.0
+    current_lead = current.get("lead_bucket")
+    example_lead = example.get("lead_bucket")
+    if current_lead or example_lead:
+        lead_weight = 1.0 if current_lead == example_lead else 0.65
+    return max(
+        0.0,
+        coverage
+        * day_weight
+        * theatre_weight
+        * showings_weight
+        * national_weight
+        * source_weight
+        * lead_weight,
+    )
+
+
+def _solve_weighted_ridge(features, targets, weights, l2=2.0):
+    if not features:
+        return None
+    n = len(features[0])
+    matrix = [[0.0 for _ in range(n)] for _ in range(n)]
+    vector = [0.0 for _ in range(n)]
+    for row, target, weight in zip(features, targets, weights):
+        if weight <= 0:
+            continue
+        for i in range(n):
+            vector[i] += weight * row[i] * target
+            for j in range(n):
+                matrix[i][j] += weight * row[i] * row[j]
+    for i in range(1, n):
+        matrix[i][i] += l2
+
+    for i in range(n):
+        pivot = max(range(i, n), key=lambda idx: abs(matrix[idx][i]))
+        if abs(matrix[pivot][i]) < 1e-9:
+            return None
+        if pivot != i:
+            matrix[i], matrix[pivot] = matrix[pivot], matrix[i]
+            vector[i], vector[pivot] = vector[pivot], vector[i]
+        pivot_value = matrix[i][i]
+        for j in range(i, n):
+            matrix[i][j] /= pivot_value
+        vector[i] /= pivot_value
+        for k in range(n):
+            if k == i:
+                continue
+            factor = matrix[k][i]
+            if abs(factor) < 1e-12:
+                continue
+            for j in range(i, n):
+                matrix[k][j] -= factor * matrix[i][j]
+            vector[k] -= factor * vector[i]
+    return vector
+
+
+def empirical_daily_residual_regression(current, examples, *,
+                                        min_examples=EMPIRICAL_DAILY_REGRESSION_MIN_EXAMPLES,
+                                        prior_weight=EMPIRICAL_DAILY_REGRESSION_PRIOR_WEIGHT,
+                                        max_strength=EMPIRICAL_DAILY_REGRESSION_MAX_STRENGTH,
+                                        factor_min=EMPIRICAL_DAILY_FACTOR_MIN,
+                                        factor_max=EMPIRICAL_DAILY_FACTOR_MAX,
+                                        l2=2.0):
+    """Current-feature local ridge regression for actual/seat residuals.
+
+    This is deliberately residual-based: the observed seat/snapshot estimate
+    remains the main signal, and historical actuals only learn how similar
+    theatre/showing/coverage profiles have missed before.
+    """
+    predicted = _positive_float(current.get("predicted_m"))
+    if not predicted:
+        return None
+
+    training_rows = []
+    for example in examples or []:
+        example_pred = _positive_float(example.get("predicted_m"))
+        actual = _positive_float(example.get("actual_m"))
+        if not example_pred or not actual:
+            continue
+        weight = _empirical_example_weight(current, example)
+        if weight <= 0:
+            continue
+        ratio = _clamp(actual / example_pred, factor_min, factor_max)
+        training_rows.append((example, ratio, weight))
+
+    if len(training_rows) < min_examples:
+        return None
+
+    x_rows = [_empirical_feature_vector(example) for example, _, _ in training_rows]
+    y_rows = [log(ratio) for _, ratio, _ in training_rows]
+    weights = [weight for _, _, weight in training_rows]
+    beta = _solve_weighted_ridge(x_rows, y_rows, weights, l2=l2)
+
+    if beta:
+        current_x = _empirical_feature_vector(current)
+        raw_factor = exp(sum(coef * value for coef, value in zip(beta, current_x)))
+    else:
+        total_weight = sum(weights)
+        if total_weight <= 0:
+            return None
+        raw_factor = exp(
+            sum(log(ratio) * weight for _, ratio, weight in training_rows)
+            / total_weight
+        )
+
+    raw_factor = _clamp(raw_factor, factor_min, factor_max)
+    effective_weight = sum(weights)
+    strength = min(
+        max_strength,
+        effective_weight / (effective_weight + max(0.0, prior_weight)),
+    )
+    factor = 1.0 + ((raw_factor - 1.0) * strength)
+    factor = _clamp(factor, factor_min, factor_max)
+    return {
+        "factor": factor,
+        "raw_factor": raw_factor,
+        "strength": strength,
+        "n": len(training_rows),
+        "effective_weight": effective_weight,
+        "features": [
+            "predicted_m",
+            "day",
+            "n_theatres",
+            "avg_showings_per_cinema",
+            "national_theatre_count",
+            "coverage_ratio",
+        ],
+        "model_features": list(EMPIRICAL_DAILY_FEATURES),
+        "examples": [
+            {
+                "movie": example.get("movie"),
+                "weekend_of": example.get("weekend_of"),
+                "day": example.get("day"),
+                "ratio": ratio,
+                "weight": weight,
+                "predicted_m": example.get("predicted_m"),
+                "actual_m": example.get("actual_m"),
+                "avg_showings_per_cinema": example.get("avg_showings_per_cinema"),
+                "n_theatres": example.get("n_theatres"),
+            }
+            for example, ratio, weight in sorted(
+                training_rows,
+                key=lambda item: item[2],
+                reverse=True,
+            )[:6]
+        ],
+    }
+
+
+def _detail_mid_m(details):
+    return (_positive_float((details or {}).get("domestic_mid")) or 0.0) / 1_000_000
+
+
+def _detail_bound_m(details, key, fallback_m):
+    value = _positive_float((details or {}).get(key))
+    return (value / 1_000_000) if value is not None else fallback_m
+
+
+def _recompute_weekend_from_daily_detail_m(daily_details, cal):
+    day_weights = get_day_weights(cal)
+    values = {
+        day: _detail_mid_m(details)
+        for day, details in (daily_details or {}).items()
+        if day in OPENING_WEEKEND_DAYS and _detail_mid_m(details) > 0
+    }
+    if not values:
+        return None
+    low_values = {
+        day: _detail_bound_m(daily_details[day], "domestic_low", values[day])
+        for day in values
+    }
+    high_values = {
+        day: _detail_bound_m(daily_details[day], "domestic_high", values[day])
+        for day in values
+    }
+    collected_share = sum(day_weights.get(day, 0.0) for day in values)
+    scale = 1.0
+    if 0 < collected_share < 0.99:
+        scale = 1.0 / collected_share
+    mid = sum(values.values()) * scale
+    low = sum(low_values.values()) * scale
+    high = sum(high_values.values()) * scale
+    return {
+        "mid_m": mid,
+        "low_m": min(low, mid),
+        "high_m": max(high, mid),
+        "collected_share": collected_share,
+        "days": sorted(values),
+    }
+
+
+def _empirical_current_from_details(day, details, predicted_m,
+                                    national_theatre_count=None):
+    coverage = details.get(
+        "effective_strategic_coverage_ratio",
+        details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+    )
+    lead_bucket = details.get("lead_bucket")
+    is_snapshot = bool(
+        details.get("snapshot_calibration_support_factor") is not None
+        or lead_bucket in SNAPSHOT_LEAD_BUCKETS
+        or details.get("snapshot_source")
+    )
+    return {
+        "day": day,
+        "predicted_m": predicted_m,
+        "n_theatres": details.get("n_theatres"),
+        "avg_showings_per_cinema": details.get("avg_showings_per_cinema"),
+        "coverage_ratio": coverage,
+        "national_theatre_count": national_theatre_count,
+        "lead_bucket": lead_bucket,
+        "is_snapshot": is_snapshot,
+    }
+
+
+def _apply_empirical_factor_to_details(details, factor_info, prefix):
+    factor = _positive_float((factor_info or {}).get("factor"))
+    if not details or not factor:
+        return details
+    adjusted = dict(details)
+    adjusted[f"{prefix}_factor"] = round(factor, 4)
+    adjusted[f"{prefix}_raw_factor"] = round(factor_info.get("raw_factor", factor), 4)
+    adjusted[f"{prefix}_strength"] = round(factor_info.get("strength", 0.0), 4)
+    adjusted[f"{prefix}_n"] = factor_info.get("n", 0)
+    for key in ("domestic_mid", "domestic_low", "domestic_high"):
+        value = _positive_float(adjusted.get(key))
+        if value is None:
+            continue
+        adjusted[f"pre_{prefix}_{key}"] = value
+        adjusted[key] = value * factor
+    return adjusted
+
+
+def _snapshot_empirical_basis_details(details):
+    """Use the direct snapshot-to-day estimate as the regression input.
+
+    The old snapshot layer could blend a future-day snapshot with a Thursday
+    day-shape prior before the supervised residual model ever saw it. That made
+    a single Thursday preview extrapolation dominate Fri/Sat/Sun even when we
+    had real future-day reservation rows. Historical snapshot calibration is
+    stored from the raw snapshot day estimate, so the empirical layer should
+    compare raw snapshot to actual and then recompute the weekend from those
+    daily rows.
+    """
+    if not details:
+        return details
+    adjusted = dict(details)
+    replaced_any = False
+    for key in ("domestic_mid", "domestic_low", "domestic_high"):
+        raw_key = f"raw_{key}"
+        raw_value = _positive_float(adjusted.get(raw_key))
+        if raw_value is None:
+            continue
+        adjusted[f"pre_empirical_snapshot_basis_{key}"] = adjusted.get(key)
+        adjusted[key] = raw_value
+        replaced_any = True
+    if replaced_any:
+        adjusted["snapshot_empirical_basis"] = "raw_snapshot_to_actual"
+    return adjusted
+
+
+def apply_empirical_snapshot_regression(pred, examples, cal):
+    snapshot_details = pred.get("snapshot_daily_details") or {}
+    if not snapshot_details:
+        return None
+
+    adjusted_days = {}
+    factor_by_day = {}
+    for day, details in snapshot_details.items():
+        basis_details = _snapshot_empirical_basis_details(details)
+        predicted_m = _detail_mid_m(basis_details)
+        if predicted_m <= 0:
+            continue
+        current = _empirical_current_from_details(
+            day,
+            basis_details,
+            predicted_m,
+            national_theatre_count=pred.get("national_theatre_count"),
+        )
+        factor_info = empirical_daily_residual_regression(
+            current,
+            examples,
+            min_examples=EMPIRICAL_SNAPSHOT_REGRESSION_MIN_EXAMPLES,
+            prior_weight=EMPIRICAL_SNAPSHOT_REGRESSION_PRIOR_WEIGHT,
+            max_strength=EMPIRICAL_SNAPSHOT_REGRESSION_MAX_STRENGTH,
+            factor_min=EMPIRICAL_SNAPSHOT_FACTOR_MIN,
+            factor_max=EMPIRICAL_SNAPSHOT_FACTOR_MAX,
+            l2=2.5,
+        )
+        if not factor_info:
+            continue
+        adjusted_days[day] = _apply_empirical_factor_to_details(
+            basis_details,
+            factor_info,
+            "snapshot_empirical_regression",
+        )
+        factor_by_day[day] = factor_info
+
+    if not adjusted_days:
+        return None
+
+    merged_snapshot_details = dict(snapshot_details)
+    merged_snapshot_details.update(adjusted_days)
+    pred["snapshot_daily_details"] = merged_snapshot_details
+
+    combined_details = {}
+    combined_details.update(pred.get("daily_details") or {})
+    combined_details.update(merged_snapshot_details)
+    recomputed = _recompute_weekend_from_daily_detail_m(combined_details, cal)
+    if not recomputed:
+        return None
+
+    pred["pre_empirical_snapshot_mid_m"] = pred.get("snapshot_mid_m")
+    pred["pre_empirical_snapshot_low_m"] = pred.get("snapshot_low_m")
+    pred["pre_empirical_snapshot_high_m"] = pred.get("snapshot_high_m")
+    pred["snapshot_mid_m"] = recomputed["mid_m"]
+    pred["snapshot_low_m"] = recomputed["low_m"]
+    pred["snapshot_high_m"] = recomputed["high_m"]
+    pred["snapshot_empirical_regression_applied"] = True
+    pred["snapshot_empirical_regression_days"] = sorted(adjusted_days)
+    pred["snapshot_empirical_regression_factors"] = {
+        day: {
+            "factor": round(info["factor"], 4),
+            "raw_factor": round(info["raw_factor"], 4),
+            "strength": round(info["strength"], 4),
+            "n": info["n"],
+            "effective_weight": round(info["effective_weight"], 4),
+            "examples": info["examples"],
+        }
+        for day, info in factor_by_day.items()
+    }
+    return pred["snapshot_empirical_regression_factors"]
+
+
+_EMPIRICAL_SEAT_EXAMPLES_CACHE = {}
+_EMPIRICAL_SNAPSHOT_EXAMPLES_CACHE = {}
+
+
+def _empirical_file_mtime(path):
+    try:
+        return round(os.path.getmtime(path), 3)
+    except OSError:
+        return None
+
+
+def _empirical_history_signature(cal):
+    entries = []
+    for entry in (cal or {}).get("history", []) or []:
+        daily_actuals = entry.get("daily_actuals", {}) or {}
+        snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+        entries.append((
+            entry.get("movie", ""),
+            entry.get("weekend_of", ""),
+            entry.get("actual_total", entry.get("actual")),
+            tuple(sorted(daily_actuals.items())),
+            tuple(sorted(snapshot_predictions.items())),
+            tuple(sorted(excluded_calibration_days(entry))),
+        ))
+    return tuple(entries)
+
+
+def _empirical_cache_key(kind, cal):
+    return (
+        kind,
+        MODEL_VERSION,
+        _empirical_file_mtime(SEAT_CSV),
+        _empirical_file_mtime(PRE_RESERVATION_CSV),
+        _empirical_history_signature(cal),
+    )
+
+
+def _empirical_history_prediction(entry, cal):
+    movie = (entry.get("movie") or "").strip()
+    weekend_of = entry.get("weekend_of") or ""
+    if not movie or not weekend_of:
+        return None
+    historical_seat_data = load_seat_data(weekend_of=weekend_of)
+    movie_seat_data = movie_mapping_get(historical_seat_data, movie)
+    if not movie_seat_data:
+        return None
+    return predict_movie(
+        movie,
+        movie_seat_data,
+        [],
+        cal,
+        verbose=False,
+        snapshot_data={},
+        social_data={},
+        daily_actual_overrides={},
+        showtime_link_profiles={},
+        apply_empirical_regression=False,
+    )
+
+
+def _history_daily_actuals(entry):
+    actuals = {}
+    for day, value in (entry.get("daily_actuals", {}) or {}).items():
+        day_name = normalize_opening_day_name(day)
+        gross_m = _positive_float(value)
+        if day_name in OPENING_WEEKEND_DAYS and gross_m and gross_m > 0:
+            actuals[day_name] = gross_m
+    return actuals
+
+
+def _empirical_example_from_details(movie, weekend_of, day, details, actual_m,
+                                    national_theatre_count=None,
+                                    source="seat"):
+    predicted_m = _detail_mid_m(details)
+    if predicted_m <= 0 or not actual_m or actual_m <= 0:
+        return None
+    current = _empirical_current_from_details(
+        day,
+        details,
+        predicted_m,
+        national_theatre_count=national_theatre_count,
+    )
+    current.update({
+        "movie": movie,
+        "weekend_of": weekend_of,
+        "actual_m": actual_m,
+        "source": source,
+        "is_snapshot": source == "snapshot" or current.get("is_snapshot"),
+    })
+    return current
+
+
+def empirical_seat_training_examples(cal, exclude_movie=None):
+    """Build clean day-level seat→actual examples from settled history."""
+    cache_key = _empirical_cache_key("seat", cal)
+    if cache_key not in _EMPIRICAL_SEAT_EXAMPLES_CACHE:
+        examples = []
+        for entry in (cal or {}).get("history", []) or []:
+            movie = (entry.get("movie") or "").strip()
+            weekend_of = entry.get("weekend_of") or ""
+            daily_actuals = _history_daily_actuals(entry)
+            if not movie or not weekend_of or not daily_actuals:
+                continue
+            pred = _empirical_history_prediction(entry, cal)
+            if not pred:
+                continue
+            excluded = excluded_calibration_days(entry)
+            for day, actual_m in daily_actuals.items():
+                if day in excluded:
+                    continue
+                details = (pred.get("daily_details") or {}).get(day)
+                if not details:
+                    continue
+                coverage = _coverage_value(
+                    details.get("effective_coverage_ratio", details.get("coverage_ratio")),
+                    default=0.0,
+                )
+                if coverage < EMPIRICAL_DAILY_TRAINING_MIN_COVERAGE:
+                    continue
+                example = _empirical_example_from_details(
+                    movie,
+                    weekend_of,
+                    day,
+                    details,
+                    actual_m,
+                    national_theatre_count=pred.get("national_theatre_count"),
+                    source="seat",
+                )
+                if example:
+                    example["training_coverage_ratio"] = round(coverage, 4)
+                    examples.append(example)
+        _EMPIRICAL_SEAT_EXAMPLES_CACHE[cache_key] = examples
+
+    examples = list(_EMPIRICAL_SEAT_EXAMPLES_CACHE.get(cache_key, []))
+    if exclude_movie:
+        exclude_key = _movie_lookup_key(exclude_movie)
+        examples = [
+            example for example in examples
+            if _movie_lookup_key(example.get("movie", "")) != exclude_key
+        ]
+    return examples
+
+
+def empirical_snapshot_training_examples(cal, exclude_movie=None):
+    """Build snapshot→actual day examples from settled history.
+
+    These examples train how much pre-reserved seats usually under/overstate
+    the final day, separate from the regular post-show seat-count layer.
+    """
+    cache_key = _empirical_cache_key("snapshot", cal)
+    if cache_key not in _EMPIRICAL_SNAPSHOT_EXAMPLES_CACHE:
+        examples = []
+        for entry in (cal or {}).get("history", []) or []:
+            movie = (entry.get("movie") or "").strip()
+            weekend_of = entry.get("weekend_of") or ""
+            snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
+            snapshot_coverage = entry.get("snapshot_daily_coverage_ratios", {}) or {}
+            snapshot_leads = entry.get("snapshot_daily_lead_buckets", {}) or {}
+            if not movie or not weekend_of or not snapshot_predictions:
+                continue
+            for raw_day, predicted_m in snapshot_predictions.items():
+                day = normalize_opening_day_name(raw_day)
+                if day not in OPENING_WEEKEND_DAYS:
+                    continue
+                actual_m, actual_confidence = snapshot_calibration_actual_for_day(
+                    entry,
+                    day,
+                )
+                predicted = _positive_float(predicted_m)
+                coverage = _coverage_value(snapshot_coverage.get(day), default=0.0)
+                if coverage <= 0:
+                    coverage = _coverage_value(
+                        (entry.get("daily_coverage_ratios", {}) or {}).get(day),
+                        default=0.0,
+                    )
+                if (
+                    not predicted
+                    or not actual_m
+                    or actual_m <= 0
+                    or actual_confidence <= 0
+                ):
+                    continue
+                effective_training_coverage = coverage * actual_confidence
+                if effective_training_coverage < EMPIRICAL_SNAPSHOT_TRAINING_MIN_COVERAGE:
+                    continue
+                example = {
+                    "movie": movie,
+                    "weekend_of": weekend_of,
+                    "day": day,
+                    "predicted_m": predicted,
+                    "actual_m": actual_m,
+                    "coverage_ratio": effective_training_coverage,
+                    "actual_confidence": actual_confidence,
+                    "lead_bucket": snapshot_leads.get(day),
+                    "n_theatres": (entry.get("daily_theatre_counts", {}) or {}).get(day),
+                    "avg_showings_per_cinema": None,
+                    "national_theatre_count": None,
+                    "source": "snapshot",
+                    "is_snapshot": True,
+                }
+                examples.append(example)
+        _EMPIRICAL_SNAPSHOT_EXAMPLES_CACHE[cache_key] = examples
+
+    examples = list(_EMPIRICAL_SNAPSHOT_EXAMPLES_CACHE.get(cache_key, []))
+    if exclude_movie:
+        exclude_key = _movie_lookup_key(exclude_movie)
+        examples = [
+            example for example in examples
+            if _movie_lookup_key(example.get("movie", "")) != exclude_key
+        ]
+    return examples
+
+
+def apply_empirical_seat_regression(pred, examples, cal):
+    daily_details = pred.get("daily_details") or {}
+    if not daily_details:
+        return None
+
+    adjusted_days = {}
+    factor_by_day = {}
+    for day, details in daily_details.items():
+        if details.get("actual_override"):
+            continue
+        predicted_m = _detail_mid_m(details)
+        if predicted_m <= 0:
+            continue
+        current = _empirical_current_from_details(
+            day,
+            details,
+            predicted_m,
+            national_theatre_count=pred.get("national_theatre_count"),
+        )
+        current["is_snapshot"] = False
+        factor_info = empirical_daily_residual_regression(
+            current,
+            examples,
+            min_examples=EMPIRICAL_DAILY_REGRESSION_MIN_EXAMPLES,
+            prior_weight=EMPIRICAL_DAILY_REGRESSION_PRIOR_WEIGHT,
+            max_strength=EMPIRICAL_DAILY_REGRESSION_MAX_STRENGTH,
+            factor_min=EMPIRICAL_DAILY_FACTOR_MIN,
+            factor_max=EMPIRICAL_DAILY_FACTOR_MAX,
+            l2=2.0,
+        )
+        if not factor_info:
+            continue
+        adjusted_days[day] = _apply_empirical_factor_to_details(
+            details,
+            factor_info,
+            "seat_empirical_regression",
+        )
+        factor_by_day[day] = factor_info
+
+    if not adjusted_days:
+        return None
+
+    merged_details = dict(daily_details)
+    merged_details.update(adjusted_days)
+    recomputed = _recompute_weekend_from_daily_detail_m(merged_details, cal)
+    if not recomputed:
+        return None
+
+    pred["daily_details"] = merged_details
+    pred["daily_estimates"] = {
+        day: details.get("domestic_mid", 0)
+        for day, details in merged_details.items()
+    }
+    pred["pre_empirical_seat_mid_m"] = pred.get("seat_mid_m")
+    pred["pre_empirical_seat_low_m"] = pred.get("seat_low_m")
+    pred["pre_empirical_seat_high_m"] = pred.get("seat_high_m")
+    pred["seat_mid_m"] = recomputed["mid_m"]
+    pred["seat_low_m"] = recomputed["low_m"]
+    pred["seat_high_m"] = recomputed["high_m"]
+    pred["blended_m"] = pred["seat_mid_m"]
+    pred["blend_low_m"] = pred["seat_low_m"]
+    pred["blend_high_m"] = pred["seat_high_m"]
+    pred["seat_empirical_regression_applied"] = True
+    pred["seat_empirical_regression_days"] = sorted(adjusted_days)
+    pred["seat_empirical_regression_factors"] = {
+        day: {
+            "factor": round(info["factor"], 4),
+            "raw_factor": round(info["raw_factor"], 4),
+            "strength": round(info["strength"], 4),
+            "n": info["n"],
+            "effective_weight": round(info["effective_weight"], 4),
+            "examples": info["examples"],
+        }
+        for day, info in factor_by_day.items()
+    }
+    return pred["seat_empirical_regression_factors"]
+
+
+def attach_empirical_seat_snapshot_regression(pred, cal):
+    """Attach supervised daily residual corrections trained from past actuals."""
+    if not pred:
+        return None
+    seat_examples = empirical_seat_training_examples(
+        cal,
+        exclude_movie=pred.get("movie"),
+    )
+    snapshot_examples = empirical_snapshot_training_examples(
+        cal,
+        exclude_movie=pred.get("movie"),
+    )
+    pred["empirical_regression_training_counts"] = {
+        "seat_daily_examples": len(seat_examples),
+        "snapshot_daily_examples": len(snapshot_examples),
+    }
+    seat_result = apply_empirical_seat_regression(pred, seat_examples, cal)
+    snapshot_result = apply_empirical_snapshot_regression(pred, snapshot_examples, cal)
+    pred["empirical_regression_applied"] = bool(seat_result or snapshot_result)
+    return {
+        "seat": seat_result,
+        "snapshot": snapshot_result,
+    }
+
+
 def build_social_signal_layer(movie, social_data):
     """Return a capped social buzz/sentiment modifier for one movie.
 
@@ -2851,6 +3623,45 @@ def _metadata_with_social_signal(target, social):
     )
 
 
+def complete_snapshot_covers_missing_days(pred):
+    """Whether snapshot rows directly fill every missing weekend day.
+
+    If Thursday is the only regular/actual seat day, the seat-only total is a
+    day-shape extrapolation. When calibrated snapshots exist for every missing
+    Fri/Sat/Sun day, use that daily evidence directly instead of blending it
+    down against the extrapolated Thursday total.
+    """
+    snapshot_mid = _positive_float(pred.get("snapshot_mid_m"))
+    if snapshot_mid is None:
+        return False
+    profile = pred.get("missing_data_profile") or {}
+    missing_days = set(profile.get("missing_days") or [])
+    if not missing_days:
+        return False
+    missing_weekend_days = {
+        day for day in missing_days
+        if day in OPENING_WEEKEND_DAYS
+    }
+    if not missing_weekend_days:
+        return False
+    snapshot_days = set(pred.get("snapshot_days") or [])
+    if not missing_weekend_days.issubset(snapshot_days):
+        return False
+
+    coverage = _coverage_value(
+        pred.get("snapshot_model_coverage_ratio", pred.get("snapshot_coverage_ratio")),
+        default=0.0,
+    )
+    support = _coverage_value(
+        pred.get("snapshot_calibration_support_factor"),
+        default=0.0,
+    )
+    weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
+    if coverage < 0.50:
+        return False
+    return weight > 0 or support >= 0.20
+
+
 def select_regression_prediction(pred, cal=None):
     """Attach the model-driven regression forecast.
 
@@ -2914,8 +3725,20 @@ def select_regression_prediction(pred, cal=None):
         include_comp=use_comps,
     )
     pred["model_component_disagreement"] = disagreement_profile
+    snapshot_primary = complete_snapshot_covers_missing_days(pred)
+    if snapshot_primary:
+        pred["snapshot_replaced_partial_seat_extrapolation"] = True
+        pred["snapshot_replaced_seat_mid_m"] = mid
+        pred["snapshot_replaced_seat_low_m"] = low
+        pred["snapshot_replaced_seat_high_m"] = high
+        mid = snapshot_mid
+        low = pred.get("snapshot_low_m", snapshot_mid)
+        high = pred.get("snapshot_high_m", snapshot_mid)
+        source = "daily-seat-snapshot-regression"
+        basis = "observed seat days + snapshot-filled missing days"
+        uses_comps = False
     snapshot_weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
-    if snapshot_mid is not None and snapshot_weight > 0:
+    if snapshot_mid is not None and snapshot_weight > 0 and not snapshot_primary:
         original_snapshot_weight = snapshot_weight
         snapshot_weight = _clamp(
             snapshot_weight * disagreement_profile.get("snapshot_weight_multiplier", 1.0),
@@ -4761,7 +5584,8 @@ def daily_actual_override_gross_m_for(movie, day_name, daily_actual_overrides):
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
                   social_data=None, daily_actual_overrides=None,
-                  showtime_link_profiles=None):
+                  showtime_link_profiles=None,
+                  apply_empirical_regression=True):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -5392,6 +6216,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
     attach_social_signal_prediction(result, social_data)
+    if apply_empirical_regression:
+        attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
     return result
@@ -6389,6 +7215,19 @@ def print_prediction(pred, verbose=False):
             pred.get("snapshot_daily_details", {}).items(),
             key=lambda item: item[1].get("date", ""),
         ):
+            empirical_factor = details.get("snapshot_empirical_regression_factor")
+            if empirical_factor:
+                basis_mid = details.get(
+                    "pre_snapshot_empirical_regression_domestic_mid",
+                    details.get("raw_domestic_mid", details.get("domestic_mid", 0)),
+                )
+                print(
+                    f"    {day}: {fmt_m(details['domestic_mid'] / 1_000_000)} "
+                    f"(raw snapshot {fmt_m(basis_mid / 1_000_000)}, "
+                    f"empirical x{empirical_factor:.2f}, "
+                    f"{details.get('snapshot_empirical_regression_n', 0)} trained snapshot days)"
+                )
+                continue
             prior = details.get("day_shape_prior_domestic_mid")
             signal_weight = details.get("snapshot_day_shape_signal_weight")
             raw_mid = details.get(

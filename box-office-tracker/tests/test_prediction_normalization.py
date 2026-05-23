@@ -591,6 +591,299 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertNotIn("component disagreement", pred["regression_basis"])
         self.assertFalse(pred["regression_uses_comps"])
 
+    def test_complete_snapshot_replaces_partial_seat_extrapolation(self):
+        pred = {
+            "movie": "Sample Tentpole",
+            "seat_mid_m": 172.7,
+            "seat_low_m": 81.5,
+            "seat_high_m": 365.4,
+            "snapshot_mid_m": 136.2,
+            "snapshot_low_m": 104.4,
+            "snapshot_high_m": 188.4,
+            "snapshot_model_weight": 0.37,
+            "snapshot_model_coverage_ratio": 0.99,
+            "snapshot_calibration_support_factor": 0.35,
+            "snapshot_days": ["Friday", "Saturday", "Sunday"],
+            "daily_details": {
+                "Thursday": {
+                    "actual_override": True,
+                    "actual_override_m": 12.0,
+                },
+            },
+            "missing_data_profile": {
+                "missing_days": ["Friday", "Saturday", "Sunday"],
+                "missing_day_share": 0.9305,
+            },
+            "n_days": 1,
+            "seat_data_quality": 0.12,
+            "seat_weighted_coverage_ratio": 0.07,
+            "reported_actual_day_share": 0.0695,
+        }
+
+        select_regression_prediction(pred, {"history": []})
+
+        self.assertEqual("daily-seat-snapshot-regression", pred["regression_source"])
+        self.assertAlmostEqual(136.2, pred["regression_mid_m"], places=6)
+        self.assertTrue(pred["snapshot_replaced_partial_seat_extrapolation"])
+        self.assertAlmostEqual(172.7, pred["snapshot_replaced_seat_mid_m"])
+        self.assertNotIn("snapshot_blended_weight", pred)
+        self.assertFalse(pred["regression_uses_comps"])
+
+    def test_empirical_daily_residual_regression_uses_showing_and_theatre_context(self):
+        current = {
+            "day": "Friday",
+            "predicted_m": 10.0,
+            "n_theatres": 420,
+            "avg_showings_per_cinema": 6.1,
+            "coverage_ratio": 0.95,
+            "national_theatre_count": 4000,
+        }
+        examples = [
+            {
+                "movie": "Similar Seat Movie",
+                "day": "Friday",
+                "predicted_m": 10.0,
+                "actual_m": 15.0,
+                "n_theatres": 415,
+                "avg_showings_per_cinema": 6.0,
+                "coverage_ratio": 0.96,
+                "national_theatre_count": 3950,
+            },
+            {
+                "movie": "Different Footprint",
+                "day": "Sunday",
+                "predicted_m": 10.0,
+                "actual_m": 5.0,
+                "n_theatres": 120,
+                "avg_showings_per_cinema": 1.2,
+                "coverage_ratio": 0.25,
+                "national_theatre_count": 1800,
+            },
+            {
+                "movie": "Same Day Lower Miss",
+                "day": "Friday",
+                "predicted_m": 8.0,
+                "actual_m": 10.0,
+                "n_theatres": 390,
+                "avg_showings_per_cinema": 5.6,
+                "coverage_ratio": 0.80,
+                "national_theatre_count": 3600,
+            },
+        ]
+
+        result = predict.empirical_daily_residual_regression(
+            current,
+            examples,
+            min_examples=2,
+            prior_weight=0.0,
+            max_strength=1.0,
+            factor_min=0.20,
+            factor_max=3.00,
+        )
+
+        self.assertIsNotNone(result)
+        self.assertGreater(result["factor"], 1.15)
+        weights = {item["movie"]: item["weight"] for item in result["examples"]}
+        self.assertGreater(weights["Similar Seat Movie"], weights["Different Footprint"])
+        self.assertIn("avg_showings_per_cinema", result["features"])
+
+    def test_empirical_snapshot_regression_recomputes_snapshot_filled_total(self):
+        pred = {
+            "movie": "Sample Movie",
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 12_000_000,
+                    "domestic_low": 12_000_000,
+                    "domestic_high": 12_000_000,
+                    "actual_override": True,
+                },
+            },
+            "snapshot_daily_details": {
+                "Friday": {
+                    "domestic_mid": 30_000_000,
+                    "domestic_low": 24_000_000,
+                    "domestic_high": 36_000_000,
+                    "n_theatres": 100,
+                    "avg_showings_per_cinema": 7.0,
+                    "effective_strategic_coverage_ratio": 1.0,
+                },
+                "Saturday": {
+                    "domestic_mid": 40_000_000,
+                    "domestic_low": 32_000_000,
+                    "domestic_high": 48_000_000,
+                    "n_theatres": 100,
+                    "avg_showings_per_cinema": 7.0,
+                    "effective_strategic_coverage_ratio": 1.0,
+                },
+            },
+            "snapshot_mid_m": 120.0,
+            "snapshot_low_m": 90.0,
+            "snapshot_high_m": 150.0,
+        }
+        examples = [
+            {
+                "movie": "Similar Snapshot",
+                "day": "Friday",
+                "predicted_m": 30.0,
+                "actual_m": 21.0,
+                "n_theatres": 100,
+                "avg_showings_per_cinema": 7.0,
+                "coverage_ratio": 1.0,
+            },
+            {
+                "movie": "Similar Snapshot 2",
+                "day": "Saturday",
+                "predicted_m": 40.0,
+                "actual_m": 28.0,
+                "n_theatres": 100,
+                "avg_showings_per_cinema": 7.0,
+                "coverage_ratio": 1.0,
+            },
+            {
+                "movie": "Lower Signal",
+                "day": "Sunday",
+                "predicted_m": 20.0,
+                "actual_m": 14.0,
+                "n_theatres": 90,
+                "avg_showings_per_cinema": 6.0,
+                "coverage_ratio": 0.8,
+            },
+            {
+                "movie": "Different Scale",
+                "day": "Friday",
+                "predicted_m": 5.0,
+                "actual_m": 4.0,
+                "n_theatres": 40,
+                "avg_showings_per_cinema": 2.0,
+                "coverage_ratio": 0.4,
+            },
+        ]
+        cal = {
+            "calibration_factors": {
+                "day_weights": {
+                    "Thursday": 0.1,
+                    "Friday": 0.3,
+                    "Saturday": 0.35,
+                    "Sunday": 0.25,
+                }
+            }
+        }
+
+        predict.apply_empirical_snapshot_regression(pred, examples, cal)
+
+        self.assertTrue(pred["snapshot_empirical_regression_applied"])
+        self.assertLess(pred["snapshot_mid_m"], 120.0)
+        self.assertLess(
+            pred["snapshot_daily_details"]["Friday"]["domestic_mid"],
+            30_000_000,
+        )
+        self.assertIn("Friday", pred["snapshot_empirical_regression_days"])
+
+    def test_empirical_snapshot_regression_uses_raw_snapshot_not_day_shape_prior(self):
+        pred = {
+            "movie": "Sample Tentpole",
+            "daily_details": {
+                "Thursday": {
+                    "domestic_mid": 12_000_000,
+                    "domestic_low": 12_000_000,
+                    "domestic_high": 12_000_000,
+                    "actual_override": True,
+                },
+            },
+            "snapshot_daily_details": {
+                "Friday": {
+                    "raw_domestic_mid": 20_000_000,
+                    "raw_domestic_low": 18_000_000,
+                    "raw_domestic_high": 22_000_000,
+                    "domestic_mid": 60_000_000,
+                    "domestic_low": 51_000_000,
+                    "domestic_high": 69_000_000,
+                    "day_shape_prior_domestic_mid": 70_000_000,
+                    "snapshot_day_shape_signal_weight": 0.35,
+                    "n_theatres": 100,
+                    "avg_showings_per_cinema": 7.0,
+                    "effective_strategic_coverage_ratio": 1.0,
+                    "lead_bucket": "next_day",
+                },
+                "Saturday": {
+                    "raw_domestic_mid": 25_000_000,
+                    "raw_domestic_low": 22_000_000,
+                    "raw_domestic_high": 28_000_000,
+                    "domestic_mid": 70_000_000,
+                    "domestic_low": 60_000_000,
+                    "domestic_high": 80_000_000,
+                    "day_shape_prior_domestic_mid": 75_000_000,
+                    "snapshot_day_shape_signal_weight": 0.35,
+                    "n_theatres": 100,
+                    "avg_showings_per_cinema": 7.0,
+                    "effective_strategic_coverage_ratio": 1.0,
+                    "lead_bucket": "next_day",
+                },
+                "Sunday": {
+                    "raw_domestic_mid": 18_000_000,
+                    "raw_domestic_low": 16_000_000,
+                    "raw_domestic_high": 20_000_000,
+                    "domestic_mid": 50_000_000,
+                    "domestic_low": 42_000_000,
+                    "domestic_high": 58_000_000,
+                    "day_shape_prior_domestic_mid": 55_000_000,
+                    "snapshot_day_shape_signal_weight": 0.35,
+                    "n_theatres": 100,
+                    "avg_showings_per_cinema": 7.0,
+                    "effective_strategic_coverage_ratio": 1.0,
+                    "lead_bucket": "multi_day",
+                },
+            },
+            "snapshot_mid_m": 192.0,
+            "snapshot_low_m": 165.0,
+            "snapshot_high_m": 219.0,
+        }
+        examples = [
+            {
+                "movie": f"Snapshot Example {idx}",
+                "day": day,
+                "predicted_m": predicted,
+                "actual_m": predicted,
+                "n_theatres": 100,
+                "avg_showings_per_cinema": 7.0,
+                "coverage_ratio": 1.0,
+                "lead_bucket": "next_day" if day != "Sunday" else "multi_day",
+                "is_snapshot": True,
+            }
+            for idx, (day, predicted) in enumerate([
+                ("Friday", 20.0),
+                ("Saturday", 25.0),
+                ("Sunday", 18.0),
+                ("Friday", 22.0),
+            ])
+        ]
+        cal = {
+            "calibration_factors": {
+                "day_weights": {
+                    "Thursday": 0.1,
+                    "Friday": 0.3,
+                    "Saturday": 0.35,
+                    "Sunday": 0.25,
+                }
+            }
+        }
+
+        predict.apply_empirical_snapshot_regression(pred, examples, cal)
+
+        self.assertTrue(pred["snapshot_empirical_regression_applied"])
+        self.assertLess(pred["snapshot_mid_m"], 90.0)
+        self.assertAlmostEqual(
+            20.0,
+            pred["snapshot_daily_details"]["Friday"][
+                "pre_snapshot_empirical_regression_domestic_mid"
+            ] / 1_000_000,
+            delta=0.1,
+        )
+        self.assertEqual(
+            "raw_snapshot_to_actual",
+            pred["snapshot_daily_details"]["Friday"]["snapshot_empirical_basis"],
+        )
+
     def test_forecast_feature_importance_reports_current_driver_stack(self):
         pred = {
             "movie": "The Mandalorian and Grogu",
