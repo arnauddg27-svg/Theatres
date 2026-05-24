@@ -5,6 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github" / "workflows" / "box-office-pipeline.yml"
+SCHEDULER_WORKFLOW = ROOT / ".github" / "workflows" / "box-office-scheduler.yml"
 DISPATCHER = ROOT / "box-office-tracker" / "scripts" / "dispatch_box_office_pipeline.sh"
 CRON_EXAMPLE = ROOT / "box-office-tracker" / "scripts" / "box-office-dispatch.cron.example"
 
@@ -13,6 +14,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.workflow = WORKFLOW.read_text()
+        cls.scheduler = SCHEDULER_WORKFLOW.read_text()
 
     def test_all_push_loops_autostash_before_rebase(self):
         self.assertNotIn("git pull --rebase -X ours origin main", self.workflow)
@@ -306,7 +308,51 @@ class WorkflowReliabilityTest(unittest.TestCase):
             block,
         )
 
-    def test_repo_contains_vps_dispatcher_for_snapshot_schedule(self):
+    def test_github_native_scheduler_dispatches_all_production_slots(self):
+        scheduler = self.scheduler
+
+        self.assertIn("name: Box Office Scheduler", scheduler)
+        self.assertIn("cron: '*/30 * * * *'", scheduler)
+        self.assertIn("actions: write", scheduler)
+        self.assertIn("contents: read", scheduler)
+        self.assertIn("box-office-scheduler", scheduler)
+        self.assertIn("GITHUB_TOKEN: ${{ github.token }}", scheduler)
+        self.assertIn("TARGET_WORKFLOW: box-office-pipeline.yml", scheduler)
+        self.assertIn("TARGET_REF: main", scheduler)
+        self.assertIn("LOOKBACK_MINUTES", scheduler)
+        self.assertIn("recent_pipeline_run_exists", scheduler)
+        self.assertIn("display_title", scheduler)
+        self.assertIn("/dispatches", scheduler)
+
+        for slot in (
+            "collect-links ET 13Z",
+            "collect-links CT 15Z",
+            "collect-links PT 17Z",
+            "collect-links ET 19Z",
+            "collect-links CT 21Z",
+            "collect-links PT 23Z",
+            "snapshot 02:30Z",
+            "regular scrape 07Z",
+            "calibrate Wednesday 12Z",
+        ):
+            self.assertIn(slot, scheduler)
+
+        self.assertIn('"days": {2, 3}', scheduler)
+        self.assertIn('"days": {0, 1, 4, 5, 6}', scheduler)
+        self.assertIn('"days": {0, 1, 5, 6}', scheduler)
+        self.assertIn('"days": {3}', scheduler)
+        self.assertIn('"pre_reservation_snapshots": snapshots', scheduler)
+        self.assertIn('"snapshots_only": snapshots_only', scheduler)
+        self.assertNotIn("GH_TOKEN_FILE", scheduler)
+
+    def test_pipeline_declares_github_scheduler_as_primary(self):
+        header = self.workflow[: self.workflow.index("permissions:")]
+
+        self.assertIn(".github/workflows/box-office-scheduler.yml", header)
+        self.assertIn("short-lived workflow token", header)
+        self.assertIn("VPS cron template is now a disabled", header)
+
+    def test_repo_contains_disabled_vps_dispatcher_fallback_for_snapshot_schedule(self):
         dispatcher = DISPATCHER.read_text()
         cron = CRON_EXAMPLE.read_text()
 
@@ -323,24 +369,27 @@ class WorkflowReliabilityTest(unittest.TestCase):
         )
         self.assertNotIn("DISPATCH=$REPO_DIR", cron)
         self.assertIn("GH_TOKEN_FILE=/root/box-office-dispatch/.env", cron)
+        self.assertIn("Primary scheduling lives in .github/workflows/box-office-scheduler.yml", cron)
+        self.assertIn("all jobs commented out", cron)
+        self.assertIn("pause the GitHub scheduler", cron)
         self.assertIn("git -C \"$REPO_DIR\" pull --ff-only origin main", cron)
         self.assertIn("Tuesday full-weekend mode targets the upcoming", cron)
         self.assertIn("Wednesday repeats are fallback", cron)
         self.assertIn("looks back to Tuesday on Wednesdays", cron)
-        self.assertIn("0 13 * * 2,3", cron)
-        self.assertIn("0 15 * * 2,3", cron)
-        self.assertIn("0 17 * * 2,3", cron)
-        self.assertIn("0 19 * * 2,3", cron)
-        self.assertIn("0 21 * * 2,3", cron)
-        self.assertIn("0 23 * * 2,3", cron)
+        self.assertIn("# 0 13 * * 2,3", cron)
+        self.assertIn("# 0 15 * * 2,3", cron)
+        self.assertIn("# 0 17 * * 2,3", cron)
+        self.assertIn("# 0 19 * * 2,3", cron)
+        self.assertIn("# 0 21 * * 2,3", cron)
+        self.assertIn("# 0 23 * * 2,3", cron)
         self.assertNotIn("0 21 * * 0,3,4,5,6", cron)
         self.assertNotIn("0 23 * * 0,3,4,5,6", cron)
         self.assertNotIn("0 1 * * 0,1,4,5,6", cron)
-        self.assertIn("30 2 * * 0,1,4,5,6", cron)
-        self.assertIn("0 7 * * 0,1,5,6", cron)
+        self.assertIn("# 30 2 * * 0,1,4,5,6", cron)
+        self.assertIn("# 0 7 * * 0,1,5,6", cron)
         self.assertNotIn("0 7 * * 0,1,4,5,6", cron)
         self.assertIn("using Tuesday's committed Phase 1 cache", cron)
-        self.assertIn("0 12 * * 3", cron)
+        self.assertIn("# 0 12 * * 3", cron)
         self.assertNotIn("0 12 * * 2", cron)
         self.assertNotIn("0 14 * * 2", cron)
         self.assertNotIn("30 22", cron)
@@ -350,6 +399,10 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn(" MT ", cron)
         self.assertNotIn("4-0", cron)
         self.assertNotIn("5-1", cron)
+        self.assertIsNone(
+            re.search(r"(?m)^[0-9*]", cron),
+            "VPS cron fallback should not contain active schedule entries",
+        )
 
     def test_vps_dispatcher_dedupes_duplicate_dispatch_slots(self):
         dispatcher = DISPATCHER.read_text()

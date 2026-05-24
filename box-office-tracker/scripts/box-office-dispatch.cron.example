@@ -1,7 +1,10 @@
-# Example VPS cron for the Box Office Pipeline.
-# Install as /etc/cron.d/box-office-dispatch after setting REPO_DIR, GH_REPO,
-# and GH_TOKEN_FILE. The live VPS should run this tracked dispatcher instead
-# of any legacy /root/box-office-dispatch/dispatch.sh schedule.
+# Disabled VPS cron fallback for the Box Office Pipeline.
+#
+# Primary scheduling lives in .github/workflows/box-office-scheduler.yml and
+# uses GitHub's short-lived workflow token. Keep this file installed on the VPS
+# with all jobs commented out unless GitHub scheduling is temporarily disabled.
+# If you intentionally enable this fallback, first refresh GH_TOKEN_FILE and
+# pause the GitHub scheduler to avoid duplicate dispatches.
 #
 # These times are UTC. They intentionally omit Mountain Time.
 # Snapshot probes use a separate workflow concurrency lane and force=true so they
@@ -23,12 +26,12 @@ DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_
 # whose Tuesday run committed canonical showtime links. This covers the case
 # where Polymarket has not exposed the upcoming market yet on Tuesday.
 # Dispatcher mode: collect-links -> phase=collect-links
-0 13 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
-0 15 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
-0 17 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
-0 19 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
-0 21 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
-0 23 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+# 0 13 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+# 0 15 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+# 0 17 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
+# 0 19 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
+# 0 21 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
+# 0 23 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links PT >> /var/log/box-office-dispatch.log 2>&1
 
 # Rolling pre-reservation snapshot probe using Tuesday's committed Phase 1 cache.
 # Each run captures the remaining opening weekend for the capped top-theatre
@@ -36,12 +39,12 @@ DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_
 # a targeted repair for that slice, but it does not run a broad Phase 1 rebuild.
 # The UTC day 4 slot is Wednesday evening local time for all ET/CT/PT groups.
 # Dispatcher mode: snapshot -> phase=scrape, pre_reservation_snapshots=true, snapshots_only=true
-30 2 * * 0,1,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
+# 30 2 * * 0,1,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
 
 # Model-driving post-show scrape. Keep this clear of snapshot probes.
 # Dispatcher mode: scrape -> phase=scrape, snapshots_only=false
-0 7 * * 0,1,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" scrape >> /var/log/box-office-dispatch.log 2>&1
+# 0 7 * * 0,1,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" scrape >> /var/log/box-office-dispatch.log 2>&1
 
 # Weekly calibration after Tuesday actuals have had time to post, outside the
 # Tuesday Phase 1 warm-cache day.
-0 12 * * 3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" calibrate >> /var/log/box-office-dispatch.log 2>&1
+# 0 12 * * 3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" calibrate >> /var/log/box-office-dispatch.log 2>&1

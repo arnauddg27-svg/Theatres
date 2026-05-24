@@ -37,6 +37,9 @@ if [[ -n "$GH_TOKEN_FILE" ]]; then
   fi
   # shellcheck disable=SC1090
   source "$GH_TOKEN_FILE"
+  if [[ -n "${GH_TOKEN:-}" ]]; then
+    export GH_TOKEN
+  fi
 fi
 
 usage() {

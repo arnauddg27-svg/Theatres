@@ -1,0 +1,177 @@
+name: Box Office Scheduler
+
+on:
+  # Primary scheduler. This workflow does not touch AMC; it only dispatches the
+  # Box Office Pipeline with explicit inputs. It runs on GitHub's short-lived
+  # token instead of the VPS personal token, so an expired VPS PAT cannot stop
+  # scheduled collection.
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print due dispatches without starting the pipeline'
+        required: false
+        default: 'false'
+      lookback_minutes:
+        description: 'UTC lookback window for delayed GitHub schedule ticks'
+        required: false
+        default: '75'
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: box-office-scheduler
+  cancel-in-progress: false
+
+jobs:
+  dispatch-due-slots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      TARGET_WORKFLOW: box-office-pipeline.yml
+      TARGET_REF: main
+      DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+      LOOKBACK_MINUTES: ${{ github.event.inputs.lookback_minutes || '75' }}
+
+    steps:
+      - name: Dispatch due Box Office Pipeline slots
+        run: |
+          python3 - <<'PY'
+          import datetime as dt
+          import json
+          import os
+          import sys
+          import urllib.error
+          import urllib.request
+
+          API = "https://api.github.com"
+          REPO = os.environ["GITHUB_REPOSITORY"]
+          TOKEN = os.environ["GITHUB_TOKEN"]
+          TARGET_WORKFLOW = os.environ.get("TARGET_WORKFLOW", "box-office-pipeline.yml")
+          TARGET_REF = os.environ.get("TARGET_REF", "main")
+          DRY_RUN = os.environ.get("DRY_RUN", "false").lower() == "true"
+
+          try:
+              LOOKBACK_MINUTES = int(os.environ.get("LOOKBACK_MINUTES", "75"))
+          except ValueError:
+              print("LOOKBACK_MINUTES must be an integer", file=sys.stderr)
+              raise SystemExit(2)
+          if LOOKBACK_MINUTES < 1 or LOOKBACK_MINUTES > 240:
+              print("LOOKBACK_MINUTES must be between 1 and 240", file=sys.stderr)
+              raise SystemExit(2)
+
+          def inputs(phase, tz_group="ALL", force="false", snapshots="false", snapshots_only="false"):
+              return {
+                  "phase": phase,
+                  "tz_group": tz_group,
+                  "force": force,
+                  "test": "",
+                  "pre_reservation_snapshots": snapshots,
+                  "snapshots_only": snapshots_only,
+              }
+
+          # UTC weekday numbers match cron: Sunday=0, Monday=1, ... Saturday=6.
+          SLOTS = [
+              # Tuesday/Wednesday Phase 1 warm-cache and fallback passes.
+              {"name": "collect-links ET 13Z", "title": "box office collect-links ET", "days": {2, 3}, "hour": 13, "minute": 0, "inputs": inputs("collect-links", "ET")},
+              {"name": "collect-links CT 15Z", "title": "box office collect-links CT", "days": {2, 3}, "hour": 15, "minute": 0, "inputs": inputs("collect-links", "CT")},
+              {"name": "collect-links PT 17Z", "title": "box office collect-links PT", "days": {2, 3}, "hour": 17, "minute": 0, "inputs": inputs("collect-links", "PT")},
+              {"name": "collect-links ET 19Z", "title": "box office collect-links ET", "days": {2, 3}, "hour": 19, "minute": 0, "inputs": inputs("collect-links", "ET")},
+              {"name": "collect-links CT 21Z", "title": "box office collect-links CT", "days": {2, 3}, "hour": 21, "minute": 0, "inputs": inputs("collect-links", "CT")},
+              {"name": "collect-links PT 23Z", "title": "box office collect-links PT", "days": {2, 3}, "hour": 23, "minute": 0, "inputs": inputs("collect-links", "PT")},
+              # Remaining-weekend pre-reservation snapshots.
+              {"name": "snapshot 02:30Z", "title": "box office scrape snapshot", "days": {0, 1, 4, 5, 6}, "hour": 2, "minute": 30, "inputs": inputs("scrape", "ALL", "true", "true", "true")},
+              # Model-driving post-show scrape.
+              {"name": "regular scrape 07Z", "title": "box office scrape regular", "days": {0, 1, 5, 6}, "hour": 7, "minute": 0, "inputs": inputs("scrape", "ALL", "false", "false", "false")},
+              # Weekly calibration after Tuesday actuals have had time to post.
+              {"name": "calibrate Wednesday 12Z", "title": "box office calibrate ALL", "days": {3}, "hour": 12, "minute": 0, "inputs": inputs("calibrate", "ALL")},
+          ]
+
+          def cron_dow(ts):
+              return (ts.weekday() + 1) % 7
+
+          def request_json(method, path, body=None):
+              data = None if body is None else json.dumps(body).encode("utf-8")
+              request = urllib.request.Request(
+                  f"{API}{path}",
+                  data=data,
+                  method=method,
+                  headers={
+                      "Accept": "application/vnd.github+json",
+                      "Authorization": f"Bearer {TOKEN}",
+                      "Content-Type": "application/json",
+                      "X-GitHub-Api-Version": "2022-11-28",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      payload = response.read().decode("utf-8")
+                      return json.loads(payload) if payload else {}
+              except urllib.error.HTTPError as exc:
+                  detail = exc.read().decode("utf-8", errors="replace")
+                  print(f"GitHub API {method} {path} failed: HTTP {exc.code} {detail}", file=sys.stderr)
+                  raise
+
+          def parse_github_time(value):
+              return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+          def recent_pipeline_run_exists(title, scheduled_at, now):
+              runs = request_json(
+                  "GET",
+                  f"/repos/{REPO}/actions/workflows/{TARGET_WORKFLOW}/runs?event=workflow_dispatch&per_page=100",
+              ).get("workflow_runs", [])
+              lower_bound = scheduled_at - dt.timedelta(minutes=5)
+              upper_bound = now + dt.timedelta(minutes=5)
+              for run in runs:
+                  if run.get("display_title") != title:
+                      continue
+                  created_at = parse_github_time(run["created_at"])
+                  if lower_bound <= created_at <= upper_bound:
+                      print(f"Skipping {title}: existing run {run.get('html_url')} created at {run['created_at']}")
+                      return True
+              return False
+
+          def dispatch(slot):
+              body = {"ref": TARGET_REF, "inputs": slot["inputs"]}
+              if DRY_RUN:
+                  print(f"DRY RUN dispatch {slot['title']}: {json.dumps(body, sort_keys=True)}")
+                  return
+              request_json(
+                  "POST",
+                  f"/repos/{REPO}/actions/workflows/{TARGET_WORKFLOW}/dispatches",
+                  body,
+              )
+              print(f"Dispatched {slot['title']}: {json.dumps(slot['inputs'], sort_keys=True)}")
+
+          now = dt.datetime.now(dt.timezone.utc).replace(second=0, microsecond=0)
+          start = now - dt.timedelta(minutes=LOOKBACK_MINUTES)
+          due = []
+          days_to_check = (LOOKBACK_MINUTES // 1440) + 2
+          for slot in SLOTS:
+              for days_back in range(days_to_check):
+                  candidate_date = (now - dt.timedelta(days=days_back)).date()
+                  scheduled_at = dt.datetime(
+                      candidate_date.year,
+                      candidate_date.month,
+                      candidate_date.day,
+                      slot["hour"],
+                      slot["minute"],
+                      tzinfo=dt.timezone.utc,
+                  )
+                  if cron_dow(scheduled_at) in slot["days"] and start <= scheduled_at <= now:
+                      due.append((scheduled_at, slot))
+
+          if not due:
+              print(f"No due slots between {start.isoformat()} and {now.isoformat()}")
+              raise SystemExit(0)
+
+          for scheduled_at, slot in sorted(due, key=lambda item: item[0]):
+              print(f"Due slot {slot['name']} at {scheduled_at.isoformat()} -> {slot['title']}")
+              if recent_pipeline_run_exists(slot["title"], scheduled_at, now):
+                  continue
+              dispatch(slot)
+          PY

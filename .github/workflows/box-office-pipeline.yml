@@ -3,11 +3,11 @@ run-name: >-
   box office ${{ github.event.inputs.phase == 'scrape' && (github.event.inputs.snapshots_only == 'true' && 'scrape snapshot' || 'scrape regular') || format('{0} {1}', github.event.inputs.phase || 'scrape', github.event.inputs.tz_group || 'ALL') }}
 
 on:
-  # Scheduling is driven by a system cron on the self-hosted VPS
-  # (/etc/cron.d/box-office-dispatch), which invokes `gh workflow run`
-  # with explicit tz_group + phase inputs. GitHub's own `schedule:`
-  # trigger was dropping ~30% of slots entirely (notably all PT slots
-  # on 2026-04-21), which no matches_slot tolerance can recover from.
+  # Primary scheduling is owned by .github/workflows/box-office-scheduler.yml,
+  # which dispatches this workflow with explicit tz_group + phase inputs using
+  # GitHub's short-lived workflow token. The VPS cron template is now a disabled
+  # fallback only, so a stale VPS personal token cannot stop production runs or
+  # create duplicate dispatches after a token rotation.
   #
   # Runner topology:
   #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
@@ -491,7 +491,7 @@ jobs:
           done
 
   # ──────────────────────────────────────────────────────────────────────────
-  # Calibrate — scheduled by VPS cron after actuals have time to post.
+  # Calibrate — dispatched by the scheduler after actuals have time to post.
   # Stays on VPS; doesn't hit AMC.
   # ──────────────────────────────────────────────────────────────────────────
   calibrate:
