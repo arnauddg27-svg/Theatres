@@ -337,24 +337,31 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     client = GitHubClient(repo=args.repo, token=token)
 
-    for scheduled_at, slot in due:
-        print(f"Due slot {slot.name} at {scheduled_at.isoformat()} -> {scheduled_display_title(slot)}")
-        if recent_pipeline_run_exists(
-            client=client,
-            workflow=args.workflow,
-            titles=(scheduled_display_title(slot), slot.title),
-            scheduled_at=scheduled_at,
-            now=now,
-        ):
-            continue
-        dispatch_slot(
-            client=client,
-            workflow=args.workflow,
-            ref=args.ref,
-            slot=slot,
-            mode=args.mode,
-            dry_run=args.dry_run,
-        )
+    try:
+        for scheduled_at, slot in due:
+            print(f"Due slot {slot.name} at {scheduled_at.isoformat()} -> {scheduled_display_title(slot)}")
+            if recent_pipeline_run_exists(
+                client=client,
+                workflow=args.workflow,
+                titles=(scheduled_display_title(slot), slot.title),
+                scheduled_at=scheduled_at,
+                now=now,
+            ):
+                continue
+            dispatch_slot(
+                client=client,
+                workflow=args.workflow,
+                ref=args.ref,
+                slot=slot,
+                mode=args.mode,
+                dry_run=args.dry_run,
+            )
+    except urllib.error.HTTPError as exc:
+        exc.close()
+        return 1
+    except urllib.error.URLError as exc:
+        print(f"GitHub API request failed: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 

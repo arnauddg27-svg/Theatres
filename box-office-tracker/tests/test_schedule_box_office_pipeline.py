@@ -1,7 +1,10 @@
 import datetime as dt
 import importlib.util
+import io
+import os
 import sys
 import unittest
+import urllib.error
 from pathlib import Path
 
 
@@ -125,6 +128,47 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
     def test_cron_dow_matches_cron_sunday_zero(self):
         self.assertEqual(0, schedule.cron_dow(dt.datetime(2026, 5, 24, tzinfo=dt.timezone.utc)))
         self.assertEqual(3, schedule.cron_dow(dt.datetime(2026, 5, 27, tzinfo=dt.timezone.utc)))
+
+    def test_main_returns_clean_failure_for_github_auth_error(self):
+        original_client = schedule.GitHubClient
+        original_token = os.environ.get("GITHUB_TOKEN")
+
+        class FakeClient:
+            def __init__(self, *, repo, token, api_url=schedule.API):
+                self.repo = repo
+
+            def request_json(self, method, path, body=None):
+                raise urllib.error.HTTPError(
+                    url="https://api.github.test",
+                    code=401,
+                    msg="Unauthorized",
+                    hdrs={},
+                    fp=io.BytesIO(b""),
+                )
+
+        try:
+            os.environ["GITHUB_TOKEN"] = "fake-token"
+            schedule.GitHubClient = FakeClient
+            result = schedule.main([
+                "--mode",
+                "watchdog",
+                "--repo",
+                "owner/repo",
+                "--now",
+                "2026-05-24T04:00:00Z",
+                "--lookback-minutes",
+                "240",
+                "--fallback-grace-minutes",
+                "90",
+            ])
+        finally:
+            schedule.GitHubClient = original_client
+            if original_token is None:
+                os.environ.pop("GITHUB_TOKEN", None)
+            else:
+                os.environ["GITHUB_TOKEN"] = original_token
+
+        self.assertEqual(1, result)
 
 
 if __name__ == "__main__":
