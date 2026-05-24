@@ -60,7 +60,7 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         self.assertIn("collect-links CT 21Z", names)
         self.assertIn("collect-links PT 23Z", names)
 
-    def test_recent_pipeline_run_blocks_duplicate_watchdog_dispatch(self):
+    def test_recent_pipeline_run_blocks_duplicate_watchdog_dispatch_for_legacy_title(self):
         parent = self
 
         class FakeClient:
@@ -82,12 +82,45 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         exists = schedule.recent_pipeline_run_exists(
             client=FakeClient(),
             workflow="box-office-pipeline.yml",
-            title="box office scrape snapshot",
+            titles=("box office scheduled snapshot 02:30Z", "box office scrape snapshot"),
             scheduled_at=schedule.parse_utc("2026-05-24T02:30:00Z"),
             now=schedule.parse_utc("2026-05-24T04:00:00Z"),
         )
 
         self.assertTrue(exists)
+
+    def test_scheduled_dispatch_sends_slot_metadata(self):
+        class FakeClient:
+            repo = "owner/repo"
+
+            def __init__(self):
+                self.requests = []
+
+            def request_json(self, method, path, body=None):
+                self.requests.append((method, path, body))
+                return {}
+
+        client = FakeClient()
+        slot = next(slot for slot in schedule.SLOTS if slot.name == "regular scrape 07Z")
+
+        schedule.dispatch_slot(
+            client=client,
+            workflow="box-office-pipeline.yml",
+            ref="main",
+            slot=slot,
+            mode="watchdog",
+            dry_run=False,
+        )
+
+        self.assertEqual(1, len(client.requests))
+        method, path, body = client.requests[0]
+        self.assertEqual("POST", method)
+        self.assertIn("/dispatches", path)
+        self.assertEqual("main", body["ref"])
+        self.assertEqual("regular scrape 07Z", body["inputs"]["schedule_slot"])
+        self.assertEqual("watchdog", body["inputs"]["schedule_mode"])
+        self.assertEqual("scrape", body["inputs"]["phase"])
+        self.assertEqual("false", body["inputs"]["snapshots_only"])
 
     def test_cron_dow_matches_cron_sunday_zero(self):
         self.assertEqual(0, schedule.cron_dow(dt.datetime(2026, 5, 24, tzinfo=dt.timezone.utc)))

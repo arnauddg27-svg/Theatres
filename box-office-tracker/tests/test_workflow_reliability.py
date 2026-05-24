@@ -73,6 +73,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
     def test_snapshot_scrapes_wait_for_regular_capacity_window(self):
         self.assertIn("run-name:", self.workflow)
+        self.assertIn("github.event.inputs.schedule_slot", self.workflow)
+        self.assertIn("box office scheduled {0}", self.workflow)
         self.assertIn("scrape regular", self.workflow)
         self.assertIn("scrape snapshot", self.workflow)
 
@@ -327,6 +329,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("schedule_box_office_pipeline.py", scheduler)
         self.assertIn("--mode primary", scheduler)
         self.assertIn("recent_pipeline_run_exists", script)
+        self.assertIn("scheduled_display_title", script)
+        self.assertIn("schedule_slot", script)
+        self.assertIn("schedule_mode", script)
         self.assertIn("display_title", script)
         self.assertIn("/dispatches", script)
 

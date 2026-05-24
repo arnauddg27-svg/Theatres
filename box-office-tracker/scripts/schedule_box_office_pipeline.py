@@ -216,7 +216,7 @@ def recent_pipeline_run_exists(
     *,
     client: GitHubClient,
     workflow: str,
-    title: str,
+    titles: tuple[str, ...],
     scheduled_at: dt.datetime,
     now: dt.datetime,
 ) -> bool:
@@ -227,26 +227,44 @@ def recent_pipeline_run_exists(
     lower_bound = scheduled_at - dt.timedelta(minutes=5)
     upper_bound = now + dt.timedelta(minutes=5)
     for run in runs:
-        if run.get("display_title") != title:
+        if run.get("display_title") not in titles:
             continue
         created_at = parse_github_time(run["created_at"])
         if lower_bound <= created_at <= upper_bound:
-            print(f"Skipping {title}: existing run {run.get('html_url')} created at {run['created_at']}")
+            print(
+                f"Skipping {titles[0]}: existing run {run.get('display_title')} "
+                f"{run.get('html_url')} created at {run['created_at']}"
+            )
             return True
     return False
 
 
-def dispatch_slot(*, client: GitHubClient, workflow: str, ref: str, slot: Slot, dry_run: bool) -> None:
-    body = {"ref": ref, "inputs": slot.inputs}
+def scheduled_display_title(slot: Slot) -> str:
+    return f"box office scheduled {slot.name}"
+
+
+def dispatch_slot(
+    *,
+    client: GitHubClient,
+    workflow: str,
+    ref: str,
+    slot: Slot,
+    mode: str,
+    dry_run: bool,
+) -> None:
+    workflow_inputs = dict(slot.inputs)
+    workflow_inputs["schedule_slot"] = slot.name
+    workflow_inputs["schedule_mode"] = mode
+    body = {"ref": ref, "inputs": workflow_inputs}
     if dry_run:
-        print(f"DRY RUN dispatch {slot.title}: {json.dumps(body, sort_keys=True)}")
+        print(f"DRY RUN dispatch {scheduled_display_title(slot)}: {json.dumps(body, sort_keys=True)}")
         return
     client.request_json(
         "POST",
         f"/repos/{client.repo}/actions/workflows/{workflow}/dispatches",
         body,
     )
-    print(f"Dispatched {slot.title}: {json.dumps(slot.inputs, sort_keys=True)}")
+    print(f"Dispatched {scheduled_display_title(slot)}: {json.dumps(workflow_inputs, sort_keys=True)}")
 
 
 def positive_int(value: str) -> int:
@@ -320,16 +338,23 @@ def main(argv: list[str] | None = None) -> int:
     client = GitHubClient(repo=args.repo, token=token)
 
     for scheduled_at, slot in due:
-        print(f"Due slot {slot.name} at {scheduled_at.isoformat()} -> {slot.title}")
+        print(f"Due slot {slot.name} at {scheduled_at.isoformat()} -> {scheduled_display_title(slot)}")
         if recent_pipeline_run_exists(
             client=client,
             workflow=args.workflow,
-            title=slot.title,
+            titles=(scheduled_display_title(slot), slot.title),
             scheduled_at=scheduled_at,
             now=now,
         ):
             continue
-        dispatch_slot(client=client, workflow=args.workflow, ref=args.ref, slot=slot, dry_run=args.dry_run)
+        dispatch_slot(
+            client=client,
+            workflow=args.workflow,
+            ref=args.ref,
+            slot=slot,
+            mode=args.mode,
+            dry_run=args.dry_run,
+        )
     return 0
 
 

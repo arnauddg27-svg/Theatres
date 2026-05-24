@@ -1,6 +1,6 @@
 name: Box Office Pipeline
 run-name: >-
-  box office ${{ github.event.inputs.phase == 'scrape' && (github.event.inputs.snapshots_only == 'true' && 'scrape snapshot' || 'scrape regular') || format('{0} {1}', github.event.inputs.phase || 'scrape', github.event.inputs.tz_group || 'ALL') }}
+  ${{ github.event.inputs.schedule_slot != '' && format('box office scheduled {0}', github.event.inputs.schedule_slot) || format('box office {0}', github.event.inputs.phase == 'scrape' && (github.event.inputs.snapshots_only == 'true' && 'scrape snapshot' || 'scrape regular') || format('{0} {1}', github.event.inputs.phase || 'scrape', github.event.inputs.tz_group || 'ALL')) }}
 
 on:
   # Primary scheduling is owned by .github/workflows/box-office-scheduler.yml,
@@ -45,6 +45,14 @@ on:
         description: 'Write pre-reservation snapshots without appending prediction seat-count rows. Default off.'
         required: false
         default: 'false'
+      schedule_slot:
+        description: 'Internal scheduler slot id. Empty for manual dispatches.'
+        required: false
+        default: ''
+      schedule_mode:
+        description: 'Internal scheduler mode: primary or watchdog. Empty for manual dispatches.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
