@@ -94,6 +94,7 @@ class DispatcherIdempotencyTest(unittest.TestCase):
 
             self.assertNotEqual(0, result.returncode)
             self.assertIn("GitHub auth failed", result.stderr)
+            self.assertIn("Actions: read/write", result.stderr)
             calls = calls_log.read_text(encoding="utf-8").splitlines()
             self.assertEqual(1, len(calls))
             self.assertIn("api repos/owner/repo", calls[0])

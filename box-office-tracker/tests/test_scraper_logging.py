@@ -77,6 +77,33 @@ class ScraperLoggingTest(unittest.TestCase):
             dates,
         )
 
+    def test_phase1_late_thursday_repair_skips_expired_current_day(self):
+        dates = scraper.phase1_collection_dates(
+            "ET",
+            ref_dt=datetime(2026, 4, 30, 18, 0),
+            full_weekend=True,
+        )
+
+        self.assertEqual(["2026-05-01", "2026-05-02", "2026-05-03"], dates)
+
+    def test_phase1_late_saturday_repair_targets_sunday(self):
+        dates = scraper.phase1_collection_dates(
+            "ET",
+            ref_dt=datetime(2026, 5, 23, 17, 0),
+            full_weekend=True,
+        )
+
+        self.assertEqual(["2026-05-24"], dates)
+
+    def test_phase1_saturday_morning_can_refresh_weekend_remaining_days(self):
+        dates = scraper.phase1_collection_dates(
+            "ET",
+            ref_dt=datetime(2026, 5, 23, 8, 0),
+            full_weekend=True,
+        )
+
+        self.assertEqual(["2026-05-23", "2026-05-24"], dates)
+
     def test_phase1_full_weekend_dates_expand_from_tuesday_warm_cache(self):
         dates = scraper.phase1_collection_dates(
             "ET",

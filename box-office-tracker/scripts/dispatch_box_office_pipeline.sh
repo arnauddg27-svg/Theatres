@@ -14,6 +14,7 @@
 #   TEST=5                       Pass test=N to the workflow
 #   GH_TOKEN_FILE=/path/.env      Optional env file containing GH_TOKEN
 #   GH_REF=main                   Git ref passed to `gh workflow run --ref`
+#   SKIP_GITHUB_AUTH_PROBE=true   Only for tests/emergencies; skips preflight
 #   DISPATCH_STATE_DIR=/var/tmp/box-office-dispatch
 #   DISPATCH_DEDUP_WINDOW_SEC=900
 
@@ -27,6 +28,7 @@ TEST="${TEST:-}"
 GH_TOKEN_FILE="${GH_TOKEN_FILE:-}"
 DISPATCH_STATE_DIR="${DISPATCH_STATE_DIR:-/var/tmp/box-office-dispatch}"
 DISPATCH_DEDUP_WINDOW_SEC="${DISPATCH_DEDUP_WINDOW_SEC:-900}"
+SKIP_GITHUB_AUTH_PROBE="${SKIP_GITHUB_AUTH_PROBE:-false}"
 
 if [[ -n "$GH_TOKEN_FILE" ]]; then
   if [[ ! -f "$GH_TOKEN_FILE" ]]; then
@@ -52,9 +54,15 @@ validate_github_auth() {
     return 1
   fi
 
+  if [[ "$SKIP_GITHUB_AUTH_PROBE" == "true" ]]; then
+    echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: skipping GitHub auth preflight because SKIP_GITHUB_AUTH_PROBE=true"
+    return 0
+  fi
+
   local auth_probe
   if ! auth_probe="$(gh api "repos/${GH_REPO}" --jq .default_branch 2>&1)"; then
     echo "$(date -u '+%Y-%m-%dT%H:%M:%SZ') dispatch: GitHub auth failed for ${GH_REPO}; refresh GH_TOKEN_FILE=$GH_TOKEN_FILE" >&2
+    echo "Create a fine-grained GitHub token with Actions: read/write and Contents: read/write for ${GH_REPO}, then store it as GH_TOKEN in that env file." >&2
     echo "$auth_probe" >&2
     return 1
   fi

@@ -150,13 +150,14 @@ jobs:
           PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
         run: |
           set +e
-          python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
-          status=$?
+          mkdir -p ../phase1-logs
+          python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }} 2>&1 | tee "../phase1-logs/phase1-${{ github.event.inputs.tz_group }}-attempt1.log"
+          status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
             echo "Phase 1 failed coverage/runtime check; waiting 180s and retrying once under the same AMC lock."
             sleep 180
-            python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }}
-            status=$?
+            python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }} 2>&1 | tee "../phase1-logs/phase1-${{ github.event.inputs.tz_group }}-attempt2.log"
+            status=${PIPESTATUS[0]}
           fi
           exit "$status"
 
@@ -165,6 +166,14 @@ jobs:
         run: |
           python3 box-office-tracker/scripts/amc_lock.py release \
             --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
+
+      - name: Upload Phase 1 logs
+        if: always() && steps.dedup.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-logs-${{ github.event.inputs.tz_group }}-${{ github.run_id }}
+          path: phase1-logs/
+          if-no-files-found: ignore
 
       - name: Commit showtime links
         # Only commit a successful Phase 1. The scraper now validates fresh

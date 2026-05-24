@@ -774,7 +774,12 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
     """Dates Phase 1 should visit for one timezone.
 
     Full-weekend expansion starts with a Tuesday warm-cache pass, then
-    Wednesday/Thursday fill gaps and refresh late schedule changes.
+    Wednesday/Thursday fill gaps and refresh late schedule changes. If a
+    manual repair is dispatched after the local showtime window has started,
+    do not try to rebuild same-day full coverage from AMC's public listing:
+    early showtimes can already be gone, so the reliability check would fail
+    while also risking a partial same-day cache. In that case, collect only
+    still-future weekend dates.
     """
     if target_date:
         base_dt = datetime.strptime(target_date, "%Y-%m-%d")
@@ -782,10 +787,19 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
         base_dt = ref_dt or local_now(tz_group)
 
     current_date = target_date or base_dt.strftime("%Y-%m-%d")
-    if full_weekend and base_dt.weekday() in (1, 2, 3):
-        return opening_weekend_show_dates(
+    if full_weekend:
+        weekend_dates = opening_weekend_show_dates(
             phase1_weekend_anchor(base_dt, full_weekend=True)
         )
+        if base_dt.weekday() in (1, 2):
+            return weekend_dates
+        if base_dt.weekday() in (3, 4, 5):
+            current_start = collection_window_start_hour(current_date)
+            if base_dt.hour >= current_start:
+                future_dates = [date_str for date_str in weekend_dates if date_str > current_date]
+                if future_dates:
+                    return future_dates
+            return [date_str for date_str in weekend_dates if date_str >= current_date]
     return [current_date]
 
 
