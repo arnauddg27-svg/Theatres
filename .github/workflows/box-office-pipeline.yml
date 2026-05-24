@@ -5,9 +5,9 @@ run-name: >-
 on:
   # Primary scheduling is owned by .github/workflows/box-office-scheduler.yml,
   # which dispatches this workflow with explicit tz_group + phase inputs using
-  # GitHub's short-lived workflow token. The VPS cron template is now a disabled
-  # fallback only, so a stale VPS personal token cannot stop production runs or
-  # create duplicate dispatches after a token rotation.
+  # GitHub's short-lived workflow token. The VPS cron runs the same scheduler
+  # code as a watchdog fallback and only dispatches if the primary scheduler
+  # missed a slot after a grace window.
   #
   # Runner topology:
   #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared

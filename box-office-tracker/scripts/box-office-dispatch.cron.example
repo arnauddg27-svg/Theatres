@@ -1,10 +1,9 @@
-# Disabled VPS cron fallback for the Box Office Pipeline.
+# VPS watchdog cron fallback for the Box Office Pipeline.
 #
 # Primary scheduling lives in .github/workflows/box-office-scheduler.yml and
-# uses GitHub's short-lived workflow token. Keep this file installed on the VPS
-# with all jobs commented out unless GitHub scheduling is temporarily disabled.
-# If you intentionally enable this fallback, first refresh GH_TOKEN_FILE and
-# pause the GitHub scheduler to avoid duplicate dispatches.
+# uses GitHub's short-lived workflow token. This VPS watchdog is intentionally
+# not the old blind cron: it checks recent GitHub Actions runs first and only
+# dispatches a slot after the primary scheduler missed it past the grace window.
 #
 # These times are UTC. They intentionally omit Mountain Time.
 # Snapshot probes use a separate workflow concurrency lane and force=true so they
@@ -19,12 +18,21 @@ GH_TOKEN_FILE=/root/box-office-dispatch/.env
 # /etc/cron.d variable assignments do not expand other variables, so keep this
 # path absolute instead of using $REPO_DIR here.
 DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_pipeline.sh
+WATCHDOG=/opt/box-office-tracker/box-office-tracker/scripts/schedule_box_office_pipeline.py
+
+# Watchdog fallback. Runs every 30 minutes, checks the last four hours of
+# expected slots, and dispatches only slots older than 90 minutes with no recent
+# matching workflow run. This still needs GH_TOKEN_FILE to contain a valid token,
+# but a stale token no longer blocks the GitHub primary scheduler.
+*/30 * * * * root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && set -a && . "$GH_TOKEN_FILE" && set +a && python3 "$WATCHDOG" --mode watchdog --repo "$GH_REPO" --workflow box-office-pipeline.yml --ref main --lookback-minutes 240 --fallback-grace-minutes 90 --token-env GH_TOKEN >> /var/log/box-office-dispatch.log 2>&1
 
 # Phase 1 weekly warm-cache. Tuesday full-weekend mode targets the upcoming
 # Thu-Sun opening weekend, not the prior weekend. Wednesday repeats are fallback
 # passes: the dedup guard looks back to Tuesday on Wednesdays and skips any TZ
 # whose Tuesday run committed canonical showtime links. This covers the case
 # where Polymarket has not exposed the upcoming market yet on Tuesday.
+# Legacy direct dispatcher examples. Do not uncomment unless the watchdog has
+# been intentionally disabled.
 # Dispatcher mode: collect-links -> phase=collect-links
 # 0 13 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links ET >> /var/log/box-office-dispatch.log 2>&1
 # 0 15 * * 2,3 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" collect-links CT >> /var/log/box-office-dispatch.log 2>&1
