@@ -3773,7 +3773,13 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
         self.assertEqual("Thursday", friday["same_week_actual_seat_scale_anchor_day"])
         self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"])
-        self.assertAlmostEqual((1700 / 0.25) * 2.0 * 0.8, friday["domestic_mid"])
+        scaled_base = (1700 / 0.25) * 2.0 * 0.8
+        self.assertGreater(friday["domestic_mid"], scaled_base)
+        self.assertAlmostEqual(
+            (1700 / 0.25) * 2.0,
+            friday["pre_same_week_actual_amc_ratio_domestic_mid"],
+        )
+        self.assertEqual("Thursday", friday["same_week_actual_amc_ratio_anchor_day"])
 
     def test_full_day_weekend_uses_same_week_actual_per_seat_anchor(self):
         daily_estimates = {
@@ -3911,6 +3917,66 @@ class PredictionNormalizationTest(unittest.TestCase):
             daily_estimates["Sunday"] * 1.20,
             places=3,
         )
+
+    def test_same_week_actual_amc_gross_anchor_uses_sampled_revenue_signal(self):
+        daily_estimates = {
+            "Thursday": 12_000_000.0,
+            "Friday": 18_000_000.0,
+        }
+        daily_details = {
+            "Thursday": {
+                "actual_override": True,
+                "domestic_mid": 12_000_000.0,
+                "domestic_low": 12_000_000.0,
+                "domestic_high": 12_000_000.0,
+                "seat_model_actual_scale": 1.0,
+                "effective_coverage_ratio": 1.0,
+                "sold_seats": 100_000,
+                "amc_total": 2_000_000.0,
+            },
+            "Friday": {
+                "actual_override": False,
+                "domestic_mid": 18_000_000.0,
+                "domestic_low": 16_000_000.0,
+                "domestic_high": 20_000_000.0,
+                "effective_coverage_ratio": 0.98,
+                "daypart_coverage_factor": 1.0,
+                "full_day_window_coverage_ratio": 0.0,
+                "earliest_showtime_hour": 16.0,
+                "sold_seats": 125_000,
+                "amc_total": 4_000_000.0,
+            },
+        }
+        cal = {
+            "calibration_factors": {
+                "day_scale_factors": {
+                    "Friday": 0.80,
+                }
+            }
+        }
+
+        predict.apply_same_week_actual_seat_scales(
+            daily_estimates,
+            daily_details,
+            cal=cal,
+        )
+
+        friday = daily_details["Friday"]
+        self.assertAlmostEqual(
+            24_000_000.0,
+            friday["same_week_actual_amc_ratio_mid"],
+            places=3,
+        )
+        self.assertGreater(
+            friday["same_week_actual_amc_ratio_daily_mid"],
+            18_000_000.0 * 0.80,
+        )
+        self.assertAlmostEqual(
+            friday["same_week_actual_amc_ratio_daily_mid"],
+            daily_estimates["Friday"] * 0.80,
+            places=3,
+        )
+        self.assertGreater(friday["same_week_actual_amc_ratio_weight"], 0.2)
 
     def test_full_day_friday_does_not_use_evening_to_daily_multiplier(self):
         cal = {
