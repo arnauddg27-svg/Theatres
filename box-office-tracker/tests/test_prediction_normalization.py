@@ -3129,6 +3129,76 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("historical-residual", pred["regression_source"])
         self.assertFalse(pred["regression_uses_polymarket"])
 
+    def test_high_coverage_same_week_actual_anchor_suppresses_generic_residual(self):
+        pred = {
+            "movie": "Future Movie",
+            "seat_mid_m": 80.0,
+            "seat_low_m": 72.0,
+            "seat_high_m": 88.0,
+            "n_theatres_total": 425,
+            "n_days": 4,
+            "coverage_ratio": 1.0,
+            "seat_weighted_coverage_ratio": 0.94,
+            "seat_data_quality": 0.96,
+            "reported_actual_day_share": 0.14,
+            "model_cohort_key": "core,expansion",
+            "model_version": predict.MODEL_VERSION,
+            "daily_details": {
+                "Thursday": {
+                    "actual_override": True,
+                    "seat_model_actual_scale": 1.33,
+                    "effective_coverage_ratio": 1.0,
+                },
+                "Friday": {
+                    "same_week_actual_seat_scale_factor": 1.33,
+                    "effective_coverage_ratio": 0.98,
+                },
+                "Saturday": {
+                    "same_week_actual_seat_ratio_factor": 1.55,
+                    "same_week_actual_seat_ratio_weight": 0.79,
+                    "effective_coverage_ratio": 0.93,
+                },
+                "Sunday": {
+                    "same_week_actual_seat_ratio_factor": 1.26,
+                    "same_week_actual_seat_ratio_weight": 0.67,
+                    "effective_coverage_ratio": 0.89,
+                },
+            },
+        }
+        cal = {
+            "history": [
+                {
+                    "movie": "Settled One",
+                    "predicted_mid": 100.0,
+                    "actual_total": 80.0,
+                    "n_theatres": 425,
+                    "n_days": 4,
+                    "coverage_ratio": 1.0,
+                    "model_cohort_key": "core,expansion",
+                    "model_version": predict.MODEL_VERSION,
+                },
+                {
+                    "movie": "Settled Two",
+                    "predicted_mid": 50.0,
+                    "actual_total": 40.0,
+                    "n_theatres": 420,
+                    "n_days": 4,
+                    "coverage_ratio": 0.95,
+                    "model_cohort_key": "core,expansion",
+                    "model_version": predict.MODEL_VERSION,
+                },
+            ],
+        }
+
+        select_regression_prediction(pred, cal)
+
+        self.assertGreater(pred["regression_mid_m"], 79.0)
+        self.assertGreater(pred["historical_residual_factor"], 0.99)
+        self.assertGreater(
+            pred["historical_residual_same_week_actual_suppression"],
+            0.75,
+        )
+
     def test_legacy_model_residuals_are_downweighted(self):
         def prediction():
             return {

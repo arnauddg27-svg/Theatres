@@ -2641,6 +2641,63 @@ def _historical_residual_weight(pred, entry, metadata=None):
     )
 
 
+def same_week_actual_residual_suppression(pred):
+    """How much generic residual history should yield to same-week actuals.
+
+    Historical residuals are a useful guardrail when the current forecast is
+    thin or mostly prior-driven. They should be much quieter when the same movie
+    has a reported actual plus high-coverage future-day seat-ratio anchors,
+    because those are stronger and more current than cross-movie residuals.
+    """
+    details = pred.get("daily_details") or {}
+    if not details:
+        return 0.0
+    has_actual_anchor = any(
+        day_details.get("actual_override")
+        and _positive_float(day_details.get("seat_model_actual_scale")) is not None
+        for day_details in details.values()
+    )
+    if not has_actual_anchor:
+        return 0.0
+
+    anchored_days = []
+    anchored_weight = 0.0
+    for day_name, day_details in details.items():
+        if day_details.get("actual_override"):
+            continue
+        if day_details.get("same_week_actual_seat_ratio_factor"):
+            anchored_days.append(day_name)
+            anchored_weight += _coverage_value(
+                day_details.get("same_week_actual_seat_ratio_weight"),
+                default=0.0,
+            )
+        elif day_details.get("same_week_actual_seat_scale_factor"):
+            anchored_days.append(day_name)
+            anchored_weight += _coverage_value(
+                day_details.get("same_week_actual_seat_scale_weight"),
+                default=0.0,
+            )
+
+    if not anchored_days:
+        return 0.0
+    coverage = _coverage_value(
+        pred.get("seat_weighted_coverage_ratio", pred.get("coverage_ratio")),
+        default=0.0,
+    )
+    n_days = int(_positive_float(pred.get("n_days")) or 0)
+    day_support = _clamp(n_days / len(OPENING_WEEKEND_DAYS), 0.0, 1.0)
+    anchor_support = _clamp(anchored_weight / 2.25, 0.0, 1.0)
+    anchored_day_support = _clamp(len(set(anchored_days)) / 3.0, 0.0, 1.0)
+    actual_share = _coverage_value(pred.get("reported_actual_day_share"), default=0.0)
+    actual_support = _clamp(actual_share / 0.12, 0.0, 1.0)
+    suppression = coverage * day_support * max(
+        anchor_support,
+        anchored_day_support * 0.90,
+        actual_support * 0.75,
+    )
+    return _clamp(suppression, 0.0, 0.90)
+
+
 def historical_residual_regression(pred, cal):
     """Estimate a shrunken actual/predicted residual from settled history.
 
@@ -2685,6 +2742,9 @@ def historical_residual_regression(pred, cal):
         RESIDUAL_REGRESSION_MAX_STRENGTH,
         total_weight / (total_weight + RESIDUAL_REGRESSION_PRIOR_WEIGHT),
     )
+    same_week_actual_suppression = same_week_actual_residual_suppression(pred)
+    if same_week_actual_suppression > 0:
+        strength *= 1.0 - same_week_actual_suppression
     factor = 1.0 + (raw_factor - 1.0) * strength
     factor = _clamp(
         factor,
@@ -2695,6 +2755,7 @@ def historical_residual_regression(pred, cal):
         "factor": factor,
         "raw_factor": raw_factor,
         "strength": strength,
+        "same_week_actual_suppression": same_week_actual_suppression,
         "n": len(values),
         "effective_weight": total_weight,
         "examples": [
@@ -4076,6 +4137,10 @@ def select_regression_prediction(pred, cal=None):
         pred["historical_residual_effective_weight"] = round(
             residual["effective_weight"],
             3,
+        )
+        pred["historical_residual_same_week_actual_suppression"] = round(
+            residual.get("same_week_actual_suppression", 0.0),
+            4,
         )
         pred["historical_residual_examples"] = [
             {
@@ -7658,10 +7723,15 @@ def print_prediction(pred, verbose=False):
             f"{weight_note}); raw seat-only is diagnostic"
         )
     if pred.get("historical_residual_factor") is not None:
+        suppression = pred.get("historical_residual_same_week_actual_suppression")
+        suppression_note = (
+            f", same-week actual suppression {suppression:.0%}"
+            if suppression else ""
+        )
         print(f"    Historical residual: x{pred['historical_residual_factor']:.3f} "
               f"(raw x{pred['historical_residual_raw_factor']:.3f}, "
               f"strength {pred['historical_residual_strength']:.0%}, "
-              f"n={pred['historical_residual_n']})")
+              f"n={pred['historical_residual_n']}{suppression_note})")
     if poly:
         diff = regression_mid - poly["ev"]
         direction = "higher" if diff > 0 else "lower"
