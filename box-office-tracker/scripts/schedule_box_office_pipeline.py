@@ -57,6 +57,9 @@ class Slot:
 
 
 # UTC weekday numbers match cron: Sunday=0, Monday=1, ... Saturday=6.
+# Snapshot runs at 02:30 UTC, so UTC Sunday is Saturday night in U.S. time.
+# Do not include UTC Monday here: that would be Sunday night locally, just
+# before the Monday 07:00 UTC post-Sunday regular scrape.
 SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links ET 13Z",
@@ -109,7 +112,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "snapshot 02:30Z",
         "box office scrape snapshot",
-        frozenset({0, 1, 4, 5, 6}),
+        frozenset({0, 4, 5, 6}),
         2,
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),

@@ -30,6 +30,16 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
         self.assertEqual(["snapshot 02:30Z"], [slot.name for _, slot in due])
 
+    def test_snapshot_does_not_run_sunday_night_local_time(self):
+        due = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-25T03:30:00Z"),
+            lookback_minutes=75,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+
+        self.assertNotIn("snapshot 02:30Z", [slot.name for _, slot in due])
+
     def test_watchdog_waits_for_grace_window_before_fallback_dispatch(self):
         too_early = schedule.candidate_due_slots(
             now=schedule.parse_utc("2026-05-24T03:30:00Z"),

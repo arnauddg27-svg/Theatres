@@ -349,7 +349,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
             self.assertIn(slot, script)
 
         self.assertIn("frozenset({2, 3})", script)
-        self.assertIn("frozenset({0, 1, 4, 5, 6})", script)
+        self.assertIn("frozenset({0, 4, 5, 6})", script)
         self.assertIn("frozenset({0, 1, 5, 6})", script)
         self.assertIn("frozenset({3})", script)
         self.assertIn('"pre_reservation_snapshots": snapshots', script)
@@ -403,7 +403,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("0 21 * * 0,3,4,5,6", cron)
         self.assertNotIn("0 23 * * 0,3,4,5,6", cron)
         self.assertNotIn("0 1 * * 0,1,4,5,6", cron)
-        self.assertIn("# 30 2 * * 0,1,4,5,6", cron)
+        self.assertIn("# 30 2 * * 0,4,5,6", cron)
+        self.assertNotIn("# 30 2 * * 0,1,4,5,6", cron)
         self.assertIn("# 0 7 * * 0,1,5,6", cron)
         self.assertNotIn("0 7 * * 0,1,4,5,6", cron)
         self.assertIn("using Tuesday's committed Phase 1 cache", cron)

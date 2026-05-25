@@ -46,8 +46,11 @@ WATCHDOG=/opt/box-office-tracker/box-office-tracker/scripts/schedule_box_office_
 # sample. If a capped theatre/date slice is missing links, the workflow may try
 # a targeted repair for that slice, but it does not run a broad Phase 1 rebuild.
 # The UTC day 4 slot is Wednesday evening local time for all ET/CT/PT groups.
+# UTC day 0 is Saturday evening local time; UTC day 1 is intentionally omitted
+# because it would run Sunday evening local time, shortly before the regular
+# post-Sunday scrape.
 # Dispatcher mode: snapshot -> phase=scrape, pre_reservation_snapshots=true, snapshots_only=true
-# 30 2 * * 0,1,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
+# 30 2 * * 0,4,5,6 root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && GH_TOKEN_FILE="$GH_TOKEN_FILE" GH_REPO="$GH_REPO" "$DISPATCH" snapshot >> /var/log/box-office-dispatch.log 2>&1
 
 # Model-driving post-show scrape. Keep this clear of snapshot probes.
 # Dispatcher mode: scrape -> phase=scrape, snapshots_only=false
