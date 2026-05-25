@@ -196,6 +196,10 @@ WEEKEND_SCHEDULE_PROFILE_MIN_THEATRES = 10
 WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
 SAME_WEEK_ACTUAL_SEAT_SCALE_MIN = 0.65
 SAME_WEEK_ACTUAL_SEAT_SCALE_MAX = 2.25
+SAME_WEEK_ACTUAL_SEAT_RATIO_MIN_COVERAGE = 0.55
+SAME_WEEK_ACTUAL_SEAT_RATIO_MAX_WEIGHT = 0.80
+SAME_WEEK_ACTUAL_SEAT_RATIO_MAX_UPLIFT = 1.95
+SAME_WEEK_ACTUAL_SEAT_RATIO_MIN_UPLIFT = 0.75
 FRIDAY_PARTIAL_DAY_EARLIEST_HOUR = 15.0
 FULL_DAY_SHOWTIME_WINDOW_NOTE = "showtime_window=sat-sun-10-23-v1"
 
@@ -438,9 +442,9 @@ def same_week_actual_seat_scale_similarity(anchor_day, target_day):
     if anchor == "Thursday" and target == "Friday":
         return 1.0
     if anchor == "Thursday" and target == "Saturday":
-        return 0.30
+        return 0.60
     if anchor == "Thursday" and target == "Sunday":
-        return 0.20
+        return 0.50
     if anchor == "Friday" and target == "Saturday":
         return 0.85
     if anchor == "Friday" and target == "Sunday":
@@ -484,25 +488,131 @@ def same_week_actual_seat_scale_for_day(day_name, anchors):
     }
 
 
-def apply_same_week_actual_seat_scales(daily_estimates, daily_details):
-    """Use same-week actuals to repair partial regular seat-count days.
+def same_week_actual_seat_ratio_similarity(anchor_day, target_day):
+    """Transfer strength for same-movie actual gross per captured sold seat."""
+    base = same_week_actual_seat_scale_similarity(anchor_day, target_day)
+    if base <= 0:
+        return 0.0
+    anchor = anchor_day if anchor_day in OPENING_WEEKEND_DAYS else None
+    target = target_day if target_day in OPENING_WEEKEND_DAYS else None
+    if anchor == "Thursday" and target == "Saturday":
+        return 0.85
+    if anchor == "Thursday" and target == "Sunday":
+        return 0.75
+    if anchor == "Thursday" and target == "Friday":
+        return 0.75
+    return base
+
+
+def same_week_actual_seat_ratio_for_day(day_name, details, anchors):
+    """Estimate a target day from reported actual gross per captured seat.
+
+    This is intentionally a same-movie, same-week layer. It does not change the
+    global AMC share. It asks a narrower question: after a reported actual tells
+    us the dollars represented by this movie's captured seats, do future-day
+    captured seats imply materially more demand than the generic calibration?
+    """
+    target_mid = _positive_float(details.get("domestic_mid"))
+    target_sold = _positive_float(details.get("sold_seats"))
+    target_coverage = _coverage_value(
+        details.get("effective_coverage_ratio"),
+        default=0.0,
+    )
+    if (
+        target_mid is None
+        or target_mid <= 0
+        or target_sold is None
+        or target_sold <= 0
+        or target_coverage < SAME_WEEK_ACTUAL_SEAT_RATIO_MIN_COVERAGE
+    ):
+        return None
+
+    weighted = []
+    for anchor in anchors or []:
+        anchor_actual = _positive_float(anchor.get("actual_gross"))
+        anchor_sold = _positive_float(anchor.get("sold_seats"))
+        anchor_coverage = _coverage_value(
+            anchor.get("coverage_ratio"),
+            default=0.0,
+        )
+        if (
+            anchor_actual is None
+            or anchor_actual <= 0
+            or anchor_sold is None
+            or anchor_sold <= 0
+            or anchor_coverage < SAME_WEEK_ACTUAL_SEAT_RATIO_MIN_COVERAGE
+        ):
+            continue
+        similarity = same_week_actual_seat_ratio_similarity(
+            anchor.get("day"),
+            day_name,
+        )
+        if similarity <= 0:
+            continue
+        projected_mid = anchor_actual * (target_sold / anchor_sold)
+        if projected_mid <= 0:
+            continue
+        min_mid = target_mid * SAME_WEEK_ACTUAL_SEAT_RATIO_MIN_UPLIFT
+        max_mid = target_mid * SAME_WEEK_ACTUAL_SEAT_RATIO_MAX_UPLIFT
+        projected_mid = _clamp(projected_mid, min_mid, max_mid)
+        weight = _clamp(
+            similarity * min(target_coverage, anchor_coverage),
+            0.0,
+            SAME_WEEK_ACTUAL_SEAT_RATIO_MAX_WEIGHT,
+        )
+        if weight <= 0:
+            continue
+        weighted.append((anchor, projected_mid, weight))
+
+    if not weighted:
+        return None
+    total_weight = sum(weight for _, _, weight in weighted)
+    if total_weight <= 0:
+        return None
+    projected_mid = sum(mid * weight for _, mid, weight in weighted) / total_weight
+    applied_weight = _clamp(total_weight, 0.0, SAME_WEEK_ACTUAL_SEAT_RATIO_MAX_WEIGHT)
+    blended_mid = target_mid + ((projected_mid - target_mid) * applied_weight)
+    if blended_mid <= target_mid * 1.01:
+        return None
+    factor = blended_mid / target_mid
+    return {
+        "mid": projected_mid,
+        "blended_mid": blended_mid,
+        "factor": factor,
+        "weight": applied_weight,
+        "anchors": [anchor for anchor, _, _ in weighted],
+        "anchor_days": [anchor.get("day") for anchor, _, _ in weighted],
+    }
+
+
+def apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=None):
+    """Use same-week actuals to repair regular seat-count days.
 
     A reported Thursday preview can prove that this movie's seat-derived gross
     is systematically low or high. When Friday is only an evening sample, that
     same-movie residual is more relevant than the generic historical day scale.
-    This keeps AMC share stable while correcting the seat layer itself.
+    For high-coverage full-window future days, captured sold-seat ratios are a
+    second same-week anchor so Saturday/Sunday do not ignore obvious demand
+    already present in the sampled AMC rows. This keeps AMC share stable while
+    correcting the seat layer itself.
     """
     anchors = []
     for day_name, details in daily_details.items():
         scale = _positive_float(details.get("seat_model_actual_scale"))
         if not details.get("actual_override") or scale is None:
             continue
+        actual_gross_m = _positive_float(details.get("actual_override_m"))
+        actual_gross = actual_gross_m * 1_000_000 if actual_gross_m is not None else None
+        if actual_gross is None:
+            actual_gross = _positive_float(details.get("domestic_mid"))
         anchors.append({
             "day": day_name,
             "scale_factor": scale,
             "raw_scale_factor": details.get("seat_model_actual_raw_scale"),
             "n_theatres": details.get("n_theatres"),
             "coverage_ratio": details.get("effective_coverage_ratio"),
+            "sold_seats": details.get("sold_seats"),
+            "actual_gross": actual_gross,
             "source": details.get("actual_override_source"),
             "status": details.get("actual_override_status"),
         })
@@ -510,28 +620,60 @@ def apply_same_week_actual_seat_scales(daily_estimates, daily_details):
     for day_name, details in daily_details.items():
         partial = regular_day_has_partial_daypart(day_name, details)
         details["partial_regular_daypart"] = partial
-        if details.get("actual_override") or not partial:
+        if details.get("actual_override"):
             continue
-        scale_info = same_week_actual_seat_scale_for_day(day_name, anchors)
-        if not scale_info:
+        if partial:
+            scale_info = same_week_actual_seat_scale_for_day(day_name, anchors)
+            if scale_info:
+                factor = scale_info["factor"]
+                if abs(factor - 1.0) >= 0.001:
+                    for field in ("domestic_mid", "domestic_low", "domestic_high"):
+                        value = details.get(field)
+                        if value is None:
+                            continue
+                        details[f"pre_same_week_actual_scale_{field}"] = value
+                        details[field] = value * factor
+                    daily_estimates[day_name] = details["domestic_mid"]
+                    details["same_week_actual_seat_scale_factor"] = factor
+                    details["same_week_actual_seat_scale_anchor_day"] = (
+                        scale_info["anchor_days"][0]
+                        if len(scale_info["anchor_days"]) == 1
+                        else ",".join(scale_info["anchor_days"])
+                    )
+                    details["same_week_actual_seat_scale_weight"] = scale_info["weight"]
+                    details["same_week_actual_seat_scale_anchors"] = scale_info["anchors"]
+
+        ratio_info = same_week_actual_seat_ratio_for_day(day_name, details, anchors)
+        if not ratio_info:
             continue
-        factor = scale_info["factor"]
-        if abs(factor - 1.0) < 0.001:
+        day_scale = get_day_scale(cal, day_name) if cal else 1.0
+        target_daily_mid = ratio_info["blended_mid"]
+        target_raw_mid = (
+            target_daily_mid / day_scale
+            if day_scale and abs(day_scale) > 1e-9 else target_daily_mid
+        )
+        current_mid = _positive_float(details.get("domestic_mid"))
+        if current_mid is None or current_mid <= 0:
+            continue
+        factor = target_raw_mid / current_mid
+        if factor <= 0 or abs(factor - 1.0) < 0.001:
             continue
         for field in ("domestic_mid", "domestic_low", "domestic_high"):
             value = details.get(field)
             if value is None:
                 continue
-            details[f"pre_same_week_actual_scale_{field}"] = value
+            details[f"pre_same_week_actual_ratio_{field}"] = value
             details[field] = value * factor
         daily_estimates[day_name] = details["domestic_mid"]
-        details["same_week_actual_seat_scale_factor"] = factor
-        details["same_week_actual_seat_scale_anchor_day"] = (
-            scale_info["anchor_days"][0]
-            if len(scale_info["anchor_days"]) == 1 else ",".join(scale_info["anchor_days"])
+        details["same_week_actual_seat_ratio_mid"] = ratio_info["mid"]
+        details["same_week_actual_seat_ratio_daily_mid"] = target_daily_mid
+        details["same_week_actual_seat_ratio_factor"] = factor
+        details["same_week_actual_seat_ratio_weight"] = ratio_info["weight"]
+        details["same_week_actual_seat_ratio_anchor_day"] = (
+            ratio_info["anchor_days"][0]
+            if len(ratio_info["anchor_days"]) == 1 else ",".join(ratio_info["anchor_days"])
         )
-        details["same_week_actual_seat_scale_weight"] = scale_info["weight"]
-        details["same_week_actual_seat_scale_anchors"] = scale_info["anchors"]
+        details["same_week_actual_seat_ratio_anchors"] = ratio_info["anchors"]
 
 
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
@@ -5857,6 +5999,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         if not per_showtime_results:
             continue
 
+        sold_seats = sum(
+            _positive_float(row.get("seats_sold")) or 0.0
+            for row in rows_by_theatre_fmt_show.values()
+        )
+        total_seats = sum(
+            _positive_float(row.get("total_seats")) or 0.0
+            for row in rows_by_theatre_fmt_show.values()
+        )
         showings_by_theatre = {
             t_name: len(captured_rows)
             for t_name, captured_rows in captured_by_theatre.items()
@@ -6055,6 +6205,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 share_anchor_for_day.get("day") if share_anchor_for_day else None
             ),
             "n_theatres": n_amc_theatres,
+            "sold_seats": sold_seats,
+            "total_seats": total_seats,
+            "sample_occupancy_ratio": (
+                sold_seats / total_seats if total_seats and total_seats > 0 else None
+            ),
             "expected_theatres": expected_amc_theatres,
             "coverage_ratio": coverage_ratio,
             "effective_coverage_ratio": effective_coverage_ratio,
@@ -6116,7 +6271,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if not daily_estimates:
         return None
 
-    apply_same_week_actual_seat_scales(daily_estimates, daily_details)
+    apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=cal)
 
     daily_raw_coverage_ratios = {
         day: details["coverage_ratio"]
@@ -7122,6 +7277,42 @@ def print_prediction(pred, verbose=False):
         if details.get("actual_override"):
             source = details.get("actual_override_source") or "reported"
             day_model = f"reported actual {fmt_m(dom_m)} ({source})"
+        elif details.get("same_week_actual_seat_scale_factor"):
+            pre_scale_m = (
+                details.get("pre_same_week_actual_scale_domestic_mid", details["raw_domestic_mid"])
+                / 1_000_000
+            )
+            scale_blend_m = details.get("raw_domestic_mid", details["domestic_mid"]) / 1_000_000
+            day_model = (
+                f"{fmt_m(pre_scale_m)} → same-week seat-scale "
+                f"{fmt_m(scale_blend_m)}"
+            )
+            if abs(day_scale - 1.0) >= 0.005:
+                day_model = f"{day_model} → calibrated {fmt_m(dom_m)}"
+            if nat and abs(footprint_factor - 1.0) >= 0.005:
+                footprint_note = f", footprint {footprint_factor:.3f}"
+        elif details.get("same_week_actual_seat_ratio_factor"):
+            pre_ratio_m = (
+                details.get("pre_same_week_actual_ratio_domestic_mid", details["raw_domestic_mid"])
+                / 1_000_000
+            )
+            ratio_blend_m = details.get("raw_domestic_mid", details["domestic_mid"]) / 1_000_000
+            ratio_daily_m = (
+                details.get("same_week_actual_seat_ratio_daily_mid")
+                or details.get("same_week_actual_seat_ratio_mid")
+                or details["domestic_mid"]
+            ) / 1_000_000
+            day_model = (
+                f"{fmt_m(pre_ratio_m)} → same-week seat-ratio "
+                f"{fmt_m(ratio_daily_m)}"
+            )
+            if abs(day_scale - 1.0) >= 0.005:
+                day_model = (
+                    f"{day_model} (raw {fmt_m(ratio_blend_m)}) "
+                    f"→ calibrated {fmt_m(dom_m)}"
+                )
+            if nat and abs(footprint_factor - 1.0) >= 0.005:
+                footprint_note = f", footprint {footprint_factor:.3f}"
         elif nat and abs(footprint_factor - 1.0) >= 0.005:
             pre_footprint_m = (
                 details.get("pre_footprint_domestic_mid", details["domestic_mid"])
@@ -7170,6 +7361,13 @@ def print_prediction(pred, verbose=False):
                 f", same-week seat scale x"
                 f"{details['same_week_actual_seat_scale_factor']:.2f} "
                 f"from {details.get('same_week_actual_seat_scale_anchor_day')} actual"
+            )
+        elif details.get("same_week_actual_seat_ratio_factor"):
+            share_note = (
+                f", same-week seat-ratio blend x"
+                f"{details['same_week_actual_seat_ratio_factor']:.2f} "
+                f"({details.get('same_week_actual_seat_ratio_weight', 0):.0%} weight) "
+                f"from {details.get('same_week_actual_seat_ratio_anchor_day')} actual"
             )
         elif details.get("amc_market_share_source") == "same_week_actual_anchor":
             share_note = (
