@@ -116,5 +116,22 @@ class TestFeatures(unittest.TestCase):
         self.assertEqual(v2, [1.0, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
 
+class TestFitOne(unittest.TestCase):
+    def test_recovers_planted_relationship(self):
+        # actual = exp(0.3) * seat^1.0 exactly, across days -> intercept 0.3, slope 1.
+        rows = []
+        for day, s in [("Thursday", 2.0), ("Friday", 10.0), ("Saturday", 12.0),
+                       ("Sunday", 8.0), ("Friday", 5.0), ("Sunday", 20.0)]:
+            rows.append({"day": day, "log_seat": log(s),
+                         "log_actual": 0.3 + log(s), "coverage": 1.0, "weight": 1.0})
+        coef = sr.fit_seat(rows, l2=0.1)
+        # predicted log-mean for a Sunday with log_seat=log(10) ~ 0.3 + log(10)
+        pred = sr.predict_log(coef, sr.seat_features(log(10.0), "Sunday", 1.0))
+        self.assertAlmostEqual(pred, 0.3 + log(10.0), places=2)
+
+    def test_fit_seat_handles_empty(self):
+        self.assertIsNone(sr.fit_seat([], l2=1.0))
+
+
 if __name__ == "__main__":
     unittest.main()

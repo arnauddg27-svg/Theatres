@@ -209,3 +209,28 @@ def snapshot_features(log_snap, day, lead_bucket):
         1.0 if lead_bucket == "multi_day" else 0.0,
         1.0 if lead_bucket == "long_lead" else 0.0,
     ]
+
+
+def predict_log(coef, features):
+    """Dot product coef . features (prediction in log space)."""
+    return sum(c * f for c, f in zip(coef, features))
+
+
+def fit_seat(rows, l2):
+    """Fit the seat regression; returns coef list or None."""
+    if not rows:
+        return None
+    X = [seat_features(r["log_seat"], r["day"], r["coverage"]) for r in rows]
+    y = [r["log_actual"] for r in rows]
+    w = [r["weight"] for r in rows]
+    return weighted_ridge(X, y, w, SEAT_PRIOR, SEAT_PENALIZE, l2)
+
+
+def fit_snapshot(rows, l2):
+    """Fit the snapshot regression; returns coef list or None."""
+    if not rows:
+        return None
+    X = [snapshot_features(r["log_snap"], r["day"], r["lead_bucket"]) for r in rows]
+    y = [r["log_actual"] for r in rows]
+    w = [r["weight"] for r in rows]
+    return weighted_ridge(X, y, w, SNAP_PRIOR, SNAP_PENALIZE, l2)
