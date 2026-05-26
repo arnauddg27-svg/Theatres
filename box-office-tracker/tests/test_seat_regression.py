@@ -237,5 +237,30 @@ class TestInterval(unittest.TestCase):
         self.assertGreater(high - low, full[2] - full[1])   # wider when partial
 
 
+class TestFitCalibration(unittest.TestCase):
+    def test_block_on_real_history(self):
+        import json
+        from pathlib import Path
+        hist = json.loads(Path("data/calibration.json").read_text())["history"]
+        block = sr.fit_regression_calibration(hist)
+        self.assertEqual(block["version"], 1)
+        self.assertIn(block["active_tier"], ("regression", "global_ratio", "identity"))
+        self.assertIn("seat", block)
+        self.assertEqual(len(block["seat"]["coef"]), len(sr.SEAT_FEATURES))
+        self.assertIn("day_shares", block)
+        self.assertAlmostEqual(sum(block["day_shares"].values()), 1.0, places=4)
+        wk = block["weekend"]
+        self.assertGreaterEqual(wk["n_movies"], 4)
+        self.assertGreater(wk["resid_scale"], 0.0)
+        self.assertGreaterEqual(wk["loo_hit_rate"], 0.0)
+        self.assertLessEqual(wk["loo_hit_rate"], 1.0)
+        # global-ratio fallback always present
+        self.assertIn("global_ratio", block)
+
+    def test_empty_history_identity(self):
+        block = sr.fit_regression_calibration([])
+        self.assertEqual(block["active_tier"], "identity")
+
+
 if __name__ == "__main__":
     unittest.main()
