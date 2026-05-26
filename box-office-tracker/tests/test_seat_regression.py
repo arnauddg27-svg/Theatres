@@ -185,5 +185,36 @@ class TestCombine(unittest.TestCase):
         self.assertGreater(v_partial, v_full)
 
 
+class TestWeekend(unittest.TestCase):
+    def test_learn_day_shares_normalized(self):
+        hist = [
+            {"daily_actuals": {"Thursday": 1.0, "Friday": 3.0, "Saturday": 4.0, "Sunday": 2.0}},
+            {"daily_actuals": {"Friday": 3.0, "Saturday": 3.0, "Sunday": 4.0}},
+        ]
+        shares = sr.learn_day_shares(hist)
+        self.assertAlmostEqual(sum(shares.values()), 1.0, places=6)
+        for d in sr.OPENING_DAYS:
+            self.assertIn(d, shares)
+            self.assertGreater(shares[d], 0.0)
+
+    def test_full_weekend_sum(self):
+        shares = {"Thursday": 0.1, "Friday": 0.3, "Saturday": 0.35, "Sunday": 0.25}
+        # all four days observed -> weekend = plain sum, no inflation
+        per_day = {d: (10.0, 0.01) for d in sr.OPENING_DAYS}  # (dollars_m, log_var)
+        mid, log_var, obs_share = sr.assemble_weekend(per_day, shares)
+        self.assertAlmostEqual(mid, 40.0, places=6)
+        self.assertAlmostEqual(obs_share, 1.0, places=6)
+
+    def test_partial_weekend_extrapolates_and_inflates(self):
+        shares = {"Thursday": 0.1, "Friday": 0.3, "Saturday": 0.35, "Sunday": 0.25}
+        per_day = {"Thursday": (10.0, 0.01)}   # only Thursday in hand (share 0.1)
+        mid, log_var, obs_share = sr.assemble_weekend(per_day, shares)
+        self.assertAlmostEqual(obs_share, 0.1, places=6)
+        self.assertAlmostEqual(mid, 10.0 / 0.1, places=4)   # 100
+        # variance inflated ~ 1/obs_share vs a fully-observed equivalent
+        _, log_var_full, _ = sr.assemble_weekend({d: (10.0, 0.01) for d in sr.OPENING_DAYS}, shares)
+        self.assertGreater(log_var, log_var_full)
+
+
 if __name__ == "__main__":
     unittest.main()

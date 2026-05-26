@@ -340,3 +340,48 @@ def inflate_variance(base_var, coverage):
     """
     c = max(0.05, min(1.0, float(coverage)))
     return base_var / c
+
+
+def learn_day_shares(history):
+    """Average per-movie normalized daily-actual shares -> Thu/Fri/Sat/Sun weights."""
+    acc = {d: 0.0 for d in OPENING_DAYS}
+    cnt = {d: 0 for d in OPENING_DAYS}
+    for e in history or []:
+        da = e.get("daily_actuals") or {}
+        vals = {d: _f(da.get(d)) for d in OPENING_DAYS if _f(da.get(d)) and _f(da.get(d)) > 0}
+        total = sum(vals.values())
+        if total <= 0:
+            continue
+        for d, v in vals.items():
+            acc[d] += v / total
+            cnt[d] += 1
+    shares = {d: (acc[d] / cnt[d] if cnt[d] else 0.0) for d in OPENING_DAYS}
+    tot = sum(shares.values())
+    if tot <= 0:
+        # uniform fallback
+        return {d: 0.25 for d in OPENING_DAYS}
+    return {d: shares[d] / tot for d in OPENING_DAYS}
+
+
+def assemble_weekend(per_day, day_shares):
+    """Sum observed per-day predictions to a weekend total; extrapolate missing days.
+
+    per_day: {day: (dollars_m, log_variance)} for days we have a prediction for.
+    Returns (weekend_mid_m, weekend_log_variance, observed_share).
+
+    Observed days contribute their dollars directly. Missing days are filled by
+    scaling up via observed day-share: weekend = observed_sum / observed_share.
+    Weekend log-variance starts from the observed days' precision and is inflated
+    by 1/observed_share (each unobserved day adds extrapolation uncertainty).
+    """
+    if not per_day:
+        return 0.0, 1.0, 0.0
+    observed_sum = sum(v[0] for v in per_day.values())
+    observed_share = sum(day_shares.get(d, 0.0) for d in per_day)
+    observed_share = max(1e-3, min(1.0, observed_share))
+    weekend_mid = observed_sum / observed_share if observed_share < 0.999 else observed_sum
+    # Base log-variance: precision-weighted mean of observed-day log-variances.
+    inv = sum(1.0 / max(1e-9, v[1]) for v in per_day.values())
+    base_log_var = 1.0 / inv if inv > 0 else 1.0
+    log_var = base_log_var / observed_share        # inflate for missing weekend share
+    return weekend_mid, log_var, observed_share
