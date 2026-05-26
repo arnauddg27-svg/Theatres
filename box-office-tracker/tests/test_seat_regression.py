@@ -162,5 +162,28 @@ class TestLOO(unittest.TestCase):
         self.assertIsNotNone(out)   # degrades gracefully, no crash
 
 
+class TestCombine(unittest.TestCase):
+    def test_inverse_variance_combine(self):
+        # two sources: logmean 1.0 (var 0.04) and 2.0 (var 0.01)
+        mean, var = sr.combine_sources([(1.0, 0.04), (2.0, 0.01)])
+        # precision-weighted: w1=25, w2=100 -> (25*1+100*2)/125 = 1.8 ; var=1/125
+        self.assertAlmostEqual(mean, 1.8, places=6)
+        self.assertAlmostEqual(var, 1.0 / 125.0, places=6)
+
+    def test_single_source(self):
+        self.assertEqual(sr.combine_sources([(1.5, 0.04)]), (1.5, 0.04))
+
+    def test_no_source(self):
+        self.assertIsNone(sr.combine_sources([]))
+
+    def test_seat_variance_inflated_by_coverage(self):
+        base = 0.09
+        # lower coverage -> larger variance
+        v_full = sr.inflate_variance(base, coverage=1.0)
+        v_partial = sr.inflate_variance(base, coverage=0.6)
+        self.assertAlmostEqual(v_full, base, places=9)
+        self.assertGreater(v_partial, v_full)
+
+
 if __name__ == "__main__":
     unittest.main()

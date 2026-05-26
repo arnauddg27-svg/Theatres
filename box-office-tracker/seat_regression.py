@@ -316,3 +316,27 @@ def loo_select(rows, fit_fn, pred_row_fn):
         return None
     _, l2, sd, n = best
     return l2, sd, n
+
+
+def combine_sources(items):
+    """Inverse-variance combine of (logmean, variance) pairs.
+
+    Returns (combined_logmean, combined_variance) or None if empty.
+    """
+    items = [(m, v) for m, v in items if v is not None and v > 0]
+    if not items:
+        return None
+    if len(items) == 1:
+        return items[0]
+    prec = sum(1.0 / v for _, v in items)
+    mean = sum(m / v for m, v in items) / prec
+    return mean, 1.0 / prec
+
+
+def inflate_variance(base_var, coverage):
+    """Inflate a source's variance when coverage < 1 (sampling argument).
+
+    Var scales ~ 1/coverage: a half-covered day's estimate is ~twice as noisy.
+    """
+    c = max(0.05, min(1.0, float(coverage)))
+    return base_var / c
