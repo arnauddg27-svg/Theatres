@@ -407,37 +407,20 @@ def weekend_interval(mid_m, resid_scale, df, observed_share, resid_mean=0.0):
     return mid, mid * exp(-half), mid * exp(half)
 
 
-GATE_MIN_HIT_RATE = 0.85
+# Reporting-only target: whether the active tier's LOO MAE clears this bar.
+# Tier SELECTION is by lowest LOO MAE (the 3-way bake-off), not a hard gate.
 GATE_MAX_MAE_PCT = 20.0
 
 
 def _global_ratio(seat_rows):
     """1-parameter fallback: weighted-mean log(actual/seat) across seat rows."""
     if not seat_rows:
-        return {"log_ratio_mean": 0.0, "resid_scale": 0.35, "df": 1}
+        return {"log_ratio_mean": 0.0, "resid_scale": 0.35}
     wsum = sum(r["weight"] for r in seat_rows)
     mean = sum(r["weight"] * (r["log_actual"] - r["log_seat"]) for r in seat_rows) / wsum
     var = sum(r["weight"] * ((r["log_actual"] - r["log_seat"]) - mean) ** 2
               for r in seat_rows) / wsum
-    return {"log_ratio_mean": mean, "resid_scale": max(0.05, var ** 0.5),
-            "df": max(1, len(_movies_in(seat_rows)) - 1)}
-
-
-def _resid_sd(rows, coef, kind):
-    if not rows or coef is None:
-        return 0.35
-    sq = 0.0
-    wsum = 0.0
-    for r in rows:
-        if kind == "seat":
-            p = predict_log(coef, seat_features(r["log_seat"], r["day"], r["coverage"]))
-        else:
-            p = predict_log(coef, snapshot_features(r["log_snap"], r["day"], r["lead_bucket"]))
-        e = r["log_actual"] - p
-        w = r.get("weight", 1.0)
-        sq += w * e * e
-        wsum += w
-    return max(0.05, (sq / wsum) ** 0.5) if wsum else 0.35
+    return {"log_ratio_mean": mean, "resid_scale": max(0.05, var ** 0.5)}
 
 
 # A day whose ONLY signal is a snapshot prediction this noisy (log-variance
@@ -525,20 +508,24 @@ def _global_ratio_day_sources(day, seat, cov, snap, lead, params):
 def _fit_regression_params(history):
     seat_rows = build_seat_rows(history)
     snap_rows = build_snapshot_rows(history)
+    # loo_select returns (lambda, LOO daily residual SD, n). Use the
+    # out-of-sample LOO SD as the per-source noise for BOTH seat and snapshot,
+    # so inverse-variance weighting compares them on the same honest basis.
     sl = loo_select(seat_rows, fit_seat, _seat_pred_row) or (1.0, 0.35, 0)
     nl = loo_select(snap_rows, fit_snapshot, _snap_pred_row) if snap_rows else None
-    seat_l2 = sl[0]
+    seat_l2, seat_sd = sl[0], sl[1]
     snap_l2 = nl[0] if nl else 1.0
+    snap_sd = nl[1] if nl else None
     sc = fit_seat(seat_rows, seat_l2)
     nc = fit_snapshot(snap_rows, snap_l2) if snap_rows else None
     return {
         "seat_coef": sc,
         "snap_coef": nc,
-        "seat_sd": _resid_sd(seat_rows, sc, "seat"),
-        "snap_sd": _resid_sd(snap_rows, nc, "snap") if nc else None,
+        "seat_sd": seat_sd,
+        "snap_sd": snap_sd,
         "seat_l2": seat_l2,
         "snap_l2": snap_l2,
-        "snap_daily_resid_sd": (nl[1] if nl else 0.35),
+        "snap_daily_resid_sd": (snap_sd if snap_sd is not None else 0.35),
     }
 
 
