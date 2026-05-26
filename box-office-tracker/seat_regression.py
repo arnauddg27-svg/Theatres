@@ -106,3 +106,72 @@ def weighted_ridge(X, y, w, prior, penalize, l2):
             A[a][a] += l2
             rhs[a] += l2 * prior[a]
     return _solve(A, rhs)
+
+
+def _f(value):
+    try:
+        v = float(value)
+        return v if isfinite(v) else None
+    except (TypeError, ValueError):
+        return None
+
+
+def build_seat_rows(history):
+    """Admissible per-day seat training rows (coverage >= COVERAGE_FLOOR)."""
+    rows = []
+    for e in history or []:
+        rdp = e.get("raw_daily_predictions") or e.get("daily_predictions") or {}
+        da = e.get("daily_actuals") or {}
+        cov = e.get("daily_coverage_ratios") or {}
+        for day in OPENING_DAYS:
+            seat = _f(rdp.get(day))
+            actual = _f(da.get(day))
+            c = _f(cov.get(day)) or 0.0
+            if not seat or seat <= 0 or not actual or actual <= 0:
+                continue
+            if c < COVERAGE_FLOOR:
+                continue
+            rows.append({
+                "movie": e.get("movie", ""),
+                "day": day,
+                "log_seat": log(seat),
+                "log_actual": log(actual),
+                "coverage": c,
+                "weight": c,            # precision proportional to coverage
+            })
+    return rows
+
+
+def build_snapshot_rows(history):
+    """Admissible per-day snapshot training rows (positive snapshot + lead bucket)."""
+    rows = []
+    for e in history or []:
+        sdp = e.get("snapshot_daily_predictions") or {}
+        da = e.get("daily_actuals") or {}
+        leads = e.get("snapshot_daily_lead_buckets") or {}
+        for day in OPENING_DAYS:
+            snap = _f(sdp.get(day))
+            actual = _f(da.get(day))
+            lead = leads.get(day)
+            if not snap or snap <= 0 or not actual or actual <= 0:
+                continue
+            if lead not in LEAD_BUCKETS:
+                lead = "same_day"
+            rows.append({
+                "movie": e.get("movie", ""),
+                "day": day,
+                "log_snap": log(snap),
+                "log_actual": log(actual),
+                "lead_bucket": lead,
+                "weight": 1.0,
+            })
+    return rows
+
+
+def weekend_cv_movies(history):
+    """Movies with >= MIN_WEEKEND_CV_DAYS admissible seat-days (eligible for weekend CV)."""
+    rows = build_seat_rows(history)
+    counts = {}
+    for r in rows:
+        counts[r["movie"]] = counts.get(r["movie"], 0) + 1
+    return [m for m, n in counts.items() if n >= MIN_WEEKEND_CV_DAYS]

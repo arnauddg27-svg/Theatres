@@ -7,6 +7,8 @@ import types
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
+from math import log
+
 import seat_regression as sr
 
 
@@ -47,6 +49,52 @@ class TestRidge(unittest.TestCase):
                                  penalize=[0, 1], l2=100.0)
         self.assertLess(beta[1], 1.5)   # pulled toward prior 1
         self.assertGreater(beta[1], 1.0)
+
+
+class TestTrainingRows(unittest.TestCase):
+    def _history(self):
+        return [
+            {  # good movie: 2 admissible seat-days (Thu, Sun), Fri below floor
+                "movie": "A", "weekend_of": "2026-01-02", "actual_total": 40.0,
+                "raw_daily_predictions": {"Thursday": 5.0, "Friday": 10.0, "Sunday": 8.0},
+                "daily_actuals": {"Thursday": 6.0, "Friday": 9.0, "Sunday": 9.0},
+                "daily_coverage_ratios": {"Thursday": 1.0, "Friday": 0.40, "Sunday": 0.90},
+                "snapshot_daily_predictions": {"Sunday": 7.5},
+                "snapshot_daily_lead_buckets": {"Sunday": "same_day"},
+            },
+            {  # unusable: 1 admissible day only
+                "movie": "B", "weekend_of": "2026-01-09", "actual_total": 2.0,
+                "raw_daily_predictions": {"Sunday": 2.0},
+                "daily_actuals": {"Sunday": 1.5},
+                "daily_coverage_ratios": {"Sunday": 0.03},
+            },
+        ]
+
+    def test_seat_rows_respect_coverage_floor(self):
+        rows = sr.build_seat_rows(self._history())
+        # A: Thu(1.0) and Sun(0.90) pass; Fri(0.40) excluded. B: Sun(0.03) excluded.
+        keys = {(r["movie"], r["day"]) for r in rows}
+        self.assertEqual(keys, {("A", "Thursday"), ("A", "Sunday")})
+
+    def test_seat_row_fields_and_weight(self):
+        rows = sr.build_seat_rows(self._history())
+        thu = next(r for r in rows if r["day"] == "Thursday")
+        self.assertAlmostEqual(thu["log_seat"], log(5.0))
+        self.assertAlmostEqual(thu["log_actual"], log(6.0))
+        self.assertAlmostEqual(thu["coverage"], 1.0)
+        self.assertAlmostEqual(thu["weight"], 1.0)   # weight == coverage
+
+    def test_snapshot_rows(self):
+        rows = sr.build_snapshot_rows(self._history())
+        keys = {(r["movie"], r["day"]) for r in rows}
+        self.assertEqual(keys, {("A", "Sunday")})
+        r = rows[0]
+        self.assertAlmostEqual(r["log_snap"], log(7.5))
+        self.assertEqual(r["lead_bucket"], "same_day")
+
+    def test_weekend_cv_movies(self):
+        movies = sr.weekend_cv_movies(self._history())
+        self.assertEqual(movies, ["A"])   # B has <2 admissible days
 
 
 if __name__ == "__main__":
