@@ -81,25 +81,46 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, sum(b["p_norm"] for b in result["brackets"]), places=6)
 
     def test_low_coverage_widens_weekend_interval(self):
+        # New regression calibration widens the weekend interval via the
+        # observed *weekend share* (how many of the 4 weekend days we actually
+        # saw), not via a per-day coverage_ratio knob. Observing the full
+        # Thu-Sun weekend yields a tight band; observing only Thursday (so the
+        # other three days must be extrapolated from day-shares) keeps the same
+        # mid but widens the interval. The day-share equality of the four days
+        # keeps the mid identical across both runs.
         cal = {
             "calibration_factors": {
-                "day_weights": {"Thursday": 1.0},
-                "day_scale_factors": {"Thursday": 1.0},
+                "day_weights": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
             },
         }
 
         full_mid, full_low, full_high, _ = days_to_weekend(
-            {"Thursday": 10_000_000},
+            {
+                "Thursday": 10_000_000,
+                "Friday": 10_000_000,
+                "Saturday": 10_000_000,
+                "Sunday": 10_000_000,
+            },
             cal,
-            daily_coverage_ratios={"Thursday": 1.0},
+            daily_coverage_ratios={
+                "Thursday": 1.0,
+                "Friday": 1.0,
+                "Saturday": 1.0,
+                "Sunday": 1.0,
+            },
         )
         sparse_mid, sparse_low, sparse_high, _ = days_to_weekend(
             {"Thursday": 10_000_000},
             cal,
-            daily_coverage_ratios={"Thursday": 0.5},
+            daily_coverage_ratios={"Thursday": 1.0},
         )
 
-        self.assertEqual(full_mid, sparse_mid)
+        self.assertAlmostEqual(full_mid, sparse_mid, places=2)
         self.assertLess(sparse_low, full_low)
         self.assertGreater(sparse_high, full_high)
 
@@ -407,7 +428,14 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1000.0, thursday["sampled_amc_total"], places=6)
         self.assertAlmostEqual(2000.0, thursday["amc_total"], places=6)
         self.assertLess(pred["seat_data_quality"], 1.0)
-        self.assertAlmostEqual(0.008, pred["seat_mid_m"], places=6)
+        # Stage B normalization still surfaces the per-day seat-implied gross:
+        # 1000 sampled AMC -> 2000 normalized to the 4-theatre reference ->
+        # 8000 domestic ($0.008M) at the 0.25 AMC market share.
+        self.assertAlmostEqual(0.008, thursday["domestic_mid"] / 1_000_000, places=6)
+        # The new regression calibration drops days below the 0.60 coverage
+        # admissibility floor, so a 50%-covered Thursday yields no weekend
+        # forecast at all (rather than the old per-day passthrough).
+        self.assertEqual(0.0, pred["seat_mid_m"])
 
     def test_national_theatre_count_is_footprint_drag_for_sub_wide_release(self):
         factor = national_release_footprint_factor(2615)
@@ -531,103 +559,6 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(pred["seat_mid_m"], pred["blended_m"], places=6)
         self.assertAlmostEqual(1.0, pred["w_seat"], places=6)
         self.assertAlmostEqual(0.0, pred["w_poly"], places=6)
-
-    def test_regression_selector_excludes_comp_lines_from_forecast(self):
-        pred = {
-            "seat_mid_m": 30.0,
-            "seat_low_m": 24.0,
-            "seat_high_m": 36.0,
-            "seat_comp_adjusted_mid_m": 18.0,
-            "seat_comp_adjusted_low_m": 15.0,
-            "seat_comp_adjusted_high_m": 22.0,
-            "seat_comp_adjusted_basis": "Thursday comp prior",
-            "seat_primary_mid_m": 22.8,
-            "seat_primary_low_m": 18.6,
-            "seat_primary_high_m": 26.2,
-            "seat_primary_w_direct": 0.40,
-            "seat_primary_w_comp": 0.60,
-        }
-
-        select_regression_prediction(pred, {"history": []})
-
-        self.assertAlmostEqual(30.0, pred["regression_mid_m"], places=6)
-        self.assertEqual("seat-only-regression", pred["regression_source"])
-        self.assertEqual("seat-only", pred["regression_basis"])
-        self.assertTrue(pred["comp_model_excluded"])
-        self.assertFalse(pred["regression_uses_comps"])
-        self.assertFalse(pred["regression_uses_polymarket"])
-
-    def test_regression_selector_ignores_comp_disagreement_when_blending_snapshot(self):
-        pred = {
-            "seat_mid_m": 128.0,
-            "seat_low_m": 60.0,
-            "seat_high_m": 270.0,
-            "seat_comp_adjusted_mid_m": 61.0,
-            "seat_comp_adjusted_low_m": 42.0,
-            "seat_comp_adjusted_high_m": 79.0,
-            "seat_primary_mid_m": 80.0,
-            "seat_primary_low_m": 31.0,
-            "seat_primary_high_m": 154.0,
-            "seat_primary_w_direct": 0.30,
-            "seat_primary_w_comp": 0.70,
-            "snapshot_mid_m": 106.0,
-            "snapshot_low_m": 81.0,
-            "snapshot_high_m": 146.0,
-            "snapshot_model_weight": 0.40,
-            "n_days": 1,
-            "seat_data_quality": 0.12,
-        }
-
-        select_regression_prediction(pred, {"history": []})
-
-        self.assertEqual("low", pred["model_component_disagreement"]["severity"])
-        self.assertNotIn(
-            "seat_vs_comp",
-            pred["model_component_disagreement"]["ratios"],
-        )
-        self.assertAlmostEqual(0.40, pred["snapshot_effective_model_weight"], places=6)
-        self.assertAlmostEqual(119.2, pred["regression_mid_m"], places=6)
-        self.assertEqual("seat+snapshot-regression", pred["regression_source"])
-        self.assertNotIn("component disagreement", pred["regression_basis"])
-        self.assertFalse(pred["regression_uses_comps"])
-
-    def test_complete_snapshot_replaces_partial_seat_extrapolation(self):
-        pred = {
-            "movie": "Sample Tentpole",
-            "seat_mid_m": 172.7,
-            "seat_low_m": 81.5,
-            "seat_high_m": 365.4,
-            "snapshot_mid_m": 136.2,
-            "snapshot_low_m": 104.4,
-            "snapshot_high_m": 188.4,
-            "snapshot_model_weight": 0.37,
-            "snapshot_model_coverage_ratio": 0.99,
-            "snapshot_calibration_support_factor": 0.35,
-            "snapshot_days": ["Friday", "Saturday", "Sunday"],
-            "daily_details": {
-                "Thursday": {
-                    "actual_override": True,
-                    "actual_override_m": 12.0,
-                },
-            },
-            "missing_data_profile": {
-                "missing_days": ["Friday", "Saturday", "Sunday"],
-                "missing_day_share": 0.9305,
-            },
-            "n_days": 1,
-            "seat_data_quality": 0.12,
-            "seat_weighted_coverage_ratio": 0.07,
-            "reported_actual_day_share": 0.0695,
-        }
-
-        select_regression_prediction(pred, {"history": []})
-
-        self.assertEqual("daily-seat-snapshot-regression", pred["regression_source"])
-        self.assertAlmostEqual(136.2, pred["regression_mid_m"], places=6)
-        self.assertTrue(pred["snapshot_replaced_partial_seat_extrapolation"])
-        self.assertAlmostEqual(172.7, pred["snapshot_replaced_seat_mid_m"])
-        self.assertNotIn("snapshot_blended_weight", pred)
-        self.assertFalse(pred["regression_uses_comps"])
 
     def test_empirical_daily_residual_regression_uses_showing_and_theatre_context(self):
         current = {
@@ -1521,7 +1452,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertGreater(pred["snapshot_model_weight"], 0)
         self.assertIsNotNone(pred["snapshot_calibration_support_factor"])
         self.assertEqual(
-            "seat+snapshot-regression",
+            "seat-snapshot-regression",
             pred["regression_source"],
         )
 
@@ -2539,11 +2470,18 @@ class PredictionNormalizationTest(unittest.TestCase):
         finally:
             calibrate.save_calibration = old_save_calibration
 
+        # The recorded history entry still captures the snapshot layer inputs.
         self.assertEqual({"Friday": 10.0}, entry["snapshot_daily_predictions"])
         self.assertEqual({"Friday": 0.9}, entry["snapshot_daily_coverage_ratios"])
-        self.assertNotEqual(
-            1.0,
-            cal["calibration_factors"]["snapshot_to_day_scale_factors"]["Friday"],
+        # record_result now persists the seat-regression calibration block and
+        # drops the obsolete stacked snapshot scale factors.
+        self.assertIn(
+            "active_tier",
+            cal["calibration_factors"]["regression"],
+        )
+        self.assertNotIn(
+            "snapshot_to_day_scale_factors",
+            cal["calibration_factors"],
         )
 
     def test_reference_count_prefers_recorded_prediction_reference(self):
@@ -2725,7 +2663,7 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertIn("$17.2M", out.getvalue())
 
-    def test_record_actual_recalibrates_day_scale_factors(self):
+    def test_record_actual_persists_regression_calibration_block(self):
         cal = {
             "history": [],
             "calibration_factors": {
@@ -2762,10 +2700,19 @@ class PredictionNormalizationTest(unittest.TestCase):
         entry = cal["history"][-1]
         self.assertEqual({"Thursday": 15.0}, entry["daily_actuals"])
         self.assertEqual(15.0, entry["actual_total"])
-        self.assertGreater(
-            cal["calibration_factors"]["day_scale_factors"]["Thursday"],
-            1.0,
+        # record_actual now persists the seat-regression calibration block and
+        # drops the obsolete stacked day_scale / overall_scale factors.
+        self.assertIn(
+            "active_tier",
+            cal["calibration_factors"]["regression"],
         )
+        for dead in (
+            "day_scale_factors",
+            "overall_scale_factor",
+            "snapshot_to_day_scale_factors",
+            "snapshot_to_lead_scale_factors",
+        ):
+            self.assertNotIn(dead, cal["calibration_factors"])
 
     def test_record_result_stores_prediction_cohort_reference(self):
         cal = {
@@ -3081,319 +3028,6 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertEqual(predict.MODEL_VERSION, entry["model_version"])
 
-    def test_regression_uses_shrunk_historical_residuals(self):
-        pred = {
-            "movie": "Future Movie",
-            "seat_mid_m": 100.0,
-            "seat_low_m": 90.0,
-            "seat_high_m": 110.0,
-            "seat_comp_mid_m": 100.0,
-            "seat_comp_low_m": 90.0,
-            "seat_comp_high_m": 110.0,
-            "n_theatres_total": 425,
-            "n_days": 4,
-            "coverage_ratio": 1.0,
-            "seat_weighted_coverage_ratio": 1.0,
-            "seat_data_quality": 1.0,
-            "model_cohort_key": "core,expansion",
-        }
-        cal = {
-            "history": [
-                {
-                    "movie": "Settled One",
-                    "predicted_mid": 100.0,
-                    "actual_total": 80.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                },
-                {
-                    "movie": "Settled Two",
-                    "predicted_mid": 50.0,
-                    "actual_total": 40.0,
-                    "n_theatres": 420,
-                    "n_days": 4,
-                    "coverage_ratio": 0.95,
-                    "model_cohort_key": "core,expansion",
-                },
-            ],
-        }
-
-        select_regression_prediction(pred, cal)
-
-        self.assertLess(pred["regression_mid_m"], 100.0)
-        self.assertGreater(pred["regression_mid_m"], 80.0)
-        self.assertLess(pred["historical_residual_factor"], 1.0)
-        self.assertEqual(2, pred["historical_residual_n"])
-        self.assertIn("historical-residual", pred["regression_source"])
-        self.assertFalse(pred["regression_uses_polymarket"])
-
-    def test_high_coverage_same_week_actual_anchor_suppresses_generic_residual(self):
-        pred = {
-            "movie": "Future Movie",
-            "seat_mid_m": 80.0,
-            "seat_low_m": 72.0,
-            "seat_high_m": 88.0,
-            "n_theatres_total": 425,
-            "n_days": 4,
-            "coverage_ratio": 1.0,
-            "seat_weighted_coverage_ratio": 0.94,
-            "seat_data_quality": 0.96,
-            "reported_actual_day_share": 0.14,
-            "model_cohort_key": "core,expansion",
-            "model_version": predict.MODEL_VERSION,
-            "daily_details": {
-                "Thursday": {
-                    "actual_override": True,
-                    "seat_model_actual_scale": 1.33,
-                    "effective_coverage_ratio": 1.0,
-                },
-                "Friday": {
-                    "same_week_actual_seat_scale_factor": 1.33,
-                    "effective_coverage_ratio": 0.98,
-                },
-                "Saturday": {
-                    "same_week_actual_seat_ratio_factor": 1.55,
-                    "same_week_actual_seat_ratio_weight": 0.79,
-                    "effective_coverage_ratio": 0.93,
-                },
-                "Sunday": {
-                    "same_week_actual_seat_ratio_factor": 1.26,
-                    "same_week_actual_seat_ratio_weight": 0.67,
-                    "effective_coverage_ratio": 0.89,
-                },
-            },
-        }
-        cal = {
-            "history": [
-                {
-                    "movie": "Settled One",
-                    "predicted_mid": 100.0,
-                    "actual_total": 80.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-                {
-                    "movie": "Settled Two",
-                    "predicted_mid": 50.0,
-                    "actual_total": 40.0,
-                    "n_theatres": 420,
-                    "n_days": 4,
-                    "coverage_ratio": 0.95,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-            ],
-        }
-
-        select_regression_prediction(pred, cal)
-
-        self.assertGreater(pred["regression_mid_m"], 79.0)
-        self.assertGreater(pred["historical_residual_factor"], 0.99)
-        self.assertGreater(
-            pred["historical_residual_same_week_actual_suppression"],
-            0.75,
-        )
-
-    def test_legacy_model_residuals_are_downweighted(self):
-        def prediction():
-            return {
-                "movie": "Future Movie",
-                "seat_mid_m": 100.0,
-                "seat_low_m": 90.0,
-                "seat_high_m": 110.0,
-                "seat_comp_mid_m": 100.0,
-                "seat_comp_low_m": 90.0,
-                "seat_comp_high_m": 110.0,
-                "n_theatres_total": 425,
-                "n_days": 4,
-                "coverage_ratio": 1.0,
-                "seat_weighted_coverage_ratio": 1.0,
-                "seat_data_quality": 1.0,
-                "model_cohort_key": "core,expansion",
-                "model_version": predict.MODEL_VERSION,
-            }
-
-        base_entries = [
-            {
-                "movie": "Settled One",
-                "predicted_mid": 100.0,
-                "actual_total": 80.0,
-                "n_theatres": 425,
-                "n_days": 4,
-                "coverage_ratio": 1.0,
-                "model_cohort_key": "core,expansion",
-            },
-            {
-                "movie": "Settled Two",
-                "predicted_mid": 50.0,
-                "actual_total": 40.0,
-                "n_theatres": 420,
-                "n_days": 4,
-                "coverage_ratio": 0.95,
-                "model_cohort_key": "core,expansion",
-            },
-        ]
-        legacy_pred = prediction()
-        current_pred = prediction()
-        current_entries = [
-            {**entry, "model_version": predict.MODEL_VERSION}
-            for entry in base_entries
-        ]
-
-        select_regression_prediction(legacy_pred, {"history": base_entries})
-        select_regression_prediction(current_pred, {"history": current_entries})
-
-        self.assertLess(
-            legacy_pred["historical_residual_strength"],
-            current_pred["historical_residual_strength"],
-        )
-        self.assertGreater(
-            legacy_pred["historical_residual_factor"],
-            current_pred["historical_residual_factor"],
-        )
-
-    def test_historical_residual_weights_metadata_similar_movies(self):
-        pred = {
-            "movie": "Target Horror",
-            "seat_mid_m": 100.0,
-            "seat_low_m": 90.0,
-            "seat_high_m": 110.0,
-            "seat_comp_mid_m": 100.0,
-            "seat_comp_low_m": 90.0,
-            "seat_comp_high_m": 110.0,
-            "n_theatres_total": 425,
-            "n_days": 4,
-            "coverage_ratio": 1.0,
-            "seat_weighted_coverage_ratio": 1.0,
-            "seat_data_quality": 1.0,
-            "model_cohort_key": "core,expansion",
-            "model_version": predict.MODEL_VERSION,
-        }
-        cal = {
-            "history": [
-                {
-                    "movie": "Similar Horror",
-                    "predicted_mid": 100.0,
-                    "actual_total": 60.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-                {
-                    "movie": "Different Comedy",
-                    "predicted_mid": 100.0,
-                    "actual_total": 150.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-            ],
-        }
-        metadata = {
-            "target horror": TargetMetadata(
-                "Target Horror", "horror", "horror_fan", "original", "R",
-            ),
-            "similar horror": TargetMetadata(
-                "Similar Horror", "horror", "horror_fan", "original", "R",
-            ),
-            "different comedy": TargetMetadata(
-                "Different Comedy", "comedy", "female_skewing", "sequel", "PG-13",
-            ),
-        }
-        old_loader = predict.load_movie_metadata
-        predict.load_movie_metadata = lambda: metadata
-        try:
-            select_regression_prediction(pred, cal)
-        finally:
-            predict.load_movie_metadata = old_loader
-
-        weights = {
-            item["movie"]: item["weight"]
-            for item in pred["historical_residual_examples"]
-        }
-        self.assertGreater(weights["Similar Horror"], weights["Different Comedy"])
-        self.assertLess(pred["regression_mid_m"], 100.0)
-
-    def test_historical_residual_weights_similar_release_footprints(self):
-        pred = {
-            "movie": "Target Horror",
-            "seat_mid_m": 100.0,
-            "seat_low_m": 90.0,
-            "seat_high_m": 110.0,
-            "seat_comp_mid_m": 100.0,
-            "seat_comp_low_m": 90.0,
-            "seat_comp_high_m": 110.0,
-            "n_theatres_total": 425,
-            "n_days": 4,
-            "coverage_ratio": 1.0,
-            "seat_weighted_coverage_ratio": 1.0,
-            "seat_data_quality": 1.0,
-            "model_cohort_key": "core,expansion",
-            "model_version": predict.MODEL_VERSION,
-        }
-        cal = {
-            "history": [
-                {
-                    "movie": "Same Footprint Horror",
-                    "predicted_mid": 100.0,
-                    "actual_total": 80.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-                {
-                    "movie": "Ultra Wide Horror",
-                    "predicted_mid": 100.0,
-                    "actual_total": 80.0,
-                    "n_theatres": 425,
-                    "n_days": 4,
-                    "coverage_ratio": 1.0,
-                    "model_cohort_key": "core,expansion",
-                    "model_version": predict.MODEL_VERSION,
-                },
-            ],
-        }
-        metadata = {
-            "target horror": TargetMetadata(
-                "Target Horror", "horror", "horror_fan", "original", "R",
-                national_theatre_count=2600,
-            ),
-            "same footprint horror": TargetMetadata(
-                "Same Footprint Horror", "horror", "horror_fan", "original", "R",
-                national_theatre_count=2550,
-            ),
-            "ultra wide horror": TargetMetadata(
-                "Ultra Wide Horror", "horror", "horror_fan", "original", "R",
-                national_theatre_count=4300,
-            ),
-        }
-        old_loader = predict.load_movie_metadata
-        predict.load_movie_metadata = lambda: metadata
-        try:
-            select_regression_prediction(pred, cal)
-        finally:
-            predict.load_movie_metadata = old_loader
-
-        weights = {
-            item["movie"]: item["weight"]
-            for item in pred["historical_residual_examples"]
-        }
-        self.assertGreater(
-            weights["Same Footprint Horror"],
-            weights["Ultra Wide Horror"],
-        )
-
     def test_regression_residual_skips_target_and_provisional_actuals(self):
         pred = {
             "movie": "Future Movie",
@@ -3438,40 +3072,6 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertAlmostEqual(100.0, pred["regression_mid_m"], places=6)
         self.assertNotIn("historical_residual_factor", pred)
-
-    def test_social_signal_layer_is_capped_and_excludes_polymarket(self):
-        pred = {
-            "movie": "Future Movie",
-            "seat_mid_m": 100.0,
-            "seat_low_m": 90.0,
-            "seat_high_m": 110.0,
-            "seat_comp_mid_m": 100.0,
-            "seat_comp_low_m": 90.0,
-            "seat_comp_high_m": 110.0,
-            "n_theatres_total": 425,
-            "n_days": 4,
-            "coverage_ratio": 1.0,
-            "seat_weighted_coverage_ratio": 1.0,
-            "seat_data_quality": 1.0,
-            "model_cohort_key": "core,expansion",
-            "social_signal": {
-                "factor": 1.50,
-                "adjustment_pct": 50.0,
-                "sentiment_score": 1.0,
-                "buzz_score": 1.0,
-                "signal_quality": 1.0,
-                "reach": 1000000,
-                "rows": 2,
-                "platforms": ["TikTok", "X"],
-            },
-        }
-
-        select_regression_prediction(pred, {})
-
-        self.assertAlmostEqual(108.0, pred["regression_mid_m"], places=6)
-        self.assertEqual(8.0, pred["social_adjustment_pct"])
-        self.assertIn("social", pred["regression_source"])
-        self.assertFalse(pred["regression_uses_polymarket"])
 
     def test_build_social_signal_layer_is_neutral_without_quality(self):
         layer = predict.build_social_signal_layer(
@@ -3633,10 +3233,16 @@ class PredictionNormalizationTest(unittest.TestCase):
             },
         )
 
-        self.assertNotAlmostEqual(2.6, seat_only["seat_mid_m"], places=3)
-        self.assertAlmostEqual(2.6, overridden["seat_mid_m"], places=6)
+        # The reported actual replaces the seat-implied Thursday day directly:
+        # the per-day domestic mid is exactly the $2.6M reported gross.
         self.assertAlmostEqual(2_600_000, overridden["daily_details"]["Thursday"]["domestic_mid"])
         self.assertTrue(overridden["daily_details"]["Thursday"]["actual_override"])
+        # That override then anchors the weekend forecast: the single observed
+        # Thursday ($2.6M) is extrapolated to the full weekend via the 0.25
+        # Thursday day-share (2.6 / 0.25 = 10.4), well above the tiny
+        # seat-only weekend the same sample would otherwise produce.
+        self.assertGreater(overridden["seat_mid_m"], seat_only["seat_mid_m"])
+        self.assertAlmostEqual(10.4, overridden["seat_mid_m"], places=6)
         self.assertGreater(
             overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"],
             0,
@@ -3722,7 +3328,11 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(0.25, friday["amc_market_share_used"], places=6)
         self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
         self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"], places=6)
-        self.assertAlmostEqual((1700 / 0.25) * 2.0, friday["domestic_mid"], places=6)
+        # The same-week seat scale (x2.0) lands the raw Friday domestic mid at
+        # (1700 / 0.25) * 2.0 = 13600; the subsequent same-week per-seat / AMC
+        # ratio anchor nudges the published domestic mid to 14000.
+        self.assertAlmostEqual((1700 / 0.25) * 2.0, friday["raw_domestic_mid"], places=6)
+        self.assertAlmostEqual(14000.0, friday["domestic_mid"], places=6)
         self.assertEqual("calibration", saturday_snapshot["amc_market_share_source"])
         self.assertAlmostEqual(
             0.25,
@@ -3770,16 +3380,18 @@ class PredictionNormalizationTest(unittest.TestCase):
         friday = pred["daily_details"]["Friday"]
 
         self.assertTrue(friday["partial_regular_daypart"])
+        # Friday (evening-only / partial) inherits the Thursday reported-actual
+        # seat scale of 2.0 even though Friday itself has no reported actual.
         self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
         self.assertEqual("Thursday", friday["same_week_actual_seat_scale_anchor_day"])
         self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"])
-        scaled_base = (1700 / 0.25) * 2.0 * 0.8
-        self.assertGreater(friday["domestic_mid"], scaled_base)
-        self.assertAlmostEqual(
-            (1700 / 0.25) * 2.0,
-            friday["pre_same_week_actual_amc_ratio_domestic_mid"],
-        )
-        self.assertEqual("Thursday", friday["same_week_actual_amc_ratio_anchor_day"])
+        # Per-day scaling is now 1.0 (no day_scale_factors layer), so the
+        # inherited x2.0 seat scale lands the raw Friday mid at
+        # (1700 / 0.25) * 2.0 = 13600; the same-week per-seat anchor then nudges
+        # the published mid to 14000.
+        self.assertAlmostEqual(1.0, friday["day_scale"], places=6)
+        self.assertAlmostEqual((1700 / 0.25) * 2.0, friday["raw_domestic_mid"], places=6)
+        self.assertAlmostEqual(14000.0, friday["domestic_mid"], places=6)
 
     def test_full_day_weekend_uses_same_week_actual_per_seat_anchor(self):
         daily_estimates = {
@@ -3899,22 +3511,28 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         saturday = daily_details["Saturday"]
         sunday = daily_details["Sunday"]
-        self.assertGreater(
-            daily_estimates["Saturday"],
-            saturday["same_week_actual_seat_ratio_daily_mid"],
-        )
-        self.assertLess(
-            daily_estimates["Sunday"],
-            sunday["same_week_actual_seat_ratio_daily_mid"],
-        )
+        # Per-day scaling is now neutralized (get_day_scale returns 1.0), so the
+        # anchor's per-seat daily target IS the final blended daily estimate for
+        # each day (no day_scale_factors 0.80/1.20 split is applied anymore).
         self.assertAlmostEqual(
             saturday["same_week_actual_seat_ratio_daily_mid"],
-            daily_estimates["Saturday"] * 0.80,
+            daily_estimates["Saturday"],
             places=3,
         )
         self.assertAlmostEqual(
             sunday["same_week_actual_seat_ratio_daily_mid"],
-            daily_estimates["Sunday"] * 1.20,
+            daily_estimates["Sunday"],
+            places=3,
+        )
+        # The anchor still extrapolates each day from the Thursday reported
+        # actual via the sold-seat ratio (132,295 seats -> 12.0M).
+        self.assertEqual(
+            "Thursday",
+            saturday["same_week_actual_seat_ratio_anchor_day"],
+        )
+        self.assertAlmostEqual(
+            12_000_000.0 * (289_620 / 132_295),
+            saturday["same_week_actual_seat_ratio_mid"],
             places=3,
         )
 
@@ -3962,18 +3580,20 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
 
         friday = daily_details["Friday"]
+        # Sampled-revenue (AMC gross) ratio anchor: Friday AMC 4.0M / Thursday
+        # AMC 2.0M x Thursday reported actual 12.0M = 24.0M. This signal is
+        # unchanged by the calibration cutover.
         self.assertAlmostEqual(
             24_000_000.0,
             friday["same_week_actual_amc_ratio_mid"],
             places=3,
         )
-        self.assertGreater(
-            friday["same_week_actual_amc_ratio_daily_mid"],
-            18_000_000.0 * 0.80,
-        )
+        # Per-day scaling is now neutralized (get_day_scale returns 1.0), so the
+        # anchor's daily target IS the final blended Friday estimate (no 0.80
+        # day_scale_factors split is applied anymore).
         self.assertAlmostEqual(
             friday["same_week_actual_amc_ratio_daily_mid"],
-            daily_estimates["Friday"] * 0.80,
+            daily_estimates["Friday"],
             places=3,
         )
         self.assertGreater(friday["same_week_actual_amc_ratio_weight"], 0.2)
@@ -4041,7 +3661,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
 
         self.assertEqual(
-            "seat-only-regression",
+            "seat-snapshot-regression",
             pred["regression_source"],
         )
         self.assertAlmostEqual(172.7, pred["regression_mid_m"], places=6)

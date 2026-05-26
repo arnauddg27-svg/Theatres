@@ -23,6 +23,7 @@ Usage:
 """
 
 import json, csv, os, sys, re, statistics
+import seat_regression
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from math import exp, log, sqrt
@@ -846,28 +847,8 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
 
 
 def get_day_scale(cal, day_name):
-    """Per-day calibration scale factor (default 1.0).
-
-    Calibration trains one scale per day from EMA over historical
-    actual/predicted ratios for that day. The total weekend prediction is the
-    sum of (raw_daily × day_scale[day]) — no global scale factor applied on
-    top, so calibration adds up to a total day-by-day instead of inflating a
-    single number.
-    """
-    factors = (cal or {}).get("calibration_factors", {}) if cal else {}
-    per_day = factors.get("day_scale_factors") if cal else None
-    if isinstance(per_day, dict) and day_name in per_day:
-        try:
-            return float(per_day[day_name])
-        except (TypeError, ValueError):
-            pass
-    # Fall back to legacy overall_scale_factor only when no per-day calibration
-    # exists — keeps a fresh install or an old calibration.json working.
-    legacy = factors.get("overall_scale_factor", 1.0) if cal else 1.0
-    try:
-        return float(legacy)
-    except (TypeError, ValueError):
-        return 1.0
+    """DEPRECATED / neutralized: per-day scaling now lives in the regression block; always returns 1.0."""
+    return 1.0
 
 
 def get_snapshot_lead_scale(cal, lead_bucket):
@@ -4151,168 +4132,18 @@ def select_regression_prediction(pred, cal=None):
     to observed seat demand plus snapshot, theatre-footprint, residual, and
     social layers.
     """
-    use_comps = bool(COMPS_IN_FORECAST)
-    comp_line_present = any(
-        pred.get(key) is not None
-        for key in (
-            "seat_primary_mid_m",
-            "seat_comp_adjusted_mid_m",
-            "seat_comp_mid_m",
-        )
-    )
-    if comp_line_present and not use_comps:
-        pred["comp_model_excluded"] = True
-
-    if use_comps and pred.get("seat_primary_mid_m") is not None:
-        source = "seat-primary-regression"
-        mid = pred["seat_primary_mid_m"]
-        low = pred["seat_primary_low_m"]
-        high = pred["seat_primary_high_m"]
-        w_direct = pred.get("seat_primary_w_direct")
-        w_comp = pred.get("seat_primary_w_comp")
-        if w_direct is not None and w_comp is not None:
-            basis = f"direct seats ({w_direct:.0%}) + seat/comp prior ({w_comp:.0%})"
-        else:
-            basis = "direct seats + seat/comp prior"
-        uses_comps = True
-    elif use_comps and pred.get("seat_comp_adjusted_mid_m") is not None:
-        source = "seat+comp-coverage-adjusted-regression"
-        mid = pred["seat_comp_adjusted_mid_m"]
-        low = pred["seat_comp_adjusted_low_m"]
-        high = pred["seat_comp_adjusted_high_m"]
-        basis = pred.get("seat_comp_adjusted_basis")
-        uses_comps = True
-    elif use_comps and pred.get("seat_comp_mid_m") is not None:
-        source = "seat+comp-regression"
-        mid = pred["seat_comp_mid_m"]
-        low = pred["seat_comp_low_m"]
-        high = pred["seat_comp_high_m"]
-        basis = pred.get("seat_comp_basis")
-        uses_comps = True
-    else:
-        source = "seat-only-regression"
-        mid = pred["seat_mid_m"]
-        low = pred["seat_low_m"]
-        high = pred["seat_high_m"]
-        basis = "seat-only"
-        uses_comps = False
-
-    snapshot_mid = pred.get("snapshot_mid_m")
-    disagreement_profile = model_component_disagreement_profile(
-        pred,
-        base_mid=mid,
-        snapshot_mid=snapshot_mid,
-        include_comp=use_comps,
-    )
-    pred["model_component_disagreement"] = disagreement_profile
-    snapshot_primary = complete_snapshot_covers_missing_days(pred)
-    if snapshot_primary:
-        pred["snapshot_replaced_partial_seat_extrapolation"] = True
-        pred["snapshot_replaced_seat_mid_m"] = mid
-        pred["snapshot_replaced_seat_low_m"] = low
-        pred["snapshot_replaced_seat_high_m"] = high
-        mid = snapshot_mid
-        low = pred.get("snapshot_low_m", snapshot_mid)
-        high = pred.get("snapshot_high_m", snapshot_mid)
-        source = "daily-seat-snapshot-regression"
-        basis = "observed seat days + snapshot-filled missing days"
-        uses_comps = False
-    snapshot_weight = _coverage_value(pred.get("snapshot_model_weight"), default=0.0)
-    if snapshot_mid is not None and snapshot_weight > 0 and not snapshot_primary:
-        original_snapshot_weight = snapshot_weight
-        snapshot_weight = _clamp(
-            snapshot_weight * disagreement_profile.get("snapshot_weight_multiplier", 1.0),
-            0.0,
-            SNAPSHOT_LAYER_MAX_WEIGHT,
-        )
-        seat_weight = 1.0 - snapshot_weight
-        snapshot_low = pred.get("snapshot_low_m", snapshot_mid)
-        snapshot_high = pred.get("snapshot_high_m", snapshot_mid)
-        base_mid = mid
-        mid = base_mid * seat_weight + snapshot_mid * snapshot_weight
-        low = low * seat_weight + snapshot_low * snapshot_weight
-        high = high * seat_weight + snapshot_high * snapshot_weight
-        disagreement = abs(snapshot_mid - base_mid)
-        low = max(0.0, low - disagreement * snapshot_weight * 0.20)
-        high = high + disagreement * snapshot_weight * 0.20
-        pred["snapshot_blended_base_mid_m"] = base_mid
-        pred["snapshot_blended_disagreement_m"] = disagreement
-        pred["snapshot_blended_weight"] = snapshot_weight
-        pred["snapshot_original_model_weight"] = round(original_snapshot_weight, 4)
-        pred["snapshot_effective_model_weight"] = round(snapshot_weight, 4)
-        if source == "seat-only-regression":
-            source = "seat+snapshot-regression"
-        elif "seat+comp" in source:
-            source = "seat+comp+snapshot-regression"
-        elif source == "seat-primary-regression":
-            source = "seat-primary+snapshot-regression"
-        else:
-            source = f"{source}+snapshot"
-        basis = f"{basis} + snapshot future days"
-
-    range_buffer_m = _positive_float(disagreement_profile.get("range_buffer_m")) or 0.0
-    if disagreement_profile.get("severity") in {"medium", "high"} and range_buffer_m > 0:
-        low = max(0.0, low - range_buffer_m)
-        high = high + range_buffer_m
-        basis = f"{basis} + component disagreement penalty ({disagreement_profile['severity']})"
-
-    residual = historical_residual_regression(pred, cal)
-    if residual:
-        base_mid = mid
-        mid = mid * residual["factor"]
-        low = low * residual["factor"]
-        high = high * residual["factor"]
-        pred["historical_residual_base_mid_m"] = base_mid
-        pred["historical_residual_factor"] = round(residual["factor"], 4)
-        pred["historical_residual_raw_factor"] = round(residual["raw_factor"], 4)
-        pred["historical_residual_strength"] = round(residual["strength"], 4)
-        pred["historical_residual_n"] = residual["n"]
-        pred["historical_residual_effective_weight"] = round(
-            residual["effective_weight"],
-            3,
-        )
-        pred["historical_residual_same_week_actual_suppression"] = round(
-            residual.get("same_week_actual_suppression", 0.0),
-            4,
-        )
-        pred["historical_residual_examples"] = [
-            {
-                "movie": item["movie"],
-                "weekend_of": item["weekend_of"],
-                "ratio": round(item["ratio"], 4),
-                "weight": round(item["weight"], 3),
-            }
-            for item in residual["examples"]
-        ]
-        source = f"{source}+historical-residual"
-        basis = f"{basis} + settled residuals"
-
-    social = pred.get("social_signal")
-    if social and not pred.get("social_signal_model_integrated"):
-        factor = _positive_float(social.get("factor")) or 1.0
-        factor = _clamp(
-            factor,
-            1.0 - SOCIAL_LAYER_MAX_ADJUSTMENT,
-            1.0 + SOCIAL_LAYER_MAX_ADJUSTMENT,
-        )
-        base_mid = mid
-        mid = mid * factor
-        low = low * factor
-        high = high * factor
-        social_delta = abs(mid - base_mid)
-        low = max(0.0, low - social_delta * 0.20)
-        high = high + social_delta * 0.20
-        pred["social_base_mid_m"] = base_mid
-        pred["social_factor"] = round(factor, 5)
-        pred["social_adjustment_m"] = round(mid - base_mid, 3)
-        pred["social_adjustment_pct"] = round((factor - 1.0) * 100.0, 2)
-        source = f"{source}+social"
-        basis = f"{basis} + social buzz/sentiment"
-    elif social and pred.get("social_signal_model_integrated"):
-        pred["social_factor"] = 1.0
-        pred["social_adjustment_m"] = 0.0
-        pred["social_adjustment_pct"] = 0.0
-        pred["social_model_note"] = "social signal integrated into historical comp regression"
+    # The production forecast now comes directly from the seat-regression
+    # calibration block (via days_to_weekend -> seat_regression.predict_weekend).
+    # The interval it produces is already honest/wide, so we pass it through
+    # with NO stacked multiplicative adjustments (snapshot blend, component
+    # disagreement buffer, historical-residual regression, social factor).
+    mid = pred["seat_mid_m"]
+    low = pred["seat_low_m"]
+    high = pred["seat_high_m"]
+    active_tier = (cal or {}).get("calibration_factors", {}).get("regression", {}).get("active_tier")
+    source = "seat-snapshot-regression"
+    basis = f"regression calibration (tier={active_tier})"
+    uses_comps = False
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -4515,61 +4346,30 @@ def calibrated_daily_estimates(daily_estimates, cal):
     }
 
 
-def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None):
-    """Stage D: per-day calibrated daily estimates summed to a weekend total.
+def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None,
+                    daily_snapshot_estimates=None, daily_lead_buckets=None):
+    """Stage D: regression-block calibration -> weekend total + 90% interval.
 
-    daily_estimates: dict of {day_name: raw_domestic_daily_mid}
-    Each captured day is multiplied by its own calibration scale factor
-    (`day_scale_factors[day]`, default 1.0). The weekend total is the SUM of
-    those calibrated daily values, so calibration adds up to a total
-    day-by-day instead of being applied as one global multiplier on the sum.
-
-    For partial-weekend coverage (e.g. only Thu+Fri scraped so far), the
-    missing Thu-Sun days are extrapolated from the calibrated days using the
-    learned `day_weights` distribution: total = collected_sum / collected_share.
-
-    Returns (mid, low, high, calibrated_daily).
+    daily_estimates: {day: raw domestic daily mid in DOLLARS}.
+    Returns (mid_dollars, low_dollars, high_dollars, per_day_dict).
     """
     if not daily_estimates:
         return 0, 0, 0, {}
-
-    day_weights = get_day_weights(cal)
-
-    # Apply per-day scale factors first; the sum is the calibrated subtotal
-    # of the days we actually have.
-    calibrated_daily = calibrated_daily_estimates(daily_estimates, cal)
-    collected_sum = sum(d["mid"] for d in calibrated_daily.values())
-    collected_share = sum(day_weights.get(day, 0) for day in calibrated_daily)
-
-    # If we have substantially the full weekend (Thu-Sun ≈ 1.0), the sum IS
-    # the prediction — no extrapolation needed. The 0.99 threshold leaves a
-    # rounding cushion for day_weights that sum to e.g. 0.9999.
-    if collected_share >= 0.99:
-        weekend_mid = collected_sum
-    elif collected_share > 0:
-        # Partial weekend: scale collected_sum up to the full weekend share.
-        # E.g. Thu+Fri share = 0.12+0.32=0.44, so weekend ≈ collected/0.44.
-        weekend_mid = collected_sum / collected_share
-    else:
-        # Day_weights misconfigured for this set of days — fall back to a
-        # wide bracket around the raw sum so we never silently zero out.
-        return collected_sum, collected_sum * 0.5, collected_sum * 2.0, calibrated_daily
-
-    # Confidence based on how many days and how complete the scraped sample was.
-    n_days = len(daily_estimates)
-    coverage_ratio = _coverage_average(daily_coverage_ratios)
-    weighted_coverage_ratio = weighted_weekend_coverage_ratio(
-        daily_coverage_ratios,
-        cal,
+    block = (cal or {}).get("calibration_factors", {}).get("regression")
+    if not block:
+        block = seat_regression.fit_regression_calibration((cal or {}).get("history", []))
+    daily_seat_m = {d: v / 1_000_000.0 for d, v in daily_estimates.items()}
+    coverage = daily_coverage_ratios or {d: 1.0 for d in daily_seat_m}
+    snap_m = {d: v / 1_000_000.0 for d, v in (daily_snapshot_estimates or {}).items()}
+    out = seat_regression.predict_weekend(
+        block, daily_seat_m=daily_seat_m, coverage=coverage,
+        daily_snapshot_m=snap_m, lead_buckets=daily_lead_buckets or {},
     )
-    conf_low, conf_high = confidence_interval_factors(
-        n_days,
-        coverage_ratio=weighted_coverage_ratio,
-    )
-    weekend_low = weekend_mid * conf_low
-    weekend_high = weekend_mid * conf_high
-
-    return weekend_mid, weekend_low, weekend_high, calibrated_daily
+    mid = out["mid_m"] * 1_000_000.0
+    low = out["low_m"] * 1_000_000.0
+    high = out["high_m"] * 1_000_000.0
+    per_day = {d: {"mid": m * 1_000_000.0} for d, m in out["per_day"].items()}
+    return mid, low, high, per_day
 
 
 def _snapshot_day_name(date_str, rows):
@@ -5927,28 +5727,14 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
             entry["calibration_excluded_days"] = sorted(excluded_days)
     cal["history"].append(entry)
 
-    # Update scale factor using the same bounded logic as calibrate.py.
     history = cal["history"]
     if history:
-        cal["calibration_factors"]["overall_scale_factor"] = recalibrate_scale_factor(
-            history,
-            default=1.0,
+        cal["calibration_factors"]["regression"] = (
+            seat_regression.fit_regression_calibration(history)
         )
-        cal["calibration_factors"]["day_scale_factors"] = (
-            recalibrate_day_scale_factors(history)
-        )
-        cal["calibration_factors"]["snapshot_to_day_scale_factors"] = (
-            recalibrate_snapshot_day_scale_factors(history)
-        )
-        cal["calibration_factors"]["snapshot_to_lead_scale_factors"] = (
-            recalibrate_snapshot_lead_scale_factors(
-                history,
-                day_scales=cal["calibration_factors"]["snapshot_to_day_scale_factors"],
-            )
-        )
-        cal["calibration_factors"]["snapshot_calibration_support"] = (
-            snapshot_calibration_support(history)
-        )
+        for _dead in ("day_scale_factors", "overall_scale_factor",
+                      "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):
+            cal["calibration_factors"].pop(_dead, None)
 
     # Refine AMC market share from seat-based estimates
     share_estimates = []
@@ -6501,12 +6287,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         raw_mid = details["domestic_mid"]
         raw_low = details["domestic_low"]
         raw_high = details["domestic_high"]
-        day_scale = calibrated["scale"]
+        # The regression-block per_day only carries a calibrated "mid"; per-day
+        # scaling is no longer applied (scale defaults to 1.0).
+        day_scale = calibrated.get("scale", 1.0)
         details["raw_domestic_mid"] = raw_mid
         details["raw_domestic_low"] = raw_low
         details["raw_domestic_high"] = raw_high
         details["day_scale"] = day_scale
-        details["domestic_mid"] = calibrated["mid"]
+        details["domestic_mid"] = calibrated.get("mid", raw_mid)
         details["domestic_low"] = raw_low * day_scale
         details["domestic_high"] = raw_high * day_scale
 
