@@ -175,3 +175,37 @@ def weekend_cv_movies(history):
     for r in rows:
         counts[r["movie"]] = counts.get(r["movie"], 0) + 1
     return [m for m, n in counts.items() if n >= MIN_WEEKEND_CV_DAYS]
+
+
+SEAT_FEATURES = ("intercept", "log_seat", "is_thu", "is_fri", "is_sat", "one_minus_cov")
+SEAT_PRIOR = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0]      # slope prior = 1
+SEAT_PENALIZE = [0, 1, 1, 1, 1, 1]                # intercept unpenalized
+
+SNAP_FEATURES = ("intercept", "log_snap", "is_thu", "is_fri", "is_sat",
+                 "lead_next_day", "lead_multi_day", "lead_long_lead")
+SNAP_PRIOR = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+SNAP_PENALIZE = [0, 1, 1, 1, 1, 1, 1, 1]
+
+
+def seat_features(log_seat, day, coverage):
+    return [
+        1.0,
+        float(log_seat),
+        1.0 if day == "Thursday" else 0.0,
+        1.0 if day == "Friday" else 0.0,
+        1.0 if day == "Saturday" else 0.0,
+        round(1.0 - float(coverage), 10),
+    ]
+
+
+def snapshot_features(log_snap, day, lead_bucket):
+    return [
+        1.0,
+        float(log_snap),
+        1.0 if day == "Thursday" else 0.0,
+        1.0 if day == "Friday" else 0.0,
+        1.0 if day == "Saturday" else 0.0,
+        1.0 if lead_bucket == "next_day" else 0.0,
+        1.0 if lead_bucket == "multi_day" else 0.0,
+        1.0 if lead_bucket == "long_lead" else 0.0,
+    ]

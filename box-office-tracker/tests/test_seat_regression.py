@@ -97,5 +97,24 @@ class TestTrainingRows(unittest.TestCase):
         self.assertEqual(movies, ["A"])   # B has <2 admissible days
 
 
+class TestFeatures(unittest.TestCase):
+    def test_seat_features(self):
+        # [intercept, log_seat, is_thu, is_fri, is_sat, one_minus_cov]; Sunday baseline
+        v = sr.seat_features(log_seat=2.0, day="Friday", coverage=0.8)
+        self.assertEqual(v, [1.0, 2.0, 0.0, 1.0, 0.0, 0.2])
+        v2 = sr.seat_features(log_seat=1.0, day="Sunday", coverage=1.0)
+        self.assertEqual(v2, [1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+        self.assertEqual(sr.SEAT_PRIOR, [0.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+        self.assertEqual(sr.SEAT_PENALIZE, [0, 1, 1, 1, 1, 1])
+
+    def test_snapshot_features(self):
+        # [intercept, log_snap, is_thu, is_fri, is_sat, lead_next, lead_multi, lead_long]
+        # same_day is the lead baseline
+        v = sr.snapshot_features(log_snap=1.5, day="Thursday", lead_bucket="next_day")
+        self.assertEqual(v, [1.0, 1.5, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+        v2 = sr.snapshot_features(log_snap=1.5, day="Sunday", lead_bucket="same_day")
+        self.assertEqual(v2, [1.0, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+
 if __name__ == "__main__":
     unittest.main()
