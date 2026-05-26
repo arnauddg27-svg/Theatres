@@ -385,3 +385,23 @@ def assemble_weekend(per_day, day_shares):
     base_log_var = 1.0 / inv if inv > 0 else 1.0
     log_var = base_log_var / observed_share        # inflate for missing weekend share
     return weekend_mid, log_var, observed_share
+
+
+def weekend_interval(mid_m, resid_scale, df, observed_share, resid_mean=0.0):
+    """Calibrated 90% interval (Student-t in log space).
+
+    mid_m: summed per-day point prediction ($M).
+    resid_scale: SD of weekend LOO log-residuals (empirical).
+    df: t degrees of freedom (n_cv_movies - 1).
+    observed_share: fraction of the weekend actually observed (widens band when <1).
+    resid_mean: mean weekend LOO log-residual (bias correction, applied to mid).
+
+    Returns (mid_m, low_m, high_m).
+    """
+    if mid_m is None or mid_m <= 0:
+        return mid_m, mid_m, mid_m
+    mid = mid_m * exp(resid_mean)
+    share = max(1e-3, min(1.0, observed_share))
+    scale = resid_scale / (share ** 0.5)    # inflate for missing weekend share
+    half = t_quantile_95(df) * scale
+    return mid, mid * exp(-half), mid * exp(half)

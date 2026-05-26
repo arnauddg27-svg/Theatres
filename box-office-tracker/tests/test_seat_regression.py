@@ -7,7 +7,7 @@ import types
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
 
-from math import log
+from math import log, exp
 
 import seat_regression as sr
 
@@ -214,6 +214,27 @@ class TestWeekend(unittest.TestCase):
         # variance inflated ~ 1/obs_share vs a fully-observed equivalent
         _, log_var_full, _ = sr.assemble_weekend({d: (10.0, 0.01) for d in sr.OPENING_DAYS}, shares)
         self.assertGreater(log_var, log_var_full)
+
+
+class TestInterval(unittest.TestCase):
+    def test_interval_multiplicative_t(self):
+        # mid 50, weekend resid scale 0.2 log, df 5, full observation, zero bias
+        mid, low, high = sr.weekend_interval(50.0, resid_scale=0.2, df=5,
+                                             observed_share=1.0, resid_mean=0.0)
+        t = sr.t_quantile_95(5)   # 2.015
+        self.assertAlmostEqual(mid, 50.0, places=6)
+        self.assertAlmostEqual(high, 50.0 * exp(t * 0.2), places=4)
+        self.assertAlmostEqual(low, 50.0 * exp(-t * 0.2), places=4)
+        self.assertLess(low, mid)
+        self.assertGreater(high, mid)
+
+    def test_interval_applies_bias_and_inflation(self):
+        # nonzero resid_mean shifts mid; partial observation widens band.
+        mid, low, high = sr.weekend_interval(50.0, resid_scale=0.2, df=5,
+                                             observed_share=0.5, resid_mean=0.1)
+        self.assertAlmostEqual(mid, 50.0 * exp(0.1), places=4)
+        full = sr.weekend_interval(50.0, 0.2, 5, 1.0, 0.1)
+        self.assertGreater(high - low, full[2] - full[1])   # wider when partial
 
 
 if __name__ == "__main__":
