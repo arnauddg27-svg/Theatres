@@ -440,69 +440,232 @@ def _resid_sd(rows, coef, kind):
     return max(0.05, (sq / wsum) ** 0.5) if wsum else 0.35
 
 
-def _predict_entry_days(entry, seat_coef, snap_coef, seat_sd, snap_sd):
-    """Per-day combined ($M, log_var) for one movie's admissible days."""
-    rdp = entry.get("raw_daily_predictions") or entry.get("daily_predictions") or {}
-    sdp = entry.get("snapshot_daily_predictions") or {}
-    cov = entry.get("daily_coverage_ratios") or {}
-    leads = entry.get("snapshot_daily_lead_buckets") or {}
+# A day whose ONLY signal is a snapshot prediction this noisy (log-variance
+# above this threshold; snapshots empirically sit near ~1.0) is dropped so the
+# reliable day-share fallback fills it instead — a noisy sole-source snapshot
+# produces worse weekend estimates than extrapolating from the observed days.
+SNAPSHOT_MAX_SOLE_SOURCE_VAR = 0.5
+
+
+def _finalize_day_sources(sources):
+    """Combine a day's tagged sources into a (point_$M, log_variance) pair.
+
+    sources: list of (logmean, variance, is_snapshot) tuples.
+
+    Returns None when the day should be treated as unobserved — either no
+    source at all, or the only source is a snapshot too noisy to trust
+    (variance > SNAPSHOT_MAX_SOLE_SOURCE_VAR). The point estimate is the
+    lognormal MEDIAN exp(logmean) — we deliberately do NOT add the +0.5*var
+    mean correction, because `var` here is mostly estimation uncertainty
+    (LOO residual + coverage/lead inflation), not true lognormal scatter, so
+    adding it would systematically over-inflate noisy days.
+    """
+    if not sources:
+        return None
+    if len(sources) == 1 and sources[0][2] and sources[0][1] > SNAPSHOT_MAX_SOLE_SOURCE_VAR:
+        return None
+    combined = combine_sources([(lm, v) for lm, v, _is_snap in sources])
+    if combined is None:
+        return None
+    logmean, var = combined
+    return exp(logmean), var
+
+
+def _raw_resid_sd(rows, key):
+    """RMS of (log_actual - raw) around 0, for the identity & ratio tiers."""
+    if not rows:
+        return 0.35
+    wsum = sum(r["weight"] for r in rows)
+    if wsum <= 0:
+        return 0.35
+    sq = sum(r["weight"] * (r["log_actual"] - r[key]) ** 2 for r in rows)
+    return max(0.05, (sq / wsum) ** 0.5)
+
+
+def _seat_pred_row(coef, r):
+    return predict_log(coef, seat_features(r["log_seat"], r["day"], r["coverage"]))
+
+
+def _snap_pred_row(coef, r):
+    return predict_log(coef, snapshot_features(r["log_snap"], r["day"], r["lead_bucket"]))
+
+
+# ── Per-tier day-source builders ──────────────────────────────────────────────
+# Each maps one day's live inputs to a list of tagged (logmean, variance,
+# is_snapshot) sources. _finalize_day_sources then gates + combines them.
+
+def _regression_day_sources(day, seat, cov, snap, lead, params):
+    sources = []
+    sc = params.get("seat_coef")
+    if seat and seat > 0 and cov >= COVERAGE_FLOOR and sc is not None:
+        sources.append((predict_log(sc, seat_features(log(seat), day, cov)),
+                        inflate_variance(params["seat_sd"] ** 2, cov), False))
+    nc = params.get("snap_coef")
+    if snap and snap > 0 and nc is not None:
+        sources.append((predict_log(nc, snapshot_features(log(snap), day, lead)),
+                        (params.get("snap_sd") or 0.35) ** 2, True))
+    return sources
+
+
+def _identity_day_sources(day, seat, cov, snap, lead, params):
+    """Raw seat-implied, no calibration (ratio = 1). Seat-only baseline."""
+    if seat and seat > 0 and cov >= COVERAGE_FLOOR:
+        return [(log(seat), inflate_variance(params["seat_sd"] ** 2, cov), False)]
+    return []
+
+
+def _global_ratio_day_sources(day, seat, cov, snap, lead, params):
+    """Raw seat-implied * exp(mean log-ratio). Seat-only baseline."""
+    if seat and seat > 0 and cov >= COVERAGE_FLOOR:
+        return [(log(seat) + params["log_ratio_mean"],
+                 inflate_variance(params["seat_sd"] ** 2, cov), False)]
+    return []
+
+
+def _fit_regression_params(history):
+    seat_rows = build_seat_rows(history)
+    snap_rows = build_snapshot_rows(history)
+    sl = loo_select(seat_rows, fit_seat, _seat_pred_row) or (1.0, 0.35, 0)
+    nl = loo_select(snap_rows, fit_snapshot, _snap_pred_row) if snap_rows else None
+    seat_l2 = sl[0]
+    snap_l2 = nl[0] if nl else 1.0
+    sc = fit_seat(seat_rows, seat_l2)
+    nc = fit_snapshot(snap_rows, snap_l2) if snap_rows else None
+    return {
+        "seat_coef": sc,
+        "snap_coef": nc,
+        "seat_sd": _resid_sd(seat_rows, sc, "seat"),
+        "snap_sd": _resid_sd(snap_rows, nc, "snap") if nc else None,
+        "seat_l2": seat_l2,
+        "snap_l2": snap_l2,
+        "snap_daily_resid_sd": (nl[1] if nl else 0.35),
+    }
+
+
+def _fit_identity_params(history):
+    return {"seat_sd": _raw_resid_sd(build_seat_rows(history), "log_seat")}
+
+
+def _fit_global_ratio_params(history):
+    gr = _global_ratio(build_seat_rows(history))
+    return {"log_ratio_mean": gr["log_ratio_mean"], "seat_sd": gr["resid_scale"]}
+
+
+TIER_SOURCE_BUILDERS = {
+    "regression": _regression_day_sources,
+    "identity": _identity_day_sources,
+    "global_ratio": _global_ratio_day_sources,
+}
+TIER_PARAM_FITTERS = {
+    "regression": _fit_regression_params,
+    "identity": _fit_identity_params,
+    "global_ratio": _fit_global_ratio_params,
+}
+
+
+def _assemble_per_day(rdp, sdp, cov, leads, build_sources, params):
+    """Per-day (point_$M, log_var) from live inputs via a tier source builder."""
     per_day = {}
     for day in OPENING_DAYS:
-        sources = []
         seat = _f(rdp.get(day))
         c = _f(cov.get(day)) or 0.0
-        if seat and seat > 0 and c >= COVERAGE_FLOOR and seat_coef is not None:
-            lm = predict_log(seat_coef, seat_features(log(seat), day, c))
-            sources.append((lm, inflate_variance(seat_sd ** 2, c)))
         snap = _f(sdp.get(day))
-        if snap and snap > 0 and snap_coef is not None:
-            lead = leads.get(day) if leads.get(day) in LEAD_BUCKETS else "same_day"
-            lm = predict_log(snap_coef, snapshot_features(log(snap), day, lead))
-            sources.append((lm, (snap_sd or 0.35) ** 2))
-        combined = combine_sources(sources)
-        if combined is None:
-            continue
-        logmean, var = combined
-        per_day[day] = (exp(logmean + 0.5 * var), var)   # lognormal mean
+        lead = leads.get(day) if leads.get(day) in LEAD_BUCKETS else "same_day"
+        fin = _finalize_day_sources(build_sources(day, seat, c, snap, lead, params))
+        if fin is not None:
+            per_day[day] = fin
     return per_day
 
 
-def _weekend_loo(history, seat_l2, snap_l2, day_shares):
-    """Leave-one-movie-out weekend predictions over eligible movies.
+def _assemble_entry(entry, build_sources, params):
+    return _assemble_per_day(
+        entry.get("raw_daily_predictions") or entry.get("daily_predictions") or {},
+        entry.get("snapshot_daily_predictions") or {},
+        entry.get("daily_coverage_ratios") or {},
+        entry.get("snapshot_daily_lead_buckets") or {},
+        build_sources, params,
+    )
 
-    For each eligible movie, refit both regressions WITHOUT it, predict each of
-    its admissible seat-days (+ snapshot days via combine), assemble the weekend
-    via the production path, and compare to actual_total. Returns list of
-    (movie, pred_m, actual_m, observed_share, log_resid).
+
+def _tier_loo(history, day_shares, tier):
+    """Leave-one-movie-out weekend predictions for one tier.
+
+    Returns list of (movie, pred_m, actual_m, observed_share, log_resid).
     """
-    eligible = weekend_cv_movies(history)
+    build_sources = TIER_SOURCE_BUILDERS[tier]
+    fit_params = TIER_PARAM_FITTERS[tier]
     results = []
-    for m in eligible:
+    for m in weekend_cv_movies(history):
         train = [e for e in history if e.get("movie") != m]
-        seat_coef = fit_seat(build_seat_rows(train), seat_l2)
-        snap_coef = fit_snapshot(build_snapshot_rows(train), snap_l2)
-        if seat_coef is None:
+        if not build_seat_rows(train):
             continue
+        params = fit_params(train)
         entry = next(e for e in history if e.get("movie") == m)
         actual_total = _f(entry.get("actual_total"))
         if not actual_total or actual_total <= 0:
             continue
-        # daily resid SDs of the held-out fit (reuse training rows' spread)
-        seat_sd = _resid_sd(build_seat_rows(train), seat_coef, "seat")
-        snap_sd = _resid_sd(build_snapshot_rows(train), snap_coef, "snap") if snap_coef else None
-        per_day = _predict_entry_days(entry, seat_coef, snap_coef, seat_sd, snap_sd)
+        per_day = _assemble_entry(entry, build_sources, params)
         if not per_day:
             continue
-        mid, _logvar, obs_share = assemble_weekend(per_day, day_shares)
+        mid, _v, obs = assemble_weekend(per_day, day_shares)
         if mid <= 0:
             continue
-        results.append((m, mid, actual_total, obs_share, log(actual_total) - log(mid)))
+        results.append((m, mid, actual_total, obs, log(actual_total) - log(mid)))
     return results
 
 
+def _resid_stats(loo):
+    """Empirical weekend residual stats + interval hit-rate for a tier's LOO."""
+    n = len(loo)
+    resids = [r[4] for r in loo]
+    rmean = sum(resids) / n
+    rscale = max(0.05, (sum((x - rmean) ** 2 for x in resids) / n) ** 0.5)
+    df = max(1, n - 1)
+    hits = 0
+    ae = []
+    for _m, pred, actual, obs, _lr in loo:
+        _mid, low, high = weekend_interval(pred, rscale, df, obs, rmean)
+        if low <= actual <= high:
+            hits += 1
+        ae.append(abs(pred * exp(rmean) - actual) / actual)
+    return {
+        "resid_scale": rscale,
+        "resid_mean": rmean,
+        "df": df,
+        "loo_hit_rate": round(hits / n, 4),
+        "loo_mae_pct": round(100.0 * sum(ae) / n, 2),
+        "n_movies": n,
+        "loo_detail": [
+            {"movie": m, "pred_m": round(p, 2), "actual_m": round(a, 2),
+             "observed_share": round(s, 3)} for m, p, a, s, _ in loo
+        ],
+    }
+
+
+def _params_from_block(block, tier):
+    """Reconstruct a tier's predict-time params from a persisted block."""
+    if tier == "regression" and block.get("seat"):
+        snap = block.get("snapshot")
+        return {"seat_coef": block["seat"]["coef"],
+                "snap_coef": snap["coef"] if snap else None,
+                "seat_sd": block["seat"]["daily_resid_sd"],
+                "snap_sd": snap["daily_resid_sd"] if snap else None}
+    if tier == "global_ratio":
+        gr = block.get("global_ratio") or {"log_ratio_mean": 0.0, "resid_scale": 0.35}
+        return {"log_ratio_mean": gr["log_ratio_mean"], "seat_sd": gr["resid_scale"]}
+    return {"seat_sd": (block.get("identity") or {}).get("seat_sd", 0.40)}
+
+
 def fit_regression_calibration(history):
+    """Fit all calibration tiers, activate the leave-one-movie-out winner.
+
+    Runs a 3-way out-of-sample bake-off (identity / global_ratio / regression)
+    and activates whichever tier has the lowest LOO weekend MAE. The full
+    regression is stored even when dormant, so it auto-activates once it beats
+    the simpler tiers as history grows. Returns the `regression` calibration
+    block persisted into calibration.json.
+    """
     seat_rows = build_seat_rows(history)
-    snap_rows = build_snapshot_rows(history)
     day_shares = learn_day_shares(history)
     block = {
         "version": 1,
@@ -510,65 +673,78 @@ def fit_regression_calibration(history):
         "day_shares": day_shares,
         "trained_on": _movies_in(seat_rows),
         "global_ratio": _global_ratio(seat_rows),
+        "identity": _fit_identity_params(history),
     }
-    if not seat_rows:
-        block["weekend"] = {"resid_scale": 0.35, "resid_mean": 0.0, "df": 1,
-                            "loo_hit_rate": 0.0, "loo_mae_pct": None, "n_movies": 0}
-        return block
 
-    seat_l2, seat_sd, _ = loo_select(
-        seat_rows, fit_seat,
-        lambda coef, r: predict_log(coef, seat_features(r["log_seat"], r["day"], r["coverage"])),
-    ) or (1.0, 0.35, 0)
-    snap_sel = loo_select(
-        snap_rows, fit_snapshot,
-        lambda coef, r: predict_log(coef, snapshot_features(r["log_snap"], r["day"], r["lead_bucket"])),
-    ) if snap_rows else None
-    snap_l2 = snap_sel[0] if snap_sel else 1.0
-
-    seat_coef = fit_seat(seat_rows, seat_l2)
-    snap_coef = fit_snapshot(snap_rows, snap_l2) if snap_rows else None
-    block["seat"] = {"features": list(SEAT_FEATURES), "coef": seat_coef,
-                     "prior": SEAT_PRIOR, "lambda": seat_l2, "daily_resid_sd": seat_sd}
-    if snap_coef is not None:
-        block["snapshot"] = {"features": list(SNAP_FEATURES), "coef": snap_coef,
-                             "prior": SNAP_PRIOR, "lambda": snap_l2,
-                             "daily_resid_sd": (snap_sel[1] if snap_sel else 0.35)}
+    # Persist full-data regression params (used when the regression tier wins).
+    if seat_rows:
+        reg = _fit_regression_params(history)
+        block["seat"] = {"features": list(SEAT_FEATURES), "coef": reg["seat_coef"],
+                         "prior": SEAT_PRIOR, "lambda": reg["seat_l2"],
+                         "daily_resid_sd": reg["seat_sd"]}
+        if reg["snap_coef"] is not None:
+            block["snapshot"] = {"features": list(SNAP_FEATURES), "coef": reg["snap_coef"],
+                                 "prior": SNAP_PRIOR, "lambda": reg["snap_l2"],
+                                 "daily_resid_sd": reg["snap_daily_resid_sd"]}
+        else:
+            block["snapshot"] = None
     else:
+        block["seat"] = None
         block["snapshot"] = None
 
-    loo = _weekend_loo(history, seat_l2, snap_l2, day_shares)
-    n = len(loo)
-    if n >= 2:
-        resids = [r[4] for r in loo]
-        rmean = sum(resids) / n
-        rscale = max(0.05, (sum((x - rmean) ** 2 for x in resids) / n) ** 0.5)
-        df = max(1, n - 1)
-        hits = 0
-        ae = []
-        for _m, pred, actual, obs_share, _lr in loo:
-            mid, low, high = weekend_interval(pred, rscale, df, obs_share, rmean)
-            if low <= actual <= high:
-                hits += 1
-            ae.append(abs(mid - actual) / actual)
-        hit_rate = hits / n
-        mae_pct = 100.0 * sum(ae) / n
-        block["weekend"] = {"resid_scale": rscale, "resid_mean": rmean, "df": df,
-                            "loo_hit_rate": round(hit_rate, 4),
-                            "loo_mae_pct": round(mae_pct, 2), "n_movies": n}
-        block["loo_detail"] = [
-            {"movie": m, "pred_m": round(p, 2), "actual_m": round(a, 2),
-             "observed_share": round(s, 3)} for m, p, a, s, _ in loo
-        ]
-        # Acceptance gate
-        if hit_rate >= GATE_MIN_HIT_RATE and mae_pct <= GATE_MAX_MAE_PCT:
-            block["active_tier"] = "regression"
-        else:
-            block["active_tier"] = "global_ratio"
-        block["gate"] = {"min_hit_rate": GATE_MIN_HIT_RATE, "max_mae_pct": GATE_MAX_MAE_PCT,
-                         "passed": block["active_tier"] == "regression"}
+    # 3-way leave-one-movie-out bake-off.
+    bakeoff = {}
+    stats_by_tier = {}
+    for tier in ("identity", "global_ratio", "regression"):
+        loo = _tier_loo(history, day_shares, tier)
+        if len(loo) >= 2:
+            stats = _resid_stats(loo)
+            stats_by_tier[tier] = stats
+            bakeoff[tier] = stats["loo_mae_pct"]
+
+    if stats_by_tier:
+        winner = min(bakeoff, key=bakeoff.get)
+        win = stats_by_tier[winner]
+        block["active_tier"] = winner
+        block["weekend"] = {k: win[k] for k in
+                            ("resid_scale", "resid_mean", "df",
+                             "loo_hit_rate", "loo_mae_pct", "n_movies")}
+        block["loo_detail"] = win["loo_detail"]
+        block["bakeoff"] = bakeoff
+        block["bakeoff_winner"] = winner
+        block["meets_mae_target"] = win["loo_mae_pct"] <= GATE_MAX_MAE_PCT
     else:
-        block["weekend"] = {"resid_scale": 0.35, "resid_mean": 0.0, "df": 1,
-                            "loo_hit_rate": 0.0, "loo_mae_pct": None, "n_movies": n}
-        block["active_tier"] = "global_ratio"
+        # Too little data to cross-validate: ship raw seat-implied with a wide
+        # default interval until a 2+-movie history exists.
+        block["active_tier"] = "identity"
+        block["weekend"] = {"resid_scale": 0.40, "resid_mean": 0.0, "df": 1,
+                            "loo_hit_rate": None, "loo_mae_pct": None, "n_movies": 0}
+        block["bakeoff"] = bakeoff
     return block
+
+
+def predict_weekend(block, daily_seat_m, coverage, daily_snapshot_m, lead_buckets):
+    """Production forecast from a fitted regression block.
+
+    daily_seat_m: {day: raw seat-implied daily gross $M} (observed days).
+    coverage:     {day: 0..1}.
+    daily_snapshot_m: {day: snapshot-implied daily gross $M} (future or observed).
+    lead_buckets: {day: lead bucket str}.
+
+    Returns {mid_m, low_m, high_m, observed_share, per_day, tier}.
+    """
+    tier = block.get("active_tier", "identity")
+    if tier not in TIER_SOURCE_BUILDERS:
+        tier = "identity"
+    day_shares = block.get("day_shares") or {d: 0.25 for d in OPENING_DAYS}
+    params = _params_from_block(block, tier)
+    per_day = _assemble_per_day(daily_seat_m or {}, daily_snapshot_m or {},
+                                coverage or {}, lead_buckets or {},
+                                TIER_SOURCE_BUILDERS[tier], params)
+    mid, _logvar, obs_share = assemble_weekend(per_day, day_shares)
+    wk = block.get("weekend") or {"resid_scale": 0.40, "resid_mean": 0.0, "df": 1}
+    lo_hi = weekend_interval(mid, wk["resid_scale"], wk.get("df", 1),
+                             obs_share, wk.get("resid_mean", 0.0))
+    return {"mid_m": lo_hi[0], "low_m": lo_hi[1], "high_m": lo_hi[2],
+            "observed_share": obs_share, "tier": tier,
+            "per_day": {d: round(v[0], 3) for d, v in per_day.items()}}

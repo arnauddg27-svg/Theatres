@@ -262,5 +262,81 @@ class TestFitCalibration(unittest.TestCase):
         self.assertEqual(block["active_tier"], "identity")
 
 
+class TestFinalizeDaySources(unittest.TestCase):
+    def test_median_not_mean(self):
+        # single source (logmean=2.0, var=1.0): point must be exp(2.0) (median),
+        # NOT exp(2.0 + 0.5*1.0) (the old mean correction).
+        point, var = sr._finalize_day_sources([(2.0, 1.0, False)])
+        self.assertAlmostEqual(point, exp(2.0), places=9)
+        self.assertNotAlmostEqual(point, exp(2.0 + 0.5 * 1.0), places=3)
+        self.assertEqual(var, 1.0)
+
+    def test_noisy_snapshot_sole_source_gated(self):
+        # only source is a snapshot with var above the threshold -> dropped (None)
+        self.assertGreater(1.0, sr.SNAPSHOT_MAX_SOLE_SOURCE_VAR)
+        self.assertIsNone(sr._finalize_day_sources([(2.5, 1.0, True)]))
+
+    def test_low_variance_snapshot_sole_source_kept(self):
+        # a snapshot below the variance threshold IS allowed as a sole source
+        out = sr._finalize_day_sources([(2.5, 0.2, True)])
+        self.assertIsNotNone(out)
+        self.assertAlmostEqual(out[0], exp(2.5), places=9)
+
+    def test_seat_plus_noisy_snapshot_combines(self):
+        # noisy snapshot is NOT gated when a seat source is also present;
+        # inverse-variance weighting makes the low-variance seat source dominate.
+        out = sr._finalize_day_sources([(1.0, 0.09, False), (3.0, 1.0, True)])
+        self.assertIsNotNone(out)
+        self.assertLess(log(out[0]), 1.3)   # pulled close to the seat source (1.0)
+
+    def test_empty_sources(self):
+        self.assertIsNone(sr._finalize_day_sources([]))
+
+
+class TestBakeoffAndPredict(unittest.TestCase):
+    def _block(self):
+        import json
+        from pathlib import Path
+        hist = json.loads(Path("data/calibration.json").read_text())["history"]
+        return sr.fit_regression_calibration(hist)
+
+    def test_bakeoff_picks_lowest_mae_tier(self):
+        block = self._block()
+        self.assertIn("bakeoff", block)
+        bo = block["bakeoff"]
+        self.assertIn(block["active_tier"], bo)
+        # active tier must be the argmin of the bake-off MAEs
+        self.assertEqual(block["active_tier"], min(bo, key=bo.get))
+
+    def test_predict_weekend_full(self):
+        block = self._block()
+        daily_seat = {"Thursday": 3.0, "Friday": 12.0, "Saturday": 14.0, "Sunday": 9.0}
+        coverage = {d: 1.0 for d in sr.OPENING_DAYS}
+        out = sr.predict_weekend(block, daily_seat_m=daily_seat, coverage=coverage,
+                                 daily_snapshot_m={}, lead_buckets={})
+        self.assertGreater(out["mid_m"], 0.0)
+        self.assertLess(out["low_m"], out["mid_m"])
+        self.assertGreater(out["high_m"], out["mid_m"])
+        self.assertAlmostEqual(out["observed_share"], 1.0, places=3)
+        self.assertIn(out["tier"], sr.TIER_SOURCE_BUILDERS)
+
+    def test_predict_weekend_thursday_only_is_wider(self):
+        block = self._block()
+        full = sr.predict_weekend(block, {"Thursday": 3.0, "Friday": 12.0,
+                                          "Saturday": 14.0, "Sunday": 9.0},
+                                  {d: 1.0 for d in sr.OPENING_DAYS}, {}, {})
+        thu = sr.predict_weekend(block, {"Thursday": 3.0}, {"Thursday": 1.0}, {}, {})
+        full_w = (full["high_m"] - full["low_m"]) / full["mid_m"]
+        thu_w = (thu["high_m"] - thu["low_m"]) / thu["mid_m"]
+        self.assertGreater(thu_w, full_w)   # honest: Thursday-only much wider
+
+    def test_empty_history_identity_tier(self):
+        block = sr.fit_regression_calibration([])
+        self.assertEqual(block["active_tier"], "identity")
+        out = sr.predict_weekend(block, {"Friday": 10.0, "Saturday": 12.0},
+                                 {"Friday": 1.0, "Saturday": 1.0}, {}, {})
+        self.assertGreater(out["mid_m"], 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()
