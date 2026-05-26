@@ -133,5 +133,34 @@ class TestFitOne(unittest.TestCase):
         self.assertIsNone(sr.fit_seat([], l2=1.0))
 
 
+class TestLOO(unittest.TestCase):
+    def _rows(self):
+        # 3 movies, clean unit-slope relationship with intercept 0.2
+        rows = []
+        plan = {"A": [("Thursday", 3.0), ("Sunday", 9.0)],
+                "B": [("Friday", 8.0), ("Saturday", 11.0)],
+                "C": [("Thursday", 2.0), ("Sunday", 7.0)]}
+        for movie, days in plan.items():
+            for day, s in days:
+                rows.append({"movie": movie, "day": day, "log_seat": log(s),
+                             "log_actual": 0.2 + log(s), "coverage": 1.0, "weight": 1.0})
+        return rows
+
+    def test_loo_returns_lambda_and_resid_sd(self):
+        best_l2, resid_sd, n = sr.loo_select(
+            self._rows(), sr.fit_seat,
+            lambda coef, r: sr.predict_log(coef, sr.seat_features(r["log_seat"], r["day"], r["coverage"])),
+        )
+        self.assertIn(best_l2, sr.LAMBDA_GRID)
+        self.assertLess(resid_sd, 0.05)   # near-perfect data -> tiny residuals
+        self.assertEqual(n, 6)
+
+    def test_loo_handles_single_movie(self):
+        rows = [r for r in self._rows() if r["movie"] == "A"]
+        out = sr.loo_select(rows, sr.fit_seat,
+                            lambda coef, r: sr.predict_log(coef, sr.seat_features(r["log_seat"], r["day"], r["coverage"])))
+        self.assertIsNotNone(out)   # degrades gracefully, no crash
+
+
 if __name__ == "__main__":
     unittest.main()

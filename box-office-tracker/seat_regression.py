@@ -234,3 +234,85 @@ def fit_snapshot(rows, l2):
     y = [r["log_actual"] for r in rows]
     w = [r["weight"] for r in rows]
     return weighted_ridge(X, y, w, SNAP_PRIOR, SNAP_PENALIZE, l2)
+
+
+def _movies_in(rows):
+    seen = []
+    for r in rows:
+        if r["movie"] not in seen:
+            seen.append(r["movie"])
+    return seen
+
+
+def loo_select(rows, fit_fn, pred_row_fn):
+    """Leave-one-movie-out CV. Returns (best_l2, daily_resid_sd, n_residuals).
+
+    fit_fn(rows, l2) -> coef ; pred_row_fn(coef, row) -> predicted log_actual.
+    Picks the l2 in LAMBDA_GRID minimizing weighted mean squared LOO residual,
+    then returns the weighted residual SD at that l2.
+
+    Single-movie fallback: when there is only one unique movie, leave-one-out
+    yields no training data for any fold, so we degrade gracefully by fitting on
+    all rows (no leave-out) and computing in-sample residuals for each l2.
+    """
+    if not rows:
+        return None
+    movies = _movies_in(rows)
+
+    # Single-movie fallback: fit on all rows, evaluate in-sample residuals.
+    if len(movies) == 1:
+        best = None
+        for l2 in LAMBDA_GRID:
+            coef = fit_fn(rows, l2)
+            if coef is None:
+                continue
+            resids = []
+            sq = 0.0
+            wsum = 0.0
+            for r in rows:
+                e = r["log_actual"] - pred_row_fn(coef, r)
+                w = r.get("weight", 1.0)
+                sq += w * e * e
+                wsum += w
+                resids.append((e, w))
+            if wsum <= 0:
+                continue
+            mse = sq / wsum
+            if best is None or mse < best[0]:
+                var = sum(w * e * e for e, w in resids) / wsum
+                best = (mse, l2, max(1e-6, var) ** 0.5, len(resids))
+        if best is None:
+            return None
+        _, l2, sd, n = best
+        return l2, sd, n
+
+    best = None
+    for l2 in LAMBDA_GRID:
+        sq = 0.0
+        wsum = 0.0
+        resids = []
+        for m in movies:
+            train = [r for r in rows if r["movie"] != m]
+            test = [r for r in rows if r["movie"] == m]
+            if not train:
+                continue
+            coef = fit_fn(train, l2)
+            if coef is None:
+                continue
+            for r in test:
+                e = r["log_actual"] - pred_row_fn(coef, r)
+                w = r.get("weight", 1.0)
+                sq += w * e * e
+                wsum += w
+                resids.append((e, w))
+        if wsum <= 0:
+            continue
+        mse = sq / wsum
+        if best is None or mse < best[0]:
+            # weighted SD of residuals
+            var = sum(w * e * e for e, w in resids) / wsum
+            best = (mse, l2, max(1e-6, var) ** 0.5, len(resids))
+    if best is None:
+        return None
+    _, l2, sd, n = best
+    return l2, sd, n
