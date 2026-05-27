@@ -388,14 +388,14 @@ def assemble_weekend(per_day, day_shares):
     return weekend_mid, log_var, observed_share
 
 
-def weekend_interval(mid_m, resid_scale, df, observed_share, resid_mean=0.0):
-    """Calibrated 90% interval (Student-t in log space).
+def weekend_interval(mid_m, log_half_width, observed_share, resid_mean=0.0):
+    """Calibrated interval from a pre-computed log-space half-width.
 
     mid_m: summed per-day point prediction ($M).
-    resid_scale: SD of weekend LOO log-residuals (empirical).
-    df: t degrees of freedom (n_cv_movies - 1).
+    log_half_width: the calibrated 90% half-width in log space (set empirically
+        by conformal leave-one-out calibration in `_resid_stats`).
     observed_share: fraction of the weekend actually observed (widens band when <1).
-    resid_mean: mean weekend LOO log-residual (bias correction, applied to mid).
+    resid_mean: median weekend log-residual bias correction, applied to the mid.
 
     Returns (mid_m, low_m, high_m).
     """
@@ -403,8 +403,7 @@ def weekend_interval(mid_m, resid_scale, df, observed_share, resid_mean=0.0):
         return mid_m, mid_m, mid_m
     mid = mid_m * exp(resid_mean)
     share = max(1e-3, min(1.0, observed_share))
-    scale = resid_scale / (share ** 0.5)    # inflate for missing weekend share
-    half = t_quantile_95(df) * scale
+    half = log_half_width / (share ** 0.5)    # inflate for missing weekend share
     return mid, mid * exp(-half), mid * exp(half)
 
 
@@ -575,8 +574,11 @@ def _assemble_entry(entry, build_sources, params):
     )
 
 
-def _tier_loo(history, day_shares, tier):
+def _tier_loo(history, tier):
     """Leave-one-movie-out weekend predictions for one tier.
+
+    day_shares are recomputed from the TRAIN fold only (excluding the held-out
+    movie), so a movie's own actuals never leak into its own prediction.
 
     Returns list of (movie, pred_m, actual_m, observed_share, log_resid).
     """
@@ -588,6 +590,7 @@ def _tier_loo(history, day_shares, tier):
         if not build_seat_rows(train):
             continue
         params = fit_params(train)
+        fold_day_shares = learn_day_shares(train)   # no leakage: train-only
         entry = next(e for e in history if e.get("movie") == m)
         actual_total = _f(entry.get("actual_total"))
         if not actual_total or actual_total <= 0:
@@ -595,7 +598,7 @@ def _tier_loo(history, day_shares, tier):
         per_day = _assemble_entry(entry, build_sources, params)
         if not per_day:
             continue
-        mid, _v, obs = assemble_weekend(per_day, day_shares)
+        mid, _v, obs = assemble_weekend(per_day, fold_day_shares)
         if mid <= 0:
             continue
         results.append((m, mid, actual_total, obs, log(actual_total) - log(mid)))
@@ -607,48 +610,61 @@ _MAD_TO_SIGMA = 1.4826          # MAD -> Gaussian-equivalent SD
 
 
 def _resid_stats(loo):
-    """Robust, coverage-honest weekend residual stats for a tier's LOO.
+    """Robust, *honestly* cross-validated weekend residual stats for a tier.
 
-    The bias correction is the MEDIAN log-residual (not the mean): a single
-    anomalous movie — e.g. a title whose seat sample was evening-only and so
-    mis-extrapolated by the fixed evening->daily multiplier — must not drag the
-    global correction applied to every other forecast.
+    Two things are computed:
 
-    The 90% interval half-width is the tightest that still covers
-    ceil(0.90*n) of the LOO residuals about that median center
-    (distribution-free / conformal-style), floored by a robust
-    t * (1.4826*MAD) parametric width for smoothness at tiny n and a small
-    absolute floor so a degenerate all-zero-residual set stays finite. This
-    keeps realized coverage honest while resisting outliers.
+    1. Deployed parameters (used by the production interval):
+       - center: MEDIAN log-residual over all folds (robust bias correction, so
+         one anomalous movie can't drag the correction applied to every forecast).
+       - log_half_width: a conformal 90% half-width calibrated on the *nested*
+         leave-one-out misses |resid_i - median(residuals without i)|, i.e. how
+         far each movie lands from a center built without it. This is a genuine
+         out-of-sample calibration, not the tautological "cover all residuals
+         about their own center". Floored by a robust t*(1.4826*MAD) width and a
+         small absolute floor.
 
-    `resid_scale` is stored as half_width / t so the unchanged `weekend_interval`
-    (which multiplies t * resid_scale) reproduces the intended half-width.
+    2. Honest performance metrics (reported): MAE / median-AE use a *leave-one-out
+       recenter* (each movie scored with the center of the OTHER movies), so the
+       reported error is not optimistically deflated by an in-sample recenter.
+
+    Note on coverage: at n < 10 the conformal quantile ceil(0.9n)=n forces the
+    half-width to cover the worst nested miss, so `loo_hit_rate` is ~1.0 by
+    construction and is NOT independent evidence of calibration — coverage cannot
+    be empirically validated until ~10 cross-validation movies exist. The honest,
+    informative number at this sample size is `loo_mae_pct` (nested).
     """
     n = len(loo)
     resids = [r[4] for r in loo]
+    preds = [r[1] for r in loo]
+    actuals = [r[2] for r in loo]
     df = max(1, n - 1)
     center = median(resids)
+
+    nested_miss = []
+    ae = []
+    for i in range(n):
+        others = resids[:i] + resids[i + 1:]
+        c_i = median(others) if others else 0.0
+        nested_miss.append(abs(resids[i] - c_i))
+        ae.append(abs(preds[i] * exp(c_i) - actuals[i]) / actuals[i])
+
     dev = sorted(abs(r - center) for r in resids)
     mad = median(dev)
     t = t_quantile_95(df)
     k = min(n, max(1, ceil(ROBUST_TARGET_COVERAGE * n)))
-    empirical_half = dev[k - 1]                       # covers ceil(0.9n) residuals
-    parametric_half = t * (_MAD_TO_SIGMA * mad)       # robust-scale parametric floor
-    half = max(empirical_half, parametric_half, 0.05 * t)
-    rscale = half / t                                 # weekend_interval does t * rscale
-    hits = 0
-    ae = []
-    for _m, pred, actual, obs, _lr in loo:
-        _mid, low, high = weekend_interval(pred, rscale, df, obs, center)
-        if low <= actual <= high:
-            hits += 1
-        ae.append(abs(pred * exp(center) - actual) / actual)
+    conformal_half = sorted(nested_miss)[k - 1]          # OUT-OF-SAMPLE calibration
+    parametric_half = t * (_MAD_TO_SIGMA * mad)          # robust parametric floor
+    half = max(conformal_half, parametric_half, 0.05)
+    honest_hits = sum(1 for mss in nested_miss if mss <= half)
+
     return {
-        "resid_scale": rscale,
+        "log_half_width": round(half, 4),
         "resid_mean": center,
         "df": df,
-        "loo_hit_rate": round(hits / n, 4),
-        "loo_mae_pct": round(100.0 * sum(ae) / n, 2),
+        "loo_hit_rate": round(honest_hits / n, 4),       # conformal; ~1.0 at n<10
+        "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
+        "loo_mae_pct": round(100.0 * sum(ae) / n, 2),    # nested LOO recenter — honest
         "loo_median_ae_pct": round(100.0 * median(ae), 2),
         "n_movies": n,
         "loo_detail": [
@@ -712,20 +728,21 @@ def fit_regression_calibration(history):
     bakeoff = {}
     stats_by_tier = {}
     for tier in ("identity", "global_ratio", "regression"):
-        loo = _tier_loo(history, day_shares, tier)
+        loo = _tier_loo(history, tier)
         if len(loo) >= 2:
             stats = _resid_stats(loo)
             stats_by_tier[tier] = stats
-            bakeoff[tier] = stats["loo_mae_pct"]
+            bakeoff[tier] = stats["loo_mae_pct"]   # honest nested MAE
 
     if stats_by_tier:
+        # Select the tier with the lowest honest (nested) out-of-sample MAE.
         winner = min(bakeoff, key=bakeoff.get)
         win = stats_by_tier[winner]
         block["active_tier"] = winner
         block["weekend"] = {k: win[k] for k in
-                            ("resid_scale", "resid_mean", "df",
-                             "loo_hit_rate", "loo_mae_pct", "loo_median_ae_pct",
-                             "n_movies")}
+                            ("log_half_width", "resid_mean", "df",
+                             "loo_hit_rate", "loo_hit_rate_basis", "loo_mae_pct",
+                             "loo_median_ae_pct", "n_movies")}
         block["loo_detail"] = win["loo_detail"]
         block["bakeoff"] = bakeoff
         block["bakeoff_winner"] = winner
@@ -734,7 +751,7 @@ def fit_regression_calibration(history):
         # Too little data to cross-validate: ship raw seat-implied with a wide
         # default interval until a 2+-movie history exists.
         block["active_tier"] = "identity"
-        block["weekend"] = {"resid_scale": 0.40, "resid_mean": 0.0, "df": 1,
+        block["weekend"] = {"log_half_width": 0.85, "resid_mean": 0.0, "df": 1,
                             "loo_hit_rate": None, "loo_mae_pct": None, "n_movies": 0}
         block["bakeoff"] = bakeoff
     return block
@@ -759,8 +776,8 @@ def predict_weekend(block, daily_seat_m, coverage, daily_snapshot_m, lead_bucket
                                 coverage or {}, lead_buckets or {},
                                 TIER_SOURCE_BUILDERS[tier], params)
     mid, _logvar, obs_share = assemble_weekend(per_day, day_shares)
-    wk = block.get("weekend") or {"resid_scale": 0.40, "resid_mean": 0.0, "df": 1}
-    lo_hi = weekend_interval(mid, wk["resid_scale"], wk.get("df", 1),
+    wk = block.get("weekend") or {"log_half_width": 0.85, "resid_mean": 0.0}
+    lo_hi = weekend_interval(mid, wk.get("log_half_width", 0.85),
                              obs_share, wk.get("resid_mean", 0.0))
     return {"mid_m": lo_hi[0], "low_m": lo_hi[1], "high_m": lo_hi[2],
             "observed_share": obs_share, "tier": tier,

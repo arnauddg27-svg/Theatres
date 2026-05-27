@@ -217,23 +217,22 @@ class TestWeekend(unittest.TestCase):
 
 
 class TestInterval(unittest.TestCase):
-    def test_interval_multiplicative_t(self):
-        # mid 50, weekend resid scale 0.2 log, df 5, full observation, zero bias
-        mid, low, high = sr.weekend_interval(50.0, resid_scale=0.2, df=5,
+    def test_interval_from_half_width(self):
+        # mid 50, log half-width 0.40, full observation, zero bias
+        mid, low, high = sr.weekend_interval(50.0, log_half_width=0.40,
                                              observed_share=1.0, resid_mean=0.0)
-        t = sr.t_quantile_95(5)   # 2.015
         self.assertAlmostEqual(mid, 50.0, places=6)
-        self.assertAlmostEqual(high, 50.0 * exp(t * 0.2), places=4)
-        self.assertAlmostEqual(low, 50.0 * exp(-t * 0.2), places=4)
+        self.assertAlmostEqual(high, 50.0 * exp(0.40), places=4)
+        self.assertAlmostEqual(low, 50.0 * exp(-0.40), places=4)
         self.assertLess(low, mid)
         self.assertGreater(high, mid)
 
     def test_interval_applies_bias_and_inflation(self):
         # nonzero resid_mean shifts mid; partial observation widens band.
-        mid, low, high = sr.weekend_interval(50.0, resid_scale=0.2, df=5,
+        mid, low, high = sr.weekend_interval(50.0, log_half_width=0.40,
                                              observed_share=0.5, resid_mean=0.1)
         self.assertAlmostEqual(mid, 50.0 * exp(0.1), places=4)
-        full = sr.weekend_interval(50.0, 0.2, 5, 1.0, 0.1)
+        full = sr.weekend_interval(50.0, 0.40, 1.0, 0.1)
         self.assertGreater(high - low, full[2] - full[1])   # wider when partial
 
 
@@ -251,9 +250,10 @@ class TestFitCalibration(unittest.TestCase):
         self.assertAlmostEqual(sum(block["day_shares"].values()), 1.0, places=4)
         wk = block["weekend"]
         self.assertGreaterEqual(wk["n_movies"], 4)
-        self.assertGreater(wk["resid_scale"], 0.0)
+        self.assertGreater(wk["log_half_width"], 0.0)
         self.assertGreaterEqual(wk["loo_hit_rate"], 0.0)
         self.assertLessEqual(wk["loo_hit_rate"], 1.0)
+        self.assertIn("loo_mae_pct", wk)   # honest nested MAE present
         # global-ratio fallback always present
         self.assertIn("global_ratio", block)
 
@@ -366,8 +366,20 @@ class TestRobustResidStats(unittest.TestCase):
     def test_degenerate_zero_residuals_has_finite_floor(self):
         loo = self._loo([0.0, 0.0, 0.0, 0.0])
         s = sr._resid_stats(loo)
-        self.assertGreater(s["resid_scale"], 0.0)
-        self.assertLess(s["resid_scale"], 0.2)
+        self.assertGreater(s["log_half_width"], 0.0)
+        self.assertLess(s["log_half_width"], 0.2)
+
+    def test_nested_mae_is_honest_not_optimistic(self):
+        # An in-sample recenter would score the typical movie ~perfectly; the
+        # nested (leave-one-out recenter) MAE must be strictly larger when there
+        # is spread, because each movie is scored with the OTHERS' center.
+        loo = self._loo([0.05, -0.05, 0.10, -0.10, -0.40])
+        s = sr._resid_stats(loo)
+        in_sample_center = sr.median([r[4] for r in loo])
+        in_sample_mae = 100.0 * sum(
+            abs(p * exp(in_sample_center) - a) / a for _m, p, a, _o, _lr in loo
+        ) / len(loo)
+        self.assertGreater(s["loo_mae_pct"], in_sample_mae)
 
 
 if __name__ == "__main__":
