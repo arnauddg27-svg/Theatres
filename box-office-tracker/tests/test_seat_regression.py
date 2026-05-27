@@ -338,5 +338,37 @@ class TestBakeoffAndPredict(unittest.TestCase):
         self.assertGreater(out["mid_m"], 0.0)
 
 
+class TestRobustResidStats(unittest.TestCase):
+    def _loo(self, log_resids):
+        # build (movie, pred, actual, observed_share, log_resid) tuples
+        return [(f"m{i}", 100.0, 100.0 * exp(lr), 1.0, lr)
+                for i, lr in enumerate(log_resids)]
+
+    def test_center_is_robust_median_not_mean(self):
+        # four ~0 residuals + one big negative outlier (an over-scraped movie)
+        loo = self._loo([0.02, -0.01, 0.03, 0.00, -0.60])
+        s = sr._resid_stats(loo)
+        # mean of these is ~-0.112; a robust median center must NOT be dragged there
+        self.assertLess(abs(s["resid_mean"]), 0.05)
+
+    def test_interval_still_covers_target_despite_outlier(self):
+        loo = self._loo([0.02, -0.01, 0.03, 0.00, -0.60])
+        s = sr._resid_stats(loo)
+        self.assertGreaterEqual(s["loo_hit_rate"], 0.90)
+
+    def test_reports_robust_median_ae(self):
+        loo = self._loo([0.1, -0.1, 0.05, -0.05, 0.5])
+        s = sr._resid_stats(loo)
+        self.assertIn("loo_median_ae_pct", s)
+        # median abs error must be <= mean abs error when an outlier is present
+        self.assertLessEqual(s["loo_median_ae_pct"], s["loo_mae_pct"])
+
+    def test_degenerate_zero_residuals_has_finite_floor(self):
+        loo = self._loo([0.0, 0.0, 0.0, 0.0])
+        s = sr._resid_stats(loo)
+        self.assertGreater(s["resid_scale"], 0.0)
+        self.assertLess(s["resid_scale"], 0.2)
+
+
 if __name__ == "__main__":
     unittest.main()

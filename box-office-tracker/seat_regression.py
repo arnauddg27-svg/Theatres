@@ -8,7 +8,8 @@ docs/superpowers/specs/2026-05-26-seat-snapshot-regression-calibration-design.md
 """
 from __future__ import annotations
 
-from math import exp, log, isfinite
+from math import ceil, exp, isfinite, log
+from statistics import median
 
 OPENING_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 COVERAGE_FLOOR = 0.60          # per-day admissibility for seat rows
@@ -601,26 +602,54 @@ def _tier_loo(history, day_shares, tier):
     return results
 
 
+ROBUST_TARGET_COVERAGE = 0.90   # the prediction interval targets 90% coverage
+_MAD_TO_SIGMA = 1.4826          # MAD -> Gaussian-equivalent SD
+
+
 def _resid_stats(loo):
-    """Empirical weekend residual stats + interval hit-rate for a tier's LOO."""
+    """Robust, coverage-honest weekend residual stats for a tier's LOO.
+
+    The bias correction is the MEDIAN log-residual (not the mean): a single
+    anomalous movie — e.g. a title whose seat sample was evening-only and so
+    mis-extrapolated by the fixed evening->daily multiplier — must not drag the
+    global correction applied to every other forecast.
+
+    The 90% interval half-width is the tightest that still covers
+    ceil(0.90*n) of the LOO residuals about that median center
+    (distribution-free / conformal-style), floored by a robust
+    t * (1.4826*MAD) parametric width for smoothness at tiny n and a small
+    absolute floor so a degenerate all-zero-residual set stays finite. This
+    keeps realized coverage honest while resisting outliers.
+
+    `resid_scale` is stored as half_width / t so the unchanged `weekend_interval`
+    (which multiplies t * resid_scale) reproduces the intended half-width.
+    """
     n = len(loo)
     resids = [r[4] for r in loo]
-    rmean = sum(resids) / n
-    rscale = max(0.05, (sum((x - rmean) ** 2 for x in resids) / n) ** 0.5)
     df = max(1, n - 1)
+    center = median(resids)
+    dev = sorted(abs(r - center) for r in resids)
+    mad = median(dev)
+    t = t_quantile_95(df)
+    k = min(n, max(1, ceil(ROBUST_TARGET_COVERAGE * n)))
+    empirical_half = dev[k - 1]                       # covers ceil(0.9n) residuals
+    parametric_half = t * (_MAD_TO_SIGMA * mad)       # robust-scale parametric floor
+    half = max(empirical_half, parametric_half, 0.05 * t)
+    rscale = half / t                                 # weekend_interval does t * rscale
     hits = 0
     ae = []
     for _m, pred, actual, obs, _lr in loo:
-        _mid, low, high = weekend_interval(pred, rscale, df, obs, rmean)
+        _mid, low, high = weekend_interval(pred, rscale, df, obs, center)
         if low <= actual <= high:
             hits += 1
-        ae.append(abs(pred * exp(rmean) - actual) / actual)
+        ae.append(abs(pred * exp(center) - actual) / actual)
     return {
         "resid_scale": rscale,
-        "resid_mean": rmean,
+        "resid_mean": center,
         "df": df,
         "loo_hit_rate": round(hits / n, 4),
         "loo_mae_pct": round(100.0 * sum(ae) / n, 2),
+        "loo_median_ae_pct": round(100.0 * median(ae), 2),
         "n_movies": n,
         "loo_detail": [
             {"movie": m, "pred_m": round(p, 2), "actual_m": round(a, 2),
@@ -695,7 +724,8 @@ def fit_regression_calibration(history):
         block["active_tier"] = winner
         block["weekend"] = {k: win[k] for k in
                             ("resid_scale", "resid_mean", "df",
-                             "loo_hit_rate", "loo_mae_pct", "n_movies")}
+                             "loo_hit_rate", "loo_mae_pct", "loo_median_ae_pct",
+                             "n_movies")}
         block["loo_detail"] = win["loo_detail"]
         block["bakeoff"] = bakeoff
         block["bakeoff_winner"] = winner

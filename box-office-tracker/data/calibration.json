@@ -850,11 +850,12 @@
         "daily_resid_sd": 0.8414095742364387
       },
       "weekend": {
-        "resid_scale": 0.21603623488750004,
-        "resid_mean": -0.07819859591815215,
+        "resid_scale": 0.23151142034806713,
+        "resid_mean": 0.03814088400754834,
         "df": 4,
         "loo_hit_rate": 1.0,
-        "loo_mae_pct": 20.06,
+        "loo_mae_pct": 20.07,
+        "loo_median_ae_pct": 9.32,
         "n_movies": 5
       },
       "loo_detail": [
@@ -890,9 +891,9 @@
         }
       ],
       "bakeoff": {
-        "identity": 20.06,
-        "global_ratio": 23.97,
-        "regression": 23.76
+        "identity": 20.07,
+        "global_ratio": 24.53,
+        "regression": 24.38
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
