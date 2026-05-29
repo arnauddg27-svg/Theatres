@@ -2491,7 +2491,8 @@ def merge_collected_phase1_links_with_existing_cache(collected_links, existing, 
     """
     merged = dict(collected_links or {})
     existing_theatres = {}
-    if phase1_cache_is_mergeable(existing or {}, current_weekend):
+    existing_is_mergeable = phase1_cache_is_mergeable(existing or {}, current_weekend)
+    if existing_is_mergeable:
         existing_theatres = sanitize_phase1_links_for_current_window(
             (existing or {}).get("theatres", {})
         )
@@ -2501,9 +2502,9 @@ def merge_collected_phase1_links_with_existing_cache(collected_links, existing, 
         merged_theatres[name] = merge_phase1_entries(merged_theatres.get(name), new_entry)
 
     merged["theatres"] = merged_theatres
-    if (existing or {}).get("weekend_of"):
+    if existing_is_mergeable and (existing or {}).get("weekend_of"):
         merged["weekend_of"] = existing["weekend_of"]
-    if (existing or {}).get("date"):
+    if existing_is_mergeable and (existing or {}).get("date"):
         merged["date"] = existing["date"]
     merged["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
     return merged

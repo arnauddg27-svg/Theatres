@@ -1184,6 +1184,62 @@ class ScraperLoggingTest(unittest.TestCase):
             coverage["by_date"],
         )
 
+    def test_phase1_merge_ignores_stale_existing_cache_metadata(self):
+        existing = {
+            "date": "2026-05-01",
+            "weekend_of": "2026-05-01",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "theatres": {
+                "AMC Stale": {
+                    "tz": "ET",
+                    "cohort": scraper.CORE_COHORT,
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "dates": {
+                        "2026-05-01": {
+                            "movies": {
+                                "Old Movie": [
+                                    {"showtime": "7:00pm", "showtime_id": "old", "format": "Standard"}
+                                ]
+                            },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        }
+                    },
+                }
+            },
+        }
+        collected = {
+            "date": "2026-05-08",
+            "weekend_of": "2026-05-08",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "theatres": {
+                "AMC Fresh": {
+                    "tz": "ET",
+                    "cohort": scraper.CORE_COHORT,
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "dates": {
+                        "2026-05-08": {
+                            "movies": {
+                                "New Movie": [
+                                    {"showtime": "8:00pm", "showtime_id": "new", "format": "Standard"}
+                                ]
+                            },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        }
+                    },
+                }
+            },
+        }
+
+        merged = scraper.merge_collected_phase1_links_with_existing_cache(
+            collected,
+            existing,
+            current_weekend="2026-05-08",
+        )
+
+        self.assertEqual("2026-05-08", merged["weekend_of"])
+        self.assertEqual("2026-05-08", merged["date"])
+        self.assertEqual(["AMC Fresh"], sorted(merged["theatres"]))
+
     def test_active_market_guard_flags_missing_timezone_movie_links(self):
         saved_links = {
             "AMC East": {
