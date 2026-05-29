@@ -21,10 +21,10 @@ DISPATCH=/opt/box-office-tracker/box-office-tracker/scripts/dispatch_box_office_
 WATCHDOG=/opt/box-office-tracker/box-office-tracker/scripts/schedule_box_office_pipeline.py
 
 # Watchdog fallback. Runs every 30 minutes, checks the last four hours of
-# expected slots, and dispatches only slots older than 90 minutes with no recent
-# matching workflow run. This still needs GH_TOKEN_FILE to contain a valid token,
-# but a stale token no longer blocks the GitHub primary scheduler.
-*/30 * * * * root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && set -a && . "$GH_TOKEN_FILE" && set +a && python3 "$WATCHDOG" --mode watchdog --repo "$GH_REPO" --workflow box-office-pipeline.yml --ref main --lookback-minutes 240 --fallback-grace-minutes 90 --token-env GH_TOKEN >> /var/log/box-office-dispatch.log 2>&1
+# expected slots, and dispatches only slots older than 30 minutes with no recent
+# matching workflow run. Snapshot slots use the shorter grace so a missed 02:30Z
+# primary dispatch is recovered before the ET local date rolls forward.
+*/30 * * * * root cd "$REPO_DIR" && git -C "$REPO_DIR" pull --ff-only origin main && set -a && . "$GH_TOKEN_FILE" && set +a && python3 "$WATCHDOG" --mode watchdog --repo "$GH_REPO" --workflow box-office-pipeline.yml --ref main --lookback-minutes 240 --fallback-grace-minutes 30 --token-env GH_TOKEN >> /var/log/box-office-dispatch.log 2>&1
 
 # Phase 1 weekly warm-cache. Tuesday full-weekend mode targets the upcoming
 # Thu-Sun opening weekend, not the prior weekend. Wednesday repeats are fallback

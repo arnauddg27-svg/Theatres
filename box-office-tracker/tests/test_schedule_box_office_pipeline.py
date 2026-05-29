@@ -40,18 +40,18 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
         self.assertNotIn("snapshot 02:30Z", [slot.name for _, slot in due])
 
-    def test_watchdog_waits_for_grace_window_before_fallback_dispatch(self):
+    def test_watchdog_uses_short_grace_to_protect_snapshot_date_boundary(self):
         too_early = schedule.candidate_due_slots(
-            now=schedule.parse_utc("2026-05-24T03:30:00Z"),
+            now=schedule.parse_utc("2026-05-24T02:59:00Z"),
             lookback_minutes=240,
             mode="watchdog",
-            fallback_grace_minutes=90,
+            fallback_grace_minutes=30,
         )
         ready = schedule.candidate_due_slots(
-            now=schedule.parse_utc("2026-05-24T04:00:00Z"),
+            now=schedule.parse_utc("2026-05-24T03:00:00Z"),
             lookback_minutes=240,
             mode="watchdog",
-            fallback_grace_minutes=90,
+            fallback_grace_minutes=30,
         )
 
         self.assertEqual([], too_early)
@@ -169,7 +169,7 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
                 "--lookback-minutes",
                 "240",
                 "--fallback-grace-minutes",
-                "90",
+                "30",
             ])
         finally:
             schedule.GitHubClient = original_client

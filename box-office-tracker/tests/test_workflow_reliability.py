@@ -388,7 +388,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("*/30 * * * *", cron)
         self.assertIn("--mode watchdog", cron)
         self.assertIn("--lookback-minutes 240", cron)
-        self.assertIn("--fallback-grace-minutes 90", cron)
+        self.assertIn("--fallback-grace-minutes 30", cron)
         self.assertIn("--token-env GH_TOKEN", cron)
         self.assertIn("git -C \"$REPO_DIR\" pull --ff-only origin main", cron)
         self.assertIn("Tuesday full-weekend mode targets the upcoming", cron)

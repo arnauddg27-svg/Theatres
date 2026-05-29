@@ -478,6 +478,7 @@ except ValueError:
 ENABLE_PRERESERVATION_SNAPSHOTS = _env_bool("ENABLE_PRERESERVATION_SNAPSHOTS", False)
 SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
 SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 100, minimum=1)
+SNAPSHOT_SAME_DAY_CUTOFF_HOUR = _env_int("SNAPSHOT_SAME_DAY_CUTOFF_HOUR", 6, minimum=0)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
 # same tracked title. Those weekday curves are calibration data; they should not
@@ -574,9 +575,10 @@ def phase2_snapshot_collection_dates(local):
         start = local + timedelta(days=1)
     elif local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
         weekend = opening_weekend_friday(local)
-        # Snapshot probes are for future pre-reservations. The current local
-        # show date is handled by the model-driving regular Phase 2 run.
-        start = local + timedelta(days=1)
+        # A delayed 02:30Z snapshot can cross midnight in ET while the full
+        # show day is still ahead. Keep that current local show date until the
+        # early-morning cutoff instead of silently losing the Friday/Sunday read.
+        start = local if local.hour < SNAPSHOT_SAME_DAY_CUTOFF_HOUR else local + timedelta(days=1)
     else:
         return [local.strftime("%Y-%m-%d")]
 
@@ -2480,6 +2482,33 @@ def sanitize_phase1_links_for_current_window(saved_links):
     return sanitized
 
 
+def merge_collected_phase1_links_with_existing_cache(collected_links, existing, current_weekend):
+    """Merge a partial Phase 1 refresh with preserved current-weekend links.
+
+    AMC can queue or hide subsets of showtimes on a refresh. A failed partial
+    refresh should not fail the run when the already committed current-window
+    cache still covers those missing theatre/date slices.
+    """
+    merged = dict(collected_links or {})
+    existing_theatres = {}
+    if phase1_cache_is_mergeable(existing or {}, current_weekend):
+        existing_theatres = sanitize_phase1_links_for_current_window(
+            (existing or {}).get("theatres", {})
+        )
+
+    merged_theatres = dict(existing_theatres)
+    for name, new_entry in ((collected_links or {}).get("theatres") or {}).items():
+        merged_theatres[name] = merge_phase1_entries(merged_theatres.get(name), new_entry)
+
+    merged["theatres"] = merged_theatres
+    if (existing or {}).get("weekend_of"):
+        merged["weekend_of"] = existing["weekend_of"]
+    if (existing or {}).get("date"):
+        merged["date"] = existing["date"]
+    merged["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
+    return merged
+
+
 def phase1_link_coverage(saved_links, theatres_map, groups, expected_dates,
                          required_cohorts=REQUIRED_PHASE1_COHORTS):
     """Count fresh Phase 1 theatre entries against the configured theatre universe."""
@@ -3499,6 +3528,33 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                 entry["movies"] = collected
             total_links += sum(len(v) for v in collected.values())
 
+    existing = {}
+    if LINKS_JSON.exists():
+        try:
+            with open(LINKS_JSON) as f:
+                existing = json.load(f)
+            existing_weekend = existing.get("weekend_of") or existing.get("date", "")
+            if existing_weekend and existing_weekend != current_weekend:
+                existing = {}
+            elif existing and not phase1_cache_is_mergeable(existing, current_weekend):
+                print(
+                    "  ⚠️  Existing Phase 1 cache uses an older showtime window "
+                    f"({existing.get('showtime_window_version') or 'none'}); starting fresh"
+                )
+                existing = {}
+        except Exception as e:
+            print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
+            existing = {}
+
+    # Validate the canonical cache we are about to write, not only the newest
+    # refresh batch. This lets preserved same-weekend links cover theatre/date
+    # slices that AMC temporarily queued or hid during the refresh.
+    links = merge_collected_phase1_links_with_existing_cache(
+        links,
+        existing,
+        current_weekend,
+    )
+
     fresh_report = phase1_required_link_coverage(
         links["theatres"],
         theatres_map,
@@ -3540,51 +3596,6 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     save_polymarket_data(poly_markets)
 
     DATA_DIR.mkdir(exist_ok=True)
-
-    # Merge into existing file so ET/CT/PT Phase 1 runs accumulate in the same file.
-    # Each TZ group runs Phase 1 separately and would otherwise overwrite the others.
-    # We keep the latest successful collected_at timestamp and update individual
-    # theatre entries. Theatres from previous weekends are replaced.
-    existing = {}
-    if LINKS_JSON.exists():
-        try:
-            with open(LINKS_JSON) as f:
-                existing = json.load(f)
-            # Only merge if the existing file is from the same opening weekend.
-            # Wipe only if the file is from a previous weekend (different weekend_of date),
-            # NOT just because it's >14h old — different TZ Phase 1 runs are spread across
-            # the day and would wipe each other if we used a time-based cutoff.
-            existing_weekend = existing.get("weekend_of") or existing.get("date", "")
-            if existing_weekend and existing_weekend != current_weekend:
-                existing = {}  # previous weekend — start fresh
-            elif existing and not phase1_cache_is_mergeable(existing, current_weekend):
-                print(
-                    "  ⚠️  Existing Phase 1 cache uses an older showtime window "
-                    f"({existing.get('showtime_window_version') or 'none'}); starting fresh"
-                )
-                existing = {}
-            elif existing:
-                existing["theatres"] = sanitize_phase1_links_for_current_window(
-                    existing.get("theatres", {})
-                )
-        except Exception as e:
-            print(f"  ⚠️  Could not load existing showtime-links.json ({e}) — starting fresh")
-            existing = {}
-
-    # Preserve same-date links while merging. AMC can roll earlier showtimes off
-    # the public listing after they start; a later Phase 1 refresh may therefore
-    # see only evening shows. The old same-date IDs are still valid seat-map IDs
-    # and are exactly what Phase 2 needs for a full Saturday/Sunday day sample.
-    # Different show dates remain harmless because Phase 2 asks for a concrete
-    # expected date before it uses a theatre entry.
-    merged_theatres = dict(existing.get("theatres", {}) or {})
-    for name, new_entry in links["theatres"].items():
-        merged_theatres[name] = merge_phase1_entries(merged_theatres.get(name), new_entry)
-    links["theatres"] = merged_theatres
-    if existing.get("weekend_of"):
-        links["weekend_of"] = existing["weekend_of"]
-    if existing.get("date"):
-        links["date"] = existing["date"]
     links["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
     links["showtime_windows"] = {
         "default": f"{DEFAULT_COLLECTION_START_HOUR}:00-{COLLECTION_END_HOUR}:00",

@@ -987,6 +987,11 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(1, coverage["fresh_count"])
         self.assertEqual({"Movie A": 1}, counts)
 
+    def test_snapshot_after_midnight_still_includes_current_show_date(self):
+        dates = scraper.phase2_snapshot_collection_dates(datetime(2026, 5, 29, 0, 5))
+
+        self.assertEqual(["2026-05-29", "2026-05-30", "2026-05-31"], dates)
+
     def test_forward_cached_links_can_pass_stale_file_guard(self):
         theatres = {
             "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
@@ -1100,6 +1105,84 @@ class ScraperLoggingTest(unittest.TestCase):
                 "Phase 1 full-weekend links for ET",
                 min_ratio=0.9,
             )
+
+    def test_phase1_validation_counts_preserved_links_before_failing_refresh(self):
+        existing = {
+            "date": "2026-05-08",
+            "weekend_of": "2026-05-08",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "theatres": {
+                "AMC Nested": {
+                    "tz": "ET",
+                    "cohort": scraper.CORE_COHORT,
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "dates": {
+                        "2026-05-08": {
+                            "movies": {
+                                "Movie A": [
+                                    {"showtime": "7:00pm", "showtime_id": "fri", "format": "Standard"}
+                                ]
+                            },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        },
+                        "2026-05-09": {
+                            "movies": {
+                                "Movie A": [
+                                    {"showtime": "7:00pm", "showtime_id": "sat", "format": "Standard"}
+                                ]
+                            },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        },
+                    },
+                }
+            },
+        }
+        collected = {
+            "date": "2026-05-08",
+            "weekend_of": "2026-05-08",
+            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+            "theatres": {
+                "AMC Nested": {
+                    "tz": "ET",
+                    "cohort": scraper.CORE_COHORT,
+                    "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                    "dates": {
+                        "2026-05-08": {
+                            "movies": {
+                                "Movie A": [
+                                    {"showtime": "8:00pm", "showtime_id": "fri-new", "format": "Standard"}
+                                ]
+                            },
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        }
+                    },
+                }
+            },
+        }
+        theatres = {
+            "ET": [{"name": "AMC Nested", "slug": "amc-nested", "cohort": scraper.CORE_COHORT}]
+        }
+        date_sets = {"ET": ["2026-05-08", "2026-05-09"]}
+
+        merged = scraper.merge_collected_phase1_links_with_existing_cache(
+            collected,
+            existing,
+            current_weekend="2026-05-08",
+        )
+        coverage = scraper.phase1_required_link_coverage(
+            merged["theatres"],
+            theatres,
+            ["ET"],
+            {"ET": "2026-05-08"},
+            date_sets,
+        )
+
+        self.assertEqual(2, coverage["expected_total"])
+        self.assertEqual(2, coverage["fresh_count"])
+        self.assertEqual(
+            {"2026-05-08": {"expected": 1, "fresh": 1}, "2026-05-09": {"expected": 1, "fresh": 1}},
+            coverage["by_date"],
+        )
 
     def test_active_market_guard_flags_missing_timezone_movie_links(self):
         saved_links = {

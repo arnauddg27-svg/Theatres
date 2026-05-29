@@ -290,7 +290,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--fallback-grace-minutes",
         type=positive_int,
-        default=positive_int(os.environ.get("FALLBACK_GRACE_MINUTES", "90")),
+        default=positive_int(os.environ.get("FALLBACK_GRACE_MINUTES", "30")),
         help="watchdog mode waits this long after a slot before dispatching it",
     )
     parser.add_argument("--now", help="override current UTC time for tests, e.g. 2026-05-24T04:00:00Z")
