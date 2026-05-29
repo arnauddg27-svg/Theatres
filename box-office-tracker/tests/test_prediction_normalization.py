@@ -3978,6 +3978,104 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
         self.assertGreater(friday["same_week_actual_amc_ratio_weight"], 0.2)
 
+    def test_snapshot_future_days_inherit_reported_thursday_actual_residual(self):
+        cal = {
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "day_weights": {
+                    "Thursday": 0.12,
+                    "Friday": 0.32,
+                    "Saturday": 0.31,
+                    "Sunday": 0.25,
+                },
+                "day_scale_factors": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
+            }
+        }
+        snapshot_data = {}
+        for day, date in (
+            ("Friday", "2026-05-15"),
+            ("Saturday", "2026-05-16"),
+            ("Sunday", "2026-05-17"),
+        ):
+            snapshot_data[date] = [
+                self._snapshot_row("AMC One", day, date, timezone="ET"),
+                self._snapshot_row("AMC Two", day, date, timezone="CT"),
+            ]
+        baseline_regular = {
+            "Thursday": {
+                "actual_override": False,
+                "domestic_mid": 11_000_000.0,
+                "coverage_ratio": 1.0,
+                "effective_coverage_ratio": 1.0,
+            }
+        }
+        reported_regular = {
+            "Thursday": {
+                "actual_override": True,
+                "actual_override_m": 11.0,
+                "domestic_mid": 11_000_000.0,
+                "coverage_ratio": 1.0,
+                "effective_coverage_ratio": 1.0,
+                "seat_model_actual_scale": 1.34,
+                "seat_model_actual_raw_scale": 1.34,
+                "source": "manual report",
+            }
+        }
+
+        baseline = predict.build_snapshot_future_layer(
+            snapshot_data,
+            baseline_regular,
+            cal,
+            expected_amc_theatres=2,
+        )
+        adjusted = predict.build_snapshot_future_layer(
+            snapshot_data,
+            reported_regular,
+            cal,
+            expected_amc_theatres=2,
+        )
+
+        self.assertGreater(
+            adjusted["snapshot_mid_m"],
+            baseline["snapshot_mid_m"] * 1.08,
+        )
+        friday = adjusted["snapshot_daily_details"]["Friday"]
+        saturday = adjusted["snapshot_daily_details"]["Saturday"]
+        sunday = adjusted["snapshot_daily_details"]["Sunday"]
+        self.assertGreater(friday["same_week_actual_snapshot_scale_factor"], 1.25)
+        self.assertGreater(saturday["same_week_actual_snapshot_scale_factor"], 1.15)
+        self.assertGreater(sunday["same_week_actual_snapshot_scale_factor"], 1.10)
+        self.assertEqual(
+            "Thursday",
+            friday["same_week_actual_snapshot_scale_anchor_day"],
+        )
+
+    def test_snapshot_empirical_basis_preserves_reported_actual_residual(self):
+        details = {
+            "domestic_mid": 14_000_000.0,
+            "domestic_low": 12_000_000.0,
+            "domestic_high": 16_000_000.0,
+            "raw_domestic_mid": 10_000_000.0,
+            "raw_domestic_low": 9_000_000.0,
+            "raw_domestic_high": 11_000_000.0,
+            "same_week_actual_snapshot_scale_factor": 1.30,
+        }
+
+        adjusted = predict._snapshot_empirical_basis_details(details)
+
+        self.assertAlmostEqual(13_000_000.0, adjusted["domestic_mid"])
+        self.assertAlmostEqual(11_700_000.0, adjusted["domestic_low"])
+        self.assertAlmostEqual(14_300_000.0, adjusted["domestic_high"])
+        self.assertEqual(
+            1.30,
+            adjusted["snapshot_empirical_basis_actual_residual_factor"],
+        )
+
     def test_full_day_friday_does_not_use_evening_to_daily_multiplier(self):
         cal = {
             "calibration_factors": {

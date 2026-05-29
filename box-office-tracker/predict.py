@@ -74,7 +74,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v24-same-week-partial-day-seat-scale"
+MODEL_VERSION = "seat-regression-v25-snapshot-actual-residual-transfer"
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -129,6 +129,9 @@ SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
+SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN = 0.70
+SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MAX = 1.65
+SNAPSHOT_ACTUAL_RESIDUAL_MAX_WEIGHT = 0.90
 SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.65
 SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT = 0.35
@@ -3263,16 +3266,26 @@ def _snapshot_empirical_basis_details(details):
         return details
     adjusted = dict(details)
     replaced_any = False
+    actual_residual_factor = _positive_float(
+        adjusted.get("same_week_actual_snapshot_scale_factor")
+    )
     for key in ("domestic_mid", "domestic_low", "domestic_high"):
         raw_key = f"raw_{key}"
         raw_value = _positive_float(adjusted.get(raw_key))
         if raw_value is None:
             continue
         adjusted[f"pre_empirical_snapshot_basis_{key}"] = adjusted.get(key)
-        adjusted[key] = raw_value
+        adjusted[key] = (
+            raw_value * actual_residual_factor
+            if actual_residual_factor else raw_value
+        )
         replaced_any = True
     if replaced_any:
         adjusted["snapshot_empirical_basis"] = "raw_snapshot_to_actual"
+        if actual_residual_factor:
+            adjusted["snapshot_empirical_basis_actual_residual_factor"] = (
+                actual_residual_factor
+            )
     return adjusted
 
 
@@ -5149,6 +5162,93 @@ def apply_same_week_snapshot_scale(details, scale):
     return adjusted
 
 
+def same_week_actual_snapshot_scale_for_day(day_name, regular_daily_details):
+    """Transfer reported-actual residuals into future snapshot demand.
+
+    A real Thursday preview can prove the same movie is monetizing/behaving
+    differently than the raw seat model expected. Snapshot rows for future days
+    should inherit a bounded part of that residual after the conservative
+    day-shape prior is applied, so the report is not silently washed out.
+    """
+    weighted = []
+    for anchor_day, anchor in (regular_daily_details or {}).items():
+        if not anchor or not anchor.get("actual_override"):
+            continue
+        raw_factor = _positive_float(anchor.get("seat_model_actual_scale"))
+        if raw_factor is None:
+            continue
+        similarity = same_week_actual_seat_scale_similarity(anchor_day, day_name)
+        if similarity <= 0:
+            continue
+        coverage = _coverage_value(
+            anchor.get("effective_coverage_ratio", anchor.get("coverage_ratio")),
+            default=0.0,
+        )
+        if coverage <= 0:
+            continue
+        clamped_factor = _clamp(
+            raw_factor,
+            SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN,
+            SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MAX,
+        )
+        factor = 1.0 + ((clamped_factor - 1.0) * similarity)
+        weight = _clamp(
+            similarity * coverage,
+            0.0,
+            SNAPSHOT_ACTUAL_RESIDUAL_MAX_WEIGHT,
+        )
+        if weight <= 0 or abs(factor - 1.0) < 0.001:
+            continue
+        weighted.append({
+            "day": anchor_day,
+            "factor": factor,
+            "weight": weight,
+            "raw_factor": raw_factor,
+            "clamped_factor": clamped_factor,
+            "coverage_ratio": coverage,
+            "actual_override_m": anchor.get("actual_override_m"),
+            "source": anchor.get("actual_override_source", anchor.get("source")),
+            "status": anchor.get("actual_override_status"),
+        })
+
+    if not weighted:
+        return None
+    total_weight = sum(anchor["weight"] for anchor in weighted)
+    if total_weight <= 0:
+        return None
+    factor = (
+        sum(anchor["factor"] * anchor["weight"] for anchor in weighted)
+        / total_weight
+    )
+    return {
+        "factor": factor,
+        "weight": _clamp(total_weight, 0.0, SNAPSHOT_ACTUAL_RESIDUAL_MAX_WEIGHT),
+        "anchors": weighted,
+        "anchor_days": [anchor["day"] for anchor in weighted],
+    }
+
+
+def apply_same_week_actual_snapshot_scale(details, scale_info):
+    if not details or not scale_info:
+        return details
+    factor = _positive_float(scale_info.get("factor"))
+    if factor is None or abs(factor - 1.0) < 0.001:
+        return details
+    adjusted = dict(details)
+    adjusted["same_week_actual_snapshot_scale_factor"] = factor
+    adjusted["same_week_actual_snapshot_scale_weight"] = scale_info.get("weight")
+    adjusted["same_week_actual_snapshot_scale_anchor_day"] = (
+        scale_info["anchor_days"][0]
+        if len(scale_info.get("anchor_days", [])) == 1
+        else ",".join(scale_info.get("anchor_days", []))
+    )
+    adjusted["same_week_actual_snapshot_scale_anchors"] = scale_info.get("anchors", [])
+    for key in ("domestic_mid", "domestic_low", "domestic_high"):
+        adjusted[f"pre_same_week_actual_snapshot_{key}"] = adjusted.get(key)
+        adjusted[key] = adjusted.get(key, 0) * factor
+    return adjusted
+
+
 def regular_day_shape_priors(regular_daily_details, cal):
     """Daily priors implied by the observed seat days and learned day shape."""
     if not regular_daily_details:
@@ -5472,6 +5572,10 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             details,
             day_same_week_scale,
         )
+        actual_scale_info = same_week_actual_snapshot_scale_for_day(
+            day_name,
+            regular_daily_details,
+        )
         support_info = snapshot_calibration_support_factor(
             cal,
             day_name,
@@ -5489,6 +5593,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             "supports_partial_regular_day": supports_partial_regular_day,
             "shape_support": shape_support,
             "support_info": support_info,
+            "actual_scale_info": actual_scale_info,
         }
 
     profile_support_values = []
@@ -5534,6 +5639,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         supports_partial_regular_day = pending["supports_partial_regular_day"]
         shape_support = pending["shape_support"]
         support_info = pending["support_info"]
+        actual_scale_info = pending.get("actual_scale_info")
         day_shape_prior = adjusted_day_shape_priors.get(
             day_name,
             day_shape_priors.get(day_name),
@@ -5542,6 +5648,10 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             scaled_details,
             day_shape_prior,
             support_factor=shape_support,
+        )
+        adjusted_details = apply_same_week_actual_snapshot_scale(
+            adjusted_details,
+            actual_scale_info,
         )
         adjusted_details = dict(adjusted_details)
         adjusted_details["snapshot_day_shape_support_factor"] = round(shape_support, 4)
@@ -7792,11 +7902,20 @@ def print_prediction(pred, verbose=False):
                     "pre_snapshot_empirical_regression_domestic_mid",
                     details.get("raw_domestic_mid", details.get("domestic_mid", 0)),
                 )
+                actual_residual = details.get(
+                    "snapshot_empirical_basis_actual_residual_factor"
+                )
+                actual_residual_note = (
+                    f", actual residual x{actual_residual:.2f}"
+                    if actual_residual and abs(actual_residual - 1.0) >= 0.01
+                    else ""
+                )
                 print(
                     f"    {day}: {fmt_m(details['domestic_mid'] / 1_000_000)} "
                     f"(raw snapshot {fmt_m(basis_mid / 1_000_000)}, "
                     f"empirical x{empirical_factor:.2f}, "
-                    f"{details.get('snapshot_empirical_regression_n', 0)} trained snapshot days)"
+                    f"{details.get('snapshot_empirical_regression_n', 0)} trained snapshot days"
+                    f"{actual_residual_note})"
                 )
                 continue
             prior = details.get("day_shape_prior_domestic_mid")
