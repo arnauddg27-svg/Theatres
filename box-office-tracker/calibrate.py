@@ -808,6 +808,14 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
     return entries
 
 
+def predict_pre_actual_movie(predict_movie_fn, movie, seat_data, poly_data, cal,
+                             **kwargs):
+    """Replay a forecast without letting reported actual override CSV leak in."""
+    kwargs = dict(kwargs)
+    kwargs["daily_actual_overrides"] = {}
+    return predict_movie_fn(movie, seat_data, poly_data, cal, **kwargs)
+
+
 # ── Auto-Calibration Pipeline ──────────────────────────────────────────────
 
 def _last_friday():
@@ -887,10 +895,16 @@ def auto_calibrate():
         )
 
         # Our prediction
-        pred = predict_movie(movie, seat_data[movie], poly_data.get(movie, []), prediction_cal,
-                             national_theatre_count=nat_count,
-                             snapshot_data=snapshot_data.get(movie, {}),
-                             social_data=social_data)
+        pred = predict_pre_actual_movie(
+            predict_movie,
+            movie,
+            seat_data[movie],
+            poly_data.get(movie, []),
+            prediction_cal,
+            national_theatre_count=nat_count,
+            snapshot_data=snapshot_data.get(movie, {}),
+            social_data=social_data,
+        )
         if not pred:
             print(f"    No prediction possible")
             continue
@@ -1123,7 +1137,8 @@ if __name__ == "__main__":
             cal,
             require_freeze=True,
         )
-        pred = predict_movie(
+        pred = predict_pre_actual_movie(
+            predict_movie,
             matched_movie,
             seat_data[matched_movie],
             poly_data.get(matched_movie, []),

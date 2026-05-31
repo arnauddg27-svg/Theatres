@@ -613,26 +613,88 @@
       "calibration_excluded_days": [
         "Sunday"
       ]
+    },
+    {
+      "movie": "Backrooms",
+      "weekend_of": "2026-05-29",
+      "date": "2026-05-31",
+      "predicted_mid": 69.14,
+      "predicted_low": 62.76,
+      "predicted_high": 76.98,
+      "actual_total": 81.4,
+      "daily_actuals": {
+        "Thursday": 10.4,
+        "Friday": 28.0,
+        "Saturday": 24.7,
+        "Sunday": 18.3
+      },
+      "daily_predictions": {
+        "Thursday": 9.34,
+        "Friday": 25.03,
+        "Saturday": 15.8
+      },
+      "error_pct": -15.1,
+      "n_theatres": 431,
+      "n_days": 3,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "Sunday studio weekend estimate",
+      "actual_status": "provisional",
+      "raw_daily_predictions": {
+        "Thursday": 6.2,
+        "Friday": 21.82,
+        "Saturday": 15.68
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 6.03,
+        "Friday": 13.0,
+        "Saturday": 26.18,
+        "Sunday": 19.41
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.008,
+        "Friday": 0.059,
+        "Saturday": 0.235,
+        "Sunday": 0.235
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 429,
+        "Friday": 426,
+        "Saturday": 386
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 1.0,
+        "Friday": 1.0,
+        "Saturday": 0.908
+      },
+      "coverage_ratio": 0.969
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2948,
+    "amc_market_share": 0.2838,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 1.0375,
+    "overall_scale_factor": 1.0819,
     "day_weights": {
-      "Thursday": 0.0726,
-      "Friday": 0.3198,
-      "Saturday": 0.3372,
-      "Sunday": 0.2704
+      "Thursday": 0.0772,
+      "Friday": 0.3218,
+      "Saturday": 0.3344,
+      "Sunday": 0.2666
     },
     "day_scale_factors": {
-      "Thursday": 1.3225,
-      "Friday": 0.9749,
-      "Saturday": 0.8545,
+      "Thursday": 1.4645,
+      "Friday": 1.0982,
+      "Saturday": 1.1216,
       "Sunday": 1.1681
     },
     "format_scale_factors": {},
@@ -823,7 +885,7 @@
       {
         "movie": "I Love Boosters",
         "weekend_of": "2026-05-22",
-        "abs_error_pct": 102.3,
+        "abs_error_pct": 102.4,
         "n_theatres": 366,
         "n_days": 2,
         "coverage_ratio": 0.528,
@@ -832,8 +894,8 @@
           "Sunday": 0.195
         },
         "daily_errors": {
-          "Friday": 17.2,
-          "Sunday": 200.3
+          "Friday": 16.8,
+          "Sunday": 201.0
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -849,22 +911,42 @@
           "Sunday": 0.033
         },
         "daily_errors": {
-          "Sunday": 52.8
+          "Sunday": 52.7
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Backrooms",
+        "weekend_of": "2026-05-29",
+        "abs_error_pct": 15.1,
+        "n_theatres": 431,
+        "n_days": 3,
+        "coverage_ratio": 0.969,
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 1.0,
+          "Saturday": 0.908
+        },
+        "daily_errors": {
+          "Thursday": 10.2,
+          "Friday": 10.6,
+          "Saturday": 36.1
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-05-26",
+    "last_updated": "2026-05-31",
     "snapshot_to_day_scale_factors": {
       "Thursday": 1.0481,
       "Friday": 1.2613,
-      "Saturday": 1.2147,
-      "Sunday": 1.2392
+      "Saturday": 1.1972,
+      "Sunday": 1.2183
     },
     "snapshot_to_lead_scale_factors": {
-      "same_day": 1.2326,
-      "next_day": 0.9867,
+      "same_day": 1.2134,
+      "next_day": 0.9872,
       "multi_day": 0.9725,
       "long_lead": 1.0
     },
@@ -880,18 +962,18 @@
           "support": 1.779
         },
         "Saturday": {
-          "n": 6,
-          "support": 2.916
+          "n": 7,
+          "support": 3.151
         },
         "Sunday": {
-          "n": 5,
-          "support": 2.683
+          "n": 6,
+          "support": 2.918
         }
       },
       "leads": {
         "same_day": {
-          "n": 12,
-          "support": 6.65
+          "n": 14,
+          "support": 7.12
         },
         "next_day": {
           "n": 3,
