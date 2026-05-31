@@ -2080,6 +2080,64 @@ class ScraperLoggingTest(unittest.TestCase):
                 os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = old_value
             importlib.reload(scraper)
 
+    def test_phase2_theatre_timeout_defaults_to_production_safe_cap(self):
+        old_value = os.environ.pop("PHASE2_THEATRE_TIMEOUT_SEC", None)
+        try:
+            reloaded = importlib.reload(scraper)
+            self.assertEqual(180, reloaded.PHASE2_THEATRE_TIMEOUT_SEC)
+        finally:
+            if old_value is None:
+                os.environ.pop("PHASE2_THEATRE_TIMEOUT_SEC", None)
+            else:
+                os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = old_value
+            importlib.reload(scraper)
+
+    def test_regular_phase2_coverage_counts_only_linked_movie_theatres(self):
+        theatres = [
+            {"name": "AMC One", "_tz": "ET", "_date": "2026-05-30"},
+            {"name": "AMC Two", "_tz": "ET", "_date": "2026-05-30"},
+        ]
+        saved_links = {
+            "AMC One": {
+                "dates": {
+                    "2026-05-30": {
+                        "movies": {
+                            "Backrooms": [
+                                {"showtime_id": "one-backrooms", "showtime": "7:00pm"}
+                            ],
+                        }
+                    }
+                }
+            },
+            "AMC Two": {
+                "dates": {
+                    "2026-05-30": {
+                        "movies": {
+                            "Other Movie": [
+                                {"showtime_id": "two-other", "showtime": "7:00pm"}
+                            ],
+                        }
+                    }
+                }
+            },
+        }
+        results = [
+            {"theatre": "AMC Two", "movie": "Backrooms"},
+        ]
+
+        report = scraper.regular_phase2_theatre_coverage(
+            theatres,
+            results,
+            ["Backrooms", "Other Movie"],
+            saved_links=saved_links,
+            expected_dates={"ET": "2026-05-30"},
+        )
+
+        self.assertEqual(["AMC One"], report["expected_theatres_by_movie"]["Backrooms"])
+        self.assertEqual(1, report["by_movie"]["Backrooms"]["expected"])
+        self.assertEqual(0, report["by_movie"]["Backrooms"]["observed"])
+        self.assertEqual(0.0, report["by_movie"]["Backrooms"]["ratio"])
+
     def test_phase1_batches_current_day_before_future_cache(self):
         theatres = [
             {"name": "Core A", "_tz": "ET", "_date": "2026-04-30", "cohort": scraper.CORE_COHORT},

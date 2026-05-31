@@ -505,9 +505,10 @@ def phase2_max_concurrent_tabs(snapshots_only=False):
 # scrape for hours. The per-theatre timeout caps each tab; the overall deadline
 # stops launching new theatres early enough for in-flight work and artifact
 # upload/finalize. Snapshot-only runs can raise PHASE2_DEADLINE_SEC from the
-# workflow because they cover multiple weekend show dates.
+# workflow because they cover multiple weekend show dates; regular runs keep a
+# short theatre cap so one slow location cannot consume the full-day budget.
 PHASE1_THEATRE_TIMEOUT_SEC = 90
-PHASE2_THEATRE_TIMEOUT_SEC = _env_int("PHASE2_THEATRE_TIMEOUT_SEC", 300, minimum=60)
+PHASE2_THEATRE_TIMEOUT_SEC = _env_int("PHASE2_THEATRE_TIMEOUT_SEC", 180, minimum=60)
 try:
     PHASE1_DEADLINE_SEC = int(os.getenv("PHASE1_DEADLINE_SEC", str(45 * 60)))
 except ValueError:
@@ -820,7 +821,7 @@ def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
     for result in results:
         movie = result.get("movie")
         theatre = result.get("theatre")
-        if movie in observed_by_movie and theatre in expected_names:
+        if movie in observed_by_movie and theatre in expected_by_movie.get(movie, set()):
             observed_by_movie[movie].add(theatre)
 
     by_movie = {}
@@ -836,6 +837,10 @@ def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
     return {
         "expected_total": len(expected_names),
         "by_movie": by_movie,
+        "expected_theatres_by_movie": {
+            title: sorted(names)
+            for title, names in expected_by_movie.items()
+        },
     }
 
 
