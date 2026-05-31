@@ -58,6 +58,19 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
 
+    def test_regular_scrapes_have_full_day_runtime_budget(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+        phase_start = scrape_block.index("      - name: Phase 2")
+        phase_end = scrape_block.index("      - name: Release AMC lock", phase_start)
+        phase_block = scrape_block[phase_start:phase_end]
+
+        self.assertIn("REGULAR_PHASE2_MIN_DEADLINE_SEC=9000", phase_block)
+        self.assertIn("REGULAR_PHASE2_MAX_DEADLINE_SEC=10800", phase_block)
+        self.assertIn("PHASE2_THEATRE_TIMEOUT_SEC=180", phase_block)
+        self.assertIn("Regular lane:", phase_block)
+
     def test_snapshot_scrapes_go_directly_from_install_to_amc_lock(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)

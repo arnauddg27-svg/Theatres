@@ -72,6 +72,20 @@ def _env_int(name, default, minimum=None):
     return value
 
 
+def _env_float(name, default, minimum=None):
+    raw = os.getenv(name)
+    if raw is None:
+        value = default
+    else:
+        try:
+            value = float(raw)
+        except ValueError:
+            value = default
+    if minimum is not None:
+        value = max(minimum, value)
+    return value
+
+
 def _parse_cohorts(value, default):
     raw = value if value is not None else ",".join(default)
     cohorts = [part.strip().lower() for part in raw.split(",") if part.strip()]
@@ -91,6 +105,12 @@ def _copy_theatre(theatre, cohort):
     return copied
 
 
+def is_amc_classic_theatre(theatre):
+    name = str(theatre.get("name") or "").strip().lower()
+    slug = str(theatre.get("slug") or "").strip().lower()
+    return name.startswith("amc classic ") or slug.startswith("amc-classic-")
+
+
 def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohorts):
     target.setdefault(group, [])
     existing_names = {
@@ -101,6 +121,8 @@ def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohort
     }
     for theatre in theatres:
         if not theatre.get("name") or not theatre.get("slug"):
+            continue
+        if is_amc_classic_theatre(theatre):
             continue
         copied = _copy_theatre(theatre, default_cohort)
         if _theatre_cohort(copied) not in allowed_cohorts:
@@ -221,6 +243,40 @@ def snapshot_theatre_signal_scores(seat_csv_path=SEAT_CSV):
     for theatre, keys in sample_keys.items():
         scores[theatre] = scores.get(theatre, 0.0) + len(keys) * 5.0
     return scores
+
+
+STRATEGIC_PHASE2_THEATRES = {
+    "AMC Empire 25",
+    "AMC Lincoln Square 13",
+    "AMC Kips Bay 15",
+    "AMC Magic Johnson Harlem 9",
+    "AMC Newport Centre 11",
+    "AMC DINE-IN Disney Springs 24",
+    "AMC Altamonte Mall 18",
+    "AMC Cherry Hill 24",
+    "AMC DINE-IN Fashion District 8",
+    "AMC Neshaminy 24",
+    "AMC Plymouth Meeting Mall 12",
+    "AMC Waterfront 22",
+    "AMC Georgetown 14",
+    "AMC Hoffman Center 22",
+    "AMC Shirlington 7",
+    "AMC Tysons Corner 16",
+    "AMC Veterans 24",
+    "AMC West Shore 14",
+}
+
+
+def regular_phase2_theatre_sort_key(theatre, signal_scores=None):
+    signal_scores = signal_scores or {}
+    name = theatre.get("name", "")
+    return (
+        1 if _theatre_cohort(theatre) == EXPANSION_COHORT else 0,
+        -1 if name in STRATEGIC_PHASE2_THEATRES else 0,
+        -signal_scores.get(name, 0.0),
+        theatre.get("dma", ""),
+        name,
+    )
 
 
 def _snapshot_cap_allocations(theatres_by_group, cap):
@@ -457,6 +513,16 @@ try:
 except ValueError:
     PHASE1_DEADLINE_SEC = 45 * 60
 PHASE2_DEADLINE_SEC = _env_int("PHASE2_DEADLINE_SEC", 60 * 60, minimum=60)
+REGULAR_PHASE2_MIN_DEADLINE_SEC = _env_int("REGULAR_PHASE2_MIN_DEADLINE_SEC", 9000, minimum=60)
+REGULAR_PHASE2_MAX_DEADLINE_SEC = _env_int(
+    "REGULAR_PHASE2_MAX_DEADLINE_SEC",
+    10800,
+    minimum=REGULAR_PHASE2_MIN_DEADLINE_SEC,
+)
+REGULAR_PHASE2_BASE_DEADLINE_SEC = _env_int("REGULAR_PHASE2_BASE_DEADLINE_SEC", 1800, minimum=60)
+REGULAR_PHASE2_PER_THEATRE_SEC = _env_float("REGULAR_PHASE2_PER_THEATRE_SEC", 9.0, minimum=0.0)
+REGULAR_PHASE2_PER_SHOWTIME_SEC = _env_float("REGULAR_PHASE2_PER_SHOWTIME_SEC", 10.0, minimum=0.0)
+REGULAR_PHASE2_MIN_COVERAGE_RATIO = _env_float("REGULAR_PHASE2_MIN_COVERAGE_RATIO", 0.90, minimum=0.0)
 try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
 except ValueError:
@@ -604,10 +670,15 @@ def phase2_collection_dates_by_group(groups, snapshots_only=False):
     return {group: [phase1_expected_date(group)] for group in groups}
 
 
-def order_phase2_theatres_for_collection(theatres, snapshots_only=False):
+def order_phase2_theatres_for_collection(theatres, snapshots_only=False, signal_scores=None):
     """Order Phase 2 work so deadline pressure leaves representative coverage."""
     if not snapshots_only:
-        return sorted(theatres, key=_theatre_sort_key)
+        if signal_scores is None:
+            signal_scores = snapshot_theatre_signal_scores()
+        return sorted(theatres, key=lambda theatre: regular_phase2_theatre_sort_key(
+            theatre,
+            signal_scores=signal_scores,
+        ))
 
     ordered = []
     cohort_order = {CORE_COHORT: 0, EXPANSION_COHORT: 1}
@@ -720,6 +791,63 @@ def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written):
     if snapshot_rows_written > 0 or report.get("observed_total", 0) > 0:
         return False
     return True
+
+
+def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
+                                    saved_links=None, expected_dates=None):
+    expected_by_movie = {title: set() for title in (movie_titles or [])}
+    if saved_links is not None and expected_dates is not None:
+        for theatre in expected_theatres:
+            name = theatre.get("name")
+            entry = saved_links.get(name)
+            if not name or not entry:
+                continue
+            expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
+            movies = phase1_entry_movies(entry, expected_date)
+            for title in movie_titles or []:
+                if movies.get(title):
+                    expected_by_movie[title].add(name)
+    else:
+        expected_names = {
+            theatre.get("name")
+            for theatre in expected_theatres
+            if theatre.get("name")
+        }
+        expected_by_movie = {title: set(expected_names) for title in (movie_titles or [])}
+
+    expected_names = set().union(*expected_by_movie.values()) if expected_by_movie else set()
+    observed_by_movie = {title: set() for title in (movie_titles or [])}
+    for result in results:
+        movie = result.get("movie")
+        theatre = result.get("theatre")
+        if movie in observed_by_movie and theatre in expected_names:
+            observed_by_movie[movie].add(theatre)
+
+    by_movie = {}
+    for title in movie_titles or []:
+        expected_total = len(expected_by_movie.get(title, set()))
+        observed = len(observed_by_movie.get(title, set()))
+        ratio = (observed / expected_total) if expected_total else 1.0
+        by_movie[title] = {
+            "expected": expected_total,
+            "observed": observed,
+            "ratio": ratio,
+        }
+    return {
+        "expected_total": len(expected_names),
+        "by_movie": by_movie,
+    }
+
+
+def regular_phase2_coverage_failures(report, min_ratio=REGULAR_PHASE2_MIN_COVERAGE_RATIO):
+    failures = []
+    for title, details in report.get("by_movie", {}).items():
+        if details["expected"] and details["ratio"] < min_ratio:
+            failures.append(
+                f"{title} {details['observed']}/{details['expected']} "
+                f"theatres ({details['ratio']:.1%})"
+            )
+    return failures
 
 
 def snapshot_phase1_coverage_failure_is_fatal(report):
@@ -2231,6 +2359,53 @@ def phase2_theatre_expected_date(theatre, entry, expected_dates):
         return theatre["_phase2_expected_date"]
     ref_tz = theatre.get("_tz") or entry.get("tz") or "ET"
     return expected_dates.get(ref_tz) or phase1_expected_date(ref_tz)
+
+
+def phase2_saved_showtime_count(theatres, saved_links, movie_titles, expected_dates):
+    """Count the linked showtimes Phase 2 is about to attempt."""
+    movie_titles = set(movie_titles or [])
+    count = 0
+    for theatre in theatres:
+        entry = saved_links.get(theatre.get("name"))
+        if not entry:
+            continue
+        expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
+        movies = phase1_entry_movies(entry, expected_date)
+        for title in movie_titles:
+            count += len(movies.get(title) or [])
+    return count
+
+
+def phase2_runtime_deadline_sec(theatres, saved_links, movie_titles, expected_dates,
+                                snapshots_only=False, max_concurrent_tabs=None,
+                                configured_deadline_sec=None):
+    """Return an internal Phase 2 deadline sized to the linked workload.
+
+    GitHub's step timeout is an outer guard. This deadline decides when the
+    scraper stops launching new AMC theatres. Regular weekend full-day windows
+    can be several times larger than preview/evening windows, so the regular
+    budget must scale with linked showtime volume. Snapshot runs keep their
+    explicit workflow deadline because their theatre cap is already fixed.
+    """
+    configured = PHASE2_DEADLINE_SEC if configured_deadline_sec is None else configured_deadline_sec
+    if snapshots_only:
+        return int(configured)
+
+    theatre_count = len({theatre.get("name") for theatre in theatres if theatre.get("name")})
+    showtime_count = phase2_saved_showtime_count(
+        theatres,
+        saved_links,
+        movie_titles,
+        expected_dates,
+    )
+    tabs = max(1, int(max_concurrent_tabs or phase2_max_concurrent_tabs(False)))
+    scaled_work = (
+        theatre_count * REGULAR_PHASE2_PER_THEATRE_SEC
+        + showtime_count * REGULAR_PHASE2_PER_SHOWTIME_SEC
+    ) / tabs
+    dynamic_deadline = int(REGULAR_PHASE2_BASE_DEADLINE_SEC + scaled_work)
+    deadline = max(int(configured), REGULAR_PHASE2_MIN_DEADLINE_SEC, dynamic_deadline)
+    return min(REGULAR_PHASE2_MAX_DEADLINE_SEC, deadline)
 
 
 def filter_fresh_phase2_theatres(all_theatres, saved_links, expected_dates):
@@ -4176,6 +4351,28 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     if not all_theatres:
         fail_phase("❌ No theatres found in saved links for this timezone group.")
 
+    linked_showtime_count = phase2_saved_showtime_count(
+        all_theatres,
+        saved_links,
+        movie_titles,
+        expected_dates,
+    )
+    phase2_deadline_sec = phase2_runtime_deadline_sec(
+        all_theatres,
+        saved_links,
+        movie_titles,
+        expected_dates,
+        snapshots_only=snapshots_only,
+        max_concurrent_tabs=max_concurrent_tabs,
+    )
+    theatre_timeout_sec = PHASE2_THEATRE_TIMEOUT_SEC
+    print(
+        "   Runtime budget: "
+        f"{phase2_deadline_sec}s internal deadline, "
+        f"{theatre_timeout_sec}s per theatre, "
+        f"{max_concurrent_tabs} tab(s), {linked_showtime_count} linked showtime(s)"
+    )
+
     # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
     all_issues = []
@@ -4193,8 +4390,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # for in-flight theatres and artifact upload/finalize to finish before the
     # workflow step timeout. Per-theatre wait_for prevents one hung tab (usually
     # from AMC's queue-it redirect) from stalling the whole run.
-    overall_deadline = asyncio.get_event_loop().time() + PHASE2_DEADLINE_SEC
-    theatre_timeout_sec = PHASE2_THEATRE_TIMEOUT_SEC
+    overall_deadline = asyncio.get_event_loop().time() + phase2_deadline_sec
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
@@ -4324,6 +4520,30 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     "\n⚠️  Snapshot coverage is partial, but rows were captured; "
                     "committing partial snapshot data for the model to weight by coverage."
                 )
+    elif not test_max:
+        regular_report = regular_phase2_theatre_coverage(
+            all_theatres,
+            all_results,
+            movie_titles,
+            saved_links=saved_links,
+            expected_dates=expected_dates,
+        )
+        regular_failures = regular_phase2_coverage_failures(regular_report)
+        print(
+            "\n🧯 Regular theatre coverage: "
+            f"minimum {REGULAR_PHASE2_MIN_COVERAGE_RATIO:.0%}"
+        )
+        for title, details in regular_report.get("by_movie", {}).items():
+            print(
+                f"   {title}: "
+                f"{details['observed']}/{details['expected']} "
+                f"theatres ({details['ratio']:.1%})"
+            )
+        if regular_failures:
+            all_issues.append(
+                "Regular coverage below minimum: "
+                + "; ".join(regular_failures[:8])
+            )
 
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues, run_id=run_id)
