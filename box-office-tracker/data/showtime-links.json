@@ -2,7 +2,7 @@
   "date": "2026-05-29",
   "weekend_of": "2026-05-29",
   "collected_local_date": "2026-05-31",
-  "collected_at": "2026-05-31T21:24:30.879820+00:00",
+  "collected_at": "2026-05-31T23:14:26.770657+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -80531,99 +80531,99 @@
               }
             ]
           },
-          "collected_at": "2026-05-29T23:22:52.196223+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "10:45am",
-            "showtime_id": "143578440",
+            "showtime_id": "143578439",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "12:40pm",
-            "showtime_id": "143570533",
+            "showtime_id": "143570529",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "1:35pm",
-            "showtime_id": "143570575",
+            "showtime_id": "143570572",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "143570620",
+            "showtime_id": "143570616",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "141902685",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "141902688",
+            "format": "AMC Artisan Films"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "143570746",
+            "showtime_id": "143570742",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141902686",
+            "showtime_id": "141902689",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "143570791",
+            "showtime_id": "143570787",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143570722",
+            "showtime_id": "143570718",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "141902687",
+            "showtime_id": "141902690",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "143570793",
+            "showtime_id": "143570789",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "10:30am",
-            "showtime_id": "143578446",
+            "showtime_id": "143578445",
             "format": "undefined"
           },
           {
             "showtime": "12:05pm",
-            "showtime_id": "143570724",
+            "showtime_id": "143570720",
             "format": "undefined"
           },
           {
             "showtime": "2:05pm",
-            "showtime_id": "143570470",
+            "showtime_id": "143570466",
             "format": "undefined"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "140976375",
+            "showtime_id": "140976377",
             "format": "undefined"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "140976376",
+            "showtime_id": "140976378",
             "format": "undefined"
           },
           {
             "showtime": "9:20pm",
-            "showtime_id": "143570512",
+            "showtime_id": "143570508",
             "format": "undefined"
           }
         ]
@@ -80890,6 +80890,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:35pm",
+                "showtime_id": "143789877",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "143682640",
                 "format": "Laser at AMC"
@@ -80938,74 +80943,109 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098696+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "141808400",
+            "showtime": "10:45am",
+            "showtime_id": "143682674",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "143627566",
+            "showtime": "11:45am",
+            "showtime_id": "141808412",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "143682564",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "143682629",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "141808411",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "143682642",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "141808410",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "143627572",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "143754982",
+            "showtime_id": "143682643",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141808399",
+            "showtime_id": "141808409",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "143627567",
+            "showtime": "9:35pm",
+            "showtime_id": "143789877",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "143627573",
+            "showtime_id": "143682640",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "143754983",
+            "showtime": "10:15pm",
+            "showtime_id": "143682621",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "141808403",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "143694193",
+            "showtime_id": "141808413",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141005885",
+            "showtime": "10:45am",
+            "showtime_id": "143682551",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "143627519",
+            "showtime": "12:00pm",
+            "showtime_id": "143682596",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "143682543",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "141005890",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "141005889",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "143682431",
             "format": "Laser at AMC"
           }
         ]
@@ -81095,7 +81135,7 @@
               }
             ]
           },
-          "collected_at": "2026-05-29T23:22:52.196310+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-30": {
@@ -81215,74 +81255,69 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "143626348",
+            "showtime": "11:10am",
+            "showtime_id": "143626453",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "143626545",
+            "showtime": "12:30pm",
+            "showtime_id": "141860042",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "2:50pm",
-            "showtime_id": "143626460",
+            "showtime": "2:00pm",
+            "showtime_id": "143626452",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "4:20pm",
-            "showtime_id": "141860038",
+            "showtime": "3:20pm",
+            "showtime_id": "141860041",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "5:40pm",
-            "showtime_id": "143626459",
+            "showtime": "4:50pm",
+            "showtime_id": "143626451",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "141860037",
+            "showtime": "6:10pm",
+            "showtime_id": "141860040",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "143626458",
+            "showtime": "7:40pm",
+            "showtime_id": "143626450",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "141860036",
+            "showtime": "9:00pm",
+            "showtime_id": "141860039",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "11:20am",
-            "showtime_id": "143647488",
+            "showtime_id": "143626346",
             "format": "undefined"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "143626481",
+            "showtime": "3:10pm",
+            "showtime_id": "141014550",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "141014551",
             "format": "undefined"
           },
           {
-            "showtime": "4:40pm",
-            "showtime_id": "141014549",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "141014548",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "143626482",
+            "showtime": "8:50pm",
+            "showtime_id": "143626492",
             "format": "undefined"
           }
         ]
@@ -82106,6 +82141,11 @@
                 "showtime": "9:30pm",
                 "showtime_id": "141859703",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "143793110",
+                "format": "Laser at AMC"
               }
             ],
             "The Breadwinner": [
@@ -82187,6 +82227,11 @@
           {
             "showtime": "9:30pm",
             "showtime_id": "141859703",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143793110",
             "format": "Laser at AMC"
           }
         ],
@@ -84317,7 +84362,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:25pm",
+                "showtime": "8:45pm",
                 "showtime_id": "141010740",
                 "format": "Laser at AMC"
               },
@@ -84404,7 +84449,7 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:25pm",
+            "showtime": "8:45pm",
             "showtime_id": "141010740",
             "format": "Laser at AMC"
           },
@@ -85089,6 +85134,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "143792619",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "142007075",
                 "format": "AMC Artisan Films"
@@ -85143,6 +85193,11 @@
           {
             "showtime": "5:45pm",
             "showtime_id": "142007074",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "143792619",
             "format": "AMC Artisan Films"
           },
           {
@@ -85489,119 +85544,99 @@
               }
             ]
           },
-          "collected_at": "2026-05-29T23:22:52.196409+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "143548087",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "11:10am",
-            "showtime_id": "143548162",
+            "showtime_id": "143548157",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "143548130",
+            "showtime_id": "143548125",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "141821966",
+            "showtime": "12:40pm",
+            "showtime_id": "141821970",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "143548161",
+            "showtime_id": "143548156",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "2:35pm",
-            "showtime_id": "141821967",
+            "showtime_id": "143548103",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "2:35pm",
-            "showtime_id": "143548108",
+            "showtime": "3:35pm",
+            "showtime_id": "141821971",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "143548160",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "5:10pm",
-            "showtime_id": "141821968",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "141821969",
+            "showtime": "6:25pm",
+            "showtime_id": "141821972",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143548131",
+            "showtime_id": "143548126",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:25pm",
-            "showtime_id": "143548202",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "143548153",
+            "showtime": "9:15pm",
+            "showtime_id": "141821973",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "143548136",
+            "showtime_id": "143548134",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141821954",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "143548159",
+            "showtime_id": "142977351",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "143548129",
+            "showtime_id": "143548124",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "11:50am",
-            "showtime_id": "143548059",
-            "format": "undefined"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "143548168",
+            "showtime_id": "143548057",
             "format": "undefined"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "141016851",
+            "showtime_id": "141016853",
             "format": "undefined"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "141016850",
+            "showtime_id": "141016852",
             "format": "undefined"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "143548063",
+            "showtime_id": "143548061",
             "format": "undefined"
           }
         ]
@@ -86472,6 +86507,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "143791440",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "141890157",
                 "format": "AMC Artisan Films"
@@ -86546,6 +86586,11 @@
           {
             "showtime": "5:15pm",
             "showtime_id": "141890158",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "143791440",
             "format": "AMC Artisan Films"
           },
           {
@@ -87803,7 +87848,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "8:15pm",
                 "showtime_id": "142032165",
                 "format": "Laser at AMC"
               },
@@ -87950,7 +87995,7 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
+            "showtime": "8:15pm",
             "showtime_id": "142032165",
             "format": "Laser at AMC"
           },
@@ -88834,6 +88879,16 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:20pm",
+                "showtime_id": "143778511",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "143775966",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:10pm",
                 "showtime_id": "143566171",
                 "format": "AMC Artisan Films"
@@ -88841,6 +88896,11 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "143566186",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "143765019",
                 "format": "AMC Artisan Films"
               }
             ],
@@ -88872,7 +88932,7 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098670+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-29": {
@@ -88917,39 +88977,84 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
+            "showtime": "11:55am",
+            "showtime_id": "143566170",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "143566187",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "143566188",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "5:25pm",
-            "showtime_id": "143550449",
+            "showtime_id": "143566168",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141854832",
+            "showtime_id": "141854836",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "143778511",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "143775966",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:10pm",
-            "showtime_id": "143550448",
+            "showtime_id": "143566171",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "143550451",
+            "showtime_id": "143566186",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "143765019",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141007601",
+            "showtime": "11:00am",
+            "showtime_id": "143566365",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:35pm",
+            "showtime_id": "143566364",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "141007606",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "143566360",
             "format": "undefined"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "143550466",
+            "showtime_id": "143566359",
             "format": "undefined"
           }
         ]
@@ -89286,6 +89391,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:05pm",
+                "showtime_id": "143789947",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "143630947",
                 "format": "Laser at AMC"
@@ -89298,6 +89408,11 @@
               {
                 "showtime": "9:00pm",
                 "showtime_id": "143783587",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "143789948",
                 "format": "Laser at AMC"
               },
               {
@@ -89338,7 +89453,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:20pm",
+                "showtime": "10:00pm",
                 "showtime_id": "143630824",
                 "format": "Laser at AMC"
               }
@@ -89423,6 +89538,11 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "8:05pm",
+            "showtime_id": "143789947",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "143630947",
             "format": "Laser at AMC"
@@ -89435,6 +89555,11 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "143783587",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "143789948",
             "format": "Laser at AMC"
           },
           {
@@ -89475,7 +89600,7 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
+            "showtime": "10:00pm",
             "showtime_id": "143630824",
             "format": "Laser at AMC"
           }
@@ -89608,8 +89733,18 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "143792319",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "143462157",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "143792320",
                 "format": "AMC Artisan Films"
               },
               {
@@ -89665,8 +89800,18 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "6:45pm",
+            "showtime_id": "143792319",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "8:00pm",
             "showtime_id": "143462157",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "143792320",
             "format": "AMC Artisan Films"
           },
           {
@@ -90699,6 +90844,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:55pm",
+                "showtime_id": "143782369",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:45pm",
                 "showtime_id": "143707486",
                 "format": "AMC Artisan Films"
@@ -90747,54 +90897,94 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098337+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "6:05pm",
-            "showtime_id": "143707492",
+            "showtime": "12:30pm",
+            "showtime_id": "143707485",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "141698433",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "143707484",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "141698432",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "143707487",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141698422",
+            "showtime_id": "141698430",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "143707612",
+            "showtime": "7:55pm",
+            "showtime_id": "143782369",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "143707493",
+            "showtime_id": "143707486",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141698423",
+            "showtime_id": "141698431",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143707613",
+            "showtime_id": "143707630",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "143707627",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "143707589",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "143707629",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "140999267",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "140999262",
+            "showtime_id": "140999266",
             "format": "undefined"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "143707520",
+            "showtime_id": "143707528",
             "format": "undefined"
           }
         ]
@@ -91340,7 +91530,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "9:15pm",
+                "showtime": "9:45pm",
                 "showtime_id": "143722687",
                 "format": "undefined"
               }
@@ -91537,7 +91727,7 @@
             "format": "undefined"
           },
           {
-            "showtime": "9:15pm",
+            "showtime": "9:45pm",
             "showtime_id": "143722687",
             "format": "undefined"
           }
@@ -95231,84 +95421,84 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098271+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "11:30am",
-            "showtime_id": "143599760",
+            "showtime_id": "143599756",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "142032544",
+            "showtime_id": "142032536",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "143599759",
+            "showtime_id": "143599755",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "142032541",
+            "showtime_id": "142032533",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "143599761",
+            "showtime_id": "143599757",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "142032542",
+            "showtime_id": "142032534",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "143599762",
+            "showtime_id": "143599758",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "142032543",
+            "showtime_id": "142032535",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143599763",
+            "showtime_id": "143599754",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "11:30am",
-            "showtime_id": "143599904",
+            "showtime_id": "143599902",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "143599906",
+            "showtime_id": "143599903",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "141003596",
+            "showtime_id": "141003598",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141003597",
+            "showtime_id": "141003599",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143599895",
+            "showtime_id": "143599889",
             "format": "Laser at AMC"
           }
         ]
@@ -95837,6 +96027,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:05pm",
+                "showtime_id": "143790864",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "142078163",
                 "format": "AMC Artisan Films"
@@ -95844,6 +96039,16 @@
               {
                 "showtime": "9:15pm",
                 "showtime_id": "143554145",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "143790861",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "143790860",
                 "format": "AMC Artisan Films"
               },
               {
@@ -95919,6 +96124,11 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "7:05pm",
+            "showtime_id": "143790864",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "142078163",
             "format": "AMC Artisan Films"
@@ -95926,6 +96136,16 @@
           {
             "showtime": "9:15pm",
             "showtime_id": "143554145",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "143790861",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143790860",
             "format": "AMC Artisan Films"
           },
           {
@@ -97043,6 +97263,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "6:10pm",
+                "showtime_id": "143791937",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "143336156",
                 "format": "Dine-In Delivery to Seat"
@@ -97122,6 +97347,11 @@
           {
             "showtime": "5:15pm",
             "showtime_id": "143336157",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "143791937",
             "format": "Dine-In Delivery to Seat"
           },
           {
@@ -99667,6 +99897,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:15pm",
+                "showtime_id": "143789203",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "143575736",
                 "format": "Laser at AMC"
@@ -99694,6 +99929,11 @@
               {
                 "showtime": "10:45pm",
                 "showtime_id": "141870491",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "143793608",
                 "format": "Laser at AMC"
               }
             ],
@@ -99834,6 +100074,11 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "8:15pm",
+            "showtime_id": "143789203",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "143575736",
             "format": "Laser at AMC"
@@ -99861,6 +100106,11 @@
           {
             "showtime": "10:45pm",
             "showtime_id": "141870491",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "143793608",
             "format": "Laser at AMC"
           }
         ],
@@ -101517,8 +101767,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:45pm",
+                "showtime_id": "143790010",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:45pm",
                 "showtime_id": "143603950",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "143790012",
                 "format": "Laser at AMC"
               },
               {
@@ -101644,8 +101904,18 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "5:45pm",
+            "showtime_id": "143790010",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
             "showtime_id": "143603950",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "143790012",
             "format": "Laser at AMC"
           },
           {
@@ -101764,7 +102034,7 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "10:40pm",
+                "showtime": "10:45pm",
                 "showtime_id": "143707246",
                 "format": "Dine-In Delivery to Seat"
               }
@@ -102021,7 +102291,7 @@
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:40pm",
+            "showtime": "10:45pm",
             "showtime_id": "143707246",
             "format": "Dine-In Delivery to Seat"
           }
@@ -102596,6 +102866,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:35pm",
+                "showtime_id": "143793184",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "141846701",
                 "format": "AMC Artisan Films"
@@ -102608,6 +102883,11 @@
               {
                 "showtime": "9:15pm",
                 "showtime_id": "143558546",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "143789858",
                 "format": "AMC Artisan Films"
               },
               {
@@ -102640,6 +102920,11 @@
               {
                 "showtime": "6:30pm",
                 "showtime_id": "140994085",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "143789859",
                 "format": "undefined"
               },
               {
@@ -102708,6 +102993,11 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "7:35pm",
+            "showtime_id": "143793184",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "8:00pm",
             "showtime_id": "141846701",
             "format": "AMC Artisan Films"
@@ -102720,6 +103010,11 @@
           {
             "showtime": "9:15pm",
             "showtime_id": "143558546",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "143789858",
             "format": "AMC Artisan Films"
           },
           {
@@ -102752,6 +103047,11 @@
           {
             "showtime": "6:30pm",
             "showtime_id": "140994085",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "143789859",
             "format": "undefined"
           },
           {
@@ -104706,6 +105006,11 @@
                 "showtime": "9:00pm",
                 "showtime_id": "143584213",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "143791897",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -104807,6 +105112,11 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "143584213",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "143791897",
             "format": "Laser at AMC"
           }
         ]
@@ -105051,89 +105361,89 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098854+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "11:10am",
-            "showtime_id": "143573357",
+            "showtime_id": "143573355",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:10pm",
-            "showtime_id": "143573513",
+            "showtime_id": "143573511",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "1:50pm",
-            "showtime_id": "141878026",
+            "showtime_id": "141878030",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "143573512",
+            "showtime_id": "143573510",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:35pm",
-            "showtime_id": "141878027",
+            "showtime_id": "141878019",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "143573515",
+            "showtime_id": "143573509",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141878028",
+            "showtime_id": "141878020",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "143573514",
+            "showtime_id": "143573508",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "143573369",
+            "showtime_id": "143573364",
             "format": "BigD at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141878029",
+            "showtime_id": "141878021",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "11:00am",
-            "showtime_id": "143573469",
+            "showtime_id": "143573468",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:35pm",
-            "showtime_id": "143573473",
+            "showtime_id": "143573467",
             "format": "undefined"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "143573472",
+            "showtime_id": "143573466",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "143573471",
+            "showtime_id": "143573465",
             "format": "undefined"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "143573470",
+            "showtime_id": "143573464",
             "format": "undefined"
           }
         ]
@@ -105225,6 +105535,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "143791922",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "143598024",
                 "format": "Dolby Cinema at AMC"
@@ -105232,6 +105547,11 @@
               {
                 "showtime": "9:20pm",
                 "showtime_id": "141854793",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "143791921",
                 "format": "AMC Artisan Films"
               },
               {
@@ -105273,7 +105593,7 @@
               }
             ]
           },
-          "collected_at": "2026-05-29T23:22:52.196385+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-29": {
@@ -105433,99 +105753,94 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "143562534",
+            "showtime": "10:30am",
+            "showtime_id": "143598091",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:00am",
-            "showtime_id": "143562485",
+            "showtime_id": "143562483",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "12:35pm",
-            "showtime_id": "143562535",
+            "showtime": "1:05pm",
+            "showtime_id": "143562527",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "1:35pm",
-            "showtime_id": "141854807",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "3:10pm",
-            "showtime_id": "143562524",
+            "showtime_id": "141854808",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "141854788",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "143562525",
+            "showtime_id": "141854791",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141854789",
+            "showtime_id": "141854792",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "143791922",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "143598023",
+            "showtime_id": "143598024",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:25pm",
-            "showtime_id": "143562526",
+            "showtime": "9:20pm",
+            "showtime_id": "141854793",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "141854790",
+            "showtime": "9:45pm",
+            "showtime_id": "143791921",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143562519",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143562493",
+            "showtime_id": "143562487",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "143598090",
-            "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "11:50am",
-            "showtime_id": "143562508",
+            "showtime_id": "143562505",
             "format": "undefined"
           },
           {
-            "showtime": "2:20pm",
-            "showtime_id": "141009494",
+            "showtime": "2:25pm",
+            "showtime_id": "141009495",
             "format": "undefined"
           },
           {
             "showtime": "4:55pm",
-            "showtime_id": "141009477",
+            "showtime_id": "141009480",
             "format": "undefined"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "141009475",
+            "showtime_id": "141009478",
             "format": "undefined"
           },
           {
             "showtime": "10:05pm",
-            "showtime_id": "141009476",
+            "showtime_id": "141009479",
             "format": "undefined"
           }
         ]
@@ -107627,6 +107942,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "9:15pm",
+                "showtime_id": "143793618",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "143552552",
                 "format": "Dolby Cinema at AMC"
@@ -107686,6 +108006,11 @@
           {
             "showtime": "7:45pm",
             "showtime_id": "141992160",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "143793618",
             "format": "AMC Artisan Films"
           },
           {
@@ -108461,6 +108786,16 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "6:15pm",
+                "showtime_id": "143790118",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "143790120",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "141983313",
                 "format": "AMC Artisan Films"
@@ -108530,6 +108865,16 @@
           {
             "showtime": "5:15pm",
             "showtime_id": "141983314",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "143790118",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "143790120",
             "format": "AMC Artisan Films"
           },
           {
@@ -108883,6 +109228,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "6:10pm",
+                "showtime_id": "143790125",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "6:40pm",
                 "showtime_id": "141861129",
                 "format": "AMC Artisan Films"
@@ -109012,6 +109362,11 @@
           {
             "showtime": "4:45pm",
             "showtime_id": "143593055",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "143790125",
             "format": "AMC Artisan Films"
           },
           {
@@ -109767,6 +110122,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "143790003",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "141697370",
                 "format": "AMC Artisan Films"
@@ -109774,6 +110134,16 @@
               {
                 "showtime": "7:40pm",
                 "showtime_id": "143600160",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "143790005",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "143790004",
                 "format": "AMC Artisan Films"
               },
               {
@@ -109785,6 +110155,11 @@
                 "showtime": "10:15pm",
                 "showtime_id": "143600227",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "143790006",
+                "format": "AMC Artisan Films"
               }
             ],
             "The Breadwinner": [
@@ -109799,7 +110174,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "7:30pm",
+                "showtime": "7:40pm",
                 "showtime_id": "141003191",
                 "format": "undefined"
               },
@@ -109844,6 +110219,11 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "6:00pm",
+            "showtime_id": "143790003",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "141697370",
             "format": "AMC Artisan Films"
@@ -109851,6 +110231,16 @@
           {
             "showtime": "7:40pm",
             "showtime_id": "143600160",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "143790005",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "143790004",
             "format": "AMC Artisan Films"
           },
           {
@@ -109862,6 +110252,11 @@
             "showtime": "10:15pm",
             "showtime_id": "143600227",
             "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "143790006",
+            "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
@@ -109876,7 +110271,7 @@
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
+            "showtime": "7:40pm",
             "showtime_id": "141003191",
             "format": "undefined"
           },
@@ -111086,74 +111481,84 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098691+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "143574061",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "1:15pm",
-            "showtime_id": "143574254",
+            "showtime_id": "143574253",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "143574069",
+            "showtime_id": "143574065",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "141787163",
+            "showtime_id": "141787165",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "143574068",
+            "showtime_id": "143574064",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141787162",
+            "showtime_id": "141787164",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "143574067",
+            "showtime_id": "143574063",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "143574255",
+            "showtime_id": "143574252",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143574066",
+            "showtime_id": "143574062",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "143574135",
+            "showtime": "11:30am",
+            "showtime_id": "143574133",
             "format": "undefined"
           },
           {
+            "showtime": "2:15pm",
+            "showtime_id": "143574131",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "141014610",
+            "showtime_id": "141014611",
             "format": "undefined"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141014622",
+            "showtime_id": "141014621",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143574134",
+            "showtime_id": "143574132",
             "format": "undefined"
           }
         ]
@@ -111288,6 +111693,11 @@
                 "showtime": "10:20pm",
                 "showtime_id": "143361146",
                 "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "143778014",
+                "format": "AMC Artisan Films"
               }
             ],
             "The Breadwinner": [
@@ -111318,54 +111728,69 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098864+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
+            "showtime": "10:10am",
+            "showtime_id": "143577257",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "2:00pm",
-            "showtime_id": "143361076",
+            "showtime_id": "143361154",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "143361077",
+            "showtime_id": "143361153",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "143361151",
+            "showtime": "7:30pm",
+            "showtime_id": "143361145",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "143361152",
+            "showtime": "10:20pm",
+            "showtime_id": "143361146",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "143778014",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "142437172",
+            "showtime": "10:00am",
+            "showtime_id": "143577204",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "143577247",
             "format": "undefined"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "141002352",
+            "showtime_id": "141002354",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "141002353",
+            "showtime": "7:25pm",
+            "showtime_id": "141002355",
             "format": "undefined"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "143577207",
+            "showtime": "10:10pm",
+            "showtime_id": "143577220",
             "format": "undefined"
           }
         ]
@@ -111632,6 +112057,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "143792083",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "143497768",
                 "format": "XL at AMC"
@@ -111742,6 +112172,11 @@
             "showtime": "8:00pm",
             "showtime_id": "143581898",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "143792083",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
@@ -112515,7 +112950,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "10:00pm",
+                "showtime": "10:30pm",
                 "showtime_id": "143561350",
                 "format": "undefined"
               }
@@ -112827,7 +113262,7 @@
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
+            "showtime": "10:30pm",
             "showtime_id": "143561350",
             "format": "undefined"
           }
@@ -113085,6 +113520,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:40pm",
+                "showtime_id": "143792318",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "141829198",
                 "format": "Laser at AMC"
@@ -113107,6 +113547,11 @@
               {
                 "showtime": "9:45pm",
                 "showtime_id": "141829197",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "143789930",
                 "format": "Laser at AMC"
               }
             ],
@@ -113197,6 +113642,11 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "6:40pm",
+            "showtime_id": "143792318",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "141829198",
             "format": "Laser at AMC"
@@ -113219,6 +113669,11 @@
           {
             "showtime": "9:45pm",
             "showtime_id": "141829197",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143789930",
             "format": "Laser at AMC"
           }
         ],
@@ -114071,6 +114526,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "143791895",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "141860539",
                 "format": "Laser at AMC"
@@ -114119,99 +114579,104 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.099325+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "11:00am",
-            "showtime_id": "141860537",
+            "showtime_id": "141860542",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "143677416",
+            "showtime_id": "143677412",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "143677342",
+            "showtime_id": "143677339",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "141860536",
+            "showtime_id": "141860541",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "143677417",
+            "showtime_id": "143677413",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "143677341",
+            "showtime_id": "143677338",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "141860535",
+            "showtime_id": "141860540",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "143677418",
+            "showtime_id": "143677414",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "143756624",
+            "showtime_id": "143791895",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141860534",
+            "showtime_id": "141860539",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "143756622",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143677419",
+            "showtime_id": "143677415",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "143677297",
+            "showtime_id": "143677296",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141860533",
+            "showtime_id": "141860538",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "143677387",
+            "showtime_id": "143677385",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "141010496",
+            "showtime_id": "141010498",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141010495",
+            "showtime_id": "141010497",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "143677386",
+            "showtime_id": "143677384",
             "format": "Laser at AMC"
           }
         ]
@@ -117225,7 +117690,7 @@
                 "format": "AMC Artisan Films"
               },
               {
-                "showtime": "7:50pm",
+                "showtime": "8:30pm",
                 "showtime_id": "143626138",
                 "format": "AMC Artisan Films"
               },
@@ -117252,6 +117717,11 @@
               {
                 "showtime": "10:35pm",
                 "showtime_id": "143626105",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "143790381",
                 "format": "AMC Artisan Films"
               }
             ],
@@ -117332,7 +117802,7 @@
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:50pm",
+            "showtime": "8:30pm",
             "showtime_id": "143626138",
             "format": "AMC Artisan Films"
           },
@@ -117359,6 +117829,11 @@
           {
             "showtime": "10:35pm",
             "showtime_id": "143626105",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "143790381",
             "format": "AMC Artisan Films"
           }
         ],
@@ -117909,6 +118384,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "9:30pm",
+                "showtime_id": "143792290",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "141876878",
                 "format": "Laser at AMC"
@@ -117994,6 +118474,11 @@
             "showtime": "9:00pm",
             "showtime_id": "143713981",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "143792290",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
@@ -119751,8 +120236,18 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "10:00pm",
+                "showtime_id": "143789872",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "143610587",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "143789874",
                 "format": "AMC Artisan Films"
               }
             ],
@@ -119833,8 +120328,18 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "10:00pm",
+            "showtime_id": "143789872",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "10:15pm",
             "showtime_id": "143610587",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "143789874",
             "format": "AMC Artisan Films"
           }
         ],
@@ -121356,6 +121861,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "143781797",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "143605921",
                 "format": "AMC Artisan Films"
@@ -121366,9 +121876,24 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "143789354",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "141842160",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "143791043",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "143781798",
+                "format": "AMC Artisan Films"
               }
             ],
             "The Breadwinner": [
@@ -121448,6 +121973,11 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "7:15pm",
+            "showtime_id": "143781797",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "143605921",
             "format": "AMC Artisan Films"
@@ -121458,9 +121988,24 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "9:00pm",
+            "showtime_id": "143789354",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "9:30pm",
             "showtime_id": "141842160",
             "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "143791043",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143781798",
+            "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
@@ -122010,6 +122555,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "6:15pm",
+                "showtime_id": "143792460",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "142212456",
                 "format": "AMC Artisan Films"
@@ -122084,6 +122634,11 @@
           {
             "showtime": "4:30pm",
             "showtime_id": "142212446",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "143792460",
             "format": "AMC Artisan Films"
           },
           {
@@ -122382,6 +122937,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "143791431",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "143593182",
                 "format": "AMC Artisan Films"
@@ -122392,8 +122952,23 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "143791438",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "143791432",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "141849530",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "143791434",
                 "format": "AMC Artisan Films"
               }
             ],
@@ -122479,6 +123054,11 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "7:45pm",
+            "showtime_id": "143791431",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "8:00pm",
             "showtime_id": "143593182",
             "format": "AMC Artisan Films"
@@ -122489,8 +123069,23 @@
             "format": "AMC Artisan Films"
           },
           {
+            "showtime": "9:00pm",
+            "showtime_id": "143791438",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "143791432",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "9:45pm",
             "showtime_id": "141849530",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "143791434",
             "format": "AMC Artisan Films"
           }
         ],
@@ -122909,13 +123504,18 @@
                 "format": "PRIME at AMC"
               },
               {
-                "showtime": "10:00pm",
+                "showtime": "9:50pm",
                 "showtime_id": "143698722",
                 "format": "Laser at AMC"
               },
               {
                 "showtime": "10:20pm",
                 "showtime_id": "143756339",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "143790020",
                 "format": "Laser at AMC"
               },
               {
@@ -122952,79 +123552,159 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.098481+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "5:05pm",
-            "showtime_id": "143756322",
+            "showtime": "10:30am",
+            "showtime_id": "143698732",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:40pm",
-            "showtime_id": "143577334",
+            "showtime": "11:10am",
+            "showtime_id": "141819985",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "143606257",
+            "showtime": "12:15pm",
+            "showtime_id": "143698749",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "143756331",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "143698731",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "143756336",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "141819984",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:40pm",
+            "showtime_id": "143756337",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "143698788",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "143698730",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "143756327",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "141819983",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "143756319",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "143698750",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "143698739",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "143489340",
+            "showtime_id": "143698729",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "143756325",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141820006",
+            "showtime_id": "141820008",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "143577335",
+            "showtime_id": "143756321",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "143489345",
+            "showtime": "9:00pm",
+            "showtime_id": "143491131",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "143510533",
+            "showtime": "9:50pm",
+            "showtime_id": "143698722",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "143577348",
+            "showtime": "10:20pm",
+            "showtime_id": "143756339",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:35pm",
-            "showtime_id": "143756333",
+            "showtime": "10:20pm",
+            "showtime_id": "143790020",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "143730192",
+            "showtime_id": "143698747",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "141006689",
+            "showtime": "11:00am",
+            "showtime_id": "143698713",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "143698653",
+            "showtime": "1:45pm",
+            "showtime_id": "143698712",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "141006692",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "143698714",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "141820009",
             "format": "Laser at AMC"
           }
         ]
@@ -129059,6 +129739,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "143760825",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "8:15pm",
                 "showtime_id": "143575093",
                 "format": "AMC Artisan Films"
@@ -129071,6 +129756,11 @@
               {
                 "showtime": "9:45pm",
                 "showtime_id": "141826238",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "143760826",
                 "format": "AMC Artisan Films"
               },
               {
@@ -129107,7 +129797,7 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.099948+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-29": {
@@ -129292,84 +129982,104 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "143618686",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "143575092",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "141826235",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "143575091",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "141826236",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "5:30pm",
-            "showtime_id": "143575086",
+            "showtime_id": "143575090",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "143575231",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "143758393",
+            "showtime_id": "143575223",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141826229",
+            "showtime_id": "141826237",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "143758391",
+            "showtime_id": "143760825",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143575084",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "143758395",
+            "showtime_id": "143575093",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "143575232",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "143758394",
+            "showtime_id": "143575224",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "141826230",
+            "showtime_id": "141826238",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "143758392",
+            "showtime_id": "143760826",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "143575085",
+            "showtime_id": "143575089",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "143575153",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "143575152",
+            "format": "undefined"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "141015313",
+            "showtime_id": "143575154",
             "format": "undefined"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "141015314",
+            "showtime_id": "143575155",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143575162",
+            "showtime_id": "143575151",
             "format": "undefined"
           }
         ]
@@ -129431,6 +130141,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:15pm",
+                "showtime_id": "143785788",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "142204024",
                 "format": "Laser at AMC"
@@ -129469,7 +130184,7 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.100016+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-30": {
@@ -129594,44 +130309,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "142204013",
+            "showtime": "11:00am",
+            "showtime_id": "143599627",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "143599483",
+            "showtime": "2:00pm",
+            "showtime_id": "143599457",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "142204035",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "143599456",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "142204025",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "143599455",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "143785788",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "142204012",
+            "showtime_id": "142204024",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "143599484",
+            "showtime": "10:40pm",
+            "showtime_id": "143599517",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "143599682",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "143599626",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "5:20pm",
-            "showtime_id": "141016947",
+            "showtime_id": "141016950",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "141016956",
+            "showtime_id": "141016957",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "143599631",
+            "showtime": "9:45pm",
+            "showtime_id": "143599479",
             "format": "Laser at AMC"
           }
         ]
@@ -131930,6 +132680,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "143766631",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "143740555",
                 "format": "Dolby Cinema at AMC"
@@ -131943,6 +132698,16 @@
                 "showtime": "9:00pm",
                 "showtime_id": "143497213",
                 "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "143790298",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "143765844",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "10:00pm",
@@ -131983,99 +132748,104 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.100332+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "143497212",
+            "showtime_id": "143497216",
             "format": "XL at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "141804423",
+            "showtime_id": "141804427",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "143497222",
+            "showtime_id": "143497215",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "141804424",
-            "format": "Laser at AMC"
+            "showtime_id": "141804428",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "143497221",
+            "showtime_id": "143497214",
             "format": "XL at AMC"
           },
           {
+            "showtime": "7:00pm",
+            "showtime_id": "143766631",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "143740554",
+            "showtime_id": "143740555",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141804425",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "143772732",
+            "showtime_id": "141804429",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "143497220",
+            "showtime_id": "143497213",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "143765843",
+            "showtime": "9:30pm",
+            "showtime_id": "143790298",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "143765844",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141804426",
+            "showtime_id": "141804430",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143616587",
+            "showtime_id": "143497201",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "143772733",
-            "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
+            "showtime": "10:45am",
+            "showtime_id": "143628665",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "12:30pm",
-            "showtime_id": "143616644",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "143616641",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "141008678",
+            "showtime_id": "141008680",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "141008679",
+            "showtime_id": "141008681",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "143616796",
+            "showtime_id": "143616795",
             "format": "Laser at AMC"
           }
         ]
@@ -132335,54 +133105,99 @@
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.100007+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "143628383",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "143628502",
+            "showtime": "11:00am",
+            "showtime_id": "143628494",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "141781149",
+            "showtime": "12:00pm",
+            "showtime_id": "141781141",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "143628497",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "141781142",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "143628496",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "142236975",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "142236971",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "143628375",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "143628495",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143628384",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "141781192",
+            "showtime_id": "141781144",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "143628457",
+            "showtime": "9:15pm",
+            "showtime_id": "143628376",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "141781208",
             "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "143628282",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "141007422",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "143628283",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "141007417",
+            "showtime_id": "141007421",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "143628290",
+            "showtime_id": "143628284",
             "format": "Laser at AMC"
           }
         ]
@@ -133458,69 +134273,69 @@
               }
             ]
           },
-          "collected_at": "2026-05-29T23:22:52.196469+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-30",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "143595012",
+            "showtime_id": "143595010",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "143020231",
+            "showtime_id": "143020235",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "143020234",
+            "showtime_id": "143020238",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "143020233",
+            "showtime_id": "143020237",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143594947",
+            "showtime_id": "143594945",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "143756109",
+            "showtime_id": "143756110",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "143020232",
+            "showtime_id": "143020236",
             "format": "AMC Artisan Films"
           }
         ],
         "The Breadwinner": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "143595000",
+            "showtime_id": "143594998",
             "format": "undefined"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "141005737",
+            "showtime_id": "141005739",
             "format": "undefined"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "141005736",
+            "showtime_id": "141005738",
             "format": "undefined"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "143594999",
+            "showtime_id": "143594997",
             "format": "undefined"
           }
         ]
@@ -134051,8 +134866,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "143791664",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "141812558",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "143778482",
                 "format": "Laser at AMC"
               },
               {
@@ -134061,13 +134886,28 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "143791665",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "143643074",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:30pm",
+                "showtime_id": "143791663",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "141812559",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "143791662",
                 "format": "Laser at AMC"
               },
               {
@@ -134093,18 +134933,18 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:00pm",
+                "showtime": "6:40pm",
                 "showtime_id": "140950909",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:40pm",
+                "showtime": "10:00pm",
                 "showtime_id": "140950912",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-05-28T23:49:41.100220+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-05-29": {
@@ -134279,64 +135119,129 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-05-29",
+      "show_date": "2026-05-31",
       "movies": {
         "Backrooms": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "143643097",
+            "showtime": "10:15am",
+            "showtime_id": "143642700",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "143752228",
+            "showtime": "11:05am",
+            "showtime_id": "143642919",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:05pm",
+            "showtime_id": "143643089",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:05pm",
+            "showtime_id": "143642696",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "141812561",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "143643091",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "143642697",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "141812560",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "143643090",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "143791664",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "141812550",
+            "showtime_id": "141812558",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "143778482",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "143502198",
+            "showtime_id": "143502199",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "143791665",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "143643076",
+            "showtime_id": "143643074",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "143752230",
+            "showtime_id": "143791663",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "141812551",
+            "showtime_id": "141812559",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "143791662",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "143643320",
+            "showtime_id": "143643319",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "143752229",
-            "format": "Laser at AMC"
           }
         ],
         "The Breadwinner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "140950901",
+            "showtime": "11:00am",
+            "showtime_id": "142926984",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "140950904",
+            "showtime": "1:40pm",
+            "showtime_id": "140950911",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "140950910",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "140950909",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "140950912",
             "format": "Laser at AMC"
           }
         ]
