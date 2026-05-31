@@ -144,6 +144,34 @@ class ScraperLoggingTest(unittest.TestCase):
             scraper.phase1_weekend_anchor(datetime(2026, 5, 6, 12, 0), full_weekend=True),
         )
 
+    def test_load_theatres_excludes_amc_classic_locations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            old_theatres_json = scraper.THEATRES_JSON
+            old_expansion_json = scraper.THEATRES_EXPANSION_JSON
+            scraper.THEATRES_JSON = tmp_path / "theatres-all.json"
+            scraper.THEATRES_EXPANSION_JSON = tmp_path / "theatres-expansion.json"
+            scraper.THEATRES_JSON.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC Empire 25", "slug": "amc-empire-25"},
+                    {"name": "AMC CLASSIC Foothills 12", "slug": "amc-classic-foothills-12"},
+                ]
+            }))
+            scraper.THEATRES_EXPANSION_JSON.write_text(json.dumps({
+                "ET": [
+                    {"name": "AMC CLASSIC Apple Blossom 12", "slug": "amc-classic-apple-blossom-12"},
+                    {"name": "AMC Garden State 16", "slug": "amc-garden-state-16"},
+                ]
+            }))
+            try:
+                theatres = scraper.load_theatres()
+            finally:
+                scraper.THEATRES_JSON = old_theatres_json
+                scraper.THEATRES_EXPANSION_JSON = old_expansion_json
+
+        names = [theatre["name"] for theatre in theatres["ET"]]
+        self.assertEqual(["AMC Empire 25", "AMC Garden State 16"], names)
+
     def test_polymarket_fetch_uses_public_search_for_low_volume_opening_markets(self):
         class FakeResponse:
             def __init__(self, payload):
@@ -1575,6 +1603,56 @@ class ScraperLoggingTest(unittest.TestCase):
             len({(row["name"], row["_date"]) for row in theatres}),
             len({(row["name"], row["_date"]) for row in ordered}),
         )
+
+    def test_regular_theatre_order_prioritizes_high_signal_locations(self):
+        theatres = [
+            {"name": "AMC A Low Signal 10", "dma": "Albany", "cohort": scraper.CORE_COHORT},
+            {"name": "AMC Empire 25", "dma": "New York", "cohort": scraper.CORE_COHORT},
+            {"name": "AMC Z Low Signal 8", "dma": "Zanesville", "cohort": scraper.CORE_COHORT},
+        ]
+
+        ordered = scraper.order_phase2_theatres_for_collection(
+            theatres,
+            snapshots_only=False,
+            signal_scores={
+                "AMC A Low Signal 10": 10.0,
+                "AMC Empire 25": 5000.0,
+                "AMC Z Low Signal 8": 5.0,
+            },
+        )
+
+        self.assertEqual("AMC Empire 25", ordered[0]["name"])
+
+    def test_regular_phase2_runtime_budget_scales_for_large_showtime_volume(self):
+        theatres = []
+        saved_links = {}
+        for theatre_idx in range(120):
+            name = f"AMC High Volume {theatre_idx}"
+            theatres.append({"name": name, "_tz": "ET", "_date": "2026-05-30"})
+            saved_links[name] = {
+                "dates": {
+                    "2026-05-30": {
+                        "movies": {
+                            "Backrooms": [
+                                {"showtime_id": f"{theatre_idx}-{show_idx}", "showtime": "10:00am"}
+                                for show_idx in range(12)
+                            ]
+                        }
+                    }
+                }
+            }
+
+        deadline = scraper.phase2_runtime_deadline_sec(
+            theatres,
+            saved_links,
+            ["Backrooms"],
+            {"ET": "2026-05-30"},
+            snapshots_only=False,
+            max_concurrent_tabs=3,
+            configured_deadline_sec=3600,
+        )
+
+        self.assertGreaterEqual(deadline, 9000)
 
     def test_snapshot_theatre_cap_selects_top_signal_theatres_across_timezones(self):
         theatres_map = {
