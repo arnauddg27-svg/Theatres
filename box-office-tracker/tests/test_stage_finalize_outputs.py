@@ -95,6 +95,44 @@ class StageFinalizeOutputsTest(unittest.TestCase):
             staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
             self.assertIn("box-office-tracker/data/seat-counts.csv", staged)
 
+    def test_stages_calibration_cleanup_outputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = self._repo(root)
+            data = repo / "box-office-tracker" / "data"
+            freeze_dir = data / "calibration-freezes"
+            freeze_dir.mkdir()
+            (data / "calibration.json").write_text('{"history":[]}\n')
+            (freeze_dir / "2026-05-01.json").write_text('{"history":[]}\n')
+            run(["git", "add", "."], cwd=repo)
+            run(["git", "commit", "-m", "add calibration"], cwd=repo)
+
+            summary = root / "summary.json"
+            marker = root / "markers.txt"
+            summary.write_text(json.dumps({"seat_added": 0, "pre_reservation_added": 0, "polymarket_added": 0}))
+            marker.write_text("")
+            (data / "calibration.json").write_text('{"history":[{"movie":"Backrooms"}]}\n')
+            (freeze_dir / "2026-05-01.json").write_text(
+                '{"history":[{"movie":"Backrooms"}]}\n'
+            )
+
+            run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--repo-root",
+                    str(repo),
+                    "--summary-file",
+                    str(summary),
+                    "--marker-file",
+                    str(marker),
+                ]
+            )
+
+            staged = run(["git", "diff", "--cached", "--name-only"], cwd=repo).stdout
+            self.assertIn("box-office-tracker/data/calibration.json", staged)
+            self.assertIn("box-office-tracker/data/calibration-freezes/2026-05-01.json", staged)
+
     def test_refuses_marker_only_commit(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -119,6 +157,38 @@ class StageFinalizeOutputsTest(unittest.TestCase):
             )
             self.assertNotEqual(0, result.returncode)
             self.assertIn("seat_added=1", result.stderr)
+
+    def test_strips_scrape_marker_when_cleaner_removed_all_net_seat_changes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repo = self._repo(root)
+            data = repo / "box-office-tracker" / "data"
+            (data / "calibration.json").write_text('{"history":[]}\n')
+            run(["git", "add", "."], cwd=repo)
+            run(["git", "commit", "-m", "add calibration"], cwd=repo)
+
+            summary = root / "summary.json"
+            marker = root / "markers.txt"
+            summary.write_text(json.dumps({"seat_added": 1, "pre_reservation_added": 0, "polymarket_added": 0}))
+            marker.write_text("data: box office ET scrape\ndata: box office ET scrape snapshot\n")
+            (data / "calibration.json").write_text('{"history":[{"movie":"Backrooms"}]}\n')
+
+            result = run(
+                [
+                    sys.executable,
+                    str(SCRIPT),
+                    "--repo-root",
+                    str(repo),
+                    "--summary-file",
+                    str(summary),
+                    "--marker-file",
+                    str(marker),
+                ],
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual("data: box office ET scrape snapshot\n", marker.read_text())
 
 
 if __name__ == "__main__":

@@ -195,6 +195,11 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("continue-on-error: true", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
+        self.assertIn("python scripts/clean_canonical_data.py", block)
+        self.assertLess(
+            block.index("python scripts/clean_canonical_data.py"),
+            block.index("run: python predict.py"),
+        )
         self.assertIn("--summary-file /tmp/box-office-merge-summary.json", block)
         self.assertIn("git status --short --", block)
         self.assertIn("box-office-tracker/data/seat-counts.csv", block)

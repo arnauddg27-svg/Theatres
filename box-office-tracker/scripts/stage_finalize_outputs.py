@@ -15,9 +15,11 @@ OUTPUT_FILES = [
     "box-office-tracker/data/seat-counts.csv",
     "box-office-tracker/data/pre-reservation-snapshots.csv",
     "box-office-tracker/data/polymarket-markets.csv",
+    "box-office-tracker/data/calibration.json",
     "box-office-tracker/data/seat-counts.xlsx",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
+CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"
 
 
 def _run(cmd: list[str], cwd: Path, check: bool = False) -> subprocess.CompletedProcess[str]:
@@ -49,6 +51,16 @@ def _is_staged(repo_root: Path, rel_path: str) -> bool:
     return result.returncode == 1
 
 
+def _has_unstaged_change(repo_root: Path, rel_path: str) -> bool:
+    result = _git(repo_root, "diff", "--quiet", "--", rel_path)
+    return result.returncode == 1
+
+
+def _has_any_staged_change(repo_root: Path) -> bool:
+    result = _git(repo_root, "diff", "--cached", "--quiet")
+    return result.returncode == 1
+
+
 def _fail_if_expected_change_not_staged(
     repo_root: Path,
     summary: dict[str, Any],
@@ -57,6 +69,12 @@ def _fail_if_expected_change_not_staged(
 ) -> None:
     expected = int(summary.get(count_key, 0) or 0)
     if expected > 0 and not _is_staged(repo_root, rel_path):
+        if not _has_unstaged_change(repo_root, rel_path):
+            print(
+                f"Finalize staging: {count_key}={expected}, but {rel_path} "
+                "has no net diff after cleanup."
+            )
+            return
         raise RuntimeError(
             f"merge summary says {count_key}={expected}, but {rel_path} is not staged"
         )
@@ -70,6 +88,20 @@ def _marker_file_has_scrape_markers(marker_file: Path) -> bool:
         and line.strip().endswith(" scrape")
         for line in marker_file.read_text().splitlines()
     )
+
+
+def _strip_scrape_markers(marker_file: Path) -> None:
+    if not marker_file.exists():
+        return
+    kept = [
+        line
+        for line in marker_file.read_text().splitlines()
+        if not (
+            line.strip().startswith("data: box office ")
+            and line.strip().endswith(" scrape")
+        )
+    ]
+    marker_file.write_text("\n".join(kept) + ("\n" if kept else ""))
 
 
 def main() -> int:
@@ -86,6 +118,7 @@ def main() -> int:
     try:
         for rel_path in OUTPUT_FILES:
             _stage_if_exists(repo_root, rel_path)
+        _stage_if_exists(repo_root, CALIBRATION_FREEZE_DIR)
         _stage_if_exists(repo_root, RUN_LOG_DIR)
 
         _fail_if_expected_change_not_staged(
@@ -116,6 +149,20 @@ def main() -> int:
         if _marker_file_has_scrape_markers(marker_file) and not _is_staged(
             repo_root, "box-office-tracker/data/seat-counts.csv"
         ):
+            if not _has_unstaged_change(repo_root, "box-office-tracker/data/seat-counts.csv"):
+                _strip_scrape_markers(marker_file)
+                print(
+                    "Finalize staging: stripped normal scrape markers because "
+                    "seat-counts.csv has no net staged data change."
+                )
+                if not _has_any_staged_change(repo_root):
+                    seat_added = int(summary.get("seat_added", 0) or 0)
+                    raise RuntimeError(
+                        f"scrape markers exist with seat_added={seat_added}, "
+                        "but no canonical data is staged; "
+                        "refusing to create marker-only commit"
+                    )
+                return 0
             raise RuntimeError(
                 "scrape markers exist, but seat-counts.csv is not staged; "
                 "refusing to create marker-only commit"

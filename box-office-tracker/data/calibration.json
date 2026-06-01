@@ -109,95 +109,6 @@
       }
     },
     {
-      "movie": "Animal Farm",
-      "weekend_of": "2026-05-01",
-      "date": "2026-05-05",
-      "predicted_mid": 2.3,
-      "predicted_low": 1.51,
-      "predicted_high": 3.75,
-      "actual_total": 3.3,
-      "daily_actuals": {
-        "Friday": 1.15,
-        "Saturday": 1.3,
-        "Sunday": 0.85
-      },
-      "daily_predictions": {
-        "Saturday": 0.83,
-        "Sunday": 0.53
-      },
-      "error_pct": -30.4,
-      "n_theatres": 292,
-      "n_days": 2,
-      "model_cohort_key": "core,expansion",
-      "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
-      "raw_daily_predictions": {
-        "Saturday": 0.83,
-        "Sunday": 0.55
-      },
-      "daily_theatre_counts": {
-        "Saturday": 49,
-        "Sunday": 287
-      },
-      "daily_coverage_ratios": {
-        "Saturday": 0.021,
-        "Sunday": 0.675
-      },
-      "coverage_ratio": 0.348,
-      "calibration_excluded_days": [
-        "Saturday",
-        "Sunday"
-      ],
-      "snapshot_daily_predictions": {
-        "Saturday": 0.11
-      },
-      "snapshot_daily_coverage_ratios": {
-        "Saturday": 0.021
-      },
-      "snapshot_daily_lead_buckets": {
-        "Saturday": "same_day"
-      }
-    },
-    {
-      "movie": "Hokum",
-      "weekend_of": "2026-05-01",
-      "date": "2026-05-05",
-      "predicted_mid": 8.27,
-      "predicted_low": 3.83,
-      "predicted_high": 17.76,
-      "actual_total": 6.43,
-      "daily_actuals": {
-        "Thursday": 0.9,
-        "Friday": 1.72,
-        "Saturday": 2.25,
-        "Sunday": 1.55
-      },
-      "daily_predictions": {
-        "Sunday": 2.13
-      },
-      "error_pct": 28.7,
-      "n_theatres": 72,
-      "n_days": 1,
-      "model_cohort_key": "core,expansion",
-      "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
-      "raw_daily_predictions": {
-        "Sunday": 2.21
-      },
-      "daily_theatre_counts": {
-        "Sunday": 72
-      },
-      "daily_coverage_ratios": {
-        "Sunday": 0.031
-      },
-      "coverage_ratio": 0.031,
-      "calibration_excluded_days": [
-        "Sunday"
-      ]
-    },
-    {
       "movie": "Mortal Kombat II",
       "weekend_of": "2026-05-08",
       "date": "2026-05-12",
@@ -738,40 +649,6 @@
           "Friday": 10.2,
           "Saturday": 22.4,
           "Sunday": 20.5
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Animal Farm",
-        "weekend_of": "2026-05-01",
-        "abs_error_pct": 30.3,
-        "n_theatres": 292,
-        "n_days": 2,
-        "coverage_ratio": 0.348,
-        "daily_coverage_ratios": {
-          "Saturday": 0.021,
-          "Sunday": 0.675
-        },
-        "daily_errors": {
-          "Saturday": 36.2,
-          "Sunday": 37.6
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Hokum",
-        "weekend_of": "2026-05-01",
-        "abs_error_pct": 28.6,
-        "n_theatres": 72,
-        "n_days": 1,
-        "coverage_ratio": 0.031,
-        "daily_coverage_ratios": {
-          "Sunday": 0.031
-        },
-        "daily_errors": {
-          "Sunday": 37.4
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
