@@ -3054,6 +3054,100 @@ def snapshot_preserved_phase1_fallback_gaps(poly_markets, fresh_links, merged_li
     ]
 
 
+def repairable_phase1_gaps(gaps):
+    return [
+        gap for gap in gaps
+        if phase1_target_date_is_repairable(gap["timezone"], gap["show_date"])
+    ]
+
+
+async def repair_regular_snapshot_preserved_fallbacks_async(
+        poly_markets, saved_links, snapshot_preserved_links,
+        groups, expected_date_sets):
+    """Repair fresh Phase 1 gaps before preserved snapshot links can mask them.
+
+    Preserved snapshot links are useful when AMC has already rolled a show date
+    off the public listing. For current/future show dates, though, they should
+    never be the first successful source for an active movie slice: rebuild
+    Phase 1 first, reload the canonical cache, and fail loudly if fresh links
+    are still missing.
+    """
+    if not snapshot_preserved_links:
+        return saved_links
+
+    merged_links = merge_snapshot_links_into_phase1_saved_links(
+        saved_links,
+        snapshot_preserved_links,
+    )
+    fallback_gaps = snapshot_preserved_phase1_fallback_gaps(
+        poly_markets,
+        saved_links,
+        merged_links,
+        groups,
+        expected_date_sets,
+    )
+    repairable_gaps = repairable_phase1_gaps(fallback_gaps)
+    if not repairable_gaps:
+        return saved_links
+
+    repair_slices = sorted({
+        (gap["timezone"], gap["show_date"]) for gap in repairable_gaps
+    })
+    print(
+        "\n🔧 Regular Phase 2 fresh-link repair: snapshot-preserved links "
+        "would mask active movie gap(s)."
+    )
+    for group, date_str in repair_slices:
+        missing = sorted({
+            gap["movie_title"]
+            for gap in repairable_gaps
+            if gap["timezone"] == group and gap["show_date"] == date_str
+        })
+        print(f"    - repairing {group} {date_str}: {', '.join(missing)}")
+        await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+
+    try:
+        with open(LINKS_JSON) as f:
+            reloaded = json.load(f).get("theatres", {})
+        saved_links = sanitize_phase1_links_for_current_window(reloaded)
+    except Exception as e:
+        fail_phase(f"❌ Could not reload repaired Phase 1 links: {e}")
+
+    merged_links = merge_snapshot_links_into_phase1_saved_links(
+        saved_links,
+        snapshot_preserved_links,
+    )
+    remaining_gaps = snapshot_preserved_phase1_fallback_gaps(
+        poly_markets,
+        saved_links,
+        merged_links,
+        groups,
+        expected_date_sets,
+    )
+    remaining_repairable = repairable_phase1_gaps(remaining_gaps)
+    if remaining_repairable:
+        print(
+            "\n❌ Fresh Phase 1 links are still missing after targeted repair; "
+            "not treating snapshot-preserved links as fresh for repairable "
+            "active movie slices."
+        )
+        for gap in remaining_repairable[:20]:
+            print(
+                "    - "
+                f"{gap['movie_title']} {gap['show_date']} {gap['timezone']}: "
+                f"{gap['fresh_theatres']}/{gap['required_theatres']} fresh theatres"
+            )
+        if len(remaining_repairable) > 20:
+            print(f"    ... and {len(remaining_repairable) - 20} more")
+        fail_phase(
+            "❌ Regular Phase 2 requires fresh Phase 1 links for current/future "
+            "active movie slices. Re-run collect-links or investigate AMC "
+            "showtime visibility before scraping."
+        )
+
+    return saved_links
+
+
 def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
                               min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                               required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -4131,6 +4225,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             theatre_metadata_by_name=theatre_metadata_by_name,
         )
         if snapshot_preserved_links:
+            if not test_max:
+                saved_links = await repair_regular_snapshot_preserved_fallbacks_async(
+                    poly_markets,
+                    saved_links,
+                    snapshot_preserved_links,
+                    groups_to_check,
+                    coverage_dates_by_group,
+                )
+                fresh_phase1_links = saved_links
             snapshot_link_count = count_phase1_showtime_links(snapshot_preserved_links)
             merged_links = merge_snapshot_links_into_phase1_saved_links(
                 saved_links,

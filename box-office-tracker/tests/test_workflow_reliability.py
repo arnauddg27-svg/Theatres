@@ -129,6 +129,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn('ENSURE_LINKS_FLAG=""', block)
         self.assertIn("SNAPSHOT_REPAIR_LINKS=1", block)
         self.assertIn('SNAPSHOT_REPAIR_FLAG="--repair-snapshot-links"', block)
+        self.assertIn("PHASE1_DEADLINE_SEC=2400", block)
+        self.assertIn("PHASE1_MAX_THEATRE_DATE_VISITS=500", block)
+        self.assertIn("phase1-repair-budget=${PHASE1_DEADLINE_SEC}s", block)
         self.assertIn('if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then', block)
         self.assertIn(
             "python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $SNAPSHOT_REPAIR_FLAG $ENSURE_LINKS_FLAG",

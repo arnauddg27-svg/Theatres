@@ -303,10 +303,12 @@ jobs:
             echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           else
             export PHASE2_THEATRE_TIMEOUT_SEC=180
+            export PHASE1_DEADLINE_SEC=2400
+            export PHASE1_MAX_THEATRE_DATE_VISITS=500
             export REGULAR_PHASE2_MIN_DEADLINE_SEC=9000
             export REGULAR_PHASE2_MAX_DEADLINE_SEC=10800
             export REGULAR_PHASE2_MIN_COVERAGE_RATIO=0.90
-            echo "Regular lane: deadline floor=${REGULAR_PHASE2_MIN_DEADLINE_SEC}s cap=${REGULAR_PHASE2_MAX_DEADLINE_SEC}s theatre-timeout=${PHASE2_THEATRE_TIMEOUT_SEC}s"
+            echo "Regular lane: deadline floor=${REGULAR_PHASE2_MIN_DEADLINE_SEC}s cap=${REGULAR_PHASE2_MAX_DEADLINE_SEC}s theatre-timeout=${PHASE2_THEATRE_TIMEOUT_SEC}s phase1-repair-budget=${PHASE1_DEADLINE_SEC}s"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
