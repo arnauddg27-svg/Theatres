@@ -276,8 +276,24 @@ def clean_calibration_json(path: Path, *, check: bool) -> CleanStats:
     return stats
 
 
+def canonical_data_dir(repo_root: Path) -> Path:
+    """Return the canonical data directory for either repo or tracker cwd.
+
+    The GitHub finalizer runs this script from ``box-office-tracker`` while
+    local/manual checks often run it from the repository root. Resolve both
+    layouts so the cleaner cannot silently inspect an empty nested path.
+    """
+    repo_layout = repo_root / "box-office-tracker" / "data"
+    if repo_layout.exists():
+        return repo_layout
+    tracker_layout = repo_root / "data"
+    if tracker_layout.exists():
+        return tracker_layout
+    return repo_layout
+
+
 def collect_stats(repo_root: Path, *, check: bool) -> list[CleanStats]:
-    data = repo_root / "box-office-tracker" / "data"
+    data = canonical_data_dir(repo_root)
     seat_result = clean_csv_file(data / "seat-counts.csv", date_col="date", check=check)
     canonical_url_movies = _canonical_movie_by_url(seat_result.rows, date_col="date")
     snapshot_result = clean_csv_file(

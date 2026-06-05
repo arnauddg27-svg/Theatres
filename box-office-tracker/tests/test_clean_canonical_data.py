@@ -19,6 +19,15 @@ def run_cleaner(repo_root: Path, *args: str) -> subprocess.CompletedProcess[str]
     )
 
 
+def run_cleaner_from(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, str(SCRIPT), *args],
+        cwd=cwd,
+        text=True,
+        capture_output=True,
+    )
+
+
 def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as fh:
@@ -206,6 +215,49 @@ class CleanCanonicalDataTest(unittest.TestCase):
 
             check_result = run_cleaner(repo, "--check")
             self.assertEqual(check_result.returncode, 0, check_result.stderr)
+
+    def test_cleans_when_launched_from_tracker_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            tracker = repo / "box-office-tracker"
+            data = tracker / "data"
+            seat_fields = [
+                "weekend_of",
+                "run_id",
+                "date",
+                "theatre_name",
+                "timezone",
+                "movie_title",
+                "showtime",
+                "auditorium_type",
+                "amc_seat_map_url",
+                "notes",
+            ]
+            write_csv(
+                data / "seat-counts.csv",
+                seat_fields,
+                [
+                    {
+                        "weekend_of": "2026-06-05",
+                        "run_id": "run",
+                        "date": "2026-06-04",
+                        "theatre_name": "AMC River Park Square 20",
+                        "timezone": "PT",
+                        "movie_title": "Scary Movie",
+                        "showtime": "7:30pm",
+                        "auditorium_type": "undefined",
+                        "amc_seat_map_url": "seat-url",
+                        "notes": "undefined @ 7:30pm",
+                    },
+                ],
+            )
+
+            result = run_cleaner_from(tracker)
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            cleaned = read_csv(data / "seat-counts.csv")
+            self.assertEqual("", cleaned[0]["auditorium_type"])
+            self.assertTrue(cleaned[0]["notes"].startswith("Unknown format @"))
 
 
 if __name__ == "__main__":

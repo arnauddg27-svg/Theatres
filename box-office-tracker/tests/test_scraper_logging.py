@@ -1368,6 +1368,70 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(["In the Grey"], [gap["movie_title"] for gap in gaps])
         self.assertEqual(["Obsession"], [market["movie_title"] for market in filtered])
 
+    def test_snapshot_preserved_fallback_gaps_are_reported_for_regular_phase2(self):
+        fresh_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ]
+                        }
+                    }
+                },
+            }
+        }
+        merged_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ],
+                            "Masters of the Universe": [
+                                {
+                                    "showtime": "8:00pm",
+                                    "showtime_id": "masters-pt-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                        }
+                    }
+                },
+            }
+        }
+        markets = [
+            {"movie_title": "Scary Movie"},
+            {"movie_title": "Masters of the Universe"},
+        ]
+
+        gaps = scraper.snapshot_preserved_phase1_fallback_gaps(
+            markets,
+            fresh_links,
+            merged_links,
+            ["PT"],
+            {"PT": ["2026-06-04"]},
+        )
+
+        self.assertEqual(
+            [
+                {
+                    "movie_title": "Masters of the Universe",
+                    "timezone": "PT",
+                    "show_date": "2026-06-04",
+                    "fresh_theatres": 0,
+                    "required_theatres": 1,
+                }
+            ],
+            gaps,
+        )
+
     def test_ensure_links_repairs_active_movie_gaps_even_when_coverage_is_high(self):
         with tempfile.TemporaryDirectory() as tmp:
             old_links_json = scraper.LINKS_JSON

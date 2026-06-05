@@ -195,7 +195,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("continue-on-error: true", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
-        self.assertIn("python scripts/clean_canonical_data.py", block)
+        self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)
         self.assertLess(
             block.index("python scripts/clean_canonical_data.py"),
             block.index("run: python predict.py"),

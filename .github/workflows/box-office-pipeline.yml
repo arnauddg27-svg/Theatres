@@ -420,7 +420,7 @@ jobs:
 
       - name: Clean canonical training data
         working-directory: box-office-tracker
-        run: python scripts/clean_canonical_data.py
+        run: python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"
 
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard

@@ -3021,6 +3021,39 @@ def warn_active_market_phase1_link_gaps(poly_markets, saved_links, groups, expec
     return gaps
 
 
+def snapshot_preserved_phase1_fallback_gaps(poly_markets, fresh_links, merged_links,
+                                            groups, expected_date_sets,
+                                            min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                            required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Fresh Phase 1 gaps that only pass because snapshot-preserved links exist."""
+    fresh_gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        fresh_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    if not fresh_gaps:
+        return []
+    merged_gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        merged_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    still_missing = {
+        (gap["movie_title"], gap["timezone"], gap["show_date"])
+        for gap in merged_gaps
+    }
+    return [
+        gap for gap in fresh_gaps
+        if (gap["movie_title"], gap["timezone"], gap["show_date"]) not in still_missing
+    ]
+
+
 def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
                               min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                               required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -4083,7 +4116,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
+    regular_snapshot_fallback_issues = []
     if not snapshots_only:
+        fresh_phase1_links = saved_links
         theatre_metadata_by_name = {
             theatre.get("name"): theatre
             for group_theatres in theatres_map.values()
@@ -4097,10 +4132,34 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         )
         if snapshot_preserved_links:
             snapshot_link_count = count_phase1_showtime_links(snapshot_preserved_links)
-            saved_links = merge_snapshot_links_into_phase1_saved_links(
+            merged_links = merge_snapshot_links_into_phase1_saved_links(
                 saved_links,
                 snapshot_preserved_links,
             )
+            fallback_gaps = snapshot_preserved_phase1_fallback_gaps(
+                poly_markets,
+                fresh_phase1_links,
+                merged_links,
+                groups_to_check,
+                coverage_dates_by_group,
+            )
+            if fallback_gaps:
+                print(
+                    "\n⚠️  Snapshot-preserved links are covering fresh Phase 1 "
+                    "active-movie gap(s):"
+                )
+                for gap in fallback_gaps[:20]:
+                    issue = (
+                        "Snapshot-preserved Phase 1 fallback: "
+                        f"{gap['movie_title']} {gap['show_date']} {gap['timezone']} "
+                        f"had {gap['fresh_theatres']}/{gap['required_theatres']} "
+                        "fresh theatres"
+                    )
+                    regular_snapshot_fallback_issues.append(issue)
+                    print(f"    - {issue}")
+                if len(fallback_gaps) > 20:
+                    print(f"    ... and {len(fallback_gaps) - 20} more")
+            saved_links = merged_links
             print(
                 "\n📎 Added "
                 f"{snapshot_link_count} snapshot-preserved showtime links "
@@ -4382,6 +4441,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     all_results = []
     all_issues = []
     all_issues.extend(snapshot_skipped_slice_issues)
+    all_issues.extend(regular_snapshot_fallback_issues)
     sem = asyncio.Semaphore(max_concurrent_tabs)
     write_lock = asyncio.Lock()
     snapshot_write_lock = asyncio.Lock()
