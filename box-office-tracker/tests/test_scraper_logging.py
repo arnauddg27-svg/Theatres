@@ -1613,6 +1613,86 @@ class ScraperLoggingTest(unittest.TestCase):
             self.assertIn("Masters of the Universe", issues[0])
             self.assertIn("preserved links were not used", issues[0])
 
+    def test_regular_phase2_drops_nonrepairable_preserved_fallbacks(self):
+        old_repairable = scraper.phase1_target_date_is_repairable
+        old_collect = scraper.run_collect_links_async
+        fresh_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ]
+                        },
+                    }
+                },
+            }
+        }
+        snapshot_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "Scary Movie": [
+                                {
+                                    "showtime": "7:00pm",
+                                    "showtime_id": "scary-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                            "Masters of the Universe": [
+                                {
+                                    "showtime": "8:00pm",
+                                    "showtime_id": "masters-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                        },
+                    }
+                },
+            }
+        }
+        collect_calls = []
+
+        async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            collect_calls.append((tz_group, target_date, full_weekend))
+
+        try:
+            scraper.phase1_target_date_is_repairable = lambda tz, date: False
+            scraper.run_collect_links_async = fake_collect
+
+            repaired, filtered_snapshot_links, issues = asyncio.run(
+                scraper.repair_regular_snapshot_preserved_fallbacks_async(
+                    [
+                        {"movie_title": "Scary Movie"},
+                        {"movie_title": "Masters of the Universe"},
+                    ],
+                    fresh_links,
+                    snapshot_links,
+                    ["PT"],
+                    {"PT": ["2026-06-04"]},
+                )
+            )
+        finally:
+            scraper.phase1_target_date_is_repairable = old_repairable
+            scraper.run_collect_links_async = old_collect
+
+        self.assertEqual([], collect_calls)
+        self.assertEqual(fresh_links, repaired)
+        filtered_movies = filtered_snapshot_links["AMC West"]["dates"]["2026-06-04"]["movies"]
+        self.assertIn("Scary Movie", filtered_movies)
+        self.assertNotIn("Masters of the Universe", filtered_movies)
+        self.assertEqual(1, len(issues))
+        self.assertIn("Masters of the Universe", issues[0])
+        self.assertIn("preserved links were not used", issues[0])
+
     def test_ensure_links_repairs_active_movie_gaps_even_when_coverage_is_high(self):
         with tempfile.TemporaryDirectory() as tmp:
             old_links_json = scraper.LINKS_JSON
