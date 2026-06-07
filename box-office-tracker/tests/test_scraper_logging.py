@@ -1368,6 +1368,59 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(["In the Grey"], [gap["movie_title"] for gap in gaps])
         self.assertEqual(["Obsession"], [market["movie_title"] for market in filtered])
 
+    def test_phase1_partial_movie_gaps_keep_linked_markets_for_date_sets(self):
+        saved_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-06": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-sat"}
+                            ]
+                        }
+                    },
+                    "2026-06-07": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-sun"}
+                            ]
+                        }
+                    },
+                },
+            }
+        }
+        markets = [
+            {"movie_title": "Scary Movie"},
+            {"movie_title": "Masters of the Universe"},
+            {"movie_title": "The Amazing Digital Circus: The Last Act"},
+        ]
+
+        gaps = scraper.active_market_phase1_link_gaps(
+            markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-06-06", "2026-06-07"]},
+        )
+        linked = scraper.linked_markets_for_phase1_saved_links(
+            markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-06-06", "2026-06-07"]},
+        )
+
+        self.assertEqual(["Scary Movie"], [market["movie_title"] for market in linked])
+        self.assertEqual(
+            [
+                ("Masters of the Universe", "2026-06-06"),
+                ("Masters of the Universe", "2026-06-07"),
+                ("The Amazing Digital Circus: The Last Act", "2026-06-06"),
+                ("The Amazing Digital Circus: The Last Act", "2026-06-07"),
+            ],
+            [(gap["movie_title"], gap["show_date"]) for gap in gaps],
+        )
+
     def test_snapshot_preserved_fallback_gaps_are_reported_for_regular_phase2(self):
         fresh_links = {
             "AMC West": {

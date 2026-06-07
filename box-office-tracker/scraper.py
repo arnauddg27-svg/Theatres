@@ -3392,6 +3392,36 @@ def filter_markets_with_phase1_links_for_date_sets(poly_markets, saved_links,
     return filtered
 
 
+def linked_markets_for_phase1_saved_links(poly_markets, saved_links, groups,
+                                          expected_date_sets,
+                                          min_theatres=1,
+                                          required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Return markets with at least one usable link in the requested TZ/date scope."""
+    expected_date_sets = expected_date_sets or {}
+    if any(len(dates or []) > 1 for dates in expected_date_sets.values()):
+        return filter_markets_with_phase1_links_for_date_sets(
+            poly_markets,
+            saved_links,
+            min_theatres=min_theatres,
+            groups=groups,
+            expected_date_sets=expected_date_sets,
+            required_cohorts=required_cohorts,
+        )
+    expected_dates = {
+        group: dates[0]
+        for group, dates in expected_date_sets.items()
+        if dates
+    }
+    return filter_markets_with_phase1_links(
+        poly_markets,
+        saved_links,
+        min_theatres=min_theatres,
+        groups=groups,
+        expected_dates=expected_dates,
+        required_cohorts=required_cohorts,
+    )
+
+
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
@@ -3926,13 +3956,29 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
         coverage_label = f"Phase 1 full-weekend links for {tz_group}"
     require_phase1_coverage(fresh_report, coverage_label)
-    require_active_market_phase1_links(
+    active_link_gaps = warn_active_market_phase1_link_gaps(
         poly_markets,
         links["theatres"],
         groups,
         collection_dates_by_group,
         coverage_label,
     )
+    linked_markets = linked_markets_for_phase1_saved_links(
+        poly_markets,
+        links["theatres"],
+        groups,
+        collection_dates_by_group,
+    )
+    if not linked_markets:
+        fail_phase(
+            f"❌ {coverage_label} has no active Polymarket movie links. "
+            "Run Phase 1 collect-links again before scraping."
+        )
+    if active_link_gaps:
+        print(
+            f"\n⚠️  {coverage_label}: preserving full active market list "
+            "while committing partial timezone links"
+        )
     expansion_report = phase1_link_coverage(
         links["theatres"], theatres_map, groups, expected_dates,
         required_cohorts=(EXPANSION_COHORT,),
@@ -3943,14 +3989,6 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             f"Phase 1 expansion links for {tz_group}",
             min_ratio=0.0,
         )
-    poly_markets = filter_markets_with_phase1_links(
-        poly_markets,
-        links["theatres"],
-        groups=groups,
-        expected_dates=expected_dates,
-    )
-    if not poly_markets:
-        fail_phase("❌ No active Polymarket box office markets have current AMC showtime links.")
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
     save_polymarket_data(poly_markets)
