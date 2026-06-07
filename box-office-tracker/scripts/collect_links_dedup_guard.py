@@ -22,6 +22,8 @@ from zoneinfo import ZoneInfo
 SHOWTIME_LINKS_PATH = "box-office-tracker/data/showtime-links.json"
 POLYMARKET_MARKETS_PATH = "box-office-tracker/data/polymarket-markets.csv"
 THEATRES_ALL_PATH = "box-office-tracker/data/theatres-all.json"
+THEATRE_COUNTS_PATH = "box-office-tracker/data/theatre-counts.json"
+MOVIE_METADATA_PATH = "box-office-tracker/data/movie-metadata.csv"
 
 TZ_TO_ZONE = {
     "ET": "America/New_York",
@@ -89,6 +91,29 @@ def _parse_date(value: str) -> datetime | None:
         return datetime.strptime(value, "%Y-%m-%d")
     except (TypeError, ValueError):
         return None
+
+
+def _unique_titles(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    titles: list[str] = []
+    for value in values:
+        cleaned = (value or "").strip()
+        key = cleaned.lower()
+        if not cleaned or key in seen:
+            continue
+        seen.add(key)
+        titles.append(cleaned)
+    return titles
+
+
+def _parse_iso_datetime(value: str) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (AttributeError, ValueError):
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
 
 
 def _opening_weekend_friday(dt: datetime) -> str:
@@ -159,14 +184,77 @@ def _phase1_expected_dates(tz: str, now: datetime | None = None) -> list[str]:
     return [current_date]
 
 
-def _active_movie_titles(repo_root: Path, market_since: str) -> list[str]:
+def _movie_metadata_weekends(repo_root: Path) -> dict[str, str]:
+    path = repo_root / MOVIE_METADATA_PATH
+    if not path.exists():
+        return {}
+    weekends: dict[str, str] = {}
+    try:
+        with path.open(newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                title = (row.get("movie") or row.get("movie_title") or "").strip()
+                weekend = (row.get("weekend_of") or "").strip()
+                if title and _parse_date(weekend):
+                    weekends[title.lower()] = weekend
+    except OSError as exc:
+        print(f"Could not read {MOVIE_METADATA_PATH}: {exc}; ignoring metadata filter")
+    return weekends
+
+
+def _tracked_titles_from_showtime_links(saved_links: dict, expected_weekend: str) -> list[str]:
+    if (saved_links.get("weekend_of") or saved_links.get("date")) != expected_weekend:
+        return []
+    titles: list[str] = []
+    theatres = saved_links.get("theatres") or {}
+    if not isinstance(theatres, dict):
+        return []
+    for entry in theatres.values():
+        if not isinstance(entry, dict):
+            continue
+        movies = entry.get("movies") or {}
+        if isinstance(movies, dict):
+            titles.extend(movies.keys())
+        dates = entry.get("dates") or {}
+        if not isinstance(dates, dict):
+            continue
+        for date_entry in dates.values():
+            date_movies = (date_entry or {}).get("movies") if isinstance(date_entry, dict) else {}
+            if isinstance(date_movies, dict):
+                titles.extend(date_movies.keys())
+    return _unique_titles(titles)
+
+
+def _tracked_titles_from_theatre_counts(repo_root: Path, expected_weekend: str) -> list[str]:
+    path = repo_root / THEATRE_COUNTS_PATH
+    if not path.exists():
+        return []
+    try:
+        with path.open(encoding="utf-8") as f:
+            payload = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"Could not read {THEATRE_COUNTS_PATH}: {exc}; ignoring requested-movie state")
+        return []
+    if not isinstance(payload, dict):
+        return []
+    updated_dt = _parse_iso_datetime(str(payload.get("_updated") or ""))
+    if not updated_dt or _opening_weekend_friday(updated_dt) != expected_weekend:
+        return []
+    requested = payload.get("_requested_movies") or []
+    if not isinstance(requested, list):
+        return []
+    return _unique_titles([str(title) for title in requested])
+
+
+def _csv_market_titles(repo_root: Path, expected_weekend: str, market_since: str) -> list[str]:
     path = repo_root / POLYMARKET_MARKETS_PATH
     if not path.exists():
-        print(f"{POLYMARKET_MARKETS_PATH} not found; running to refresh active links")
+        print(f"{POLYMARKET_MARKETS_PATH} not found; no CSV active-market fallback")
         return []
 
     since_dt = _parse_date(market_since)
-    titles: set[str] = set()
+    metadata_weekends = _movie_metadata_weekends(repo_root)
+    titles: list[str] = []
+    ignored_metadata_titles: list[str] = []
     with path.open(newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             title = (row.get("movie_title") or "").strip()
@@ -175,13 +263,44 @@ def _active_movie_titles(repo_root: Path, market_since: str) -> list[str]:
                 continue
             if since_dt and row_dt < since_dt:
                 continue
-            titles.add(title)
+            metadata_weekend = metadata_weekends.get(title.lower())
+            if metadata_weekend:
+                if metadata_weekend == expected_weekend:
+                    titles.append(title)
+                else:
+                    ignored_metadata_titles.append(title)
+                continue
+            if _opening_weekend_friday(row_dt) == expected_weekend:
+                titles.append(title)
+                continue
+            # Pre-opening rows are stamped with the observation date, not the
+            # movie's weekend. If no metadata disqualifies the title, keep it as
+            # a conservative active-slate candidate rather than letting a stale
+            # marker hide a newly added Polymarket movie.
+            titles.append(title)
 
     if not titles:
-        print(f"No active movie rows in {POLYMARKET_MARKETS_PATH} since {market_since}; running")
+        print(f"No usable movie rows in {POLYMARKET_MARKETS_PATH} since {market_since}")
         return []
 
-    return sorted(titles)
+    if ignored_metadata_titles:
+        print(
+            f"Ignoring {len(set(ignored_metadata_titles))} metadata-known "
+            f"out-of-weekend market title(s)"
+        )
+    return _unique_titles(titles)
+
+
+def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: str) -> list[str]:
+    saved_links = _load_showtime_links(repo_root)
+    titles: list[str] = []
+    titles.extend(_tracked_titles_from_showtime_links(saved_links, expected_weekend))
+    titles.extend(_tracked_titles_from_theatre_counts(repo_root, expected_weekend))
+    titles.extend(_csv_market_titles(repo_root, expected_weekend, market_since))
+    active = _unique_titles(titles)
+    if not active:
+        print(f"No active movie state found for weekend {expected_weekend}; running")
+    return active
 
 
 def _active_market_since(expected_dates: list[str]) -> str:
@@ -189,6 +308,12 @@ def _active_market_since(expected_dates: list[str]) -> str:
         return default_since_date()
     weekend = _opening_weekend_friday(datetime.strptime(expected_dates[0], "%Y-%m-%d"))
     return (datetime.strptime(weekend, "%Y-%m-%d") - timedelta(days=3)).strftime("%Y-%m-%d")
+
+
+def _expected_weekend(expected_dates: list[str]) -> str:
+    if not expected_dates:
+        return _opening_weekend_friday(datetime.now(timezone.utc))
+    return _opening_weekend_friday(datetime.strptime(expected_dates[0], "%Y-%m-%d"))
 
 
 def _load_showtime_links(repo_root: Path) -> dict:
@@ -316,6 +441,7 @@ def _expected_theatre_names(repo_root: Path, tz: str) -> list[str]:
     if not isinstance(theatres, list):
         return []
     names: list[str] = []
+    seen_names: set[str] = set()
     for theatre in theatres:
         if not isinstance(theatre, dict):
             continue
@@ -323,7 +449,10 @@ def _expected_theatre_names(repo_root: Path, tz: str) -> list[str]:
         slug = (theatre.get("slug") or "").strip()
         if not name or not slug or _is_amc_classic_theatre(name):
             continue
+        if name in seen_names:
+            continue
         names.append(name)
+        seen_names.add(name)
     return names
 
 
@@ -410,11 +539,12 @@ def should_skip(
     ]
     if link_commits:
         expected_dates = _phase1_expected_dates(tz, now)
+        expected_weekend = _expected_weekend(expected_dates)
         market_since = _active_market_since(expected_dates)
-        active_titles = _active_movie_titles(repo_root, market_since)
+        active_titles = _active_movie_titles(repo_root, expected_weekend, market_since)
         print(
             f"Dedup active-slate check for {tz}: "
-            f"{len(active_titles)} movie(s), market_since={market_since}, "
+            f"{len(active_titles)} movie(s), weekend={expected_weekend}, market_since={market_since}, "
             f"dates={','.join(expected_dates)}"
         )
         if _active_movie_link_coverage_ok(

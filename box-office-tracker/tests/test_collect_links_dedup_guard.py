@@ -45,6 +45,27 @@ def append_active_markets(repo, titles, date):
             )
 
 
+def write_movie_metadata(repo, rows):
+    metadata = repo / "box-office-tracker" / "data" / "movie-metadata.csv"
+    metadata.parent.mkdir(parents=True, exist_ok=True)
+    lines = [
+        "movie,weekend_of,genre,audience_type,franchise_type,rating,notes,"
+        "imdb_rating,imdb_votes,rt_audience_score,rt_audience_score_type,national_theatre_count\n"
+    ]
+    for movie, weekend_of in rows:
+        lines.append(f"{movie},{weekend_of},,,,,,,,,,\n")
+    metadata.write_text("".join(lines))
+
+
+def write_theatre_counts(repo, requested_movies, updated="2026-06-07T12:00:00+00:00"):
+    counts = repo / "box-office-tracker" / "data" / "theatre-counts.json"
+    counts.parent.mkdir(parents=True, exist_ok=True)
+    counts.write_text(json.dumps({
+        "_updated": updated,
+        "_requested_movies": requested_movies,
+    }))
+
+
 def write_showtime_links(repo, tz, titles_by_date, weekend_of="2026-06-05"):
     dates = {
         date: {
@@ -152,6 +173,115 @@ class CollectLinksDedupGuardTest(unittest.TestCase):
             run(["git", "commit", "-m", "data: box office PT collect-links"], repo)
 
             self.assertFalse(
+                should_skip(
+                    repo,
+                    "PT",
+                    False,
+                    "2000-01-01",
+                    now=datetime(2026, 6, 3, 18, 0, tzinfo=timezone.utc),
+                )
+            )
+
+    def test_known_future_market_row_does_not_expand_active_slate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            run(["git", "init"], repo)
+            run(["git", "config", "user.name", "Test"], repo)
+            run(["git", "config", "user.email", "test@example.com"], repo)
+
+            (repo / "README.md").write_text("init\n")
+            run(["git", "add", "."], repo)
+            run(["git", "commit", "-m", "init"], repo)
+
+            write_movie_metadata(repo, [
+                ("Scary Movie", "2026-06-05"),
+                ("Future Movie", "2026-06-12"),
+            ])
+            write_active_markets(repo, ["Scary Movie", "Future Movie"], date="2026-06-03")
+            write_showtime_links(
+                repo,
+                "PT",
+                {
+                    "2026-06-04": ["Scary Movie"],
+                    "2026-06-05": ["Scary Movie"],
+                    "2026-06-06": ["Scary Movie"],
+                    "2026-06-07": ["Scary Movie"],
+                },
+            )
+            run(["git", "add", "box-office-tracker/data/showtime-links.json"], repo)
+            run(["git", "commit", "-m", "data: box office PT collect-links"], repo)
+
+            self.assertTrue(
+                should_skip(
+                    repo,
+                    "PT",
+                    False,
+                    "2000-01-01",
+                    now=datetime(2026, 6, 3, 18, 0, tzinfo=timezone.utc),
+                )
+            )
+
+    def test_theatre_counts_requested_movies_are_active_slate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            run(["git", "init"], repo)
+            run(["git", "config", "user.name", "Test"], repo)
+            run(["git", "config", "user.email", "test@example.com"], repo)
+
+            (repo / "README.md").write_text("init\n")
+            run(["git", "add", "."], repo)
+            run(["git", "commit", "-m", "init"], repo)
+
+            write_active_markets(repo, ["Scary Movie"])
+            write_theatre_counts(repo, ["Scary Movie", "Masters of the Universe"])
+            write_showtime_links(
+                repo,
+                "PT",
+                {
+                    "2026-06-07": ["Scary Movie"],
+                },
+            )
+            run(["git", "add", "box-office-tracker/data/showtime-links.json"], repo)
+            run(["git", "commit", "-m", "data: box office PT collect-links"], repo)
+
+            self.assertFalse(
+                should_skip(
+                    repo,
+                    "PT",
+                    False,
+                    "2026-06-07",
+                    now=datetime(2026, 6, 7, 18, 0, tzinfo=timezone.utc),
+                )
+            )
+
+    def test_theatre_coverage_dedupes_duplicate_theatre_names(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            run(["git", "init"], repo)
+            run(["git", "config", "user.name", "Test"], repo)
+            run(["git", "config", "user.email", "test@example.com"], repo)
+
+            (repo / "README.md").write_text("init\n")
+            write_theatres(repo, "PT", ["AMC Test 1", "AMC Test 1"])
+            run(["git", "add", "."], repo)
+            run(["git", "commit", "-m", "init"], repo)
+
+            active_titles = ["Scary Movie"]
+            write_active_markets(repo, active_titles)
+            write_showtime_links(
+                repo,
+                "PT",
+                {
+                    "2026-06-04": active_titles,
+                    "2026-06-05": active_titles,
+                    "2026-06-06": active_titles,
+                    "2026-06-07": active_titles,
+                },
+            )
+            run(["git", "add", "box-office-tracker/data/showtime-links.json"], repo)
+            run(["git", "commit", "-m", "data: box office PT collect-links"], repo)
+
+            self.assertTrue(
                 should_skip(
                     repo,
                     "PT",
