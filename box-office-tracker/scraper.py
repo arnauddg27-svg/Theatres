@@ -360,8 +360,10 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
     require_links = saved_links is not None and requested_date_sets is not None and movie_titles
     theatres_by_group = {}
     availability_by_name = {}
+    dropped_by_group = {}
     for group in groups:
         rows = []
+        dropped = 0
         for theatre in theatres_map.get(group, []):
             availability = _snapshot_link_availability(
                 theatre,
@@ -371,11 +373,22 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
                 movie_titles,
             )
             if require_links and availability <= 0:
+                dropped += 1
                 continue
             availability_by_name[theatre.get("name", "")] = availability
             rows.append(theatre)
+        if dropped:
+            dropped_by_group[group] = dropped
         if rows:
             theatres_by_group[group] = rows
+    if require_links and dropped_by_group:
+        # Surface silently-excluded theatres so a shrunken snapshot sample is
+        # visible rather than masquerading as full coverage.
+        summary = ", ".join(f"{g}:{n}" for g, n in sorted(dropped_by_group.items()))
+        print(
+            f"   ⚠️  Snapshot selection dropped {sum(dropped_by_group.values())} theatre(s) "
+            f"with no current Phase 1 links ({summary})"
+        )
     if not theatres_by_group:
         return set()
     signal_scores = signal_scores if signal_scores is not None else snapshot_theatre_signal_scores()
@@ -532,6 +545,16 @@ try:
     SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = float(os.getenv("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO", "0.80"))
 except ValueError:
     SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO = 0.80
+# Below the MIN ratio (0.80) we still commit a partial snapshot with a warning so
+# the model can weight it by coverage. Below this FATAL floor the capture is so
+# sparse (e.g. a handful of theatres) that recording it as real data would be
+# misleading, so the snapshot fails instead. The default (0.25) only catches
+# truly-degenerate captures and preserves the established "partial-but-real"
+# commit behaviour; raise it via the env var to be stricter.
+try:
+    SNAPSHOT_FATAL_COVERAGE_RATIO = float(os.getenv("SNAPSHOT_FATAL_COVERAGE_RATIO", "0.25"))
+except ValueError:
+    SNAPSHOT_FATAL_COVERAGE_RATIO = 0.25
 PHASE1_FULL_WEEKEND_LINKS = _env_bool("PHASE1_FULL_WEEKEND_LINKS", True)
 try:
     PHASE1_MAX_THEATRE_DATE_VISITS = int(os.getenv("PHASE1_MAX_THEATRE_DATE_VISITS", "2000"))
@@ -784,13 +807,24 @@ def snapshot_coverage_failures(report, min_ratio=SNAPSHOT_MIN_THEATRE_COVERAGE_R
     return failures
 
 
-def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written):
-    """Only zero-row snapshots should fail solely because coverage is thin."""
+def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written,
+                                       fatal_ratio=SNAPSHOT_FATAL_COVERAGE_RATIO):
+    """Decide whether thin snapshot coverage should fail the run.
+
+    Fatal when either (a) no rows were captured at all, or (b) the overall
+    theatre-date coverage is below the FATAL floor — in which case the data is
+    too sparse to record honestly, so we fail rather than commit a misleadingly
+    partial snapshot. Coverage between the fatal floor and the MIN warning
+    threshold still commits (with a warning) so the model can weight it.
+    """
     if not report.get("expected_total"):
         return False
-    if snapshot_rows_written > 0 or report.get("observed_total", 0) > 0:
-        return False
-    return True
+    if snapshot_rows_written <= 0 and report.get("observed_total", 0) <= 0:
+        return True
+    ratio = report.get("ratio")
+    if ratio is not None and ratio < fatal_ratio:
+        return True
+    return False
 
 
 def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
@@ -4515,7 +4549,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 snapshot_report,
                 snapshot_rows_written,
             )
-            if not fatal_snapshot_failure:
+            if fatal_snapshot_failure:
+                print(
+                    f"\n❌ Snapshot coverage {snapshot_report['ratio']:.1%} is below the "
+                    f"fatal floor {SNAPSHOT_FATAL_COVERAGE_RATIO:.0%}; refusing to commit "
+                    "misleadingly sparse snapshot data."
+                )
+            else:
                 print(
                     "\n⚠️  Snapshot coverage is partial, but rows were captured; "
                     "committing partial snapshot data for the model to weight by coverage."

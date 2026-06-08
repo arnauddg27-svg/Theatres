@@ -2030,6 +2030,25 @@ class ScraperLoggingTest(unittest.TestCase):
             scraper.snapshot_coverage_failure_is_fatal(report, snapshot_rows_written=0)
         )
 
+    def test_snapshot_below_fatal_floor_is_fatal_even_with_rows(self):
+        # Degenerate coverage (e.g. a few % of theatres) must NOT commit as real
+        # data even though some rows were captured.
+        report = {"expected_total": 100, "observed_total": 15, "ratio": 0.15, "by_slice": {}}
+        self.assertTrue(
+            scraper.snapshot_coverage_failure_is_fatal(
+                report, snapshot_rows_written=30, fatal_ratio=0.25
+            )
+        )
+
+    def test_snapshot_above_fatal_floor_still_commits(self):
+        # Above the fatal floor (but below the MIN warning threshold) still commits.
+        report = {"expected_total": 100, "observed_total": 40, "ratio": 0.40, "by_slice": {}}
+        self.assertFalse(
+            scraper.snapshot_coverage_failure_is_fatal(
+                report, snapshot_rows_written=80, fatal_ratio=0.25
+            )
+        )
+
     def test_partial_snapshot_phase1_coverage_is_warning_when_some_links_exist(self):
         report = {
             "expected_total": 10,
