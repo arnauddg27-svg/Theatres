@@ -1331,6 +1331,56 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertGreater(adjusted, 3.0)
 
+    def test_evening_only_programmed_schedule_reduces_multiplier(self):
+        # A niche/non-family title AMC programmed evening-only (no matinees in the
+        # schedule) must NOT get the full 1.7x matinee-fill uplift — the captured
+        # evening shows already ARE essentially the full day. (Sheep/MK2 case.)
+        metadata = types.SimpleNamespace(audience_type="fan_driven", rating="R")
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.2,
+            target_metadata=metadata,
+            earliest_showtime_hour=17.0,
+            full_day_window_coverage_ratio=0.0,
+            scheduled_full_day_window_coverage_ratio=0.0,
+            scheduled_earliest_showtime_hour=17.0,
+        )
+        self.assertLess(adjusted, 1.7)
+        self.assertGreaterEqual(adjusted, 1.0)
+        self.assertAlmostEqual(predict.WEEKEND_EVENING_ONLY_PROGRAMMED_MULTIPLIER, adjusted)
+
+    def test_matinees_missed_keeps_full_multiplier(self):
+        # Schedule shows matinees ARE programmed (high scheduled full-day coverage,
+        # early scheduled first show) but the capture missed them -> keep 1.7x.
+        metadata = types.SimpleNamespace(audience_type="fan_driven", rating="R")
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.2,
+            target_metadata=metadata,
+            earliest_showtime_hour=17.0,
+            full_day_window_coverage_ratio=0.0,
+            scheduled_full_day_window_coverage_ratio=0.70,
+            scheduled_earliest_showtime_hour=10.0,
+        )
+        self.assertAlmostEqual(1.7, adjusted)
+
+    def test_no_schedule_signal_keeps_base_multiplier(self):
+        # Without a scheduled signal a late CAPTURED earliest showtime is
+        # ambiguous (evening-only vs missed matinees), so C4 does NOT fire and
+        # the base uplift is preserved unchanged.
+        metadata = types.SimpleNamespace(audience_type="fan_driven", rating="R")
+        adjusted = predict.daypart_adjusted_evening_to_daily(
+            1.7,
+            "Saturday",
+            avg_showings=2.2,
+            target_metadata=metadata,
+            earliest_showtime_hour=18.0,
+            full_day_window_coverage_ratio=0.0,
+        )
+        self.assertAlmostEqual(1.7, adjusted)
+
     def test_showtime_window_marker_without_daytime_rows_does_not_count_full_day(self):
         cal = {
             "history": [],

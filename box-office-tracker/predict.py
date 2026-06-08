@@ -197,6 +197,16 @@ WEEKEND_ADULT_DAYPART_COVERAGE_FLOOR = 0.70
 WEEKEND_LATE_SKEW_MIN_SHOWINGS = 2.5
 WEEKEND_LATE_SKEW_LATEST_START_HOUR = 18.0
 WEEKEND_SCHEDULE_PROFILE_MIN_THEATRES = 10
+# Evening-only-PROGRAMMED detection (C4). When AMC schedules a title with no
+# matinees, the captured 5pm-11pm shows already ARE essentially the full day, so
+# the 1.7x matinee-fill uplift would invent revenue that does not exist (the
+# Sheep Detectives / Mortal Kombat II over-prediction). A first scheduled (or, as
+# a historical fallback, captured) showtime at/after this hour means no matinees
+# were programmed; in that case the uplift collapses to a modest value covering
+# only shows just outside the captured window — no matinee fill.
+WEEKEND_EVENING_ONLY_EARLIEST_HOUR = 15.0
+WEEKEND_EVENING_ONLY_MAX_SCHEDULED_MATINEE_COVERAGE = 0.30
+WEEKEND_EVENING_ONLY_PROGRAMMED_MULTIPLIER = 1.30
 WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD = 0.85
 SAME_WEEK_ACTUAL_SEAT_SCALE_MIN = 0.65
 SAME_WEEK_ACTUAL_SEAT_SCALE_MAX = 2.25
@@ -807,10 +817,33 @@ def apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=None)
         details["same_week_actual_amc_ratio_anchors"] = amc_info["anchors"]
 
 
+def _weekend_schedule_is_evening_only(scheduled_full_day_coverage,
+                                      scheduled_earliest_hour):
+    """True when AMC programmed the title evening-only (no matinees exist).
+
+    Decides off the SCHEDULED signal only (from showtime-links Phase 1), which is
+    the authoritative discriminator between "no matinees were programmed"
+    (collapse the evening->daily uplift) and "matinees exist but the scrape
+    missed them" (keep the uplift). The captured earliest showtime is NOT used
+    here: a late captured first show is ambiguous — it can mean the schedule was
+    evening-only OR that a full-day schedule's matinees were simply missed — so
+    relying on it would wrongly collapse the uplift for missed-matinee weekends.
+    With no scheduled signal the function returns False (behavior unchanged).
+    """
+    sched_cov = _positive_float(scheduled_full_day_coverage)
+    if sched_cov is not None and sched_cov >= WEEKEND_EVENING_ONLY_MAX_SCHEDULED_MATINEE_COVERAGE:
+        # Matinees ARE on the schedule -> they exist (maybe missed), not absent.
+        return False
+    sched_hour = _positive_float(scheduled_earliest_hour)
+    return sched_hour is not None and sched_hour >= WEEKEND_EVENING_ONLY_EARLIEST_HOUR
+
+
 def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
                                       target_metadata=None,
                                       earliest_showtime_hour=None,
-                                      full_day_window_coverage_ratio=None):
+                                      full_day_window_coverage_ratio=None,
+                                      scheduled_full_day_window_coverage_ratio=None,
+                                      scheduled_earliest_showtime_hour=None):
     """Adjust partial-day scaling when showtime mix misses matinee demand.
 
     Friday/Saturday/Sunday can be partial 5pm-11pm samples or full-day
@@ -819,6 +852,11 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
     showtime-window marker only describes the intended link window; it is not
     enough by itself because AMC can drop earlier seat maps before the
     post-show scrape runs.
+
+    When AMC programmed the title evening-only (no matinees in the schedule), the
+    captured evening shows already ARE essentially the full day, so the matinee-
+    fill uplift collapses to WEEKEND_EVENING_ONLY_PROGRAMMED_MULTIPLIER instead of
+    inventing matinee revenue (C4).
     """
     if day_name not in {"Friday", "Saturday", "Sunday"}:
         return base_multiplier
@@ -828,6 +866,20 @@ def daypart_adjusted_evening_to_daily(base_multiplier, day_name, avg_showings,
         full_day_coverage = 0.0
     if full_day_coverage >= WEEKEND_FULL_DAY_MIN_THEATRE_COVERAGE:
         return 1.0
+    # C4: evening-only-PROGRAMMED titles get a collapsed uplift (no matinee fill),
+    # independent of genre. Only fires on positive evidence (a late scheduled or
+    # captured first show); absent that evidence, behavior is unchanged.
+    if _weekend_schedule_is_evening_only(
+        scheduled_full_day_window_coverage_ratio,
+        scheduled_earliest_showtime_hour,
+    ):
+        try:
+            base = float(base_multiplier)
+        except (TypeError, ValueError):
+            return base_multiplier
+        if base <= 0:
+            return base_multiplier
+        return min(base, WEEKEND_EVENING_ONLY_PROGRAMMED_MULTIPLIER)
     if target_metadata is None:
         return base_multiplier
 
@@ -6163,6 +6215,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             target_metadata=movie_metadata,
             earliest_showtime_hour=earliest_showtime_hour,
             full_day_window_coverage_ratio=full_day_window_coverage_ratio,
+            scheduled_full_day_window_coverage_ratio=scheduled_full_day_window_coverage_ratio,
+            scheduled_earliest_showtime_hour=schedule_profile.get("earliest_showtime_hour"),
         )
         theatre_results = []
         for t_name, captured_rows in captured_by_theatre.items():
