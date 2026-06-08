@@ -14,6 +14,12 @@ SHELL=/bin/bash
 PATH=/usr/local/bin:/usr/bin:/bin
 REPO_DIR=/opt/box-office-tracker
 GH_REPO=arnauddg27-svg/Theatres
+# GH_TOKEN_FILE should export GH_TOKEN=<token>. If the token is rejected (HTTP
+# 401/403) the watchdog now logs a distinct "token expired/invalid" error and
+# writes box-office-tracker/data/dispatch-token-error.marker (cleared on the next
+# successful dispatch) so the failure is visible instead of silent. To avoid
+# expiry entirely, point GH_TOKEN_FILE at a script/secret source that refreshes
+# the token before each run rather than a static file.
 GH_TOKEN_FILE=/root/box-office-dispatch/.env
 # /etc/cron.d variable assignments do not expand other variables, so keep this
 # path absolute instead of using $REPO_DIR here.

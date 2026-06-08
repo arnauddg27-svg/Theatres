@@ -3,6 +3,7 @@ import importlib.util
 import io
 import os
 import sys
+import tempfile
 import unittest
 import urllib.error
 from pathlib import Path
@@ -156,29 +157,71 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
                     fp=io.BytesIO(b""),
                 )
 
-        try:
-            os.environ["GITHUB_TOKEN"] = "fake-token"
-            schedule.GitHubClient = FakeClient
-            result = schedule.main([
-                "--mode",
-                "watchdog",
-                "--repo",
-                "owner/repo",
-                "--now",
-                "2026-05-24T04:00:00Z",
-                "--lookback-minutes",
-                "240",
-                "--fallback-grace-minutes",
-                "30",
-            ])
-        finally:
-            schedule.GitHubClient = original_client
-            if original_token is None:
-                os.environ.pop("GITHUB_TOKEN", None)
-            else:
-                os.environ["GITHUB_TOKEN"] = original_token
+        with tempfile.TemporaryDirectory() as tmp:
+            marker = Path(tmp) / "dispatch-token-error.marker"
+            try:
+                os.environ["GITHUB_TOKEN"] = "fake-token"
+                schedule.GitHubClient = FakeClient
+                result = schedule.main([
+                    "--mode",
+                    "watchdog",
+                    "--repo",
+                    "owner/repo",
+                    "--now",
+                    "2026-05-24T04:00:00Z",
+                    "--lookback-minutes",
+                    "240",
+                    "--fallback-grace-minutes",
+                    "30",
+                    "--token-error-marker",
+                    str(marker),
+                ])
+            finally:
+                schedule.GitHubClient = original_client
+                if original_token is None:
+                    os.environ.pop("GITHUB_TOKEN", None)
+                else:
+                    os.environ["GITHUB_TOKEN"] = original_token
 
-        self.assertEqual(1, result)
+            self.assertEqual(1, result)
+            # A 401 must now leave a visible marker (was previously silent).
+            self.assertTrue(marker.exists())
+            self.assertIn("401", marker.read_text())
+
+    def test_successful_dispatch_clears_stale_token_error_marker(self):
+        original_client = schedule.GitHubClient
+        original_token = os.environ.get("GITHUB_TOKEN")
+
+        class FakeClient:
+            def __init__(self, *, repo, token, api_url=schedule.API):
+                self.repo = repo
+
+            def request_json(self, method, path, body=None):
+                # No prior runs -> not a duplicate; dispatch "succeeds".
+                return {"workflow_runs": []}
+
+        with tempfile.TemporaryDirectory() as tmp:
+            marker = Path(tmp) / "dispatch-token-error.marker"
+            marker.write_text("stale token error from a previous run\n")
+            try:
+                os.environ["GITHUB_TOKEN"] = "fake-token"
+                schedule.GitHubClient = FakeClient
+                result = schedule.main([
+                    "--mode", "watchdog", "--repo", "owner/repo",
+                    "--now", "2026-05-24T04:00:00Z",
+                    "--lookback-minutes", "240", "--fallback-grace-minutes", "30",
+                    "--dry-run",
+                    "--token-error-marker", str(marker),
+                ])
+            finally:
+                schedule.GitHubClient = original_client
+                if original_token is None:
+                    os.environ.pop("GITHUB_TOKEN", None)
+                else:
+                    os.environ["GITHUB_TOKEN"] = original_token
+
+            self.assertEqual(0, result)
+            self.assertFalse(marker.exists())  # cleared on a working token
 
 
 if __name__ == "__main__":

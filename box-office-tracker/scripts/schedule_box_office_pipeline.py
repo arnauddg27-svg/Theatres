@@ -21,7 +21,59 @@ import sys
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
+
+
+# Default location for the token-error marker (repo-relative: box-office-tracker/data/).
+_DEFAULT_TOKEN_ERROR_MARKER = str(
+    Path(__file__).resolve().parent.parent / "data" / "dispatch-token-error.marker"
+)
+
+
+def _write_token_error_marker(path: str, detail: str) -> None:
+    """Record that dispatch is blocked by a bad GitHub token (visible signal)."""
+    if not path:
+        return
+    try:
+        marker = Path(path)
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text(
+            f"{dt.datetime.now(dt.timezone.utc).isoformat()} {detail}\n"
+        )
+    except OSError:
+        pass
+
+
+def _clear_token_error_marker(path: str) -> None:
+    """Clear the token-error marker once the token works again."""
+    if not path:
+        return
+    try:
+        Path(path).unlink()
+    except (FileNotFoundError, OSError):
+        pass
+
+
+def _report_http_error(exc: urllib.error.HTTPError, marker_path: str) -> int:
+    """Classify a GitHub API HTTPError, surface it loudly, and return exit code 1.
+
+    A 401/403 means the token is expired/invalid — the operator's "token
+    confusion" symptom, previously a SILENT `return 1`. Now it prints a distinct
+    message and writes a marker file so the failure is visible.
+    """
+    code = getattr(exc, "code", None)
+    if code in (401, 403):
+        msg = (
+            f"GitHub token expired or invalid (HTTP {code}); dispatch is disabled "
+            "until the token is refreshed."
+        )
+        print(f"❌ {msg}", file=sys.stderr)
+        _write_token_error_marker(marker_path, msg)
+    else:
+        reason = getattr(exc, "reason", "") or getattr(exc, "msg", "")
+        print(f"GitHub API request failed: HTTP {code} {reason}", file=sys.stderr)
+    return 1
 
 
 API = "https://api.github.com"
@@ -300,6 +352,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         default=os.environ.get("TOKEN_ENV", "GITHUB_TOKEN"),
         help="environment variable containing the GitHub token",
     )
+    parser.add_argument(
+        "--token-error-marker",
+        default=_DEFAULT_TOKEN_ERROR_MARKER,
+        help="file written when the GitHub token is rejected (401/403); cleared on success",
+    )
     return parser.parse_args(argv)
 
 
@@ -360,11 +417,15 @@ def main(argv: list[str] | None = None) -> int:
                 dry_run=args.dry_run,
             )
     except urllib.error.HTTPError as exc:
-        exc.close()
-        return 1
+        try:
+            return _report_http_error(exc, args.token_error_marker)
+        finally:
+            exc.close()
     except urllib.error.URLError as exc:
         print(f"GitHub API request failed: {exc}", file=sys.stderr)
         return 1
+    # The token successfully inspected/dispatched runs — clear any prior alert.
+    _clear_token_error_marker(args.token_error_marker)
     return 0
 
 
