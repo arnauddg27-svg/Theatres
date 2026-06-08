@@ -25,6 +25,19 @@ from typing import Any
 LOCK_BRANCH = "box-office-amc-lock"
 LOCK_FILE = "amc-lock.json"
 
+# Distinct from None: the GitHub run-status probe could not reach the API at all
+# (rate limit / outage), so we genuinely do not know whether the lock holder is
+# still running. This must NOT be treated as "holder is dead" — see _lock_is_stale.
+RUN_STATE_UNKNOWN = "unknown"
+
+# When the run-status probe is UNKNOWN, only break the lock after this multiple of
+# the normal TTL. A briefly-stuck lock is visible and self-heals at the hard
+# ceiling; breaking a still-active lock silently double-runs AMC (data corruption).
+AMC_LOCK_HARD_TTL_MULTIPLIER = float(os.environ.get("AMC_LOCK_HARD_TTL_MULTIPLIER", "3.0"))
+# Retry budget for the run-status probe before declaring UNKNOWN.
+AMC_LOCK_PROBE_ATTEMPTS = int(os.environ.get("AMC_LOCK_PROBE_ATTEMPTS", "3"))
+AMC_LOCK_PROBE_BACKOFF_SEC = float(os.environ.get("AMC_LOCK_PROBE_BACKOFF_SEC", "2.0"))
+
 
 def _run(
     cmd: list[str],
@@ -89,28 +102,46 @@ def _read_lock_metadata(repo_root: Path, branch: str) -> tuple[str, dict[str, An
         return sha, {}
 
 
-def _github_run_is_active(run_id: str | None) -> bool | None:
+def _github_run_is_active(run_id: str | None) -> bool | None | str:
+    """Tri-state run-status probe.
+
+    Returns:
+      True  — the run is confirmed active (queued/in_progress/...).
+      False — the run is confirmed NOT active (completed/cancelled/...).
+      None  — no run id recorded (the lock is genuinely orphaned).
+      RUN_STATE_UNKNOWN — the GitHub API could not be reached after retries, so
+        the holder's liveness is unknown. Callers must NOT treat this as "dead".
+
+    The distinction matters: the old code returned None for BOTH "no run id" and
+    "API failed", so a transient API outage on an over-TTL lock would break a
+    still-active lock and double-run AMC.
+    """
     if not run_id:
         return None
     cmd = ["gh", "run", "view", str(run_id), "--json", "status,conclusion"]
     repo = os.environ.get("GITHUB_REPOSITORY")
     if repo:
         cmd.extend(["--repo", repo])
-    result = _run(
-        cmd,
-        capture=True,
-    )
-    if result.returncode != 0:
-        return None
-    try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        return None
-    status = str(payload.get("status") or "")
-    return status in {"queued", "in_progress", "waiting", "requested", "pending"}
+    for attempt in range(max(1, AMC_LOCK_PROBE_ATTEMPTS)):
+        result = _run(cmd, capture=True)
+        if result.returncode == 0:
+            try:
+                payload = json.loads(result.stdout)
+            except json.JSONDecodeError:
+                payload = None
+            if payload is not None:
+                status = str(payload.get("status") or "")
+                return status in {"queued", "in_progress", "waiting", "requested", "pending"}
+        # API call failed or returned unparseable output — retry, then give up.
+        if attempt < AMC_LOCK_PROBE_ATTEMPTS - 1:
+            time.sleep(AMC_LOCK_PROBE_BACKOFF_SEC * (attempt + 1))
+    return RUN_STATE_UNKNOWN
 
 
-def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int) -> bool:
+def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int,
+                   hard_ttl_seconds: float | None = None) -> bool:
+    if hard_ttl_seconds is None:
+        hard_ttl_seconds = ttl_seconds * AMC_LOCK_HARD_TTL_MULTIPLIER
     created_at = metadata.get("created_at_epoch")
     try:
         age = time.time() - float(created_at)
@@ -120,9 +151,16 @@ def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int) -> bool:
         return False
 
     active = _github_run_is_active(str(metadata.get("run_id") or ""))
+    if active is True:
+        return False                      # holder confirmed alive — never break
+    if active is False:
+        return True                       # holder confirmed dead — safe to break
     if active is None:
-        return age >= ttl_seconds
-    return not active
+        return True                       # no run id => orphaned; age already >= ttl
+    # active == RUN_STATE_UNKNOWN: API unreachable, holder liveness unknown.
+    # Prefer a stuck lock (visible, hard-ceiling-bounded) over a double-run race;
+    # only break as a last resort once the hard ceiling is exceeded.
+    return age >= hard_ttl_seconds
 
 
 def _delete_lock(repo_root: Path, branch: str, expected_sha: str) -> bool:

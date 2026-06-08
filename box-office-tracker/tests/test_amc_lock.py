@@ -80,5 +80,80 @@ class AmcLockTest(unittest.TestCase):
             self.assertEqual("", refs.stdout.strip())
 
 
+def _load_amc_lock_module():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("amc_lock_under_test", SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class LockStaleTest(unittest.TestCase):
+    """The lock must never be broken while the holder might still be running."""
+
+    def setUp(self):
+        self.mod = _load_amc_lock_module()
+        self.ttl = 600  # seconds
+        # A lock created well past TTL but within the hard ceiling (3x TTL).
+        self.over_ttl = {"created_at_epoch": __import__("time").time() - (self.ttl + 60),
+                         "run_id": "999"}
+        # A lock created past the hard ceiling.
+        self.over_hard = {"created_at_epoch": __import__("time").time() - (self.ttl * 4),
+                          "run_id": "999"}
+
+    def _patch_probe(self, value):
+        self.mod._github_run_is_active = lambda run_id: value
+
+    def test_api_failure_over_ttl_does_not_break_active_lock(self):
+        # UNKNOWN (API unreachable) + age over TTL but under hard ceiling -> KEEP lock.
+        self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
+        self.assertFalse(self.mod._lock_is_stale(self.over_ttl, self.ttl))
+
+    def test_api_failure_over_hard_ceiling_breaks_lock(self):
+        # UNKNOWN but age beyond the hard ceiling -> break as last-resort deadlock guard.
+        self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
+        self.assertTrue(self.mod._lock_is_stale(self.over_hard, self.ttl))
+
+    def test_confirmed_inactive_breaks_lock(self):
+        # Run confirmed NOT active -> safe to break even just past TTL.
+        self._patch_probe(False)
+        self.assertTrue(self.mod._lock_is_stale(self.over_ttl, self.ttl))
+
+    def test_confirmed_active_keeps_lock(self):
+        # Run confirmed active -> never break, even past TTL.
+        self._patch_probe(True)
+        self.assertFalse(self.mod._lock_is_stale(self.over_ttl, self.ttl))
+
+    def test_missing_run_id_breaks_orphan_at_ttl(self):
+        # No run id recorded -> genuinely orphaned -> break once past TTL.
+        self._patch_probe(None)
+        orphan = {"created_at_epoch": __import__("time").time() - (self.ttl + 60),
+                  "run_id": ""}
+        self.assertTrue(self.mod._lock_is_stale(orphan, self.ttl))
+
+    def test_under_ttl_never_stale(self):
+        self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
+        fresh = {"created_at_epoch": __import__("time").time() - 10, "run_id": "999"}
+        self.assertFalse(self.mod._lock_is_stale(fresh, self.ttl))
+
+    def test_probe_returns_unknown_on_api_failure(self):
+        # When `gh` exits nonzero every attempt, the probe returns UNKNOWN (not None).
+        calls = {"n": 0}
+
+        def fake_run(cmd, capture=False, **kw):
+            calls["n"] += 1
+            return __import__("types").SimpleNamespace(returncode=1, stdout="", stderr="boom")
+
+        self.mod._run = fake_run
+        self.mod.AMC_LOCK_PROBE_ATTEMPTS = 2
+        self.mod.AMC_LOCK_PROBE_BACKOFF_SEC = 0.0  # no real sleeping in tests
+        self.assertEqual(self.mod.RUN_STATE_UNKNOWN, self.mod._github_run_is_active("999"))
+        self.assertEqual(2, calls["n"])  # retried
+
+    def test_probe_returns_none_for_missing_run_id(self):
+        self.assertIsNone(self.mod._github_run_is_active(""))
+
+
 if __name__ == "__main__":
     unittest.main()
