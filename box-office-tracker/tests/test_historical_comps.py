@@ -743,7 +743,7 @@ class HistoricalCompsTest(unittest.TestCase):
         )
         self.assertTrue(prediction["comp_model_excluded"])
         self.assertNotIn("seat_primary_mid_m", prediction)
-        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
 
     def test_prediction_context_infers_tentpole_from_showings_and_theatre_breadth(self):
         target = TargetMetadata(
@@ -859,7 +859,7 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertAlmostEqual(88.6, prediction["regression_mid_m"], places=6)
         self.assertAlmostEqual(88.6, prediction["model_forecast_mid_m"], places=6)
-        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_polymarket"])
         self.assertFalse(prediction["regression_uses_comps"])
         self.assertNotIn("headline_mid_m", prediction)
@@ -916,7 +916,7 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertNotIn("seat_primary_mid_m", prediction)
         self.assertAlmostEqual(55.0, prediction["blended_m"], places=6)
         self.assertAlmostEqual(60.0, prediction["model_forecast_mid_m"], places=6)
-        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_comps"])
 
     def test_comp_model_uses_friday_only_when_thursday_is_missing(self):
@@ -975,7 +975,7 @@ class HistoricalCompsTest(unittest.TestCase):
         self.assertFalse(prediction["seat_comp_has_thursday_evidence"])
         self.assertAlmostEqual(10.0, prediction["seat_comp_mid_m"], places=6)
         self.assertAlmostEqual(0.40, prediction["seat_comp_evidence_share"], places=6)
-        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_comps"])
 
     def test_non_thursday_comp_model_applies_feature_adjustment_to_midpoint(self):
@@ -1277,7 +1277,7 @@ class HistoricalCompsTest(unittest.TestCase):
             prediction["seat_comp_adjusted_mid_m"],
             prediction["seat_comp_prior_mid_m"],
         )
-        self.assertEqual("seat-only-regression", prediction["regression_source"])
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
         self.assertFalse(prediction["regression_uses_comps"])
         self.assertNotIn("seat_primary_mid_m", prediction)
 
@@ -1378,8 +1378,11 @@ class HistoricalCompsTest(unittest.TestCase):
 
         self.assertNotIn("social_signal_model_integrated", prediction)
         self.assertIn("RelishMix SMU 600M", prediction["seat_comp_audience_features"])
-        self.assertAlmostEqual(8.0, prediction["social_adjustment_m"], places=6)
-        self.assertIn("+social", prediction["regression_source"])
+        # Social signal is recorded as a comp audience feature but no longer
+        # mutates the published forecast (the social adjustment layer was removed
+        # in the seat_regression rewrite).
+        self.assertNotIn("social_adjustment_m", prediction)
+        self.assertEqual("seat-snapshot-regression", prediction["regression_source"])
 
     def test_default_model_cohorts_include_expansion_data(self):
         old_value = os.environ.pop("THEATRE_MODEL_COHORTS", None)
