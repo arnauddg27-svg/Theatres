@@ -622,18 +622,11 @@
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 1.0375,
     "day_weights": {
       "Thursday": 0.0726,
       "Friday": 0.3198,
       "Saturday": 0.3372,
       "Sunday": 0.2704
-    },
-    "day_scale_factors": {
-      "Thursday": 1.3225,
-      "Friday": 0.9749,
-      "Saturday": 0.8545,
-      "Sunday": 1.1681
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -856,18 +849,6 @@
       }
     ],
     "last_updated": "2026-05-26",
-    "snapshot_to_day_scale_factors": {
-      "Thursday": 1.0481,
-      "Friday": 1.2613,
-      "Saturday": 1.2147,
-      "Sunday": 1.2392
-    },
-    "snapshot_to_lead_scale_factors": {
-      "same_day": 1.2326,
-      "next_day": 0.9867,
-      "multi_day": 0.9725,
-      "long_lead": 1.0
-    },
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
@@ -906,6 +887,144 @@
           "support": 0.0
         }
       }
+    },
+    "regression": {
+      "version": 1,
+      "active_tier": "identity",
+      "day_shares": {
+        "Thursday": 0.1254682652659431,
+        "Friday": 0.30157503273973923,
+        "Saturday": 0.31797721066492235,
+        "Sunday": 0.2549794913293953
+      },
+      "trained_on": [
+        "Michael",
+        "The Devil Wears Prada 2",
+        "Animal Farm",
+        "Mortal Kombat II",
+        "The Sheep Detectives",
+        "Obsession",
+        "The Mandalorian and Grogu",
+        "I Love Boosters"
+      ],
+      "global_ratio": {
+        "log_ratio_mean": 0.01588223197612198,
+        "resid_scale": 0.3175489156461821
+      },
+      "identity": {
+        "seat_sd": 0.31794584306232004
+      },
+      "seat": {
+        "features": [
+          "intercept",
+          "log_seat",
+          "is_thu",
+          "is_fri",
+          "is_sat",
+          "one_minus_cov"
+        ],
+        "coef": [
+          0.1512154368526735,
+          0.958465775435513,
+          0.08901168437755516,
+          -0.17483069260502848,
+          -0.0592317776818732,
+          0.040592643101781824
+        ],
+        "prior": [
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lambda": 3.0,
+        "daily_resid_sd": 0.3347214324582178
+      },
+      "snapshot": {
+        "features": [
+          "intercept",
+          "log_snap",
+          "is_thu",
+          "is_fri",
+          "is_sat",
+          "lead_next_day",
+          "lead_multi_day",
+          "lead_long_lead"
+        ],
+        "coef": [
+          0.8703234852591304,
+          0.7307983263066714,
+          -0.047736873878477214,
+          0.08578374447490483,
+          0.0669573998888656,
+          -0.08895679911557065,
+          -0.12646023970045642,
+          0.0
+        ],
+        "prior": [
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lambda": 10.0,
+        "daily_resid_sd": 1.0082640801498468
+      },
+      "weekend": {
+        "log_half_width": 0.5022,
+        "resid_mean": 0.03814088400754834,
+        "df": 4,
+        "loo_hit_rate": 1.0,
+        "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
+        "loo_mae_pct": 26.46,
+        "loo_median_ae_pct": 19.0,
+        "n_movies": 5
+      },
+      "loo_detail": [
+        {
+          "movie": "Michael",
+          "pred_m": 93.37,
+          "actual_m": 97.0,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "Mortal Kombat II",
+          "pred_m": 46.02,
+          "actual_m": 38.5,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "The Sheep Detectives",
+          "pred_m": 23.62,
+          "actual_m": 15.09,
+          "observed_share": 0.874
+        },
+        {
+          "movie": "Obsession",
+          "pred_m": 14.94,
+          "actual_m": 17.2,
+          "observed_share": 0.681
+        },
+        {
+          "movie": "The Mandalorian and Grogu",
+          "pred_m": 75.54,
+          "actual_m": 81.0,
+          "observed_share": 1.0
+        }
+      ],
+      "bakeoff": {
+        "identity": 26.46,
+        "global_ratio": 32.39,
+        "regression": 28.74
+      },
+      "bakeoff_winner": "identity",
+      "meets_mae_target": false
     }
   }
 }

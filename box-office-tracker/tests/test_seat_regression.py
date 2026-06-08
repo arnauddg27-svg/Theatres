@@ -1,0 +1,386 @@
+# tests/test_seat_regression.py
+import unittest
+from pathlib import Path
+import sys
+import types
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.modules.setdefault("requests", types.SimpleNamespace(get=None))
+
+from math import log, exp
+
+import seat_regression as sr
+
+
+class TestConstants(unittest.TestCase):
+    def test_constants_present(self):
+        self.assertEqual(sr.COVERAGE_FLOOR, 0.60)
+        self.assertEqual(sr.OPENING_DAYS, ("Thursday", "Friday", "Saturday", "Sunday"))
+        self.assertEqual(sr.MIN_WEEKEND_CV_DAYS, 2)
+        # t_{0.95, df} table for two-sided 90% interval
+        self.assertAlmostEqual(sr.t_quantile_95(5), 2.015, places=3)
+        self.assertAlmostEqual(sr.t_quantile_95(1), 6.314, places=3)
+        self.assertAlmostEqual(sr.t_quantile_95(100), 1.660, places=2)  # ~normal
+
+
+class TestRidge(unittest.TestCase):
+    def test_solve_identity(self):
+        # 2x2 solve: [[2,0],[0,4]] x = [2,8] -> [1,2]
+        x = sr._solve([[2.0, 0.0], [0.0, 4.0]], [2.0, 8.0])
+        self.assertAlmostEqual(x[0], 1.0, places=9)
+        self.assertAlmostEqual(x[1], 2.0, places=9)
+
+    def test_ridge_recovers_line_with_unit_slope_prior(self):
+        # y = 0.5 + 1.0*x exactly; intercept unpenalized, slope prior=1.
+        # With perfect data and any lambda, slope should stay ~1, intercept ~0.5.
+        X = [[1.0, 0.0], [1.0, 1.0], [1.0, 2.0], [1.0, 3.0]]
+        y = [0.5, 1.5, 2.5, 3.5]
+        w = [1.0, 1.0, 1.0, 1.0]
+        beta = sr.weighted_ridge(X, y, w, prior=[0.0, 1.0],
+                                 penalize=[0, 1], l2=1.0)
+        self.assertAlmostEqual(beta[1], 1.0, places=6)
+        self.assertAlmostEqual(beta[0], 0.5, places=6)
+
+    def test_ridge_shrinks_slope_toward_one_when_noisy(self):
+        # Slope of raw OLS would be ~2; with strong prior=1 + big lambda it shrinks toward 1.
+        X = [[1.0, 0.0], [1.0, 1.0]]
+        y = [0.0, 2.0]   # OLS slope = 2
+        beta = sr.weighted_ridge(X, y, [1.0, 1.0], prior=[0.0, 1.0],
+                                 penalize=[0, 1], l2=100.0)
+        self.assertLess(beta[1], 1.5)   # pulled toward prior 1
+        self.assertGreater(beta[1], 1.0)
+
+
+class TestTrainingRows(unittest.TestCase):
+    def _history(self):
+        return [
+            {  # good movie: 2 admissible seat-days (Thu, Sun), Fri below floor
+                "movie": "A", "weekend_of": "2026-01-02", "actual_total": 40.0,
+                "raw_daily_predictions": {"Thursday": 5.0, "Friday": 10.0, "Sunday": 8.0},
+                "daily_actuals": {"Thursday": 6.0, "Friday": 9.0, "Sunday": 9.0},
+                "daily_coverage_ratios": {"Thursday": 1.0, "Friday": 0.40, "Sunday": 0.90},
+                "snapshot_daily_predictions": {"Sunday": 7.5},
+                "snapshot_daily_lead_buckets": {"Sunday": "same_day"},
+            },
+            {  # unusable: 1 admissible day only
+                "movie": "B", "weekend_of": "2026-01-09", "actual_total": 2.0,
+                "raw_daily_predictions": {"Sunday": 2.0},
+                "daily_actuals": {"Sunday": 1.5},
+                "daily_coverage_ratios": {"Sunday": 0.03},
+            },
+        ]
+
+    def test_seat_rows_respect_coverage_floor(self):
+        rows = sr.build_seat_rows(self._history())
+        # A: Thu(1.0) and Sun(0.90) pass; Fri(0.40) excluded. B: Sun(0.03) excluded.
+        keys = {(r["movie"], r["day"]) for r in rows}
+        self.assertEqual(keys, {("A", "Thursday"), ("A", "Sunday")})
+
+    def test_seat_row_fields_and_weight(self):
+        rows = sr.build_seat_rows(self._history())
+        thu = next(r for r in rows if r["day"] == "Thursday")
+        self.assertAlmostEqual(thu["log_seat"], log(5.0))
+        self.assertAlmostEqual(thu["log_actual"], log(6.0))
+        self.assertAlmostEqual(thu["coverage"], 1.0)
+        self.assertAlmostEqual(thu["weight"], 1.0)   # weight == coverage
+
+    def test_snapshot_rows(self):
+        rows = sr.build_snapshot_rows(self._history())
+        keys = {(r["movie"], r["day"]) for r in rows}
+        self.assertEqual(keys, {("A", "Sunday")})
+        r = rows[0]
+        self.assertAlmostEqual(r["log_snap"], log(7.5))
+        self.assertEqual(r["lead_bucket"], "same_day")
+
+    def test_weekend_cv_movies(self):
+        movies = sr.weekend_cv_movies(self._history())
+        self.assertEqual(movies, ["A"])   # B has <2 admissible days
+
+
+class TestFeatures(unittest.TestCase):
+    def test_seat_features(self):
+        # [intercept, log_seat, is_thu, is_fri, is_sat, one_minus_cov]; Sunday baseline
+        v = sr.seat_features(log_seat=2.0, day="Friday", coverage=0.8)
+        self.assertEqual(v, [1.0, 2.0, 0.0, 1.0, 0.0, 0.2])
+        v2 = sr.seat_features(log_seat=1.0, day="Sunday", coverage=1.0)
+        self.assertEqual(v2, [1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+        self.assertEqual(sr.SEAT_PRIOR, [0.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+        self.assertEqual(sr.SEAT_PENALIZE, [0, 1, 1, 1, 1, 1])
+
+    def test_snapshot_features(self):
+        # [intercept, log_snap, is_thu, is_fri, is_sat, lead_next, lead_multi, lead_long]
+        # same_day is the lead baseline
+        v = sr.snapshot_features(log_snap=1.5, day="Thursday", lead_bucket="next_day")
+        self.assertEqual(v, [1.0, 1.5, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+        v2 = sr.snapshot_features(log_snap=1.5, day="Sunday", lead_bucket="same_day")
+        self.assertEqual(v2, [1.0, 1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+
+class TestFitOne(unittest.TestCase):
+    def test_recovers_planted_relationship(self):
+        # actual = exp(0.3) * seat^1.0 exactly, across days -> intercept 0.3, slope 1.
+        rows = []
+        for day, s in [("Thursday", 2.0), ("Friday", 10.0), ("Saturday", 12.0),
+                       ("Sunday", 8.0), ("Friday", 5.0), ("Sunday", 20.0)]:
+            rows.append({"day": day, "log_seat": log(s),
+                         "log_actual": 0.3 + log(s), "coverage": 1.0, "weight": 1.0})
+        coef = sr.fit_seat(rows, l2=0.1)
+        # predicted log-mean for a Sunday with log_seat=log(10) ~ 0.3 + log(10)
+        pred = sr.predict_log(coef, sr.seat_features(log(10.0), "Sunday", 1.0))
+        self.assertAlmostEqual(pred, 0.3 + log(10.0), places=2)
+
+    def test_fit_seat_handles_empty(self):
+        self.assertIsNone(sr.fit_seat([], l2=1.0))
+
+
+class TestLOO(unittest.TestCase):
+    def _rows(self):
+        # 3 movies, clean unit-slope relationship with intercept 0.2
+        rows = []
+        plan = {"A": [("Thursday", 3.0), ("Sunday", 9.0)],
+                "B": [("Friday", 8.0), ("Saturday", 11.0)],
+                "C": [("Thursday", 2.0), ("Sunday", 7.0)]}
+        for movie, days in plan.items():
+            for day, s in days:
+                rows.append({"movie": movie, "day": day, "log_seat": log(s),
+                             "log_actual": 0.2 + log(s), "coverage": 1.0, "weight": 1.0})
+        return rows
+
+    def test_loo_returns_lambda_and_resid_sd(self):
+        best_l2, resid_sd, n = sr.loo_select(
+            self._rows(), sr.fit_seat,
+            lambda coef, r: sr.predict_log(coef, sr.seat_features(r["log_seat"], r["day"], r["coverage"])),
+        )
+        self.assertIn(best_l2, sr.LAMBDA_GRID)
+        self.assertLess(resid_sd, 0.05)   # near-perfect data -> tiny residuals
+        self.assertEqual(n, 6)
+
+    def test_loo_handles_single_movie(self):
+        rows = [r for r in self._rows() if r["movie"] == "A"]
+        out = sr.loo_select(rows, sr.fit_seat,
+                            lambda coef, r: sr.predict_log(coef, sr.seat_features(r["log_seat"], r["day"], r["coverage"])))
+        self.assertIsNotNone(out)   # degrades gracefully, no crash
+
+
+class TestCombine(unittest.TestCase):
+    def test_inverse_variance_combine(self):
+        # two sources: logmean 1.0 (var 0.04) and 2.0 (var 0.01)
+        mean, var = sr.combine_sources([(1.0, 0.04), (2.0, 0.01)])
+        # precision-weighted: w1=25, w2=100 -> (25*1+100*2)/125 = 1.8 ; var=1/125
+        self.assertAlmostEqual(mean, 1.8, places=6)
+        self.assertAlmostEqual(var, 1.0 / 125.0, places=6)
+
+    def test_single_source(self):
+        self.assertEqual(sr.combine_sources([(1.5, 0.04)]), (1.5, 0.04))
+
+    def test_no_source(self):
+        self.assertIsNone(sr.combine_sources([]))
+
+    def test_seat_variance_inflated_by_coverage(self):
+        base = 0.09
+        # lower coverage -> larger variance
+        v_full = sr.inflate_variance(base, coverage=1.0)
+        v_partial = sr.inflate_variance(base, coverage=0.6)
+        self.assertAlmostEqual(v_full, base, places=9)
+        self.assertGreater(v_partial, v_full)
+
+
+class TestWeekend(unittest.TestCase):
+    def test_learn_day_shares_normalized(self):
+        hist = [
+            {"daily_actuals": {"Thursday": 1.0, "Friday": 3.0, "Saturday": 4.0, "Sunday": 2.0}},
+            {"daily_actuals": {"Friday": 3.0, "Saturday": 3.0, "Sunday": 4.0}},
+        ]
+        shares = sr.learn_day_shares(hist)
+        self.assertAlmostEqual(sum(shares.values()), 1.0, places=6)
+        for d in sr.OPENING_DAYS:
+            self.assertIn(d, shares)
+            self.assertGreater(shares[d], 0.0)
+
+    def test_full_weekend_sum(self):
+        shares = {"Thursday": 0.1, "Friday": 0.3, "Saturday": 0.35, "Sunday": 0.25}
+        # all four days observed -> weekend = plain sum, no inflation
+        per_day = {d: (10.0, 0.01) for d in sr.OPENING_DAYS}  # (dollars_m, log_var)
+        mid, log_var, obs_share = sr.assemble_weekend(per_day, shares)
+        self.assertAlmostEqual(mid, 40.0, places=6)
+        self.assertAlmostEqual(obs_share, 1.0, places=6)
+
+    def test_partial_weekend_extrapolates_and_inflates(self):
+        shares = {"Thursday": 0.1, "Friday": 0.3, "Saturday": 0.35, "Sunday": 0.25}
+        per_day = {"Thursday": (10.0, 0.01)}   # only Thursday in hand (share 0.1)
+        mid, log_var, obs_share = sr.assemble_weekend(per_day, shares)
+        self.assertAlmostEqual(obs_share, 0.1, places=6)
+        self.assertAlmostEqual(mid, 10.0 / 0.1, places=4)   # 100
+        # variance inflated ~ 1/obs_share vs a fully-observed equivalent
+        _, log_var_full, _ = sr.assemble_weekend({d: (10.0, 0.01) for d in sr.OPENING_DAYS}, shares)
+        self.assertGreater(log_var, log_var_full)
+
+
+class TestInterval(unittest.TestCase):
+    def test_interval_from_half_width(self):
+        # mid 50, log half-width 0.40, full observation, zero bias
+        mid, low, high = sr.weekend_interval(50.0, log_half_width=0.40,
+                                             observed_share=1.0, resid_mean=0.0)
+        self.assertAlmostEqual(mid, 50.0, places=6)
+        self.assertAlmostEqual(high, 50.0 * exp(0.40), places=4)
+        self.assertAlmostEqual(low, 50.0 * exp(-0.40), places=4)
+        self.assertLess(low, mid)
+        self.assertGreater(high, mid)
+
+    def test_interval_applies_bias_and_inflation(self):
+        # nonzero resid_mean shifts mid; partial observation widens band.
+        mid, low, high = sr.weekend_interval(50.0, log_half_width=0.40,
+                                             observed_share=0.5, resid_mean=0.1)
+        self.assertAlmostEqual(mid, 50.0 * exp(0.1), places=4)
+        full = sr.weekend_interval(50.0, 0.40, 1.0, 0.1)
+        self.assertGreater(high - low, full[2] - full[1])   # wider when partial
+
+
+class TestFitCalibration(unittest.TestCase):
+    def test_block_on_real_history(self):
+        import json
+        from pathlib import Path
+        hist = json.loads(Path("data/calibration.json").read_text())["history"]
+        block = sr.fit_regression_calibration(hist)
+        self.assertEqual(block["version"], 1)
+        self.assertIn(block["active_tier"], ("regression", "global_ratio", "identity"))
+        self.assertIn("seat", block)
+        self.assertEqual(len(block["seat"]["coef"]), len(sr.SEAT_FEATURES))
+        self.assertIn("day_shares", block)
+        self.assertAlmostEqual(sum(block["day_shares"].values()), 1.0, places=4)
+        wk = block["weekend"]
+        self.assertGreaterEqual(wk["n_movies"], 4)
+        self.assertGreater(wk["log_half_width"], 0.0)
+        self.assertGreaterEqual(wk["loo_hit_rate"], 0.0)
+        self.assertLessEqual(wk["loo_hit_rate"], 1.0)
+        self.assertIn("loo_mae_pct", wk)   # honest nested MAE present
+        # global-ratio fallback always present
+        self.assertIn("global_ratio", block)
+
+    def test_empty_history_identity(self):
+        block = sr.fit_regression_calibration([])
+        self.assertEqual(block["active_tier"], "identity")
+
+
+class TestFinalizeDaySources(unittest.TestCase):
+    def test_median_not_mean(self):
+        # single source (logmean=2.0, var=1.0): point must be exp(2.0) (median),
+        # NOT exp(2.0 + 0.5*1.0) (the old mean correction).
+        point, var = sr._finalize_day_sources([(2.0, 1.0, False)])
+        self.assertAlmostEqual(point, exp(2.0), places=9)
+        self.assertNotAlmostEqual(point, exp(2.0 + 0.5 * 1.0), places=3)
+        self.assertEqual(var, 1.0)
+
+    def test_noisy_snapshot_sole_source_gated(self):
+        # only source is a snapshot with var above the threshold -> dropped (None)
+        self.assertGreater(1.0, sr.SNAPSHOT_MAX_SOLE_SOURCE_VAR)
+        self.assertIsNone(sr._finalize_day_sources([(2.5, 1.0, True)]))
+
+    def test_low_variance_snapshot_sole_source_kept(self):
+        # a snapshot below the variance threshold IS allowed as a sole source
+        out = sr._finalize_day_sources([(2.5, 0.2, True)])
+        self.assertIsNotNone(out)
+        self.assertAlmostEqual(out[0], exp(2.5), places=9)
+
+    def test_seat_plus_noisy_snapshot_combines(self):
+        # noisy snapshot is NOT gated when a seat source is also present;
+        # inverse-variance weighting makes the low-variance seat source dominate.
+        out = sr._finalize_day_sources([(1.0, 0.09, False), (3.0, 1.0, True)])
+        self.assertIsNotNone(out)
+        self.assertLess(log(out[0]), 1.3)   # pulled close to the seat source (1.0)
+
+    def test_empty_sources(self):
+        self.assertIsNone(sr._finalize_day_sources([]))
+
+
+class TestBakeoffAndPredict(unittest.TestCase):
+    def _block(self):
+        import json
+        from pathlib import Path
+        hist = json.loads(Path("data/calibration.json").read_text())["history"]
+        return sr.fit_regression_calibration(hist)
+
+    def test_bakeoff_picks_lowest_mae_tier(self):
+        block = self._block()
+        self.assertIn("bakeoff", block)
+        bo = block["bakeoff"]
+        self.assertIn(block["active_tier"], bo)
+        # active tier must be the argmin of the bake-off MAEs
+        self.assertEqual(block["active_tier"], min(bo, key=bo.get))
+
+    def test_predict_weekend_full(self):
+        block = self._block()
+        daily_seat = {"Thursday": 3.0, "Friday": 12.0, "Saturday": 14.0, "Sunday": 9.0}
+        coverage = {d: 1.0 for d in sr.OPENING_DAYS}
+        out = sr.predict_weekend(block, daily_seat_m=daily_seat, coverage=coverage,
+                                 daily_snapshot_m={}, lead_buckets={})
+        self.assertGreater(out["mid_m"], 0.0)
+        self.assertLess(out["low_m"], out["mid_m"])
+        self.assertGreater(out["high_m"], out["mid_m"])
+        self.assertAlmostEqual(out["observed_share"], 1.0, places=3)
+        self.assertIn(out["tier"], sr.TIER_SOURCE_BUILDERS)
+
+    def test_predict_weekend_thursday_only_is_wider(self):
+        block = self._block()
+        full = sr.predict_weekend(block, {"Thursday": 3.0, "Friday": 12.0,
+                                          "Saturday": 14.0, "Sunday": 9.0},
+                                  {d: 1.0 for d in sr.OPENING_DAYS}, {}, {})
+        thu = sr.predict_weekend(block, {"Thursday": 3.0}, {"Thursday": 1.0}, {}, {})
+        full_w = (full["high_m"] - full["low_m"]) / full["mid_m"]
+        thu_w = (thu["high_m"] - thu["low_m"]) / thu["mid_m"]
+        self.assertGreater(thu_w, full_w)   # honest: Thursday-only much wider
+
+    def test_empty_history_identity_tier(self):
+        block = sr.fit_regression_calibration([])
+        self.assertEqual(block["active_tier"], "identity")
+        out = sr.predict_weekend(block, {"Friday": 10.0, "Saturday": 12.0},
+                                 {"Friday": 1.0, "Saturday": 1.0}, {}, {})
+        self.assertGreater(out["mid_m"], 0.0)
+
+
+class TestRobustResidStats(unittest.TestCase):
+    def _loo(self, log_resids):
+        # build (movie, pred, actual, observed_share, log_resid) tuples
+        return [(f"m{i}", 100.0, 100.0 * exp(lr), 1.0, lr)
+                for i, lr in enumerate(log_resids)]
+
+    def test_center_is_robust_median_not_mean(self):
+        # four ~0 residuals + one big negative outlier (an over-scraped movie)
+        loo = self._loo([0.02, -0.01, 0.03, 0.00, -0.60])
+        s = sr._resid_stats(loo)
+        # mean of these is ~-0.112; a robust median center must NOT be dragged there
+        self.assertLess(abs(s["resid_mean"]), 0.05)
+
+    def test_interval_still_covers_target_despite_outlier(self):
+        loo = self._loo([0.02, -0.01, 0.03, 0.00, -0.60])
+        s = sr._resid_stats(loo)
+        self.assertGreaterEqual(s["loo_hit_rate"], 0.90)
+
+    def test_reports_robust_median_ae(self):
+        loo = self._loo([0.1, -0.1, 0.05, -0.05, 0.5])
+        s = sr._resid_stats(loo)
+        self.assertIn("loo_median_ae_pct", s)
+        # median abs error must be <= mean abs error when an outlier is present
+        self.assertLessEqual(s["loo_median_ae_pct"], s["loo_mae_pct"])
+
+    def test_degenerate_zero_residuals_has_finite_floor(self):
+        loo = self._loo([0.0, 0.0, 0.0, 0.0])
+        s = sr._resid_stats(loo)
+        self.assertGreater(s["log_half_width"], 0.0)
+        self.assertLess(s["log_half_width"], 0.2)
+
+    def test_nested_mae_is_honest_not_optimistic(self):
+        # An in-sample recenter would score the typical movie ~perfectly; the
+        # nested (leave-one-out recenter) MAE must be strictly larger when there
+        # is spread, because each movie is scored with the OTHERS' center.
+        loo = self._loo([0.05, -0.05, 0.10, -0.10, -0.40])
+        s = sr._resid_stats(loo)
+        in_sample_center = sr.median([r[4] for r in loo])
+        in_sample_mae = 100.0 * sum(
+            abs(p * exp(in_sample_center) - a) / a for _m, p, a, _o, _lr in loo
+        ) / len(loo)
+        self.assertGreater(s["loo_mae_pct"], in_sample_mae)
+
+
+if __name__ == "__main__":
+    unittest.main()

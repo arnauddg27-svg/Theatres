@@ -26,6 +26,7 @@ try:
     import requests
 except ModuleNotFoundError:
     requests = None
+import seat_regression
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
@@ -639,27 +640,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
 
     cal["history"].append(entry)
 
-    # 1a. Update overall scale factor (EMA) — kept as a fallback for movies
-    #     with no per-day history yet, but predict.py now prefers the per-day
-    #     scale factors below for Thu/Fri/Sat/Sun.
-    factors["overall_scale_factor"] = recalibrate_scale_factor(
-        cal["history"],
-        default=1.0,
-    )
-
-    # 1b. Per-day scale factors (EMA) — calibration adds up to a total
-    #     day-by-day rather than scaling the weekend sum once. Each day's
-    #     bias (Thursday previews-only, Saturday partial-scrape, etc.) gets
-    #     learned independently. Deterministic: always EMAs from 1.0 over
-    #     history, so re-running this on the same history is a no-op.
-    factors["day_scale_factors"] = recalibrate_day_scale_factors(cal["history"])
-    factors["snapshot_to_day_scale_factors"] = recalibrate_snapshot_day_scale_factors(
-        cal["history"]
-    )
-    factors["snapshot_to_lead_scale_factors"] = recalibrate_snapshot_lead_scale_factors(
-        cal["history"],
-        day_scales=factors["snapshot_to_day_scale_factors"],
-    )
+    factors["regression"] = seat_regression.fit_regression_calibration(cal["history"])
+    for _dead in ("day_scale_factors", "overall_scale_factor",
+                  "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):
+        factors.pop(_dead, None)
     factors["snapshot_calibration_support"] = snapshot_calibration_support(
         cal["history"]
     )
@@ -1018,10 +1002,12 @@ def show_history():
                     print(f"    {day:<12} pred={p_str:>8}  actual={a_str:>8}  err={err_d}{coverage}")
 
     factors = cal.get("calibration_factors", {})
-    print(f"\n  Scale: {factors.get('overall_scale_factor', 1.0):.4f}")
-    print(f"  AMC share: {factors.get('amc_market_share', 0.25):.2%}")
+    print(f"\n  AMC share: {factors.get('amc_market_share', 0.25):.2%}")
     print(f"  Day weights: {factors.get('day_weights', {})}")
-    print(f"  Day scales: {factors.get('day_scale_factors', {})}")
+    _reg = factors.get("regression", {})
+    _wk = _reg.get("weekend", {})
+    print(f"  Calibration tier: {_reg.get('active_tier')}  (bake-off: {_reg.get('bakeoff')})")
+    print(f"  Weekend LOO: MAE%={_wk.get('loo_mae_pct')} hit-rate={_wk.get('loo_hit_rate')} n={_wk.get('n_movies')}")
 
 
 # ── CLI ─────────────────────────────────────────────────────────────────────

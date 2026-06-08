@@ -9,6 +9,8 @@ stored scale factor.
 
 from __future__ import annotations
 
+import seat_regression
+
 MIN_SCALE_FACTOR = 0.5
 MAX_SCALE_FACTOR = 2.0
 MIN_MARKET_SHARE = 0.15
@@ -465,17 +467,13 @@ def sanitize_calibration(cal: dict,
             4,
         )
 
-    # Per-day scale factors. These supersede overall_scale_factor for prediction —
-    # see predict.get_day_scale. Recomputed deterministically from history on
-    # every load (idempotent — always EMAs from 1.0), so a stale persisted
-    # value can never silently compound across reloads.
-    factors["day_scale_factors"] = recalibrate_day_scale_factors(history)
-    snapshot_day_scales = recalibrate_snapshot_day_scale_factors(history)
-    factors["snapshot_to_day_scale_factors"] = snapshot_day_scales
-    factors["snapshot_to_lead_scale_factors"] = recalibrate_snapshot_lead_scale_factors(
-        history,
-        day_scales=snapshot_day_scales,
-    )
+    # Regression calibration block (replaces EMA day/scale factors). Selects the
+    # best-cross-validated tier (identity / global_ratio / regression) from history.
+    factors["regression"] = seat_regression.fit_regression_calibration(history)
+    # Drop superseded EMA factor blocks (one-time migration).
+    for _dead in ("day_scale_factors", "overall_scale_factor",
+                  "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):
+        factors.pop(_dead, None)
     factors["snapshot_calibration_support"] = snapshot_calibration_support(history)
 
     return cal
