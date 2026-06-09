@@ -524,20 +524,139 @@
       "calibration_excluded_days": [
         "Sunday"
       ]
+    },
+    {
+      "movie": "Backrooms",
+      "weekend_of": "2026-05-29",
+      "date": "2026-06-09",
+      "predicted_mid": 93.18,
+      "predicted_low": 48.65,
+      "predicted_high": 178.47,
+      "actual_total": 81.4,
+      "daily_actuals": {
+        "Thursday": 10.4,
+        "Friday": 28.0,
+        "Saturday": 24.7,
+        "Sunday": 18.3
+      },
+      "daily_predictions": {
+        "Thursday": 6.7,
+        "Friday": 16.69
+      },
+      "error_pct": 14.5,
+      "n_theatres": 431,
+      "n_days": 2,
+      "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "web research (Variety/Deadline/RT): 3-day $81.4M; Fri incl $10.4M Thu previews; Sat $24.7M; Sun $18.3M",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 6.7,
+        "Friday": 16.69
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 6.03,
+        "Friday": 13.0,
+        "Saturday": 26.18,
+        "Sunday": 17.47
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.008,
+        "Friday": 0.059,
+        "Saturday": 0.235,
+        "Sunday": 0.235
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "next_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 429,
+        "Friday": 426
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 1.0,
+        "Friday": 1.0
+      },
+      "coverage_ratio": 1.0
+    },
+    {
+      "movie": "The Breadwinner",
+      "weekend_of": "2026-05-29",
+      "date": "2026-06-09",
+      "predicted_mid": 3.23,
+      "predicted_low": 3.0,
+      "predicted_high": 3.69,
+      "actual_total": 7.35,
+      "daily_actuals": {
+        "Thursday": 0.75,
+        "Friday": 2.05,
+        "Saturday": 2.55,
+        "Sunday": 2.0
+      },
+      "daily_predictions": {
+        "Thursday": 0.18,
+        "Friday": 1.09
+      },
+      "error_pct": -56.0,
+      "n_theatres": 400,
+      "n_days": 2,
+      "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "web research (Sony): 3-day $7.35M firm; Fri $2.8M incl $0.75M previews; Sat/Sun estimated to total",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 0.18,
+        "Friday": 1.17
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.18,
+        "Friday": 0.51,
+        "Saturday": 1.69,
+        "Sunday": 1.14
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.008,
+        "Friday": 0.059,
+        "Saturday": 0.235,
+        "Sunday": 0.235
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "next_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 76,
+        "Friday": 400
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.032,
+        "Friday": 0.941
+      },
+      "coverage_ratio": 0.486,
+      "calibration_excluded_days": [
+        "Thursday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2948,
+    "amc_market_share": 0.3008,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.0726,
-      "Friday": 0.3198,
-      "Saturday": 0.3372,
-      "Sunday": 0.2704
+      "Thursday": 0.0807,
+      "Friday": 0.3204,
+      "Saturday": 0.3287,
+      "Sunday": 0.2702
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -723,9 +842,45 @@
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Backrooms",
+        "weekend_of": "2026-05-29",
+        "abs_error_pct": 14.5,
+        "n_theatres": 431,
+        "n_days": 2,
+        "coverage_ratio": 1.0,
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 1.0
+        },
+        "daily_errors": {
+          "Thursday": 35.6,
+          "Friday": 40.4
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The Breadwinner",
+        "weekend_of": "2026-05-29",
+        "abs_error_pct": 56.0,
+        "n_theatres": 400,
+        "n_days": 2,
+        "coverage_ratio": 0.486,
+        "daily_coverage_ratios": {
+          "Thursday": 0.032,
+          "Friday": 0.941
+        },
+        "daily_errors": {
+          "Thursday": 76.1,
+          "Friday": 46.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-05-26",
+    "last_updated": "2026-06-09",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
@@ -738,22 +893,22 @@
           "support": 1.779
         },
         "Saturday": {
-          "n": 6,
-          "support": 2.916
+          "n": 8,
+          "support": 3.386
         },
         "Sunday": {
-          "n": 5,
-          "support": 2.683
+          "n": 7,
+          "support": 3.153
         }
       },
       "leads": {
         "same_day": {
-          "n": 12,
-          "support": 6.65
+          "n": 14,
+          "support": 7.12
         },
         "next_day": {
-          "n": 3,
-          "support": 0.697
+          "n": 5,
+          "support": 1.167
         },
         "multi_day": {
           "n": 1,
@@ -769,10 +924,10 @@
       "version": 1,
       "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.12435546060832049,
-        "Friday": 0.3045770993541535,
-        "Saturday": 0.31122453950257273,
-        "Sunday": 0.2598429005349532
+        "Thursday": 0.12125776903378074,
+        "Friday": 0.30627692310313614,
+        "Saturday": 0.3141686816102085,
+        "Sunday": 0.2582966262528746
       },
       "trained_on": [
         "Michael",
@@ -781,14 +936,16 @@
         "The Sheep Detectives",
         "Obsession",
         "The Mandalorian and Grogu",
-        "I Love Boosters"
+        "I Love Boosters",
+        "Backrooms",
+        "The Breadwinner"
       ],
       "global_ratio": {
-        "log_ratio_mean": 9.110076327333106e-05,
-        "resid_scale": 0.31266749348777345
+        "log_ratio_mean": 0.0712253529257857,
+        "resid_scale": 0.33938790165575766
       },
       "identity": {
-        "seat_sd": 0.3126675067596182
+        "seat_sd": 0.3467811971397829
       },
       "seat": {
         "features": [
@@ -800,12 +957,12 @@
           "one_minus_cov"
         ],
         "coef": [
-          0.05488725768828141,
-          0.9844334986619931,
-          0.05454975735626889,
-          -0.0813085289495737,
-          -0.021309440846310337,
-          0.0052969642532009024
+          0.16967473750551954,
+          0.9586981446923823,
+          0.05906951563083326,
+          -0.042461829026336016,
+          -0.03295747596653995,
+          0.002622770166070791
         ],
         "prior": [
           0.0,
@@ -816,7 +973,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.3421890226579599
+        "daily_resid_sd": 0.370280521063397
       },
       "snapshot": {
         "features": [
@@ -830,13 +987,13 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7082731971506544,
-          0.8433200476409697,
-          -0.03915837512439469,
-          0.08786438784663884,
-          0.023612587581664905,
-          -0.11964874365393348,
-          -0.11970030229207562,
+          0.7867463160396375,
+          0.8028169658099281,
+          -0.009456969244993452,
+          0.13175306426273334,
+          -0.013840290205997445,
+          -0.11966186243828592,
+          -0.12396467134943433,
           0.0
         ],
         "prior": [
@@ -850,54 +1007,60 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 1.0357306765260015
+        "daily_resid_sd": 0.8091330679891878
       },
       "weekend": {
-        "log_half_width": 0.4256,
-        "resid_mean": 0.07505408746563891,
-        "df": 4,
+        "log_half_width": 0.452,
+        "resid_mean": -0.035407905212432755,
+        "df": 5,
         "loo_hit_rate": 1.0,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 22.84,
-        "loo_median_ae_pct": 15.09,
-        "n_movies": 5
+        "loo_mae_pct": 20.9,
+        "loo_median_ae_pct": 13.69,
+        "n_movies": 6
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 89.99,
+          "pred_m": 95.7,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 43.32,
+          "pred_m": 43.68,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 20.78,
+          "pred_m": 21.14,
           "actual_m": 15.09,
-          "observed_share": 0.875
+          "observed_share": 0.878
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.92,
+          "pred_m": 18.71,
           "actual_m": 17.2,
-          "observed_share": 0.689
+          "observed_share": 0.685
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 70.68,
+          "pred_m": 77.22,
           "actual_m": 81.0,
           "observed_share": 1.0
+        },
+        {
+          "movie": "Backrooms",
+          "pred_m": 56.35,
+          "actual_m": 81.4,
+          "observed_share": 0.423
         }
       ],
       "bakeoff": {
-        "identity": 26.6,
-        "global_ratio": 32.74,
-        "regression": 22.84
+        "identity": 23.56,
+        "global_ratio": 28.48,
+        "regression": 20.9
       },
       "bakeoff_winner": "regression",
       "meets_mae_target": false
