@@ -1,0 +1,977 @@
+{
+  "schema": 1,
+  "description": "Pre-actual calibration snapshot for clean live-model replays. Use this instead of calibration.json when auditing what the model would have predicted before reported actuals were learned.",
+  "weekend_of": "2026-06-05",
+  "frozen_at": "2026-06-09T14:00:52",
+  "source": "calibrate.py auto_calibrate",
+  "movies": [
+    "Masters of the Universe",
+    "Scary Movie",
+    "The Amazing Digital Circus: The Last Act"
+  ],
+  "calibration": {
+    "history": [
+      {
+        "movie": "Michael",
+        "weekend_of": "2026-04-24",
+        "date": "2026-04-27",
+        "predicted_mid": 93.37,
+        "predicted_low": 89.64,
+        "predicted_high": 98.04,
+        "actual_total": 97.0,
+        "daily_actuals": {
+          "Thursday": 12.6,
+          "Friday": 26.9,
+          "Saturday": 32.5,
+          "Sunday": 25.0
+        },
+        "daily_predictions": {
+          "Thursday": 12.14,
+          "Friday": 39.19,
+          "Saturday": 18.71,
+          "Sunday": 23.41
+        },
+        "raw_daily_predictions": {
+          "Thursday": 10.63,
+          "Friday": 37.35,
+          "Saturday": 17.84,
+          "Sunday": 27.55
+        },
+        "error_pct": -3.7,
+        "n_theatres": 378,
+        "n_days": 4,
+        "model_cohort_key": "core",
+        "reference_amc_theatres": 376,
+        "daily_theatre_counts": {
+          "Thursday": 375,
+          "Friday": 261,
+          "Saturday": 260,
+          "Sunday": 376
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 0.997,
+          "Friday": 0.694,
+          "Saturday": 0.691,
+          "Sunday": 1.0
+        },
+        "coverage_ratio": 0.846,
+        "calibration_excluded_days": [
+          "Friday",
+          "Saturday"
+        ]
+      },
+      {
+        "movie": "The Devil Wears Prada 2",
+        "weekend_of": "2026-05-01",
+        "date": "2026-05-05",
+        "predicted_mid": 95.93,
+        "predicted_low": 95.93,
+        "predicted_high": 95.93,
+        "actual_total": 76.75,
+        "daily_actuals": {
+          "Friday": 32.9,
+          "Saturday": 25.11,
+          "Sunday": 18.74
+        },
+        "daily_predictions": {
+          "Thursday": 14.04,
+          "Friday": 36.27,
+          "Saturday": 30.73,
+          "Sunday": 14.89
+        },
+        "error_pct": 25.0,
+        "n_theatres": 431,
+        "n_days": 4,
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 13.07,
+          "Friday": 36.27,
+          "Saturday": 30.73,
+          "Sunday": 15.47
+        },
+        "daily_theatre_counts": {
+          "Thursday": 425,
+          "Friday": 287,
+          "Saturday": 261,
+          "Sunday": 430
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 0.457,
+          "Saturday": 0.415,
+          "Sunday": 1.0
+        },
+        "coverage_ratio": 0.718,
+        "calibration_excluded_days": [
+          "Friday",
+          "Saturday"
+        ],
+        "snapshot_daily_predictions": {
+          "Saturday": 3.0
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Saturday": 0.034
+        },
+        "snapshot_daily_lead_buckets": {
+          "Saturday": "same_day"
+        }
+      },
+      {
+        "movie": "Mortal Kombat II",
+        "weekend_of": "2026-05-08",
+        "date": "2026-05-12",
+        "predicted_mid": 46.4,
+        "predicted_low": 46.39,
+        "predicted_high": 46.43,
+        "actual_total": 38.5,
+        "daily_actuals": {
+          "Thursday": 5.2,
+          "Friday": 11.6,
+          "Saturday": 13.3,
+          "Sunday": 8.4
+        },
+        "daily_predictions": {
+          "Thursday": 4.88,
+          "Friday": 18.29,
+          "Saturday": 15.14,
+          "Sunday": 8.54
+        },
+        "error_pct": 20.5,
+        "n_theatres": 431,
+        "n_days": 4,
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 4.55,
+          "Friday": 18.29,
+          "Saturday": 15.14,
+          "Sunday": 8.04
+        },
+        "daily_theatre_counts": {
+          "Thursday": 415,
+          "Friday": 429,
+          "Saturday": 428,
+          "Sunday": 430
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 0.976,
+          "Friday": 1.0,
+          "Saturday": 1.0,
+          "Sunday": 1.0
+        },
+        "coverage_ratio": 0.994,
+        "snapshot_daily_predictions": {
+          "Thursday": 2.47,
+          "Friday": 4.67,
+          "Saturday": 4.3,
+          "Sunday": 2.27
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Thursday": 0.202,
+          "Friday": 0.667,
+          "Saturday": 1.0,
+          "Sunday": 1.0
+        },
+        "snapshot_daily_lead_buckets": {
+          "Thursday": "same_day",
+          "Friday": "same_day",
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        }
+      },
+      {
+        "movie": "The Sheep Detectives",
+        "weekend_of": "2026-05-08",
+        "date": "2026-05-12",
+        "predicted_mid": 21.14,
+        "predicted_low": 20.17,
+        "predicted_high": 22.14,
+        "actual_total": 15.09,
+        "daily_actuals": {
+          "Friday": 4.01,
+          "Saturday": 5.19,
+          "Sunday": 5.89
+        },
+        "daily_predictions": {
+          "Thursday": 0.45,
+          "Friday": 7.1,
+          "Saturday": 7.78,
+          "Sunday": 6.12
+        },
+        "error_pct": 40.1,
+        "n_theatres": 417,
+        "n_days": 4,
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 0.42,
+          "Friday": 7.1,
+          "Saturday": 7.78,
+          "Sunday": 5.76
+        },
+        "daily_theatre_counts": {
+          "Thursday": 289,
+          "Friday": 415,
+          "Saturday": 414,
+          "Sunday": 415
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 0.557,
+          "Friday": 0.976,
+          "Saturday": 0.974,
+          "Sunday": 0.976
+        },
+        "coverage_ratio": 0.871,
+        "calibration_excluded_days": [
+          "Thursday"
+        ],
+        "snapshot_daily_predictions": {
+          "Friday": 0.84,
+          "Saturday": 1.08,
+          "Sunday": 0.8
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Friday": 0.646,
+          "Saturday": 0.974,
+          "Sunday": 0.974
+        },
+        "snapshot_daily_lead_buckets": {
+          "Friday": "same_day",
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        }
+      },
+      {
+        "movie": "Obsession",
+        "weekend_of": "2026-05-15",
+        "date": "2026-05-19",
+        "predicted_mid": 16.21,
+        "predicted_low": 14.38,
+        "predicted_high": 18.91,
+        "actual_total": 17.2,
+        "daily_actuals": {
+          "Thursday": 2.6,
+          "Friday": 4.38,
+          "Saturday": 5.42,
+          "Sunday": 4.8
+        },
+        "daily_predictions": {
+          "Thursday": 1.73,
+          "Friday": 3.55,
+          "Saturday": 4.61,
+          "Sunday": 3.99
+        },
+        "error_pct": -5.7,
+        "n_theatres": 416,
+        "n_days": 4,
+        "model_version": "seat-regression-v20-multi-anchor-snapshot",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 1.57,
+          "Friday": 4.78,
+          "Saturday": 5.48,
+          "Sunday": 3.83
+        },
+        "snapshot_daily_predictions": {
+          "Thursday": 2.89,
+          "Friday": 4.86,
+          "Saturday": 5.1,
+          "Sunday": 4.07
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Thursday": 0.085,
+          "Friday": 0.235,
+          "Saturday": 0.238,
+          "Sunday": 0.238
+        },
+        "snapshot_daily_lead_buckets": {
+          "Thursday": "same_day",
+          "Friday": "same_day",
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        },
+        "daily_theatre_counts": {
+          "Thursday": 410,
+          "Friday": 287,
+          "Saturday": 416,
+          "Sunday": 416
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 1.0,
+          "Saturday": 0.44,
+          "Sunday": 0.979
+        },
+        "coverage_ratio": 0.855,
+        "calibration_excluded_days": [
+          "Saturday"
+        ]
+      },
+      {
+        "movie": "In the Grey",
+        "weekend_of": "2026-05-15",
+        "date": "2026-05-19",
+        "predicted_mid": 2.74,
+        "predicted_low": 1.85,
+        "predicted_high": 4.18,
+        "actual_total": 2.93,
+        "daily_actuals": {
+          "Friday": 1.17,
+          "Saturday": 1.03,
+          "Sunday": 0.72
+        },
+        "daily_predictions": {
+          "Friday": 0.61,
+          "Saturday": 0.68,
+          "Sunday": 0.84
+        },
+        "error_pct": -6.5,
+        "n_theatres": 363,
+        "n_days": 3,
+        "model_version": "seat-regression-v20-multi-anchor-snapshot",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Friday": 0.82,
+          "Saturday": 0.81,
+          "Sunday": 0.81
+        },
+        "snapshot_daily_predictions": {
+          "Saturday": 1.27,
+          "Sunday": 1.0
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Saturday": 0.238,
+          "Sunday": 0.238
+        },
+        "snapshot_daily_lead_buckets": {
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        },
+        "daily_theatre_counts": {
+          "Friday": 244,
+          "Saturday": 363,
+          "Sunday": 360
+        },
+        "daily_coverage_ratios": {
+          "Friday": 0.388,
+          "Saturday": 0.384,
+          "Sunday": 0.582
+        },
+        "coverage_ratio": 0.451,
+        "calibration_excluded_days": [
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ]
+      },
+      {
+        "movie": "The Mandalorian and Grogu",
+        "weekend_of": "2026-05-22",
+        "date": "2026-05-26",
+        "predicted_mid": 82.65,
+        "predicted_low": 76.44,
+        "predicted_high": 90.18,
+        "actual_total": 81.0,
+        "daily_actuals": {
+          "Friday": 33.0,
+          "Saturday": 25.5,
+          "Sunday": 22.5
+        },
+        "daily_predictions": {
+          "Thursday": 9.05,
+          "Friday": 20.4,
+          "Saturday": 27.76,
+          "Sunday": 22.72
+        },
+        "error_pct": 2.0,
+        "n_theatres": 427,
+        "n_days": 4,
+        "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 6.84,
+          "Friday": 21.43,
+          "Saturday": 29.46,
+          "Sunday": 17.81
+        },
+        "snapshot_daily_predictions": {
+          "Thursday": 18.63,
+          "Friday": 16.89,
+          "Saturday": 30.54,
+          "Sunday": 23.79
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Thursday": 0.235,
+          "Friday": 0.231,
+          "Saturday": 0.233,
+          "Sunday": 0.082
+        },
+        "snapshot_daily_lead_buckets": {
+          "Thursday": "same_day",
+          "Friday": "next_day",
+          "Saturday": "next_day",
+          "Sunday": "next_day"
+        },
+        "daily_theatre_counts": {
+          "Thursday": 426,
+          "Friday": 418,
+          "Saturday": 397,
+          "Sunday": 377
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 0.984,
+          "Saturday": 0.934,
+          "Sunday": 0.887
+        },
+        "coverage_ratio": 0.951
+      },
+      {
+        "movie": "I Love Boosters",
+        "weekend_of": "2026-05-22",
+        "date": "2026-05-26",
+        "predicted_mid": 7.53,
+        "predicted_low": 6.86,
+        "predicted_high": 8.34,
+        "actual_total": 3.72,
+        "daily_actuals": {
+          "Thursday": 0.43,
+          "Friday": 1.07,
+          "Saturday": 1.17,
+          "Sunday": 1.05
+        },
+        "daily_predictions": {
+          "Friday": 1.25,
+          "Sunday": 3.16
+        },
+        "error_pct": 102.3,
+        "n_theatres": 366,
+        "n_days": 2,
+        "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Friday": 1.42,
+          "Sunday": 2.58
+        },
+        "snapshot_daily_predictions": {
+          "Saturday": 2.5,
+          "Sunday": 2.18
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Saturday": 0.233,
+          "Sunday": 0.233
+        },
+        "snapshot_daily_lead_buckets": {
+          "Saturday": "next_day",
+          "Sunday": "multi_day"
+        },
+        "daily_theatre_counts": {
+          "Friday": 366,
+          "Sunday": 83
+        },
+        "daily_coverage_ratios": {
+          "Friday": 0.861,
+          "Sunday": 0.195
+        },
+        "coverage_ratio": 0.528,
+        "calibration_excluded_days": [
+          "Sunday"
+        ]
+      },
+      {
+        "movie": "Passenger",
+        "weekend_of": "2026-05-22",
+        "date": "2026-05-26",
+        "predicted_mid": 4.27,
+        "predicted_low": 3.9,
+        "predicted_high": 4.73,
+        "actual_total": 8.7,
+        "daily_actuals": {
+          "Thursday": 1.1,
+          "Friday": 2.42,
+          "Saturday": 2.75,
+          "Sunday": 2.43
+        },
+        "daily_predictions": {
+          "Sunday": 1.15
+        },
+        "error_pct": -50.9,
+        "n_theatres": 77,
+        "n_days": 1,
+        "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Sunday": 0.95
+        },
+        "daily_theatre_counts": {
+          "Sunday": 77
+        },
+        "daily_coverage_ratios": {
+          "Sunday": 0.033
+        },
+        "coverage_ratio": 0.033,
+        "calibration_excluded_days": [
+          "Sunday"
+        ]
+      },
+      {
+        "movie": "Backrooms",
+        "weekend_of": "2026-05-29",
+        "date": "2026-06-02",
+        "predicted_mid": 65.98,
+        "predicted_low": 59.89,
+        "predicted_high": 73.46,
+        "actual_total": 81.4,
+        "daily_actuals": {
+          "Thursday": 10.4,
+          "Friday": 28.01,
+          "Saturday": 24.74,
+          "Sunday": 18.25
+        },
+        "daily_predictions": {
+          "Thursday": 9.26,
+          "Friday": 24.42,
+          "Saturday": 15.57,
+          "Sunday": 18.79
+        },
+        "error_pct": -18.9,
+        "n_theatres": 425,
+        "n_days": 4,
+        "model_version": "seat-regression-v26-reported-actual-guardrails",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 6.08,
+          "Friday": 21.28,
+          "Saturday": 15.32,
+          "Sunday": 13.58
+        },
+        "snapshot_daily_predictions": {
+          "Thursday": 5.87,
+          "Friday": 12.65,
+          "Saturday": 25.48,
+          "Sunday": 18.9
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Thursday": 0.008,
+          "Friday": 0.059,
+          "Saturday": 0.235,
+          "Sunday": 0.235
+        },
+        "snapshot_daily_lead_buckets": {
+          "Thursday": "same_day",
+          "Friday": "same_day",
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        },
+        "daily_theatre_counts": {
+          "Thursday": 423,
+          "Friday": 421,
+          "Saturday": 382,
+          "Sunday": 424
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 0.995,
+          "Friday": 0.991,
+          "Saturday": 0.899,
+          "Sunday": 0.998
+        },
+        "coverage_ratio": 0.971
+      },
+      {
+        "movie": "The Breadwinner",
+        "weekend_of": "2026-05-29",
+        "date": "2026-06-02",
+        "predicted_mid": 4.75,
+        "predicted_low": 4.31,
+        "predicted_high": 5.29,
+        "actual_total": 7.35,
+        "daily_actuals": {
+          "Friday": 2.84,
+          "Saturday": 2.71,
+          "Sunday": 1.8
+        },
+        "daily_predictions": {
+          "Thursday": 0.2,
+          "Friday": 1.34,
+          "Saturday": 1.75,
+          "Sunday": 1.61
+        },
+        "error_pct": -35.4,
+        "n_theatres": 402,
+        "n_days": 4,
+        "model_version": "seat-regression-v26-reported-actual-guardrails",
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425,
+        "actual_source": "The Numbers auto-calibrate",
+        "actual_status": "final",
+        "raw_daily_predictions": {
+          "Thursday": 0.15,
+          "Friday": 1.46,
+          "Saturday": 1.87,
+          "Sunday": 1.29
+        },
+        "snapshot_daily_predictions": {
+          "Thursday": 0.17,
+          "Friday": 0.48,
+          "Saturday": 1.6,
+          "Sunday": 1.23
+        },
+        "snapshot_daily_coverage_ratios": {
+          "Thursday": 0.008,
+          "Friday": 0.059,
+          "Saturday": 0.235,
+          "Sunday": 0.235
+        },
+        "snapshot_daily_lead_buckets": {
+          "Thursday": "same_day",
+          "Friday": "same_day",
+          "Saturday": "same_day",
+          "Sunday": "same_day"
+        },
+        "daily_theatre_counts": {
+          "Thursday": 74,
+          "Friday": 396,
+          "Saturday": 365,
+          "Sunday": 401
+        },
+        "daily_coverage_ratios": {
+          "Thursday": 0.031,
+          "Friday": 0.932,
+          "Saturday": 0.859,
+          "Sunday": 0.944
+        },
+        "coverage_ratio": 0.692,
+        "calibration_excluded_days": [
+          "Thursday"
+        ]
+      }
+    ],
+    "calibration_factors": {
+      "amc_market_share": 0.2732,
+      "reference_amc_theatres": 376,
+      "reference_amc_theatres_by_cohort": {
+        "core": 376,
+        "core,expansion": 425
+      },
+      "overall_scale_factor": 1.2615,
+      "day_weights": {
+        "Thursday": 0.0714,
+        "Friday": 0.3302,
+        "Saturday": 0.3307,
+        "Sunday": 0.2677
+      },
+      "day_scale_factors": {
+        "Thursday": 1.4763,
+        "Friday": 1.4186,
+        "Saturday": 1.2346,
+        "Sunday": 1.2922
+      },
+      "format_scale_factors": {},
+      "historical_accuracy": [
+        {
+          "movie": "Michael",
+          "weekend_of": "2026-04-24",
+          "abs_error_pct": 3.7,
+          "n_theatres": 378,
+          "n_days": 4,
+          "coverage_ratio": 0.846,
+          "daily_coverage_ratios": {
+            "Thursday": 0.997,
+            "Friday": 0.694,
+            "Saturday": 0.691,
+            "Sunday": 1.0
+          },
+          "daily_errors": {
+            "Thursday": 3.7,
+            "Friday": 45.7,
+            "Saturday": 42.4,
+            "Sunday": 6.4
+          },
+          "model_cohort_key": "core",
+          "reference_amc_theatres": 376
+        },
+        {
+          "movie": "The Devil Wears Prada 2",
+          "weekend_of": "2026-05-01",
+          "abs_error_pct": 25.0,
+          "n_theatres": 431,
+          "n_days": 4,
+          "coverage_ratio": 0.718,
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 0.457,
+            "Saturday": 0.415,
+            "Sunday": 1.0
+          },
+          "daily_errors": {
+            "Friday": 10.2,
+            "Saturday": 22.4,
+            "Sunday": 20.5
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "Mortal Kombat II",
+          "weekend_of": "2026-05-08",
+          "abs_error_pct": 20.5,
+          "n_theatres": 431,
+          "n_days": 4,
+          "coverage_ratio": 0.994,
+          "daily_coverage_ratios": {
+            "Thursday": 0.976,
+            "Friday": 1.0,
+            "Saturday": 1.0,
+            "Sunday": 1.0
+          },
+          "daily_errors": {
+            "Thursday": 6.2,
+            "Friday": 57.7,
+            "Saturday": 13.8,
+            "Sunday": 1.7
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "The Sheep Detectives",
+          "weekend_of": "2026-05-08",
+          "abs_error_pct": 40.1,
+          "n_theatres": 417,
+          "n_days": 4,
+          "coverage_ratio": 0.871,
+          "daily_coverage_ratios": {
+            "Thursday": 0.557,
+            "Friday": 0.976,
+            "Saturday": 0.974,
+            "Sunday": 0.976
+          },
+          "daily_errors": {
+            "Friday": 77.1,
+            "Saturday": 49.9,
+            "Sunday": 3.9
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "Obsession",
+          "weekend_of": "2026-05-15",
+          "abs_error_pct": 5.8,
+          "n_theatres": 416,
+          "n_days": 4,
+          "coverage_ratio": 0.855,
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 1.0,
+            "Saturday": 0.44,
+            "Sunday": 0.979
+          },
+          "daily_errors": {
+            "Thursday": 33.5,
+            "Friday": 18.9,
+            "Saturday": 14.9,
+            "Sunday": 16.9
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "In the Grey",
+          "weekend_of": "2026-05-15",
+          "abs_error_pct": 6.5,
+          "n_theatres": 363,
+          "n_days": 3,
+          "coverage_ratio": 0.451,
+          "daily_coverage_ratios": {
+            "Friday": 0.388,
+            "Saturday": 0.384,
+            "Sunday": 0.582
+          },
+          "daily_errors": {
+            "Friday": 47.9,
+            "Saturday": 34.0,
+            "Sunday": 16.7
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "The Mandalorian and Grogu",
+          "weekend_of": "2026-05-22",
+          "abs_error_pct": 2.0,
+          "n_theatres": 427,
+          "n_days": 4,
+          "coverage_ratio": 0.951,
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 0.984,
+            "Saturday": 0.934,
+            "Sunday": 0.887
+          },
+          "daily_errors": {
+            "Friday": 38.2,
+            "Saturday": 8.9,
+            "Sunday": 1.0
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "I Love Boosters",
+          "weekend_of": "2026-05-22",
+          "abs_error_pct": 102.4,
+          "n_theatres": 366,
+          "n_days": 2,
+          "coverage_ratio": 0.528,
+          "daily_coverage_ratios": {
+            "Friday": 0.861,
+            "Sunday": 0.195
+          },
+          "daily_errors": {
+            "Friday": 16.8,
+            "Sunday": 201.0
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "Passenger",
+          "weekend_of": "2026-05-22",
+          "abs_error_pct": 50.9,
+          "n_theatres": 77,
+          "n_days": 1,
+          "coverage_ratio": 0.033,
+          "daily_coverage_ratios": {
+            "Sunday": 0.033
+          },
+          "daily_errors": {
+            "Sunday": 52.7
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "Backrooms",
+          "weekend_of": "2026-05-29",
+          "abs_error_pct": 18.9,
+          "n_theatres": 425,
+          "n_days": 4,
+          "coverage_ratio": 0.971,
+          "daily_coverage_ratios": {
+            "Thursday": 0.995,
+            "Friday": 0.991,
+            "Saturday": 0.899,
+            "Sunday": 0.998
+          },
+          "daily_errors": {
+            "Thursday": 11.0,
+            "Friday": 12.8,
+            "Saturday": 37.1,
+            "Sunday": 2.9
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        },
+        {
+          "movie": "The Breadwinner",
+          "weekend_of": "2026-05-29",
+          "abs_error_pct": 35.4,
+          "n_theatres": 402,
+          "n_days": 4,
+          "coverage_ratio": 0.692,
+          "daily_coverage_ratios": {
+            "Thursday": 0.031,
+            "Friday": 0.932,
+            "Saturday": 0.859,
+            "Sunday": 0.944
+          },
+          "daily_errors": {
+            "Friday": 52.8,
+            "Saturday": 35.6,
+            "Sunday": 10.6
+          },
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425
+        }
+      ],
+      "last_updated": "2026-06-02",
+      "snapshot_to_day_scale_factors": {
+        "Thursday": 1.0481,
+        "Friday": 1.2613,
+        "Saturday": 1.2011,
+        "Sunday": 1.2147
+      },
+      "snapshot_to_lead_scale_factors": {
+        "same_day": 1.2063,
+        "next_day": 0.9871,
+        "multi_day": 0.9725,
+        "long_lead": 1.0
+      },
+      "last_snapshot_calibration_backfill": "2026-05-15",
+      "snapshot_calibration_support": {
+        "days": {
+          "Thursday": {
+            "n": 1,
+            "support": 0.202
+          },
+          "Friday": {
+            "n": 4,
+            "support": 1.779
+          },
+          "Saturday": {
+            "n": 8,
+            "support": 3.386
+          },
+          "Sunday": {
+            "n": 7,
+            "support": 3.153
+          }
+        },
+        "leads": {
+          "same_day": {
+            "n": 16,
+            "support": 7.59
+          },
+          "next_day": {
+            "n": 3,
+            "support": 0.697
+          },
+          "multi_day": {
+            "n": 1,
+            "support": 0.233
+          },
+          "long_lead": {
+            "n": 0,
+            "support": 0.0
+          }
+        }
+      }
+    }
+  }
+}

@@ -658,27 +658,235 @@
       "calibration_excluded_days": [
         "Thursday"
       ]
+    },
+    {
+      "movie": "Scary Movie",
+      "weekend_of": "2026-06-05",
+      "date": "2026-06-09",
+      "predicted_mid": 64.0,
+      "predicted_low": 57.66,
+      "predicted_high": 71.89,
+      "actual_total": 54.34,
+      "daily_actuals": {
+        "Thursday": 7.7,
+        "Friday": 17.12,
+        "Saturday": 17.61,
+        "Sunday": 11.91
+      },
+      "daily_predictions": {
+        "Thursday": 10.11,
+        "Friday": 22.98,
+        "Saturday": 16.58,
+        "Sunday": 13.09
+      },
+      "error_pct": 17.8,
+      "n_theatres": 424,
+      "n_days": 4,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 6.53,
+        "Friday": 16.83,
+        "Saturday": 12.61,
+        "Sunday": 9.56
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 12.83,
+        "Friday": 15.97,
+        "Saturday": 16.76,
+        "Sunday": 11.84
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.235,
+        "Friday": 0.061,
+        "Saturday": 0.219,
+        "Sunday": 0.228
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 419,
+        "Friday": 423,
+        "Saturday": 423,
+        "Sunday": 420
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.986,
+        "Friday": 0.995,
+        "Saturday": 0.995,
+        "Sunday": 0.988
+      },
+      "coverage_ratio": 0.991
+    },
+    {
+      "movie": "Masters of the Universe",
+      "weekend_of": "2026-06-05",
+      "date": "2026-06-09",
+      "predicted_mid": 26.49,
+      "predicted_low": 23.87,
+      "predicted_high": 29.76,
+      "actual_total": 29.44,
+      "daily_actuals": {
+        "Thursday": 4.4,
+        "Friday": 7.3,
+        "Saturday": 10.01,
+        "Sunday": 7.73
+      },
+      "daily_predictions": {
+        "Thursday": 2.81,
+        "Friday": 7.06,
+        "Saturday": 8.66,
+        "Sunday": 7.42
+      },
+      "error_pct": -10.0,
+      "n_theatres": 361,
+      "n_days": 4,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 1.86,
+        "Friday": 5.31,
+        "Saturday": 6.65,
+        "Sunday": 5.43
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 4.12,
+        "Friday": 5.22,
+        "Saturday": 13.4,
+        "Sunday": 11.68
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.235,
+        "Friday": 0.059,
+        "Saturday": 0.219,
+        "Sunday": 0.228
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 354,
+        "Friday": 361,
+        "Saturday": 338,
+        "Sunday": 337
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.833,
+        "Friday": 0.849,
+        "Saturday": 0.652,
+        "Sunday": 0.65
+      },
+      "coverage_ratio": 0.746,
+      "calibration_excluded_days": [
+        "Saturday",
+        "Sunday"
+      ]
+    },
+    {
+      "movie": "The Amazing Digital Circus: The Last Act",
+      "weekend_of": "2026-06-05",
+      "date": "2026-06-09",
+      "predicted_mid": 17.66,
+      "predicted_low": 15.91,
+      "predicted_high": 19.83,
+      "actual_total": 20.24,
+      "daily_actuals": {
+        "Thursday": 7.88,
+        "Friday": 4.33,
+        "Saturday": 4.7,
+        "Sunday": 3.33
+      },
+      "daily_predictions": {
+        "Thursday": 6.32,
+        "Friday": 4.2,
+        "Saturday": 4.06,
+        "Sunday": 2.71
+      },
+      "error_pct": -12.8,
+      "n_theatres": 343,
+      "n_days": 4,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 4.2,
+        "Friday": 3.2,
+        "Saturday": 3.23,
+        "Sunday": 2.1
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 9.04,
+        "Friday": 3.68,
+        "Saturday": 7.33,
+        "Sunday": 4.47
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.235,
+        "Friday": 0.059,
+        "Saturday": 0.219,
+        "Sunday": 0.228
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 335,
+        "Friday": 336,
+        "Saturday": 321,
+        "Sunday": 319
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.788,
+        "Friday": 0.791,
+        "Saturday": 0.619,
+        "Sunday": 0.615
+      },
+      "coverage_ratio": 0.703,
+      "calibration_excluded_days": [
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Thursday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2732,
+    "amc_market_share": 0.2484,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
-    "overall_scale_factor": 1.2615,
+    "overall_scale_factor": 1.1828,
     "day_weights": {
-      "Thursday": 0.0714,
-      "Friday": 0.3302,
-      "Saturday": 0.3307,
-      "Sunday": 0.2677
+      "Thursday": 0.1047,
+      "Friday": 0.3149,
+      "Saturday": 0.3238,
+      "Sunday": 0.2565
     },
     "day_scale_factors": {
-      "Thursday": 1.4763,
-      "Friday": 1.4186,
-      "Saturday": 1.2346,
-      "Sunday": 1.2922
+      "Thursday": 1.6139,
+      "Friday": 1.2821,
+      "Saturday": 1.2986,
+      "Sunday": 1.2724
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -882,7 +1090,7 @@
           "Thursday": 11.0,
           "Friday": 12.8,
           "Saturday": 37.1,
-          "Sunday": 2.9
+          "Sunday": 3.0
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -902,23 +1110,89 @@
         },
         "daily_errors": {
           "Friday": 52.8,
-          "Saturday": 35.6,
+          "Saturday": 35.4,
           "Sunday": 10.6
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Scary Movie",
+        "weekend_of": "2026-06-05",
+        "abs_error_pct": 17.8,
+        "n_theatres": 424,
+        "n_days": 4,
+        "coverage_ratio": 0.991,
+        "daily_coverage_ratios": {
+          "Thursday": 0.986,
+          "Friday": 0.995,
+          "Saturday": 0.995,
+          "Sunday": 0.988
+        },
+        "daily_errors": {
+          "Thursday": 31.3,
+          "Friday": 34.3,
+          "Saturday": 5.9,
+          "Sunday": 9.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Masters of the Universe",
+        "weekend_of": "2026-06-05",
+        "abs_error_pct": 10.0,
+        "n_theatres": 361,
+        "n_days": 4,
+        "coverage_ratio": 0.746,
+        "daily_coverage_ratios": {
+          "Thursday": 0.833,
+          "Friday": 0.849,
+          "Saturday": 0.652,
+          "Sunday": 0.65
+        },
+        "daily_errors": {
+          "Thursday": 36.2,
+          "Friday": 3.2,
+          "Saturday": 13.5,
+          "Sunday": 3.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The Amazing Digital Circus: The Last Act",
+        "weekend_of": "2026-06-05",
+        "abs_error_pct": 12.8,
+        "n_theatres": 343,
+        "n_days": 4,
+        "coverage_ratio": 0.703,
+        "daily_coverage_ratios": {
+          "Thursday": 0.788,
+          "Friday": 0.791,
+          "Saturday": 0.619,
+          "Sunday": 0.615
+        },
+        "daily_errors": {
+          "Thursday": 19.8,
+          "Friday": 2.9,
+          "Saturday": 13.7,
+          "Sunday": 18.8
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-06-02",
+    "last_updated": "2026-06-09",
     "snapshot_to_day_scale_factors": {
-      "Thursday": 1.0481,
+      "Thursday": 1.0191,
       "Friday": 1.2613,
-      "Saturday": 1.2011,
-      "Sunday": 1.2147
+      "Saturday": 1.1578,
+      "Sunday": 1.1642
     },
     "snapshot_to_lead_scale_factors": {
-      "same_day": 1.2063,
-      "next_day": 0.9871,
+      "same_day": 1.1482,
+      "next_day": 0.9884,
       "multi_day": 0.9725,
       "long_lead": 1.0
     },
@@ -926,26 +1200,26 @@
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 1,
-          "support": 0.202
+          "n": 4,
+          "support": 0.907
         },
         "Friday": {
           "n": 4,
           "support": 1.779
         },
         "Saturday": {
-          "n": 8,
-          "support": 3.386
+          "n": 11,
+          "support": 4.043
         },
         "Sunday": {
-          "n": 7,
-          "support": 3.153
+          "n": 10,
+          "support": 3.837
         }
       },
       "leads": {
         "same_day": {
-          "n": 16,
-          "support": 7.59
+          "n": 25,
+          "support": 9.636
         },
         "next_day": {
           "n": 3,
