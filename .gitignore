@@ -19,5 +19,17 @@ box-office-tracker/data/trades.db
 SwissTony 2/
 output/
 
+# iCloud conflict copies ("Foo 2.py", "Foo copy.csv") — auto-created on sync.
+# These also break `python3 -m unittest discover` (a "test_x 2.py" loads twice),
+# so delete them when they reappear: find . -name "* 2.*" -o -name "* copy.*"
+* 2.py
+* 2.json
+* 2.csv
+* 2.md
+* 2.sh
+* 2.example
+* copy.csv
+* copy.py
+
 # Claude Code working directory (may contain SSH commands, VPS IPs, private notes)
 .claude/
