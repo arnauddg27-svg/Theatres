@@ -1887,10 +1887,13 @@ def load_frozen_calibration(weekend_of):
 
 
 def save_calibration(cal):
-    """Save calibration.json."""
+    """Save calibration.json atomically (temp file + rename), so a crash or
+    concurrent writer mid-dump can never leave the file truncated."""
     os.makedirs(DATA_DIR, exist_ok=True)
-    with open(CALIBRATION_JSON, "w") as f:
+    tmp_path = CALIBRATION_JSON + ".tmp"
+    with open(tmp_path, "w") as f:
         json.dump(cal, f, indent=2)
+    os.replace(tmp_path, CALIBRATION_JSON)
 
 
 def load_theatre_counts():

@@ -318,10 +318,14 @@ def rebuild_historical_accuracy(cal):
 
 
 def save_calibration(cal):
+    # Atomic write (temp file + rename): a crash or concurrent writer mid-dump
+    # must never leave calibration.json truncated/corrupted.
     os.makedirs(DATA_DIR, exist_ok=True)
-    with open(CALIBRATION_JSON, "w") as f:
+    tmp_path = CALIBRATION_JSON + ".tmp"
+    with open(tmp_path, "w") as f:
         json.dump(cal, f, indent=2)
         f.write("\n")
+    os.replace(tmp_path, CALIBRATION_JSON)
 
 
 # ── Fetch Daily Actuals from The Numbers ────────────────────────────────────
@@ -938,21 +942,24 @@ def auto_calibrate():
         direction = "over" if error and error > 0 else "under"
         print(f"    Error: {abs(error):.1f}% ({direction}-predicted)")
 
-        # Show day weight + per-day scale-factor update
+        # Show day weight update. Per-day scale factors were replaced by the
+        # regression block; record_result pops the old keys, so reading them
+        # here (especially factors['overall_scale_factor'] below) would crash.
         new_weights = cal["calibration_factors"]["day_weights"]
-        new_scales = cal["calibration_factors"].get("day_scale_factors", {})
-        print(f"    Updated day weights / scales:")
+        print(f"    Updated day weights:")
         for day in ["Thursday", "Friday", "Saturday", "Sunday"]:
             w = new_weights.get(day, 0)
-            s = new_scales.get(day, 1.0)
-            print(f"      {day}: weight={w:.1%}  scale={s:.3f}")
+            print(f"      {day}: weight={w:.1%}")
 
     # Summary
     factors = cal["calibration_factors"]
     acc = factors.get("historical_accuracy", [])
     if acc:
         mean_err = statistics.mean(a["abs_error_pct"] for a in acc)
-        print(f"\n  Overall: scale={factors['overall_scale_factor']:.3f}, "
+        reg = factors.get("regression", {})
+        wk = reg.get("weekend", {})
+        print(f"\n  Overall: tier={reg.get('active_tier', 'n/a')}, "
+              f"honest LOO MAE={wk.get('loo_mae_pct', 'n/a')}%, "
               f"mean error={mean_err:.1f}%, "
               f"movies calibrated={len(cal['history'])}")
 
