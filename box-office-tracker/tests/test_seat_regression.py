@@ -99,13 +99,29 @@ class TestTrainingRows(unittest.TestCase):
 
 class TestFeatures(unittest.TestCase):
     def test_seat_features(self):
-        # [intercept, log_seat, is_thu, is_fri, is_sat, one_minus_cov]; Sunday baseline
+        # [intercept, log_seat, is_thu, is_fri, is_sat, one_minus_cov, sellout_frac]
+        # Sunday is the day baseline; sellout defaults to 0.0.
         v = sr.seat_features(log_seat=2.0, day="Friday", coverage=0.8)
-        self.assertEqual(v, [1.0, 2.0, 0.0, 1.0, 0.0, 0.2])
-        v2 = sr.seat_features(log_seat=1.0, day="Sunday", coverage=1.0)
-        self.assertEqual(v2, [1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
-        self.assertEqual(sr.SEAT_PRIOR, [0.0, 1.0, 0.0, 0.0, 0.0, 0.0])
-        self.assertEqual(sr.SEAT_PENALIZE, [0, 1, 1, 1, 1, 1])
+        self.assertEqual(v, [1.0, 2.0, 0.0, 1.0, 0.0, 0.2, 0.0])
+        v2 = sr.seat_features(log_seat=1.0, day="Sunday", coverage=1.0, sellout=0.15)
+        self.assertEqual(v2, [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.15])
+        self.assertEqual(sr.SEAT_PRIOR, [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        self.assertEqual(sr.SEAT_PENALIZE, [0, 1, 1, 1, 1, 1, 1])
+
+    def test_build_seat_rows_reads_sellout_fractions(self):
+        history = [{
+            "movie": "X", "weekend_of": "2026-01-02", "actual_total": 30.0,
+            "raw_daily_predictions": {"Friday": 10.0},
+            "daily_actuals": {"Friday": 13.0},
+            "daily_coverage_ratios": {"Friday": 0.9},
+            "daily_sellout_fractions": {"Friday": 0.21},
+        }]
+        rows = sr.build_seat_rows(history)
+        self.assertEqual(1, len(rows))
+        self.assertAlmostEqual(0.21, rows[0]["sellout"])
+        # absent -> defaults to 0.0
+        del history[0]["daily_sellout_fractions"]
+        self.assertAlmostEqual(0.0, sr.build_seat_rows(history)[0]["sellout"])
 
     def test_snapshot_features(self):
         # [intercept, log_snap, is_thu, is_fri, is_sat, lead_next, lead_multi, lead_long]

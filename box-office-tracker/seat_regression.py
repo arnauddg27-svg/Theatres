@@ -132,6 +132,7 @@ def build_seat_rows(history):
                 continue
             if c < COVERAGE_FLOOR:
                 continue
+            sellout = _f((e.get("daily_sellout_fractions") or {}).get(day))
             rows.append({
                 "movie": e.get("movie", ""),
                 "day": day,
@@ -139,6 +140,10 @@ def build_seat_rows(history):
                 "log_actual": log(actual),
                 "coverage": c,
                 "weight": c,            # precision proportional to coverage
+                # Fraction of captured showtimes at >=95% occupancy. When shows
+                # sell out, seats_sold is censored at capacity, so the seat-
+                # implied gross under-counts true demand (the Backrooms miss).
+                "sellout": min(1.0, max(0.0, sellout)) if sellout is not None else 0.0,
             })
     return rows
 
@@ -178,9 +183,10 @@ def weekend_cv_movies(history):
     return [m for m, n in counts.items() if n >= MIN_WEEKEND_CV_DAYS]
 
 
-SEAT_FEATURES = ("intercept", "log_seat", "is_thu", "is_fri", "is_sat", "one_minus_cov")
-SEAT_PRIOR = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0]      # slope prior = 1
-SEAT_PENALIZE = [0, 1, 1, 1, 1, 1]                # intercept unpenalized
+SEAT_FEATURES = ("intercept", "log_seat", "is_thu", "is_fri", "is_sat",
+                 "one_minus_cov", "sellout_frac")
+SEAT_PRIOR = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]  # slope prior = 1
+SEAT_PENALIZE = [0, 1, 1, 1, 1, 1, 1]              # intercept unpenalized
 
 SNAP_FEATURES = ("intercept", "log_snap", "is_thu", "is_fri", "is_sat",
                  "lead_next_day", "lead_multi_day", "lead_long_lead")
@@ -188,7 +194,7 @@ SNAP_PRIOR = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 SNAP_PENALIZE = [0, 1, 1, 1, 1, 1, 1, 1]
 
 
-def seat_features(log_seat, day, coverage):
+def seat_features(log_seat, day, coverage, sellout=0.0):
     return [
         1.0,
         float(log_seat),
@@ -196,6 +202,7 @@ def seat_features(log_seat, day, coverage):
         1.0 if day == "Friday" else 0.0,
         1.0 if day == "Saturday" else 0.0,
         round(1.0 - float(coverage), 10),
+        min(1.0, max(0.0, float(sellout or 0.0))),
     ]
 
 
@@ -466,7 +473,8 @@ def _raw_resid_sd(rows, key):
 
 
 def _seat_pred_row(coef, r):
-    return predict_log(coef, seat_features(r["log_seat"], r["day"], r["coverage"]))
+    return predict_log(coef, seat_features(r["log_seat"], r["day"], r["coverage"],
+                                           r.get("sellout", 0.0)))
 
 
 def _snap_pred_row(coef, r):
@@ -477,11 +485,11 @@ def _snap_pred_row(coef, r):
 # Each maps one day's live inputs to a list of tagged (logmean, variance,
 # is_snapshot) sources. _finalize_day_sources then gates + combines them.
 
-def _regression_day_sources(day, seat, cov, snap, lead, params):
+def _regression_day_sources(day, seat, cov, snap, lead, params, sellout=0.0):
     sources = []
     sc = params.get("seat_coef")
     if seat and seat > 0 and cov >= COVERAGE_FLOOR and sc is not None:
-        sources.append((predict_log(sc, seat_features(log(seat), day, cov)),
+        sources.append((predict_log(sc, seat_features(log(seat), day, cov, sellout)),
                         inflate_variance(params["seat_sd"] ** 2, cov), False))
     nc = params.get("snap_coef")
     if snap and snap > 0 and nc is not None:
@@ -490,14 +498,14 @@ def _regression_day_sources(day, seat, cov, snap, lead, params):
     return sources
 
 
-def _identity_day_sources(day, seat, cov, snap, lead, params):
+def _identity_day_sources(day, seat, cov, snap, lead, params, sellout=0.0):
     """Raw seat-implied, no calibration (ratio = 1). Seat-only baseline."""
     if seat and seat > 0 and cov >= COVERAGE_FLOOR:
         return [(log(seat), inflate_variance(params["seat_sd"] ** 2, cov), False)]
     return []
 
 
-def _global_ratio_day_sources(day, seat, cov, snap, lead, params):
+def _global_ratio_day_sources(day, seat, cov, snap, lead, params, sellout=0.0):
     """Raw seat-implied * exp(mean log-ratio). Seat-only baseline."""
     if seat and seat > 0 and cov >= COVERAGE_FLOOR:
         return [(log(seat) + params["log_ratio_mean"],
@@ -550,7 +558,7 @@ TIER_PARAM_FITTERS = {
 }
 
 
-def _assemble_per_day(rdp, sdp, cov, leads, build_sources, params):
+def _assemble_per_day(rdp, sdp, cov, leads, build_sources, params, sellouts=None):
     """Per-day (point_$M, log_var) from live inputs via a tier source builder."""
     per_day = {}
     for day in OPENING_DAYS:
@@ -558,7 +566,10 @@ def _assemble_per_day(rdp, sdp, cov, leads, build_sources, params):
         c = _f(cov.get(day)) or 0.0
         snap = _f(sdp.get(day))
         lead = leads.get(day) if leads.get(day) in LEAD_BUCKETS else "same_day"
-        fin = _finalize_day_sources(build_sources(day, seat, c, snap, lead, params))
+        sellout = _f((sellouts or {}).get(day)) or 0.0
+        fin = _finalize_day_sources(
+            build_sources(day, seat, c, snap, lead, params, sellout)
+        )
         if fin is not None:
             per_day[day] = fin
     return per_day
@@ -571,6 +582,7 @@ def _assemble_entry(entry, build_sources, params):
         entry.get("daily_coverage_ratios") or {},
         entry.get("snapshot_daily_lead_buckets") or {},
         build_sources, params,
+        sellouts=entry.get("daily_sellout_fractions") or {},
     )
 
 
@@ -757,13 +769,17 @@ def fit_regression_calibration(history):
     return block
 
 
-def predict_weekend(block, daily_seat_m, coverage, daily_snapshot_m, lead_buckets):
+def predict_weekend(block, daily_seat_m, coverage, daily_snapshot_m, lead_buckets,
+                    daily_sellout=None):
     """Production forecast from a fitted regression block.
 
     daily_seat_m: {day: raw seat-implied daily gross $M} (observed days).
     coverage:     {day: 0..1}.
     daily_snapshot_m: {day: snapshot-implied daily gross $M} (future or observed).
     lead_buckets: {day: lead bucket str}.
+    daily_sellout: {day: fraction of captured showtimes at >=95% occupancy} —
+        demand-censoring signal for the regression tier (sold-out shows hide
+        demand above capacity).
 
     Returns {mid_m, low_m, high_m, observed_share, per_day, tier}.
     """
@@ -774,7 +790,8 @@ def predict_weekend(block, daily_seat_m, coverage, daily_snapshot_m, lead_bucket
     params = _params_from_block(block, tier)
     per_day = _assemble_per_day(daily_seat_m or {}, daily_snapshot_m or {},
                                 coverage or {}, lead_buckets or {},
-                                TIER_SOURCE_BUILDERS[tier], params)
+                                TIER_SOURCE_BUILDERS[tier], params,
+                                sellouts=daily_sellout or {})
     mid, _logvar, obs_share = assemble_weekend(per_day, day_shares)
     wk = block.get("weekend") or {"log_half_width": 0.85, "resid_mean": 0.0}
     lo_hi = weekend_interval(mid, wk.get("log_half_width", 0.85),

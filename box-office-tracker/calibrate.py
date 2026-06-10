@@ -537,7 +537,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   reference_amc_theatres=None, model_cohort_key=None,
                   social_signal=None, model_version=None,
                   actual_source=None, actual_status="final",
-                  replace_existing=False):
+                  replace_existing=False, daily_sellout_fractions=None):
     """Record daily predicted-vs-actual and update all calibration factors."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
@@ -578,6 +578,14 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
+        }
+    if daily_sellout_fractions:
+        # Demand-censoring signal for the seat regression (fraction of captured
+        # showtimes at >=95% occupancy that day).
+        entry["daily_sellout_fractions"] = {
+            k: round(min(1.0, max(0.0, float(v))), 4)
+            for k, v in daily_sellout_fractions.items()
+            if v is not None
         }
     if snapshot_daily_predictions:
         entry["snapshot_daily_predictions"] = {
@@ -780,6 +788,7 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             daily_theatre_counts=item.get("daily_theatre_counts"),
             daily_coverage_ratios=item.get("daily_coverage_ratios"),
             raw_daily_predictions=item.get("raw_daily_predictions"),
+            daily_sellout_fractions=item.get("daily_sellout_fractions"),
             snapshot_daily_predictions=item.get("snapshot_daily_predictions"),
             snapshot_daily_coverage_ratios=item.get("snapshot_daily_coverage_ratios"),
             snapshot_daily_lead_buckets=item.get("snapshot_daily_lead_buckets"),
@@ -812,6 +821,7 @@ def auto_calibrate():
                          load_social_signal_data,
                          load_movie_metadata,
                          daily_calibration_fields_from_prediction,
+                         daily_sellout_fractions_from_prediction,
                          national_theatre_count_for_movie,
                          predict_movie)
 
@@ -925,6 +935,7 @@ def auto_calibrate():
             "raw_daily_predictions": raw_daily_predictions,
             "daily_theatre_counts": daily_theatre_counts,
             "daily_coverage_ratios": daily_coverage_ratios,
+            "daily_sellout_fractions": daily_sellout_fractions_from_prediction(pred),
             "snapshot_daily_predictions": snapshot_daily_predictions,
             "snapshot_daily_coverage_ratios": snapshot_daily_coverage_ratios,
             "snapshot_daily_lead_buckets": snapshot_daily_lead_buckets,
@@ -1072,6 +1083,7 @@ if __name__ == "__main__":
                              load_daily_actual_overrides,
                              daily_actual_override_for,
                              daily_calibration_fields_from_prediction,
+                             daily_sellout_fractions_from_prediction,
                              national_theatre_count_for_movie,
                              predict_movie)
         cal = load_calibration()
@@ -1178,6 +1190,7 @@ if __name__ == "__main__":
             daily_theatre_counts=daily_theatre_counts,
             daily_coverage_ratios=daily_coverage_ratios,
             raw_daily_predictions=raw_daily_predictions,
+            daily_sellout_fractions=daily_sellout_fractions_from_prediction(pred),
             snapshot_daily_predictions=snapshot_daily_predictions,
             snapshot_daily_coverage_ratios=snapshot_daily_coverage_ratios,
             snapshot_daily_lead_buckets=snapshot_daily_lead_buckets,

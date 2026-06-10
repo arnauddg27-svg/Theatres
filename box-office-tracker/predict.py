@@ -4415,7 +4415,8 @@ def calibrated_daily_estimates(daily_estimates, cal):
 
 
 def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None,
-                    daily_snapshot_estimates=None, daily_lead_buckets=None):
+                    daily_snapshot_estimates=None, daily_lead_buckets=None,
+                    daily_sellout_fractions=None):
     """Stage D: regression-block calibration -> weekend total + 90% interval.
 
     daily_estimates: {day: raw domestic daily mid in DOLLARS}.
@@ -4432,6 +4433,7 @@ def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None,
     out = seat_regression.predict_weekend(
         block, daily_seat_m=daily_seat_m, coverage=coverage,
         daily_snapshot_m=snap_m, lead_buckets=daily_lead_buckets or {},
+        daily_sellout=daily_sellout_fractions or {},
     )
     mid = out["mid_m"] * 1_000_000.0
     low = out["low_m"] * 1_000_000.0
@@ -5790,7 +5792,7 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
                   seat_raw, poly_ev, actual, n_theatres, days_collected,
                   daily_theatre_counts=None, daily_coverage_ratios=None,
                   daily_predictions=None, raw_daily_predictions=None,
-                  daily_actuals=None,
+                  daily_actuals=None, daily_sellout_fractions=None,
                   snapshot_daily_predictions=None,
                   snapshot_daily_coverage_ratios=None,
                   snapshot_daily_lead_buckets=None,
@@ -5836,6 +5838,12 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
+        }
+    if daily_sellout_fractions:
+        entry["daily_sellout_fractions"] = {
+            k: round(min(1.0, max(0.0, float(v))), 4)
+            for k, v in daily_sellout_fractions.items()
+            if v is not None
         }
     if daily_actuals:
         clean_daily_actuals = {}
@@ -5985,6 +5993,19 @@ def daily_calibration_fields_from_prediction(pred):
         daily_theatre_counts,
         daily_coverage_ratios,
     )
+
+
+def daily_sellout_fractions_from_prediction(pred):
+    """Per-day fraction of captured showtimes at >=95% occupancy.
+
+    Stored on calibration history entries so the seat regression can learn the
+    demand-censoring bias (sold-out shows hide demand above capacity)."""
+    fractions = {}
+    for day_name, details in pred.get("daily_details", {}).items():
+        value = details.get("sellout_fraction")
+        if value is not None:
+            fractions[day_name] = round(float(value), 4)
+    return fractions
 
 
 # ── Main Prediction Pipeline ─────────────────────────────────────────────────
@@ -6361,6 +6382,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "sample_occupancy_ratio": (
                 sold_seats / total_seats if total_seats and total_seats > 0 else None
             ),
+            # Demand-censoring signal: fraction of captured showtimes effectively
+            # sold out (>=95% observed occupancy). Sold-out shows hide demand
+            # above capacity, so high values mean seat-implied gross is a floor.
+            "sellout_fraction": (
+                sum(1 for r in per_showtime_results
+                    if r.get("observed_occ", 0) >= 0.95) / len(per_showtime_results)
+                if per_showtime_results else 0.0
+            ),
             "expected_theatres": expected_amc_theatres,
             "coverage_ratio": coverage_ratio,
             "effective_coverage_ratio": effective_coverage_ratio,
@@ -6446,6 +6475,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         daily_estimates,
         cal,
         daily_coverage_ratios=daily_coverage_ratios,
+        daily_sellout_fractions={
+            day: details["sellout_fraction"]
+            for day, details in daily_details.items()
+            if details.get("sellout_fraction") is not None
+        },
     )
     for day_name, calibrated in calibrated_daily.items():
         details = daily_details.get(day_name)
