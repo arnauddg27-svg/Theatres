@@ -118,6 +118,9 @@
         "Friday": 0.0589,
         "Saturday": 0.0382,
         "Sunday": 0.0104
+      },
+      "daily_early_sellout_fractions": {
+        "Saturday": 0.0
       }
     },
     {
@@ -189,6 +192,12 @@
         "Friday": 0.0101,
         "Saturday": 0.0132,
         "Sunday": 0.0022
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
       }
     },
     {
@@ -259,6 +268,12 @@
         "Friday": 0.0114,
         "Saturday": 0.0325,
         "Sunday": 0.0112
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0014,
+        "Saturday": 0.0011,
+        "Sunday": 0.0048
       }
     },
     {
@@ -334,6 +349,12 @@
         "Friday": 0.019,
         "Saturday": 0.0219,
         "Sunday": 0.0115
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0089,
+        "Friday": 0.0057,
+        "Saturday": 0.0027,
+        "Sunday": 0.0
       }
     },
     {
@@ -398,6 +419,10 @@
       "daily_sellout_fractions": {
         "Friday": 0.0,
         "Saturday": 0.0013,
+        "Sunday": 0.0
+      },
+      "daily_early_sellout_fractions": {
+        "Saturday": 0.0,
         "Sunday": 0.0
       }
     },
@@ -470,6 +495,12 @@
         "Friday": 0.0019,
         "Saturday": 0.0036,
         "Sunday": 0.0019
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0034,
+        "Friday": 0.0012,
+        "Saturday": 0.0009,
+        "Sunday": 0.0
       }
     },
     {
@@ -529,6 +560,10 @@
       "daily_sellout_fractions": {
         "Friday": 0.0039,
         "Sunday": 0.0023
+      },
+      "daily_early_sellout_fractions": {
+        "Saturday": 0.0037,
+        "Sunday": 0.0038
       }
     },
     {
@@ -643,6 +678,12 @@
         "Friday": 0.1524,
         "Saturday": 0.0402,
         "Sunday": 0.0176
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0046,
+        "Saturday": 0.0,
+        "Sunday": 0.0
       }
     },
     {
@@ -717,6 +758,12 @@
         "Friday": 0.0106,
         "Saturday": 0.0113,
         "Sunday": 0.0031
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
       }
     },
     {
@@ -789,6 +836,12 @@
         "Friday": 0.0707,
         "Saturday": 0.0333,
         "Sunday": 0.0092
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0483,
+        "Friday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
       }
     },
     {
@@ -865,6 +918,12 @@
         "Friday": 0.007,
         "Saturday": 0.0076,
         "Sunday": 0.003
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0,
+        "Saturday": 0.001,
+        "Sunday": 0.0
       }
     },
     {
@@ -943,6 +1002,12 @@
         "Friday": 0.0062,
         "Saturday": 0.0041,
         "Sunday": 0.0025
+      },
+      "daily_early_sellout_fractions": {
+        "Thursday": 0.0104,
+        "Friday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
       }
     }
   ],
