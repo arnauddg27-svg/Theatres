@@ -32952,3 +32952,81 @@ This log records each automated run of the seat-map tracking system.
 **Issues:** AMC Glen Cove 6: No seat map for The Devil Wears Prada 2 Laser at AMC @ 8:30pm (https://www.amctheatres.com/showtimes/142757318/seats); AMC Highwoods 20: timeout after 180s — skipped; AMC Madison Yards 8: No seat map for The Devil Wears Prada 2 Laser at AMC @ 9:25pm (https://www.amctheatres.com/showtimes/142830095/seats); AMC Majestic 12: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142531150/seats); AMC Majestic 12: No seat map for The Devil Wears Prada 2 BigD at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/141321835/seats); AMC Majestic 12: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/141321881/seats); AMC Southington 12: No seat map for The Devil Wears Prada 2 undefined @ 10:00pm (https://www.amctheatres.com/showtimes/142683552/seats); AMC DINE-IN North Point Mall 12: No seat map for The Devil Wears Prada 2 Dolby Cinema at AMC @ 11:00pm (https://www.amctheatres.com/showtimes/141456232/seats); AMC CLASSIC Albany 16: timeout after 180s — skipped; AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142747946/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 8:15pm (https://www.amctheatres.com/showtimes/142130249/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 7:30pm (https://www.amctheatres.com/showtimes/141508730/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142747945/seats); AMC CLASSIC LaGrange 10 - Georgia: No seat map for The Devil Wears Prada 2 undefined @ 5:15pm (https://www.amctheatres.com/showtimes/142130250/seats); AMC CLASSIC Cartersville 12: timeout after 180s — skipped; AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 Laser at AMC @ 8:30pm (https://www.amctheatres.com/showtimes/141506736/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 Laser at AMC @ 7:45pm (https://www.amctheatres.com/showtimes/142691537/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 Laser at AMC @ 6:00pm (https://www.amctheatres.com/showtimes/142691585/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 Laser at AMC @ 5:15pm (https://www.amctheatres.com/showtimes/141506737/seats); AMC CLASSIC Riverstone 15: No seat map for The Devil Wears Prada 2 BigD at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/141506787/seats); AMC CLASSIC Battlefield 10: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/141414759/seats); AMC CLASSIC Battlefield 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142762358/seats); AMC CLASSIC Battlefield 10: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/141414758/seats); AMC CLASSIC Battlefield 10: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142762357/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 10:15pm (https://www.amctheatres.com/showtimes/141451144/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 9:15pm (https://www.amctheatres.com/showtimes/142748300/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 8:15pm (https://www.amctheatres.com/showtimes/142748264/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 7:20pm (https://www.amctheatres.com/showtimes/141451145/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142748283/seats); AMC CLASSIC Shelby 10: No seat map for The Devil Wears Prada 2 undefined @ 5:15pm (https://www.amctheatres.com/showtimes/142748265/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142703263/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141498158/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142703236/seats); AMC CLASSIC Havelock 6: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142703262/seats); AMC CLASSIC Walnut Square 12: timeout after 180s — skipped; AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 9:30pm (https://www.amctheatres.com/showtimes/142036886/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/141495759/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 7:30pm (https://www.amctheatres.com/showtimes/142697320/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/142697290/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 6:30pm (https://www.amctheatres.com/showtimes/142036887/seats); AMC CLASSIC Jacksonville 16: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/141495758/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142737538/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 7:30pm (https://www.amctheatres.com/showtimes/141415063/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 6:45pm (https://www.amctheatres.com/showtimes/142737458/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142737537/seats); AMC CLASSIC Myrtle Beach 12: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142737425/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 8:45pm (https://www.amctheatres.com/showtimes/142740935/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 7:45pm (https://www.amctheatres.com/showtimes/142179418/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141427527/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142740908/seats); AMC CLASSIC New Smyrna 12: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142179417/seats); AMC CLASSIC Pensacola 18: timeout after 180s — skipped; AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 10:00pm (https://www.amctheatres.com/showtimes/141327117/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 7:45pm (https://www.amctheatres.com/showtimes/142738029/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141327116/seats); AMC CLASSIC South Hills Village 10: No seat map for The Devil Wears Prada 2 undefined @ 6:15pm (https://www.amctheatres.com/showtimes/142738094/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/142696340/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 8:30pm (https://www.amctheatres.com/showtimes/141332220/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/142696388/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 6:05pm (https://www.amctheatres.com/showtimes/142696338/seats); AMC CLASSIC Wilson 10: No seat map for The Devil Wears Prada 2 undefined @ 5:30pm (https://www.amctheatres.com/showtimes/141332219/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 BigD at AMC @ 10:00pm (https://www.amctheatres.com/showtimes/142776200/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 9:00pm (https://www.amctheatres.com/showtimes/141510240/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142776223/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 BigD at AMC @ 7:00pm (https://www.amctheatres.com/showtimes/141510297/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/141510239/seats); AMC CLASSIC Savannah 11: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142776222/seats); AMC CLASSIC Indian River 24: overall deadline reached — skipped; AMC Center Park 8: overall deadline reached — skipped; AMC Magic Johnson Capital Center 12: overall deadline reached — skipped; AMC St. Charles Town Ctr 9: overall deadline reached — skipped; AMC CLASSIC Statesboro 12: timeout after 180s — skipped; AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 8:00pm (https://www.amctheatres.com/showtimes/142740466/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 7:00pm (https://www.amctheatres.com/showtimes/141439145/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 6:00pm (https://www.amctheatres.com/showtimes/142740446/seats); AMC CLASSIC Palm Harbor 10: No seat map for The Devil Wears Prada 2 undefined @ 5:00pm (https://www.amctheatres.com/showtimes/142740467/seats)
 
 ---
+
+---
+
+## 2026-05-30 (Saturday) — Automated Run SKIPPED (environment blocker)
+
+**Status:** No data collected. The scheduled command could not run.
+
+**Root causes (all confirmed):**
+1. `collect.py` does not exist in the repo. The task references `collect.py --sample 50 --budget 200`, but no such file is present (the actual collector is the Playwright-based `scraper.py`, which takes no `--sample`/`--budget` args).
+2. The task's working directory path is wrong: `~/Documents/Claude/Theatre 2.0/...` does not exist. Real path is `~/Documents/Code Projects/Theatre 2.0/box-office-tracker`.
+3. The sandbox lacks Playwright and has no network access to gamma-api.polymarket.com or amctheatres.com (proxy errors), so even `scraper.py` cannot run here.
+
+**API calls used:** 0 (no collection performed).
+
+**Action needed:** Run locally — see summary.
+
+---
+
+## 2026-06-04 (Thursday) — Automated Run SKIPPED (environment blocker)
+
+**Status:** No data collected. The scheduled command could not run in the sandbox.
+
+**Blockers (re-confirmed today, same as 2026-05-30):**
+1. `collect.py` does not exist in the repo. The task references `collect.py --sample 50 --budget 200`; the actual collector is the Playwright-based `scraper.py` (no `--sample`/`--budget` args).
+2. Task working-dir path is wrong: `~/Documents/Claude/Theatre 2.0/...` does not exist. Real path: `~/Documents/Code Projects/Theatre 2.0/box-office-tracker`.
+3. Sandbox has no `playwright` module and no network egress to amctheatres.com or gamma-api.polymarket.com (connection errors), so `scraper.py` cannot run here either.
+
+**API calls used:** 0 (no collection performed).
+**Action needed:** Run locally on the user's machine.
+
+---
+
+## 2026-06-05 (Friday) — Automated Run SKIPPED (environment blocker)
+
+**Status:** No data collected. The scheduled command could not run in the sandbox.
+
+**Blockers (re-confirmed today, identical to 2026-05-30 and 2026-06-04):**
+1. `collect.py` does not exist anywhere in the repo. The task references `collect.py --sample 50 --budget 200`; the only collector present is the Playwright-based `scraper.py`, which has no `--sample`/`--budget` arguments.
+2. Task working-dir path is wrong: `~/Documents/Claude/Theatre 2.0/...` does not exist. Real path: `~/Documents/Code Projects/Theatre 2.0/box-office-tracker`.
+3. Sandbox has no `playwright` module installed and no network egress to amctheatres.com (connection error), so `scraper.py` cannot run here either.
+
+**API calls used:** 0 (no collection performed).
+**Action needed:** Run locally on the user's machine.
+
+---
+
+## 2026-06-07 (Sunday) — Automated Run FAILED (network blocked)
+
+**Status:** No data collected.
+
+**What changed vs. prior skipped runs:** the collector was actually executed this time via the surviving bytecode `__pycache__/collect.cpython-310.pyc` (sandbox Python is 3.10.12, matching). It started normally ("Box Office Tracker v2") and failed at step 1/5:
+- `Fetching Polymarket opening-weekend markets... ERROR: <urlopen error Tunnel connection failed: 403 Forbidden>`
+
+**Persistent blockers:**
+1. `collect.py` source file is still missing from the repo (only the .pyc remains). Recommend recovering/restoring the source.
+2. Task path in SKILL.md is still wrong (`~/Documents/Claude/Theatre 2.0/...`; real path is `~/Documents/Code Projects/Theatre 2.0/box-office-tracker`).
+3. Sandbox has no network egress to gamma-api.polymarket.com / amctheatres.com (proxy 403) — collection cannot run here.
+
+**API calls used:** 0 successful (1 attempted, blocked).
+**Action needed:** Run locally: `python3 collect.py --sample 50 --budget 200` (or `python3 __pycache__/collect.cpython-310.pyc --sample 50 --budget 200` until the source is restored).
+
+---
+
+## 2026-06-11 (Thursday) — Automated Run FAILED (network blocked)
+
+**Status:** No data collected.
+
+**What happened:** Collector executed via `__pycache__/collect.cpython-310.pyc` (source `collect.py` still missing from repo). Started normally ("Box Office Tracker v2", run 20260611_233620) and failed at step 1/5:
+- `Fetching Polymarket opening-weekend markets... ERROR: <urlopen error Tunnel connection failed: 403 Forbidden>`
+- Exited cleanly with no markets, so steps 2–5 (theatres, showtimes, seat maps, export) never ran.
+
+**Persistent blockers (unchanged since 2026-05-30):**
+1. `collect.py` source missing — only `.pyc` bytecode remains. Recommend restoring the source.
+2. SKILL.md task path still wrong: `~/Documents/Claude/Theatre 2.0/...` → real path is `~/Documents/Code Projects/Theatre 2.0/box-office-tracker`.
+3. Sandbox has no network egress to gamma-api.polymarket.com / amctheatres.com (proxy 403).
+
+**API calls used:** 0 successful (1 attempted, blocked).
+**Action needed:** Run locally on your machine: `python3 collect.py --sample 50 --budget 200` (or `python3 __pycache__/collect.cpython-310.pyc --sample 50 --budget 200` until source is restored).
