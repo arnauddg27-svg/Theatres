@@ -159,25 +159,12 @@ jobs:
           fi
           exit "$status"
 
-      - name: Release AMC lock
-        if: always() && steps.amc_lock.outputs.acquired == 'true'
-        run: |
-          python3 box-office-tracker/scripts/amc_lock.py release \
-            --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
-
-      - name: Upload Phase 1 logs
-        if: always() && steps.dedup.outputs.skip != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: phase1-logs-${{ github.event.inputs.tz_group }}-${{ github.run_id }}
-          path: phase1-logs/
-          if-no-files-found: ignore
-
       - name: Commit showtime links
         # Only commit a successful Phase 1. The scraper now validates fresh
-        # link coverage before writing showtime-links.json; if coverage is low,
-        # preserve the last good file and let Phase 2 repair/fail loudly.
-        if: success() && steps.dedup.outputs.skip != 'true'
+        # link coverage before writing showtime-links.json. Commit while still
+        # holding the AMC lock so the next timezone cannot re-sync a stale
+        # shared cache before this timezone's canonical links reach main.
+        if: success() && steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -205,6 +192,20 @@ jobs:
             fi
             sleep $((i * 15))
           done
+
+      - name: Release AMC lock
+        if: always() && steps.amc_lock.outputs.acquired == 'true'
+        run: |
+          python3 box-office-tracker/scripts/amc_lock.py release \
+            --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
+
+      - name: Upload Phase 1 logs
+        if: always() && steps.dedup.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase1-logs-${{ github.event.inputs.tz_group }}-${{ github.run_id }}
+          path: phase1-logs/
+          if-no-files-found: ignore
 
   # ──────────────────────────────────────────────────────────────────────────
   # Phase 2 — seat data scrape. Runs on ubuntu-latest matrix so each TZ gets

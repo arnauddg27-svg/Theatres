@@ -229,6 +229,22 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("git fetch origin main", resync_block)
         self.assertIn("git reset --hard origin/main", resync_block)
 
+    def test_collect_links_commits_shared_cache_before_releasing_lock(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        phase_pos = collect_block.index("      - name: Phase 1")
+        commit_pos = collect_block.index("      - name: Commit showtime links")
+        release_pos = collect_block.index("      - name: Release AMC lock")
+        upload_pos = collect_block.index("      - name: Upload Phase 1 logs")
+        commit_block = collect_block[commit_pos:release_pos]
+
+        self.assertLess(phase_pos, commit_pos)
+        self.assertLess(commit_pos, release_pos)
+        self.assertLess(release_pos, upload_pos)
+        self.assertIn("steps.amc_lock.outputs.acquired == 'true'", commit_block)
+        self.assertIn("git push", commit_block)
+
     def test_finalize_downloads_merges_and_commits_once(self):
         start = self.workflow.index("  finalize:")
         end = self.workflow.index("  calibrate:", start)
