@@ -294,10 +294,17 @@ jobs:
           export PHASE1_MIN_FRESH_LINK_RATIO=0.90
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             export SNAPSHOT_MAX_CONCURRENT_TABS=3
-            export SNAPSHOT_TOP_THEATRE_CAP=100
+            # 200 theatres ≈ 2x the sellout/demand-velocity sample (measured
+            # ~1.6s/row ≈ 5,600 rows in the 9000s deadline — Thu-Sun probes fit
+            # fully; only the low-value Wednesday long-lead probe may truncate,
+            # and demand-first ordering drops the least-informative tail).
+            # Budget chain: lock wait 120m + step 190m + 50m buffers = 360m job cap,
+            # so the extra room comes from the repair budget (2700 -> 1800), not
+            # the step timeout.
+            export SNAPSHOT_TOP_THEATRE_CAP=200
             export SNAPSHOT_REPAIR_LINKS=1
-            export PHASE2_DEADLINE_SEC=8100
-            export PHASE1_DEADLINE_SEC=2700
+            export PHASE2_DEADLINE_SEC=9000
+            export PHASE1_DEADLINE_SEC=1800
             export PHASE1_MAX_THEATRE_DATE_VISITS=500
             export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
             echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"

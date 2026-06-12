@@ -2175,5 +2175,104 @@ class ScraperLoggingTest(unittest.TestCase):
                 os.environ["SNAPSHOT_MAX_CONCURRENT_TABS"] = old_snapshot
 
 
+class PartialRenderGuardTest(unittest.TestCase):
+    def _snapshot_row(self, **overrides):
+        row = {field: "" for field in scraper.PRE_RESERVATION_FIELDS}
+        row.update({
+            "weekend_of": "2026-06-05",
+            "snapshot_bucket": "2026-06-05T20:00Z",
+            "show_date": "2026-06-06",
+            "theatre_name": "AMC Test 1",
+            "timezone": "ET",
+            "movie_title": "Scary Movie",
+            "showtime": "7:00pm",
+            "showtime_id": "show-123",
+            "auditorium_type": "Laser at AMC",
+            "total_seats": "219",
+            "reserved_seats": "40",
+            "available_seats": "179",
+            "occupancy_pct": "18.3",
+            "amc_seat_map_url": "https://www.amctheatres.com/showtimes/show-123/seats",
+        })
+        row.update(overrides)
+        return row
+
+    def test_collapsed_capacity_reading_is_dropped(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.PRE_RESERVATION_CSV
+            scraper.PRE_RESERVATION_CSV = Path(tmp) / "pre.csv"
+            try:
+                scraper.ensure_pre_reservation_header()
+                written, _ = scraper.append_unique_pre_reservation_rows(
+                    [self._snapshot_row()]
+                )
+                self.assertEqual(1, written)
+                # Same showtime, later bucket, total_seats collapsed 219 -> 127:
+                # a partial seat-map render — must be dropped, not recorded.
+                partial = self._snapshot_row(
+                    snapshot_bucket="2026-06-05T22:00Z",
+                    total_seats="127", reserved_seats="120",
+                )
+                written, skipped = scraper.append_unique_pre_reservation_rows([partial])
+                self.assertEqual(0, written)
+                self.assertEqual(1, skipped)
+                # A consistent reading at a later bucket still records.
+                ok = self._snapshot_row(
+                    snapshot_bucket="2026-06-05T23:00Z",
+                    reserved_seats="151", available_seats="68",
+                )
+                written, _ = scraper.append_unique_pre_reservation_rows([ok])
+                self.assertEqual(1, written)
+            finally:
+                scraper.PRE_RESERVATION_CSV = old_csv
+
+    def test_delta_reserved_uses_latest_prior_bucket(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_csv = scraper.PRE_RESERVATION_CSV
+            scraper.PRE_RESERVATION_CSV = Path(tmp) / "pre.csv"
+            try:
+                scraper.ensure_pre_reservation_header()
+                scraper.append_unique_pre_reservation_rows([self._snapshot_row()])
+                later = self._snapshot_row(
+                    snapshot_bucket="2026-06-05T22:00Z", reserved_seats="65",
+                )
+                scraper.append_unique_pre_reservation_rows([later])
+                with open(scraper.PRE_RESERVATION_CSV, newline="") as f:
+                    rows = list(csv.DictReader(f))
+                self.assertEqual("25", rows[-1]["delta_reserved_since_previous"])
+            finally:
+                scraper.PRE_RESERVATION_CSV = old_csv
+
+
+class SnapshotDemandScoreTest(unittest.TestCase):
+    def test_latest_weekend_latest_bucket_occupancy_drives_score(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "pre.csv"
+            with open(path, "w", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=scraper.PRE_RESERVATION_FIELDS)
+                writer.writeheader()
+                def row(theatre, sid, bucket, reserved, total, weekend="2026-06-05"):
+                    base = {field: "" for field in scraper.PRE_RESERVATION_FIELDS}
+                    base.update({
+                        "weekend_of": weekend, "snapshot_bucket": bucket,
+                        "show_date": "2026-06-06", "theatre_name": theatre,
+                        "movie_title": "M", "showtime_id": sid,
+                        "total_seats": str(total), "reserved_seats": str(reserved),
+                    })
+                    return base
+                # Hot theatre: latest bucket 90% full (earlier reading 10% must be ignored)
+                writer.writerow(row("AMC Hot", "s1", "2026-06-05T18:00Z", 10, 100))
+                writer.writerow(row("AMC Hot", "s1", "2026-06-05T22:00Z", 90, 100))
+                # Cold theatre: 10%
+                writer.writerow(row("AMC Cold", "s2", "2026-06-05T22:00Z", 10, 100))
+                # Older weekend must not contribute
+                writer.writerow(row("AMC Old", "s3", "2026-05-29T22:00Z", 99, 100,
+                                    weekend="2026-05-29"))
+            scores = scraper.snapshot_demand_scores(pre_reservation_csv_path=path)
+            self.assertAlmostEqual(0.9, scores["AMC Hot"], places=6)
+            self.assertAlmostEqual(0.1, scores["AMC Cold"], places=6)
+            self.assertNotIn("AMC Old", scores)
+
+
 if __name__ == "__main__":
     unittest.main()

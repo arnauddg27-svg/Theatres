@@ -52,11 +52,15 @@ class WorkflowReliabilityTest(unittest.TestCase):
         phase_block = scrape_block[phase_start:phase_end]
 
         self.assertIn("timeout-minutes: 190", phase_block)
-        self.assertIn("PHASE2_DEADLINE_SEC=8100", phase_block)
+        self.assertIn("PHASE2_DEADLINE_SEC=9000", phase_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
-        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=100", phase_block)
+        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=200", phase_block)
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
+        # Snapshot scrape + targeted link repair must fit the step timeout:
+        # 9000s + 1800s = 180m <= 190m. The job-level chain (lock wait + step
+        # + buffers <= 360m) is asserted by test_amc_lock_wait_budget_fits_job_timeouts.
+        self.assertIn("PHASE1_DEADLINE_SEC=1800", phase_block)
 
     def test_regular_scrapes_have_full_day_runtime_budget(self):
         scrape_start = self.workflow.index("  scrape:")

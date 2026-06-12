@@ -245,6 +245,54 @@ def snapshot_theatre_signal_scores(seat_csv_path=SEAT_CSV):
     return scores
 
 
+def snapshot_demand_scores(pre_reservation_csv_path=None):
+    """Per-theatre demand velocity from the latest pre-reservation readings.
+
+    For the most recent weekend in the snapshots CSV, take each showtime's
+    LATEST bucket reading and average occupancy per theatre. Theatres filling
+    fastest carry the most information about demand censoring (sellouts), so
+    the snapshot cap should prefer them. Returns {theatre_name: 0..1}.
+    """
+    path = pre_reservation_csv_path or PRE_RESERVATION_CSV
+    if not Path(path).exists():
+        return {}
+    latest = {}
+    max_weekend = ""
+    try:
+        with open(path, newline="") as f:
+            for row in csv.DictReader(f):
+                weekend = row.get("weekend_of", "") or ""
+                if weekend > max_weekend:
+                    max_weekend = weekend
+                try:
+                    total = float(row.get("total_seats") or 0)
+                    reserved = float(row.get("reserved_seats") or 0)
+                except (TypeError, ValueError):
+                    continue
+                if total <= 0:
+                    continue
+                key = (
+                    weekend,
+                    row.get("theatre_name", ""),
+                    row.get("showtime_id", "") or row.get("showtime", ""),
+                    row.get("show_date", ""),
+                )
+                bucket = str(row.get("snapshot_bucket", "") or "")
+                prev = latest.get(key)
+                if prev is None or bucket > prev[0]:
+                    latest[key] = (bucket, reserved / total)
+    except OSError:
+        return {}
+    sums = {}
+    counts = {}
+    for (weekend, theatre, _sid, _date), (_bucket, occ) in latest.items():
+        if weekend != max_weekend or not theatre:
+            continue
+        sums[theatre] = sums.get(theatre, 0.0) + occ
+        counts[theatre] = counts.get(theatre, 0) + 1
+    return {t: sums[t] / counts[t] for t in sums if counts[t] > 0}
+
+
 STRATEGIC_PHASE2_THEATRES = {
     "AMC Empire 25",
     "AMC Lincoln Square 13",
@@ -392,6 +440,10 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
     if not theatres_by_group:
         return set()
     signal_scores = signal_scores if signal_scores is not None else snapshot_theatre_signal_scores()
+    # Demand velocity from this weekend's latest snapshot readings: theatres
+    # filling fastest carry the most sellout/demand-censoring information, so
+    # they win the cap ahead of equally-available, equally-signalled peers.
+    demand_scores = snapshot_demand_scores()
     allocations = _snapshot_cap_allocations(theatres_by_group, cap)
     selected = set()
     for group in groups:
@@ -401,6 +453,7 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
             rows,
             key=lambda theatre: (
                 -availability_by_name.get(theatre.get("name", ""), 0),
+                -round(demand_scores.get(theatre.get("name", ""), 0.0), 2),
                 -signal_scores.get(theatre.get("name", ""), 0.0),
                 _theatre_sort_key(theatre),
             ),
@@ -566,7 +619,10 @@ except ValueError:
     PRE_RESERVATION_BUCKET_MINUTES = 60
 ENABLE_PRERESERVATION_SNAPSHOTS = _env_bool("ENABLE_PRERESERVATION_SNAPSHOTS", False)
 SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
-SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 100, minimum=1)
+# 200 theatres ≈ 2x the sellout/demand-velocity sample at ~1.6s/row measured
+# throughput; per-TZ legs stay within the (raised) snapshot deadline, and the
+# demand-first ordering degrades gracefully if a heavy Wednesday probe runs long.
+SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 200, minimum=1)
 SNAPSHOT_SAME_DAY_CUTOFF_HOUR = _env_int("SNAPSHOT_SAME_DAY_CUTOFF_HOUR", 6, minimum=0)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
@@ -2132,35 +2188,62 @@ def snapshot_bucket(check_time, minutes=PRE_RESERVATION_BUCKET_MINUTES):
     return bucketed.strftime("%Y-%m-%dT%H:%MZ")
 
 
-def _previous_reserved_count(row):
+_PRE_RESERVATION_IDENTITY_FIELDS = (
+    "weekend_of", "show_date", "theatre_name", "movie_title",
+    "showtime_id", "auditorium_type",
+)
+
+
+def _pre_reservation_identity(row):
+    return tuple(
+        str(row.get(field, "") or "") for field in _PRE_RESERVATION_IDENTITY_FIELDS
+    )
+
+
+def _previous_reserved_count(row, reserved_index=None):
+    """Latest prior reserved count for this showtime identity.
+
+    `reserved_index` ({identity: sorted-insertable list of (bucket, reserved)})
+    is built once per append batch by `append_unique_pre_reservation_rows`; the
+    old implementation re-read the entire snapshots CSV for EVERY appended row
+    (O(rows_in_file x rows_appended) — minutes of wasted CPU per probe, growing
+    weekly). Passing no index falls back to a one-off single-file scan.
+    """
+    if reserved_index is None:
+        reserved_index = _build_reserved_index()
+        if reserved_index is None:
+            return None
+    identity = _pre_reservation_identity(row)
+    current_bucket = str(row.get("snapshot_bucket", "") or "")
+    previous = [
+        (bucket, reserved)
+        for bucket, reserved in reserved_index.get(identity, ())
+        if bucket < current_bucket
+    ]
+    if not previous:
+        return None
+    return max(previous)[1]
+
+
+def _build_reserved_index():
+    """One pass over the snapshots CSV -> {identity: [(bucket, reserved), ...]}."""
     if not PRE_RESERVATION_CSV.exists():
         return None
-    identity_fields = (
-        "weekend_of", "show_date", "theatre_name", "movie_title",
-        "showtime_id", "auditorium_type",
-    )
-    identity = tuple(str(row.get(field, "") or "") for field in identity_fields)
-    current_bucket = str(row.get("snapshot_bucket", "") or "")
-    previous = []
+    index = {}
     try:
         with open(PRE_RESERVATION_CSV, "r", newline="") as f:
             for existing in csv.DictReader(f):
-                existing_identity = tuple(str(existing.get(field, "") or "") for field in identity_fields)
-                if existing_identity != identity:
-                    continue
                 bucket = str(existing.get("snapshot_bucket", "") or "")
-                if bucket >= current_bucket:
-                    continue
                 try:
                     reserved = int(float(existing.get("reserved_seats", 0) or 0))
                 except (TypeError, ValueError):
                     continue
-                previous.append((bucket, reserved))
-    except Exception:
+                index.setdefault(_pre_reservation_identity(existing), []).append(
+                    (bucket, reserved)
+                )
+    except OSError:
         return None
-    if not previous:
-        return None
-    return sorted(previous)[-1][1]
+    return index
 
 
 def append_unique_pre_reservation_rows(rows):
@@ -2170,17 +2253,33 @@ def append_unique_pre_reservation_rows(rows):
 
     ensure_pre_reservation_header()
     existing_keys = set()
+    reserved_index = {}
+    capacity_by_showtime = {}
     with open(PRE_RESERVATION_CSV, "r", newline="") as f:
         for row in csv.DictReader(f):
             existing_keys.add(_pre_reservation_row_key(row))
+            _is_partial_render(row, capacity_by_showtime)  # build capacity index
+            bucket = str(row.get("snapshot_bucket", "") or "")
+            try:
+                reserved = int(float(row.get("reserved_seats", 0) or 0))
+            except (TypeError, ValueError):
+                continue
+            reserved_index.setdefault(_pre_reservation_identity(row), []).append(
+                (bucket, reserved)
+            )
 
     pending = []
     seen_keys = set(existing_keys)
     skipped = 0
+    partial_renders = 0
     for row in rows:
         normalized = {field: str(row.get(field, "") or "") for field in PRE_RESERVATION_FIELDS}
+        if _is_partial_render(normalized, capacity_by_showtime):
+            partial_renders += 1
+            skipped += 1
+            continue
         if not normalized.get("delta_reserved_since_previous"):
-            previous = _previous_reserved_count(normalized)
+            previous = _previous_reserved_count(normalized, reserved_index)
             if previous is not None:
                 try:
                     normalized["delta_reserved_since_previous"] = str(
@@ -2195,6 +2294,13 @@ def append_unique_pre_reservation_rows(rows):
         pending.append(normalized)
         seen_keys.add(key)
 
+    if partial_renders:
+        print(
+            f"   ⚠️  Dropped {partial_renders} snapshot row(s) whose total_seats "
+            f"collapsed below {SEAT_CAPACITY_PARTIAL_RENDER_RATIO:.0%} of the known "
+            "capacity for the same showtime (partial seat-map render)"
+        )
+
     if pending:
         with open(PRE_RESERVATION_CSV, "a", newline="") as f:
             writer = csv.DictWriter(
@@ -2207,6 +2313,43 @@ def append_unique_pre_reservation_rows(rows):
     return len(pending), skipped
 
 
+# A showtime's auditorium capacity cannot shrink between readings. An incoming
+# total_seats below this fraction of the best prior reading for the SAME
+# showtime means the seat map only partially rendered — recording it would
+# silently undercount sold seats (the number every dollar derives from).
+SEAT_CAPACITY_PARTIAL_RENDER_RATIO = _env_float(
+    "SEAT_CAPACITY_PARTIAL_RENDER_RATIO", 0.80, minimum=0.0
+)
+
+
+def _showtime_capacity_key(row):
+    """Stable per-showtime identity for capacity comparison (URL carries the id)."""
+    url = str(row.get("amc_seat_map_url", "") or "")
+    if url:
+        return url
+    showtime_id = str(row.get("showtime_id", "") or "")
+    return showtime_id or None
+
+
+def _is_partial_render(row, capacity_by_showtime,
+                       ratio=SEAT_CAPACITY_PARTIAL_RENDER_RATIO):
+    """True when this reading's total_seats collapsed vs the known capacity."""
+    key = _showtime_capacity_key(row)
+    if not key:
+        return False
+    try:
+        total = float(row.get("total_seats") or 0)
+    except (TypeError, ValueError):
+        return False
+    if total <= 0:
+        return False
+    known = capacity_by_showtime.get(key, 0.0)
+    if total > known:
+        capacity_by_showtime[key] = total
+        return False
+    return known > 0 and total < known * ratio
+
+
 def append_unique_seat_rows(rows):
     """Append only rows we haven't already logged for this showtime snapshot."""
     if not rows:
@@ -2215,16 +2358,19 @@ def append_unique_seat_rows(rows):
     ensure_csv_header()
     existing_rows = []
     existing_by_key = {}
+    capacity_by_showtime = {}
     if SEAT_CSV.exists():
         with open(SEAT_CSV, "r", newline="") as f:
             for row in csv.DictReader(f):
                 normalized = _normalize_seat_row(row)
                 existing_rows.append(normalized)
                 existing_by_key.setdefault(_seat_row_key(normalized), normalized)
+                _is_partial_render(normalized, capacity_by_showtime)  # build index
 
     pending = []
     seen_keys = set(existing_by_key)
     skipped = 0
+    partial_renders = 0
     metadata_updated = 0
     for row in rows:
         normalized = _normalize_seat_row(row)
@@ -2235,9 +2381,20 @@ def append_unique_seat_rows(rows):
             if existing_row and _merge_seat_row_metadata(existing_row, normalized):
                 metadata_updated += 1
             continue
+        if _is_partial_render(normalized, capacity_by_showtime):
+            partial_renders += 1
+            skipped += 1
+            continue
         pending.append(normalized)
         seen_keys.add(key)
         existing_by_key[key] = normalized
+
+    if partial_renders:
+        print(
+            f"   ⚠️  Dropped {partial_renders} seat row(s) whose total_seats collapsed "
+            f"below {SEAT_CAPACITY_PARTIAL_RENDER_RATIO:.0%} of the known capacity for "
+            "the same showtime (partial seat-map render)"
+        )
 
     if metadata_updated:
         with open(SEAT_CSV, "w", newline="") as f:
