@@ -205,6 +205,30 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("git log --since", block)
         self.assertNotIn("pattern=\"data: box office", block)
 
+    def test_collect_links_runs_on_github_hosted_runner(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+
+        self.assertIn("runs-on: ubuntu-latest", collect_block)
+        self.assertNotIn("runs-on: [self-hosted, vps]", collect_block)
+        self.assertNotIn("/home/gha/actions-runner", collect_block)
+
+    def test_collect_links_resyncs_shared_cache_after_acquiring_lock(self):
+        collect_start = self.workflow.index("  collect-links:")
+        scrape_start = self.workflow.index("  scrape:")
+        collect_block = self.workflow[collect_start:scrape_start]
+        lock_pos = collect_block.index("      - name: Acquire AMC lock")
+        resync_pos = collect_block.index("      - name: Re-sync shared Phase 1 cache after lock acquisition")
+        phase_pos = collect_block.index("      - name: Phase 1")
+        resync_block = collect_block[resync_pos:phase_pos]
+
+        self.assertLess(lock_pos, resync_pos)
+        self.assertLess(resync_pos, phase_pos)
+        self.assertIn("steps.amc_lock.outputs.acquired == 'true'", resync_block)
+        self.assertIn("git fetch origin main", resync_block)
+        self.assertIn("git reset --hard origin/main", resync_block)
+
     def test_finalize_downloads_merges_and_commits_once(self):
         start = self.workflow.index("  finalize:")
         end = self.workflow.index("  calibrate:", start)

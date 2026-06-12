@@ -10,8 +10,9 @@ on:
   # missed a slot after a grace window.
   #
   # Runner topology:
-  #   - Phase 1 (collect-links): self-hosted VPS — not Queue-It'd, shared
-  #     state file showtime-links.json benefits from single-writer serialization.
+  #   - Phase 1 (collect-links): GH-hosted ubuntu-latest. The global AMC lock
+  #     serializes the shared showtime-links.json writer, and each job re-syncs
+  #     main after acquiring that lock before extending the shared cache.
   #   - Phase 2 (scrape): GH-hosted ubuntu-latest with matrix [ET,CT,PT],
   #     serialized by the AMC lock so only one AMC browser session is active.
   #     Each leg gets a fresh Azure IP, then uploads a data artifact instead of
@@ -61,9 +62,8 @@ permissions:
 # Workflow-level concurrency keyed on phase, with one important wrinkle:
 # collect-links also includes tz_group. GitHub Actions keeps at most one pending
 # run per concurrency group, so a single shared collect-links group can cancel an
-# earlier queued ET/CT/PT slot when the VPS runner is busy. Per-TZ collect groups
-# preserve all timezone slots; the single self-hosted VPS runner still serializes
-# actual execution and avoids parallel writes to showtime-links.json.
+# earlier queued ET/CT/PT slot. Per-TZ collect groups preserve all timezone slots;
+# the global AMC lock serializes actual execution and shared-cache writes.
 #
 # For Phase 2, GitHub Actions concurrency groups apply across workflow runs, not
 # across matrix legs within one run. The matrix therefore also sets
@@ -78,40 +78,21 @@ concurrency:
 
 jobs:
   # ──────────────────────────────────────────────────────────────────────────
-  # Phase 1 — collect showtime links. Runs on VPS because (a) it isn't
-  # Queue-It'd, so IP rotation buys nothing, and (b) showtime-links.json is
-  # shared state — parallel writers would conflict. VPS cron dispatches one
-  # TZ at a time, so this job always sees a single TZ.
+  # Phase 1 — collect showtime links. Runs on GitHub-hosted infrastructure so
+  # Phase 1 is independent of VPS runner health and gets a fresh outbound IP.
+  # showtime-links.json is shared state, so every job acquires the global AMC
+  # lock and re-syncs main after acquisition before it starts collecting.
   # ──────────────────────────────────────────────────────────────────────────
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
-    runs-on: [self-hosted, vps]
+    runs-on: ubuntu-latest
     timeout-minutes: 360
 
     steps:
-      - name: Free disk space
-        run: |
-          rm -rf /home/gha/actions-runner/_work/_update 2>/dev/null || true
-          rm -rf /home/gha/actions-runner/_work/_temp/* 2>/dev/null || true
-          find /home/gha/actions-runner/_diag -maxdepth 1 -type f -name '*.log' -mtime +7 -delete 2>/dev/null || true
-          current_ext=$(readlink /home/gha/actions-runner/externals 2>/dev/null | xargs basename 2>/dev/null)
-          current_bin=$(readlink /home/gha/actions-runner/bin 2>/dev/null | xargs basename 2>/dev/null)
-          if [ -n "$current_ext" ] && [ -n "$current_bin" ]; then
-            for d in /home/gha/actions-runner/externals.* /home/gha/actions-runner/bin.*; do
-              [ -e "$d" ] || continue
-              base=$(basename "$d")
-              [ "$base" != "$current_ext" ] && [ "$base" != "$current_bin" ] && rm -rf "$d"
-            done
-          fi
-          pip3 cache purge 2>/dev/null || true
-          apt-get clean 2>/dev/null || true
-          df -h / | tail -1
-
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          clean: false   # preserve .env and other untracked files between runs
           fetch-depth: 50   # dedup guard greps today's commits
 
       - name: Sync to latest main
@@ -147,8 +128,17 @@ jobs:
             --poll-seconds 60 \
             --github-output "$GITHUB_OUTPUT"
 
+      - name: Re-sync shared Phase 1 cache after lock acquisition
+        if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
+        run: |
+          # Other timezone jobs may have committed showtime-links.json while
+          # this job waited for the lock. Always extend the newest canonical
+          # cache instead of overwriting it from a stale checkout.
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
-        if: steps.dedup.outputs.skip != 'true'
+        if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
         working-directory: box-office-tracker
         timeout-minutes: 250
         env:
