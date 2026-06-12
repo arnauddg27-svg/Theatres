@@ -75,6 +75,19 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("PHASE2_THEATRE_TIMEOUT_SEC=180", phase_block)
         self.assertIn("Regular lane:", phase_block)
 
+    def test_regular_scrapes_have_full_day_runtime_budget(self):
+        scrape_start = self.workflow.index("  scrape:")
+        scrape_end = self.workflow.index("  finalize:", scrape_start)
+        scrape_block = self.workflow[scrape_start:scrape_end]
+        phase_start = scrape_block.index("      - name: Phase 2")
+        phase_end = scrape_block.index("      - name: Release AMC lock", phase_start)
+        phase_block = scrape_block[phase_start:phase_end]
+
+        self.assertIn("REGULAR_PHASE2_MIN_DEADLINE_SEC=9000", phase_block)
+        self.assertIn("REGULAR_PHASE2_MAX_DEADLINE_SEC=10800", phase_block)
+        self.assertIn("PHASE2_THEATRE_TIMEOUT_SEC=180", phase_block)
+        self.assertIn("Regular lane:", phase_block)
+
     def test_snapshot_scrapes_go_directly_from_install_to_amc_lock(self):
         scrape_start = self.workflow.index("  scrape:")
         scrape_end = self.workflow.index("  finalize:", scrape_start)
@@ -133,6 +146,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn('ENSURE_LINKS_FLAG=""', block)
         self.assertIn("SNAPSHOT_REPAIR_LINKS=1", block)
         self.assertIn('SNAPSHOT_REPAIR_FLAG="--repair-snapshot-links"', block)
+        self.assertIn("PHASE1_DEADLINE_SEC=2400", block)
+        self.assertIn("PHASE1_MAX_THEATRE_DATE_VISITS=500", block)
+        self.assertIn("phase1-repair-budget=${PHASE1_DEADLINE_SEC}s", block)
         self.assertIn('if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then', block)
         self.assertIn(
             "python scraper.py $FORCE_FLAG $TEST_FLAG $SNAPSHOT_FLAG $SNAPSHOT_REPAIR_FLAG $ENSURE_LINKS_FLAG",
@@ -199,6 +215,11 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("continue-on-error: true", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
+        self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)
+        self.assertLess(
+            block.index("python scripts/clean_canonical_data.py"),
+            block.index("run: python predict.py"),
+        )
         self.assertIn("--summary-file /tmp/box-office-merge-summary.json", block)
         self.assertIn("git status --short --", block)
         self.assertIn("box-office-tracker/data/seat-counts.csv", block)

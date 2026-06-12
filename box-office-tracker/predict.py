@@ -75,7 +75,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v25-snapshot-actual-residual-transfer"
+MODEL_VERSION = "seat-regression-v26-reported-actual-guardrails"
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -2818,6 +2818,12 @@ def same_week_actual_residual_suppression(pred):
     details = pred.get("daily_details") or {}
     if not details:
         return 0.0
+    actual_share = _coverage_value(pred.get("reported_actual_day_share"), default=0.0)
+    if actual_share >= 0.995 or all(
+        (details.get(day) or {}).get("actual_override")
+        for day in OPENING_WEEKEND_DAYS
+    ):
+        return 1.0
     has_actual_anchor = any(
         day_details.get("actual_override")
         and _positive_float(day_details.get("seat_model_actual_scale")) is not None
@@ -2860,7 +2866,6 @@ def same_week_actual_residual_suppression(pred):
     day_support = _clamp(n_days / len(OPENING_WEEKEND_DAYS), 0.0, 1.0)
     anchor_support = _clamp(anchored_weight / 2.25, 0.0, 1.0)
     anchored_day_support = _clamp(len(set(anchored_days)) / 3.0, 0.0, 1.0)
-    actual_share = _coverage_value(pred.get("reported_actual_day_share"), default=0.0)
     actual_support = _clamp(actual_share / 0.12, 0.0, 1.0)
     suppression = coverage * day_support * max(
         anchor_support,
@@ -2917,6 +2922,8 @@ def historical_residual_regression(pred, cal):
     same_week_actual_suppression = same_week_actual_residual_suppression(pred)
     if same_week_actual_suppression > 0:
         strength *= 1.0 - same_week_actual_suppression
+    if strength <= 0.0001:
+        return None
     factor = 1.0 + (raw_factor - 1.0) * strength
     factor = _clamp(
         factor,
@@ -5077,6 +5084,16 @@ def same_week_actual_snapshot_scale_for_day(day_name, regular_daily_details):
         sum(anchor["factor"] * anchor["weight"] for anchor in weighted)
         / total_weight
     )
+    # Sunday is hold-sensitive. A strong Thursday/Friday actual tells us the
+    # movie broke out, but it does not prove the weekend tail will hold. Do not
+    # carry positive early-week residuals into Sunday until Saturday actuals
+    # confirm the hold; still allow negative residuals to reduce Sunday.
+    if (
+        day_name == "Sunday"
+        and factor > 1.0
+        and not any(anchor["day"] == "Saturday" for anchor in weighted)
+    ):
+        return None
     return {
         "factor": factor,
         "weight": _clamp(total_weight, 0.0, SNAPSHOT_ACTUAL_RESIDUAL_MAX_WEIGHT),
@@ -6037,6 +6054,51 @@ def daily_actual_override_gross_m_for(movie, day_name, daily_actual_overrides):
     return _positive_float(override)
 
 
+def opening_weekend_dates_by_day(weekend_of):
+    """Return the Thu-Sun date map for a Friday weekend anchor."""
+    try:
+        friday = datetime.strptime(weekend_of, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        return {}
+    return {
+        "Thursday": (friday - timedelta(days=1)).strftime("%Y-%m-%d"),
+        "Friday": friday.strftime("%Y-%m-%d"),
+        "Saturday": (friday + timedelta(days=1)).strftime("%Y-%m-%d"),
+        "Sunday": (friday + timedelta(days=2)).strftime("%Y-%m-%d"),
+    }
+
+
+def reported_actual_daily_detail(movie, day_name, cal, daily_actual_overrides,
+                                 date_str=None):
+    """Build a daily-details row for a reported actual without seat rows."""
+    override = daily_actual_override_for(movie, day_name, daily_actual_overrides)
+    if not isinstance(override, dict):
+        return None
+    gross_m = _positive_float(override.get("gross_m"))
+    if gross_m is None or gross_m <= 0:
+        return None
+    day_scale = get_day_scale(cal, day_name)
+    raw_gross = (gross_m * 1_000_000) / day_scale if day_scale else gross_m * 1_000_000
+    return {
+        "date": date_str,
+        "domestic_mid": raw_gross,
+        "domestic_low": raw_gross,
+        "domestic_high": raw_gross,
+        "actual_override": True,
+        "actual_override_m": gross_m,
+        "actual_override_source": override.get("source", ""),
+        "actual_override_status": override.get("status", ""),
+        "actual_override_as_of_date": override.get("as_of_date", ""),
+        "actual_override_notes": override.get("notes", ""),
+        "coverage_ratio": 1.0,
+        "effective_coverage_ratio": 1.0,
+        "day_scale": day_scale,
+        "n_theatres": 0,
+        "avg_showings_per_cinema": 0.0,
+        "reported_actual_without_seat_rows": True,
+    }
+
+
 def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
                   social_data=None, daily_actual_overrides=None,
@@ -6447,6 +6509,23 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         else:
             details["actual_override"] = False
         daily_details[day_name] = details
+
+    weekend_of = seat_data_weekend_of(seat_data)
+    date_by_day = opening_weekend_dates_by_day(weekend_of)
+    for day_name in OPENING_WEEKEND_DAYS:
+        if day_name in daily_details:
+            continue
+        actual_detail = reported_actual_daily_detail(
+            movie,
+            day_name,
+            cal,
+            daily_actual_overrides,
+            date_str=date_by_day.get(day_name),
+        )
+        if not actual_detail:
+            continue
+        daily_estimates[day_name] = actual_detail["domestic_mid"]
+        daily_details[day_name] = actual_detail
 
     if not daily_estimates:
         return None
@@ -7421,8 +7500,12 @@ def print_prediction(pred, verbose=False):
     # Per-day breakdown
     for day, details in sorted(pred["daily_details"].items(),
                                 key=lambda x: x[1]["date"]):
-        amc_m = details["amc_total"] / 1_000_000
-        sampled_amc_m = details.get("sampled_amc_total", details["amc_total"]) / 1_000_000
+        amc_total = _positive_float(details.get("amc_total")) or 0.0
+        sampled_amc_total = _positive_float(
+            details.get("sampled_amc_total", amc_total)
+        ) or 0.0
+        amc_m = amc_total / 1_000_000
+        sampled_amc_m = sampled_amc_total / 1_000_000
         sample_norm = details.get("sample_normalization_factor", 1.0)
         raw_dom_m = details.get("raw_domestic_mid", details["domestic_mid"]) / 1_000_000
         dom_m = details["domestic_mid"] / 1_000_000
@@ -7592,11 +7675,16 @@ def print_prediction(pred, verbose=False):
             implied_m = (
                 details.get(
                     "seat_implied_scaled_domestic_mid",
-                    details.get("seat_implied_domestic_mid", details["domestic_mid"]),
+                    details.get("seat_implied_domestic_mid"),
                 )
-                / 1_000_000
+                or 0
             )
-            amc_input = f"seat-implied {fmt_m(implied_m)}"
+            if implied_m:
+                amc_input = f"seat-implied {fmt_m(implied_m / 1_000_000)}"
+            elif details.get("reported_actual_without_seat_rows"):
+                amc_input = "reported actual input"
+            else:
+                amc_input = f"seat-implied {fmt_m(dom_m)}"
         print(f"    {day} ({details['date']}): "
               f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
@@ -7606,7 +7694,7 @@ def print_prediction(pred, verbose=False):
               f"{preview_note}"
               f"{share_note}"
               f"{missing_tz_str}"
-              f"{', ' + str(details['n_no_data']) + ' no data' if details['n_no_data'] else ''}]")
+              f"{', ' + str(details.get('n_no_data')) + ' no data' if details.get('n_no_data') else ''}]")
 
     # Seat + historical comps are diagnostics unless COMPS_IN_FORECAST is enabled.
     comps_visible = (

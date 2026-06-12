@@ -1368,6 +1368,384 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(["In the Grey"], [gap["movie_title"] for gap in gaps])
         self.assertEqual(["Obsession"], [market["movie_title"] for market in filtered])
 
+    def test_phase1_partial_movie_gaps_keep_linked_markets_for_date_sets(self):
+        saved_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-06": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-sat"}
+                            ]
+                        }
+                    },
+                    "2026-06-07": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-sun"}
+                            ]
+                        }
+                    },
+                },
+            }
+        }
+        markets = [
+            {"movie_title": "Scary Movie"},
+            {"movie_title": "Masters of the Universe"},
+            {"movie_title": "The Amazing Digital Circus: The Last Act"},
+        ]
+
+        gaps = scraper.active_market_phase1_link_gaps(
+            markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-06-06", "2026-06-07"]},
+        )
+        linked = scraper.linked_markets_for_phase1_saved_links(
+            markets,
+            saved_links,
+            ["PT"],
+            {"PT": ["2026-06-06", "2026-06-07"]},
+        )
+
+        self.assertEqual(["Scary Movie"], [market["movie_title"] for market in linked])
+        self.assertEqual(
+            [
+                ("Masters of the Universe", "2026-06-06"),
+                ("Masters of the Universe", "2026-06-07"),
+                ("The Amazing Digital Circus: The Last Act", "2026-06-06"),
+                ("The Amazing Digital Circus: The Last Act", "2026-06-07"),
+            ],
+            [(gap["movie_title"], gap["show_date"]) for gap in gaps],
+        )
+
+    def test_snapshot_preserved_fallback_gaps_are_reported_for_regular_phase2(self):
+        fresh_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ]
+                        }
+                    }
+                },
+            }
+        }
+        merged_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ],
+                            "Masters of the Universe": [
+                                {
+                                    "showtime": "8:00pm",
+                                    "showtime_id": "masters-pt-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                        }
+                    }
+                },
+            }
+        }
+        markets = [
+            {"movie_title": "Scary Movie"},
+            {"movie_title": "Masters of the Universe"},
+        ]
+
+        gaps = scraper.snapshot_preserved_phase1_fallback_gaps(
+            markets,
+            fresh_links,
+            merged_links,
+            ["PT"],
+            {"PT": ["2026-06-04"]},
+        )
+
+        self.assertEqual(
+            [
+                {
+                    "movie_title": "Masters of the Universe",
+                    "timezone": "PT",
+                    "show_date": "2026-06-04",
+                    "fresh_theatres": 0,
+                    "required_theatres": 1,
+                }
+            ],
+            gaps,
+        )
+
+    def test_regular_phase2_repairs_repairable_snapshot_preserved_fallbacks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_links_json = scraper.LINKS_JSON
+            old_repairable = scraper.phase1_target_date_is_repairable
+            old_collect = scraper.run_collect_links_async
+            tmp_links = Path(tmp) / "showtime-links.json"
+            tmp_links.write_text(json.dumps({
+                "weekend_of": "2026-06-05",
+                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                "theatres": {
+                    "AMC West": {
+                        "tz": "PT",
+                        "cohort": scraper.CORE_COHORT,
+                        "dates": {
+                            "2026-06-04": {
+                                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                                "movies": {
+                                    "Scary Movie": [
+                                        {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                                    ]
+                                },
+                            }
+                        },
+                    }
+                },
+            }))
+            fresh_links = json.loads(tmp_links.read_text())["theatres"]
+            snapshot_links = {
+                "AMC West": {
+                    "tz": "PT",
+                    "cohort": scraper.CORE_COHORT,
+                    "dates": {
+                        "2026-06-04": {
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                            "movies": {
+                                "Scary Movie": [
+                                    {
+                                        "showtime": "7:00pm",
+                                        "showtime_id": "scary-preserved",
+                                        "source": "snapshot-preserved link",
+                                    }
+                                ],
+                                "Masters of the Universe": [
+                                    {
+                                        "showtime": "8:00pm",
+                                        "showtime_id": "masters-preserved",
+                                        "source": "snapshot-preserved link",
+                                    }
+                                ]
+                            },
+                        }
+                    },
+                }
+            }
+            calls = []
+
+            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+                calls.append((tz_group, target_date, full_weekend))
+                repaired = json.loads(tmp_links.read_text())
+                repaired["theatres"]["AMC West"]["dates"]["2026-06-04"]["movies"][
+                    "Masters of the Universe"
+                ] = [{"showtime": "8:00pm", "showtime_id": "masters-fresh"}]
+                tmp_links.write_text(json.dumps(repaired))
+
+            try:
+                scraper.LINKS_JSON = tmp_links
+                scraper.phase1_target_date_is_repairable = lambda tz, date: True
+                scraper.run_collect_links_async = fake_collect
+
+                repaired, filtered_snapshot_links, issues = asyncio.run(
+                    scraper.repair_regular_snapshot_preserved_fallbacks_async(
+                        [
+                            {"movie_title": "Scary Movie"},
+                            {"movie_title": "Masters of the Universe"},
+                        ],
+                        fresh_links,
+                        snapshot_links,
+                        ["PT"],
+                        {"PT": ["2026-06-04"]},
+                    )
+                )
+            finally:
+                scraper.LINKS_JSON = old_links_json
+                scraper.phase1_target_date_is_repairable = old_repairable
+                scraper.run_collect_links_async = old_collect
+
+            self.assertEqual([("PT", "2026-06-04", False)], calls)
+            movies = repaired["AMC West"]["dates"]["2026-06-04"]["movies"]
+            self.assertEqual("masters-fresh", movies["Masters of the Universe"][0]["showtime_id"])
+            self.assertIn("Masters of the Universe", filtered_snapshot_links["AMC West"]["dates"]["2026-06-04"]["movies"])
+            self.assertEqual([], issues)
+
+    def test_regular_phase2_drops_unrepaired_repairable_preserved_fallbacks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old_links_json = scraper.LINKS_JSON
+            old_repairable = scraper.phase1_target_date_is_repairable
+            old_collect = scraper.run_collect_links_async
+            tmp_links = Path(tmp) / "showtime-links.json"
+            fresh_payload = {
+                "weekend_of": "2026-06-05",
+                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                "theatres": {
+                    "AMC West": {
+                        "tz": "PT",
+                        "cohort": scraper.CORE_COHORT,
+                        "dates": {
+                            "2026-06-04": {
+                                "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                                "movies": {
+                                    "Scary Movie": [
+                                        {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                                    ]
+                                },
+                            }
+                        },
+                    }
+                },
+            }
+            tmp_links.write_text(json.dumps(fresh_payload))
+            snapshot_links = {
+                "AMC West": {
+                    "tz": "PT",
+                    "cohort": scraper.CORE_COHORT,
+                    "dates": {
+                        "2026-06-04": {
+                            "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                            "movies": {
+                                "Scary Movie": [
+                                    {
+                                        "showtime": "7:00pm",
+                                        "showtime_id": "scary-preserved",
+                                        "source": "snapshot-preserved link",
+                                    }
+                                ],
+                                "Masters of the Universe": [
+                                    {
+                                        "showtime": "8:00pm",
+                                        "showtime_id": "masters-preserved",
+                                        "source": "snapshot-preserved link",
+                                    }
+                                ]
+                            },
+                        }
+                    },
+                }
+            }
+
+            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+                # Simulate AMC still not returning the active movie links.
+                tmp_links.write_text(json.dumps(fresh_payload))
+
+            try:
+                scraper.LINKS_JSON = tmp_links
+                scraper.phase1_target_date_is_repairable = lambda tz, date: True
+                scraper.run_collect_links_async = fake_collect
+
+                repaired, filtered_snapshot_links, issues = asyncio.run(
+                    scraper.repair_regular_snapshot_preserved_fallbacks_async(
+                        [
+                            {"movie_title": "Scary Movie"},
+                            {"movie_title": "Masters of the Universe"},
+                        ],
+                        fresh_payload["theatres"],
+                        snapshot_links,
+                        ["PT"],
+                        {"PT": ["2026-06-04"]},
+                    )
+                )
+            finally:
+                scraper.LINKS_JSON = old_links_json
+                scraper.phase1_target_date_is_repairable = old_repairable
+                scraper.run_collect_links_async = old_collect
+
+            self.assertEqual(fresh_payload["theatres"], repaired)
+            filtered_movies = filtered_snapshot_links["AMC West"]["dates"]["2026-06-04"]["movies"]
+            self.assertIn("Scary Movie", filtered_movies)
+            self.assertNotIn("Masters of the Universe", filtered_movies)
+            self.assertEqual(1, len(issues))
+            self.assertIn("Masters of the Universe", issues[0])
+            self.assertIn("preserved links were not used", issues[0])
+
+    def test_regular_phase2_drops_nonrepairable_preserved_fallbacks(self):
+        old_repairable = scraper.phase1_target_date_is_repairable
+        old_collect = scraper.run_collect_links_async
+        fresh_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "Scary Movie": [
+                                {"showtime": "7:00pm", "showtime_id": "scary-pt-1"}
+                            ]
+                        },
+                    }
+                },
+            }
+        }
+        snapshot_links = {
+            "AMC West": {
+                "tz": "PT",
+                "cohort": scraper.CORE_COHORT,
+                "dates": {
+                    "2026-06-04": {
+                        "showtime_window_version": scraper.SHOWTIME_WINDOW_VERSION,
+                        "movies": {
+                            "Scary Movie": [
+                                {
+                                    "showtime": "7:00pm",
+                                    "showtime_id": "scary-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                            "Masters of the Universe": [
+                                {
+                                    "showtime": "8:00pm",
+                                    "showtime_id": "masters-preserved",
+                                    "source": "snapshot-preserved link",
+                                }
+                            ],
+                        },
+                    }
+                },
+            }
+        }
+        collect_calls = []
+
+        async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            collect_calls.append((tz_group, target_date, full_weekend))
+
+        try:
+            scraper.phase1_target_date_is_repairable = lambda tz, date: False
+            scraper.run_collect_links_async = fake_collect
+
+            repaired, filtered_snapshot_links, issues = asyncio.run(
+                scraper.repair_regular_snapshot_preserved_fallbacks_async(
+                    [
+                        {"movie_title": "Scary Movie"},
+                        {"movie_title": "Masters of the Universe"},
+                    ],
+                    fresh_links,
+                    snapshot_links,
+                    ["PT"],
+                    {"PT": ["2026-06-04"]},
+                )
+            )
+        finally:
+            scraper.phase1_target_date_is_repairable = old_repairable
+            scraper.run_collect_links_async = old_collect
+
+        self.assertEqual([], collect_calls)
+        self.assertEqual(fresh_links, repaired)
+        filtered_movies = filtered_snapshot_links["AMC West"]["dates"]["2026-06-04"]["movies"]
+        self.assertIn("Scary Movie", filtered_movies)
+        self.assertNotIn("Masters of the Universe", filtered_movies)
+        self.assertEqual(1, len(issues))
+        self.assertIn("Masters of the Universe", issues[0])
+        self.assertIn("preserved links were not used", issues[0])
+
     def test_ensure_links_repairs_active_movie_gaps_even_when_coverage_is_high(self):
         with tempfile.TemporaryDirectory() as tmp:
             old_links_json = scraper.LINKS_JSON
@@ -2098,6 +2476,64 @@ class ScraperLoggingTest(unittest.TestCase):
             else:
                 os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = old_value
             importlib.reload(scraper)
+
+    def test_phase2_theatre_timeout_defaults_to_production_safe_cap(self):
+        old_value = os.environ.pop("PHASE2_THEATRE_TIMEOUT_SEC", None)
+        try:
+            reloaded = importlib.reload(scraper)
+            self.assertEqual(180, reloaded.PHASE2_THEATRE_TIMEOUT_SEC)
+        finally:
+            if old_value is None:
+                os.environ.pop("PHASE2_THEATRE_TIMEOUT_SEC", None)
+            else:
+                os.environ["PHASE2_THEATRE_TIMEOUT_SEC"] = old_value
+            importlib.reload(scraper)
+
+    def test_regular_phase2_coverage_counts_only_linked_movie_theatres(self):
+        theatres = [
+            {"name": "AMC One", "_tz": "ET", "_date": "2026-05-30"},
+            {"name": "AMC Two", "_tz": "ET", "_date": "2026-05-30"},
+        ]
+        saved_links = {
+            "AMC One": {
+                "dates": {
+                    "2026-05-30": {
+                        "movies": {
+                            "Backrooms": [
+                                {"showtime_id": "one-backrooms", "showtime": "7:00pm"}
+                            ],
+                        }
+                    }
+                }
+            },
+            "AMC Two": {
+                "dates": {
+                    "2026-05-30": {
+                        "movies": {
+                            "Other Movie": [
+                                {"showtime_id": "two-other", "showtime": "7:00pm"}
+                            ],
+                        }
+                    }
+                }
+            },
+        }
+        results = [
+            {"theatre": "AMC Two", "movie": "Backrooms"},
+        ]
+
+        report = scraper.regular_phase2_theatre_coverage(
+            theatres,
+            results,
+            ["Backrooms", "Other Movie"],
+            saved_links=saved_links,
+            expected_dates={"ET": "2026-05-30"},
+        )
+
+        self.assertEqual(["AMC One"], report["expected_theatres_by_movie"]["Backrooms"])
+        self.assertEqual(1, report["by_movie"]["Backrooms"]["expected"])
+        self.assertEqual(0, report["by_movie"]["Backrooms"]["observed"])
+        self.assertEqual(0.0, report["by_movie"]["Backrooms"]["ratio"])
 
     def test_phase1_batches_current_day_before_future_cache(self):
         theatres = [

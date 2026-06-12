@@ -571,9 +571,10 @@ def phase2_max_concurrent_tabs(snapshots_only=False):
 # scrape for hours. The per-theatre timeout caps each tab; the overall deadline
 # stops launching new theatres early enough for in-flight work and artifact
 # upload/finalize. Snapshot-only runs can raise PHASE2_DEADLINE_SEC from the
-# workflow because they cover multiple weekend show dates.
+# workflow because they cover multiple weekend show dates; regular runs keep a
+# short theatre cap so one slow location cannot consume the full-day budget.
 PHASE1_THEATRE_TIMEOUT_SEC = 90
-PHASE2_THEATRE_TIMEOUT_SEC = _env_int("PHASE2_THEATRE_TIMEOUT_SEC", 300, minimum=60)
+PHASE2_THEATRE_TIMEOUT_SEC = _env_int("PHASE2_THEATRE_TIMEOUT_SEC", 180, minimum=60)
 try:
     PHASE1_DEADLINE_SEC = int(os.getenv("PHASE1_DEADLINE_SEC", str(45 * 60)))
 except ValueError:
@@ -926,6 +927,67 @@ def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
     return {
         "expected_total": len(expected_names),
         "by_movie": by_movie,
+    }
+
+
+def regular_phase2_coverage_failures(report, min_ratio=REGULAR_PHASE2_MIN_COVERAGE_RATIO):
+    failures = []
+    for title, details in report.get("by_movie", {}).items():
+        if details["expected"] and details["ratio"] < min_ratio:
+            failures.append(
+                f"{title} {details['observed']}/{details['expected']} "
+                f"theatres ({details['ratio']:.1%})"
+            )
+    return failures
+
+
+def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
+                                    saved_links=None, expected_dates=None):
+    expected_by_movie = {title: set() for title in (movie_titles or [])}
+    if saved_links is not None and expected_dates is not None:
+        for theatre in expected_theatres:
+            name = theatre.get("name")
+            entry = saved_links.get(name)
+            if not name or not entry:
+                continue
+            expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
+            movies = phase1_entry_movies(entry, expected_date)
+            for title in movie_titles or []:
+                if movies.get(title):
+                    expected_by_movie[title].add(name)
+    else:
+        expected_names = {
+            theatre.get("name")
+            for theatre in expected_theatres
+            if theatre.get("name")
+        }
+        expected_by_movie = {title: set(expected_names) for title in (movie_titles or [])}
+
+    expected_names = set().union(*expected_by_movie.values()) if expected_by_movie else set()
+    observed_by_movie = {title: set() for title in (movie_titles or [])}
+    for result in results:
+        movie = result.get("movie")
+        theatre = result.get("theatre")
+        if movie in observed_by_movie and theatre in expected_by_movie.get(movie, set()):
+            observed_by_movie[movie].add(theatre)
+
+    by_movie = {}
+    for title in movie_titles or []:
+        expected_total = len(expected_by_movie.get(title, set()))
+        observed = len(observed_by_movie.get(title, set()))
+        ratio = (observed / expected_total) if expected_total else 1.0
+        by_movie[title] = {
+            "expected": expected_total,
+            "observed": observed,
+            "ratio": ratio,
+        }
+    return {
+        "expected_total": len(expected_names),
+        "by_movie": by_movie,
+        "expected_theatres_by_movie": {
+            title: sorted(names)
+            for title, names in expected_by_movie.items()
+        },
     }
 
 
@@ -3207,6 +3269,185 @@ def warn_active_market_phase1_link_gaps(poly_markets, saved_links, groups, expec
     return gaps
 
 
+def snapshot_preserved_phase1_fallback_gaps(poly_markets, fresh_links, merged_links,
+                                            groups, expected_date_sets,
+                                            min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
+                                            required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Fresh Phase 1 gaps that only pass because snapshot-preserved links exist."""
+    fresh_gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        fresh_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    if not fresh_gaps:
+        return []
+    merged_gaps = active_market_phase1_link_gaps(
+        poly_markets,
+        merged_links,
+        groups,
+        expected_date_sets,
+        min_theatres=min_theatres,
+        required_cohorts=required_cohorts,
+    )
+    still_missing = {
+        (gap["movie_title"], gap["timezone"], gap["show_date"])
+        for gap in merged_gaps
+    }
+    return [
+        gap for gap in fresh_gaps
+        if (gap["movie_title"], gap["timezone"], gap["show_date"]) not in still_missing
+    ]
+
+
+def repairable_phase1_gaps(gaps):
+    return [
+        gap for gap in gaps
+        if phase1_target_date_is_repairable(gap["timezone"], gap["show_date"])
+    ]
+
+
+def remove_snapshot_links_for_gaps(snapshot_links, gaps):
+    """Drop preserved snapshot links for repairable active-movie gaps."""
+    if not gaps:
+        return snapshot_links or {}
+    gap_keys = {
+        (gap["timezone"], gap["show_date"], gap["movie_title"])
+        for gap in gaps
+    }
+    filtered = {}
+    for theatre_name, entry in (snapshot_links or {}).items():
+        if not entry:
+            continue
+        entry_tz = entry.get("tz") or entry.get("timezone") or ""
+        kept_entry = dict(entry)
+        kept_dates = {}
+        for date_str, date_entry in (entry.get("dates") or {}).items():
+            kept_date = dict(date_entry)
+            kept_movies = {}
+            for movie, shows in (date_entry.get("movies") or {}).items():
+                key = (entry_tz, date_str, movie)
+                if key in gap_keys:
+                    continue
+                if shows:
+                    kept_movies[movie] = shows
+            if kept_movies:
+                kept_date["movies"] = kept_movies
+                kept_dates[date_str] = kept_date
+        if kept_dates:
+            kept_entry["dates"] = kept_dates
+        else:
+            kept_entry.pop("dates", None)
+
+        top_level_movies = {}
+        for movie, shows in (entry.get("movies") or {}).items():
+            key = (entry_tz, entry.get("show_date", ""), movie)
+            if key in gap_keys:
+                continue
+            if shows:
+                top_level_movies[movie] = shows
+        if top_level_movies:
+            kept_entry["movies"] = top_level_movies
+        else:
+            kept_entry.pop("movies", None)
+
+        if kept_entry.get("dates") or kept_entry.get("movies"):
+            filtered[theatre_name] = kept_entry
+    return filtered
+
+
+async def repair_regular_snapshot_preserved_fallbacks_async(
+        poly_markets, saved_links, snapshot_preserved_links,
+        groups, expected_date_sets):
+    """Repair fresh Phase 1 gaps before preserved snapshot links can mask them.
+
+    Preserved snapshot links are useful when AMC has already rolled a show date
+    off the public listing. For current/future show dates, though, they should
+    never be the first successful source for an active movie slice: rebuild
+    Phase 1 first when possible, then drop the preserved active-movie slice
+    if fresh links are still missing. That keeps regular data partial but clean.
+    """
+    if not snapshot_preserved_links:
+        return saved_links, {}, []
+
+    merged_links = merge_snapshot_links_into_phase1_saved_links(
+        saved_links,
+        snapshot_preserved_links,
+    )
+    fallback_gaps = snapshot_preserved_phase1_fallback_gaps(
+        poly_markets,
+        saved_links,
+        merged_links,
+        groups,
+        expected_date_sets,
+    )
+    repairable_gaps = repairable_phase1_gaps(fallback_gaps)
+    remaining_gaps = fallback_gaps
+    if repairable_gaps:
+        repair_slices = sorted({
+            (gap["timezone"], gap["show_date"]) for gap in repairable_gaps
+        })
+        print(
+            "\n🔧 Regular Phase 2 fresh-link repair: snapshot-preserved links "
+            "would mask active movie gap(s)."
+        )
+        for group, date_str in repair_slices:
+            missing = sorted({
+                gap["movie_title"]
+                for gap in repairable_gaps
+                if gap["timezone"] == group and gap["show_date"] == date_str
+            })
+            print(f"    - repairing {group} {date_str}: {', '.join(missing)}")
+            await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+
+        try:
+            with open(LINKS_JSON) as f:
+                reloaded = json.load(f).get("theatres", {})
+            saved_links = sanitize_phase1_links_for_current_window(reloaded)
+        except Exception as e:
+            fail_phase(f"❌ Could not reload repaired Phase 1 links: {e}")
+
+        merged_links = merge_snapshot_links_into_phase1_saved_links(
+            saved_links,
+            snapshot_preserved_links,
+        )
+        remaining_gaps = snapshot_preserved_phase1_fallback_gaps(
+            poly_markets,
+            saved_links,
+            merged_links,
+            groups,
+            expected_date_sets,
+        )
+
+    if remaining_gaps:
+        print(
+            "\n⚠️  Fresh Phase 1 links are missing for active movie slices; "
+            "dropping snapshot-preserved links for those slices and continuing "
+            "with clean partial data."
+        )
+        issues = []
+        for gap in remaining_gaps[:20]:
+            issue = (
+                "Fresh Phase 1 link gap: "
+                f"{gap['movie_title']} {gap['show_date']} {gap['timezone']} "
+                f"had {gap['fresh_theatres']}/{gap['required_theatres']} "
+                "fresh theatres; preserved links were not used"
+            )
+            issues.append(issue)
+            print(f"    - {issue}")
+        if len(remaining_gaps) > 20:
+            print(f"    ... and {len(remaining_gaps) - 20} more")
+        filtered_snapshot_links = remove_snapshot_links_for_gaps(
+            snapshot_preserved_links,
+            remaining_gaps,
+        )
+        return saved_links, filtered_snapshot_links, issues
+
+    return saved_links, snapshot_preserved_links, []
+
+
 def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_sets,
                               min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                               required_cohorts=REQUIRED_PHASE1_COHORTS):
@@ -3397,6 +3638,36 @@ def filter_markets_with_phase1_links_for_date_sets(poly_markets, saved_links,
         for title in skipped:
             print(f"    - {title}")
     return filtered
+
+
+def linked_markets_for_phase1_saved_links(poly_markets, saved_links, groups,
+                                          expected_date_sets,
+                                          min_theatres=1,
+                                          required_cohorts=REQUIRED_PHASE1_COHORTS):
+    """Return markets with at least one usable link in the requested TZ/date scope."""
+    expected_date_sets = expected_date_sets or {}
+    if any(len(dates or []) > 1 for dates in expected_date_sets.values()):
+        return filter_markets_with_phase1_links_for_date_sets(
+            poly_markets,
+            saved_links,
+            min_theatres=min_theatres,
+            groups=groups,
+            expected_date_sets=expected_date_sets,
+            required_cohorts=required_cohorts,
+        )
+    expected_dates = {
+        group: dates[0]
+        for group, dates in expected_date_sets.items()
+        if dates
+    }
+    return filter_markets_with_phase1_links(
+        poly_markets,
+        saved_links,
+        min_theatres=min_theatres,
+        groups=groups,
+        expected_dates=expected_dates,
+        required_cohorts=required_cohorts,
+    )
 
 
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
@@ -3933,13 +4204,29 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
         coverage_label = f"Phase 1 full-weekend links for {tz_group}"
     require_phase1_coverage(fresh_report, coverage_label)
-    require_active_market_phase1_links(
+    active_link_gaps = warn_active_market_phase1_link_gaps(
         poly_markets,
         links["theatres"],
         groups,
         collection_dates_by_group,
         coverage_label,
     )
+    linked_markets = linked_markets_for_phase1_saved_links(
+        poly_markets,
+        links["theatres"],
+        groups,
+        collection_dates_by_group,
+    )
+    if not linked_markets:
+        fail_phase(
+            f"❌ {coverage_label} has no active Polymarket movie links. "
+            "Run Phase 1 collect-links again before scraping."
+        )
+    if active_link_gaps:
+        print(
+            f"\n⚠️  {coverage_label}: preserving full active market list "
+            "while committing partial timezone links"
+        )
     expansion_report = phase1_link_coverage(
         links["theatres"], theatres_map, groups, expected_dates,
         required_cohorts=(EXPANSION_COHORT,),
@@ -3950,14 +4237,6 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             f"Phase 1 expansion links for {tz_group}",
             min_ratio=0.0,
         )
-    poly_markets = filter_markets_with_phase1_links(
-        poly_markets,
-        links["theatres"],
-        groups=groups,
-        expected_dates=expected_dates,
-    )
-    if not poly_markets:
-        fail_phase("❌ No active Polymarket box office markets have current AMC showtime links.")
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
     save_polymarket_data(poly_markets)
@@ -4269,7 +4548,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
+    regular_snapshot_fallback_issues = []
     if not snapshots_only:
+        fresh_phase1_links = saved_links
         theatre_metadata_by_name = {
             theatre.get("name"): theatre
             for group_theatres in theatres_map.values()
@@ -4282,11 +4563,49 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             theatre_metadata_by_name=theatre_metadata_by_name,
         )
         if snapshot_preserved_links:
+            if not test_max:
+                (
+                    saved_links,
+                    snapshot_preserved_links,
+                    repair_issues,
+                ) = await repair_regular_snapshot_preserved_fallbacks_async(
+                    poly_markets,
+                    saved_links,
+                    snapshot_preserved_links,
+                    groups_to_check,
+                    coverage_dates_by_group,
+                )
+                regular_snapshot_fallback_issues.extend(repair_issues)
+                fresh_phase1_links = saved_links
             snapshot_link_count = count_phase1_showtime_links(snapshot_preserved_links)
-            saved_links = merge_snapshot_links_into_phase1_saved_links(
+            merged_links = merge_snapshot_links_into_phase1_saved_links(
                 saved_links,
                 snapshot_preserved_links,
             )
+            fallback_gaps = snapshot_preserved_phase1_fallback_gaps(
+                poly_markets,
+                fresh_phase1_links,
+                merged_links,
+                groups_to_check,
+                coverage_dates_by_group,
+            )
+            if fallback_gaps:
+                print(
+                    "\n⚠️  Snapshot-preserved links are covering fresh Phase 1 "
+                    "active-movie gap(s):"
+                )
+                for gap in fallback_gaps[:20]:
+                    issue = (
+                        "Snapshot-preserved Phase 1 fallback: "
+                        f"{gap['movie_title']} {gap['show_date']} {gap['timezone']} "
+                        f"had {gap['fresh_theatres']}/{gap['required_theatres']} "
+                        "fresh theatres"
+                    )
+                    regular_snapshot_fallback_issues.append(issue)
+                    print(f"    - {issue}")
+                if len(fallback_gaps) > 20:
+                    print(f"    ... and {len(fallback_gaps) - 20} more")
+            saved_links = merged_links
             print(
                 "\n📎 Added "
                 f"{snapshot_link_count} snapshot-preserved showtime links "
@@ -4568,6 +4887,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     all_results = []
     all_issues = []
     all_issues.extend(snapshot_skipped_slice_issues)
+    all_issues.extend(regular_snapshot_fallback_issues)
     sem = asyncio.Semaphore(max_concurrent_tabs)
     write_lock = asyncio.Lock()
     snapshot_write_lock = asyncio.Lock()

@@ -1684,6 +1684,63 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(["Friday"], sorted(pred["snapshot_daily_details"]))
         self.assertIn("Thursday", pred["snapshot_ignored_days"])
 
+    def test_reported_actual_for_missing_seat_day_overrides_snapshot_day(self):
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {
+                    "Thursday": 0.12,
+                    "Friday": 0.32,
+                    "Saturday": 0.33,
+                    "Sunday": 0.23,
+                },
+                "day_scale_factors": {
+                    "Thursday": 1.0,
+                    "Friday": 1.0,
+                    "Saturday": 1.0,
+                    "Sunday": 1.0,
+                },
+                "reference_amc_theatres": 2,
+            },
+        }
+        seat_rows = [
+            self._row("AMC One", date="2026-05-07", day="Thursday", timezone="ET"),
+        ]
+        snapshot_rows = [
+            self._snapshot_row("AMC One", "Sunday", "2026-05-10", timezone="ET"),
+        ]
+
+        pred = predict_movie(
+            "Sample Movie",
+            {"2026-05-07": seat_rows},
+            [],
+            cal,
+            snapshot_data={"2026-05-10": snapshot_rows},
+            daily_actual_overrides={
+                "Sample Movie": {
+                    "Sunday": {
+                        "gross_m": 18.3,
+                        "source": "studio estimate",
+                        "status": "estimated",
+                    }
+                }
+            },
+        )
+
+        sunday = pred["daily_details"]["Sunday"]
+        self.assertTrue(sunday["actual_override"])
+        self.assertEqual(18.3, sunday["actual_override_m"])
+        self.assertAlmostEqual(18.3, sunday["domestic_mid"] / 1_000_000)
+        self.assertNotIn("Sunday", pred["snapshot_daily_details"])
+
+        with contextlib.redirect_stdout(io.StringIO()) as captured:
+            predict.print_prediction(pred)
+
+        self.assertIn("Sunday", captured.getvalue())
+        self.assertIn("reported actual input", captured.getvalue())
+
     def test_snapshot_layer_calibrates_future_days_from_same_week_overlap(self):
         cal = {
             "history": [],
@@ -2914,6 +2971,27 @@ class PredictionNormalizationTest(unittest.TestCase):
             finally:
                 calibrate.DATA_DIR = old_data_dir
 
+    def test_calibration_pre_actual_prediction_suppresses_daily_actual_overrides(self):
+        captured = {}
+
+        def fake_predict_movie(movie, seat_data, poly_data, cal, **kwargs):
+            captured["kwargs"] = kwargs
+            return {"movie": movie}
+
+        pred = calibrate.predict_pre_actual_movie(
+            fake_predict_movie,
+            "Sample Movie",
+            {"2026-05-08": []},
+            [],
+            {"calibration_factors": {}},
+            snapshot_data={"2026-05-09": []},
+            daily_actual_overrides={"Sample Movie": {"Friday": {"gross_m": 10.0}}},
+        )
+
+        self.assertEqual({"movie": "Sample Movie"}, pred)
+        self.assertEqual({}, captured["kwargs"]["daily_actual_overrides"])
+        self.assertEqual({"2026-05-09": []}, captured["kwargs"]["snapshot_data"])
+
     def test_record_pending_calibrations_keeps_all_same_run_accuracy_entries(self):
         cal = {
             "history": [],
@@ -3719,11 +3797,47 @@ class PredictionNormalizationTest(unittest.TestCase):
         sunday = adjusted["snapshot_daily_details"]["Sunday"]
         self.assertGreater(friday["same_week_actual_snapshot_scale_factor"], 1.25)
         self.assertGreater(saturday["same_week_actual_snapshot_scale_factor"], 1.15)
-        self.assertGreater(sunday["same_week_actual_snapshot_scale_factor"], 1.10)
+        self.assertNotIn("same_week_actual_snapshot_scale_factor", sunday)
         self.assertEqual(
             "Thursday",
             friday["same_week_actual_snapshot_scale_anchor_day"],
         )
+
+    def test_snapshot_sunday_needs_saturday_actual_before_positive_residual_uplift(self):
+        regular_daily_details = {
+            "Thursday": {
+                "actual_override": True,
+                "seat_model_actual_scale": 1.35,
+                "effective_coverage_ratio": 1.0,
+            },
+            "Friday": {
+                "actual_override": True,
+                "seat_model_actual_scale": 1.35,
+                "effective_coverage_ratio": 1.0,
+            },
+        }
+
+        no_hold_confirmed = predict.same_week_actual_snapshot_scale_for_day(
+            "Sunday",
+            regular_daily_details,
+        )
+
+        self.assertIsNone(no_hold_confirmed)
+
+        regular_daily_details["Saturday"] = {
+            "actual_override": True,
+            "seat_model_actual_scale": 1.30,
+            "effective_coverage_ratio": 1.0,
+        }
+
+        hold_confirmed = predict.same_week_actual_snapshot_scale_for_day(
+            "Sunday",
+            regular_daily_details,
+        )
+
+        self.assertIsNotNone(hold_confirmed)
+        self.assertGreater(hold_confirmed["factor"], 1.10)
+        self.assertIn("Saturday", hold_confirmed["anchor_days"])
 
     def test_snapshot_empirical_basis_preserves_reported_actual_residual(self):
         details = {

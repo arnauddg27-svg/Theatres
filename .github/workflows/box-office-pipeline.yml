@@ -310,10 +310,12 @@ jobs:
             echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           else
             export PHASE2_THEATRE_TIMEOUT_SEC=180
+            export PHASE1_DEADLINE_SEC=2400
+            export PHASE1_MAX_THEATRE_DATE_VISITS=500
             export REGULAR_PHASE2_MIN_DEADLINE_SEC=9000
             export REGULAR_PHASE2_MAX_DEADLINE_SEC=10800
             export REGULAR_PHASE2_MIN_COVERAGE_RATIO=0.90
-            echo "Regular lane: deadline floor=${REGULAR_PHASE2_MIN_DEADLINE_SEC}s cap=${REGULAR_PHASE2_MAX_DEADLINE_SEC}s theatre-timeout=${PHASE2_THEATRE_TIMEOUT_SEC}s"
+            echo "Regular lane: deadline floor=${REGULAR_PHASE2_MIN_DEADLINE_SEC}s cap=${REGULAR_PHASE2_MAX_DEADLINE_SEC}s theatre-timeout=${PHASE2_THEATRE_TIMEOUT_SEC}s phase1-repair-budget=${PHASE1_DEADLINE_SEC}s"
           fi
           # Default-off: only pass --force when the input is explicitly "true".
           # Matches the workflow_dispatch input default of 'false' and the VPS
@@ -425,41 +427,34 @@ jobs:
             --marker-file /tmp/box-office-scrape-markers.txt \
             --summary-file /tmp/box-office-merge-summary.json
 
+      - name: Clean canonical training data
+        working-directory: box-office-tracker
+        run: python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"
+
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard
         run: |
           row_changes=$(python3 -c 'import json; s=json.load(open("/tmp/box-office-merge-summary.json")); print(sum(int(s.get(k, 0) or 0) for k in ("seat_added", "seat_metadata_updated", "pre_reservation_added", "polymarket_added")))')
-          if [ "$row_changes" -eq 0 ]; then
-            echo "No canonical seat, snapshot, market rows, or seat metadata were merged; skipping finalize."
-            echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          if [ -n "$(git status --short -- \
+          canonical_status="$(git status --short -- \
             box-office-tracker/data/seat-counts.csv \
             box-office-tracker/data/pre-reservation-snapshots.csv \
             box-office-tracker/data/polymarket-markets.csv \
-            box-office-tracker/data/run-logs)" ]; then
-            echo "Merged scrape artifacts changed canonical data; finalize required."
-            echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          latest_scrape=$(git log --format=%H --grep='data: box office .* scrape' -n 1 || true)
-          latest_finalize=$(git log --format=%H \
-            --grep='data: box office scrape merge + predictions' \
-            --grep='data: box office predictions + xlsx' \
-            -n 1 || true)
-          if [ -z "$latest_scrape" ]; then
-            echo "No scrape marker or artifact changes found; skipping finalize."
+            box-office-tracker/data/calibration.json \
+            box-office-tracker/data/calibration-freezes \
+            box-office-tracker/data/run-logs)"
+          if [ -z "$canonical_status" ]; then
+            if [ "$row_changes" -eq 0 ]; then
+              echo "No canonical seat, snapshot, market rows, or seat metadata were merged; skipping finalize."
+            else
+              echo "Merged rows were duplicate or cleaned away; no net canonical data changes."
+            fi
             echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if [ -n "$latest_finalize" ] && git merge-base --is-ancestor "$latest_scrape" "$latest_finalize"; then
-            echo "Latest scrape $latest_scrape is already covered by finalize $latest_finalize; skipping duplicate finalize."
-            echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          echo "Latest scrape $latest_scrape is not finalized yet."
+          echo "Merged or cleaned scrape artifacts changed canonical data; finalize required."
+          echo "$canonical_status"
           echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
+          exit 0
 
       - name: Install dependencies
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
