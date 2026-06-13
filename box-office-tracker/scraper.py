@@ -1056,12 +1056,24 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
     """Dates Phase 1 should visit for one timezone.
 
     Full-weekend expansion starts with a Tuesday warm-cache pass, then
-    Wednesday/Thursday fill gaps and refresh late schedule changes. If a
-    manual repair is dispatched after the local showtime window has started,
-    do not try to rebuild same-day full coverage from AMC's public listing:
-    early showtimes can already be gone, so the reliability check would fail
-    while also risking a partial same-day cache. In that case, collect only
-    still-future weekend dates.
+    Wednesday/Thursday/Friday fill gaps and refresh late schedule changes.
+
+    A same-day full-weekend run ALWAYS keeps the current local day in its
+    collection set, even in the evening. AMC serves the whole day's listing
+    until local midnight; the evening schedule is the most complete (it has
+    absorbed any late showtime additions); ``merge_showtime_entries`` unions
+    rows, so a late capture can never shrink an earlier same-day one; and
+    Phase 1 coverage is measured per theatre — an evening run still has
+    in-window showtimes, so theatres stay covered.
+
+    Dropping today here used to strand any timezone whose only successful
+    collection landed after the local window start. When an AMC block delayed
+    the Tue/Wed warm cache (2026-06-12), the CT/PT catch-up runs fired ~18:00
+    local and, under the old rule, collected only Sat/Sun — losing the
+    just-opened Friday show date that the Saturday post-show Phase 2 scrape
+    needs. By the time Phase 2 ran, Friday had rolled off AMC and was
+    unrecoverable, so CT/PT lost the whole opening-Friday seat capture while
+    ET (which collected that morning) kept it.
     """
     if target_date:
         base_dt = datetime.strptime(target_date, "%Y-%m-%d")
@@ -1076,11 +1088,6 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
         if base_dt.weekday() in (1, 2):
             return weekend_dates
         if base_dt.weekday() in (3, 4, 5):
-            current_start = collection_window_start_hour(current_date)
-            if base_dt.hour >= current_start:
-                future_dates = [date_str for date_str in weekend_dates if date_str > current_date]
-                if future_dates:
-                    return future_dates
             return [date_str for date_str in weekend_dates if date_str >= current_date]
     return [current_date]
 

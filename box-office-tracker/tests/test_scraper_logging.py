@@ -77,23 +77,47 @@ class ScraperLoggingTest(unittest.TestCase):
             dates,
         )
 
-    def test_phase1_late_thursday_repair_skips_expired_current_day(self):
+    def test_phase1_late_thursday_run_still_collects_current_day(self):
+        # An evening Thursday run keeps Thursday (previews) in the set: AMC
+        # still serves the day until local midnight and merge unions rows, so
+        # a late capture only adds. Dropping today here lost CT/PT's opening
+        # Friday on 2026-06-12 when their only post-block run was in the evening.
         dates = scraper.phase1_collection_dates(
             "ET",
             ref_dt=datetime(2026, 4, 30, 18, 0),
             full_weekend=True,
         )
 
-        self.assertEqual(["2026-05-01", "2026-05-02", "2026-05-03"], dates)
+        self.assertEqual(
+            ["2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03"], dates
+        )
 
-    def test_phase1_late_saturday_repair_targets_sunday(self):
+    def test_phase1_late_saturday_run_still_collects_current_day(self):
+        # 17:00 Saturday must collect Saturday (today) + Sunday, matching the
+        # 08:00 morning run below — the post-show scrape needs Saturday links.
         dates = scraper.phase1_collection_dates(
             "ET",
             ref_dt=datetime(2026, 5, 23, 17, 0),
             full_weekend=True,
         )
 
-        self.assertEqual(["2026-05-24"], dates)
+        self.assertEqual(["2026-05-23", "2026-05-24"], dates)
+
+    def test_phase1_evening_friday_run_keeps_just_opened_friday(self):
+        # Regression for the 2026-06-12 CT/PT loss: the AMC block delayed the
+        # Tue/Wed warm cache, so CT/PT only collected in a ~18:00-local catch-up
+        # run. Friday (the just-opened show date the Saturday post-show scrape
+        # reads) must stay in the collection set, not be dropped as "expired".
+        for tz, hour in (("CT", 18), ("PT", 18)):
+            dates = scraper.phase1_collection_dates(
+                tz,
+                ref_dt=datetime(2026, 6, 12, hour, 9),  # Friday evening, local
+                full_weekend=True,
+            )
+            self.assertIn("2026-06-12", dates, f"{tz} dropped opening Friday")
+            self.assertEqual(
+                ["2026-06-12", "2026-06-13", "2026-06-14"], dates
+            )
 
     def test_phase1_saturday_morning_can_refresh_weekend_remaining_days(self):
         dates = scraper.phase1_collection_dates(
