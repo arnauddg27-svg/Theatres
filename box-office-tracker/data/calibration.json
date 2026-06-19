@@ -504,69 +504,6 @@
       }
     },
     {
-      "movie": "I Love Boosters",
-      "weekend_of": "2026-05-22",
-      "date": "2026-05-26",
-      "predicted_mid": 7.53,
-      "predicted_low": 6.86,
-      "predicted_high": 8.34,
-      "actual_total": 3.72,
-      "daily_actuals": {
-        "Thursday": 0.43,
-        "Friday": 1.07,
-        "Saturday": 1.17,
-        "Sunday": 1.05
-      },
-      "daily_predictions": {
-        "Friday": 1.25,
-        "Sunday": 3.16
-      },
-      "error_pct": 102.3,
-      "n_theatres": 366,
-      "n_days": 2,
-      "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
-      "model_cohort_key": "core,expansion",
-      "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
-      "raw_daily_predictions": {
-        "Friday": 1.42,
-        "Sunday": 2.58
-      },
-      "snapshot_daily_predictions": {
-        "Saturday": 2.5,
-        "Sunday": 2.18
-      },
-      "snapshot_daily_coverage_ratios": {
-        "Saturday": 0.233,
-        "Sunday": 0.233
-      },
-      "snapshot_daily_lead_buckets": {
-        "Saturday": "next_day",
-        "Sunday": "multi_day"
-      },
-      "daily_theatre_counts": {
-        "Friday": 366,
-        "Sunday": 83
-      },
-      "daily_coverage_ratios": {
-        "Friday": 0.861,
-        "Sunday": 0.195
-      },
-      "coverage_ratio": 0.528,
-      "calibration_excluded_days": [
-        "Sunday"
-      ],
-      "daily_sellout_fractions": {
-        "Friday": 0.0039,
-        "Sunday": 0.0023
-      },
-      "daily_early_sellout_fractions": {
-        "Saturday": 0.0037,
-        "Sunday": 0.0038
-      }
-    },
-    {
       "movie": "Passenger",
       "weekend_of": "2026-05-22",
       "date": "2026-05-26",
@@ -1083,10 +1020,10 @@
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1075,
-      "Friday": 0.3129,
-      "Saturday": 0.323,
-      "Sunday": 0.2566
+      "Thursday": 0.1069,
+      "Friday": 0.3147,
+      "Saturday": 0.3237,
+      "Sunday": 0.2547
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -1240,24 +1177,6 @@
         "reference_amc_theatres": 425
       },
       {
-        "movie": "I Love Boosters",
-        "weekend_of": "2026-05-22",
-        "abs_error_pct": 102.4,
-        "n_theatres": 366,
-        "n_days": 2,
-        "coverage_ratio": 0.528,
-        "daily_coverage_ratios": {
-          "Friday": 0.861,
-          "Sunday": 0.195
-        },
-        "daily_errors": {
-          "Friday": 16.8,
-          "Sunday": 201.0
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
         "movie": "Passenger",
         "weekend_of": "2026-05-22",
         "abs_error_pct": 50.9,
@@ -1403,7 +1322,7 @@
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-06-16",
+    "last_updated": "2026-06-19",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
@@ -1416,12 +1335,12 @@
           "support": 1.779
         },
         "Saturday": {
-          "n": 12,
-          "support": 4.514
+          "n": 11,
+          "support": 4.281
         },
         "Sunday": {
-          "n": 11,
-          "support": 4.308
+          "n": 10,
+          "support": 4.075
         }
       },
       "leads": {
@@ -1430,12 +1349,12 @@
           "support": 10.578
         },
         "next_day": {
-          "n": 3,
-          "support": 0.697
+          "n": 2,
+          "support": 0.464
         },
         "multi_day": {
-          "n": 1,
-          "support": 0.233
+          "n": 0,
+          "support": 0.0
         },
         "long_lead": {
           "n": 0,
@@ -1447,10 +1366,10 @@
       "version": 1,
       "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.15301033652807733,
-        "Friday": 0.29692490684247275,
-        "Saturday": 0.30656880653830515,
-        "Sunday": 0.2434959500911448
+        "Thursday": 0.15698133522432373,
+        "Friday": 0.29704366759976053,
+        "Saturday": 0.305508837598561,
+        "Sunday": 0.24046615957735482
       },
       "trained_on": [
         "Michael",
@@ -1459,7 +1378,6 @@
         "The Sheep Detectives",
         "Obsession",
         "The Mandalorian and Grogu",
-        "I Love Boosters",
         "Backrooms",
         "The Breadwinner",
         "Scary Movie",
@@ -1468,11 +1386,11 @@
         "Disclosure Day"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.215221275298266,
-        "resid_scale": 0.3373595716979027
+        "log_ratio_mean": 0.2272871784304327,
+        "resid_scale": 0.33228108305403936
       },
       "identity": {
-        "seat_sd": 0.40016456359503444
+        "seat_sd": 0.40257940786189345
       },
       "seat": {
         "features": [
@@ -1485,12 +1403,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.4120205514268646,
-          0.8991958011862359,
-          0.04197851250414071,
-          -0.030095195213044428,
-          0.00265289854721286,
-          0.030039815447238088,
+          0.47396561656851505,
+          0.8740940125293316,
+          0.03233022820118371,
+          -0.006485776954463682,
+          0.0004995289403868958,
+          0.03148348337983809,
           0.0
         ],
         "prior": [
@@ -1503,7 +1421,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.34523630855308796
+        "daily_resid_sd": 0.32663669849681626
       },
       "snapshot": {
         "features": [
@@ -1517,13 +1435,13 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.6928879926278426,
-          0.7363189104809618,
-          -0.04921893902667523,
-          0.1890844802059935,
-          0.018371820260553704,
-          -0.04277269200964942,
-          -0.11072086115047547,
+          0.8558015492768308,
+          0.6420249261206625,
+          -0.09418245672476505,
+          0.2650290313171145,
+          0.1007022400024556,
+          0.1451475146326953,
+          0.0,
           0.0
         ],
         "prior": [
@@ -1536,94 +1454,94 @@
           0.0,
           0.0
         ],
-        "lambda": 10.0,
-        "daily_resid_sd": 0.7116804722303478
+        "lambda": 3.0,
+        "daily_resid_sd": 0.6460142907003014
       },
       "weekend": {
-        "log_half_width": 0.4146,
-        "resid_mean": 0.014120695985672116,
+        "log_half_width": 0.4336,
+        "resid_mean": 0.0021730265820980588,
         "df": 10,
         "loo_hit_rate": 0.9091,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 20.51,
-        "loo_median_ae_pct": 17.35,
+        "loo_mae_pct": 19.88,
+        "loo_median_ae_pct": 13.82,
         "n_movies": 11
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 104.15,
+          "pred_m": 102.66,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 45.96,
+          "pred_m": 46.71,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 22.97,
+          "pred_m": 24.52,
           "actual_m": 15.09,
-          "observed_share": 0.846
+          "observed_share": 0.842
         },
         {
           "movie": "Obsession",
-          "pred_m": 20.67,
+          "pred_m": 22.82,
           "actual_m": 17.2,
-          "observed_share": 0.694
+          "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 75.48,
+          "pred_m": 79.18,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 55.33,
+          "pred_m": 54.22,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 7.25,
+          "pred_m": 7.33,
           "actual_m": 7.35,
-          "observed_share": 0.846
+          "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 48.75,
+          "pred_m": 49.34,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 24.65,
+          "pred_m": 25.47,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "The Amazing Digital Circus: The Last Act",
-          "pred_m": 18.48,
+          "pred_m": 19.44,
           "actual_m": 20.24,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 50.09,
+          "pred_m": 50.05,
           "actual_m": 44.53,
-          "observed_share": 0.548
+          "observed_share": 0.544
         }
       ],
       "bakeoff": {
-        "identity": 30.85,
-        "global_ratio": 33.65,
-        "regression": 20.51
+        "identity": 31.11,
+        "global_ratio": 33.97,
+        "regression": 19.88
       },
       "bakeoff_winner": "regression",
-      "meets_mae_target": false
+      "meets_mae_target": true
     }
   }
 }
