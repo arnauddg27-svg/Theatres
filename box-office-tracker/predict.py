@@ -4265,6 +4265,28 @@ def calibrated_amc_market_share(cal):
     return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, share))
 
 
+def amc_market_share_override_for(target_metadata):
+    """Operator-set per-film AMC revenue share, if any (else None).
+
+    AMC's share of a film is idiosyncratic (an ultra-wide family tentpole like
+    Toy Story 5 under-indexes at ~19%, while a Star Wars title over-indexes near
+    the ~26% prior) and cannot be inferred from a small, self-contradicting
+    sample. So rather than a bogus auto-rule that helps one film and hurts
+    another, an operator can pin the share for a specific marquee title via the
+    metadata `amc_market_share_override` column. Returns None unless a sane
+    in-range value is set, so every un-flagged movie keeps the calibrated prior.
+    """
+    if target_metadata is None:
+        return None
+    try:
+        val = float(getattr(target_metadata, "amc_market_share_override", 0) or 0)
+    except (TypeError, ValueError):
+        return None
+    if DYNAMIC_AMC_SHARE_MIN_SHARE <= val <= DYNAMIC_AMC_SHARE_MAX_SHARE:
+        return val
+    return None
+
+
 def amc_to_domestic(amc_revenue, cal, share_override=None):
     """Stage C: scale AMC revenue to total domestic market."""
     if share_override is None:
@@ -5361,7 +5383,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 national_theatre_count=None,
                                 regular_seat_data=None,
                                 amc_share_anchor=None,
-                                amc_share_anchors=None):
+                                amc_share_anchors=None,
+                                amc_share_override=None):
     """Use snapshots only for opening-weekend days without seat-count actuals."""
     if not snapshot_data:
         return None
@@ -5386,7 +5409,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         )
         share_override = (
             share_anchor_for_day.get("blended_share")
-            if share_anchor_for_day else None
+            if share_anchor_for_day else amc_share_override
         )
         details = estimate_snapshot_day(
             rows,
@@ -6357,9 +6380,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         # movie's AMC share for future days; a single preview report can reflect
         # release footprint, premium screens, or timing more than actual AMC
         # share. Keep the calibrated share stable and record the actual-vs-seat
-        # scale on the seat layer instead.
+        # scale on the seat layer instead. An operator-set per-film override
+        # (e.g. an ultra-wide family tentpole that under-indexes at AMC) does
+        # apply here — it is a deliberate prior for THIS title, not an actual.
         share_anchor_for_day = None
-        share_override = None
+        share_override = amc_market_share_override_for(movie_metadata)
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(
             amc_total,
             cal,
@@ -6610,6 +6635,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         },
         amc_share_anchor=dynamic_amc_share_anchor,
         amc_share_anchors=dynamic_amc_share_anchors,
+        amc_share_override=amc_market_share_override_for(movie_metadata),
     )
     data_profile = missing_data_profile(
         daily_details,

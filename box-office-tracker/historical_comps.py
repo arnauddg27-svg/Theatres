@@ -107,6 +107,11 @@ class TargetMetadata:
     national_theatre_count: int = 0
     release_scale: str = ""
     avg_showings_per_cinema: float = 0.0
+    # Manual per-film AMC revenue-share override (0 = unset → use calibrated
+    # prior). For marquee titles whose AMC share the model can't infer from a
+    # small sample (e.g. an ultra-wide family tentpole that under-indexes at
+    # AMC), an operator can pin the share here. Applies to THAT film only.
+    amc_market_share_override: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -230,6 +235,7 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 national_theatre_count=_int(row, "national_theatre_count") or 0,
                 release_scale=_clean(row.get("release_scale")),
                 avg_showings_per_cinema=_float(row, "avg_showings_per_cinema"),
+                amc_market_share_override=_float(row, "amc_market_share_override"),
             )
             metadata[movie.lower()] = item
     return metadata
