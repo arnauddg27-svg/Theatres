@@ -22,6 +22,7 @@ import signal
 import sys
 import time
 from datetime import datetime, timedelta, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 import uuid
 
@@ -1610,11 +1611,76 @@ def save_polymarket_data(markets):
 
 # ─── Box Office Mojo — National Theatre Counts ──────────────────────────────
 
+def _parse_bom_chart_theatre_counts(html):
+    """Parse a Box Office Mojo weekend/daily chart into {title_lower: theatres}.
+
+    Stdlib HTML table parse (no external deps): read the table, locate the
+    'Release' and 'Theaters' columns by header NAME, and pull each row's pair.
+    Robust to BOM's column reordering, unlike the old positional regex (which
+    silently matched nothing and left theatre-counts.json empty).
+    """
+    class _ChartTable(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.in_cell = False
+            self.is_header_row = False
+            self.cur = []
+            self.rows = []
+            self.buf = ""
+
+        def handle_starttag(self, tag, attrs):
+            if tag == "tr":
+                self.cur = []
+                self.is_header_row = False
+            elif tag in ("td", "th"):
+                self.in_cell = True
+                self.buf = ""
+                if tag == "th":
+                    self.is_header_row = True
+
+        def handle_endtag(self, tag):
+            if tag in ("td", "th") and self.in_cell:
+                self.cur.append(self.buf.strip())
+                self.in_cell = False
+            elif tag == "tr" and self.cur:
+                self.rows.append((self.is_header_row, self.cur))
+
+        def handle_data(self, data):
+            if self.in_cell:
+                self.buf += data
+
+    parser = _ChartTable()
+    try:
+        parser.feed(html)
+    except Exception:
+        return {}
+    header = next((cells for is_h, cells in parser.rows if is_h), None)
+    if not header or "Release" not in header or "Theaters" not in header:
+        return {}
+    ri, ti = header.index("Release"), header.index("Theaters")
+    counts = {}
+    for is_h, cells in parser.rows:
+        if is_h or len(cells) <= max(ri, ti):
+            continue
+        title = cells[ri].strip()
+        raw = cells[ti].replace(",", "").strip()
+        if title and raw.isdigit():
+            count = int(raw)
+            if 10 <= count <= 12000:  # plausible theatre-count range
+                # Keep the widest count seen for a title (opening footprint).
+                counts[title.lower()] = max(count, counts.get(title.lower(), 0))
+    return counts
+
+
 def fetch_bom_theatre_counts(movie_titles):
     """
-    Scrape Box Office Mojo's current weekend chart to get national theatre counts.
-    Saves results to theatre-counts.json.
-    Returns dict: {movie_title: theatre_count}
+    Scrape Box Office Mojo for national theatre counts of the requested movies.
+    Reads the most recent weekend chart plus the last few daily charts (the
+    weekend chart only lists COMPLETED weekends, so a film opening this weekend
+    is found via the daily chart once previews/opening day post). Note: BOM only
+    publishes a film's theatre count after it opens — pre-opening titles won't
+    be found here and rely on movie-metadata / a manual override instead.
+    Saves results to theatre-counts.json. Returns {movie_title: theatre_count}.
     """
     print("\n🎭 Fetching national theatre counts from Box Office Mojo...")
     headers = {
@@ -1625,42 +1691,27 @@ def fetch_bom_theatre_counts(movie_titles):
         )
     }
     counts = {}
-    try:
-        resp = requests.get(
-            "https://www.boxofficemojo.com/weekend/chart/",
-            headers=headers, timeout=15
-        )
-        resp.raise_for_status()
-        html = resp.text
+    # Weekend chart = most recent COMPLETED weekend (movies mid-run). Daily
+    # charts for the last few days catch brand-new openings (Thu previews /
+    # opening day) not yet on the weekend chart. Merge, keeping widest count.
+    chart_urls = ["https://www.boxofficemojo.com/weekend/chart/"]
+    today = datetime.now().date()
+    for back in range(0, 3):
+        day = today - timedelta(days=back)
+        chart_urls.append(f"https://www.boxofficemojo.com/date/{day.isoformat()}/")
 
-        # BOM renders a table: Title | Studio | Weekend | % Change | Theaters | ...
-        # Parse <td> cells — theatre count appears in the "Theaters" column
-        # Each row: rank, title, studio, weekend_gross, ..., theater_count, ...
-        rows = re.findall(
-            r'<td[^>]*>.*?<a[^>]*>([^<]+)</a>.*?</td>(?:.*?<td[^>]*>([^<]+)</td>){3,5}.*?'
-            r'<td[^>]*>\s*([\d,]+)\s*</td>',
-            html, re.DOTALL
-        )
+    parsed = {}
+    for url in chart_urls:
+        try:
+            resp = requests.get(url, headers=headers, timeout=15)
+            resp.raise_for_status()
+            for title, count in _parse_bom_chart_theatre_counts(resp.text).items():
+                if count > parsed.get(title, 0):
+                    parsed[title] = count
+        except Exception as e:
+            print(f"  ⚠️  BOM chart fetch failed ({url}): {e}")
 
-        # Fallback: simpler extraction — find all title+theater_count pairs
-        # BOM table columns (typical): Rank | Title | Studio | Weekend | %Chg | Theaters | Avg | Total | Wks
-        # Extract all numbers that look like theatre counts (1,000–10,000 range)
-        title_blocks = re.findall(
-            r'release/rl\d+[^"]*"[^>]*>([^<]{3,60})</a>.*?'
-            r'<td[^>]*>\s*([\d,]{1,6})\s*</td>',
-            html, re.DOTALL
-        )
-
-        parsed = {}
-        for title, count_str in title_blocks:
-            title = title.strip()
-            try:
-                count = int(count_str.replace(',', ''))
-                if 10 <= count <= 12000:  # plausible theatre count range
-                    parsed[title.lower()] = count
-            except ValueError:
-                continue
-
+    if parsed:
         # Match our movie titles to BOM titles (fuzzy)
         for movie in movie_titles:
             movie_lower = movie.lower().strip()
@@ -1678,10 +1729,9 @@ def fetch_bom_theatre_counts(movie_titles):
                 counts[movie] = best_match[1]
                 print(f"  ✅ {movie}: {best_match[1]:,} theatres (matched '{best_match[0]}')")
             else:
-                print(f"  ⚠️  {movie}: no BOM match found")
-
-    except Exception as e:
-        print(f"  ❌ BOM fetch failed: {e}")
+                print(f"  ⚠️  {movie}: no BOM match found (may not have opened yet)")
+    else:
+        print("  ⚠️  No BOM chart rows parsed — leaving prior counts untouched.")
 
     # Save only the movies in this collection window. Keeping stale counts for
     # prior weekends makes theatre-counts.json look like active metadata and
