@@ -3243,6 +3243,18 @@ def _recompute_weekend_from_daily_detail_m(daily_details, cal):
     mid = sum(values.values()) * scale
     low = sum(low_values.values()) * scale
     high = sum(high_values.values()) * scale
+    # Floor the band width by the day-count confidence range. Summing per-day
+    # bounds and scaling the midpoint up for missing days captures the per-day
+    # spread but NOT the uncertainty of extrapolating most of the weekend from a
+    # few collected days. Without this, a Thursday-only forecast reports
+    # high ~= mid — falsely confident a film can't exceed its point estimate,
+    # which badly low-balls the upside on big/early reads (e.g. tentpoles whose
+    # only data is preview night). Widening only touches the interval; `mid`
+    # (the scored point estimate) is never changed, so accuracy is unaffected
+    # and full-weekend reads (4 days -> ~0.96-1.05 band) barely move.
+    lo_mult, hi_mult = DAY_CONFIDENCE.get(len(values), (0.70, 1.40))
+    low = min(low, mid * lo_mult)
+    high = max(high, mid * hi_mult)
     return {
         "mid_m": mid,
         "low_m": min(low, mid),
