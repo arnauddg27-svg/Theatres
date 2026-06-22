@@ -1010,20 +1010,91 @@
       "calibration_excluded_days": [
         "Friday"
       ]
+    },
+    {
+      "movie": "Toy Story 5",
+      "weekend_of": "2026-06-19",
+      "date": "2026-06-22",
+      "predicted_mid": 145.69,
+      "predicted_low": 122.49,
+      "predicted_high": 167.58,
+      "actual_total": 160.0,
+      "daily_actuals": {
+        "Thursday": 17.5,
+        "Friday": 31.6,
+        "Saturday": 58.2,
+        "Sunday": 52.7
+      },
+      "daily_predictions": {
+        "Thursday": 17.36,
+        "Friday": 34.34,
+        "Saturday": 49.27,
+        "Sunday": 44.72
+      },
+      "error_pct": -8.9,
+      "n_theatres": 425,
+      "n_days": 4,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "user report ~160M all-in incl previews; Fri/Sat/Sun split derived from captured seat proportions",
+      "actual_status": "reported",
+      "raw_daily_predictions": {
+        "Thursday": 14.15,
+        "Friday": 31.13,
+        "Saturday": 44.59,
+        "Sunday": 40.35
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0021,
+        "Friday": 0.0381,
+        "Saturday": 0.0114,
+        "Sunday": 0.0094
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 20.67,
+        "Friday": 27.28,
+        "Saturday": 49.22,
+        "Sunday": 46.17
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.445,
+        "Friday": 0.468,
+        "Saturday": 0.461,
+        "Sunday": 0.468
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 425,
+        "Friday": 424,
+        "Saturday": 419,
+        "Sunday": 420
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 1.0,
+        "Friday": 0.998,
+        "Saturday": 0.986,
+        "Sunday": 0.988
+      },
+      "coverage_ratio": 0.993
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2596,
+    "amc_market_share": 0.2444,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1069,
-      "Friday": 0.3147,
-      "Saturday": 0.3237,
-      "Sunday": 0.2547
+      "Thursday": 0.1071,
+      "Friday": 0.3069,
+      "Saturday": 0.3263,
+      "Sunday": 0.2597
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -1320,33 +1391,55 @@
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Toy Story 5",
+        "weekend_of": "2026-06-19",
+        "abs_error_pct": 8.9,
+        "n_theatres": 425,
+        "n_days": 4,
+        "coverage_ratio": 0.993,
+        "daily_coverage_ratios": {
+          "Thursday": 1.0,
+          "Friday": 0.998,
+          "Saturday": 0.986,
+          "Sunday": 0.988
+        },
+        "daily_errors": {
+          "Thursday": 0.8,
+          "Friday": 8.7,
+          "Saturday": 15.3,
+          "Sunday": 15.1
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-06-19",
+    "last_updated": "2026-06-22",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 4,
-          "support": 0.907
+          "n": 5,
+          "support": 1.352
         },
         "Friday": {
-          "n": 4,
-          "support": 1.779
+          "n": 5,
+          "support": 2.247
         },
         "Saturday": {
-          "n": 11,
-          "support": 4.281
+          "n": 12,
+          "support": 4.742
         },
         "Sunday": {
-          "n": 10,
-          "support": 4.075
+          "n": 11,
+          "support": 4.543
         }
       },
       "leads": {
         "same_day": {
-          "n": 27,
-          "support": 10.578
+          "n": 31,
+          "support": 12.42
         },
         "next_day": {
           "n": 2,
@@ -1366,10 +1459,10 @@
       "version": 1,
       "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.15698133522432373,
-        "Friday": 0.29704366759976053,
-        "Saturday": 0.305508837598561,
-        "Sunday": 0.24046615957735482
+        "Thursday": 0.15245038106911143,
+        "Friday": 0.2912797025635546,
+        "Saturday": 0.30974456775120773,
+        "Sunday": 0.24652534861612616
       },
       "trained_on": [
         "Michael",
@@ -1383,14 +1476,15 @@
         "Scary Movie",
         "Masters of the Universe",
         "The Amazing Digital Circus: The Last Act",
-        "Disclosure Day"
+        "Disclosure Day",
+        "Toy Story 5"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.2272871784304327,
-        "resid_scale": 0.33228108305403936
+        "log_ratio_mean": 0.22352042905981315,
+        "resid_scale": 0.3170519351873795
       },
       "identity": {
-        "seat_sd": 0.40257940786189345
+        "seat_sd": 0.38792178569029256
       },
       "seat": {
         "features": [
@@ -1403,12 +1497,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.47396561656851505,
-          0.8740940125293316,
-          0.03233022820118371,
-          -0.006485776954463682,
-          0.0004995289403868958,
-          0.03148348337983809,
+          0.45044769694149916,
+          0.8921900737096043,
+          0.031847387015985655,
+          -0.015739961293605602,
+          0.0038400343391575926,
+          0.030708007433654066,
           0.0
         ],
         "prior": [
@@ -1421,7 +1515,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.32663669849681626
+        "daily_resid_sd": 0.31552480449096265
       },
       "snapshot": {
         "features": [
@@ -1435,12 +1529,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.8558015492768308,
-          0.6420249261206625,
-          -0.09418245672476505,
-          0.2650290313171145,
-          0.1007022400024556,
-          0.1451475146326953,
+          0.7887321956847367,
+          0.7286885255163086,
+          -0.08363728929992736,
+          0.15049864104483232,
+          0.04205771701101651,
+          0.033025243295438406,
           0.0,
           0.0
         ],
@@ -1454,94 +1548,100 @@
           0.0,
           0.0
         ],
-        "lambda": 3.0,
-        "daily_resid_sd": 0.6460142907003014
+        "lambda": 10.0,
+        "daily_resid_sd": 0.6268987809042385
       },
       "weekend": {
-        "log_half_width": 0.4336,
-        "resid_mean": 0.0021730265820980588,
-        "df": 10,
-        "loo_hit_rate": 0.9091,
+        "log_half_width": 0.3594,
+        "resid_mean": -0.006908076613889813,
+        "df": 11,
+        "loo_hit_rate": 0.9167,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 19.88,
-        "loo_median_ae_pct": 13.82,
-        "n_movies": 11
+        "loo_mae_pct": 21.92,
+        "loo_median_ae_pct": 17.41,
+        "n_movies": 12
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 102.66,
+          "pred_m": 106.0,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 46.71,
+          "pred_m": 47.28,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.52,
+          "pred_m": 24.33,
           "actual_m": 15.09,
-          "observed_share": 0.842
+          "observed_share": 0.846
         },
         {
           "movie": "Obsession",
-          "pred_m": 22.82,
+          "pred_m": 22.9,
           "actual_m": 17.2,
           "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 79.18,
+          "pred_m": 84.69,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 54.22,
+          "pred_m": 61.59,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 7.33,
+          "pred_m": 7.11,
           "actual_m": 7.35,
           "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 49.34,
+          "pred_m": 50.76,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 25.47,
+          "pred_m": 26.02,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "The Amazing Digital Circus: The Last Act",
-          "pred_m": 19.44,
+          "pred_m": 19.63,
           "actual_m": 20.24,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 50.05,
+          "pred_m": 51.54,
           "actual_m": 44.53,
-          "observed_share": 0.544
+          "observed_share": 0.555
+        },
+        {
+          "movie": "Toy Story 5",
+          "pred_m": 126.22,
+          "actual_m": 160.0,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 31.11,
-        "global_ratio": 33.97,
-        "regression": 19.88
+        "identity": 26.32,
+        "global_ratio": 28.11,
+        "regression": 21.92
       },
       "bakeoff_winner": "regression",
-      "meets_mae_target": true
+      "meets_mae_target": false
     }
   }
 }

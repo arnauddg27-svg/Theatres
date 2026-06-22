@@ -8272,7 +8272,10 @@ def main():
                      model_cohort_key=pred.get("model_cohort_key"),
                      social_signal=pred.get("social_signal"))
         print(f"Recorded: {movie_match} actual = ${actual_val}M")
-        print(f"Calibration updated → scale={cal['calibration_factors']['overall_scale_factor']:.4f}, "
+        _reg = cal["calibration_factors"].get("regression", {})
+        _bo = _reg.get("bakeoff", {})
+        print(f"Calibration updated → tier={_reg.get('active_tier')}, "
+              f"regression LOO MAE={_bo.get('regression')}%, "
               f"AMC share={cal['calibration_factors']['amc_market_share']:.2%}")
         return
 
