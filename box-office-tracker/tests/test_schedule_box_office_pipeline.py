@@ -29,7 +29,22 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             fallback_grace_minutes=90,
         )
 
-        self.assertEqual(["snapshot 02:30Z"], [slot.name for _, slot in due])
+        # Both late-night snapshot slots fall inside this lookback window: the
+        # AMC snapshot at 02:30Z and the Fandango lane at 03:00Z (sorted by
+        # scheduled_at).
+        self.assertEqual(
+            ["snapshot 02:30Z", "snapshot fandango 03Z"],
+            [slot.name for _, slot in due],
+        )
+
+    def test_fandango_slot_dispatches_isolated_phase(self):
+        slot = next(s for s in schedule.SLOTS if s.name == "snapshot fandango 03Z")
+        self.assertEqual(slot.inputs["phase"], "scrape-fandango")
+        self.assertEqual(slot.cron_days, frozenset({0, 4, 5, 6}))
+        self.assertEqual((slot.hour, slot.minute), (3, 0))
+        # It runs the same nights as the AMC snapshot but 30 min later.
+        amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
+        self.assertEqual(slot.cron_days, amc.cron_days)
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(

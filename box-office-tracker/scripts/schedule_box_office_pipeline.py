@@ -169,6 +169,17 @@ SLOTS: tuple[Slot, ...] = (
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),
     ),
+    # Fandango (Regal/Cinemark) pre-reservation snapshot — same nights as the
+    # AMC snapshot, offset +30 min to spread GitHub-hosted runner load. Isolated
+    # lane (own commit file, no AMC lock); gated out of the model until Phase C.
+    Slot(
+        "snapshot fandango 03Z",
+        "box office scrape-fandango ALL",
+        frozenset({0, 4, 5, 6}),
+        3,
+        0,
+        pipeline_inputs("scrape-fandango", "ALL", "false", "true", "true"),
+    ),
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",

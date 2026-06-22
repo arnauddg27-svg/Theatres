@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -496,6 +496,95 @@ jobs:
             fi
             sleep $((i * 15))
           done
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Fandango snapshot lane — Regal/Cinemark pre-reservation seat data via
+  # Fandango. ISOLATED from the AMC pipeline: a single GH-hosted writer that
+  # commits ONLY data/fandango-pre-reservation-snapshots.csv (a separate file —
+  # the AMC seat/snapshot CSVs are never touched). No AMC lock and no finalize
+  # merge are needed: the workflow concurrency group already serializes Fandango
+  # runs (one running + one pending per group, cancel-in-progress: false) and
+  # this single writer dedupes in-process. Different origin (Fandango/Akamai)
+  # from AMC, so it runs in parallel with the AMC lanes. Gated OUT of the model
+  # until Phase C. See box-office-tracker/fandango_collect.py.
+  # ──────────────────────────────────────────────────────────────────────────
+  scrape-fandango:
+    if: github.event.inputs.phase == 'scrape-fandango'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50   # dedup guard greps today's commits
+
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+
+      - name: Dedup guard — skip if today's Fandango snapshot already committed
+        id: dedup
+        run: |
+          python3 box-office-tracker/scripts/fandango_scrape_dedup_guard.py \
+            --force "${{ github.event.inputs.force }}" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
+
+      - name: Fandango snapshot — collect Regal/Cinemark seat data
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        timeout-minutes: 90
+        env:
+          # National pool (~320 theatres) sampled with N parallel browsers under
+          # a deadline that sits safely below the 90-min step timeout. Rows flush
+          # per-theatre, so hitting the deadline keeps everything collected so far.
+          FANDANGO_CONCURRENCY: '3'
+          FANDANGO_PER_THEATRE_CAP: '3'
+          FANDANGO_DEADLINE_SEC: '4500'
+        run: |
+          mkdir -p ../fandango-logs
+          python fandango_collect.py 2>&1 | tee "../fandango-logs/fandango-${{ github.run_id }}.log"
+
+      - name: Commit Fandango snapshot data
+        if: steps.dedup.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Isolated single file — never sweep up other untracked files.
+          git add box-office-tracker/data/fandango-pre-reservation-snapshots.csv
+          if git diff --staged --quiet; then
+            echo "No Fandango snapshot rows to commit."
+            exit 0
+          fi
+          git commit -m "data: box office fandango snapshot"
+          for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            git pull --rebase --autostash -X ours origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            if [ "$i" = "3" ]; then
+              echo "All 3 push attempts failed — Fandango data not committed."
+              git rebase --abort 2>/dev/null || true
+              exit 1
+            fi
+            sleep $((i * 15))
+          done
+
+      - name: Upload Fandango logs
+        if: always() && steps.dedup.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: fandango-logs-${{ github.run_id }}
+          path: fandango-logs/
+          if-no-files-found: ignore
 
   # ──────────────────────────────────────────────────────────────────────────
   # Calibrate — dispatched by the scheduler after actuals have time to post.

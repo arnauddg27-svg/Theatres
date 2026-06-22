@@ -1,0 +1,2888 @@
+{
+  "_cohort": "fandango",
+  "_note": "Regal/Cinemark theatres discovered via Fandango across US metros (chain from slug prefix; timezone inherited from the metro). A national pool \u2014 each scheduled run samples a rotating subset within its time budget. Gated OUT of the AMC model until Phase C. See fandango_collect.py.",
+  "_updated": "2026-06-22T17:45:52Z",
+  "_count": 320,
+  "theatres": [
+    {
+      "name": "Regal Atlas Park",
+      "slug": "regal-atlas-park-aatzo",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Battery Park",
+      "slug": "regal-battery-park-aapos",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Concourse",
+      "slug": "regal-concourse-aacub",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Essex Crossing And Rpx",
+      "slug": "regal-essex-crossing-and-rpx-aayny",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Secaucus Showplace 14",
+      "slug": "regal-secaucus-showplace-14-aavpq",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Tangram",
+      "slug": "regal-tangram-aayuj",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Times Square",
+      "slug": "regal-times-square-aaodh",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Ua Kaufman Astoria",
+      "slug": "regal-ua-kaufman-astoria-aapot",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Ua Midway",
+      "slug": "regal-ua-midway-aabjw",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Ua Sheepshead Bay",
+      "slug": "regal-ua-sheepshead-bay-aabkc",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Regal Union Square Screenx And 4Dx",
+      "slug": "regal-union-square-screenx-and-4dx-aajnk",
+      "chain": "REGL",
+      "city": "New York, NY",
+      "dma": "New York, NY",
+      "timezone": "America/New_York",
+      "zip": "10001"
+    },
+    {
+      "name": "Cinemark Somerdale 16 And Xd",
+      "slug": "cinemark-somerdale-16-and-xd-aadko",
+      "chain": "CNMK",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Cinemark University City Penn 6",
+      "slug": "cinemark-university-city-penn-6-aaqog",
+      "chain": "CNMK",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Edgmont Square",
+      "slug": "regal-edgmont-square-aaebq",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Moorestown Mall",
+      "slug": "regal-moorestown-mall-aaxbz",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Plymouth Meeting",
+      "slug": "regal-plymouth-meeting-aadhw",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Ua Grant Plaza",
+      "slug": "regal-ua-grant-plaza-aabzt",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Ua King Of Prussia",
+      "slug": "regal-ua-king-of-prussia-aaoqp",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Ua Main Street",
+      "slug": "regal-ua-main-street-aadhz",
+      "chain": "REGL",
+      "city": "Philadelphia, PA",
+      "dma": "Philadelphia, PA",
+      "timezone": "America/New_York",
+      "zip": "19103"
+    },
+    {
+      "name": "Regal Ballston Quarter",
+      "slug": "regal-ballston-quarter-aanhf",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Gallery Place And 4Dx",
+      "slug": "regal-gallery-place-and-4dx-aatar",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Hyattsville Royale",
+      "slug": "regal-hyattsville-royale-aaund",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Kingstowne Screenx And Rpx",
+      "slug": "regal-kingstowne-screenx-and-rpx-aatuq",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Majestic And Imax",
+      "slug": "regal-majestic-and-imax-aaron",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Rockville Center",
+      "slug": "regal-rockville-center-aaixz",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Regal Springfield Town Center",
+      "slug": "regal-springfield-town-center-aaxhi",
+      "chain": "REGL",
+      "city": "Washington, DC",
+      "dma": "Washington, DC",
+      "timezone": "America/New_York",
+      "zip": "20001"
+    },
+    {
+      "name": "Cinemark Egyptian 24 And Xd",
+      "slug": "cinemark-egyptian-24-and-xd-aapdl",
+      "chain": "CNMK",
+      "city": "Baltimore, MD",
+      "dma": "Baltimore, MD",
+      "timezone": "America/New_York",
+      "zip": "21201"
+    },
+    {
+      "name": "Cinemark Towson And Xd",
+      "slug": "cinemark-towson-and-xd-aaxgt",
+      "chain": "CNMK",
+      "city": "Baltimore, MD",
+      "dma": "Baltimore, MD",
+      "timezone": "America/New_York",
+      "zip": "21201"
+    },
+    {
+      "name": "Regal Hunt Valley",
+      "slug": "regal-hunt-valley-aajus",
+      "chain": "REGL",
+      "city": "Baltimore, MD",
+      "dma": "Baltimore, MD",
+      "timezone": "America/New_York",
+      "zip": "21201"
+    },
+    {
+      "name": "Regal Atlantic Station",
+      "slug": "regal-atlantic-station-aatsj",
+      "chain": "REGL",
+      "city": "Atlanta, GA",
+      "dma": "Atlanta, GA",
+      "timezone": "America/New_York",
+      "zip": "30303"
+    },
+    {
+      "name": "Regal Perimeter Pointe",
+      "slug": "regal-perimeter-pointe-aadit",
+      "chain": "REGL",
+      "city": "Atlanta, GA",
+      "dma": "Atlanta, GA",
+      "timezone": "America/New_York",
+      "zip": "30303"
+    },
+    {
+      "name": "Regal Kendall Village",
+      "slug": "regal-kendall-village-aatef",
+      "chain": "REGL",
+      "city": "Miami, FL",
+      "dma": "Miami, FL",
+      "timezone": "America/New_York",
+      "zip": "33130"
+    },
+    {
+      "name": "Regal Ua Falls",
+      "slug": "regal-ua-falls-aaftl",
+      "chain": "REGL",
+      "city": "Miami, FL",
+      "dma": "Miami, FL",
+      "timezone": "America/New_York",
+      "zip": "33130"
+    },
+    {
+      "name": "Cinemark Orlando And Xd",
+      "slug": "cinemark-orlando-and-xd-aaojk",
+      "chain": "CNMK",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal Oviedo Mall",
+      "slug": "regal-oviedo-mall-aafqv",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal Pointe Orlando",
+      "slug": "regal-pointe-orlando-aaujq",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal The Loop",
+      "slug": "regal-the-loop-aatwt",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal Waterford Lakes",
+      "slug": "regal-waterford-lakes-aaope",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal Wekiva Riverwalk",
+      "slug": "regal-wekiva-riverwalk-aabgx",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Regal Winter Park Village",
+      "slug": "regal-winter-park-village-aanzd",
+      "chain": "REGL",
+      "city": "Orlando, FL",
+      "dma": "Orlando, FL",
+      "timezone": "America/New_York",
+      "zip": "32801"
+    },
+    {
+      "name": "Cinemark Jacksonville Atlantic North And Xd",
+      "slug": "cinemark-jacksonville-atlantic-north-and-xd-aayvy",
+      "chain": "CNMK",
+      "city": "Jacksonville, FL",
+      "dma": "Jacksonville, FL",
+      "timezone": "America/New_York",
+      "zip": "32202"
+    },
+    {
+      "name": "Cinemark Tinseltown Jacksonville And Xd",
+      "slug": "cinemark-tinseltown-jacksonville-and-xd-aaili",
+      "chain": "CNMK",
+      "city": "Jacksonville, FL",
+      "dma": "Jacksonville, FL",
+      "timezone": "America/New_York",
+      "zip": "32202"
+    },
+    {
+      "name": "Regal Avenues",
+      "slug": "regal-avenues-aanzr",
+      "chain": "REGL",
+      "city": "Jacksonville, FL",
+      "dma": "Jacksonville, FL",
+      "timezone": "America/New_York",
+      "zip": "32202"
+    },
+    {
+      "name": "Cinemark Bistro Charlotte",
+      "slug": "cinemark-bistro-charlotte-aavbq",
+      "chain": "CNMK",
+      "city": "Charlotte, NC",
+      "dma": "Charlotte, NC",
+      "timezone": "America/New_York",
+      "zip": "28202"
+    },
+    {
+      "name": "Regal Starlight Charlotte",
+      "slug": "regal-starlight-charlotte-aafzk",
+      "chain": "REGL",
+      "city": "Charlotte, NC",
+      "dma": "Charlotte, NC",
+      "timezone": "America/New_York",
+      "zip": "28202"
+    },
+    {
+      "name": "Regal Stonecrest At Piper Glen",
+      "slug": "regal-stonecrest-at-piper-glen-aaixy",
+      "chain": "REGL",
+      "city": "Charlotte, NC",
+      "dma": "Charlotte, NC",
+      "timezone": "America/New_York",
+      "zip": "28202"
+    },
+    {
+      "name": "Cinemark Bistro Raleigh",
+      "slug": "cinemark-bistro-raleigh-aavbo",
+      "chain": "CNMK",
+      "city": "Raleigh, NC",
+      "dma": "Raleigh, NC",
+      "timezone": "America/New_York",
+      "zip": "27601"
+    },
+    {
+      "name": "Regal Brier Creek",
+      "slug": "regal-brier-creek-aaqwe",
+      "chain": "REGL",
+      "city": "Raleigh, NC",
+      "dma": "Raleigh, NC",
+      "timezone": "America/New_York",
+      "zip": "27601"
+    },
+    {
+      "name": "Regal Crossroads Cary",
+      "slug": "regal-crossroads-cary-aaonh",
+      "chain": "REGL",
+      "city": "Raleigh, NC",
+      "dma": "Raleigh, NC",
+      "timezone": "America/New_York",
+      "zip": "27601"
+    },
+    {
+      "name": "Regal North Hills",
+      "slug": "regal-north-hills-aatcu",
+      "chain": "REGL",
+      "city": "Raleigh, NC",
+      "dma": "Raleigh, NC",
+      "timezone": "America/New_York",
+      "zip": "27601"
+    },
+    {
+      "name": "Regal White Oak",
+      "slug": "regal-white-oak-aaubr",
+      "chain": "REGL",
+      "city": "Raleigh, NC",
+      "dma": "Raleigh, NC",
+      "timezone": "America/New_York",
+      "zip": "27601"
+    },
+    {
+      "name": "Regal Cherrydale",
+      "slug": "regal-cherrydale-aaqhs",
+      "chain": "REGL",
+      "city": "Greenville, SC",
+      "dma": "Greenville, SC",
+      "timezone": "America/New_York",
+      "zip": "29601"
+    },
+    {
+      "name": "Regal Hollywood Greenville",
+      "slug": "regal-hollywood-greenville-aaerb",
+      "chain": "REGL",
+      "city": "Greenville, SC",
+      "dma": "Greenville, SC",
+      "timezone": "America/New_York",
+      "zip": "29601"
+    },
+    {
+      "name": "Regal Simpsonville",
+      "slug": "regal-simpsonville-aavzv",
+      "chain": "REGL",
+      "city": "Greenville, SC",
+      "dma": "Greenville, SC",
+      "timezone": "America/New_York",
+      "zip": "29601"
+    },
+    {
+      "name": "Cinemark Summerville",
+      "slug": "cinemark-summerville-aainz",
+      "chain": "CNMK",
+      "city": "Charleston, SC",
+      "dma": "Charleston, SC",
+      "timezone": "America/New_York",
+      "zip": "29401"
+    },
+    {
+      "name": "Regal Azalea Square",
+      "slug": "regal-azalea-square-aarek",
+      "chain": "REGL",
+      "city": "Charleston, SC",
+      "dma": "Charleston, SC",
+      "timezone": "America/New_York",
+      "zip": "29401"
+    },
+    {
+      "name": "Regal Palmetto Grande",
+      "slug": "regal-palmetto-grande-aanpy",
+      "chain": "REGL",
+      "city": "Charleston, SC",
+      "dma": "Charleston, SC",
+      "timezone": "America/New_York",
+      "zip": "29401"
+    },
+    {
+      "name": "Cinemark Monroeville Mall And Xd",
+      "slug": "cinemark-monroeville-mall-and-xd-aaxbv",
+      "chain": "CNMK",
+      "city": "Pittsburgh, PA",
+      "dma": "Pittsburgh, PA",
+      "timezone": "America/New_York",
+      "zip": "15222"
+    },
+    {
+      "name": "Cinemark North Hills And Xd",
+      "slug": "cinemark-north-hills-and-xd-aaxiw",
+      "chain": "CNMK",
+      "city": "Pittsburgh, PA",
+      "dma": "Pittsburgh, PA",
+      "timezone": "America/New_York",
+      "zip": "15222"
+    },
+    {
+      "name": "Cinemark Robinson Township And Xd",
+      "slug": "cinemark-robinson-township-and-xd-aavpp",
+      "chain": "CNMK",
+      "city": "Pittsburgh, PA",
+      "dma": "Pittsburgh, PA",
+      "timezone": "America/New_York",
+      "zip": "15222"
+    },
+    {
+      "name": "Cinemark Strongsville At Southpark Mall",
+      "slug": "cinemark-strongsville-at-southpark-mall-aauiu",
+      "chain": "CNMK",
+      "city": "Cleveland, OH",
+      "dma": "Cleveland, OH",
+      "timezone": "America/New_York",
+      "zip": "44113"
+    },
+    {
+      "name": "Cinemark Valley View And Xd",
+      "slug": "cinemark-valley-view-and-xd-aanhi",
+      "chain": "CNMK",
+      "city": "Cleveland, OH",
+      "dma": "Cleveland, OH",
+      "timezone": "America/New_York",
+      "zip": "44113"
+    },
+    {
+      "name": "Regal Crocker Park And Imax",
+      "slug": "regal-crocker-park-and-imax-aaeng",
+      "chain": "REGL",
+      "city": "Cleveland, OH",
+      "dma": "Cleveland, OH",
+      "timezone": "America/New_York",
+      "zip": "44113"
+    },
+    {
+      "name": "Cinemark Polaris 18 And Xd",
+      "slug": "cinemark-polaris-18-and-xd-aatvf",
+      "chain": "CNMK",
+      "city": "Columbus, OH",
+      "dma": "Columbus, OH",
+      "timezone": "America/New_York",
+      "zip": "43215"
+    },
+    {
+      "name": "Cinemark Stoneridge Plaza Movies 16",
+      "slug": "cinemark-stoneridge-plaza-movies-16-aaglu",
+      "chain": "CNMK",
+      "city": "Columbus, OH",
+      "dma": "Columbus, OH",
+      "timezone": "America/New_York",
+      "zip": "43215"
+    },
+    {
+      "name": "Cinemark Florence 14 And Xd",
+      "slug": "cinemark-florence-14-and-xd-aauxe",
+      "chain": "CNMK",
+      "city": "Cincinnati, OH",
+      "dma": "Cincinnati, OH",
+      "timezone": "America/New_York",
+      "zip": "45202"
+    },
+    {
+      "name": "Cinemark Milford 16",
+      "slug": "cinemark-milford-16-aapck",
+      "chain": "CNMK",
+      "city": "Cincinnati, OH",
+      "dma": "Cincinnati, OH",
+      "timezone": "America/New_York",
+      "zip": "45202"
+    },
+    {
+      "name": "Cinemark Oakley Station And Xd",
+      "slug": "cinemark-oakley-station-and-xd-aaxae",
+      "chain": "CNMK",
+      "city": "Cincinnati, OH",
+      "dma": "Cincinnati, OH",
+      "timezone": "America/New_York",
+      "zip": "45202"
+    },
+    {
+      "name": "Cinemark Western Hills 14",
+      "slug": "cinemark-western-hills-14-aacjt",
+      "chain": "CNMK",
+      "city": "Cincinnati, OH",
+      "dma": "Cincinnati, OH",
+      "timezone": "America/New_York",
+      "zip": "45202"
+    },
+    {
+      "name": "Regal Wilder",
+      "slug": "regal-wilder-aapes",
+      "chain": "REGL",
+      "city": "Cincinnati, OH",
+      "dma": "Cincinnati, OH",
+      "timezone": "America/New_York",
+      "zip": "45202"
+    },
+    {
+      "name": "Cinemark Southland Mall And Xd",
+      "slug": "cinemark-southland-mall-and-xd-aaxvg",
+      "chain": "CNMK",
+      "city": "Detroit, MI",
+      "dma": "Detroit, MI",
+      "timezone": "America/New_York",
+      "zip": "48226"
+    },
+    {
+      "name": "Regal Elmwood Center",
+      "slug": "regal-elmwood-center-aaeth",
+      "chain": "REGL",
+      "city": "Buffalo, NY",
+      "dma": "Buffalo, NY",
+      "timezone": "America/New_York",
+      "zip": "14202"
+    },
+    {
+      "name": "Regal Quaker Crossing",
+      "slug": "regal-quaker-crossing-aafso",
+      "chain": "REGL",
+      "city": "Buffalo, NY",
+      "dma": "Buffalo, NY",
+      "timezone": "America/New_York",
+      "zip": "14202"
+    },
+    {
+      "name": "Regal Transit Center And Imax",
+      "slug": "regal-transit-center-and-imax-aaetg",
+      "chain": "REGL",
+      "city": "Buffalo, NY",
+      "dma": "Buffalo, NY",
+      "timezone": "America/New_York",
+      "zip": "14202"
+    },
+    {
+      "name": "Regal Walden Galleria 4Dx And Rpx",
+      "slug": "regal-walden-galleria-4dx-and-rpx-aauvb",
+      "chain": "REGL",
+      "city": "Buffalo, NY",
+      "dma": "Buffalo, NY",
+      "timezone": "America/New_York",
+      "zip": "14202"
+    },
+    {
+      "name": "Cinemark Tinseltown Rochester And Imax",
+      "slug": "cinemark-tinseltown-rochester-and-imax-aaipn",
+      "chain": "CNMK",
+      "city": "Rochester, NY",
+      "dma": "Rochester, NY",
+      "timezone": "America/New_York",
+      "zip": "14604"
+    },
+    {
+      "name": "Regal Eastview Mall",
+      "slug": "regal-eastview-mall-aaeqv",
+      "chain": "REGL",
+      "city": "Rochester, NY",
+      "dma": "Rochester, NY",
+      "timezone": "America/New_York",
+      "zip": "14604"
+    },
+    {
+      "name": "Regal Clifton Park",
+      "slug": "regal-clifton-park-aaggh",
+      "chain": "REGL",
+      "city": "Albany, NY",
+      "dma": "Albany, NY",
+      "timezone": "America/New_York",
+      "zip": "12207"
+    },
+    {
+      "name": "Regal Colonie Center",
+      "slug": "regal-colonie-center-aautq",
+      "chain": "REGL",
+      "city": "Albany, NY",
+      "dma": "Albany, NY",
+      "timezone": "America/New_York",
+      "zip": "12207"
+    },
+    {
+      "name": "Regal Crossgates",
+      "slug": "regal-crossgates-aaggs",
+      "chain": "REGL",
+      "city": "Albany, NY",
+      "dma": "Albany, NY",
+      "timezone": "America/New_York",
+      "zip": "12207"
+    },
+    {
+      "name": "Regal East Greenbush",
+      "slug": "regal-east-greenbush-aaggv",
+      "chain": "REGL",
+      "city": "Albany, NY",
+      "dma": "Albany, NY",
+      "timezone": "America/New_York",
+      "zip": "12207"
+    },
+    {
+      "name": "Regal Commonwealth And Imax",
+      "slug": "regal-commonwealth-and-imax-aaowm",
+      "chain": "REGL",
+      "city": "Richmond, VA",
+      "dma": "Richmond, VA",
+      "timezone": "America/New_York",
+      "zip": "23219"
+    },
+    {
+      "name": "Regal Short Pump",
+      "slug": "regal-short-pump-aaphs",
+      "chain": "REGL",
+      "city": "Richmond, VA",
+      "dma": "Richmond, VA",
+      "timezone": "America/New_York",
+      "zip": "23219"
+    },
+    {
+      "name": "Regal Virginia Center",
+      "slug": "regal-virginia-center-aaepq",
+      "chain": "REGL",
+      "city": "Richmond, VA",
+      "dma": "Richmond, VA",
+      "timezone": "America/New_York",
+      "zip": "23219"
+    },
+    {
+      "name": "Regal West Tower Cinemas",
+      "slug": "regal-west-tower-cinemas-aablc",
+      "chain": "REGL",
+      "city": "Richmond, VA",
+      "dma": "Richmond, VA",
+      "timezone": "America/New_York",
+      "zip": "23219"
+    },
+    {
+      "name": "Regal Westchester Commons",
+      "slug": "regal-westchester-commons-aavgw",
+      "chain": "REGL",
+      "city": "Richmond, VA",
+      "dma": "Richmond, VA",
+      "timezone": "America/New_York",
+      "zip": "23219"
+    },
+    {
+      "name": "Regal Columbus",
+      "slug": "regal-columbus-aaeqt",
+      "chain": "REGL",
+      "city": "Virginia Beach, VA",
+      "dma": "Virginia Beach, VA",
+      "timezone": "America/New_York",
+      "zip": "23451"
+    },
+    {
+      "name": "Regal Strawbridge Marketplace",
+      "slug": "regal-strawbridge-marketplace-aaepk",
+      "chain": "REGL",
+      "city": "Virginia Beach, VA",
+      "dma": "Virginia Beach, VA",
+      "timezone": "America/New_York",
+      "zip": "23451"
+    },
+    {
+      "name": "Cinemark Mall St Matthews And Xd",
+      "slug": "cinemark-mall-st-matthews-and-xd-aawyp",
+      "chain": "CNMK",
+      "city": "Louisville, KY",
+      "dma": "Louisville, KY",
+      "timezone": "America/New_York",
+      "zip": "40202"
+    },
+    {
+      "name": "Cinemark Preston Crossings 16 And Xd",
+      "slug": "cinemark-preston-crossings-16-and-xd-aarfh",
+      "chain": "CNMK",
+      "city": "Louisville, KY",
+      "dma": "Louisville, KY",
+      "timezone": "America/New_York",
+      "zip": "40202"
+    },
+    {
+      "name": "Cinemark Tinseltown Louisville And Xd",
+      "slug": "cinemark-tinseltown-louisville-and-xd-aaiqi",
+      "chain": "CNMK",
+      "city": "Louisville, KY",
+      "dma": "Louisville, KY",
+      "timezone": "America/New_York",
+      "zip": "40202"
+    },
+    {
+      "name": "Regal Cinebarre West Town Mall",
+      "slug": "regal-cinebarre-west-town-mall-aajaj",
+      "chain": "REGL",
+      "city": "Knoxville, TN",
+      "dma": "Knoxville, TN",
+      "timezone": "America/New_York",
+      "zip": "37902"
+    },
+    {
+      "name": "Regal Downtown West",
+      "slug": "regal-downtown-west-aaeon",
+      "chain": "REGL",
+      "city": "Knoxville, TN",
+      "dma": "Knoxville, TN",
+      "timezone": "America/New_York",
+      "zip": "37902"
+    },
+    {
+      "name": "Regal Pinnacle",
+      "slug": "regal-pinnacle-aatjd",
+      "chain": "REGL",
+      "city": "Knoxville, TN",
+      "dma": "Knoxville, TN",
+      "timezone": "America/New_York",
+      "zip": "37902"
+    },
+    {
+      "name": "Regal Riviera",
+      "slug": "regal-riviera-aauno",
+      "chain": "REGL",
+      "city": "Knoxville, TN",
+      "dma": "Knoxville, TN",
+      "timezone": "America/New_York",
+      "zip": "37902"
+    },
+    {
+      "name": "Cinemark Watchung And Xd",
+      "slug": "cinemark-watchung-and-xd-aaypg",
+      "chain": "CNMK",
+      "city": "Newark, NJ",
+      "dma": "Newark, NJ",
+      "timezone": "America/New_York",
+      "zip": "07102"
+    },
+    {
+      "name": "Cinemark Willowbrook Mall And Xd",
+      "slug": "cinemark-willowbrook-mall-and-xd-aayrx",
+      "chain": "CNMK",
+      "city": "Newark, NJ",
+      "dma": "Newark, NJ",
+      "timezone": "America/New_York",
+      "zip": "07102"
+    },
+    {
+      "name": "Regal Bricktown Charleston",
+      "slug": "regal-bricktown-charleston-aaynj",
+      "chain": "REGL",
+      "city": "Newark, NJ",
+      "dma": "Newark, NJ",
+      "timezone": "America/New_York",
+      "zip": "07102"
+    },
+    {
+      "name": "Cinemark Buckland Hills 18 Xd And Imax",
+      "slug": "cinemark-buckland-hills-18-xd-and-imax-aafuv",
+      "chain": "CNMK",
+      "city": "Hartford, CT",
+      "dma": "Hartford, CT",
+      "timezone": "America/New_York",
+      "zip": "06103"
+    },
+    {
+      "name": "Regal Bellingham",
+      "slug": "regal-bellingham-aaezs",
+      "chain": "REGL",
+      "city": "Providence, RI",
+      "dma": "Providence, RI",
+      "timezone": "America/New_York",
+      "zip": "02903"
+    },
+    {
+      "name": "Regal Independence Mall And Rpx",
+      "slug": "regal-independence-mall-and-rpx-aadtk",
+      "chain": "REGL",
+      "city": "Providence, RI",
+      "dma": "Providence, RI",
+      "timezone": "America/New_York",
+      "zip": "02903"
+    },
+    {
+      "name": "Regal Mashpee Commons",
+      "slug": "regal-mashpee-commons-aadtl",
+      "chain": "REGL",
+      "city": "Providence, RI",
+      "dma": "Providence, RI",
+      "timezone": "America/New_York",
+      "zip": "02903"
+    },
+    {
+      "name": "Regal Solomon Pond",
+      "slug": "regal-solomon-pond-aadxg",
+      "chain": "REGL",
+      "city": "Providence, RI",
+      "dma": "Providence, RI",
+      "timezone": "America/New_York",
+      "zip": "02903"
+    },
+    {
+      "name": "Regal Waterford",
+      "slug": "regal-waterford-aageb",
+      "chain": "REGL",
+      "city": "Providence, RI",
+      "dma": "Providence, RI",
+      "timezone": "America/New_York",
+      "zip": "02903"
+    },
+    {
+      "name": "Cinemark Rockingham Park And Xd",
+      "slug": "cinemark-rockingham-park-and-xd-aaysp",
+      "chain": "CNMK",
+      "city": "Manchester, NH",
+      "dma": "Manchester, NH",
+      "timezone": "America/New_York",
+      "zip": "03101"
+    },
+    {
+      "name": "Regal Fox Run And Rpx",
+      "slug": "regal-fox-run-and-rpx-aafxo",
+      "chain": "REGL",
+      "city": "Manchester, NH",
+      "dma": "Manchester, NH",
+      "timezone": "America/New_York",
+      "zip": "03101"
+    },
+    {
+      "name": "Cinemark Greenwood Corner",
+      "slug": "cinemark-greenwood-corner-aaimj",
+      "chain": "CNMK",
+      "city": "Indianapolis, IN",
+      "dma": "Indianapolis, IN",
+      "timezone": "America/Indiana/Indianapolis",
+      "zip": "46204"
+    },
+    {
+      "name": "Regal Greenwood And Rpx",
+      "slug": "regal-greenwood-and-rpx-aacta",
+      "chain": "REGL",
+      "city": "Indianapolis, IN",
+      "dma": "Indianapolis, IN",
+      "timezone": "America/Indiana/Indianapolis",
+      "zip": "46204"
+    },
+    {
+      "name": "Regal Shiloh Crossing",
+      "slug": "regal-shiloh-crossing-aaejm",
+      "chain": "REGL",
+      "city": "Indianapolis, IN",
+      "dma": "Indianapolis, IN",
+      "timezone": "America/Indiana/Indianapolis",
+      "zip": "46204"
+    },
+    {
+      "name": "Regal Ua Galaxy Indianapolis",
+      "slug": "regal-ua-galaxy-indianapolis-aacvp",
+      "chain": "REGL",
+      "city": "Indianapolis, IN",
+      "dma": "Indianapolis, IN",
+      "timezone": "America/Indiana/Indianapolis",
+      "zip": "46204"
+    },
+    {
+      "name": "Cinemark Christiana And Xd",
+      "slug": "cinemark-christiana-and-xd-aaxjl",
+      "chain": "CNMK",
+      "city": "Wilmington, DE",
+      "dma": "Wilmington, DE",
+      "timezone": "America/New_York",
+      "zip": "19801"
+    },
+    {
+      "name": "Cinemark Wilmington Movies 10",
+      "slug": "cinemark-wilmington-movies-10-aaimp",
+      "chain": "CNMK",
+      "city": "Wilmington, DE",
+      "dma": "Wilmington, DE",
+      "timezone": "America/New_York",
+      "zip": "19801"
+    },
+    {
+      "name": "Regal Brandywine Town Center",
+      "slug": "regal-brandywine-town-center-aadri",
+      "chain": "REGL",
+      "city": "Wilmington, DE",
+      "dma": "Wilmington, DE",
+      "timezone": "America/New_York",
+      "zip": "19801"
+    },
+    {
+      "name": "Regal Peoples Plaza",
+      "slug": "regal-peoples-plaza-aaehm",
+      "chain": "REGL",
+      "city": "Wilmington, DE",
+      "dma": "Wilmington, DE",
+      "timezone": "America/New_York",
+      "zip": "19801"
+    },
+    {
+      "name": "Regal Harrisburg",
+      "slug": "regal-harrisburg-aaogs",
+      "chain": "REGL",
+      "city": "Harrisburg, PA",
+      "dma": "Harrisburg, PA",
+      "timezone": "America/New_York",
+      "zip": "17101"
+    },
+    {
+      "name": "Regal Manor",
+      "slug": "regal-manor-aamuq",
+      "chain": "REGL",
+      "city": "Harrisburg, PA",
+      "dma": "Harrisburg, PA",
+      "timezone": "America/New_York",
+      "zip": "17101"
+    },
+    {
+      "name": "Regal West Manchester",
+      "slug": "regal-west-manchester-aaivx",
+      "chain": "REGL",
+      "city": "Harrisburg, PA",
+      "dma": "Harrisburg, PA",
+      "timezone": "America/New_York",
+      "zip": "17101"
+    },
+    {
+      "name": "Cinemark Melrose Park",
+      "slug": "cinemark-melrose-park-aamia",
+      "chain": "CNMK",
+      "city": "Chicago, IL",
+      "dma": "Chicago, IL",
+      "timezone": "America/Chicago",
+      "zip": "60601"
+    },
+    {
+      "name": "Regal City North 4Dx And Imax",
+      "slug": "regal-city-north-4dx-and-imax-aaodv",
+      "chain": "REGL",
+      "city": "Chicago, IL",
+      "dma": "Chicago, IL",
+      "timezone": "America/Chicago",
+      "zip": "60601"
+    },
+    {
+      "name": "Regal Webster Place",
+      "slug": "regal-webster-place-aaaxr",
+      "chain": "REGL",
+      "city": "Chicago, IL",
+      "dma": "Chicago, IL",
+      "timezone": "America/Chicago",
+      "zip": "60601"
+    },
+    {
+      "name": "Cinemark Hollywood Pasadena And Xd",
+      "slug": "cinemark-hollywood-pasadena-and-xd-aaccv",
+      "chain": "CNMK",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Cinemark Memorial City",
+      "slug": "cinemark-memorial-city-aauis",
+      "chain": "CNMK",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Cinemark Pearland And Xd",
+      "slug": "cinemark-pearland-and-xd-aatlv",
+      "chain": "CNMK",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Cinemark Tinseltown Houston 290 And Xd",
+      "slug": "cinemark-tinseltown-houston-290-and-xd-aacmr",
+      "chain": "CNMK",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Cinemark Tinseltown Jacinto City And Xd",
+      "slug": "cinemark-tinseltown-jacinto-city-and-xd-aafyh",
+      "chain": "CNMK",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Regal Edwards Greenway Grand Palace Screenx And Rpx",
+      "slug": "regal-edwards-greenway-grand-palace-screenx-and-rpx-aanzg",
+      "chain": "REGL",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Regal Houston Marqe Screenx 4Dx Imax And Rpx",
+      "slug": "regal-houston-marqe-screenx-4dx-imax-and-rpx-aaojh",
+      "chain": "REGL",
+      "city": "Houston, TX",
+      "dma": "Houston, TX",
+      "timezone": "America/Chicago",
+      "zip": "77002"
+    },
+    {
+      "name": "Cinemark Dallas Xd And Imax",
+      "slug": "cinemark-dallas-xd-and-imax-aacbt",
+      "chain": "CNMK",
+      "city": "Dallas, TX",
+      "dma": "Dallas, TX",
+      "timezone": "America/Chicago",
+      "zip": "75201"
+    },
+    {
+      "name": "Cinemark Grand Prairie",
+      "slug": "cinemark-grand-prairie-aacbv",
+      "chain": "CNMK",
+      "city": "Dallas, TX",
+      "dma": "Dallas, TX",
+      "timezone": "America/Chicago",
+      "zip": "75201"
+    },
+    {
+      "name": "Cinemark Lancaster Movies 14",
+      "slug": "cinemark-lancaster-movies-14-aacbs",
+      "chain": "CNMK",
+      "city": "Dallas, TX",
+      "dma": "Dallas, TX",
+      "timezone": "America/Chicago",
+      "zip": "75201"
+    },
+    {
+      "name": "Regal Ua Galaxy Theatre And Screenx Dallas",
+      "slug": "regal-ua-galaxy-theatre-and-screenx-dallas-aacaw",
+      "chain": "REGL",
+      "city": "Dallas, TX",
+      "dma": "Dallas, TX",
+      "timezone": "America/Chicago",
+      "zip": "75201"
+    },
+    {
+      "name": "Cinemark Alliance Town Center And Xd",
+      "slug": "cinemark-alliance-town-center-and-xd-aawqh",
+      "chain": "CNMK",
+      "city": "Fort Worth, TX",
+      "dma": "Fort Worth, TX",
+      "timezone": "America/Chicago",
+      "zip": "76102"
+    },
+    {
+      "name": "Cinemark North East Mall 18 And Xd",
+      "slug": "cinemark-north-east-mall-18-and-xd-aatcg",
+      "chain": "CNMK",
+      "city": "Fort Worth, TX",
+      "dma": "Fort Worth, TX",
+      "timezone": "America/Chicago",
+      "zip": "76102"
+    },
+    {
+      "name": "Cinemark Rave Ridgmar 13 And Xd",
+      "slug": "cinemark-rave-ridgmar-13-and-xd-aarfi",
+      "chain": "CNMK",
+      "city": "Fort Worth, TX",
+      "dma": "Fort Worth, TX",
+      "timezone": "America/Chicago",
+      "zip": "76102"
+    },
+    {
+      "name": "Regal Fossil Creek",
+      "slug": "regal-fossil-creek-aactx",
+      "chain": "REGL",
+      "city": "Fort Worth, TX",
+      "dma": "Fort Worth, TX",
+      "timezone": "America/Chicago",
+      "zip": "76102"
+    },
+    {
+      "name": "Cinemark Mccreless Market",
+      "slug": "cinemark-mccreless-market-aauwg",
+      "chain": "CNMK",
+      "city": "San Antonio, TX",
+      "dma": "San Antonio, TX",
+      "timezone": "America/Chicago",
+      "zip": "78205"
+    },
+    {
+      "name": "Cinemark Movies 16",
+      "slug": "cinemark-movies-16-aagno",
+      "chain": "CNMK",
+      "city": "San Antonio, TX",
+      "dma": "San Antonio, TX",
+      "timezone": "America/Chicago",
+      "zip": "78205"
+    },
+    {
+      "name": "Regal Alamo Quarry",
+      "slug": "regal-alamo-quarry-aaffh",
+      "chain": "REGL",
+      "city": "San Antonio, TX",
+      "dma": "San Antonio, TX",
+      "timezone": "America/Chicago",
+      "zip": "78205"
+    },
+    {
+      "name": "Regal Cielo Vista And Rpx",
+      "slug": "regal-cielo-vista-and-rpx-aaotb",
+      "chain": "REGL",
+      "city": "San Antonio, TX",
+      "dma": "San Antonio, TX",
+      "timezone": "America/Chicago",
+      "zip": "78205"
+    },
+    {
+      "name": "Cinemark Hill Country Galleria",
+      "slug": "cinemark-hill-country-galleria-aaunj",
+      "chain": "CNMK",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Cinemark Pflugerville 20 And Xd",
+      "slug": "cinemark-pflugerville-20-and-xd-aaeqk",
+      "chain": "CNMK",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Cinemark Southpark Meadows",
+      "slug": "cinemark-southpark-meadows-aauiy",
+      "chain": "CNMK",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Regal Gateway 4Dx And Imax",
+      "slug": "regal-gateway-4dx-and-imax-aaebg",
+      "chain": "REGL",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Regal Metropolitan",
+      "slug": "regal-metropolitan-aalhe",
+      "chain": "REGL",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Regal Westgate",
+      "slug": "regal-westgate-aanot",
+      "chain": "REGL",
+      "city": "Austin, TX",
+      "dma": "Austin, TX",
+      "timezone": "America/Chicago",
+      "zip": "78701"
+    },
+    {
+      "name": "Cinemark Merriam And Xd",
+      "slug": "cinemark-merriam-and-xd-aalav",
+      "chain": "CNMK",
+      "city": "Kansas City, MO",
+      "dma": "Kansas City, MO",
+      "timezone": "America/Chicago",
+      "zip": "64106"
+    },
+    {
+      "name": "Regal Grand Esplanade",
+      "slug": "regal-grand-esplanade-aaxdq",
+      "chain": "REGL",
+      "city": "New Orleans, LA",
+      "dma": "New Orleans, LA",
+      "timezone": "America/Chicago",
+      "zip": "70112"
+    },
+    {
+      "name": "Cinemark Perkins Rowe And Xd",
+      "slug": "cinemark-perkins-rowe-and-xd-aauir",
+      "chain": "CNMK",
+      "city": "Baton Rouge, LA",
+      "dma": "Baton Rouge, LA",
+      "timezone": "America/Chicago",
+      "zip": "70801"
+    },
+    {
+      "name": "Regal Green Hills",
+      "slug": "regal-green-hills-aaiwp",
+      "chain": "REGL",
+      "city": "Nashville, TN",
+      "dma": "Nashville, TN",
+      "timezone": "America/Chicago",
+      "zip": "37203"
+    },
+    {
+      "name": "Regal Hollywood Nashville",
+      "slug": "regal-hollywood-nashville-aaexd",
+      "chain": "REGL",
+      "city": "Nashville, TN",
+      "dma": "Nashville, TN",
+      "timezone": "America/Chicago",
+      "zip": "37203"
+    },
+    {
+      "name": "Regal Opry Mills",
+      "slug": "regal-opry-mills-aaopj",
+      "chain": "REGL",
+      "city": "Nashville, TN",
+      "dma": "Nashville, TN",
+      "timezone": "America/Chicago",
+      "zip": "37203"
+    },
+    {
+      "name": "Cinemark Tinseltown Oklahoma City And Xd",
+      "slug": "cinemark-tinseltown-oklahoma-city-and-xd-aaitg",
+      "chain": "CNMK",
+      "city": "Oklahoma City, OK",
+      "dma": "Oklahoma City, OK",
+      "timezone": "America/Chicago",
+      "zip": "73102"
+    },
+    {
+      "name": "Regal Midwest City",
+      "slug": "regal-midwest-city-aayqb",
+      "chain": "REGL",
+      "city": "Oklahoma City, OK",
+      "dma": "Oklahoma City, OK",
+      "timezone": "America/Chicago",
+      "zip": "73102"
+    },
+    {
+      "name": "Regal Warren Moore 4Dx And Imax",
+      "slug": "regal-warren-moore-4dx-and-imax-aauuo",
+      "chain": "REGL",
+      "city": "Oklahoma City, OK",
+      "dma": "Oklahoma City, OK",
+      "timezone": "America/Chicago",
+      "zip": "73102"
+    },
+    {
+      "name": "Cinemark Broken Arrow",
+      "slug": "cinemark-broken-arrow-aawad",
+      "chain": "CNMK",
+      "city": "Tulsa, OK",
+      "dma": "Tulsa, OK",
+      "timezone": "America/Chicago",
+      "zip": "74103"
+    },
+    {
+      "name": "Cinemark Tulsa And Imax",
+      "slug": "cinemark-tulsa-and-imax-aaopp",
+      "chain": "CNMK",
+      "city": "Tulsa, OK",
+      "dma": "Tulsa, OK",
+      "timezone": "America/Chicago",
+      "zip": "74103"
+    },
+    {
+      "name": "Cinemark Altoona And Xd",
+      "slug": "cinemark-altoona-and-xd-aaxua",
+      "chain": "CNMK",
+      "city": "Des Moines, IA",
+      "dma": "Des Moines, IA",
+      "timezone": "America/Chicago",
+      "zip": "50309"
+    },
+    {
+      "name": "Cinemark Century Jordan Creek 20 And Xd",
+      "slug": "cinemark-century-jordan-creek-20-and-xd-aasus",
+      "chain": "CNMK",
+      "city": "Des Moines, IA",
+      "dma": "Des Moines, IA",
+      "timezone": "America/Chicago",
+      "zip": "50309"
+    },
+    {
+      "name": "Regal Warren East",
+      "slug": "regal-warren-east-aaqlh",
+      "chain": "REGL",
+      "city": "Wichita, KS",
+      "dma": "Wichita, KS",
+      "timezone": "America/Chicago",
+      "zip": "67202"
+    },
+    {
+      "name": "Regal Warren West Screenx And Imax",
+      "slug": "regal-warren-west-screenx-and-imax-aaknp",
+      "chain": "REGL",
+      "city": "Wichita, KS",
+      "dma": "Wichita, KS",
+      "timezone": "America/Chicago",
+      "zip": "67202"
+    },
+    {
+      "name": "Cinemark Colonel Glenn And Xd",
+      "slug": "cinemark-colonel-glenn-and-xd-aaqsf",
+      "chain": "CNMK",
+      "city": "Little Rock, AR",
+      "dma": "Little Rock, AR",
+      "timezone": "America/Chicago",
+      "zip": "72201"
+    },
+    {
+      "name": "Regal Mccain Mall",
+      "slug": "regal-mccain-mall-aawsv",
+      "chain": "REGL",
+      "city": "Little Rock, AR",
+      "dma": "Little Rock, AR",
+      "timezone": "America/Chicago",
+      "zip": "72201"
+    },
+    {
+      "name": "Regal Trussville",
+      "slug": "regal-trussville-aaopg",
+      "chain": "REGL",
+      "city": "Birmingham, AL",
+      "dma": "Birmingham, AL",
+      "timezone": "America/Chicago",
+      "zip": "35203"
+    },
+    {
+      "name": "Cinemark Pearl 17 And Xd",
+      "slug": "cinemark-pearl-17-and-xd-aaitj",
+      "chain": "CNMK",
+      "city": "Jackson, MS",
+      "dma": "Jackson, MS",
+      "timezone": "America/Chicago",
+      "zip": "39201"
+    },
+    {
+      "name": "Cinemark Century East At Dawley Farm",
+      "slug": "cinemark-century-east-at-dawley-farm-aavzz",
+      "chain": "CNMK",
+      "city": "Sioux Falls, SD",
+      "dma": "Sioux Falls, SD",
+      "timezone": "America/Chicago",
+      "zip": "57104"
+    },
+    {
+      "name": "Cinemark Century Sioux Falls 14 And Xd",
+      "slug": "cinemark-century-sioux-falls-14-and-xd-aanyz",
+      "chain": "CNMK",
+      "city": "Sioux Falls, SD",
+      "dma": "Sioux Falls, SD",
+      "timezone": "America/Chicago",
+      "zip": "57104"
+    },
+    {
+      "name": "Regal Southwind",
+      "slug": "regal-southwind-aagld",
+      "chain": "REGL",
+      "city": "Topeka, KS",
+      "dma": "Topeka, KS",
+      "timezone": "America/Chicago",
+      "zip": "66603"
+    },
+    {
+      "name": "Cinemark Century Aurora And Xd",
+      "slug": "cinemark-century-aurora-and-xd-aajni",
+      "chain": "CNMK",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Cinemark Century Bel Mar 16 And Xd",
+      "slug": "cinemark-century-bel-mar-16-and-xd-aarmq",
+      "chain": "CNMK",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Regal River Point",
+      "slug": "regal-river-point-aavkz",
+      "chain": "REGL",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Regal Southglenn",
+      "slug": "regal-southglenn-aavry",
+      "chain": "REGL",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Regal Ua Colorado Center",
+      "slug": "regal-ua-colorado-center-aafxw",
+      "chain": "REGL",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Regal Ua Colorado Mills",
+      "slug": "regal-ua-colorado-mills-aaqqk",
+      "chain": "REGL",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Regal Ua Denver Pavilions",
+      "slug": "regal-ua-denver-pavilions-aajjg",
+      "chain": "REGL",
+      "city": "Denver, CO",
+      "dma": "Denver, CO",
+      "timezone": "America/Denver",
+      "zip": "80202"
+    },
+    {
+      "name": "Cinemark Carefree Circle And Imax",
+      "slug": "cinemark-carefree-circle-and-imax-aapdk",
+      "chain": "CNMK",
+      "city": "Colorado Springs, CO",
+      "dma": "Colorado Springs, CO",
+      "timezone": "America/Denver",
+      "zip": "80903"
+    },
+    {
+      "name": "Cinemark Tinseltown Colorado Springs And Xd",
+      "slug": "cinemark-tinseltown-colorado-springs-and-xd-aaiqk",
+      "chain": "CNMK",
+      "city": "Colorado Springs, CO",
+      "dma": "Colorado Springs, CO",
+      "timezone": "America/Denver",
+      "zip": "80903"
+    },
+    {
+      "name": "Regal Interquest",
+      "slug": "regal-interquest-aauvw",
+      "chain": "REGL",
+      "city": "Colorado Springs, CO",
+      "dma": "Colorado Springs, CO",
+      "timezone": "America/Denver",
+      "zip": "80903"
+    },
+    {
+      "name": "Cinemark Century Salt Lake 16 And Xd",
+      "slug": "cinemark-century-salt-lake-16-and-xd-aaiwv",
+      "chain": "CNMK",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Cinemark Century Sandy Union Heights 16",
+      "slug": "cinemark-century-sandy-union-heights-16-aattg",
+      "chain": "CNMK",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Cinemark Jordan Landing 24 And Xd",
+      "slug": "cinemark-jordan-landing-24-and-xd-aaoej",
+      "chain": "CNMK",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Cinemark Sugarhouse Movies 10",
+      "slug": "cinemark-sugarhouse-movies-10-aagnl",
+      "chain": "CNMK",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Cinemark West Valley And Xd",
+      "slug": "cinemark-west-valley-and-xd-aaxfm",
+      "chain": "CNMK",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Regal Crossroads Taylorsville",
+      "slug": "regal-crossroads-taylorsville-aaybn",
+      "chain": "REGL",
+      "city": "Salt Lake City, UT",
+      "dma": "Salt Lake City, UT",
+      "timezone": "America/Denver",
+      "zip": "84101"
+    },
+    {
+      "name": "Cinemark Century Rio Plex 24 And Xd",
+      "slug": "cinemark-century-rio-plex-24-and-xd-aacwa",
+      "chain": "CNMK",
+      "city": "Albuquerque, NM",
+      "dma": "Albuquerque, NM",
+      "timezone": "America/Denver",
+      "zip": "87102"
+    },
+    {
+      "name": "Regal Ua Cottonwood",
+      "slug": "regal-ua-cottonwood-aacmq",
+      "chain": "REGL",
+      "city": "Albuquerque, NM",
+      "dma": "Albuquerque, NM",
+      "timezone": "America/Denver",
+      "zip": "87102"
+    },
+    {
+      "name": "Regal Winrock",
+      "slug": "regal-winrock-aaxby",
+      "chain": "REGL",
+      "city": "Albuquerque, NM",
+      "dma": "Albuquerque, NM",
+      "timezone": "America/Denver",
+      "zip": "87102"
+    },
+    {
+      "name": "Cinemark Majestic Cinemas",
+      "slug": "cinemark-majestic-cinemas-aatnu",
+      "chain": "CNMK",
+      "city": "Boise, ID",
+      "dma": "Boise, ID",
+      "timezone": "America/Boise",
+      "zip": "83702"
+    },
+    {
+      "name": "Regal Edwards Boise",
+      "slug": "regal-edwards-boise-aaeux",
+      "chain": "REGL",
+      "city": "Boise, ID",
+      "dma": "Boise, ID",
+      "timezone": "America/Boise",
+      "zip": "83702"
+    },
+    {
+      "name": "Cinemark Bistro Fort Collins And Xd",
+      "slug": "cinemark-bistro-fort-collins-and-xd-aaxry",
+      "chain": "CNMK",
+      "city": "Cheyenne, WY",
+      "dma": "Cheyenne, WY",
+      "timezone": "America/Denver",
+      "zip": "82001"
+    },
+    {
+      "name": "Cinemark Fort Collins",
+      "slug": "cinemark-fort-collins-aaosz",
+      "chain": "CNMK",
+      "city": "Cheyenne, WY",
+      "dma": "Cheyenne, WY",
+      "timezone": "America/Denver",
+      "zip": "82001"
+    },
+    {
+      "name": "Regal Fox Laramie",
+      "slug": "regal-fox-laramie-aawsk",
+      "chain": "REGL",
+      "city": "Cheyenne, WY",
+      "dma": "Cheyenne, WY",
+      "timezone": "America/Denver",
+      "zip": "82001"
+    },
+    {
+      "name": "Cinemark Cielo Vista Mall 14 And Xd",
+      "slug": "cinemark-cielo-vista-mall-14-and-xd-aatxc",
+      "chain": "CNMK",
+      "city": "El Paso, TX",
+      "dma": "El Paso, TX",
+      "timezone": "America/Denver",
+      "zip": "79901"
+    },
+    {
+      "name": "Cinemark East Montana And Xd",
+      "slug": "cinemark-east-montana-and-xd-aaxbq",
+      "chain": "CNMK",
+      "city": "El Paso, TX",
+      "dma": "El Paso, TX",
+      "timezone": "America/Denver",
+      "zip": "79901"
+    },
+    {
+      "name": "Cinemark Tinseltown Las Palmas Xd And Screenx",
+      "slug": "cinemark-tinseltown-las-palmas-xd-and-screenx-aaipz",
+      "chain": "CNMK",
+      "city": "El Paso, TX",
+      "dma": "El Paso, TX",
+      "timezone": "America/Denver",
+      "zip": "79901"
+    },
+    {
+      "name": "Cinemark West El Paso Xd And Screenx",
+      "slug": "cinemark-west-el-paso-xd-and-screenx-aaqyj",
+      "chain": "CNMK",
+      "city": "El Paso, TX",
+      "dma": "El Paso, TX",
+      "timezone": "America/Denver",
+      "zip": "79901"
+    },
+    {
+      "name": "Cinemark Mesa 16",
+      "slug": "cinemark-mesa-16-aatzn",
+      "chain": "CNMK",
+      "city": "Phoenix, AZ",
+      "dma": "Phoenix, AZ",
+      "timezone": "America/Phoenix",
+      "zip": "85004"
+    },
+    {
+      "name": "Cinemark Century El Con 20 And Xd",
+      "slug": "cinemark-century-el-con-20-and-xd-aangb",
+      "chain": "CNMK",
+      "city": "Tucson, AZ",
+      "dma": "Tucson, AZ",
+      "timezone": "America/Phoenix",
+      "zip": "85701"
+    },
+    {
+      "name": "Cinemark Century Park Place 20 And Xd",
+      "slug": "cinemark-century-park-place-20-and-xd-aapqi",
+      "chain": "CNMK",
+      "city": "Tucson, AZ",
+      "dma": "Tucson, AZ",
+      "timezone": "America/Phoenix",
+      "zip": "85701"
+    },
+    {
+      "name": "Cinemark Century Tucson Marketplace And Xd",
+      "slug": "cinemark-century-tucson-marketplace-and-xd-aaxzu",
+      "chain": "CNMK",
+      "city": "Tucson, AZ",
+      "dma": "Tucson, AZ",
+      "timezone": "America/Phoenix",
+      "zip": "85701"
+    },
+    {
+      "name": "Cinemark Baldwin Hills Crenshaw And Xd",
+      "slug": "cinemark-baldwin-hills-crenshaw-and-xd-aawju",
+      "chain": "CNMK",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Cinemark Century North Hollywood",
+      "slug": "cinemark-century-north-hollywood-aacel",
+      "chain": "CNMK",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Cinemark Downey And Xd",
+      "slug": "cinemark-downey-and-xd-aaxsy",
+      "chain": "CNMK",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Cinemark Howard Hughes Los Angeles And Xd",
+      "slug": "cinemark-howard-hughes-los-angeles-and-xd-aapiw",
+      "chain": "CNMK",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Cinemark Playa Vista And Xd",
+      "slug": "cinemark-playa-vista-and-xd-aaxlr",
+      "chain": "CNMK",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal Edwards Alhambra Renaissance",
+      "slug": "regal-edwards-alhambra-renaissance-aaqoz",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal Edwards South Gate",
+      "slug": "regal-edwards-south-gate-aapdq",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal La Live",
+      "slug": "regal-la-live-aavpa",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal North Hollywood",
+      "slug": "regal-north-hollywood-aayui",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal Paseo",
+      "slug": "regal-paseo-aaqba",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal Sherman Oaks Galleria",
+      "slug": "regal-sherman-oaks-galleria-aauri",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Regal Ua La Canada",
+      "slug": "regal-ua-la-canada-aabso",
+      "chain": "REGL",
+      "city": "Los Angeles, CA",
+      "dma": "Los Angeles, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90012"
+    },
+    {
+      "name": "Cinemark At The Pike Outlets And Xd",
+      "slug": "cinemark-at-the-pike-outlets-and-xd-aardy",
+      "chain": "CNMK",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Cinemark Carson And Xd",
+      "slug": "cinemark-carson-and-xd-aaxoc",
+      "chain": "CNMK",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Cinemark Century Huntington Beach And Xd",
+      "slug": "cinemark-century-huntington-beach-and-xd-aattf",
+      "chain": "CNMK",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Regal Edwards Cerritos",
+      "slug": "regal-edwards-cerritos-aabiq",
+      "chain": "REGL",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Regal Edwards Long Beach",
+      "slug": "regal-edwards-long-beach-aamzh",
+      "chain": "REGL",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Regal Garden Grove",
+      "slug": "regal-garden-grove-aankw",
+      "chain": "REGL",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Regal Promenade",
+      "slug": "regal-promenade-aaopm",
+      "chain": "REGL",
+      "city": "Long Beach, CA",
+      "dma": "Long Beach, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "90802"
+    },
+    {
+      "name": "Cinemark Century Orange And Xd",
+      "slug": "cinemark-century-orange-and-xd-aaegj",
+      "chain": "CNMK",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal Edwards Brea East",
+      "slug": "regal-edwards-brea-east-aameo",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal Edwards Market Place",
+      "slug": "regal-edwards-market-place-aajnp",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal Edwards Metro Pointe",
+      "slug": "regal-edwards-metro-pointe-aaedk",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal La Habra",
+      "slug": "regal-la-habra-aamgn",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal University Town Center",
+      "slug": "regal-university-town-center-aabhi",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Regal Yorba Linda",
+      "slug": "regal-yorba-linda-aayqz",
+      "chain": "REGL",
+      "city": "Anaheim, CA",
+      "dma": "Anaheim, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92805"
+    },
+    {
+      "name": "Cinemark Bistro Renaissance Marketplace And Xd",
+      "slug": "cinemark-bistro-renaissance-marketplace-and-xd-aaylh",
+      "chain": "CNMK",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Regal Edwards Corona Crossings",
+      "slug": "regal-edwards-corona-crossings-aatbd",
+      "chain": "REGL",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Regal Edwards Eastvale Gateway",
+      "slug": "regal-edwards-eastvale-gateway-aauqt",
+      "chain": "REGL",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Regal Edwards Ontario Palace",
+      "slug": "regal-edwards-ontario-palace-aaedm",
+      "chain": "REGL",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Regal Riverside Plaza",
+      "slug": "regal-riverside-plaza-aatbe",
+      "chain": "REGL",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Regal San Bernardino And Rpx",
+      "slug": "regal-san-bernardino-and-rpx-aawqj",
+      "chain": "REGL",
+      "city": "Riverside, CA",
+      "dma": "Riverside, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92501"
+    },
+    {
+      "name": "Cinemark Century At Hayward",
+      "slug": "cinemark-century-at-hayward-aavac",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century At Pacific Commons And Xd",
+      "slug": "cinemark-century-at-pacific-commons-and-xd-aawqb",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century At Tanforan And Xd",
+      "slug": "cinemark-century-at-tanforan-and-xd-aautx",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Bayfair Mall 16",
+      "slug": "cinemark-century-bayfair-mall-16-aapic",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Daly City 20 Xd And Imax",
+      "slug": "cinemark-century-daly-city-20-xd-and-imax-aaqlt",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Downtown Pleasant Hill 16 And Xd",
+      "slug": "cinemark-century-downtown-pleasant-hill-16-and-xd-aaqam",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Great Mall 20 Xd And Screenx",
+      "slug": "cinemark-century-great-mall-20-xd-and-screenx-aapcg",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Hilltop 16",
+      "slug": "cinemark-century-hilltop-16-aaqal",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Mountain View 16",
+      "slug": "cinemark-century-mountain-view-16-aacfx",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Napa Valley And Xd",
+      "slug": "cinemark-century-napa-valley-and-xd-aawtt",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Redwood Downtown 20 And Xd",
+      "slug": "cinemark-century-redwood-downtown-20-and-xd-aaubf",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Rowland Plaza",
+      "slug": "cinemark-century-rowland-plaza-aaqck",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century San Mateo 12",
+      "slug": "cinemark-century-san-mateo-12-aaqsg",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Southland Mall",
+      "slug": "cinemark-century-southland-mall-aaynh",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Union Landing 25 And Xd",
+      "slug": "cinemark-century-union-landing-25-and-xd-aanay",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Vallejo 14",
+      "slug": "cinemark-century-vallejo-14-aapis",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Cinemark Century Walnut Creek 14 And Xd",
+      "slug": "cinemark-century-walnut-creek-14-and-xd-aarar",
+      "chain": "CNMK",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Regal Hacienda Crossings Screenx Imax And Rpx",
+      "slug": "regal-hacienda-crossings-screenx-imax-and-rpx-aaopk",
+      "chain": "REGL",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Regal Jack London",
+      "slug": "regal-jack-london-aafcc",
+      "chain": "REGL",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Regal Stonestown Galleria Screenx 4Dx And Rpx",
+      "slug": "regal-stonestown-galleria-screenx-4dx-and-rpx-aayum",
+      "chain": "REGL",
+      "city": "San Francisco, CA",
+      "dma": "San Francisco, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94103"
+    },
+    {
+      "name": "Regal Edwards Fairfield And Imax",
+      "slug": "regal-edwards-fairfield-and-imax-aandk",
+      "chain": "REGL",
+      "city": "Oakland, CA",
+      "dma": "Oakland, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "94607"
+    },
+    {
+      "name": "Cinemark Century Oakridge 20 Xd And Screenx",
+      "slug": "cinemark-century-oakridge-20-xd-and-screenx-aarbx",
+      "chain": "CNMK",
+      "city": "San Jose, CA",
+      "dma": "San Jose, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95113"
+    },
+    {
+      "name": "Cinemark Cinearts Santana Row",
+      "slug": "cinemark-cinearts-santana-row-aasur",
+      "chain": "CNMK",
+      "city": "San Jose, CA",
+      "dma": "San Jose, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95113"
+    },
+    {
+      "name": "Cinemark Century Arden 14 And Xd",
+      "slug": "cinemark-century-arden-14-and-xd-aaxzv",
+      "chain": "CNMK",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Cinemark Century Doco And Xd",
+      "slug": "cinemark-century-doco-and-xd-aayho",
+      "chain": "CNMK",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Cinemark Century Greenback Lane 16 And Xd",
+      "slug": "cinemark-century-greenback-lane-16-and-xd-aaqsi",
+      "chain": "CNMK",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Cinemark Century Laguna 16 And Xd",
+      "slug": "cinemark-century-laguna-16-and-xd-aacfa",
+      "chain": "CNMK",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Regal Davis Holiday",
+      "slug": "regal-davis-holiday-aafzc",
+      "chain": "REGL",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Regal Delta Shores And Imax",
+      "slug": "regal-delta-shores-and-imax-aayii",
+      "chain": "REGL",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Regal Natomas Marketplace Screenx 4Dx And Rpx",
+      "slug": "regal-natomas-marketplace-screenx-4dx-and-rpx-aanky",
+      "chain": "REGL",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Regal Ua Laguna Village",
+      "slug": "regal-ua-laguna-village-aaake",
+      "chain": "REGL",
+      "city": "Sacramento, CA",
+      "dma": "Sacramento, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "95814"
+    },
+    {
+      "name": "Regal Edwards Fresno Screenx 4Dx And Imax",
+      "slug": "regal-edwards-fresno-screenx-4dx-and-imax-aafyg",
+      "chain": "REGL",
+      "city": "Fresno, CA",
+      "dma": "Fresno, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "93721"
+    },
+    {
+      "name": "Regal Manchester Fresno",
+      "slug": "regal-manchester-fresno-aaovy",
+      "chain": "REGL",
+      "city": "Fresno, CA",
+      "dma": "Fresno, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "93721"
+    },
+    {
+      "name": "Regal Marketplace El Paseo And Rpx",
+      "slug": "regal-marketplace-el-paseo-and-rpx-aayuk",
+      "chain": "REGL",
+      "city": "Fresno, CA",
+      "dma": "Fresno, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "93721"
+    },
+    {
+      "name": "Regal Edwards Bakersfield",
+      "slug": "regal-edwards-bakersfield-aaede",
+      "chain": "REGL",
+      "city": "Bakersfield, CA",
+      "dma": "Bakersfield, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "93301"
+    },
+    {
+      "name": "Regal Edwards Mira Mesa",
+      "slug": "regal-edwards-mira-mesa-aaove",
+      "chain": "REGL",
+      "city": "San Diego, CA",
+      "dma": "San Diego, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92101"
+    },
+    {
+      "name": "Regal Edwards Rancho San Diego",
+      "slug": "regal-edwards-rancho-san-diego-aalaw",
+      "chain": "REGL",
+      "city": "San Diego, CA",
+      "dma": "San Diego, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92101"
+    },
+    {
+      "name": "Regal Parkway Plaza",
+      "slug": "regal-parkway-plaza-aajnl",
+      "chain": "REGL",
+      "city": "San Diego, CA",
+      "dma": "San Diego, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92101"
+    },
+    {
+      "name": "Regal Rancho Del Rey",
+      "slug": "regal-rancho-del-rey-aajal",
+      "chain": "REGL",
+      "city": "San Diego, CA",
+      "dma": "San Diego, CA",
+      "timezone": "America/Los_Angeles",
+      "zip": "92101"
+    },
+    {
+      "name": "Cinemark Lincoln Square",
+      "slug": "cinemark-lincoln-square-aatvl",
+      "chain": "CNMK",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Cinemark Reserve Lincoln Square Dine In 21",
+      "slug": "cinemark-reserve-lincoln-square-dine-in-21-aayfj",
+      "chain": "CNMK",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Cinemark Totem Lake Kirkland And Xd",
+      "slug": "cinemark-totem-lake-kirkland-and-xd-aayus",
+      "chain": "CNMK",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal Bella Bottega",
+      "slug": "regal-bella-bottega-aabsr",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal Cinebarre Mountlake",
+      "slug": "regal-cinebarre-mountlake-aavnt",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal Crossroads Bellevue",
+      "slug": "regal-crossroads-bellevue-aaatx",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal Meridian",
+      "slug": "regal-meridian-aabfy",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal The Landing",
+      "slug": "regal-the-landing-aauyz",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Regal Thornton Place",
+      "slug": "regal-thornton-place-aaviy",
+      "chain": "REGL",
+      "city": "Seattle, WA",
+      "dma": "Seattle, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98101"
+    },
+    {
+      "name": "Cinemark Century Federal Way And Xd",
+      "slug": "cinemark-century-federal-way-and-xd-aaujz",
+      "chain": "CNMK",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Cinemark Century Point Ruston And Xd",
+      "slug": "cinemark-century-point-ruston-and-xd-aaxsd",
+      "chain": "CNMK",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal Auburn Washington",
+      "slug": "regal-auburn-washington-aacpz",
+      "chain": "REGL",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal Lakewood And Rpx",
+      "slug": "regal-lakewood-and-rpx-aajmo",
+      "chain": "REGL",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal Longston Place",
+      "slug": "regal-longston-place-aamur",
+      "chain": "REGL",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal South Hill Cinema",
+      "slug": "regal-south-hill-cinema-aacdg",
+      "chain": "REGL",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal Tall Firs",
+      "slug": "regal-tall-firs-aaers",
+      "chain": "REGL",
+      "city": "Tacoma, WA",
+      "dma": "Tacoma, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "98402"
+    },
+    {
+      "name": "Regal Northtown Mall",
+      "slug": "regal-northtown-mall-aaozv",
+      "chain": "REGL",
+      "city": "Spokane, WA",
+      "dma": "Spokane, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "99201"
+    },
+    {
+      "name": "Regal Spokane Valley",
+      "slug": "regal-spokane-valley-aadrg",
+      "chain": "REGL",
+      "city": "Spokane, WA",
+      "dma": "Spokane, WA",
+      "timezone": "America/Los_Angeles",
+      "zip": "99201"
+    },
+    {
+      "name": "Cinemark Cedar Hills 16",
+      "slug": "cinemark-cedar-hills-16-aatbx",
+      "chain": "CNMK",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Cinemark Century Eastport Plaza 16",
+      "slug": "cinemark-century-eastport-plaza-16-aajmz",
+      "chain": "CNMK",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Cinemark Clackamas Town Center And Xd",
+      "slug": "cinemark-clackamas-town-center-and-xd-aaunh",
+      "chain": "CNMK",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Bridgeport Village Screenx And Imax",
+      "slug": "regal-bridgeport-village-screenx-and-imax-aatjc",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Cascade Imax And Rpx",
+      "slug": "regal-cascade-imax-and-rpx-aajmn",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Cinema 99",
+      "slug": "regal-cinema-99-aajml",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal City Center",
+      "slug": "regal-city-center-aajmm",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Evergreen Parkway And Rpx",
+      "slug": "regal-evergreen-parkway-and-rpx-aaaqm",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Fox Tower",
+      "slug": "regal-fox-tower-aaozw",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Hilltop Cinema",
+      "slug": "regal-hilltop-cinema-aachl",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Lloyd Center And Imax",
+      "slug": "regal-lloyd-center-and-imax-aaapp",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Movies On Tv",
+      "slug": "regal-movies-on-tv-aaesc",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Pioneer Place",
+      "slug": "regal-pioneer-place-aaqzi",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Regal Stark Street",
+      "slug": "regal-stark-street-aafwf",
+      "chain": "REGL",
+      "city": "Portland, OR",
+      "dma": "Portland, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97201"
+    },
+    {
+      "name": "Cinemark Eugene Springfield 17",
+      "slug": "cinemark-eugene-springfield-17-aamzt",
+      "chain": "CNMK",
+      "city": "Eugene, OR",
+      "dma": "Eugene, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97401"
+    },
+    {
+      "name": "Regal Albany Cinemas",
+      "slug": "regal-albany-cinemas-aaaxf",
+      "chain": "REGL",
+      "city": "Eugene, OR",
+      "dma": "Eugene, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97401"
+    },
+    {
+      "name": "Regal Valley River Center And Imax",
+      "slug": "regal-valley-river-center-and-imax-aauhx",
+      "chain": "REGL",
+      "city": "Eugene, OR",
+      "dma": "Eugene, OR",
+      "timezone": "America/Los_Angeles",
+      "zip": "97401"
+    },
+    {
+      "name": "Cinemark Century Orleans 18 And Xd",
+      "slug": "cinemark-century-orleans-18-and-xd-aadzy",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Century Sams Town 18",
+      "slug": "cinemark-century-sams-town-18-aapby",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Century Santa Fe Station 16 And Xd",
+      "slug": "cinemark-century-santa-fe-station-16-and-xd-aatkm",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Century South Point 16 And Xd",
+      "slug": "cinemark-century-south-point-16-and-xd-aatth",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Century Suncoast 16 And Xd",
+      "slug": "cinemark-century-suncoast-16-and-xd-aaozl",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Cinedome Henderson 12",
+      "slug": "cinemark-cinedome-henderson-12-aaceh",
+      "chain": "CNMK",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Aliante",
+      "slug": "regal-aliante-aauzm",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Boulder Station",
+      "slug": "regal-boulder-station-aabsv",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Cinebarre Palace Station",
+      "slug": "regal-cinebarre-palace-station-aaymr",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Green Valley Ranch",
+      "slug": "regal-green-valley-ranch-aaqel",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Red Rock",
+      "slug": "regal-red-rock-aatya",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Summerlin Luxury",
+      "slug": "regal-summerlin-luxury-aaxhh",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Regal Sunset Station",
+      "slug": "regal-sunset-station-aabun",
+      "chain": "REGL",
+      "city": "Las Vegas, NV",
+      "dma": "Las Vegas, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89101"
+    },
+    {
+      "name": "Cinemark Century Park Lane 16",
+      "slug": "cinemark-century-park-lane-16-aaiqg",
+      "chain": "CNMK",
+      "city": "Reno, NV",
+      "dma": "Reno, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89501"
+    },
+    {
+      "name": "Cinemark Century Summit Sierra",
+      "slug": "cinemark-century-summit-sierra-aauix",
+      "chain": "CNMK",
+      "city": "Reno, NV",
+      "dma": "Reno, NV",
+      "timezone": "America/Los_Angeles",
+      "zip": "89501"
+    }
+  ]
+}
