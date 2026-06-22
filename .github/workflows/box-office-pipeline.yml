@@ -559,8 +559,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Isolated single file — never sweep up other untracked files.
-          git add box-office-tracker/data/fandango-pre-reservation-snapshots.csv
+          # Isolated single file — never sweep up other untracked files. Guard
+          # the add: a no-op run (no rows, e.g. off opening-weekend window) never
+          # creates the file, and `git add` of a missing pathspec would fail the
+          # step under `set -e`.
+          fandango_csv=box-office-tracker/data/fandango-pre-reservation-snapshots.csv
+          if [ -f "$fandango_csv" ]; then
+            git add "$fandango_csv"
+          fi
           if git diff --staged --quiet; then
             echo "No Fandango snapshot rows to commit."
             exit 0
