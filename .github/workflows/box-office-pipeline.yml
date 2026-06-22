@@ -54,6 +54,14 @@ on:
         description: 'Internal scheduler mode: primary or watchdog. Empty for manual dispatches.'
         required: false
         default: ''
+      fandango_titles:
+        description: 'Fandango ad-hoc test only: comma-separated movie titles to capture (empty = tracked titles).'
+        required: false
+        default: ''
+      fandango_show_dates:
+        description: 'Fandango ad-hoc test only: comma-separated YYYY-MM-DD dates to capture instead of the opening-weekend window. Setting this makes scrape-fandango a throwaway test — it writes to an uploaded artifact and does NOT commit canonical data.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -550,6 +558,12 @@ jobs:
           FANDANGO_CONCURRENCY: '3'
           FANDANGO_PER_THEATRE_CAP: '3'
           FANDANGO_DEADLINE_SEC: '4500'
+          # Ad-hoc test overrides (empty on scheduled/production runs):
+          FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
+          FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
+          # When show_dates is set (test mode) write to a throwaway file that the
+          # log-upload step captures, so a test never touches the canonical data.
+          FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
         run: |
           mkdir -p ../fandango-logs
           python fandango_collect.py 2>&1 | tee "../fandango-logs/fandango-${{ github.run_id }}.log"

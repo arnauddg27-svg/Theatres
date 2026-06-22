@@ -508,17 +508,20 @@ def _worker(slice_theatres, shared):
 
 def collect(weekend_of=None, titles=None, zips=None, theatres=None,
             per_theatre_cap=None, max_theatres=None, headless=True, run_id=None,
-            polite=(1.0, 2.5), concurrency=None, deadline_sec=None):
+            polite=(1.0, 2.5), concurrency=None, deadline_sec=None, show_dates=None):
     """Capture tracked-title Regal/Cinemark seat maps across the national pool
     using N parallel browsers, bounded by a deadline, appending to the isolated
-    Fandango file. Returns a totals dict."""
+    Fandango file. Returns a totals dict.
+
+    show_dates overrides the opening-weekend window (used for ad-hoc test runs
+    that capture an arbitrary date, e.g. validating GitHub seat capture today)."""
     weekend_of = weekend_of or opening_weekend_friday()
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {}
     target_slugs = {slugify_title(t): t for t in titles}
-    window_dates = set(opening_weekend_show_dates(weekend_of))
+    window_dates = set(show_dates) if show_dates else set(opening_weekend_show_dates(weekend_of))
     theatres = theatres if theatres is not None else load_fandango_theatres(zips)
     if not theatres:
         print("⚠️  No Fandango theatres configured (data/theatres-fandango.json).")
@@ -641,7 +644,10 @@ def main():
     ap = argparse.ArgumentParser(description="Fandango Regal/Cinemark pre-reservation collector")
     ap.add_argument("--selftest", action="store_true", help="offline logic checks, no network")
     ap.add_argument("--weekend", help="weekend_of (YYYY-MM-DD); default = current")
-    ap.add_argument("--titles", nargs="*", help="override tracked titles")
+    ap.add_argument("--titles", nargs="*", help="override tracked titles (or env FANDANGO_TITLES, comma-sep)")
+    ap.add_argument("--show-dates", nargs="*",
+                    help="override the opening-weekend window with these YYYY-MM-DD dates "
+                         "(or env FANDANGO_SHOW_DATES, comma-sep) — for ad-hoc test runs")
     ap.add_argument("--zips", nargs="*", help="restrict to theatres in these zips")
     ap.add_argument("--max-theatres", type=int, default=FANDANGO_MAX_THEATRES,
                     help="cap theatres visited this run (0 = whole pool)")
@@ -656,10 +662,25 @@ def main():
     if args.selftest:
         _selftest()
         return
-    collect(weekend_of=args.weekend, titles=args.titles, zips=args.zips,
+
+    # Env fallbacks let the workflow pass overrides without building a CLI string.
+    def _csv_env(name):
+        raw = (os.environ.get(name) or "").strip()
+        return [p.strip() for p in raw.split(",") if p.strip()] or None
+
+    titles = args.titles or _csv_env("FANDANGO_TITLES")
+    show_dates = args.show_dates or _csv_env("FANDANGO_SHOW_DATES")
+    # FANDANGO_OUTPUT redirects writes to a throwaway path so an ad-hoc test run
+    # never pollutes the canonical data/fandango-pre-reservation-snapshots.csv.
+    out_override = (os.environ.get("FANDANGO_OUTPUT") or "").strip()
+    if out_override:
+        global FANDANGO_CSV
+        FANDANGO_CSV = Path(out_override)
+
+    collect(weekend_of=args.weekend, titles=titles, zips=args.zips,
             per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
             concurrency=args.concurrency, deadline_sec=args.deadline_sec,
-            headless=not args.no_headless)
+            show_dates=show_dates, headless=not args.no_headless)
 
 
 if __name__ == "__main__":
