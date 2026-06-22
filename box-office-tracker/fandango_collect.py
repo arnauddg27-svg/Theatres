@@ -104,6 +104,11 @@ FANDANGO_BACKOFF_AFTER = _env_int("FANDANGO_BACKOFF_AFTER", 4)        # consecut
 FANDANGO_STOP_AFTER = _env_int("FANDANGO_STOP_AFTER", 12)            # consecutive fails → stop the run
 FANDANGO_BACKOFF_STEP_SEC = _env_int("FANDANGO_BACKOFF_STEP_SEC", 6)  # extra delay added per backoff step
 FANDANGO_BACKOFF_MAX_SEC = _env_int("FANDANGO_BACKOFF_MAX_SEC", 30)   # cap on the added delay
+# The throttle is transient (recovers in ~15 min), so on a sustained stall we
+# PAUSE and resume rather than hard-stop — one nightly run can then bank several
+# batches instead of one. Bounded by max-resumes and the run deadline.
+FANDANGO_PAUSE_SEC = _env_int("FANDANGO_PAUSE_SEC", 720)      # wait this long for the limit to recover
+FANDANGO_MAX_RESUMES = _env_int("FANDANGO_MAX_RESUMES", 2)    # pause/resume cycles before giving up
 
 
 # ── Pure logic (offline-testable) ────────────────────────────────────────────
@@ -373,14 +378,32 @@ SHOWTIME_ENTRIES_JS = r"""() => {
 
 def _note_seat_failure(shared):
     """Record a seat-map render failure (throttle/block signal) shared across all
-    workers — they hit one IP-level limit. Returns True if the run should stop."""
+    workers — they hit one IP-level limit. On a sustained stall, open a pause
+    window (resume after the limit recovers) rather than hard-stop; only stop
+    once the resume budget or the deadline is exhausted. Returns True to stop."""
     with shared["lock"]:
         shared["consec_fail"] += 1
         n = shared["consec_fail"]
         if n >= shared["stop_after"]:
+            now = time.monotonic()
+            if now < shared["paused_until"]:
+                # another worker already opened a pause window — just reset
+                shared["consec_fail"] = 0
+                return False
+            if (shared["resume_count"] < shared["max_resumes"]
+                    and now + shared["pause_sec"] < shared["deadline"]):
+                shared["paused_until"] = now + shared["pause_sec"]
+                shared["resume_count"] += 1
+                shared["consec_fail"] = 0
+                shared["backoff_extra"] = 0.0
+                print(f"   ⏸️  {n} consecutive seat-render failures — throttled; pausing "
+                      f"{shared['pause_sec'] / 60:.0f} min then resuming "
+                      f"(resume {shared['resume_count']}/{shared['max_resumes']}).")
+                return False
             if not shared["stop"].is_set():
                 shared["stop"].set()
-                print(f"   ⛔ {n} consecutive seat-render failures — likely IP-throttled; "
+                print(f"   ⛔ throttled and out of resume budget "
+                      f"({shared['resume_count']}/{shared['max_resumes']}) — "
                       "stopping the run (rows already captured are kept).")
             return True
         if n >= shared["backoff_after"]:
@@ -396,6 +419,18 @@ def _note_seat_success(shared):
     with shared["lock"]:
         shared["consec_fail"] = 0
         shared["backoff_extra"] = 0.0
+
+
+def _wait_if_paused(shared):
+    """Cooperatively wait out a throttle pause window, then resume. Bounded by the
+    run deadline and the stop flag so a pause never overruns the budget."""
+    while not shared["stop"].is_set():
+        with shared["lock"]:
+            paused_until = shared["paused_until"]
+        now = time.monotonic()
+        if now >= paused_until or now >= shared["deadline"]:
+            return
+        time.sleep(min(5.0, paused_until - now))
 
 
 def _capture_theatre(page, th, shared):
@@ -424,6 +459,9 @@ def _capture_theatre(page, th, shared):
     stats["matched"] = len(wanted)
     rows = []
     for w in wanted:
+        if shared["stop"].is_set():
+            break
+        _wait_if_paused(shared)   # ride out a throttle pause window before resuming
         if shared["stop"].is_set():
             break
         with shared["lock"]:
@@ -488,6 +526,9 @@ def _worker(slice_theatres, shared):
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
         page = ctx.new_page()
         for th in slice_theatres:
+            if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
+                break
+            _wait_if_paused(shared)   # ride out a throttle pause before the next theatre
             if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
                 break
             agg["visited"] += 1
@@ -560,6 +601,9 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         "backoff_after": FANDANGO_BACKOFF_AFTER, "stop_after": FANDANGO_STOP_AFTER,
         "backoff_step": float(FANDANGO_BACKOFF_STEP_SEC),
         "backoff_max": float(FANDANGO_BACKOFF_MAX_SEC),
+        # pause/resume: ride out the transient throttle instead of hard-stopping
+        "paused_until": 0.0, "resume_count": 0,
+        "max_resumes": FANDANGO_MAX_RESUMES, "pause_sec": float(FANDANGO_PAUSE_SEC),
     }
 
     # Round-robin slices so each worker's slice is geographically mixed.
@@ -575,6 +619,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         for k in totals:
             totals[k] += agg.get(k, 0)
     totals["throttled_stop"] = shared["stop"].is_set()
+    totals["pauses"] = shared["resume_count"]
 
     print("\n=== Fandango collect summary ===")
     print(f"  pool={len(theatres)} visited={totals['visited']}"
@@ -582,7 +627,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
           f"matched_showtimes={totals['matched']} renders={totals['renders']}")
     print(f"  captured={totals['captured']} written={totals['written']} "
           f"deduped={totals['skipped']} incomplete_dropped={totals['incompletes']} "
-          f"seat_fails={totals['seat_fails']} blocks={totals['blocks']}")
+          f"seat_fails={totals['seat_fails']} blocks={totals['blocks']} "
+          f"throttle_pauses={totals['pauses']}")
     print(f"  -> {FANDANGO_CSV}")
     return totals
 

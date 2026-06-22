@@ -2,6 +2,7 @@ import csv
 import sys
 import tempfile
 import threading
+import time
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
@@ -186,7 +187,9 @@ class ThrottleBackoffTests(unittest.TestCase):
         s = {"lock": threading.Lock(), "stop": threading.Event(),
              "consec_fail": 0, "backoff_extra": 0.0,
              "backoff_after": 4, "stop_after": 12,
-             "backoff_step": 6.0, "backoff_max": 30.0}
+             "backoff_step": 6.0, "backoff_max": 30.0,
+             "paused_until": 0.0, "resume_count": 0, "max_resumes": 0,
+             "pause_sec": 600.0, "deadline": time.monotonic() + 10_000}
         s.update(over)
         return s
 
@@ -202,13 +205,46 @@ class ThrottleBackoffTests(unittest.TestCase):
         self.assertEqual(s["consec_fail"], 0)
         self.assertEqual(s["backoff_extra"], 0.0)
 
-    def test_persistent_failures_stop_the_run(self):
-        s = self._shared()
+    def test_persistent_failures_stop_when_no_resumes_left(self):
+        s = self._shared(max_resumes=0)          # no pause budget → hard stop
         stop = False
         for _ in range(12):
             stop = fc._note_seat_failure(s)
         self.assertTrue(stop)
         self.assertTrue(s["stop"].is_set())
+
+    def test_throttle_pauses_then_resumes_before_stopping(self):
+        s = self._shared(max_resumes=2)
+        # first sustained stall → pause #1 (not a stop), counter reset
+        stop = False
+        for _ in range(12):
+            stop = fc._note_seat_failure(s)
+        self.assertFalse(stop)
+        self.assertFalse(s["stop"].is_set())
+        self.assertEqual(s["resume_count"], 1)
+        self.assertGreater(s["paused_until"], time.monotonic())
+        self.assertEqual(s["consec_fail"], 0)
+        # simulate the pause window elapsing, then stall again → pause #2
+        s["paused_until"] = 0.0
+        for _ in range(12):
+            stop = fc._note_seat_failure(s)
+        self.assertFalse(stop)
+        self.assertEqual(s["resume_count"], 2)
+        # third stall: resume budget exhausted → stop
+        s["paused_until"] = 0.0
+        for _ in range(12):
+            stop = fc._note_seat_failure(s)
+        self.assertTrue(stop)
+        self.assertTrue(s["stop"].is_set())
+
+    def test_no_pause_when_it_would_overrun_the_deadline(self):
+        # plenty of resume budget, but the pause wouldn't fit before the deadline
+        s = self._shared(max_resumes=5, pause_sec=600.0, deadline=time.monotonic() + 1)
+        stop = False
+        for _ in range(12):
+            stop = fc._note_seat_failure(s)
+        self.assertTrue(stop)
+        self.assertEqual(s["resume_count"], 0)
 
     def test_backoff_is_capped(self):
         s = self._shared(backoff_after=1, stop_after=1000, backoff_step=10.0, backoff_max=25.0)
