@@ -95,6 +95,16 @@ FANDANGO_DEADLINE_SEC = _env_int("FANDANGO_DEADLINE_SEC", 4200)   # stop launchi
 FANDANGO_PER_THEATRE_CAP = _env_int("FANDANGO_PER_THEATRE_CAP", 3)  # showtimes captured per theatre
 FANDANGO_MAX_THEATRES = _env_int("FANDANGO_MAX_THEATRES", 0)      # 0 = whole pool
 
+# Adaptive throttle handling. Fandango rate-limits its seat-availability backend
+# per IP: under sustained load the seat page loads but the map never populates
+# (stuck "Loading… 0 seats"). When such failures cluster we slow down, and if
+# they persist we stop the run cleanly rather than burn the whole window on
+# 18s-per-render timeouts. Rows already captured are kept (per-theatre flush).
+FANDANGO_BACKOFF_AFTER = _env_int("FANDANGO_BACKOFF_AFTER", 4)        # consecutive seat-render fails → slow down
+FANDANGO_STOP_AFTER = _env_int("FANDANGO_STOP_AFTER", 12)            # consecutive fails → stop the run
+FANDANGO_BACKOFF_STEP_SEC = _env_int("FANDANGO_BACKOFF_STEP_SEC", 6)  # extra delay added per backoff step
+FANDANGO_BACKOFF_MAX_SEC = _env_int("FANDANGO_BACKOFF_MAX_SEC", 30)   # cap on the added delay
+
 
 # ── Pure logic (offline-testable) ────────────────────────────────────────────
 
@@ -361,13 +371,40 @@ SHOWTIME_ENTRIES_JS = r"""() => {
 }"""
 
 
-def _capture_theatre(page, th, target_slugs, window_dates, now_utc, weekend_of,
-                     run_id, check_time, per_theatre_cap, polite):
+def _note_seat_failure(shared):
+    """Record a seat-map render failure (throttle/block signal) shared across all
+    workers — they hit one IP-level limit. Returns True if the run should stop."""
+    with shared["lock"]:
+        shared["consec_fail"] += 1
+        n = shared["consec_fail"]
+        if n >= shared["stop_after"]:
+            if not shared["stop"].is_set():
+                shared["stop"].set()
+                print(f"   ⛔ {n} consecutive seat-render failures — likely IP-throttled; "
+                      "stopping the run (rows already captured are kept).")
+            return True
+        if n >= shared["backoff_after"]:
+            shared["backoff_extra"] = min(
+                shared["backoff_extra"] + shared["backoff_step"], shared["backoff_max"])
+            print(f"   🐢 {n} consecutive seat-render failures — backing off "
+                  f"(+{shared['backoff_extra']:.0f}s/render).")
+        return False
+
+
+def _note_seat_success(shared):
+    """A seat map rendered — reset the throttle counter and any backoff."""
+    with shared["lock"]:
+        shared["consec_fail"] = 0
+        shared["backoff_extra"] = 0.0
+
+
+def _capture_theatre(page, th, shared):
     """Render one theatre, capture its tracked-title seat maps. Returns
-    (rows, stats) where stats has matched/renders/incompletes/blocks counts."""
+    (rows, stats). Feeds the shared throttle state so the run backs off / stops
+    when the seat-availability backend starts rate-limiting."""
     slug = th.get("slug", "")
     tz_name = th.get("timezone", "")
-    stats = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0}
+    stats = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0, "seat_fails": 0}
     try:
         page.goto(f"https://www.fandango.com/{slug}/theater-page",
                   wait_until="domcontentloaded", timeout=45000)
@@ -381,22 +418,31 @@ def _capture_theatre(page, th, target_slugs, window_dates, now_utc, weekend_of,
         print(f"  {slug}: theater-page ERROR {str(e)[:80]}")
         return [], stats
 
-    wanted = select_wanted_showtimes(entries, target_slugs, window_dates,
-                                     tz_name, now_utc, per_theatre_cap)
+    wanted = select_wanted_showtimes(entries, shared["target_slugs"],
+                                     shared["window_dates"], tz_name,
+                                     shared["now_utc"], shared["per_theatre_cap"])
     stats["matched"] = len(wanted)
     rows = []
     for w in wanted:
-        time.sleep(random.uniform(*polite))
+        if shared["stop"].is_set():
+            break
+        with shared["lock"]:
+            extra = shared["backoff_extra"]
+        time.sleep(random.uniform(*shared["polite"]) + extra)
         stats["renders"] += 1
+        seats = None
         try:
             page.goto(w["href"], wait_until="domcontentloaded", timeout=45000)
             page.wait_for_timeout(1200)
             if looks_blocked(page):
                 stats["blocks"] += 1
+                stats["seat_fails"] += 1
+                if _note_seat_failure(shared):
+                    break
                 continue
             params = seat_url_params(page.url)
             if not params["is_seat_page"] or not is_wanted_chain(params["chain"]):
-                continue
+                continue   # routing miss, not a throttle signal
             try:
                 page.wait_for_selector(".seat-map__seat", timeout=8000)
             except Exception:
@@ -404,9 +450,19 @@ def _capture_theatre(page, th, target_slugs, window_dates, now_utc, weekend_of,
                 page.reload(wait_until="domcontentloaded", timeout=45000)
                 page.wait_for_selector(".seat-map__seat", timeout=10000)
             seats = page.evaluate(SEAT_COUNT_JS)
-        except Exception as e:
-            print(f"  {slug}: seat render ERROR {str(e)[:80]}")
+        except Exception:
+            # seat page loaded but the map never populated ("Loading… 0 seats") —
+            # the signature of the seat-availability throttle.
+            stats["seat_fails"] += 1
+            if _note_seat_failure(shared):
+                break
             continue
+        if not seats or seats.get("total", 0) <= 0:
+            stats["seat_fails"] += 1
+            if _note_seat_failure(shared):
+                break
+            continue
+        _note_seat_success(shared)
         if not assess_completeness(seats.get("total", 0),
                                    seats.get("rowFirst", ""),
                                    seats.get("containerFits")):
@@ -414,8 +470,8 @@ def _capture_theatre(page, th, target_slugs, window_dates, now_utc, weekend_of,
             continue
         rows.append(build_fandango_row(
             th, w["title"], w["sdate"], page.url, params, seats,
-            weekend_of, run_id, check_time, w["minutes_until"],
-            w["show_date"], w["day_of_week"],
+            shared["weekend_of"], shared["run_id"], shared["check_time"],
+            w["minutes_until"], w["show_date"], w["day_of_week"],
         ))
     return rows, stats
 
@@ -426,20 +482,16 @@ def _worker(slice_theatres, shared):
     from playwright.sync_api import sync_playwright
 
     agg = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0,
-           "written": 0, "skipped": 0, "captured": 0, "visited": 0}
+           "seat_fails": 0, "written": 0, "skipped": 0, "captured": 0, "visited": 0}
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=shared["headless"], args=CHROMIUM_ARGS)
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
         page = ctx.new_page()
         for th in slice_theatres:
-            if time.monotonic() >= shared["deadline"]:
+            if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
                 break
             agg["visited"] += 1
-            rows, stats = _capture_theatre(
-                page, th, shared["target_slugs"], shared["window_dates"],
-                shared["now_utc"], shared["weekend_of"], shared["run_id"],
-                shared["check_time"], shared["per_theatre_cap"], shared["polite"],
-            )
+            rows, stats = _capture_theatre(page, th, shared)
             for k in stats:
                 agg[k] += stats[k]
             # Flush per theatre (under a lock — the file is the shared writer)
@@ -500,12 +552,17 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         "check_time": check_time, "per_theatre_cap": per_theatre_cap,
         "polite": polite, "headless": headless,
         "deadline": time.monotonic() + deadline_sec, "lock": threading.Lock(),
+        # adaptive throttle state, shared across workers (one IP-level limit)
+        "stop": threading.Event(), "consec_fail": 0, "backoff_extra": 0.0,
+        "backoff_after": FANDANGO_BACKOFF_AFTER, "stop_after": FANDANGO_STOP_AFTER,
+        "backoff_step": float(FANDANGO_BACKOFF_STEP_SEC),
+        "backoff_max": float(FANDANGO_BACKOFF_MAX_SEC),
     }
 
     # Round-robin slices so each worker's slice is geographically mixed.
     slices = [theatres[i::concurrency] for i in range(concurrency)]
     totals = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0,
-              "written": 0, "skipped": 0, "captured": 0, "visited": 0}
+              "seat_fails": 0, "written": 0, "skipped": 0, "captured": 0, "visited": 0}
     if concurrency == 1:
         aggs = [_worker(slices[0], shared)]
     else:
@@ -514,13 +571,15 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     for agg in aggs:
         for k in totals:
             totals[k] += agg.get(k, 0)
+    totals["throttled_stop"] = shared["stop"].is_set()
 
     print("\n=== Fandango collect summary ===")
-    print(f"  pool={len(theatres)} visited={totals['visited']} "
+    print(f"  pool={len(theatres)} visited={totals['visited']}"
+          f"{' (STOPPED EARLY — throttled)' if totals['throttled_stop'] else ''} "
           f"matched_showtimes={totals['matched']} renders={totals['renders']}")
     print(f"  captured={totals['captured']} written={totals['written']} "
           f"deduped={totals['skipped']} incomplete_dropped={totals['incompletes']} "
-          f"blocks={totals['blocks']}")
+          f"seat_fails={totals['seat_fails']} blocks={totals['blocks']}")
     print(f"  -> {FANDANGO_CSV}")
     return totals
 

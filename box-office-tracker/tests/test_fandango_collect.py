@@ -1,6 +1,7 @@
 import csv
 import sys
 import tempfile
+import threading
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
@@ -178,6 +179,42 @@ class DedupeAndWriteTests(unittest.TestCase):
             with open(path) as f:
                 header = f.readline().strip().split(",")
             self.assertEqual(header, fc.FANDANGO_PRE_RESERVATION_FIELDS)
+
+
+class ThrottleBackoffTests(unittest.TestCase):
+    def _shared(self, **over):
+        s = {"lock": threading.Lock(), "stop": threading.Event(),
+             "consec_fail": 0, "backoff_extra": 0.0,
+             "backoff_after": 4, "stop_after": 12,
+             "backoff_step": 6.0, "backoff_max": 30.0}
+        s.update(over)
+        return s
+
+    def test_backoff_kicks_in_then_success_resets(self):
+        s = self._shared()
+        for _ in range(3):                       # below backoff threshold
+            self.assertFalse(fc._note_seat_failure(s))
+        self.assertEqual(s["backoff_extra"], 0.0)
+        fc._note_seat_failure(s)                 # 4th → backoff
+        self.assertGreater(s["backoff_extra"], 0.0)
+        self.assertFalse(s["stop"].is_set())
+        fc._note_seat_success(s)                 # a render succeeds → reset
+        self.assertEqual(s["consec_fail"], 0)
+        self.assertEqual(s["backoff_extra"], 0.0)
+
+    def test_persistent_failures_stop_the_run(self):
+        s = self._shared()
+        stop = False
+        for _ in range(12):
+            stop = fc._note_seat_failure(s)
+        self.assertTrue(stop)
+        self.assertTrue(s["stop"].is_set())
+
+    def test_backoff_is_capped(self):
+        s = self._shared(backoff_after=1, stop_after=1000, backoff_step=10.0, backoff_max=25.0)
+        for _ in range(10):
+            fc._note_seat_failure(s)
+        self.assertLessEqual(s["backoff_extra"], 25.0)
 
 
 if __name__ == "__main__":
