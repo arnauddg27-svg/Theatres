@@ -33,3 +33,6 @@ output/
 
 # Claude Code working directory (may contain SSH commands, VPS IPs, private notes)
 .claude/
+
+# Phase A Fandango validation prototype output (not production data)
+box-office-tracker/data/fandango-probe.csv
