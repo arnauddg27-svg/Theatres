@@ -46,16 +46,18 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
         self.assertEqual(slot.cron_days, amc.cron_days)
 
-    def test_fandango_shards_cover_the_pool_across_the_night(self):
+    def test_fandango_full_pool_plus_core_second_pass(self):
         fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
-        self.assertEqual(len(fslots), 6)
-        # the 6 slots take shards 0..5 of 6 → every theatre covered once per night
-        self.assertEqual(sorted(int(s.inputs["fandango_shard"]) for s in fslots),
-                         [0, 1, 2, 3, 4, 5])
+        self.assertEqual(len(fslots), 9)
         self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
-        # one hour apart, all on the AMC-snapshot nights
-        self.assertEqual(sorted(s.hour for s in fslots), [3, 4, 5, 6, 7, 8])
         self.assertTrue(all(s.cron_days == frozenset({0, 4, 5, 6}) for s in fslots))
+        by_hour = {s.hour: int(s.inputs["fandango_shard"]) for s in fslots}
+        # 03-08Z cover all 6 shards once → the full ~320 pool per night
+        self.assertEqual({h: by_hour[h] for h in range(3, 9)},
+                         {3: 0, 4: 1, 5: 2, 6: 3, 7: 4, 8: 5})
+        # 09-11Z re-run shards 0-2 → the core ~160 get a 2nd reading (velocity)
+        self.assertEqual({h: by_hour[h] for h in range(9, 12)},
+                         {9: 0, 10: 1, 11: 2})
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(

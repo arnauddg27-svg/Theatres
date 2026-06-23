@@ -195,6 +195,17 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 4, 5, 6}), 7, 0, fandango_slot_inputs(4, 6)),
     Slot("snapshot fandango 08Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 8, 0, fandango_slot_inputs(5, 6)),
+    # SECOND nightly pass over the core ~160 theatres (shards 0-2 of the 6-way
+    # split) at 09-11Z — gives those a second pre-reservation reading each night
+    # (evening via 03-05Z + overnight here) so we capture how fast seats fill,
+    # while the full 320 still gets one reading. Spaced ≥1 h from the evening
+    # slots and from each other so Fandango's per-range limit stays recovered.
+    Slot("snapshot fandango core 09Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 9, 0, fandango_slot_inputs(0, 6)),
+    Slot("snapshot fandango core 10Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 10, 0, fandango_slot_inputs(1, 6)),
+    Slot("snapshot fandango core 11Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 11, 0, fandango_slot_inputs(2, 6)),
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",
