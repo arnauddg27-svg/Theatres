@@ -98,6 +98,14 @@ def pipeline_inputs(
     }
 
 
+def fandango_slot_inputs(shard: int, num_shards: int) -> dict[str, str]:
+    """Inputs for one Fandango shard slot — phase + which 1/N slice of the pool."""
+    inputs = pipeline_inputs("scrape-fandango", "ALL", "false", "true", "true")
+    inputs["fandango_shard"] = str(shard)
+    inputs["fandango_num_shards"] = str(num_shards)
+    return inputs
+
+
 @dataclass(frozen=True)
 class Slot:
     name: str
@@ -169,17 +177,24 @@ SLOTS: tuple[Slot, ...] = (
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),
     ),
-    # Fandango (Regal/Cinemark) pre-reservation snapshot — same nights as the
-    # AMC snapshot, offset +30 min to spread GitHub-hosted runner load. Isolated
-    # lane (own commit file, no AMC lock); gated out of the model until Phase C.
-    Slot(
-        "snapshot fandango 03Z",
-        "box office scrape-fandango ALL",
-        frozenset({0, 4, 5, 6}),
-        3,
-        0,
-        pipeline_inputs("scrape-fandango", "ALL", "false", "true", "true"),
-    ),
+    # Fandango (Regal/Cinemark) pre-reservation snapshots — SHARDED across the
+    # opening-weekend night. Fandango's seat limit is a per-Azure-range budget
+    # that recovers in ~1 h, so fan-out can't beat it; instead 6 slots one hour
+    # apart each scrape a different 1/6 of the pool (one fresh IP, alone), and
+    # together cover all ~320 theatres in a single night. Same cron_days as the
+    # AMC snapshot. Isolated lane; gated out of the model until Phase C.
+    Slot("snapshot fandango 03Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 3, 0, fandango_slot_inputs(0, 6)),
+    Slot("snapshot fandango 04Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 4, 0, fandango_slot_inputs(1, 6)),
+    Slot("snapshot fandango 05Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 5, 0, fandango_slot_inputs(2, 6)),
+    Slot("snapshot fandango 06Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 6, 0, fandango_slot_inputs(3, 6)),
+    Slot("snapshot fandango 07Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 7, 0, fandango_slot_inputs(4, 6)),
+    Slot("snapshot fandango 08Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 8, 0, fandango_slot_inputs(5, 6)),
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",

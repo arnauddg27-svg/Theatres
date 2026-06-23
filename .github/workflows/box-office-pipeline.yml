@@ -78,6 +78,14 @@ on:
         description: 'Fandango ad-hoc test only: showtimes per theatre (default 3).'
         required: false
         default: ''
+      fandango_shard:
+        description: 'Fandango: this run scrapes theatres[shard::num_shards] (scheduler sets it per slot; default 0).'
+        required: false
+        default: ''
+      fandango_num_shards:
+        description: 'Fandango: total shards across the night (0 = whole pool in one run).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -526,91 +534,21 @@ jobs:
   # Fandango. ISOLATED from the AMC pipeline (writes ONLY the separate
   # data/fandango-pre-reservation-snapshots.csv; the AMC CSVs are untouched).
   #
-  # SHARDED FAN-OUT (sequential): Fandango rate-limits its seat backend, and
-  # testing showed 8 jobs hitting it CONCURRENTLY all throttle even on distinct
-  # Azure IPs (the limit aggregates per range/ASN under simultaneous load — 8
-  # IPs → only ~70 rows total). A single job ALONE captures cleanly (~36/50). So
-  # we shard the ~320-theatre pool and run the legs ONE AT A TIME (max-parallel
-  # 1) — each leg a fresh IP scraping a disjoint theatres[shard::N] slice, alone,
-  # under the per-IP budget (same pattern as the AMC scrape matrix). Each leg
-  # writes a shard artifact; finalize-fandango merges + commits ONCE (no race).
+  # SHARDED TIME-SPREAD: Fandango's seat limit is a per-Azure-RANGE budget of
+  # ~70-80 captures per ~1-hour window — fanning out across IPs (concurrent OR
+  # rapid-sequential) does NOT beat it (tested: 8 shards → only ~55-70 rows
+  # total). But the limit RECOVERS in ~1 hour, so we run ONE capped shard per
+  # scheduled slot and space the slots ~1 h apart across the opening-weekend
+  # night; each slot takes a different shard (theatres[shard::N]) so the N slots
+  # together cover all ~320 theatres in one night. Each run is a single fresh IP
+  # scraping ~1/N of the pool (cap 1), comfortably under the per-window budget,
+  # and commits its shard directly — slots never overlap, so no commit race.
   # Gated OUT of the model until Phase C.
   # ──────────────────────────────────────────────────────────────────────────
   scrape-fandango:
     if: github.event.inputs.phase == 'scrape-fandango'
     runs-on: ubuntu-latest
     timeout-minutes: 50
-    strategy:
-      fail-fast: false        # one shard's throttle/timeout must not cancel the others
-      max-parallel: 1         # SEQUENTIAL — one fresh IP at a time; concurrent IPs share the throttle
-      matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7]
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 50   # dedup guard greps today's commits
-
-      - name: Sync to latest main
-        run: |
-          git fetch --deepen=50 origin main
-          git reset --hard origin/main
-
-      - name: Dedup guard — skip shard if today's Fandango snapshot already committed
-        id: dedup
-        run: |
-          # Ad-hoc test runs (show_dates set) always run — they never commit canonical.
-          force="${{ (github.event.inputs.force == 'true' || github.event.inputs.fandango_show_dates != '') && 'true' || 'false' }}"
-          python3 box-office-tracker/scripts/fandango_scrape_dedup_guard.py \
-            --force "$force" \
-            --github-output "$GITHUB_OUTPUT"
-
-      - name: Install dependencies
-        if: steps.dedup.outputs.skip != 'true'
-        working-directory: box-office-tracker
-        run: |
-          pip install -r requirements.txt
-          python -m playwright install chromium --with-deps
-
-      - name: Fandango snapshot — collect shard ${{ matrix.shard }}/8
-        if: steps.dedup.outputs.skip != 'true'
-        working-directory: box-office-tracker
-        timeout-minutes: 40
-        env:
-          FANDANGO_NUM_SHARDS: '8'
-          FANDANGO_SHARD: ${{ matrix.shard }}
-          FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
-          FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
-          FANDANGO_DEADLINE_SEC: '2100'
-          # Ad-hoc test overrides (empty on scheduled/production runs):
-          FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
-          FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
-          # Each leg writes a shard artifact — never commits directly (finalize merges).
-          FANDANGO_OUTPUT: ../fandango-shards/shard-${{ matrix.shard }}.csv
-        run: |
-          mkdir -p ../fandango-shards
-          python fandango_collect.py 2>&1 | tee "../fandango-shards/shard-${{ matrix.shard }}.log"
-
-      - name: Upload shard artifact
-        if: always() && steps.dedup.outputs.skip != 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: fandango-shard-${{ matrix.shard }}-${{ github.run_id }}
-          path: fandango-shards/
-          if-no-files-found: ignore
-          retention-days: 7
-
-  # Merge the shard artifacts and commit once — single writer, no commit race.
-  finalize-fandango:
-    needs: scrape-fandango
-    if: >
-      always() &&
-      github.event.inputs.phase == 'scrape-fandango' &&
-      (needs.scrape-fandango.result == 'success' || needs.scrape-fandango.result == 'failure')
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
       - name: Checkout repo
@@ -624,29 +562,43 @@ jobs:
           git fetch --deepen=50 origin main
           git reset --hard origin/main
 
-      - name: Download shard artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: fandango-shard-*
-          path: fandango-shard-dl
-
       - name: Install dependencies
         working-directory: box-office-tracker
-        run: pip install -r requirements.txt   # merge is pure-python; no playwright needed
-
-      - name: Merge shards into the Fandango snapshot file
-        working-directory: box-office-tracker
-        env:
-          # Test runs (show_dates set) merge to a throwaway and never commit canonical.
-          FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-shard-dl/fandango-test-merged.csv' || '' }}
         run: |
-          python fandango_collect.py --merge-dir ../fandango-shard-dl 2>&1 | tee ../fandango-shard-dl/merge.log
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
 
-      - name: Commit merged Fandango snapshot data
+      - name: Fandango snapshot — collect shard ${{ github.event.inputs.fandango_shard || '0' }}
+        working-directory: box-office-tracker
+        timeout-minutes: 40
+        env:
+          # Scheduled slots pass shard + num_shards; ad-hoc runs default to the whole pool.
+          FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
+          FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
+          FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
+          FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
+          FANDANGO_DEADLINE_SEC: '2400'
+          # Ad-hoc test overrides (empty on scheduled/production runs):
+          FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
+          FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
+          FANDANGO_ZIPS: ${{ github.event.inputs.fandango_zips }}
+          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres }}
+          # Test runs (show_dates set) write to a throwaway file, never canonical.
+          FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
+        run: |
+          mkdir -p ../fandango-logs
+          python fandango_collect.py 2>&1 | tee "../fandango-logs/fandango-${{ github.run_id }}.log"
+
+      - name: Commit Fandango snapshot data
+        # Skip on ad-hoc test runs (show_dates set) — they write to a throwaway file.
         if: github.event.inputs.fandango_show_dates == ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Isolated single file — never sweep up other untracked files. Guard the
+          # add: a no-op run (no rows) never creates the file, and `git add` of a
+          # missing pathspec would fail the step under `set -e`. Slots are spaced
+          # ~1 h apart so commits never race; the rebase loop covers AMC overlap.
           fandango_csv=box-office-tracker/data/fandango-pre-reservation-snapshots.csv
           if [ -f "$fandango_csv" ]; then
             git add "$fandango_csv"
@@ -655,7 +607,7 @@ jobs:
             echo "No Fandango snapshot rows to commit."
             exit 0
           fi
-          git commit -m "data: box office fandango snapshot"
+          git commit -m "data: box office fandango snapshot (shard ${{ github.event.inputs.fandango_shard || '0' }})"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
             git pull --rebase --autostash -X ours origin main && git push && break
@@ -668,12 +620,12 @@ jobs:
             sleep $((i * 15))
           done
 
-      - name: Upload merge artifacts (shards + merged + logs)
+      - name: Upload Fandango logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fandango-merge-${{ github.run_id }}
-          path: fandango-shard-dl/
+          name: fandango-logs-${{ github.run_id }}
+          path: fandango-logs/
           if-no-files-found: ignore
           retention-days: 7
 

@@ -42,9 +42,20 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         self.assertEqual(slot.inputs["phase"], "scrape-fandango")
         self.assertEqual(slot.cron_days, frozenset({0, 4, 5, 6}))
         self.assertEqual((slot.hour, slot.minute), (3, 0))
-        # It runs the same nights as the AMC snapshot but 30 min later.
+        # It runs the same nights as the AMC snapshot.
         amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
         self.assertEqual(slot.cron_days, amc.cron_days)
+
+    def test_fandango_shards_cover_the_pool_across_the_night(self):
+        fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
+        self.assertEqual(len(fslots), 6)
+        # the 6 slots take shards 0..5 of 6 → every theatre covered once per night
+        self.assertEqual(sorted(int(s.inputs["fandango_shard"]) for s in fslots),
+                         [0, 1, 2, 3, 4, 5])
+        self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
+        # one hour apart, all on the AMC-snapshot nights
+        self.assertEqual(sorted(s.hour for s in fslots), [3, 4, 5, 6, 7, 8])
+        self.assertTrue(all(s.cron_days == frozenset({0, 4, 5, 6}) for s in fslots))
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(
