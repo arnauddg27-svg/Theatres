@@ -323,14 +323,19 @@ def append_unique_fandango_rows(rows, csv_path=None):
         normalized = {fld: str(row.get(fld, "") or "")
                       for fld in FANDANGO_PRE_RESERVATION_FIELDS}
         if not normalized.get("delta_reserved_since_previous"):
+            cur_bucket = str(normalized.get("snapshot_bucket", "") or "")
             prior = [
-                r for b, r in reserved_index.get(_identity(normalized), ())
-                if b < str(normalized.get("snapshot_bucket", "") or "")
+                (b, r) for b, r in reserved_index.get(_identity(normalized), ())
+                if b < cur_bucket
             ]
             if prior:
                 try:
+                    # delta vs the LATEST prior bucket's reserved count (max by
+                    # bucket string == chronological), not the max reserved —
+                    # matches scraper._previous_reserved_count semantics.
+                    prev_reserved = max(prior)[1]
                     normalized["delta_reserved_since_previous"] = str(
-                        int(float(normalized.get("reserved_seats", 0) or 0)) - max(prior)
+                        int(float(normalized.get("reserved_seats", 0) or 0)) - prev_reserved
                     )
                 except (TypeError, ValueError):
                     pass
@@ -527,29 +532,36 @@ def _worker(slice_theatres, shared):
 
     agg = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0,
            "seat_fails": 0, "written": 0, "skipped": 0, "captured": 0, "visited": 0}
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=shared["headless"], args=CHROMIUM_ARGS)
-        ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
-        page = ctx.new_page()
-        for th in slice_theatres:
-            if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
-                break
-            _wait_if_paused(shared)   # ride out a throttle pause before the next theatre
-            if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
-                break
-            agg["visited"] += 1
-            rows, stats = _capture_theatre(page, th, shared)
-            for k in stats:
-                agg[k] += stats[k]
-            # Flush per theatre (under a lock — the file is the shared writer)
-            # so a deadline/crash keeps earlier theatres' rows durable.
-            if rows:
-                with shared["lock"]:
-                    w, sk = append_unique_fandango_rows(rows)
-                agg["written"] += w
-                agg["skipped"] += sk
-                agg["captured"] += len(rows)
-        browser.close()
+    # A worker must never raise: ThreadPoolExecutor.map re-raises on iteration,
+    # which would discard the OTHER workers' results and crash collect(). Any
+    # browser/launch failure just ends this worker with its partial agg (rows
+    # already flushed per-theatre stay safe on disk).
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=shared["headless"], args=CHROMIUM_ARGS)
+            ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
+            page = ctx.new_page()
+            for th in slice_theatres:
+                if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
+                    break
+                _wait_if_paused(shared)   # ride out a throttle pause before the next theatre
+                if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
+                    break
+                agg["visited"] += 1
+                rows, stats = _capture_theatre(page, th, shared)
+                for k in stats:
+                    agg[k] += stats[k]
+                # Flush per theatre (under a lock — the file is the shared writer)
+                # so a deadline/crash keeps earlier theatres' rows durable.
+                if rows:
+                    with shared["lock"]:
+                        w, sk = append_unique_fandango_rows(rows)
+                    agg["written"] += w
+                    agg["skipped"] += sk
+                    agg["captured"] += len(rows)
+            browser.close()
+    except Exception as e:
+        print(f"  ⚠️  worker aborted ({str(e)[:100]}) — keeping its captured rows")
     return agg
 
 

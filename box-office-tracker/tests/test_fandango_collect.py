@@ -173,6 +173,25 @@ class DedupeAndWriteTests(unittest.TestCase):
             later = [r for r in rows if r["snapshot_bucket"].endswith("11:00Z")][0]
             self.assertEqual(later["delta_reserved_since_previous"], "30")
 
+    def test_delta_is_vs_latest_prior_bucket_not_max_reserved(self):
+        # Regression: a reservation dip (50→80→60) then a new reading (70) must
+        # delta against the LATEST prior bucket (60 → +10), not the max (80 → -10).
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "fandango.csv"
+
+            def at(reserved, hh):
+                return _row(seats={"total": 200, "reserved": reserved,
+                                   "available": 200 - reserved,
+                                   "rowFirst": "A", "containerFits": True},
+                            check_time=f"2026-06-20T{hh}:00:00+00:00")
+
+            fc.append_unique_fandango_rows([at(50, "08"), at(80, "09"), at(60, "10")],
+                                           csv_path=path)
+            fc.append_unique_fandango_rows([at(70, "11")], csv_path=path)
+            rows = list(csv.DictReader(open(path)))
+            last = [r for r in rows if r["snapshot_bucket"].endswith("11:00Z")][0]
+            self.assertEqual(last["delta_reserved_since_previous"], "10")
+
     def test_header_written_to_target_path(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / "sub" / "fandango.csv"

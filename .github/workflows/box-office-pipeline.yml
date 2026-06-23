@@ -599,8 +599,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Isolated single file — never sweep up other untracked files. Guard the
           # add: a no-op run (no rows) never creates the file, and `git add` of a
-          # missing pathspec would fail the step under `set -e`. Slots are spaced
-          # ~1 h apart so commits never race; the rebase loop covers AMC overlap.
+          # missing pathspec would fail the step under `set -e`.
+          # NO concurrent-commit race: all scrape-fandango runs share one workflow
+          # concurrency group (cancel-in-progress: false), so a run fully finishes
+          # (incl. push) before the next starts. The rebase loop therefore only
+          # replays onto unrelated AMC commits (different files → no conflict), so
+          # `-X ours` can never drop another shard's appended rows.
           fandango_csv=box-office-tracker/data/fandango-pre-reservation-snapshots.csv
           if [ -f "$fandango_csv" ]; then
             git add "$fandango_csv"
