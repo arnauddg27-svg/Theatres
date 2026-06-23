@@ -526,13 +526,15 @@ jobs:
   # Fandango. ISOLATED from the AMC pipeline (writes ONLY the separate
   # data/fandango-pre-reservation-snapshots.csv; the AMC CSVs are untouched).
   #
-  # MATRIX FAN-OUT: Fandango rate-limits its seat-availability backend PER IP, so
-  # one job can only capture ~50-80 theatres before throttling. We shard the
-  # ~320-theatre pool across N parallel jobs — each gets its own fresh Azure IP
-  # (the same property that defeats AMC's Queue-It IP flagging) and scrapes a
-  # disjoint theatres[shard::N] slice under the per-IP budget. Each leg writes a
-  # shard artifact; finalize-fandango merges them and commits ONCE (single
-  # writer — no concurrent-commit race). Gated OUT of the model until Phase C.
+  # SHARDED FAN-OUT (sequential): Fandango rate-limits its seat backend, and
+  # testing showed 8 jobs hitting it CONCURRENTLY all throttle even on distinct
+  # Azure IPs (the limit aggregates per range/ASN under simultaneous load — 8
+  # IPs → only ~70 rows total). A single job ALONE captures cleanly (~36/50). So
+  # we shard the ~320-theatre pool and run the legs ONE AT A TIME (max-parallel
+  # 1) — each leg a fresh IP scraping a disjoint theatres[shard::N] slice, alone,
+  # under the per-IP budget (same pattern as the AMC scrape matrix). Each leg
+  # writes a shard artifact; finalize-fandango merges + commits ONCE (no race).
+  # Gated OUT of the model until Phase C.
   # ──────────────────────────────────────────────────────────────────────────
   scrape-fandango:
     if: github.event.inputs.phase == 'scrape-fandango'
@@ -540,7 +542,7 @@ jobs:
     timeout-minutes: 50
     strategy:
       fail-fast: false        # one shard's throttle/timeout must not cancel the others
-      max-parallel: 8         # all shards run concurrently — distinct fresh IPs is the point
+      max-parallel: 1         # SEQUENTIAL — one fresh IP at a time; concurrent IPs share the throttle
       matrix:
         shard: [0, 1, 2, 3, 4, 5, 6, 7]
 
