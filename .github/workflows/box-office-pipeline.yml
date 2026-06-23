@@ -62,6 +62,22 @@ on:
         description: 'Fandango ad-hoc test only: comma-separated YYYY-MM-DD dates to capture instead of the opening-weekend window. Setting this makes scrape-fandango a throwaway test — it writes to an uploaded artifact and does NOT commit canonical data.'
         required: false
         default: ''
+      fandango_zips:
+        description: 'Fandango ad-hoc test only: comma-separated ZIPs to restrict the theatre pool (for per-IP vs per-range sharding experiments).'
+        required: false
+        default: ''
+      fandango_max_theatres:
+        description: 'Fandango ad-hoc test only: cap theatres visited (0 = whole pool).'
+        required: false
+        default: ''
+      fandango_concurrency:
+        description: 'Fandango ad-hoc test only: parallel browsers (default 3).'
+        required: false
+        default: ''
+      fandango_per_theatre_cap:
+        description: 'Fandango ad-hoc test only: showtimes per theatre (default 3).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -555,12 +571,14 @@ jobs:
           # National pool (~320 theatres) sampled with N parallel browsers under
           # a deadline that sits safely below the 90-min step timeout. Rows flush
           # per-theatre, so hitting the deadline keeps everything collected so far.
-          FANDANGO_CONCURRENCY: '3'
-          FANDANGO_PER_THEATRE_CAP: '3'
+          FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '3' }}
+          FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '3' }}
           FANDANGO_DEADLINE_SEC: '4500'
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
+          FANDANGO_ZIPS: ${{ github.event.inputs.fandango_zips }}
+          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres }}
           # When show_dates is set (test mode) write to a throwaway file that the
           # log-upload step captures, so a test never touches the canonical data.
           FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}

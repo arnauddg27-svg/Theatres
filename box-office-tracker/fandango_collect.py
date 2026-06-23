@@ -547,6 +547,16 @@ def _worker(slice_theatres, shared):
     return agg
 
 
+def _egress_ip():
+    """Best-effort outbound IP — lets us tell whether parallel GitHub jobs get
+    distinct IPs (per-IP rate limit → fan-out works) vs share one (range limit)."""
+    try:
+        import urllib.request
+        return urllib.request.urlopen("https://api.ipify.org", timeout=10).read().decode().strip()
+    except Exception:
+        return "?"
+
+
 def collect(weekend_of=None, titles=None, zips=None, theatres=None,
             per_theatre_cap=None, max_theatres=None, headless=True, run_id=None,
             polite=(1.0, 2.5), concurrency=None, deadline_sec=None, show_dates=None):
@@ -586,9 +596,10 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     run_id = run_id or f"fandango-{snapshot_bucket(check_time)}"
     concurrency = max(1, min(concurrency, len(theatres)))
 
-    print(f"Fandango collect • weekend_of={weekend_of} • {len(theatres)} theatres "
-          f"• {concurrency} workers • cap={per_theatre_cap}/theatre "
-          f"• deadline={deadline_sec}s • titles={list(target_slugs.values())}")
+    print(f"Fandango collect • egress_ip={_egress_ip()} • weekend_of={weekend_of} "
+          f"• {len(theatres)} theatres • {concurrency} workers "
+          f"• cap={per_theatre_cap}/theatre • deadline={deadline_sec}s "
+          f"• titles={list(target_slugs.values())}")
 
     shared = {
         "target_slugs": target_slugs, "window_dates": window_dates,
@@ -716,6 +727,7 @@ def main():
 
     titles = args.titles or _csv_env("FANDANGO_TITLES")
     show_dates = args.show_dates or _csv_env("FANDANGO_SHOW_DATES")
+    zips = args.zips or _csv_env("FANDANGO_ZIPS")
     # FANDANGO_OUTPUT redirects writes to a throwaway path so an ad-hoc test run
     # never pollutes the canonical data/fandango-pre-reservation-snapshots.csv.
     out_override = (os.environ.get("FANDANGO_OUTPUT") or "").strip()
@@ -723,7 +735,7 @@ def main():
         global FANDANGO_CSV
         FANDANGO_CSV = Path(out_override)
 
-    collect(weekend_of=args.weekend, titles=titles, zips=args.zips,
+    collect(weekend_of=args.weekend, titles=titles, zips=zips,
             per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
             concurrency=args.concurrency, deadline_sec=args.deadline_sec,
             show_dates=show_dates, headless=not args.no_headless)
