@@ -577,7 +577,7 @@ jobs:
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
           FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
-          FANDANGO_DEADLINE_SEC: '2400'
+          FANDANGO_DEADLINE_SEC: '2100'   # 35 min — self-stop with margin under the 40-min step timeout
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
@@ -590,8 +590,10 @@ jobs:
           python fandango_collect.py 2>&1 | tee "../fandango-logs/fandango-${{ github.run_id }}.log"
 
       - name: Commit Fandango snapshot data
-        # Skip on ad-hoc test runs (show_dates set) — they write to a throwaway file.
-        if: github.event.inputs.fandango_show_dates == ''
+        # always() so partial rows from a timed-out/failed collect still commit
+        # (the collector flushes per-theatre); skip only on ad-hoc test runs,
+        # which write to a throwaway file.
+        if: always() && github.event.inputs.fandango_show_dates == ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

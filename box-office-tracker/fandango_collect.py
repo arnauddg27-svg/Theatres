@@ -364,24 +364,6 @@ def load_fandango_theatres(zips=None):
     return out
 
 
-def merge_shard_files(merge_dir, csv_path=None):
-    """Combine matrix-leg shard CSVs into the canonical file (deduped). The
-    finalize step runs this after the sharded fan-out; no browser needed."""
-    rows = []
-    files = sorted(Path(merge_dir).rglob("*.csv"))
-    for p in files:
-        try:
-            with open(p, newline="") as f:
-                rows.extend(list(csv.DictReader(f)))
-        except OSError:
-            continue
-    written, skipped = append_unique_fandango_rows(rows, csv_path=csv_path)
-    target = csv_path or FANDANGO_CSV
-    print(f"merged {len(files)} shard file(s), {len(rows)} rows → "
-          f"written={written} deduped={skipped} → {target}")
-    return written, skipped
-
-
 # ── Browser discovery + capture ──────────────────────────────────────────────
 
 # For each hydrated showtime button, walk ancestors to the movie container and
@@ -755,8 +737,6 @@ def main():
     ap.add_argument("--shard", type=int, default=FANDANGO_SHARD, help="this leg's shard index")
     ap.add_argument("--num-shards", type=int, default=FANDANGO_NUM_SHARDS,
                     help="total shards (0/1 = whole pool)")
-    ap.add_argument("--merge-dir",
-                    help="merge shard CSVs in this dir into the canonical file, then exit")
     ap.add_argument("--no-headless", action="store_true")
     args = ap.parse_args()
     if args.selftest:
@@ -777,10 +757,6 @@ def main():
     if out_override:
         global FANDANGO_CSV
         FANDANGO_CSV = Path(out_override)
-
-    if args.merge_dir:
-        merge_shard_files(args.merge_dir)
-        return
 
     collect(weekend_of=args.weekend, titles=titles, zips=zips,
             per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
