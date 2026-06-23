@@ -109,6 +109,12 @@ FANDANGO_BACKOFF_MAX_SEC = _env_int("FANDANGO_BACKOFF_MAX_SEC", 30)   # cap on t
 # batches instead of one. Bounded by max-resumes and the run deadline.
 FANDANGO_PAUSE_SEC = _env_int("FANDANGO_PAUSE_SEC", 720)      # wait this long for the limit to recover
 FANDANGO_MAX_RESUMES = _env_int("FANDANGO_MAX_RESUMES", 2)    # pause/resume cycles before giving up
+# Matrix fan-out: the seat rate limit is per-IP, so split the pool across N
+# parallel GitHub jobs (one fresh IP each). A leg scrapes theatres[shard::N] —
+# a deterministic, geographically-mixed, disjoint slice — staying under the
+# per-IP budget; a merge step recombines the shard outputs.
+FANDANGO_NUM_SHARDS = _env_int("FANDANGO_NUM_SHARDS", 0)      # 0/1 = no sharding (whole pool)
+FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard index
 
 
 # ── Pure logic (offline-testable) ────────────────────────────────────────────
@@ -358,6 +364,24 @@ def load_fandango_theatres(zips=None):
     return out
 
 
+def merge_shard_files(merge_dir, csv_path=None):
+    """Combine matrix-leg shard CSVs into the canonical file (deduped). The
+    finalize step runs this after the sharded fan-out; no browser needed."""
+    rows = []
+    files = sorted(Path(merge_dir).rglob("*.csv"))
+    for p in files:
+        try:
+            with open(p, newline="") as f:
+                rows.extend(list(csv.DictReader(f)))
+        except OSError:
+            continue
+    written, skipped = append_unique_fandango_rows(rows, csv_path=csv_path)
+    target = csv_path or FANDANGO_CSV
+    print(f"merged {len(files)} shard file(s), {len(rows)} rows → "
+          f"written={written} deduped={skipped} → {target}")
+    return written, skipped
+
+
 # ── Browser discovery + capture ──────────────────────────────────────────────
 
 # For each hydrated showtime button, walk ancestors to the movie container and
@@ -557,9 +581,17 @@ def _egress_ip():
         return "?"
 
 
+def shard_theatres(theatres, shard, num_shards):
+    """Deterministic, disjoint, geographically-mixed slice for one matrix leg."""
+    if not num_shards or num_shards <= 1:
+        return theatres
+    return list(theatres)[shard % num_shards::num_shards]
+
+
 def collect(weekend_of=None, titles=None, zips=None, theatres=None,
             per_theatre_cap=None, max_theatres=None, headless=True, run_id=None,
-            polite=(1.0, 2.5), concurrency=None, deadline_sec=None, show_dates=None):
+            polite=(1.0, 2.5), concurrency=None, deadline_sec=None, show_dates=None,
+            shard=None, num_shards=None):
     """Capture tracked-title Regal/Cinemark seat maps across the national pool
     using N parallel browsers, bounded by a deadline, appending to the isolated
     Fandango file. Returns a totals dict.
@@ -577,6 +609,12 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     if not theatres:
         print("⚠️  No Fandango theatres configured (data/theatres-fandango.json).")
         return {}
+
+    num_shards = num_shards if num_shards is not None else FANDANGO_NUM_SHARDS
+    shard = shard if shard is not None else FANDANGO_SHARD
+    if num_shards and num_shards > 1:
+        theatres = shard_theatres(theatres, shard, num_shards)
+        print(f"  shard {shard % num_shards}/{num_shards}: {len(theatres)} theatres of the pool")
 
     per_theatre_cap = per_theatre_cap if per_theatre_cap is not None else FANDANGO_PER_THEATRE_CAP
     concurrency = concurrency if concurrency is not None else FANDANGO_CONCURRENCY
@@ -714,6 +752,11 @@ def main():
                     help="parallel browsers")
     ap.add_argument("--deadline-sec", type=int, default=FANDANGO_DEADLINE_SEC,
                     help="stop launching new theatres after this many seconds")
+    ap.add_argument("--shard", type=int, default=FANDANGO_SHARD, help="this leg's shard index")
+    ap.add_argument("--num-shards", type=int, default=FANDANGO_NUM_SHARDS,
+                    help="total shards (0/1 = whole pool)")
+    ap.add_argument("--merge-dir",
+                    help="merge shard CSVs in this dir into the canonical file, then exit")
     ap.add_argument("--no-headless", action="store_true")
     args = ap.parse_args()
     if args.selftest:
@@ -735,10 +778,15 @@ def main():
         global FANDANGO_CSV
         FANDANGO_CSV = Path(out_override)
 
+    if args.merge_dir:
+        merge_shard_files(args.merge_dir)
+        return
+
     collect(weekend_of=args.weekend, titles=titles, zips=zips,
             per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
             concurrency=args.concurrency, deadline_sec=args.deadline_sec,
-            show_dates=show_dates, headless=not args.no_headless)
+            show_dates=show_dates, shard=args.shard, num_shards=args.num_shards,
+            headless=not args.no_headless)
 
 
 if __name__ == "__main__":

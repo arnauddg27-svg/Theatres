@@ -253,5 +253,39 @@ class ThrottleBackoffTests(unittest.TestCase):
         self.assertLessEqual(s["backoff_extra"], 25.0)
 
 
+class ShardingAndMergeTests(unittest.TestCase):
+    def test_shards_are_disjoint_and_cover_the_whole_pool(self):
+        pool = [{"slug": f"t{i}"} for i in range(320)]
+        N = 8
+        shards = [fc.shard_theatres(pool, i, N) for i in range(N)]
+        seen = [t["slug"] for s in shards for t in s]
+        self.assertEqual(sorted(seen), sorted(t["slug"] for t in pool))  # complete
+        self.assertEqual(len(seen), len(set(seen)))                      # disjoint
+        sizes = [len(s) for s in shards]
+        self.assertLessEqual(max(sizes) - min(sizes), 1)                 # balanced
+
+    def test_no_sharding_returns_whole_pool(self):
+        pool = [{"slug": f"t{i}"} for i in range(10)]
+        self.assertEqual(fc.shard_theatres(pool, 0, 0), pool)
+        self.assertEqual(fc.shard_theatres(pool, 0, 1), pool)
+
+    def test_merge_combines_shard_files_and_dedupes(self):
+        with tempfile.TemporaryDirectory() as d:
+            shard_dir = Path(d) / "shards"
+            shard_dir.mkdir()
+            canonical = Path(d) / "canonical.csv"
+            r1 = _row(sdate="2026-06-20 19:30")
+            r2 = _row(sdate="2026-06-20 22:00")
+            for name, rows in [("shard-0.csv", [r1, r2]), ("shard-1.csv", [r2])]:
+                with open(shard_dir / name, "w", newline="") as f:
+                    w = csv.DictWriter(f, fieldnames=fc.FANDANGO_PRE_RESERVATION_FIELDS)
+                    w.writeheader()
+                    w.writerows(rows)
+            written, skipped = fc.merge_shard_files(shard_dir, csv_path=canonical)
+            self.assertEqual(written, 2)   # r2 appears in both shards → deduped to one
+            with open(canonical) as f:
+                self.assertEqual(len(list(csv.DictReader(f))), 2)
+
+
 if __name__ == "__main__":
     unittest.main()
