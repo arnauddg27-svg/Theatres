@@ -39,3 +39,4 @@ box-office-tracker/data/fandango-probe.csv
 
 # wiki pageviews backfill cache (transient build artifact)
 box-office-tracker/data/.wiki-pageviews-cache.json
+box-office-tracker/data/.rt-critic-cache.json
