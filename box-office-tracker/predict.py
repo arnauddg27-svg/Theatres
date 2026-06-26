@@ -59,6 +59,7 @@ PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
 DAILY_ACTUALS_CSV   = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 SOCIAL_SIGNALS_CSV  = os.path.join(DATA_DIR, "social-signals.csv")
+REVIEWS_CSV         = os.path.join(DATA_DIR, "reviews.csv")
 SHOWTIME_LINKS_JSON = os.path.join(DATA_DIR, "showtime-links.json")
 CALIBRATION_JSON    = os.path.join(DATA_DIR, "calibration.json")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
@@ -4171,6 +4172,121 @@ def _metadata_with_social_signal(target, social):
     )
 
 
+# ── Review / word-of-mouth signal ────────────────────────────────────────────
+#
+# Reviews/WOM affect the back of the weekend (the Sunday hold), NOT the opening
+# headline — validated on the 217-film comp library: corr(RT audience score,
+# Sunday share) = +0.35, while corr with the Thursday→weekend multiple ≈ 0. So
+# the effect is a small, bounded trim/boost to the Sunday portion (a 50-vs-95
+# RT gap moves the weekend total by only ~-2.7%..+1.0%). Neutral when a film has
+# no review score. Leak-safe via as_of_date / through_date in replay.
+
+REVIEW_FACTOR_FLOOR = 0.94   # safety clamp on the weekend multiplier
+REVIEW_FACTOR_CAP = 1.04
+_REVIEW_SUNDAY_REGRESSION = None   # cached (intercept, slope, mean_score, base_sunday_share)
+
+
+def load_reviews_data(weekend_of=None, through_date=None):
+    """Load review/WOM scores grouped by movie (latest as_of_date per movie).
+
+    data/reviews.csv is data-source agnostic (RT audience/critic, IMDb). Leak-
+    safe: rows dated after through_date are ignored in replay. Returns {} (the
+    review layer stays neutral) when the file is absent or empty.
+    """
+    if not os.path.exists(REVIEWS_CSV):
+        return {}
+    latest = {}   # movie -> (as_of_date, row)
+    with open(REVIEWS_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            movie = (row.get("movie_title") or row.get("movie") or "").strip()
+            if not movie:
+                continue
+            row_weekend = (row.get("weekend_of") or "").strip()
+            if weekend_of and row_weekend and row_weekend != weekend_of:
+                continue
+            as_of = (row.get("as_of_date") or "").strip()
+            if through_date and as_of and as_of > through_date:
+                continue
+            prev = latest.get(movie)
+            if prev is None or as_of >= prev[0]:
+                latest[movie] = (as_of, row)
+    return {movie: row for movie, (_as_of, row) in latest.items()}
+
+
+def _review_sunday_regression():
+    """Fit sunday_share ~ rt_audience_score on the comp library (cached)."""
+    global _REVIEW_SUNDAY_REGRESSION
+    if _REVIEW_SUNDAY_REGRESSION is not None:
+        return _REVIEW_SUNDAY_REGRESSION
+    pts = []
+    try:
+        with open(os.path.join(DATA_DIR, "historical-comps.csv"), "r") as f:
+            for r in csv.DictReader(f):
+                try:
+                    ow = float(r.get("opening_weekend_m") or 0)
+                    sun = float(r.get("sunday_m") or 0)
+                    rt = float(r.get("rt_audience_score") or 0)
+                except (TypeError, ValueError):
+                    continue
+                if ow > 0 and sun > 0 and rt > 0:
+                    pts.append((rt, sun / ow))
+    except OSError:
+        pts = []
+    if len(pts) < 20:
+        _REVIEW_SUNDAY_REGRESSION = (None, 0.0, 0.0, 0.0)   # not enough data → neutral
+        return _REVIEW_SUNDAY_REGRESSION
+    n = len(pts)
+    mx = sum(p[0] for p in pts) / n
+    my = sum(p[1] for p in pts) / n
+    denom = sum((p[0] - mx) ** 2 for p in pts)
+    slope = sum((p[0] - mx) * (p[1] - my) for p in pts) / denom if denom else 0.0
+    intercept = my - slope * mx
+    base_share = intercept + slope * mx
+    _REVIEW_SUNDAY_REGRESSION = (intercept, slope, mx, base_share)
+    return _REVIEW_SUNDAY_REGRESSION
+
+
+def review_weekend_factor(rt_audience_score):
+    """Bounded weekend multiplier from a film's RT audience score.
+
+    Translates the comp-calibrated Sunday-share shift into a weekend-level
+    factor: factor = 1 + base_sunday_share * (predicted_share(score)/base - 1).
+    Returns 1.0 (neutral) when no score or insufficient comp data.
+    """
+    if not rt_audience_score:
+        return 1.0
+    intercept, slope, _mean, base_share = _review_sunday_regression()
+    if not base_share or slope == 0.0:
+        return 1.0
+    predicted_share = intercept + slope * float(rt_audience_score)
+    sunday_factor = predicted_share / base_share
+    weekend_factor = 1.0 + base_share * (sunday_factor - 1.0)
+    return max(REVIEW_FACTOR_FLOOR, min(REVIEW_FACTOR_CAP, weekend_factor))
+
+
+def attach_review_signal(pred, reviews_data):
+    """Attach the review/WOM layer to a prediction (neutral if no score)."""
+    movie = pred.get("movie", "")
+    row = movie_mapping_get(reviews_data or {}, movie, None)
+    score = None
+    if row:
+        try:
+            score = float(row.get("rt_audience_score") or 0) or None
+        except (TypeError, ValueError):
+            score = None
+    factor = review_weekend_factor(score)
+    pred["review_rt_audience_score"] = score
+    pred["review_weekend_factor"] = factor
+    pred["review_signal"] = {
+        "rt_audience_score": score,
+        "weekend_factor": round(factor, 4),
+        "impact_pct": round((factor - 1.0) * 100, 1),
+        "source": (row or {}).get("source", "") if row else "",
+        "active": bool(score) and factor != 1.0,
+    }
+    return pred
+
+
 def complete_snapshot_covers_missing_days(pred):
     """Whether snapshot rows directly fill every missing weekend day.
 
@@ -4219,18 +4335,43 @@ def select_regression_prediction(pred, cal=None):
     to observed seat demand plus snapshot, theatre-footprint, residual, and
     social layers.
     """
-    # The production forecast now comes directly from the seat-regression
-    # calibration block (via days_to_weekend -> seat_regression.predict_weekend).
-    # The interval it produces is already honest/wide, so we pass it through
-    # with NO stacked multiplicative adjustments (snapshot blend, component
-    # disagreement buffer, historical-residual regression, social factor).
-    mid = pred["seat_mid_m"]
-    low = pred["seat_low_m"]
-    high = pred["seat_high_m"]
+    # The production forecast comes from the seat-regression calibration block
+    # (days_to_weekend -> seat_regression.predict_weekend), passed through with NO
+    # stacked multiplicative adjustments (snapshot blend, component-disagreement
+    # buffer, historical-residual regression, social factor).
+    #
+    # EXCEPTION — Thursday-only window: when Thursday is the only seat day, the
+    # seat-only weekend is a day-SHAPE EXTRAPOLATION (Thursday actual × the
+    # average historical Fri/Sat/Sun split), which structurally over-predicts
+    # frontloaded openings (tentpoles/superhero capture a big share on Thu/Fri).
+    # If snapshots already cover every missing Fri/Sat/Sun day, that film-specific
+    # daily reservation evidence (snapshot_mid_m = Thursday seat + Fri/Sat/Sun
+    # snapshot) beats the average-shape extrapolation — make it the headline.
+    # Only fires for partial-week LIVE forecasts; complete-data historical
+    # predictions have no missing weekend days, so calibration is unchanged.
     active_tier = (cal or {}).get("calibration_factors", {}).get("regression", {}).get("active_tier")
-    source = "seat-snapshot-regression"
-    basis = f"regression calibration (tier={active_tier})"
     uses_comps = False
+    if complete_snapshot_covers_missing_days(pred):
+        mid = pred["snapshot_mid_m"]
+        low = pred["snapshot_low_m"]
+        high = pred["snapshot_high_m"]
+        source = "snapshot-daily-evidence"
+        basis = f"snapshot daily evidence — Thursday-only seat day (tier={active_tier})"
+    else:
+        mid = pred["seat_mid_m"]
+        low = pred["seat_low_m"]
+        high = pred["seat_high_m"]
+        source = "seat-snapshot-regression"
+        basis = f"regression calibration (tier={active_tier})"
+
+    # Review / word-of-mouth: a small, comp-calibrated, bounded weekend trim/boost
+    # (Sunday-hold driven). Neutral (1.0) when the film has no review score.
+    review_factor = pred.get("review_weekend_factor", 1.0) or 1.0
+    if review_factor != 1.0:
+        mid *= review_factor
+        low *= review_factor
+        high *= review_factor
+        basis += f"; reviews ×{review_factor:.3f}"
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -6138,7 +6279,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
                   social_data=None, daily_actual_overrides=None,
                   showtime_link_profiles=None,
-                  apply_empirical_regression=True):
+                  apply_empirical_regression=True, reviews_data=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -6821,6 +6962,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "amc_total_weekend": sum(d.get("amc_total", 0) for d in daily_details.values()),
     }
     attach_social_signal_prediction(result, social_data)
+    attach_review_signal(result, reviews_data)
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
@@ -8191,6 +8333,7 @@ def main():
         poly_data = load_polymarket_data()
         snapshot_data = load_pre_reservation_data()
         social_data = load_social_signal_data()
+        reviews_data = load_reviews_data()
         daily_actual_overrides = load_daily_actual_overrides()
         showtime_link_profiles = load_showtime_link_daypart_profiles()
         theatre_counts = load_theatre_counts()
@@ -8212,7 +8355,8 @@ def main():
                             snapshot_data=movie_mapping_get(snapshot_data, movie_match, {}),
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
-                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie_match, {}))
+                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie_match, {}),
+                            reviews_data=reviews_data)
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -8294,6 +8438,10 @@ def main():
         weekend_of=replay_weekend,
         through_date=through_date,
     )
+    reviews_data = load_reviews_data(
+        weekend_of=replay_weekend,
+        through_date=through_date,
+    )
     daily_actual_overrides = load_daily_actual_overrides(
         weekend_of=replay_weekend,
         through_date=through_date,
@@ -8351,7 +8499,8 @@ def main():
                             snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
-                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}))
+                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
+                            reviews_data=reviews_data)
         if pred:
             print_prediction(pred, verbose=verbose)
 
