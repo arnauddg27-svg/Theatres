@@ -252,7 +252,17 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
         self.assertIn("Download scrape artifacts", block)
         self.assertIn("uses: actions/download-artifact@v4", block)
-        self.assertNotIn("continue-on-error: true", block)
+        # The core finalize write path (merge -> predict -> commit -> push) must
+        # fail loudly. Only the best-effort word-of-mouth fetches (Rotten
+        # Tomatoes reviews + Wikipedia anticipation), which run before predict,
+        # may swallow errors so a flaky external API can't block the prediction
+        # commit. Assert nothing from predict onward is continue-on-error, and
+        # that the only such steps are those two known fetches.
+        self.assertNotIn(
+            "continue-on-error: true",
+            block[block.index("run: python predict.py"):],
+        )
+        self.assertEqual(block.count("continue-on-error: true"), 2)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
         self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)

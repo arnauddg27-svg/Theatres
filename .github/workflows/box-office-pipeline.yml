@@ -497,6 +497,17 @@ jobs:
         continue-on-error: true
         run: python scripts/import_reviews.py
 
+      - name: Auto-fetch Wikipedia anticipation (diagnostic)
+        # Word-of-mouth DIAGNOSTIC only: release-week Wikipedia pageviews are a
+        # leak-free anticipation signal, but the backtest showed they're
+        # redundant with the Thursday seat read (LOO MAE 21.6%->21.8%), so they
+        # render as a social-signal context card and DO NOT move the headline.
+        # Best effort — never fail finalize.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python scripts/import_wiki_pageviews.py
+
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
