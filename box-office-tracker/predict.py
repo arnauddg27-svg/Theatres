@@ -4183,7 +4183,13 @@ def _metadata_with_social_signal(target, social):
 
 REVIEW_FACTOR_FLOOR = 0.94   # safety clamp on the weekend multiplier
 REVIEW_FACTOR_CAP = 1.04
-_REVIEW_SUNDAY_REGRESSION = None   # cached (intercept, slope, mean_score, base_sunday_share)
+_REVIEW_REGRESSIONS = {}   # score column -> (intercept, slope, mean_score, base_sunday_share)
+# Review/WOM audience signals in priority order. IMDb is primary — on the comp
+# library it predicts the Sunday hold about as well as RT verified audience
+# (r≈0.32 vs 0.35) and is the source the operator trusts over RT — with RT
+# verified audience as the fallback. RT critic tested redundant with audience
+# (subsumed at r=0.53; no LOO gain), so it is not used.
+REVIEW_SIGNAL_PRIORITY = (("imdb_rating", "IMDb"), ("rt_audience_score", "RT audience"))
 
 
 def load_reviews_data(weekend_of=None, through_date=None):
@@ -4213,11 +4219,11 @@ def load_reviews_data(weekend_of=None, through_date=None):
     return {movie: row for movie, (_as_of, row) in latest.items()}
 
 
-def _review_sunday_regression():
-    """Fit sunday_share ~ rt_audience_score on the comp library (cached)."""
-    global _REVIEW_SUNDAY_REGRESSION
-    if _REVIEW_SUNDAY_REGRESSION is not None:
-        return _REVIEW_SUNDAY_REGRESSION
+def _review_sunday_regression(column="imdb_rating"):
+    """Fit sunday_share ~ <column> on the comp library (cached per column)."""
+    cached = _REVIEW_REGRESSIONS.get(column)
+    if cached is not None:
+        return cached
     pts = []
     try:
         with open(os.path.join(DATA_DIR, "historical-comps.csv"), "r") as f:
@@ -4225,16 +4231,16 @@ def _review_sunday_regression():
                 try:
                     ow = float(r.get("opening_weekend_m") or 0)
                     sun = float(r.get("sunday_m") or 0)
-                    rt = float(r.get("rt_audience_score") or 0)
+                    sc = float(r.get(column) or 0)
                 except (TypeError, ValueError):
                     continue
-                if ow > 0 and sun > 0 and rt > 0:
-                    pts.append((rt, sun / ow))
+                if ow > 0 and sun > 0 and sc > 0:
+                    pts.append((sc, sun / ow))
     except OSError:
         pts = []
     if len(pts) < 20:
-        _REVIEW_SUNDAY_REGRESSION = (None, 0.0, 0.0, 0.0)   # not enough data → neutral
-        return _REVIEW_SUNDAY_REGRESSION
+        _REVIEW_REGRESSIONS[column] = (None, 0.0, 0.0, 0.0)   # not enough data → neutral
+        return _REVIEW_REGRESSIONS[column]
     n = len(pts)
     mx = sum(p[0] for p in pts) / n
     my = sum(p[1] for p in pts) / n
@@ -4242,46 +4248,57 @@ def _review_sunday_regression():
     slope = sum((p[0] - mx) * (p[1] - my) for p in pts) / denom if denom else 0.0
     intercept = my - slope * mx
     base_share = intercept + slope * mx
-    _REVIEW_SUNDAY_REGRESSION = (intercept, slope, mx, base_share)
-    return _REVIEW_SUNDAY_REGRESSION
+    _REVIEW_REGRESSIONS[column] = (intercept, slope, mx, base_share)
+    return _REVIEW_REGRESSIONS[column]
 
 
-def review_weekend_factor(rt_audience_score):
-    """Bounded weekend multiplier from a film's RT audience score.
+def review_weekend_factor(score, column="imdb_rating"):
+    """Bounded weekend multiplier from a film's audience review score.
 
     Translates the comp-calibrated Sunday-share shift into a weekend-level
     factor: factor = 1 + base_sunday_share * (predicted_share(score)/base - 1).
-    Returns 1.0 (neutral) when no score or insufficient comp data.
+    `column` picks the comp-calibrated scale the score is on (IMDb 0-10 or RT
+    audience 0-100). Returns 1.0 (neutral) when no score or insufficient comps.
     """
-    if not rt_audience_score:
+    if not score:
         return 1.0
-    intercept, slope, _mean, base_share = _review_sunday_regression()
+    intercept, slope, _mean, base_share = _review_sunday_regression(column)
     if not base_share or slope == 0.0:
         return 1.0
-    predicted_share = intercept + slope * float(rt_audience_score)
+    predicted_share = intercept + slope * float(score)
     sunday_factor = predicted_share / base_share
     weekend_factor = 1.0 + base_share * (sunday_factor - 1.0)
     return max(REVIEW_FACTOR_FLOOR, min(REVIEW_FACTOR_CAP, weekend_factor))
 
 
 def attach_review_signal(pred, reviews_data):
-    """Attach the review/WOM layer to a prediction (neutral if no score)."""
+    """Attach the review/WOM layer (IMDb-primary, RT-audience fallback).
+
+    Neutral (factor 1.0) when the film has no review score in reviews.csv.
+    """
     movie = pred.get("movie", "")
-    row = movie_mapping_get(reviews_data or {}, movie, None)
+    row = movie_mapping_get(reviews_data or {}, movie, None) or {}
     score = None
-    if row:
+    column = "imdb_rating"
+    label = ""
+    for col, name in REVIEW_SIGNAL_PRIORITY:
         try:
-            score = float(row.get("rt_audience_score") or 0) or None
+            value = float(row.get(col) or 0) or None
         except (TypeError, ValueError):
-            score = None
-    factor = review_weekend_factor(score)
-    pred["review_rt_audience_score"] = score
+            value = None
+        if value:
+            score, column, label = value, col, name
+            break
+    factor = review_weekend_factor(score, column)
+    pred["review_score"] = score
+    pred["review_score_source"] = label
     pred["review_weekend_factor"] = factor
     pred["review_signal"] = {
-        "rt_audience_score": score,
+        "score": score,
+        "score_source": label,            # "IMDb" or "RT audience"
         "weekend_factor": round(factor, 4),
         "impact_pct": round((factor - 1.0) * 100, 1),
-        "source": (row or {}).get("source", "") if row else "",
+        "source": row.get("source", ""),
         "active": bool(score) and factor != 1.0,
     }
     return pred
@@ -4371,7 +4388,10 @@ def select_regression_prediction(pred, cal=None):
         mid *= review_factor
         low *= review_factor
         high *= review_factor
-        basis += f"; reviews ×{review_factor:.3f}"
+        src = pred.get("review_score_source") or "reviews"
+        score = pred.get("review_score")
+        basis += (f"; {src} {score:g} ×{review_factor:.3f}" if score
+                  else f"; reviews ×{review_factor:.3f}")
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low

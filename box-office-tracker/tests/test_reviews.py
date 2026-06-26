@@ -14,27 +14,38 @@ class ReviewWeekendFactorTests(unittest.TestCase):
         self.assertEqual(P.review_weekend_factor(None), 1.0)
         self.assertEqual(P.review_weekend_factor(0), 1.0)
 
-    def test_bad_reviews_trim_good_reviews_boost(self):
-        bad = P.review_weekend_factor(50)
-        good = P.review_weekend_factor(95)
+    def test_imdb_is_the_default_scale(self):
+        # default column is imdb_rating (0-10): low rating trims, high boosts.
+        bad = P.review_weekend_factor(4.5)
+        good = P.review_weekend_factor(8.0)
         self.assertLess(bad, 1.0)          # weak WOM → trim the weekend
         self.assertGreater(good, 1.0)      # strong WOM → small boost
         self.assertLess(bad, good)         # monotonic in score
 
-    def test_near_mean_is_about_neutral(self):
-        # the comp mean RT audience (~82) maps to ~1.0
-        self.assertAlmostEqual(P.review_weekend_factor(82), 1.0, delta=0.01)
+    def test_imdb_mean_is_about_neutral(self):
+        # the comp-mean IMDb rating maps to ~1.0 (no shift at the average)
+        mean_imdb = P._review_sunday_regression("imdb_rating")[2]
+        self.assertAlmostEqual(P.review_weekend_factor(mean_imdb), 1.0, delta=0.01)
 
-    def test_factor_is_bounded(self):
-        for score in (1, 5, 30, 70, 100, 200, -5):
-            f = P.review_weekend_factor(score)
-            self.assertGreaterEqual(f, P.REVIEW_FACTOR_FLOOR)
-            self.assertLessEqual(f, P.REVIEW_FACTOR_CAP)
+    def test_rt_audience_scale_still_supported_as_fallback(self):
+        bad = P.review_weekend_factor(50, "rt_audience_score")
+        good = P.review_weekend_factor(95, "rt_audience_score")
+        self.assertLess(bad, good)
+        self.assertAlmostEqual(
+            P.review_weekend_factor(82, "rt_audience_score"), 1.0, delta=0.02)
+
+    def test_factor_is_bounded_on_both_scales(self):
+        for col, scores in (("imdb_rating", (0.5, 2, 5, 7, 10, 20, -3)),
+                            ("rt_audience_score", (1, 5, 30, 70, 100, 200, -5))):
+            for score in scores:
+                f = P.review_weekend_factor(score, col)
+                self.assertGreaterEqual(f, P.REVIEW_FACTOR_FLOOR)
+                self.assertLessEqual(f, P.REVIEW_FACTOR_CAP)
 
     def test_effect_is_small(self):
-        # reviews affect the Sunday hold only — even an awful score moves the
-        # weekend total by no more than the floor (~6%).
-        self.assertGreaterEqual(P.review_weekend_factor(20), 0.93)
+        # reviews affect the Sunday hold only — even an awful IMDb score moves
+        # the weekend total by no more than the floor (~6%).
+        self.assertGreaterEqual(P.review_weekend_factor(2.0), 0.93)
 
 
 class LoadReviewsDataTests(unittest.TestCase):

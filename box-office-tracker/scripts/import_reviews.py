@@ -60,6 +60,17 @@ def fetch_rt_scores(title, release_year):
     return {"rt_audience_score": audience, "rt_critic_score": critic, "rt_url": candidate["url"]}
 
 
+def fetch_imdb_rating(title, release_year, ratings):
+    """Return {imdb_rating, imdb_votes, imdb_url} or None (best effort)."""
+    if not ratings:
+        return None
+    try:
+        rating, votes, url = RT.imdb_reference(title, release_year, ratings)
+        return {"imdb_rating": rating, "imdb_votes": votes, "imdb_url": url}
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def current_weekend_and_films(args):
     weekend = args.weekend or P._current_weekend_friday()
     if args.movies:
@@ -98,25 +109,35 @@ def main():
         return 0
     year = int(weekend[:4])
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    print(f"Fetching RT scores for weekend {weekend}: {films}")
+    print(f"Fetching review scores (IMDb primary, RT fallback) for weekend {weekend}: {films}")
+
+    imdb_ratings = {}
+    try:
+        imdb_ratings = RT.load_imdb_ratings()
+    except Exception as e:  # noqa: BLE001
+        print(f"  (IMDb dataset unavailable: {str(e)[:60]} — IMDb scores skipped)")
 
     rows = []
     for title in films:
         try:
             scores = fetch_rt_scores(title, year)
-        except Exception as e:
-            print(f"  {title}: ERROR {str(e)[:80]}")
+        except Exception as e:  # noqa: BLE001
+            scores = None
+            print(f"  {title}: RT error {str(e)[:60]}")
+        imdb = fetch_imdb_rating(title, year, imdb_ratings)
+        if not scores and not imdb:
+            print(f"  {title}: no IMDb or RT match — skipped (review layer neutral)")
             continue
-        if not scores:
-            print(f"  {title}: no RT match / no score yet — skipped (review layer neutral)")
-            continue
-        print(f"  {title}: RT audience={scores['rt_audience_score'] or '-'} "
-              f"critic={scores['rt_critic_score'] or '-'}  ({scores['rt_url']})")
+        rt_aud = (scores or {}).get("rt_audience_score", "")
+        rt_crit = (scores or {}).get("rt_critic_score", "")
+        imdb_rating = (imdb or {}).get("imdb_rating", "")
+        print(f"  {title}: IMDb={imdb_rating or '-'}  RT audience={rt_aud or '-'} critic={rt_crit or '-'}")
         rows.append({
             "weekend_of": weekend, "as_of_date": today, "movie_title": title,
-            "rt_audience_score": scores["rt_audience_score"],
-            "rt_critic_score": scores["rt_critic_score"], "imdb_rating": "",
-            "source": "rottentomatoes", "notes": scores["rt_url"],
+            "rt_audience_score": rt_aud, "rt_critic_score": rt_crit,
+            "imdb_rating": imdb_rating,
+            "source": "imdb+rottentomatoes",
+            "notes": (imdb or {}).get("imdb_url", "") or (scores or {}).get("rt_url", ""),
         })
 
     if args.dry_run:
