@@ -487,6 +487,16 @@ jobs:
           # No playwright needed here — predict.py and export_seat_counts_xlsx.py
           # are pure-pandas. Skipping the chromium download saves ~2 min.
 
+      - name: Auto-fetch review scores
+        # Word-of-mouth layer: pull this weekend's films' Rotten Tomatoes
+        # audience/critic scores into data/reviews.csv before predicting. Best
+        # effort — a fetch miss leaves the review layer neutral, so it must not
+        # fail finalize.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python scripts/import_reviews.py
+
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker

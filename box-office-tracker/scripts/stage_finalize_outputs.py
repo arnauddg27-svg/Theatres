@@ -17,6 +17,7 @@ OUTPUT_FILES = [
     "box-office-tracker/data/polymarket-markets.csv",
     "box-office-tracker/data/calibration.json",
     "box-office-tracker/data/seat-counts.xlsx",
+    "box-office-tracker/data/reviews.csv",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"
