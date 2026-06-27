@@ -4304,6 +4304,77 @@ def attach_review_signal(pred, reviews_data):
     return pred
 
 
+# Post-Friday anchor. Once Friday is an observed seat day, a soft (or strong)
+# Friday is fresh ground truth that pre-weekend reservations can't see — so the
+# headline blends with (observed Thu+Fri) × a front-load-aware Friday→weekend
+# multiplier. Validated +1.5 pts MAE on the as-of-Saturday history (n=11); every
+# blend weight 33–67% improves, so it isn't knife-edged. Inert until Friday is
+# observed, so the as-of-Thursday path is unchanged.
+FRIDAY_ANCHOR_BLEND_WEIGHT = 0.5
+_FRIDAY_WEEKEND_MULTIPLIERS = None   # (global, {audience_type: (mult, n)})
+
+
+def _friday_weekend_multipliers():
+    global _FRIDAY_WEEKEND_MULTIPLIERS
+    if _FRIDAY_WEEKEND_MULTIPLIERS is not None:
+        return _FRIDAY_WEEKEND_MULTIPLIERS
+    by, allv = {}, []
+    try:
+        with open(os.path.join(DATA_DIR, "historical-comps.csv"), "r") as f:
+            for r in csv.DictReader(f):
+                try:
+                    fr = float(r.get("friday_m") or 0)   # incl previews (public convention)
+                    sa = float(r.get("saturday_m") or 0)
+                    su = float(r.get("sunday_m") or 0)
+                except (TypeError, ValueError):
+                    continue
+                if fr > 0 and sa > 0 and su > 0:
+                    mult = (fr + sa + su) / fr
+                    allv.append(mult)
+                    atype = (r.get("audience_type") or "").strip()
+                    if atype:
+                        by.setdefault(atype, []).append(mult)
+    except OSError:
+        pass
+    if not allv:
+        _FRIDAY_WEEKEND_MULTIPLIERS = (0.0, {})
+        return _FRIDAY_WEEKEND_MULTIPLIERS
+    glob = sum(allv) / len(allv)
+    per = {a: (sum(v) / len(v), len(v)) for a, v in by.items()}
+    _FRIDAY_WEEKEND_MULTIPLIERS = (glob, per)
+    return _FRIDAY_WEEKEND_MULTIPLIERS
+
+
+def audience_friday_weekend_multiplier(audience_type, min_n=6, shrink=8.0):
+    """Friday(incl previews)→weekend multiplier, audience-aware, shrunk toward
+    the global multiplier for thin/unknown audience cells (None if no comps)."""
+    glob, per = _friday_weekend_multipliers()
+    if not glob:
+        return None
+    info = per.get((audience_type or "").strip())
+    if not info:
+        return glob
+    mult, n = info
+    if n < min_n:
+        return glob
+    return glob + (n / (n + shrink)) * (mult - glob)
+
+
+def friday_anchored_weekend_m(pred):
+    """(weekend_m, front_half_m, multiplier) once Thursday AND Friday are observed
+    seat days, else None. weekend = (observed Thu+Fri gross) × multiplier."""
+    dd = pred.get("daily_details") or {}
+    thu = _positive_float((dd.get("Thursday") or {}).get("domestic_mid"))
+    fri = _positive_float((dd.get("Friday") or {}).get("domestic_mid"))
+    if not (thu and fri):
+        return None
+    mult = audience_friday_weekend_multiplier(pred.get("audience_type"))
+    if not mult:
+        return None
+    front_m = (thu + fri) / 1_000_000.0   # domestic_mid is in dollars
+    return front_m * mult, front_m, mult
+
+
 def complete_snapshot_covers_missing_days(pred):
     """Whether snapshot rows directly fill every missing weekend day.
 
@@ -4373,13 +4444,30 @@ def select_regression_prediction(pred, cal=None):
         low = pred["snapshot_low_m"]
         high = pred["snapshot_high_m"]
         source = "snapshot-daily-evidence"
-        basis = f"snapshot daily evidence — Thursday-only seat day (tier={active_tier})"
+        observed = [d for d in ("Thursday", "Friday", "Saturday", "Sunday")
+                    if d in (pred.get("daily_details") or {})]
+        seat_days = "+".join(observed) if observed else "preview"
+        basis = f"snapshot daily evidence — {seat_days} seat day(s) (tier={active_tier})"
     else:
         mid = pred["seat_mid_m"]
         low = pred["seat_low_m"]
         high = pred["seat_high_m"]
         source = "seat-snapshot-regression"
         basis = f"regression calibration (tier={active_tier})"
+
+    # Post-Friday anchor: once Friday is an observed seat day, blend the headline
+    # with (observed Thu+Fri) × a front-load-aware Friday→weekend multiplier, so a
+    # soft Friday pulls Sat/Sun down even when reservations don't. Inert pre-Friday.
+    fa = friday_anchored_weekend_m(pred)
+    if fa is not None and mid and mid > 0:
+        fa_mid, front_m, mult = fa
+        w = FRIDAY_ANCHOR_BLEND_WEIGHT
+        blended = (1.0 - w) * mid + w * fa_mid
+        scale = blended / mid
+        mid, low, high = blended, low * scale, high * scale
+        pred["friday_anchored_mid_m"] = round(fa_mid, 2)
+        pred["friday_anchor_blend_weight"] = w
+        basis += f"; Fri-anchor blend (front ${front_m:.1f}M ×{mult:.2f}→${fa_mid:.1f}M, w={w:g})"
 
     # Review / word-of-mouth: a small, comp-calibrated, bounded weekend trim/boost
     # (Sunday-hold driven). Neutral (1.0) when the film has no review score.
@@ -6983,6 +7071,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     }
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
+    result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
