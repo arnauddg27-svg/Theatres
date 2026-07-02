@@ -4536,6 +4536,113 @@ def amc_market_share_override_for(target_metadata):
     return None
 
 
+# Cross-chain (Fandango) per-film AMC share. AMC's revenue share of a film is
+# idiosyncratic (broad films under-index, young/horror crowds over-index) and
+# footprint/audience-type rules were refuted. But relative occupancy ACROSS
+# chains is a direct demand measurement: with wA = fleet AMC share,
+#   share_f = wA*occA / (wA*occA + (1-wA)*K*occRC)
+# where K corrects Fandango's pre-show reservation reads for walk-ups vs AMC's
+# post-show reads. On 2026-06-26 the two films with cross-chain data + actuals
+# implied consistent K (Supergirl 1.106, Jackass 1.197) and K=1.15 reconstructs
+# both true shares within ±3% — one physical parameter, corroborated by two very
+# different films. Applied SHRUNK (50% toward the fleet share) and CLAMPED, and
+# only when the film actually has cross-chain rows — films without Fandango
+# coverage (all history pre-2026-06-26) are byte-identical. An operator
+# metadata override always wins. Self-strengthens as covered weekends accrue.
+FANDANGO_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "fandango-pre-reservation-snapshots.csv")
+CROSS_CHAIN_WALKUP_K = 1.15
+CROSS_CHAIN_SHARE_WEIGHT = 0.5      # shrink toward the calibrated fleet share
+CROSS_CHAIN_SHARE_CLAMP = (0.70, 1.45)   # x fleet share
+CROSS_CHAIN_MIN_AMC_ROWS = 50
+CROSS_CHAIN_MIN_RC_ROWS = 40
+_CROSS_CHAIN_CACHE = {}
+
+
+def _occ_pct(row):
+    try:
+        v = float(str(row.get("occupancy_pct", "")).replace("%", "").strip())
+    except (TypeError, ValueError):
+        return None
+    return v if 0.0 <= v <= 100.0 else None
+
+
+def load_cross_chain_occupancy(weekend_of=None, through_date=None):
+    """Per-movie mean occupancy at AMC vs Regal/Cinemark (Fandango) for a weekend.
+
+    Returns {movie: {"amc_occ", "rc_occ", "amc_rows", "rc_rows"}} for movies with
+    rows on BOTH sides. Leak-safe: AMC rows filtered by show date <= through_date,
+    Fandango rows by snapshot_time date <= through_date. Returns {} when the
+    Fandango file is absent/empty (all pre-multichain history)."""
+    if weekend_of is None:
+        weekend_of = _current_weekend_friday()
+    key = (weekend_of, through_date)
+    if key in _CROSS_CHAIN_CACHE:
+        return _CROSS_CHAIN_CACHE[key]
+    if not os.path.exists(FANDANGO_SNAPSHOTS_CSV):
+        _CROSS_CHAIN_CACHE[key] = {}
+        return {}
+    rc = {}
+    with open(FANDANGO_SNAPSHOTS_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            if (row.get("weekend_of") or "").strip() != weekend_of:
+                continue
+            snap_date = (row.get("snapshot_time") or "")[:10]
+            if through_date and snap_date and snap_date > through_date:
+                continue
+            occ = _occ_pct(row)
+            if occ is None:
+                continue
+            rc.setdefault(row.get("movie_title", "").strip(), []).append(occ)
+    if not rc:
+        _CROSS_CHAIN_CACHE[key] = {}
+        return {}
+    amc = {}
+    with open(SEAT_CSV, "r") as f:
+        for row in csv.DictReader(f):
+            if (row.get("weekend_of") or "").strip() != weekend_of:
+                continue
+            if through_date and (row.get("date") or "") > through_date:
+                continue
+            occ = _occ_pct(row)
+            if occ is None:
+                continue
+            amc.setdefault(row.get("movie_title", "").strip(), []).append(occ)
+    out = {}
+    for movie, rc_vals in rc.items():
+        amc_vals = movie_mapping_get(amc, movie, None)
+        if not amc_vals:
+            continue
+        out[movie] = {
+            "amc_occ": sum(amc_vals) / len(amc_vals),
+            "rc_occ": sum(rc_vals) / len(rc_vals),
+            "amc_rows": len(amc_vals),
+            "rc_rows": len(rc_vals),
+        }
+    _CROSS_CHAIN_CACHE[key] = out
+    return out
+
+
+def cross_chain_share(movie, cross_chain_data, cal):
+    """Bounded per-film AMC share from cross-chain occupancy (None = no signal)."""
+    info = movie_mapping_get(cross_chain_data or {}, movie, None)
+    if not info:
+        return None
+    if (info.get("amc_rows", 0) < CROSS_CHAIN_MIN_AMC_ROWS
+            or info.get("rc_rows", 0) < CROSS_CHAIN_MIN_RC_ROWS):
+        return None
+    occ_a, occ_rc = info.get("amc_occ") or 0.0, info.get("rc_occ") or 0.0
+    if occ_a <= 0 or occ_rc <= 0:
+        return None
+    base = calibrated_amc_market_share(cal)
+    a = base * occ_a
+    b = (1.0 - base) * CROSS_CHAIN_WALKUP_K * occ_rc
+    formula = a / (a + b)
+    shrunk = base + CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
+    lo, hi = CROSS_CHAIN_SHARE_CLAMP
+    clamped = max(base * lo, min(base * hi, shrunk))
+    return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, clamped))
+
+
 def amc_to_domestic(amc_revenue, cal, share_override=None):
     """Stage C: scale AMC revenue to total domestic market."""
     if share_override is None:
@@ -6387,7 +6494,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   national_theatre_count=None, snapshot_data=None,
                   social_data=None, daily_actual_overrides=None,
                   showtime_link_profiles=None,
-                  apply_empirical_regression=True, reviews_data=None):
+                  apply_empirical_regression=True, reviews_data=None,
+                  cross_chain_data=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -6453,6 +6561,15 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             movie_metadata,
             national_theatre_count=int(national_theatre_count),
         )
+
+    # Resolve the per-film AMC share once: an operator metadata override wins;
+    # otherwise the cross-chain (Fandango) occupancy share applies when this
+    # film has cross-chain coverage; otherwise None -> calibrated fleet share.
+    share_override_resolved = amc_market_share_override_for(movie_metadata)
+    cross_chain_share_value = None
+    if share_override_resolved is None:
+        cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
+        share_override_resolved = cross_chain_share_value
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")
@@ -6633,7 +6750,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         # (e.g. an ultra-wide family tentpole that under-indexes at AMC) does
         # apply here — it is a deliberate prior for THIS title, not an actual.
         share_anchor_for_day = None
-        share_override = amc_market_share_override_for(movie_metadata)
+        share_override = share_override_resolved
         domestic_mid, domestic_low, domestic_high = amc_to_domestic(
             amc_total,
             cal,
@@ -6884,7 +7001,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         },
         amc_share_anchor=dynamic_amc_share_anchor,
         amc_share_anchors=dynamic_amc_share_anchors,
-        amc_share_override=amc_market_share_override_for(movie_metadata),
+        amc_share_override=share_override_resolved,
     )
     data_profile = missing_data_profile(
         daily_details,
@@ -7072,6 +7189,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
     result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
+    if cross_chain_share_value is not None:
+        info = movie_mapping_get(cross_chain_data or {}, movie, {}) or {}
+        result["cross_chain_share"] = round(cross_chain_share_value, 4)
+        result["cross_chain_share_detail"] = {
+            "amc_occ": round(info.get("amc_occ", 0.0), 1),
+            "rc_occ": round(info.get("rc_occ", 0.0), 1),
+            "amc_rows": info.get("amc_rows", 0),
+            "rc_rows": info.get("rc_rows", 0),
+            "fleet_share": round(calibrated_amc_market_share(cal), 4),
+        }
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
@@ -7753,6 +7880,11 @@ def print_prediction(pred, verbose=False):
     movie = pred["movie"]
     print(f"\n  {movie.upper()}")
     print(f"  {'─' * len(movie)}")
+    if pred.get("cross_chain_share") is not None:
+        d = pred.get("cross_chain_share_detail") or {}
+        print(f"  Cross-chain share: {pred['cross_chain_share']:.1%} "
+              f"(AMC occ {d.get('amc_occ', 0):.1f}% vs Regal/Cinemark {d.get('rc_occ', 0):.1f}%"
+              f" on {d.get('rc_rows', 0)} rows; fleet {d.get('fleet_share', 0):.1%})")
 
     # Seat-based
     days_str = ", ".join(
@@ -8458,6 +8590,10 @@ def main():
             return
 
         nat_count = national_theatre_count_for_movie(movie_match, theatre_counts, metadata=metadata)
+        # cross-chain occupancy must come from the MOVIE's weekend (an actual is
+        # often recorded days later, when the "current" weekend has moved on)
+        cross_chain_data = load_cross_chain_occupancy(
+            weekend_of=seat_data_weekend_of(seat_data[movie_match]))
         pred = predict_movie(movie_match, seat_data[movie_match],
                             movie_mapping_get(poly_data, movie_match, []), cal,
                             national_theatre_count=nat_count,
@@ -8465,7 +8601,8 @@ def main():
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
                             showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie_match, {}),
-                            reviews_data=reviews_data)
+                            reviews_data=reviews_data,
+                            cross_chain_data=cross_chain_data)
         if not pred:
             print(f"Could not build a prediction for {movie_match!r}; not recording actual.")
             return
@@ -8551,6 +8688,10 @@ def main():
         weekend_of=replay_weekend,
         through_date=through_date,
     )
+    cross_chain_data = load_cross_chain_occupancy(
+        weekend_of=replay_weekend,
+        through_date=through_date,
+    )
     daily_actual_overrides = load_daily_actual_overrides(
         weekend_of=replay_weekend,
         through_date=through_date,
@@ -8609,7 +8750,8 @@ def main():
                             social_data=social_data,
                             daily_actual_overrides=daily_actual_overrides,
                             showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
-                            reviews_data=reviews_data)
+                            reviews_data=reviews_data,
+                            cross_chain_data=cross_chain_data)
         if pred:
             print_prediction(pred, verbose=verbose)
 

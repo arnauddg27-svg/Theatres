@@ -65,6 +65,7 @@ def main():
         social = P.load_social_signal_data(weekend_of=w, through_date=thu)
         dao = P.load_daily_actual_overrides(weekend_of=w, through_date=thu)
         slp = P.load_showtime_link_daypart_profiles(weekend_of=w)
+        ccd = P.load_cross_chain_occupancy(weekend_of=w, through_date=thu)
         tc = P.load_theatre_counts()
         md = load_md() if load_md else None
         nat = P.national_theatre_count_for_movie(movie, tc, metadata=md)
@@ -77,6 +78,7 @@ def main():
                 social_data=social,
                 daily_actual_overrides=dao,
                 showtime_link_profiles=P.movie_mapping_get(slp, movie, {}),
+                cross_chain_data=ccd,
             )
         except Exception as e:
             rows.append((movie, w, actual, None, None, None, frontload, f"err:{str(e)[:40]}"))
