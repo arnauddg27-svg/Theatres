@@ -120,8 +120,15 @@ FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard 
 # ── Pure logic (offline-testable) ────────────────────────────────────────────
 
 def slugify_title(title):
-    """'Toy Story 5' -> 'toy-story-5' (matches Fandango's movie-overview slug)."""
-    s = re.sub(r"[^a-z0-9]+", "-", str(title or "").lower()).strip("-")
+    """'Toy Story 5' -> 'toy-story-5' (matches Fandango's movie-overview slug).
+
+    Fandango spells symbols out in its slugs — '&' becomes 'and'
+    ('Minions & Monsters' -> 'minions-and-monsters') — so normalize those before
+    stripping to alphanumerics, or the whole film is silently dropped from the
+    lane on an exact core-slug match.
+    """
+    s = str(title or "").lower().replace("&", " and ")
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
     return s
 
 
@@ -680,7 +687,14 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
 
 def _selftest():
     assert slugify_title("Toy Story 5") == "toy-story-5"
-    assert slugify_title("Star Wars: The Mandalorian & Grogu") == "star-wars-the-mandalorian-grogu"
+    # '&' must become 'and' to match Fandango's slug (regression: 2026-07-03,
+    # 'Minions & Monsters' was silently dropped when '&' was stripped instead)
+    assert slugify_title("Star Wars: The Mandalorian & Grogu") == "star-wars-the-mandalorian-and-grogu"
+    assert slugify_title("Minions & Monsters") == "minions-and-monsters"
+    assert match_target_title(
+        "/minions-and-monsters-2026-241234/movie-overview",
+        {slugify_title("Minions & Monsters"): "Minions & Monsters"},
+    ) == "Minions & Monsters"
 
     assert overview_core_slug("/toy-story-5-2026-243393/movie-overview") == "toy-story-5"
     assert overview_core_slug("https://www.fandango.com/backrooms-2026-244954/movie-overview") == "backrooms"

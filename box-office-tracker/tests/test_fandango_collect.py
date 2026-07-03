@@ -57,9 +57,21 @@ class SchemaTests(unittest.TestCase):
 class DiscoveryLogicTests(unittest.TestCase):
     def test_slugify(self):
         self.assertEqual(fc.slugify_title("Toy Story 5"), "toy-story-5")
+        # '&' -> 'and' to match Fandango slugs (regression 2026-07-03:
+        # 'Minions & Monsters' was silently dropped when '&' was stripped)
         self.assertEqual(
             fc.slugify_title("Star Wars: The Mandalorian & Grogu"),
-            "star-wars-the-mandalorian-grogu",
+            "star-wars-the-mandalorian-and-grogu",
+        )
+        self.assertEqual(fc.slugify_title("Minions & Monsters"), "minions-and-monsters")
+        self.assertEqual(fc.slugify_title("Fast & Furious 11"), "fast-and-furious-11")
+
+    def test_ampersand_title_matches_fandango_slug(self):
+        targets = {fc.slugify_title("Minions & Monsters"): "Minions & Monsters"}
+        self.assertEqual(
+            fc.match_target_title(
+                "/minions-and-monsters-2026-241234/movie-overview", targets),
+            "Minions & Monsters",
         )
 
     def test_overview_core_slug_strips_year_and_id(self):
