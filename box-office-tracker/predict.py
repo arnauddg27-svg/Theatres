@@ -4313,6 +4313,12 @@ def attach_review_signal(pred, reviews_data):
 FRIDAY_ANCHOR_BLEND_WEIGHT = 0.5
 _FRIDAY_WEEKEND_MULTIPLIERS = None   # (global, {audience_type: (mult, n)})
 
+# Family walk-up: broad_family audiences buy at the door, so the genre-blind
+# reservation→final multiplier under-reads their reservation-projected days.
+# Conservative bounded PRIOR applied to the reservation-projected share only.
+FAMILY_WALKUP_AUDIENCE = "broad_family"
+FAMILY_WALKUP_SNAPSHOT_BOOST = 1.25
+
 
 def _friday_weekend_multipliers():
     global _FRIDAY_WEEKEND_MULTIPLIERS
@@ -4454,6 +4460,33 @@ def select_regression_prediction(pred, cal=None):
         high = pred["seat_high_m"]
         source = "seat-snapshot-regression"
         basis = f"regression calibration (tier={active_tier})"
+
+    # Family walk-up boost. snapshot_reservation_multiplier projects reserved
+    # seats to final attendance by LEAD TIME ONLY — genre-blind. Kids/family
+    # films sell overwhelmingly at the door, so their reservation-projected days
+    # are under-read (the one family-ish comp, The Breadwinner, needed ~2× more
+    # uplift). This applies a bounded boost gated on broad_family, scaled by the
+    # RESERVATION-PROJECTED share so observed seat days (incl. a reported-actual
+    # Thursday) are untouched. Only ~3 films are tagged broad_family and none are
+    # in the LOO history with a snapshot headline, so the validated bake-off is
+    # byte-identical. This is a conservative PRIOR (no family snapshot data exists
+    # to fit it) — Minions & Monsters' weekend actual is its first validation.
+    if (source == "snapshot-daily-evidence"
+            and (pred.get("audience_type") or "") == FAMILY_WALKUP_AUDIENCE
+            and mid and mid > 0):
+        dw = get_day_weights(cal) if cal else DAY_WEIGHTS_DEFAULT
+        observed = set(pred.get("daily_details") or {})
+        wk_days = ("Thursday", "Friday", "Saturday", "Sunday")
+        tot = sum(dw.get(d, 0) for d in wk_days) or 1.0
+        res_share = sum(dw.get(d, 0) for d in wk_days if d not in observed) / tot
+        boost = 1.0 + (FAMILY_WALKUP_SNAPSHOT_BOOST - 1.0) * res_share
+        if boost > 1.0:
+            mid *= boost
+            low *= boost
+            high *= boost
+            pred["family_walkup_boost"] = round(boost, 4)
+            basis += (f"; family walk-up ×{boost:.3f} "
+                      f"({res_share:.0%} reservation-projected)")
 
     # Post-Friday anchor: once Friday is an observed seat day, blend the headline
     # with (observed Thu+Fri) × a front-load-aware Friday→weekend multiplier, so a
