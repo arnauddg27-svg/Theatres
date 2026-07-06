@@ -1245,10 +1245,77 @@
         "Sunday": 0.969
       },
       "coverage_ratio": 0.942
+    },
+    {
+      "movie": "Minions & Monsters",
+      "weekend_of": "2026-07-03",
+      "date": "2026-07-06",
+      "predicted_mid": 33.19,
+      "predicted_low": 29.2,
+      "predicted_high": 38.45,
+      "actual_total": 47.21,
+      "daily_actuals": {
+        "Thursday": 10.81,
+        "Friday": 16.51,
+        "Saturday": 9.47,
+        "Sunday": 10.42
+      },
+      "daily_predictions": {
+        "Thursday": 5.76,
+        "Friday": 7.16,
+        "Saturday": 9.26,
+        "Sunday": 10.93
+      },
+      "error_pct": -29.7,
+      "n_theatres": 425,
+      "n_days": 4,
+      "exclude_from_day_weights": true,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "the-numbers.com",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 5.31,
+        "Friday": 7.33,
+        "Saturday": 8.87,
+        "Sunday": 10.55
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 4.65,
+        "Friday": 4.4,
+        "Saturday": 9.07,
+        "Sunday": 9.25
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.473,
+        "Friday": 0.468,
+        "Saturday": 0.461,
+        "Sunday": 0.454
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 424,
+        "Friday": 424,
+        "Saturday": 410,
+        "Sunday": 412
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.998,
+        "Friday": 0.998,
+        "Saturday": 0.965,
+        "Sunday": 0.969
+      },
+      "coverage_ratio": 0.982,
+      "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b."
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2194,
+    "amc_market_share": 0.209,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
@@ -1621,33 +1688,55 @@
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Minions & Monsters",
+        "weekend_of": "2026-07-03",
+        "abs_error_pct": 29.7,
+        "n_theatres": 425,
+        "n_days": 4,
+        "coverage_ratio": 0.982,
+        "daily_coverage_ratios": {
+          "Thursday": 0.998,
+          "Friday": 0.998,
+          "Saturday": 0.965,
+          "Sunday": 0.969
+        },
+        "daily_errors": {
+          "Thursday": 46.7,
+          "Friday": 56.6,
+          "Saturday": 2.2,
+          "Sunday": 4.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-06-30",
+    "last_updated": "2026-07-06",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 5,
-          "support": 1.352
+          "n": 6,
+          "support": 1.825
         },
         "Friday": {
-          "n": 7,
-          "support": 3.189
+          "n": 8,
+          "support": 3.657
         },
         "Saturday": {
-          "n": 14,
-          "support": 5.678
+          "n": 15,
+          "support": 6.139
         },
         "Sunday": {
-          "n": 13,
-          "support": 5.477
+          "n": 14,
+          "support": 5.931
         }
       },
       "leads": {
         "same_day": {
-          "n": 37,
-          "support": 15.232
+          "n": 41,
+          "support": 17.088
         },
         "next_day": {
           "n": 2,
@@ -1667,10 +1756,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.15571064778469818,
-        "Friday": 0.2916578950211259,
-        "Saturday": 0.3086045558971692,
-        "Sunday": 0.24402690129700683
+        "Thursday": 0.1607331963667533,
+        "Friday": 0.2943475162273397,
+        "Saturday": 0.30245736083955127,
+        "Sunday": 0.2424619265663557
       },
       "trained_on": [
         "Michael",
@@ -1687,14 +1776,15 @@
         "Disclosure Day",
         "Toy Story 5",
         "Supergirl",
-        "Jackass: Best and Last"
+        "Jackass: Best and Last",
+        "Minions & Monsters"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.2035498351483825,
-        "resid_scale": 0.2977662498563452
+        "log_ratio_mean": 0.2186392279141263,
+        "resid_scale": 0.3084149510857635
       },
       "identity": {
-        "seat_sd": 0.36068999839536037
+        "seat_sd": 0.37805144363713145
       },
       "seat": {
         "features": [
@@ -1707,12 +1797,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.34362816693321785,
-          0.9267037495660767,
-          0.03495371803627225,
-          -0.004954983665475655,
-          0.0011456979824436431,
-          0.03658801984616118,
+          0.3583688251546138,
+          0.9236474441538733,
+          0.05206163184068577,
+          0.01719114134945035,
+          -0.008095119091305295,
+          0.03188779477819185,
           0.0
         ],
         "prior": [
@@ -1725,7 +1815,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.31166262978528814
+        "daily_resid_sd": 0.31846714601325227
       },
       "snapshot": {
         "features": [
@@ -1739,12 +1829,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7093233609966304,
-          0.7377268932028918,
-          -0.057722146974797744,
-          0.1480300485680962,
-          0.04035550450301612,
-          0.045125309230138834,
+          0.7388278077343904,
+          0.7329062678212122,
+          -0.03394698071833266,
+          0.17304999092397436,
+          0.023279281332827084,
+          0.041196789689793914,
           0.0,
           0.0
         ],
@@ -1759,17 +1849,17 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.6097942971101884
+        "daily_resid_sd": 0.5992482376785926
       },
       "weekend": {
-        "log_half_width": 0.3925,
-        "resid_mean": 0.15373507966051214,
-        "df": 13,
-        "loo_hit_rate": 0.9286,
+        "log_half_width": 0.3855,
+        "resid_mean": 0.1654817254839922,
+        "df": 14,
+        "loo_hit_rate": 0.9333,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 20.8,
-        "loo_median_ae_pct": 13.67,
-        "n_movies": 14
+        "loo_mae_pct": 22.49,
+        "loo_median_ae_pct": 15.56,
+        "n_movies": 15
       },
       "loo_detail": [
         {
@@ -1786,15 +1876,15 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.48,
+          "pred_m": 24.63,
           "actual_m": 15.09,
-          "observed_share": 0.843
+          "observed_share": 0.838
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.71,
+          "pred_m": 14.58,
           "actual_m": 17.2,
-          "observed_share": 0.692
+          "observed_share": 0.698
         },
         {
           "movie": "The Mandalorian and Grogu",
@@ -1810,9 +1900,9 @@
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 5.27,
+          "pred_m": 5.3,
           "actual_m": 7.35,
-          "observed_share": 0.843
+          "observed_share": 0.838
         },
         {
           "movie": "Scary Movie",
@@ -1834,9 +1924,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 39.39,
+          "pred_m": 39.98,
           "actual_m": 44.53,
-          "observed_share": 0.551
+          "observed_share": 0.543
         },
         {
           "movie": "Toy Story 5",
@@ -1855,12 +1945,18 @@
           "pred_m": 7.99,
           "actual_m": 8.46,
           "observed_share": 1.0
+        },
+        {
+          "movie": "Minions & Monsters",
+          "pred_m": 32.06,
+          "actual_m": 47.21,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 20.8,
-        "global_ratio": 22.51,
-        "regression": 22.5
+        "identity": 22.49,
+        "global_ratio": 23.9,
+        "regression": 23.91
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false

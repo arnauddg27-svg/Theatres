@@ -537,7 +537,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   reference_amc_theatres=None, model_cohort_key=None,
                   social_signal=None, model_version=None,
                   actual_source=None, actual_status="final",
-                  replace_existing=False, daily_sellout_fractions=None):
+                  replace_existing=False, daily_sellout_fractions=None,
+                  exclude_from_day_weights=False):
     """Record daily predicted-vs-actual and update all calibration factors."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
@@ -561,6 +562,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     }
     if model_version:
         entry["model_version"] = model_version
+    if exclude_from_day_weights:
+        entry["exclude_from_day_weights"] = True
     cohort_key = _normalize_model_cohort_key(model_cohort_key)
     if cohort_key:
         entry["model_cohort_key"] = cohort_key
@@ -664,6 +667,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     #    Average the actual day splits across all movies with daily data
     all_day_weights = []
     for h in cal["history"]:
+        # Skip weekends with anomalous day shapes (e.g. a July-4th Saturday
+        # crater) — they would corrupt the normal Thu/Fri/Sat/Sun weights.
+        if h.get("exclude_from_day_weights"):
+            continue
         da = h.get("daily_actuals", {})
         opening_da = {
             day: _positive_float(da.get(day))
