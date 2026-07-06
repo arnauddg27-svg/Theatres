@@ -6598,9 +6598,22 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # Resolve the per-film AMC share once: an operator metadata override wins;
     # otherwise the cross-chain (Fandango) occupancy share applies when this
     # film has cross-chain coverage; otherwise None -> calibrated fleet share.
+    #
+    # Cross-chain is SKIPPED for broad_family: Fandango sees only advance online
+    # sales (never walk-ups), while AMC's post-showtime read captures the full
+    # house, so the occupancy comparison is dominated by walk-up rate. That is
+    # tolerable for average-walk-up titles (validated: Supergirl/Jackass land
+    # within ~2% of their true share after shrink) but breaks badly for family
+    # films, which sell overwhelmingly at the door — Minions' cross-chain share
+    # came out 0.26 vs a true ~0.14. Projecting Fandango to final via the
+    # genre-blind reservation multiplier did NOT fix it (it over-corrected
+    # young-male Jackass; see scripts/validate_crosschain_leadtime.py), so family
+    # titles fall back to the fleet share + the family walk-up boost + any
+    # reported-actual anchor instead.
     share_override_resolved = amc_market_share_override_for(movie_metadata)
     cross_chain_share_value = None
-    if share_override_resolved is None:
+    if share_override_resolved is None and \
+            (getattr(movie_metadata, "audience_type", "") or "") != FAMILY_WALKUP_AUDIENCE:
         cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
         share_override_resolved = cross_chain_share_value
 
