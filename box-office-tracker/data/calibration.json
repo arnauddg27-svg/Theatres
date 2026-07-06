@@ -10,9 +10,9 @@
       "actual_total": 97.0,
       "daily_actuals": {
         "Thursday": 12.6,
-        "Friday": 26.9,
-        "Saturday": 32.5,
-        "Sunday": 25.0
+        "Friday": 26.69,
+        "Saturday": 32.46,
+        "Sunday": 25.45
       },
       "daily_predictions": {
         "Thursday": 12.14,
@@ -53,7 +53,8 @@
         "Friday": 0.0788,
         "Saturday": 0.0347,
         "Sunday": 0.0197
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "The Devil Wears Prada 2",
@@ -198,7 +199,8 @@
         "Friday": 0.0,
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "The Sheep Detectives",
@@ -355,7 +357,8 @@
         "Friday": 0.0057,
         "Saturday": 0.0027,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "In the Grey",
@@ -424,7 +427,8 @@
       "daily_early_sellout_fractions": {
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "The Mandalorian and Grogu",
@@ -514,8 +518,8 @@
       "daily_actuals": {
         "Thursday": 1.1,
         "Friday": 2.42,
-        "Saturday": 2.75,
-        "Sunday": 2.43
+        "Saturday": 2.76,
+        "Sunday": 2.46
       },
       "daily_predictions": {
         "Sunday": 1.15
@@ -543,7 +547,8 @@
       ],
       "daily_sellout_fractions": {
         "Sunday": 0.0025
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Backrooms",
@@ -621,7 +626,8 @@
         "Friday": 0.0046,
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "The Breadwinner",
@@ -779,7 +785,8 @@
         "Friday": 0.0,
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Masters of the Universe",
@@ -861,7 +868,8 @@
         "Friday": 0.0,
         "Saturday": 0.001,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "The Amazing Digital Circus: The Last Act",
@@ -1009,7 +1017,8 @@
       "coverage_ratio": 0.746,
       "calibration_excluded_days": [
         "Friday"
-      ]
+      ],
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Toy Story 5",
@@ -1021,9 +1030,9 @@
       "actual_total": 160.0,
       "daily_actuals": {
         "Thursday": 17.5,
-        "Friday": 31.6,
-        "Saturday": 58.2,
-        "Sunday": 52.7
+        "Friday": 53.61,
+        "Saturday": 47.76,
+        "Sunday": 40.81
       },
       "daily_predictions": {
         "Thursday": 17.36,
@@ -1080,7 +1089,8 @@
         "Saturday": 0.986,
         "Sunday": 0.988
       },
-      "coverage_ratio": 0.993
+      "coverage_ratio": 0.993,
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Supergirl",
@@ -1162,7 +1172,8 @@
         "Saturday": 0.953,
         "Sunday": 0.995
       },
-      "coverage_ratio": 0.969
+      "coverage_ratio": 0.969,
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Jackass: Best and Last",
@@ -1244,7 +1255,8 @@
         "Saturday": 0.929,
         "Sunday": 0.969
       },
-      "coverage_ratio": 0.942
+      "coverage_ratio": 0.942,
+      "daily_actuals_source": "the-numbers.com"
     },
     {
       "movie": "Minions & Monsters",
@@ -1311,7 +1323,8 @@
         "Sunday": 0.969
       },
       "coverage_ratio": 0.982,
-      "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b."
+      "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b.",
+      "daily_actuals_source": "the-numbers.com"
     }
   ],
   "calibration_factors": {
@@ -1323,9 +1336,9 @@
     },
     "day_weights": {
       "Thursday": 0.1152,
-      "Friday": 0.3057,
-      "Saturday": 0.3234,
-      "Sunday": 0.2557
+      "Friday": 0.3136,
+      "Saturday": 0.3195,
+      "Sunday": 0.2518
     },
     "format_scale_factors": {},
     "historical_accuracy": [
