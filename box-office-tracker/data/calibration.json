@@ -1357,9 +1357,9 @@
         },
         "daily_errors": {
           "Thursday": 3.7,
-          "Friday": 45.7,
+          "Friday": 46.8,
           "Saturday": 42.4,
-          "Sunday": 6.4
+          "Sunday": 8.0
         },
         "model_cohort_key": "core",
         "reference_amc_theatres": 376
@@ -1502,7 +1502,7 @@
           "Sunday": 0.033
         },
         "daily_errors": {
-          "Sunday": 52.7
+          "Sunday": 53.3
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -1651,9 +1651,9 @@
         },
         "daily_errors": {
           "Thursday": 0.8,
-          "Friday": 8.7,
-          "Saturday": 15.3,
-          "Sunday": 15.1
+          "Friday": 35.9,
+          "Saturday": 3.2,
+          "Sunday": 9.6
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -1694,9 +1694,9 @@
           "Sunday": 0.969
         },
         "daily_errors": {
-          "Thursday": 62.9,
+          "Thursday": 62.5,
           "Friday": 16.9,
-          "Saturday": 23.4,
+          "Saturday": 23.5,
           "Sunday": 35.1
         },
         "model_cohort_key": "core,expansion",
@@ -1769,10 +1769,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.1607331963667533,
-        "Friday": 0.2943475162273397,
-        "Saturday": 0.30245736083955127,
-        "Sunday": 0.2424619265663557
+        "Thursday": 0.16068919345910201,
+        "Friday": 0.30147563459702803,
+        "Saturday": 0.2989552983371282,
+        "Sunday": 0.23887987360674182
       },
       "trained_on": [
         "Michael",
@@ -1793,11 +1793,11 @@
         "Minions & Monsters"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.2186392279141263,
-        "resid_scale": 0.3084149510857635
+        "log_ratio_mean": 0.22043037015430547,
+        "resid_scale": 0.31214504519900876
       },
       "identity": {
-        "seat_sd": 0.37805144363713145
+        "seat_sd": 0.38213096881652414
       },
       "seat": {
         "features": [
@@ -1810,12 +1810,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.3583688251546138,
-          0.9236474441538733,
-          0.05206163184068577,
-          0.01719114134945035,
-          -0.008095119091305295,
-          0.03188779477819185,
+          0.3552727879429242,
+          0.9236890618612419,
+          0.053630477845057666,
+          0.04151507909897397,
+          -0.01507004641835454,
+          0.031091965318502043,
           0.0
         ],
         "prior": [
@@ -1828,7 +1828,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.31846714601325227
+        "daily_resid_sd": 0.3206810974641682
       },
       "snapshot": {
         "features": [
@@ -1842,12 +1842,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7388278077343904,
-          0.7329062678212122,
-          -0.03394698071833266,
-          0.17304999092397436,
-          0.023279281332827084,
-          0.041196789689793914,
+          0.7371027392673578,
+          0.7320621732766012,
+          -0.032509974787819564,
+          0.19779988997081693,
+          0.017781482577303068,
+          0.04072527244403626,
           0.0,
           0.0
         ],
@@ -1862,16 +1862,16 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.5992482376785926
+        "daily_resid_sd": 0.5991887107430791
       },
       "weekend": {
-        "log_half_width": 0.3855,
-        "resid_mean": 0.1654817254839922,
+        "log_half_width": 0.3828,
+        "resid_mean": 0.1707608679235877,
         "df": 14,
         "loo_hit_rate": 0.9333,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 22.49,
-        "loo_median_ae_pct": 15.56,
+        "loo_mae_pct": 22.61,
+        "loo_median_ae_pct": 15.34,
         "n_movies": 15
       },
       "loo_detail": [
@@ -1889,15 +1889,15 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.63,
+          "pred_m": 24.62,
           "actual_m": 15.09,
           "observed_share": 0.838
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.58,
+          "pred_m": 14.5,
           "actual_m": 17.2,
-          "observed_share": 0.698
+          "observed_share": 0.702
         },
         {
           "movie": "The Mandalorian and Grogu",
@@ -1937,9 +1937,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 39.98,
+          "pred_m": 40.54,
           "actual_m": 44.53,
-          "observed_share": 0.543
+          "observed_share": 0.536
         },
         {
           "movie": "Toy Story 5",
@@ -1967,9 +1967,9 @@
         }
       ],
       "bakeoff": {
-        "identity": 22.49,
-        "global_ratio": 23.9,
-        "regression": 23.91
+        "identity": 22.61,
+        "global_ratio": 24.1,
+        "regression": 24.22
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
