@@ -4313,6 +4313,34 @@ def attach_review_signal(pred, reviews_data):
 FRIDAY_ANCHOR_BLEND_WEIGHT = 0.5
 _FRIDAY_WEEKEND_MULTIPLIERS = None   # (global, {audience_type: (mult, n)})
 
+# Conformal interval floor. Audit 2026-07-08: only 8/18 recorded actuals fell
+# inside the model's stated bands (44% coverage; a good band covers ~85%) — the
+# intervals were systematically overconfident (Young Washington: band [6.8, 8.5],
+# actual 19.4). Fix: floor the final band with empirical LOO quantiles of the
+# model's own actual/predicted ratios from calibration history. Trimming the
+# k-th extreme ratio each side targets ~(n-2k+1)/(n+1) coverage (~80% at n=19,
+# k=2). The floor only ever WIDENS a band, never narrows, and needs >=10 history
+# films (else no-op), so early-history replays are unchanged.
+CONFORMAL_MIN_HISTORY = 10
+CONFORMAL_TRIM = 2
+
+
+def conformal_ratio_band(cal, movie):
+    """(r_lo, r_hi) empirical band of actual/predicted from history (LOO by movie)."""
+    key = _movie_lookup_key(movie or "")
+    ratios = sorted(
+        e["actual_total"] / e["predicted_mid"]
+        for e in ((cal or {}).get("history", []) or [])
+        if e.get("actual_total") and e.get("predicted_mid")
+        and e["predicted_mid"] > 0
+        and _movie_lookup_key(e.get("movie", "")) != key
+    )
+    if len(ratios) < CONFORMAL_MIN_HISTORY:
+        return None
+    k = min(CONFORMAL_TRIM, max(1, len(ratios) // 8))
+    return ratios[k - 1], ratios[-k]
+
+
 # broad_family audiences buy at the door (walk-ups), which confounds Fandango's
 # advance-only reads — so this tag gates the cross-chain share off for family
 # films (see predict_movie). NOTE: a family snapshot walk-up BOOST was shipped
@@ -4491,6 +4519,19 @@ def select_regression_prediction(pred, cal=None):
         basis += (f"; {src} {score:g} ×{review_factor:.3f}" if score
                   else f"; reviews ×{review_factor:.3f}")
 
+    # Conformal floor: the band must be at least as wide as the model's own
+    # historical error distribution implies (audit: stated bands covered only
+    # 44% of actuals). Widens only — the midpoint is untouched.
+    band = conformal_ratio_band(cal, pred.get("movie", "")) if mid and mid > 0 else None
+    if band:
+        r_lo, r_hi = band
+        c_low, c_high = mid * r_lo, mid * r_hi
+        if c_low < low or c_high > high:
+            low = min(low, c_low)
+            high = max(high, c_high)
+            pred["conformal_band"] = (round(r_lo, 3), round(r_hi, 3))
+            basis += f"; conformal band ×[{r_lo:.2f},{r_hi:.2f}]"
+
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
     pred["regression_high_m"] = high
@@ -4565,7 +4606,26 @@ CROSS_CHAIN_SHARE_WEIGHT = 0.5      # shrink toward the calibrated fleet share
 CROSS_CHAIN_SHARE_CLAMP = (0.70, 1.45)   # x fleet share
 CROSS_CHAIN_MIN_AMC_ROWS = 50
 CROSS_CHAIN_MIN_RC_ROWS = 40
+# Skip cross-chain when AMC under-programs a film: scarce showings run full, so
+# occupancy stops measuring chain preference (Young Washington, 2026-07-03).
+CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA = 4.5
 _CROSS_CHAIN_CACHE = {}
+
+
+def _seat_showings_per_cinema_day(seat_data):
+    """Average distinct showtimes per theatre per day across observed seat days."""
+    slots = set()
+    theatre_days = set()
+    for date_str, rows in (seat_data or {}).items():
+        for row in rows:
+            t = row.get("theatre_name", "")
+            if not t:
+                continue
+            slots.add((date_str, t, row.get("showtime", "")))
+            theatre_days.add((date_str, t))
+    if not theatre_days:
+        return None
+    return len(slots) / len(theatre_days)
 
 
 def _occ_pct(row):
@@ -6587,12 +6647,22 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # young-male Jackass; see scripts/validate_crosschain_leadtime.py), so family
     # titles fall back to the fleet share + the family walk-up boost + any
     # reported-actual anchor instead.
+    # Cross-chain is ALSO skipped when AMC has under-programmed the film
+    # (supply-constrained): with few showings per cinema, the ones that run fill
+    # up, so high AMC occupancy signals SCARCITY, not chain preference — the
+    # exact inversion that made Young Washington's share read 0.26 when AMC's
+    # true share was ~0.15 (2026-07-03: AMC gave it 2.4 showings/cinema on
+    # opening Friday vs ~6-7 for normal wide films, then tripled to 6.1 on
+    # Saturday once demand showed; model missed -57%). Wide-release controls
+    # (Supergirl 5.8+, Jackass 6.7, Minions 6.8+) all clear the floor.
     share_override_resolved = amc_market_share_override_for(movie_metadata)
     cross_chain_share_value = None
     if share_override_resolved is None and \
             (getattr(movie_metadata, "audience_type", "") or "") != FAMILY_WALKUP_AUDIENCE:
-        cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
-        share_override_resolved = cross_chain_share_value
+        spc = _seat_showings_per_cinema_day(seat_data)
+        if spc is None or spc >= CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA:
+            cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
+            share_override_resolved = cross_chain_share_value
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")

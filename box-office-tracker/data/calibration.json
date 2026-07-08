@@ -1325,20 +1325,88 @@
       "coverage_ratio": 0.982,
       "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b.",
       "daily_actuals_source": "the-numbers.com"
+    },
+    {
+      "movie": "Young Washington",
+      "weekend_of": "2026-07-03",
+      "date": "2026-07-08",
+      "predicted_mid": 8.33,
+      "predicted_low": 7.48,
+      "predicted_high": 9.41,
+      "actual_total": 19.37,
+      "daily_actuals": {
+        "Friday": 7.6,
+        "Saturday": 7.67,
+        "Sunday": 4.1
+      },
+      "daily_predictions": {
+        "Thursday": 0.3,
+        "Friday": 2.04,
+        "Saturday": 5.62,
+        "Sunday": 3.01
+      },
+      "error_pct": -57.0,
+      "n_theatres": 400,
+      "n_days": 4,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "the-numbers.com",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 0.3,
+        "Friday": 2.11,
+        "Saturday": 5.63,
+        "Sunday": 3.05
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.95,
+        "Friday": 1.51,
+        "Saturday": 7.45,
+        "Sunday": 3.16
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.473,
+        "Friday": 0.468,
+        "Saturday": 0.459,
+        "Sunday": 0.452
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 65,
+        "Friday": 369,
+        "Saturday": 386,
+        "Sunday": 387
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.028,
+        "Friday": 0.868,
+        "Saturday": 0.908,
+        "Sunday": 0.911
+      },
+      "coverage_ratio": 0.679,
+      "calibration_excluded_days": [
+        "Thursday"
+      ],
+      "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%."
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.209,
+    "amc_market_share": 0.2012,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1152,
-      "Friday": 0.3136,
-      "Saturday": 0.3195,
-      "Sunday": 0.2518
+      "Thursday": 0.1088,
+      "Friday": 0.3179,
+      "Saturday": 0.3238,
+      "Sunday": 0.2495
     },
     "format_scale_factors": {},
     "historical_accuracy": [
@@ -1723,33 +1791,54 @@
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Young Washington",
+        "weekend_of": "2026-07-03",
+        "abs_error_pct": 57.0,
+        "n_theatres": 400,
+        "n_days": 4,
+        "coverage_ratio": 0.679,
+        "daily_coverage_ratios": {
+          "Thursday": 0.028,
+          "Friday": 0.868,
+          "Saturday": 0.908,
+          "Sunday": 0.911
+        },
+        "daily_errors": {
+          "Friday": 73.2,
+          "Saturday": 26.7,
+          "Sunday": 26.6
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-07-06",
+    "last_updated": "2026-07-08",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 6,
-          "support": 1.825
+          "n": 7,
+          "support": 2.0615
         },
         "Friday": {
-          "n": 8,
-          "support": 3.657
+          "n": 9,
+          "support": 4.125
         },
         "Saturday": {
-          "n": 15,
-          "support": 6.139
+          "n": 16,
+          "support": 6.598
         },
         "Sunday": {
-          "n": 14,
-          "support": 5.931
+          "n": 15,
+          "support": 6.383
         }
       },
       "leads": {
         "same_day": {
-          "n": 41,
-          "support": 17.088
+          "n": 45,
+          "support": 18.7035
         },
         "next_day": {
           "n": 2,
@@ -1767,12 +1856,12 @@
     },
     "regression": {
       "version": 1,
-      "active_tier": "identity",
+      "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.16068919345910201,
-        "Friday": 0.30147563459702803,
-        "Saturday": 0.2989552983371282,
-        "Sunday": 0.23887987360674182
+        "Thursday": 0.15971365149430855,
+        "Friday": 0.3034835351242832,
+        "Saturday": 0.3012909526416044,
+        "Sunday": 0.23551186073980396
       },
       "trained_on": [
         "Michael",
@@ -1790,14 +1879,15 @@
         "Toy Story 5",
         "Supergirl",
         "Jackass: Best and Last",
-        "Minions & Monsters"
+        "Minions & Monsters",
+        "Young Washington"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.22043037015430547,
-        "resid_scale": 0.31214504519900876
+        "log_ratio_mean": 0.24033008741058987,
+        "resid_scale": 0.33251886727371177
       },
       "identity": {
-        "seat_sd": 0.38213096881652414
+        "seat_sd": 0.41027715998794534
       },
       "seat": {
         "features": [
@@ -1810,12 +1900,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.3552727879429242,
-          0.9236890618612419,
-          0.053630477845057666,
-          0.04151507909897397,
-          -0.01507004641835454,
-          0.031091965318502043,
+          0.40660451143029125,
+          0.90393949404529,
+          0.04280857390933552,
+          0.0684863611780099,
+          -0.01530991575894259,
+          0.034427425468402974,
           0.0
         ],
         "prior": [
@@ -1828,7 +1918,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.3206810974641682
+        "daily_resid_sd": 0.3334723150900613
       },
       "snapshot": {
         "features": [
@@ -1842,12 +1932,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7371027392673578,
-          0.7320621732766012,
-          -0.032509974787819564,
-          0.19779988997081693,
-          0.017781482577303068,
-          0.04072527244403626,
+          0.754941124253547,
+          0.6915158754404441,
+          -0.01348312780413923,
+          0.3583338512594788,
+          0.06422497467371158,
+          0.10844671917638288,
           0.0,
           0.0
         ],
@@ -1861,117 +1951,123 @@
           0.0,
           0.0
         ],
-        "lambda": 10.0,
-        "daily_resid_sd": 0.5991887107430791
+        "lambda": 3.0,
+        "daily_resid_sd": 0.5854790571728622
       },
       "weekend": {
-        "log_half_width": 0.3828,
-        "resid_mean": 0.1707608679235877,
-        "df": 14,
-        "loo_hit_rate": 0.9333,
+        "log_half_width": 0.4121,
+        "resid_mean": -0.009890781409765959,
+        "df": 15,
+        "loo_hit_rate": 0.9375,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 22.61,
-        "loo_median_ae_pct": 15.34,
-        "n_movies": 15
+        "loo_mae_pct": 22.53,
+        "loo_median_ae_pct": 18.44,
+        "n_movies": 16
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 93.37,
+          "pred_m": 133.77,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 46.02,
+          "pred_m": 45.52,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.62,
+          "pred_m": 22.08,
           "actual_m": 15.09,
-          "observed_share": 0.838
+          "observed_share": 0.839
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.5,
+          "pred_m": 22.55,
           "actual_m": 17.2,
-          "observed_share": 0.702
+          "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 75.54,
+          "pred_m": 83.69,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 53.16,
+          "pred_m": 59.92,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 5.3,
+          "pred_m": 7.09,
           "actual_m": 7.35,
-          "observed_share": 0.838
+          "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 39.79,
+          "pred_m": 50.93,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 17.09,
+          "pred_m": 26.39,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "The Amazing Digital Circus: The Last Act",
-          "pred_m": 11.79,
+          "pred_m": 19.98,
           "actual_m": 20.24,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 40.54,
+          "pred_m": 51.31,
           "actual_m": 44.53,
-          "observed_share": 0.536
+          "observed_share": 0.535
         },
         {
           "movie": "Toy Story 5",
-          "pred_m": 130.22,
+          "pred_m": 125.65,
           "actual_m": 160.0,
           "observed_share": 1.0
         },
         {
           "movie": "Supergirl",
-          "pred_m": 31.89,
+          "pred_m": 42.9,
           "actual_m": 37.1,
           "observed_share": 1.0
         },
         {
           "movie": "Jackass: Best and Last",
-          "pred_m": 7.99,
+          "pred_m": 13.1,
           "actual_m": 8.46,
           "observed_share": 1.0
         },
         {
           "movie": "Minions & Monsters",
-          "pred_m": 32.06,
+          "pred_m": 38.19,
           "actual_m": 47.21,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "Young Washington",
+          "pred_m": 16.68,
+          "actual_m": 19.37,
           "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 22.61,
-        "global_ratio": 24.1,
-        "regression": 24.22
+        "identity": 23.53,
+        "global_ratio": 24.86,
+        "regression": 22.53
       },
-      "bakeoff_winner": "identity",
+      "bakeoff_winner": "regression",
       "meets_mae_target": false
     }
   }
