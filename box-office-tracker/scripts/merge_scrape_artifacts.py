@@ -360,6 +360,30 @@ def _is_future_pre_reservation_row(row: dict[str, str]) -> bool:
     return minutes_until_showtime >= 0
 
 
+def _pre_reservation_row_filter(data_dir: Path):
+    """Future-rows filter that ALSO refuses rows for archived weekends.
+
+    Scrape legs upload their FULL local pre-reservation CSV as the artifact, so
+    an artifact built before a rotation contains every settled weekend. Merging
+    it into the rotated (weekends-trimmed) live CSV would re-import ~200K
+    archived rows and re-breach GitHub's 100MB push limit — exactly how the
+    2026-07-12 recovery rerun pushed a 100.38MB file. An archived weekend is
+    settled: artifacts can only ever add rows for live weekends.
+    """
+    archive_dir = data_dir / "pre-reservation-archive"
+
+    def _filter(row: dict[str, str]) -> bool:
+        if not _is_future_pre_reservation_row(row):
+            return False
+        weekend = str(row.get("weekend_of", "") or "").strip()
+        if weekend and (archive_dir
+                        / f"pre-reservation-snapshots-{weekend}.csv.gz").exists():
+            return False
+        return True
+
+    return _filter
+
+
 def _unique_destination(path: Path) -> Path:
     if not path.exists():
         return path
@@ -436,7 +460,7 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
         pre_sources,
         PRE_RESERVATION_FIELDS,
         _tuple_key(PRE_RESERVATION_DEDUPE_FIELDS),
-        row_filter=_is_future_pre_reservation_row,
+        row_filter=_pre_reservation_row_filter(data_dir),
     )
     summary.pre_reservation_added = pre_added
     summary.pre_reservation_duplicates = pre_dupes

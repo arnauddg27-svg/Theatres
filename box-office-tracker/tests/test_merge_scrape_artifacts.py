@@ -400,3 +400,23 @@ class MergeScrapeArtifactsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ArchivedWeekendGuardTest(unittest.TestCase):
+    def test_archived_weekend_rows_are_refused(self):
+        # Artifacts built before a rotation carry every settled weekend; merging
+        # them must not re-import archived rows (2026-07-12: re-import pushed the
+        # live CSV to 100.38MB and re-breached GitHub's push limit).
+        from scripts import merge_scrape_artifacts as M
+        with tempfile.TemporaryDirectory() as d:
+            data_dir = Path(d)
+            (data_dir / "pre-reservation-archive").mkdir()
+            (data_dir / "pre-reservation-archive"
+             / "pre-reservation-snapshots-2026-06-19.csv.gz").write_bytes(b"")
+            f = M._pre_reservation_row_filter(data_dir)
+            archived = {"weekend_of": "2026-06-19", "minutes_until_showtime": "60"}
+            live = {"weekend_of": "2026-07-10", "minutes_until_showtime": "60"}
+            past = {"weekend_of": "2026-07-10", "minutes_until_showtime": "-5"}
+            self.assertFalse(f(archived))   # settled weekend -> refused
+            self.assertTrue(f(live))        # live weekend -> accepted
+            self.assertFalse(f(past))       # past-showtime still refused
