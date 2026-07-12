@@ -30,12 +30,29 @@ REVIEWS_FIELDS = ["weekend_of", "as_of_date", "movie_title", "rt_audience_score"
                   "rt_critic_score", "imdb_rating", "source", "notes"]
 
 
+def _rt_retry(fn, *args, tries=3, base_sleep=10):
+    """RT rate-limits CI IPs in bursts (403s all weekend 2026-07-10); one or two
+    spaced retries usually clear it. Best effort — the caller treats a final
+    failure as 'no RT this run' and IMDb (the primary signal) carries on."""
+    import time
+    last = None
+    for attempt in range(tries):
+        try:
+            return fn(*args)
+        except Exception as exc:  # noqa: BLE001
+            last = exc
+            if attempt < tries - 1:
+                time.sleep(base_sleep * (attempt + 1))
+    raise last
+
+
 def fetch_rt_scores(title, release_year):
     """Return {rt_audience_score, rt_critic_score, rt_url} or None if not found."""
-    candidate = RT.choose_rt_candidate(title, release_year, RT.rt_search_candidates(title))
+    candidate = RT.choose_rt_candidate(
+        title, release_year, _rt_retry(RT.rt_search_candidates, title))
     if not candidate:
         return None
-    scorecard = RT.rt_scorecard(candidate["url"])
+    scorecard = _rt_retry(RT.rt_scorecard, candidate["url"])
 
     def _score(block_keys):
         for k in block_keys:

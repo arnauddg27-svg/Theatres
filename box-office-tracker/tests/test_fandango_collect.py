@@ -303,3 +303,34 @@ class ShardingAndMergeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RobustSlugMatchTest(unittest.TestCase):
+    def test_roman_numeral_variant_matches(self):
+        # tracked 'Mortal Kombat 2' must match a fandango 'mortal-kombat-ii' slug
+        targets = {fc.slugify_title("Mortal Kombat 2"): "Mortal Kombat 2"}
+        self.assertEqual(
+            fc.match_target_title("/mortal-kombat-ii-2026-241111/movie-overview", targets),
+            "Mortal Kombat 2")
+
+    def test_number_word_variant_matches(self):
+        targets = {fc.slugify_title("Scream Seven"): "Scream Seven"}
+        self.assertEqual(
+            fc.match_target_title("/scream-7-2026-241112/movie-overview", targets),
+            "Scream Seven")
+
+    def test_different_films_do_not_cross_match(self):
+        # exact-first + token equality: 'toy-story' never swallows 'toy-story-5'
+        targets = {fc.slugify_title("Toy Story 5"): "Toy Story 5"}
+        self.assertIsNone(
+            fc.match_target_title("/toy-story-2026-241113/movie-overview", targets))
+
+    def test_near_miss_is_logged_not_matched(self):
+        import io, contextlib
+        fc._NEAR_MISS_LOGGED.clear()
+        targets = {fc.slugify_title("Moana (2026)"): "Moana (2026)"}
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            got = fc.match_target_title("/moana-2-2027-241114/movie-overview", targets)
+        self.assertIsNone(got)                      # not silently matched
+        self.assertIn("NEAR-MISS", buf.getvalue())  # but LOUD in run logs

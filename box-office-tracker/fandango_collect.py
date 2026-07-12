@@ -152,15 +152,48 @@ def overview_core_slug(href):
     return re.sub(r"-\d{4}-\d+$", "", core)
 
 
+# Roman numerals / number words normalize to digits so 'mortal-kombat-ii'
+# matches a tracked 'Mortal Kombat 2' (and vice versa).
+_NUMERAL_TOKENS = {
+    "ii": "2", "iii": "3", "iv": "4", "vi": "6", "vii": "7", "viii": "8",
+    "ix": "9", "one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
+    "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
+}
+_NEAR_MISS_LOGGED = set()
+
+
+def _slug_tokens(slug):
+    return frozenset(_NUMERAL_TOKENS.get(t, t) for t in (slug or "").split("-") if t)
+
+
 def match_target_title(overview_href, target_slugs):
     """Return the canonical tracked title for a movie-overview link, or None.
 
     ``target_slugs`` maps slugified-title -> canonical title. Exact core-slug
-    match only — so 'Toy Story' (toy-story) never swallows 'Toy Story 5'
-    (toy-story-5).
+    match first — so 'Toy Story' (toy-story) never swallows 'Toy Story 5'
+    (toy-story-5). Falls back to normalized TOKEN-SET equality (word order,
+    roman-numeral/number-word variants). Anything close-but-unmatched is logged
+    LOUDLY: two whole films were silently dropped by slug variants already
+    ('Minions & Monsters' via '&', 'Moana (2026)' via the year suffix) — the
+    next variant must show up in run logs, not in a zero-row post-mortem.
     """
     core = overview_core_slug(overview_href)
-    return target_slugs.get(core)
+    hit = target_slugs.get(core)
+    if hit or not core:
+        return hit
+    core_tokens = _slug_tokens(core)
+    for slug, title in target_slugs.items():
+        if _slug_tokens(slug) == core_tokens:
+            return title
+    for slug, title in target_slugs.items():
+        slug_tokens = _slug_tokens(slug)
+        overlap = len(core_tokens & slug_tokens)
+        union = len(core_tokens | slug_tokens) or 1
+        if overlap / union >= 0.5 and core not in _NEAR_MISS_LOGGED:
+            _NEAR_MISS_LOGGED.add(core)
+            print(f"⚠️  NEAR-MISS: overview slug '{core}' did not match tracked "
+                  f"'{title}' (slug '{slug}') — possible new slug-variant bug")
+    return None
 
 
 def sdate_from_jump_href(href):
