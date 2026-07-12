@@ -22,6 +22,7 @@ Usage:
     python3 predict.py --verbose                    # Full calculation breakdown
 """
 
+import gzip
 import json, csv, os, sys, re, statistics
 import seat_regression
 from dataclasses import replace
@@ -56,6 +57,7 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
 PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
+PRE_RESERVATION_ARCHIVE_DIR = os.path.join(DATA_DIR, "pre-reservation-archive")
 DAILY_ACTUALS_CSV   = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
 POLY_CSV            = os.path.join(DATA_DIR, "polymarket-markets.csv")
 SOCIAL_SIGNALS_CSV  = os.path.join(DATA_DIR, "social-signals.csv")
@@ -1268,16 +1270,38 @@ def load_seat_data(weekend_of=None):
     return data
 
 
+def _pre_reservation_archive_path(weekend_of):
+    return os.path.join(
+        PRE_RESERVATION_ARCHIVE_DIR,
+        f"pre-reservation-snapshots-{weekend_of}.csv.gz",
+    )
+
+
+def _pre_reservation_row_sources(weekend_of):
+    """Yield open readers over the live CSV plus this weekend's archive (if any).
+
+    Settled weekends are rotated out of the 99MB-capped live CSV into per-weekend
+    gzip archives (scripts/rotate_pre_reservation_snapshots.py) so the live file
+    stays under GitHub's 100MB push limit; historical replays read the archive.
+    """
+    archive = _pre_reservation_archive_path(weekend_of) if weekend_of else None
+    if archive and os.path.exists(archive):
+        with gzip.open(archive, "rt", newline="") as f:
+            yield csv.DictReader(f)
+    if os.path.exists(PRE_RESERVATION_CSV):
+        with open(PRE_RESERVATION_CSV, "r") as f:
+            yield csv.DictReader(f)
+
+
 def load_pre_reservation_data(weekend_of=None, through_date=None):
     """Load pre-reservation snapshots grouped by movie → show_date.
 
     These rows are a separate early-demand signal. They are not mixed into
     regular post-show seat counts; prediction code decides when to use them.
     """
-    if not os.path.exists(PRE_RESERVATION_CSV):
-        return {}
-
     if weekend_of is None:
+        if not os.path.exists(PRE_RESERVATION_CSV):
+            return {}
         with open(PRE_RESERVATION_CSV, "r") as f:
             weekends = [
                 r.get("weekend_of", "")
@@ -1289,8 +1313,7 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     data = {}
     cohort_sets = load_theatre_cohort_sets()
     model_cohorts = active_model_cohorts()
-    with open(PRE_RESERVATION_CSV, "r") as f:
-        reader = csv.DictReader(f)
+    for reader in _pre_reservation_row_sources(weekend_of):
         has_weekend_col = "weekend_of" in (reader.fieldnames or [])
         for row in reader:
             movie = row.get("movie_title", "")

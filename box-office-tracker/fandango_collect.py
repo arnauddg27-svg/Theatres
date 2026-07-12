@@ -126,8 +126,14 @@ def slugify_title(title):
     ('Minions & Monsters' -> 'minions-and-monsters') — so normalize those before
     stripping to alphanumerics, or the whole film is silently dropped from the
     lane on an exact core-slug match.
+
+    A trailing parenthesized year in the TRACKED title ('Moana (2026)') is
+    stripped: overview_core_slug already removes Fandango's own '-YYYY-NNNN'
+    suffix, so keeping the year here can never match ('moana-2026' vs 'moana' —
+    live miss 2026-07-10: Moana got zero Fandango rows all weekend).
     """
     s = str(title or "").lower().replace("&", " and ")
+    s = re.sub(r"\s*\((?:19|20)\d{2}\)\s*$", "", s)
     s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
     return s
 

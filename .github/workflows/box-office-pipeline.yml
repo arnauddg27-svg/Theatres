@@ -686,6 +686,14 @@ jobs:
         working-directory: box-office-tracker
         run: python3 calibrate.py
 
+      - name: Rotate settled pre-reservation snapshots
+        # The live snapshot CSV grows ~15-25MB per weekend and GitHub hard-blocks
+        # pushes at 100MB (it hit 99MB on 2026-07-12 and killed a finalize push).
+        # Move settled weekends into per-weekend gzip archives; the model reads
+        # them transparently for historical replays.
+        working-directory: box-office-tracker
+        run: python3 scripts/rotate_pre_reservation_snapshots.py
+
       - name: Commit calibration
         run: |
           git config user.name "github-actions[bot]"
@@ -695,6 +703,10 @@ jobs:
           # stray untracked file on the VPS runner (e.g. a playwright cache,
           # a locally-edited .env) can't ride along into the commit.
           git add box-office-tracker/data/calibration.json
+          git add box-office-tracker/data/pre-reservation-snapshots.csv
+          if compgen -G "box-office-tracker/data/pre-reservation-archive/*.csv.gz" > /dev/null; then
+            git add box-office-tracker/data/pre-reservation-archive/*.csv.gz
+          fi
           if compgen -G "box-office-tracker/data/calibration-freezes/*.json" > /dev/null; then
             git add box-office-tracker/data/calibration-freezes/*.json
           else
