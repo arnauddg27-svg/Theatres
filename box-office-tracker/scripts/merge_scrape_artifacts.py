@@ -360,6 +360,26 @@ def _is_future_pre_reservation_row(row: dict[str, str]) -> bool:
     return minutes_until_showtime >= 0
 
 
+def _archived_weekend_filter(data_dir: Path, subdir: str, prefix: str):
+    """Refuse rows whose weekend has been rotated into an archive."""
+    archive_dir = data_dir / subdir
+
+    def _filter(row: dict[str, str]) -> bool:
+        weekend = str(row.get("weekend_of", "") or "").strip()
+        if weekend and (archive_dir / f"{prefix}-{weekend}.csv.gz").exists():
+            return False
+        return True
+
+    return _filter
+
+
+def _seat_row_filter(data_dir: Path):
+    """Refuse seat rows for archived weekends (same stale-artifact trap as
+    pre-reservation: legs upload their full local CSV, so pre-rotation
+    artifacts would re-import every settled weekend)."""
+    return _archived_weekend_filter(data_dir, "seat-archive", "seat-counts")
+
+
 def _pre_reservation_row_filter(data_dir: Path):
     """Future-rows filter that ALSO refuses rows for archived weekends.
 
@@ -370,16 +390,11 @@ def _pre_reservation_row_filter(data_dir: Path):
     2026-07-12 recovery rerun pushed a 100.38MB file. An archived weekend is
     settled: artifacts can only ever add rows for live weekends.
     """
-    archive_dir = data_dir / "pre-reservation-archive"
+    archived = _archived_weekend_filter(
+        data_dir, "pre-reservation-archive", "pre-reservation-snapshots")
 
     def _filter(row: dict[str, str]) -> bool:
-        if not _is_future_pre_reservation_row(row):
-            return False
-        weekend = str(row.get("weekend_of", "") or "").strip()
-        if weekend and (archive_dir
-                        / f"pre-reservation-snapshots-{weekend}.csv.gz").exists():
-            return False
-        return True
+        return _is_future_pre_reservation_row(row) and archived(row)
 
     return _filter
 
@@ -432,6 +447,7 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
         SEAT_FIELDS,
         _tuple_key(SEAT_DEDUPE_FIELDS),
         merge_duplicate=_merge_seat_row_metadata,
+        row_filter=_seat_row_filter(data_dir),
     )
     summary.seat_added = seat_added
     summary.seat_duplicates = seat_dupes

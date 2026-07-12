@@ -704,8 +704,12 @@ jobs:
           # a locally-edited .env) can't ride along into the commit.
           git add box-office-tracker/data/calibration.json
           git add box-office-tracker/data/pre-reservation-snapshots.csv
+          git add box-office-tracker/data/seat-counts.csv
           if compgen -G "box-office-tracker/data/pre-reservation-archive/*.csv.gz" > /dev/null; then
             git add box-office-tracker/data/pre-reservation-archive/*.csv.gz
+          fi
+          if compgen -G "box-office-tracker/data/seat-archive/*.csv.gz" > /dev/null; then
+            git add box-office-tracker/data/seat-archive/*.csv.gz
           fi
           if compgen -G "box-office-tracker/data/calibration-freezes/*.json" > /dev/null; then
             git add box-office-tracker/data/calibration-freezes/*.json

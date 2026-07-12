@@ -27,10 +27,13 @@ import predict as P  # noqa: E402
 KEEP_WEEKENDS = 2
 
 
-def rotate(keep=KEEP_WEEKENDS, dry_run=False):
-    path = P.PRE_RESERVATION_CSV
+def rotate(keep=KEEP_WEEKENDS, dry_run=False,
+           path=None, archive_dir=None, archive_path_fn=None, label="pre-reservation"):
+    path = path or P.PRE_RESERVATION_CSV
+    archive_dir = archive_dir or P.PRE_RESERVATION_ARCHIVE_DIR
+    archive_path_fn = archive_path_fn or P._pre_reservation_archive_path
     if not os.path.exists(path):
-        print("no live pre-reservation CSV; nothing to rotate")
+        print(f"no live {label} CSV; nothing to rotate")
         return 0
     size_before = os.path.getsize(path)
     with open(path, "r", newline="") as f:
@@ -48,10 +51,10 @@ def rotate(keep=KEEP_WEEKENDS, dry_run=False):
     if dry_run:
         return 0
 
-    os.makedirs(P.PRE_RESERVATION_ARCHIVE_DIR, exist_ok=True)
+    os.makedirs(archive_dir, exist_ok=True)
     for w in to_archive:
         w_rows = [r for r in rows if r.get("weekend_of") == w]
-        apath = P._pre_reservation_archive_path(w)
+        apath = archive_path_fn(w)
         existing = []
         if os.path.exists(apath):
             with gzip.open(apath, "rt", newline="") as f:
@@ -85,4 +88,9 @@ if __name__ == "__main__":
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--keep", type=int, default=KEEP_WEEKENDS)
     args = ap.parse_args()
-    raise SystemExit(rotate(keep=args.keep, dry_run=args.dry_run))
+    rc = rotate(keep=args.keep, dry_run=args.dry_run)
+    # seat-counts.csv has the same 100MB cliff (72MB on 2026-07-12, ~+9MB/weekend)
+    rc |= rotate(keep=args.keep, dry_run=args.dry_run,
+                 path=P.SEAT_CSV, archive_dir=P.SEAT_ARCHIVE_DIR,
+                 archive_path_fn=P._seat_archive_path, label="seat-counts")
+    raise SystemExit(rc)

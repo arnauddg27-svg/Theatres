@@ -56,6 +56,7 @@ from model_calibration import (MIN_DAILY_CALIBRATION_COVERAGE,
 # ── Paths ────────────────────────────────────────────────────────────────────
 DATA_DIR            = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 SEAT_CSV            = os.path.join(DATA_DIR, "seat-counts.csv")
+SEAT_ARCHIVE_DIR    = os.path.join(DATA_DIR, "seat-archive")
 PRE_RESERVATION_CSV = os.path.join(DATA_DIR, "pre-reservation-snapshots.csv")
 PRE_RESERVATION_ARCHIVE_DIR = os.path.join(DATA_DIR, "pre-reservation-archive")
 DAILY_ACTUALS_CSV   = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
@@ -1223,6 +1224,26 @@ def model_allows_theatre(theatre_name, cohort_sets=None, model_cohorts=None):
     return name in allowed_names
 
 
+def _seat_archive_path(weekend_of):
+    return os.path.join(SEAT_ARCHIVE_DIR, f"seat-counts-{weekend_of}.csv.gz")
+
+
+def _seat_row_sources(weekend_of):
+    """Yield open readers over the live seat CSV plus this weekend's archive.
+
+    Settled weekends rotate out of the 100MB-capped live CSV into per-weekend
+    gzip archives (same pattern as pre-reservation snapshots); historical
+    replays read the archive transparently.
+    """
+    archive = _seat_archive_path(weekend_of) if weekend_of else None
+    if archive and os.path.exists(archive):
+        with gzip.open(archive, "rt", newline="") as f:
+            yield csv.DictReader(f)
+    if os.path.exists(SEAT_CSV):
+        with open(SEAT_CSV, "r") as f:
+            yield csv.DictReader(f)
+
+
 def load_seat_data(weekend_of=None):
     """Load seat-counts.csv and group by movie → date → list of theatre rows.
 
@@ -1230,10 +1251,9 @@ def load_seat_data(weekend_of=None):
     If not set, uses the current weekend (Thu-Sun → Friday anchor).
     Falls back to loading all rows if weekend_of column is absent (old data).
     """
-    if not os.path.exists(SEAT_CSV):
-        return {}
-
     if weekend_of is None:
+        if not os.path.exists(SEAT_CSV):
+            return {}
         # Use the most recent weekend_of found in the CSV rather than
         # computing from today's date — avoids day-of-week arithmetic mismatches.
         with open(SEAT_CSV, "r") as f:
@@ -1244,8 +1264,8 @@ def load_seat_data(weekend_of=None):
     rows = []
     cohort_sets = load_theatre_cohort_sets()
     model_cohorts = active_model_cohorts()
-    with open(SEAT_CSV, "r") as f:
-        for row in csv.DictReader(f):
+    for reader in _seat_row_sources(weekend_of):
+        for row in reader:
             movie = row.get("movie_title", "")
             date = row.get("date", "")
             if not movie or not date:

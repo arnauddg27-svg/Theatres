@@ -100,3 +100,50 @@ class MoanaSlugTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SeatArchiveLoaderTests(unittest.TestCase):
+    SEAT_FIELDS = ["weekend_of", "movie_title", "date", "theatre_name",
+                   "showtime", "occupancy_pct"]
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.orig = (P.SEAT_CSV, P.SEAT_ARCHIVE_DIR)
+        P.SEAT_CSV = os.path.join(self.tmp.name, "seat.csv")
+        P.SEAT_ARCHIVE_DIR = os.path.join(self.tmp.name, "seat-archive")
+        os.makedirs(P.SEAT_ARCHIVE_DIR)
+        self.orig_allow = P.model_allows_theatre
+        P.model_allows_theatre = lambda *a, **k: True
+
+    def tearDown(self):
+        P.SEAT_CSV, P.SEAT_ARCHIVE_DIR = self.orig
+        P.model_allows_theatre = self.orig_allow
+        self.tmp.cleanup()
+
+    def _row(self, weekend, movie, i):
+        return {"weekend_of": weekend, "movie_title": movie, "date": weekend,
+                "theatre_name": f"AMC T{i}", "showtime": "19:00",
+                "occupancy_pct": "20"}
+
+    def test_archived_seat_weekend_reads_transparently(self):
+        with open(P.SEAT_CSV, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=self.SEAT_FIELDS)
+            w.writeheader()
+            w.writerows(self._row("2026-07-10", "New Film", i) for i in range(3))
+        with gzip.open(P._seat_archive_path("2026-05-01"), "wt", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=self.SEAT_FIELDS)
+            w.writeheader()
+            w.writerows(self._row("2026-05-01", "Old Film", i) for i in range(4))
+        old = P.load_seat_data(weekend_of="2026-05-01")
+        self.assertEqual(len(old["Old Film"]["2026-05-01"]), 4)
+        new = P.load_seat_data(weekend_of="2026-07-10")
+        self.assertEqual(len(new["New Film"]["2026-07-10"]), 3)
+
+    def test_seat_merge_filter_refuses_archived_weekend(self):
+        from scripts import merge_scrape_artifacts as M
+        from pathlib import Path as _P
+        data_dir = _P(self.tmp.name)
+        (data_dir / "seat-archive" / "seat-counts-2026-05-01.csv.gz").write_bytes(b"")
+        f = M._seat_row_filter(data_dir)
+        self.assertFalse(f({"weekend_of": "2026-05-01"}))
+        self.assertTrue(f({"weekend_of": "2026-07-10"}))
