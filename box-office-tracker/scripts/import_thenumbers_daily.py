@@ -36,6 +36,9 @@ def _get(url):
 
 
 def slug_candidates(title, year):
+    # a trailing parenthesized year in the TITLE ('Moana (2026)') must not end up
+    # duplicated in the slug — the-numbers wants 'Moana-(2026)', not 'Moana-2026-(2026)'
+    title = re.sub(r"\s*\((?:19|20)\d{2}\)\s*$", "", title)
     base = title.replace("&", "and")
     base = re.sub(r"[^A-Za-z0-9 ]", " ", base)      # drop :, ', etc.
     base = re.sub(r"\s+", "-", base.strip())

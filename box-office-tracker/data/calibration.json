@@ -1393,45 +1393,145 @@
         "Thursday"
       ],
       "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%."
+    },
+    {
+      "movie": "Moana (2026)",
+      "weekend_of": "2026-07-10",
+      "date": "2026-07-13",
+      "predicted_mid": 36.87,
+      "predicted_low": 27.01,
+      "predicted_high": 75.13,
+      "actual_total": 43.0,
+      "daily_actuals": {
+        "Thursday": 4.5,
+        "Friday": 13.5,
+        "Saturday": 13.5,
+        "Sunday": 11.5
+      },
+      "daily_predictions": {
+        "Thursday": 4.22,
+        "Friday": 10.17,
+        "Saturday": 12.6
+      },
+      "error_pct": -14.2,
+      "n_theatres": 424,
+      "n_days": 3,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "the-numbers.com + user report",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 3.23,
+        "Friday": 8.46,
+        "Saturday": 11.73
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 4.84,
+        "Friday": 7.41,
+        "Saturday": 13.87,
+        "Sunday": 11.35
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.475,
+        "Friday": 0.471,
+        "Saturday": 0.464,
+        "Sunday": 0.471
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 421,
+        "Friday": 423,
+        "Saturday": 421
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.991,
+        "Friday": 0.995,
+        "Saturday": 0.991
+      },
+      "coverage_ratio": 0.992
+    },
+    {
+      "movie": "Evil Dead Burn",
+      "weekend_of": "2026-07-10",
+      "date": "2026-07-13",
+      "predicted_mid": 24.75,
+      "predicted_low": 17.01,
+      "predicted_high": 50.42,
+      "actual_total": 13.7,
+      "daily_actuals": {
+        "Thursday": 2.3,
+        "Friday": 4.4,
+        "Saturday": 4.0,
+        "Sunday": 3.0
+      },
+      "daily_predictions": {
+        "Thursday": 4.6,
+        "Friday": 7.05,
+        "Saturday": 5.33
+      },
+      "error_pct": 80.6,
+      "n_theatres": 417,
+      "n_days": 3,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "the-numbers.com + user report",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 3.65,
+        "Friday": 5.75,
+        "Saturday": 4.77
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 5.56,
+        "Friday": 5.8,
+        "Saturday": 5.6,
+        "Sunday": 3.66
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.475,
+        "Friday": 0.468,
+        "Saturday": 0.464,
+        "Sunday": 0.471
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "daily_theatre_counts": {
+        "Thursday": 415,
+        "Friday": 416,
+        "Saturday": 414
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.976,
+        "Friday": 0.979,
+        "Saturday": 0.974
+      },
+      "coverage_ratio": 0.976
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2012,
+    "amc_market_share": 0.1955,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1088,
+      "Thursday": 0.1115,
       "Friday": 0.3179,
-      "Saturday": 0.3238,
-      "Sunday": 0.2495
+      "Saturday": 0.3217,
+      "Sunday": 0.2489
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "Michael",
-        "weekend_of": "2026-04-24",
-        "abs_error_pct": 3.7,
-        "n_theatres": 378,
-        "n_days": 4,
-        "coverage_ratio": 0.846,
-        "daily_coverage_ratios": {
-          "Thursday": 0.997,
-          "Friday": 0.694,
-          "Saturday": 0.691,
-          "Sunday": 1.0
-        },
-        "daily_errors": {
-          "Thursday": 3.7,
-          "Friday": 46.8,
-          "Saturday": 42.4,
-          "Sunday": 8.0
-        },
-        "model_cohort_key": "core",
-        "reference_amc_theatres": 376
-      },
       {
         "movie": "The Devil Wears Prada 2",
         "weekend_of": "2026-05-01",
@@ -1812,33 +1912,73 @@
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Moana (2026)",
+        "weekend_of": "2026-07-10",
+        "abs_error_pct": 14.2,
+        "n_theatres": 424,
+        "n_days": 3,
+        "coverage_ratio": 0.992,
+        "daily_coverage_ratios": {
+          "Thursday": 0.991,
+          "Friday": 0.995,
+          "Saturday": 0.991
+        },
+        "daily_errors": {
+          "Thursday": 6.2,
+          "Friday": 24.6,
+          "Saturday": 6.7
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Evil Dead Burn",
+        "weekend_of": "2026-07-10",
+        "abs_error_pct": 80.6,
+        "n_theatres": 417,
+        "n_days": 3,
+        "coverage_ratio": 0.976,
+        "daily_coverage_ratios": {
+          "Thursday": 0.976,
+          "Friday": 0.979,
+          "Saturday": 0.974
+        },
+        "daily_errors": {
+          "Thursday": 99.8,
+          "Friday": 60.3,
+          "Saturday": 33.3
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-07-08",
+    "last_updated": "2026-07-13",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 7,
-          "support": 2.0615
+          "n": 9,
+          "support": 3.0115
         },
         "Friday": {
-          "n": 9,
-          "support": 4.125
+          "n": 11,
+          "support": 5.064
         },
         "Saturday": {
-          "n": 16,
-          "support": 6.598
+          "n": 18,
+          "support": 7.526
         },
         "Sunday": {
-          "n": 15,
-          "support": 6.383
+          "n": 17,
+          "support": 7.325
         }
       },
       "leads": {
         "same_day": {
-          "n": 45,
-          "support": 18.7035
+          "n": 53,
+          "support": 22.4625
         },
         "next_day": {
           "n": 2,
@@ -1856,12 +1996,12 @@
     },
     "regression": {
       "version": 1,
-      "active_tier": "regression",
+      "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.15971365149430855,
-        "Friday": 0.3034835351242832,
-        "Saturday": 0.3012909526416044,
-        "Sunday": 0.23551186073980396
+        "Thursday": 0.15660420481614734,
+        "Friday": 0.3051168586838258,
+        "Saturday": 0.30179307476161216,
+        "Sunday": 0.23648586173841468
       },
       "trained_on": [
         "Michael",
@@ -1880,14 +2020,16 @@
         "Supergirl",
         "Jackass: Best and Last",
         "Minions & Monsters",
-        "Young Washington"
+        "Young Washington",
+        "Moana (2026)",
+        "Evil Dead Burn"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.24033008741058987,
-        "resid_scale": 0.33251886727371177
+        "log_ratio_mean": 0.2173667026003536,
+        "resid_scale": 0.33968469457026895
       },
       "identity": {
-        "seat_sd": 0.41027715998794534
+        "seat_sd": 0.40327902886791356
       },
       "seat": {
         "features": [
@@ -1900,12 +2042,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.40660451143029125,
-          0.90393949404529,
-          0.04280857390933552,
-          0.0684863611780099,
-          -0.01530991575894259,
-          0.034427425468402974,
+          0.3614025558747005,
+          0.9168676923332969,
+          0.022601664925100195,
+          0.06606931094063967,
+          -0.022205327353978486,
+          0.04020000484687247,
           0.0
         ],
         "prior": [
@@ -1918,7 +2060,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.3334723150900613
+        "daily_resid_sd": 0.3461695349160588
       },
       "snapshot": {
         "features": [
@@ -1932,12 +2074,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.754941124253547,
-          0.6915158754404441,
-          -0.01348312780413923,
-          0.3583338512594788,
-          0.06422497467371158,
-          0.10844671917638288,
+          0.7030578040406351,
+          0.6963145813212517,
+          -0.0895072871839073,
+          0.35561480016095137,
+          0.06997500761792234,
+          0.12635322685190403,
           0.0,
           0.0
         ],
@@ -1952,122 +2094,134 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.5854790571728622
+        "daily_resid_sd": 0.5858243544949411
       },
       "weekend": {
-        "log_half_width": 0.4121,
-        "resid_mean": -0.009890781409765959,
-        "df": 15,
-        "loo_hit_rate": 0.9375,
+        "log_half_width": 0.5106,
+        "resid_mean": 0.18610723847973776,
+        "df": 17,
+        "loo_hit_rate": 0.9444,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 22.53,
-        "loo_median_ae_pct": 18.44,
-        "n_movies": 16
+        "loo_mae_pct": 25.51,
+        "loo_median_ae_pct": 17.16,
+        "n_movies": 18
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 133.77,
+          "pred_m": 93.37,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 45.52,
+          "pred_m": 46.02,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 22.08,
+          "pred_m": 24.5,
           "actual_m": 15.09,
-          "observed_share": 0.839
+          "observed_share": 0.843
         },
         {
           "movie": "Obsession",
-          "pred_m": 22.55,
+          "pred_m": 14.57,
           "actual_m": 17.2,
-          "observed_share": 1.0
+          "observed_share": 0.699
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 83.69,
+          "pred_m": 75.54,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 59.92,
+          "pred_m": 53.16,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 7.09,
+          "pred_m": 5.27,
           "actual_m": 7.35,
-          "observed_share": 1.0
+          "observed_share": 0.843
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 50.93,
+          "pred_m": 39.79,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 26.39,
+          "pred_m": 17.09,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "The Amazing Digital Circus: The Last Act",
-          "pred_m": 19.98,
+          "pred_m": 11.79,
           "actual_m": 20.24,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 51.31,
+          "pred_m": 40.48,
           "actual_m": 44.53,
-          "observed_share": 0.535
+          "observed_share": 0.537
         },
         {
           "movie": "Toy Story 5",
-          "pred_m": 125.65,
+          "pred_m": 130.22,
           "actual_m": 160.0,
           "observed_share": 1.0
         },
         {
           "movie": "Supergirl",
-          "pred_m": 42.9,
+          "pred_m": 31.89,
           "actual_m": 37.1,
           "observed_share": 1.0
         },
         {
           "movie": "Jackass: Best and Last",
-          "pred_m": 13.1,
+          "pred_m": 7.99,
           "actual_m": 8.46,
           "observed_share": 1.0
         },
         {
           "movie": "Minions & Monsters",
-          "pred_m": 38.19,
+          "pred_m": 32.06,
           "actual_m": 47.21,
           "observed_share": 1.0
         },
         {
           "movie": "Young Washington",
-          "pred_m": 16.68,
+          "pred_m": 12.81,
           "actual_m": 19.37,
-          "observed_share": 1.0
+          "observed_share": 0.843
+        },
+        {
+          "movie": "Moana (2026)",
+          "pred_m": 30.6,
+          "actual_m": 43.0,
+          "observed_share": 0.765
+        },
+        {
+          "movie": "Evil Dead Burn",
+          "pred_m": 18.58,
+          "actual_m": 13.7,
+          "observed_share": 0.763
         }
       ],
       "bakeoff": {
-        "identity": 23.53,
-        "global_ratio": 24.86,
-        "regression": 22.53
+        "identity": 25.51,
+        "global_ratio": 26.86,
+        "regression": 26.59
       },
-      "bakeoff_winner": "regression",
+      "bakeoff_winner": "identity",
       "meets_mae_target": false
     }
   }
