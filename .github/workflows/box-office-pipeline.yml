@@ -86,6 +86,10 @@ on:
         description: 'Fandango: total shards across the night (0 = whole pool in one run).'
         required: false
         default: ''
+      fandango_order:
+        description: 'Fandango showtime pick order: prime (default) or nearest (near-showtime afternoon slots).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -596,6 +600,7 @@ jobs:
           # Scheduled slots pass shard + num_shards; ad-hoc runs default to the whole pool.
           FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
+          FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
           FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
           FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
           FANDANGO_DEADLINE_SEC: '2100'   # 35 min — self-stop with margin under the 40-min step timeout

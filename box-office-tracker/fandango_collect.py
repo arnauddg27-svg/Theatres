@@ -113,6 +113,7 @@ FANDANGO_MAX_RESUMES = _env_int("FANDANGO_MAX_RESUMES", 2)    # pause/resume cyc
 # parallel GitHub jobs (one fresh IP each). A leg scrapes theatres[shard::N] —
 # a deterministic, geographically-mixed, disjoint slice — staying under the
 # per-IP budget; a merge step recombines the shard outputs.
+FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest
 FANDANGO_NUM_SHARDS = _env_int("FANDANGO_NUM_SHARDS", 0)      # 0/1 = no sharding (whole pool)
 FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard index
 
@@ -245,10 +246,16 @@ def showtime_timing(sdate, tz_name, now_utc):
 
 
 def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
-                            now_utc, cap):
+                            now_utc, cap, order="prime"):
     """From a theatre's showtime buttons, pick the tracked-title showtimes worth
-    capturing: in-window date, still pre-show, prime-time first (the strongest
-    reservation signal), capped. Pure — unit-tested offline.
+    capturing: in-window date, still pre-show, capped. Pure — unit-tested offline.
+
+    order="prime"   : prime-time evening shows first (strongest reservation signal;
+                      the overnight slots' default).
+    order="nearest" : soonest showtime first — the afternoon "near" slots use this
+                      to read occupancy 1-4h before showtime, where advance-online
+                      reservations best approximate final attendance (the
+                      like-for-like data the family walk-up confound needs).
     """
     wanted = []
     for e in entries:
@@ -278,8 +285,11 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         counts[key] = counts.get(key, 0) + 1
     for w in wanted:
         w["discovered"] = counts[(w["title"], w["show_date"])]
-    # Prime-time evening shows first (highest occupancy signal), then by date.
-    wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
+    if order == "nearest":
+        wanted.sort(key=lambda w: (w["minutes_until"], w["_prime"]))
+    else:
+        # Prime-time evening shows first (highest occupancy signal), then by date.
+        wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
     if cap and cap > 0:
         wanted = wanted[:cap]
     return wanted
@@ -522,7 +532,8 @@ def _capture_theatre(page, th, shared):
 
     wanted = select_wanted_showtimes(entries, shared["target_slugs"],
                                      shared["window_dates"], tz_name,
-                                     shared["now_utc"], shared["per_theatre_cap"])
+                                     shared["now_utc"], shared["per_theatre_cap"],
+                                     order=shared.get("order", "prime"))
     stats["matched"] = len(wanted)
     rows = []
     for w in wanted:
@@ -692,6 +703,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
 
     shared = {
         "target_slugs": target_slugs, "window_dates": window_dates,
+        "order": FANDANGO_ORDER,
         "now_utc": now_utc, "weekend_of": weekend_of, "run_id": run_id,
         "check_time": check_time, "per_theatre_cap": per_theatre_cap,
         "polite": polite, "headless": headless,

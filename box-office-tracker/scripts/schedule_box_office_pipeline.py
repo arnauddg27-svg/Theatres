@@ -98,11 +98,14 @@ def pipeline_inputs(
     }
 
 
-def fandango_slot_inputs(shard: int, num_shards: int) -> dict[str, str]:
+def fandango_slot_inputs(shard: int, num_shards: int,
+                         order: str | None = None) -> dict[str, str]:
     """Inputs for one Fandango shard slot — phase + which 1/N slice of the pool."""
     inputs = pipeline_inputs("scrape-fandango", "ALL", "false", "true", "true")
     inputs["fandango_shard"] = str(shard)
     inputs["fandango_num_shards"] = str(num_shards)
+    if order:
+        inputs["fandango_order"] = order
     return inputs
 
 
@@ -206,6 +209,18 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 4, 5, 6}), 10, 0, fandango_slot_inputs(1, 6)),
     Slot("snapshot fandango core 11Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 11, 0, fandango_slot_inputs(2, 6)),
+    # NEAR-SHOWTIME afternoon pass over the core theatres, nearest-show-first:
+    # the overnight slots capture at a median 13-16h lead (advance sales only),
+    # which is why family-film occupancy reads near zero and the cross-chain
+    # share stays family-gated. These read matinee/early-evening shows 1-4h out,
+    # where advance-online occupancy best approximates final attendance —
+    # accumulating the like-for-like data that eventually lifts the family gate.
+    Slot("snapshot fandango near 16Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 16, 0, fandango_slot_inputs(0, 6, order="nearest")),
+    Slot("snapshot fandango near 18Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 18, 0, fandango_slot_inputs(1, 6, order="nearest")),
+    Slot("snapshot fandango near 20Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 20, 0, fandango_slot_inputs(2, 6, order="nearest")),
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",

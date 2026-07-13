@@ -334,3 +334,27 @@ class RobustSlugMatchTest(unittest.TestCase):
             got = fc.match_target_title("/moana-2-2027-241114/movie-overview", targets)
         self.assertIsNone(got)                      # not silently matched
         self.assertIn("NEAR-MISS", buf.getvalue())  # but LOUD in run logs
+
+
+class NearestOrderTest(unittest.TestCase):
+    def test_nearest_order_picks_soonest_showtime(self):
+        def href(sd):
+            q = sd.replace(" ", "+").replace(":", "%3A")
+            return f"https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate={q}&mid=1"
+        TS5 = "/toy-story-5-2026-243393/movie-overview"
+        entries = [
+            {"movieOverview": TS5, "href": href("2026-06-20 19:30")},   # prime, 11.5h out
+            {"movieOverview": TS5, "href": href("2026-06-20 11:00")},   # matinee, 3h out
+        ]
+        targets = {fc.slugify_title("Toy Story 5"): "Toy Story 5"}
+        window = {"2026-06-20"}
+        now = datetime(2026, 6, 20, 8, 0, tzinfo=timezone.utc)
+        # prime order (default): the 19:30 show wins the cap
+        prime = fc.select_wanted_showtimes(entries, targets, window, "UTC", now, cap=1)
+        self.assertEqual(prime[0]["sdate"], "2026-06-20 19:30")
+        # nearest order (afternoon near-showtime slots): the 3h-out matinee wins
+        near = fc.select_wanted_showtimes(entries, targets, window, "UTC", now,
+                                          cap=1, order="nearest")
+        self.assertEqual(near[0]["sdate"], "2026-06-20 11:00")
+        # discovered count attached either way (volume signal for cross-chain)
+        self.assertEqual(near[0]["discovered"], 2)

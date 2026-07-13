@@ -48,7 +48,7 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
     def test_fandango_full_pool_plus_core_second_pass(self):
         fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
-        self.assertEqual(len(fslots), 9)
+        self.assertEqual(len(fslots), 12)
         self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
         self.assertTrue(all(s.cron_days == frozenset({0, 4, 5, 6}) for s in fslots))
         by_hour = {s.hour: int(s.inputs["fandango_shard"]) for s in fslots}
@@ -58,6 +58,14 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         # 09-11Z re-run shards 0-2 → the core ~160 get a 2nd reading (velocity)
         self.assertEqual({h: by_hour[h] for h in range(9, 12)},
                          {9: 0, 10: 1, 11: 2})
+        # 16-20Z afternoon near-showtime pass over the core, nearest-show-first
+        # (like-for-like occupancy for the cross-chain share; family-gate data)
+        self.assertEqual({h: by_hour[h] for h in (16, 18, 20)},
+                         {16: 0, 18: 1, 20: 2})
+        near = [s for s in fslots if s.hour in (16, 18, 20)]
+        self.assertTrue(all(s.inputs.get("fandango_order") == "nearest" for s in near))
+        others = [s for s in fslots if s.hour not in (16, 18, 20)]
+        self.assertTrue(all("fandango_order" not in s.inputs for s in others))
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(
