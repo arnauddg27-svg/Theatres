@@ -268,6 +268,16 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
             "minutes_until": m_until, "show_date": show_date, "day_of_week": dow,
             "_prime": abs(hour - 19),  # distance from 7pm
         })
+    # Attach the PRE-CAP discovered showtime count per (title, show_date): the
+    # per-chain showings allocation is the volume signal the occupancy-only
+    # cross-chain share is missing (a chain giving a film few showings reads as
+    # high occupancy — the Young Washington confound). Recorded in row notes.
+    counts = {}
+    for w in wanted:
+        key = (w["title"], w["show_date"])
+        counts[key] = counts.get(key, 0) + 1
+    for w in wanted:
+        w["discovered"] = counts[(w["title"], w["show_date"])]
     # Prime-time evening shows first (highest occupancy signal), then by date.
     wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
     if cap and cap > 0:
@@ -567,6 +577,7 @@ def _capture_theatre(page, th, shared):
             th, w["title"], w["sdate"], page.url, params, seats,
             shared["weekend_of"], shared["run_id"], shared["check_time"],
             w["minutes_until"], w["show_date"], w["day_of_week"],
+            note=f"discovered_showtimes={w.get('discovered', '')}",
         ))
     return rows, stats
 

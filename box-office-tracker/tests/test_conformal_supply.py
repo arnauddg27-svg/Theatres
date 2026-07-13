@@ -56,22 +56,18 @@ class ConformalRatioBandTests(unittest.TestCase):
         self.assertIn("conformal", pred["regression_basis"])
 
 
-class SupplyConstraintGateTests(unittest.TestCase):
-    def _seat(self, showings_per_day):
-        return {"2026-07-03": [
-            {"theatre_name": "T1", "showtime": f"{10+i}:00"} for i in range(showings_per_day)
-        ]}
-
-    def test_showings_per_cinema_day(self):
-        self.assertAlmostEqual(P._seat_showings_per_cinema_day(self._seat(2)), 2.0)
-        self.assertAlmostEqual(P._seat_showings_per_cinema_day(self._seat(6)), 6.0)
+class SaturationGateTests(unittest.TestCase):
+    def test_showings_per_cinema_day_helper(self):
+        seat = {"2026-07-03": [
+            {"theatre_name": "T1", "showtime": f"{10+i}:00"} for i in range(6)]}
+        self.assertAlmostEqual(P._seat_showings_per_cinema_day(seat), 6.0)
         self.assertIsNone(P._seat_showings_per_cinema_day({}))
 
-    def test_floor_constant_separates_yw_from_wide_films(self):
-        # Young Washington opened at 2.2-2.4 showings/cinema (gated);
-        # Supergirl/Jackass/Minions ran 5.8-6.8+ (pass).
-        self.assertGreater(P.CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA, 2.5)
-        self.assertLess(P.CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA, 5.5)
+    def test_saturation_threshold_separates_yw_from_clean_films(self):
+        # YW read 42% AMC occupancy (supply-saturated, formula off 3x);
+        # every correctly-read film sat 17-30%.
+        self.assertGreater(P.CROSS_CHAIN_MAX_AMC_OCC, 30.0)
+        self.assertLess(P.CROSS_CHAIN_MAX_AMC_OCC, 42.0)
 
 
 if __name__ == "__main__":

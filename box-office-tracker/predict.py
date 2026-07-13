@@ -4645,13 +4645,31 @@ def amc_market_share_override_for(target_metadata):
 # metadata override always wins. Self-strengthens as covered weekends accrue.
 FANDANGO_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "fandango-pre-reservation-snapshots.csv")
 CROSS_CHAIN_WALKUP_K = 1.15
-CROSS_CHAIN_SHARE_WEIGHT = 0.5      # shrink toward the calibrated fleet share
-CROSS_CHAIN_SHARE_CLAMP = (0.70, 1.45)   # x fleet share
+# v2 (validated on the 5 films with cross-chain data + actuals, 2026-07-13,
+# scripts/validate_crosschain_v2.py):
+#   * wA is a FIXED capacity constant, not the drifting calibrated fleet share —
+#     otherwise the formula's output moves whenever the fleet prior drifts
+#     (0.244 -> 0.196 era). With wA=0.24 the formula matched true shares 3/3 on
+#     clean films: Supergirl 0.249 vs 0.260, Jackass 0.338 vs 0.333, Evil Dead
+#     Burn 0.333 vs 0.352.
+#   * weight raised 0.5 -> 0.9: the old shrink muted a CORRECT signal (EDB was
+#     read right and still missed +81% because the correction was halved and
+#     the old showings-gate blocked it by 0.02). Expected errors at 0.9 on the
+#     clean films: +5% / +1% / +10% (vs recorded +7% / +37% / +81%).
+#   * clamp is absolute [0.10, 0.40] (was relative to the drifting fleet share).
+#   * the showings/cinema supply gate was WRONG — Jackass (2.6 Fri) and EDB
+#     (3.7) sit below YW-like thresholds yet their reads were correct. The real
+#     confound signature is occupancy SATURATION: YW read 42% AMC occupancy
+#     (scarce showings run full -> occupancy stops measuring preference) vs
+#     17-30% for every correctly-read film. Gate: skip when AMC occ > 35%.
+#   * near-showtime-only RC occupancy was tested and REJECTED (worse on 3 of 4:
+#     composition effects — early-reserved prime shows vs same-day matinees).
+CROSS_CHAIN_CAPACITY_SHARE = 0.24
+CROSS_CHAIN_SHARE_WEIGHT = 0.9
+CROSS_CHAIN_SHARE_CLAMP_ABS = (0.10, 0.40)
+CROSS_CHAIN_MAX_AMC_OCC = 35.0     # saturation gate (supply-constrained films)
 CROSS_CHAIN_MIN_AMC_ROWS = 50
 CROSS_CHAIN_MIN_RC_ROWS = 40
-# Skip cross-chain when AMC under-programs a film: scarce showings run full, so
-# occupancy stops measuring chain preference (Young Washington, 2026-07-03).
-CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA = 4.5
 _CROSS_CHAIN_CACHE = {}
 
 
@@ -4746,13 +4764,19 @@ def cross_chain_share(movie, cross_chain_data, cal):
     occ_a, occ_rc = info.get("amc_occ") or 0.0, info.get("rc_occ") or 0.0
     if occ_a <= 0 or occ_rc <= 0:
         return None
-    base = calibrated_amc_market_share(cal)
-    a = base * occ_a
-    b = (1.0 - base) * CROSS_CHAIN_WALKUP_K * occ_rc
+    if occ_a > CROSS_CHAIN_MAX_AMC_OCC:
+        # saturation: when AMC under-programs a film its few showings run full,
+        # and occupancy stops measuring chain preference (Young Washington read
+        # 42% and the formula was off 3x; every correctly-read film sat 17-30%).
+        return None
+    wa = CROSS_CHAIN_CAPACITY_SHARE
+    a = wa * occ_a
+    b = (1.0 - wa) * CROSS_CHAIN_WALKUP_K * occ_rc
     formula = a / (a + b)
+    base = calibrated_amc_market_share(cal)
     shrunk = base + CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
-    lo, hi = CROSS_CHAIN_SHARE_CLAMP
-    clamped = max(base * lo, min(base * hi, shrunk))
+    lo, hi = CROSS_CHAIN_SHARE_CLAMP_ABS
+    clamped = max(lo, min(hi, shrunk))
     return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, clamped))
 
 
@@ -6690,22 +6714,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # young-male Jackass; see scripts/validate_crosschain_leadtime.py), so family
     # titles fall back to the fleet share + the family walk-up boost + any
     # reported-actual anchor instead.
-    # Cross-chain is ALSO skipped when AMC has under-programmed the film
-    # (supply-constrained): with few showings per cinema, the ones that run fill
-    # up, so high AMC occupancy signals SCARCITY, not chain preference — the
-    # exact inversion that made Young Washington's share read 0.26 when AMC's
-    # true share was ~0.15 (2026-07-03: AMC gave it 2.4 showings/cinema on
-    # opening Friday vs ~6-7 for normal wide films, then tripled to 6.1 on
-    # Saturday once demand showed; model missed -57%). Wide-release controls
-    # (Supergirl 5.8+, Jackass 6.7, Minions 6.8+) all clear the floor.
+    # (Supply-constrained films are handled INSIDE cross_chain_share via the
+    # AMC-occupancy saturation gate; the old showings/cinema gate wrongly
+    # blocked correctly-read films — Jackass ran 2.6 showings/cinema on Friday
+    # and Evil Dead Burn 3.7, both read accurately by the formula.)
     share_override_resolved = amc_market_share_override_for(movie_metadata)
     cross_chain_share_value = None
     if share_override_resolved is None and \
             (getattr(movie_metadata, "audience_type", "") or "") != FAMILY_WALKUP_AUDIENCE:
-        spc = _seat_showings_per_cinema_day(seat_data)
-        if spc is None or spc >= CROSS_CHAIN_MIN_SHOWINGS_PER_CINEMA:
-            cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
-            share_override_resolved = cross_chain_share_value
+        cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
+        share_override_resolved = cross_chain_share_value
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")

@@ -25,24 +25,31 @@ class CrossChainShareTests(unittest.TestCase):
         s = P.cross_chain_share("F", self._cc(15.0, 25.0), CAL)
         self.assertLess(s, 0.244)
 
-    def test_equal_occupancy_stays_near_fleet(self):
-        # occA == k*occRC -> formula == fleet share exactly
-        s = P.cross_chain_share("F", self._cc(23.0, 23.0 / P.CROSS_CHAIN_WALKUP_K), CAL)
-        self.assertAlmostEqual(s, 0.244, places=3)
-
-    def test_shrink_halves_the_move(self):
+    def test_formula_uses_fixed_capacity_share(self):
+        # v2: wA is the pinned capacity constant, so the formula's output is
+        # identical whatever the calibrated fleet prior has drifted to.
         cc = self._cc(25.0, 13.5)
-        base = 0.244
-        a = base * 25.0
-        b = (1 - base) * P.CROSS_CHAIN_WALKUP_K * 13.5
+        drifted = {"calibration_factors": {"amc_market_share": 0.196}}
+        wa = P.CROSS_CHAIN_CAPACITY_SHARE
+        a, b = wa * 25.0, (1 - wa) * P.CROSS_CHAIN_WALKUP_K * 13.5
         formula = a / (a + b)
-        expected = base + P.CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
-        self.assertAlmostEqual(P.cross_chain_share("F", cc, CAL), expected, places=6)
+        for cal in (CAL, drifted):
+            base = cal["calibration_factors"]["amc_market_share"]
+            expected = base + P.CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
+            expected = max(P.CROSS_CHAIN_SHARE_CLAMP_ABS[0],
+                           min(P.CROSS_CHAIN_SHARE_CLAMP_ABS[1], expected))
+            self.assertAlmostEqual(P.cross_chain_share("F", cc, cal), expected, places=6)
+
+    def test_saturation_gate_blocks_supply_constrained(self):
+        # Young Washington signature: AMC occupancy saturated at 42% because
+        # scarce showings ran full -> occupancy stopped measuring preference.
+        self.assertIsNone(P.cross_chain_share("F", self._cc(42.1, 21.0), CAL))
+        self.assertIsNotNone(P.cross_chain_share("F", self._cc(29.9, 16.4), CAL))
 
     def test_clamped_at_extremes(self):
-        # absurd skew cannot move the share beyond the clamp band
-        s = P.cross_chain_share("F", self._cc(90.0, 1.0), CAL)
-        self.assertLessEqual(s, 0.244 * P.CROSS_CHAIN_SHARE_CLAMP[1] + 1e-9)
+        # absurd skew cannot move the share beyond the absolute clamp
+        s = P.cross_chain_share("F", self._cc(34.0, 2.0), CAL)
+        self.assertLessEqual(s, P.CROSS_CHAIN_SHARE_CLAMP_ABS[1] + 1e-9)
 
     def test_no_data_and_thin_rows_are_neutral(self):
         self.assertIsNone(P.cross_chain_share("Other", self._cc(25, 13.5), CAL))
