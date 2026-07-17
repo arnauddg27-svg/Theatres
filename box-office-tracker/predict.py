@@ -4366,20 +4366,42 @@ _FRIDAY_WEEKEND_MULTIPLIERS = None   # (global, {audience_type: (mult, n)})
 # films (else no-op), so early-history replays are unchanged.
 CONFORMAL_MIN_HISTORY = 10
 CONFORMAL_TRIM = 2
+# Size-conditional bands: the model's 2x blowups all came from SMALL films
+# (Young Washington 2.33, Passenger 2.05, Breadwinner 1.46 — thin coverage,
+# supply confounds), while it has NEVER missed a >= $40M film by more than ~20%
+# (n=8 ratio range 0.80-1.11). Pooling both regimes gave a $114M tentpole an
+# absurd [0.71, 2.04] band. Tentpoles get their own reference class, expanded by
+# a 1.3x margin (finite-n humility) with a +/-15% minimum half-width; small
+# films keep the pooled k-trim band, which is honestly wide.
+CONFORMAL_TENTPOLE_MIN_M = 40.0
+CONFORMAL_BUCKET_MIN_N = 6
+CONFORMAL_BUCKET_MARGIN = 1.3
+CONFORMAL_MIN_HALF_WIDTH = 0.15
 
 
-def conformal_ratio_band(cal, movie):
-    """(r_lo, r_hi) empirical band of actual/predicted from history (LOO by movie)."""
+def conformal_ratio_band(cal, movie, predicted_mid=None):
+    """(r_lo, r_hi) empirical band of actual/predicted from history (LOO by movie).
+
+    predicted_mid selects the reference class: >= $40M films are judged against
+    the model's tentpole track record only (a very different error regime)."""
     key = _movie_lookup_key(movie or "")
-    ratios = sorted(
-        e["actual_total"] / e["predicted_mid"]
+    entries = [
+        (e["predicted_mid"], e["actual_total"] / e["predicted_mid"])
         for e in ((cal or {}).get("history", []) or [])
         if e.get("actual_total") and e.get("predicted_mid")
         and e["predicted_mid"] > 0
         and _movie_lookup_key(e.get("movie", "")) != key
-    )
+    ]
+    ratios = sorted(r for _, r in entries)
     if len(ratios) < CONFORMAL_MIN_HISTORY:
         return None
+    if predicted_mid and predicted_mid >= CONFORMAL_TENTPOLE_MIN_M:
+        big = sorted(r for p, r in entries if p >= CONFORMAL_TENTPOLE_MIN_M)
+        if len(big) >= CONFORMAL_BUCKET_MIN_N:
+            r_lo = 1.0 - (1.0 - big[0]) * CONFORMAL_BUCKET_MARGIN
+            r_hi = 1.0 + (big[-1] - 1.0) * CONFORMAL_BUCKET_MARGIN
+            return (min(r_lo, 1.0 - CONFORMAL_MIN_HALF_WIDTH),
+                    max(r_hi, 1.0 + CONFORMAL_MIN_HALF_WIDTH))
     k = min(CONFORMAL_TRIM, max(1, len(ratios) // 8))
     return ratios[k - 1], ratios[-k]
 
@@ -4565,7 +4587,7 @@ def select_regression_prediction(pred, cal=None):
     # Conformal floor: the band must be at least as wide as the model's own
     # historical error distribution implies (audit: stated bands covered only
     # 44% of actuals). Widens only — the midpoint is untouched.
-    band = conformal_ratio_band(cal, pred.get("movie", "")) if mid and mid > 0 else None
+    band = conformal_ratio_band(cal, pred.get("movie", ""), predicted_mid=mid) if mid and mid > 0 else None
     if band:
         r_lo, r_hi = band
         c_low, c_high = mid * r_lo, mid * r_hi
