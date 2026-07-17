@@ -4692,6 +4692,18 @@ CROSS_CHAIN_SHARE_CLAMP_ABS = (0.10, 0.40)
 CROSS_CHAIN_MAX_AMC_OCC = 35.0     # saturation gate (supply-constrained films)
 CROSS_CHAIN_MIN_AMC_ROWS = 50
 CROSS_CHAIN_MIN_RC_ROWS = 40
+# VOLUME mode: q = (occA*showingsA)/(occRC*showingsRC), day-matched. Volume does
+# not censor at sellouts (chains ADD showings when selling out — the supply
+# response is demand signal), so it needs no saturation gate and covers the
+# occupancy formula's two blind spots (saturated tentpoles, supply-constrained
+# films). It reduces EXACTLY to the validated occupancy formula when both chains
+# allocate the same showings per theatre. RC showings counts (discovered_
+# showtimes) only exist from 2026-07-16, so volume mode is UNBACKTESTABLE —
+# per the validate-then-apply discipline it runs LOG-ONLY (computed, printed,
+# stored on the prediction) until its first live validation (The Odyssey,
+# 2026-07-17 weekend), then CROSS_CHAIN_VOLUME_APPLY flips on.
+CROSS_CHAIN_VOLUME_APPLY = False
+CROSS_CHAIN_MIN_VOLUME_DAYS = 1
 _CROSS_CHAIN_CACHE = {}
 
 
@@ -4735,6 +4747,7 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
     rc = {}
+    rc_day = {}     # movie -> show_date -> [(occ, discovered_spc or None)]
     with open(FANDANGO_SNAPSHOTS_CSV, "r") as f:
         for row in csv.DictReader(f):
             if (row.get("weekend_of") or "").strip() != weekend_of:
@@ -4745,11 +4758,21 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
             occ = _occ_pct(row)
             if occ is None:
                 continue
-            rc.setdefault(row.get("movie_title", "").strip(), []).append(occ)
+            movie = row.get("movie_title", "").strip()
+            rc.setdefault(movie, []).append(occ)
+            disc = None
+            note = row.get("notes") or ""
+            if "discovered_showtimes=" in note:
+                raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
+                if raw.isdigit():
+                    disc = int(raw)
+            rc_day.setdefault(movie, {}).setdefault(
+                row.get("show_date", ""), []).append((occ, disc))
     if not rc:
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
     amc = {}
+    amc_day = {}    # movie -> date -> {"occ": [..], "slots": set, "theatres": set}
     with open(SEAT_CSV, "r") as f:
         for row in csv.DictReader(f):
             if (row.get("weekend_of") or "").strip() != weekend_of:
@@ -4759,17 +4782,43 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
             occ = _occ_pct(row)
             if occ is None:
                 continue
-            amc.setdefault(row.get("movie_title", "").strip(), []).append(occ)
+            movie = row.get("movie_title", "").strip()
+            amc.setdefault(movie, []).append(occ)
+            d = amc_day.setdefault(movie, {}).setdefault(
+                row.get("date", ""), {"occ": [], "slots": set(), "theatres": set()})
+            d["occ"].append(occ)
+            t = row.get("theatre_name", "")
+            d["slots"].add((t, row.get("showtime", "")))
+            d["theatres"].add(t)
     out = {}
     for movie, rc_vals in rc.items():
         amc_vals = movie_mapping_get(amc, movie, None)
         if not amc_vals:
             continue
+        # Day-matched VOLUME ratios: (occA*spcA)/(occRC*spcRC) per show date.
+        # spcRC comes from the discovered_showtimes counts the collector logs
+        # (2026-07-16 onward); days without them fall back to occupancy-only.
+        vol_ratios = []
+        a_days = movie_mapping_get(amc_day, movie, {}) or {}
+        for show_date, pairs in (rc_day.get(movie) or {}).items():
+            ad = a_days.get(show_date)
+            discs = [d for _, d in pairs if d]
+            occs = [o for o, _ in pairs]
+            if not ad or not ad["theatres"] or not discs or not occs:
+                continue
+            spc_a = len(ad["slots"]) / len(ad["theatres"])
+            occ_a = sum(ad["occ"]) / len(ad["occ"])
+            spc_rc = statistics.median(discs)
+            occ_rc = sum(occs) / len(occs)
+            if occ_rc > 0 and spc_rc > 0:
+                vol_ratios.append((occ_a * spc_a) / (occ_rc * spc_rc))
         out[movie] = {
             "amc_occ": sum(amc_vals) / len(amc_vals),
             "rc_occ": sum(rc_vals) / len(rc_vals),
             "amc_rows": len(amc_vals),
             "rc_rows": len(rc_vals),
+            "volume_ratio": statistics.median(vol_ratios) if vol_ratios else None,
+            "volume_days": len(vol_ratios),
         }
     _CROSS_CHAIN_CACHE[key] = out
     return out
@@ -4795,6 +4844,31 @@ def cross_chain_share(movie, cross_chain_data, cal):
     a = wa * occ_a
     b = (1.0 - wa) * CROSS_CHAIN_WALKUP_K * occ_rc
     formula = a / (a + b)
+    base = calibrated_amc_market_share(cal)
+    shrunk = base + CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
+    lo, hi = CROSS_CHAIN_SHARE_CLAMP_ABS
+    clamped = max(lo, min(hi, shrunk))
+    return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, clamped))
+
+
+def cross_chain_volume_share(movie, cross_chain_data, cal):
+    """VOLUME-mode per-film AMC share (None = no day-matched volume data).
+
+    q = median over matched show dates of (occA*showingsA)/(occRC*showingsRC);
+    share = wa*q / (wa*q + (1-wa)*K). Identical to the validated occupancy
+    formula when both chains run the same showings per theatre; unlike it,
+    volume does not censor at sellouts, so no saturation gate applies."""
+    info = movie_mapping_get(cross_chain_data or {}, movie, None)
+    if not info:
+        return None
+    q = info.get("volume_ratio")
+    if not q or info.get("volume_days", 0) < CROSS_CHAIN_MIN_VOLUME_DAYS:
+        return None
+    if (info.get("amc_rows", 0) < CROSS_CHAIN_MIN_AMC_ROWS
+            or info.get("rc_rows", 0) < CROSS_CHAIN_MIN_RC_ROWS):
+        return None
+    wa = CROSS_CHAIN_CAPACITY_SHARE
+    formula = wa * q / (wa * q + (1.0 - wa) * CROSS_CHAIN_WALKUP_K)
     base = calibrated_amc_market_share(cal)
     shrunk = base + CROSS_CHAIN_SHARE_WEIGHT * (formula - base)
     lo, hi = CROSS_CHAIN_SHARE_CLAMP_ABS
@@ -6742,10 +6816,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # and Evil Dead Burn 3.7, both read accurately by the formula.)
     share_override_resolved = amc_market_share_override_for(movie_metadata)
     cross_chain_share_value = None
+    cross_chain_volume_value = None
     if share_override_resolved is None and \
             (getattr(movie_metadata, "audience_type", "") or "") != FAMILY_WALKUP_AUDIENCE:
         cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
-        share_override_resolved = cross_chain_share_value
+        # Volume mode (uncensored; no saturation gate) — the family gate still
+        # applies since RC occupancy remains walk-up-blind in both modes.
+        cross_chain_volume_value = cross_chain_volume_share(movie, cross_chain_data, cal)
+        if CROSS_CHAIN_VOLUME_APPLY and cross_chain_volume_value is not None:
+            share_override_resolved = cross_chain_volume_value
+        else:
+            share_override_resolved = cross_chain_share_value
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")
@@ -7365,6 +7446,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
     result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
+    if cross_chain_volume_value is not None:
+        result["cross_chain_volume_share"] = round(cross_chain_volume_value, 4)
+        result["cross_chain_volume_applied"] = bool(CROSS_CHAIN_VOLUME_APPLY)
     if cross_chain_share_value is not None:
         info = movie_mapping_get(cross_chain_data or {}, movie, {}) or {}
         result["cross_chain_share"] = round(cross_chain_share_value, 4)
@@ -8056,6 +8140,9 @@ def print_prediction(pred, verbose=False):
     movie = pred["movie"]
     print(f"\n  {movie.upper()}")
     print(f"  {'─' * len(movie)}")
+    if pred.get("cross_chain_volume_share") is not None:
+        applied = "APPLIED" if pred.get("cross_chain_volume_applied") else "log-only, validating on this weekend's actual"
+        print(f"  Cross-chain VOLUME share: {pred['cross_chain_volume_share']:.1%} ({applied})")
     if pred.get("cross_chain_share") is not None:
         d = pred.get("cross_chain_share_detail") or {}
         print(f"  Cross-chain share: {pred['cross_chain_share']:.1%} "

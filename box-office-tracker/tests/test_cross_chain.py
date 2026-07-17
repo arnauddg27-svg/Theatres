@@ -109,3 +109,36 @@ class LoadCrossChainOccupancyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class VolumeShareTests(unittest.TestCase):
+    def _cc(self, q, days=2, amc_rows=100, rc_rows=100, amc_occ=25.0, rc_occ=15.0):
+        return {"F": {"amc_occ": amc_occ, "rc_occ": rc_occ, "amc_rows": amc_rows,
+                      "rc_rows": rc_rows, "volume_ratio": q, "volume_days": days}}
+
+    def test_reduces_to_occupancy_formula_at_showings_parity(self):
+        # same showings per theatre on both chains -> q = occA/occRC -> identical share
+        occ_a, occ_rc = 25.0, 13.5
+        occ_share = P.cross_chain_share(
+            "F", {"F": {"amc_occ": occ_a, "rc_occ": occ_rc,
+                        "amc_rows": 100, "rc_rows": 100}}, CAL)
+        vol_share = P.cross_chain_volume_share(
+            "F", self._cc(occ_a / occ_rc, amc_occ=occ_a, rc_occ=occ_rc), CAL)
+        self.assertAlmostEqual(occ_share, vol_share, places=6)
+
+    def test_no_saturation_gate_in_volume_mode(self):
+        # occupancy mode gates at 42% AMC occ; volume mode measures instead
+        s = P.cross_chain_volume_share("F", self._cc(1.5, amc_occ=42.0), CAL)
+        self.assertIsNotNone(s)
+        self.assertIsNone(P.cross_chain_share(
+            "F", {"F": {"amc_occ": 42.0, "rc_occ": 20.0,
+                        "amc_rows": 100, "rc_rows": 100}}, CAL))
+
+    def test_needs_volume_days_and_rows(self):
+        self.assertIsNone(P.cross_chain_volume_share("F", self._cc(None), CAL))
+        self.assertIsNone(P.cross_chain_volume_share("F", self._cc(1.2, days=0), CAL))
+        self.assertIsNone(P.cross_chain_volume_share("F", self._cc(1.2, rc_rows=5), CAL))
+
+    def test_log_only_by_default(self):
+        # validate-then-apply: the flag stays off until the first live validation
+        self.assertFalse(P.CROSS_CHAIN_VOLUME_APPLY)
