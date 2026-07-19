@@ -132,6 +132,7 @@ SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
 SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
+SNAPSHOT_MEASURED_NORM_FROM = "2026-07-17"  # measured subset-expansion era start
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN = 0.70
@@ -5105,7 +5106,17 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
     by_slice = {}
     for item in parsed_rows:
         _, row, _ = item
-        key = (row.get("show_date", ""), row.get("timezone", ""))
+        # Slice per THEATRE (not per timezone): a capture run that stops mid-pool
+        # (deadline) misses whole theatres; slicing per timezone discarded those
+        # theatres' perfectly good earlier reads and then EXTRAPOLATED over them
+        # from a size-biased subset (2026-07-19: the latest Sunday run reached
+        # 200/425 theatres -> sample_normalization_factor 2.125 -> the snapshot
+        # day scaled x10.8 vs the x5.2 Saturday demonstrated; ~$53M raw vs ~$38M
+        # honest). Per-theatre slicing keeps each theatre's own freshest coherent
+        # run within the max-age window; per-row lead-time multipliers already
+        # handle the freshness differences between theatres.
+        key = (row.get("show_date", ""), row.get("timezone", ""),
+               row.get("theatre_name", ""))
         by_slice.setdefault(key, []).append(item)
 
     keep_indexes = set()
@@ -5389,10 +5400,51 @@ def snapshot_pickup_scale_for_day(day_name, anchors, fallback_scale=1.0):
     return _clamp(scale, SNAPSHOT_SAME_WEEK_SCALE_MIN, SNAPSHOT_SAME_WEEK_SCALE_MAX)
 
 
+def measured_snapshot_sample_expansion(regular_seat_data, snapshot_data):
+    """Measure the snapshot lane's subset->full-fleet expansion from OBSERVED days.
+
+    The snapshot lane deliberately visits a strategic ~200-theatre subset while
+    the seat lane visits the full ~425. The old normalization extrapolated the
+    subset LINEARLY (425/200 = x2.125), assuming subset theatres are average-
+    sized — but a strategic subset skews big. On observed seat days both lanes
+    exist, so the film's TRUE factor is measurable: total seats sold across all
+    theatres / seats sold within the snapshot subset. The Odyssey (2026-07-17):
+    measured 1.48/1.57/1.57 across Thu/Fri/Sat vs the x2.125 applied — a +35%
+    inflation on every snapshot-day estimate. Returns (factor, subset_size) or
+    (None, 0) when unmeasurable (no observed-day overlap). Leak-free: uses only
+    post-show data from already-observed days.
+    """
+    subset = {
+        (row.get("theatre_name") or "").strip()
+        for rows in (snapshot_data or {}).values()
+        for row in rows
+        if (row.get("theatre_name") or "").strip()
+    }
+    if not subset:
+        return None, 0
+    factors = []
+    for date_str, rows in (regular_seat_data or {}).items():
+        tot = sub = 0
+        for row in rows:
+            try:
+                sold = int(float(row.get("seats_sold", 0) or 0))
+            except (TypeError, ValueError):
+                continue
+            tot += sold
+            if (row.get("theatre_name") or "").strip() in subset:
+                sub += sold
+        if sub > 0 and tot >= sub:
+            factors.append(tot / sub)
+    if not factors:
+        return None, len(subset)
+    return statistics.median(factors), len(subset)
+
+
 def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           expected_timezone_counts=None,
                           theatre_timezone_map=None,
                           national_theatre_count=None,
+                          sample_norm_override=None,
                           share_override=None):
     """Estimate one future day from pre-reservation snapshots only."""
     day_name = _snapshot_day_name(date_str, rows)
@@ -5435,12 +5487,24 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         expected_timezone_counts=expected_timezone_counts,
         theatre_timezone_map=theatre_timezone_map,
     )
-    amc_total, sample_norm_factor = normalize_amc_sample(
-        sampled_amc_total,
-        n_amc_theatres,
-        expected_amc_theatres,
-        representativeness=tz_profile["coverage_factor"],
-    )
+    if sample_norm_override and sample_norm_override[0]:
+        # Same-film measured subset->fleet factor (see
+        # measured_snapshot_sample_expansion), composed with a completeness
+        # term when this day's window captured only part of the subset.
+        measured_factor, subset_size = sample_norm_override
+        completeness = (
+            max(1.0, subset_size / n_amc_theatres)
+            if n_amc_theatres and subset_size else 1.0
+        )
+        sample_norm_factor = measured_factor * completeness
+        amc_total = sampled_amc_total * sample_norm_factor
+    else:
+        amc_total, sample_norm_factor = normalize_amc_sample(
+            sampled_amc_total,
+            n_amc_theatres,
+            expected_amc_theatres,
+            representativeness=tz_profile["coverage_factor"],
+        )
     coverage_ratio = (
         min(1.0, n_amc_theatres / expected_amc_theatres)
         if expected_amc_theatres else None
@@ -5986,6 +6050,17 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         else ([amc_share_anchor] if isinstance(amc_share_anchor, dict) else [])
     )
     share_anchor_summary = same_week_amc_share_anchor_for_day(share_anchor_inputs)
+    # ERA-SCOPED: the measured normalization applies from 2026-07-17 onward.
+    # Pre-fix weekends' FROZEN calibrations were fitted against the legacy
+    # linear normalization — replaying them with the corrected factor breaks
+    # that calibrated equilibrium (backtest gate: snapshot MAE 19.1% -> 35.2%).
+    # Future weekends' calibrations fit against the measured factor natively.
+    _snapshot_dates = sorted(d for d in (snapshot_data or {}) if d)
+    _measured_era = bool(_snapshot_dates) and _snapshot_dates[0] >= SNAPSHOT_MEASURED_NORM_FROM
+    sample_norm_expansion = (
+        measured_snapshot_sample_expansion(regular_seat_data, snapshot_data)
+        if _measured_era else (None, 0)
+    )
     for date_str, rows in sorted(snapshot_data.items()):
         if not rows:
             continue
@@ -6009,6 +6084,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
             theatre_timezone_map=theatre_timezone_map,
             national_theatre_count=national_theatre_count,
             share_override=share_override,
+            sample_norm_override=sample_norm_expansion,
         )
         if details:
             if share_anchor_for_day:

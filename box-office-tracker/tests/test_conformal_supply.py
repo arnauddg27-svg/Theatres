@@ -72,3 +72,50 @@ class SaturationGateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SnapshotSampleExpansionTests(unittest.TestCase):
+    def _seat_rows(self, sold_by_theatre):
+        return [{"theatre_name": t, "seats_sold": str(s)}
+                for t, s in sold_by_theatre.items()]
+
+    def test_measured_factor_from_observed_days(self):
+        # subset holds 2/3 of seats -> true factor 1.5 (not linear 425/200)
+        snapshot_data = {"2026-07-19": [{"theatre_name": "Big1"},
+                                        {"theatre_name": "Big2"}]}
+        seat_data = {"2026-07-18": self._seat_rows(
+            {"Big1": 400, "Big2": 200, "Small": 300})}
+        f, n = P.measured_snapshot_sample_expansion(seat_data, snapshot_data)
+        self.assertEqual(n, 2)
+        self.assertAlmostEqual(f, 900 / 600)
+
+    def test_median_across_days(self):
+        snapshot_data = {"d": [{"theatre_name": "A"}]}
+        seat_data = {
+            "d1": self._seat_rows({"A": 100, "B": 50}),    # 1.5
+            "d2": self._seat_rows({"A": 100, "B": 100}),   # 2.0
+            "d3": self._seat_rows({"A": 100, "B": 60}),    # 1.6
+        }
+        f, _ = P.measured_snapshot_sample_expansion(seat_data, snapshot_data)
+        self.assertAlmostEqual(f, 1.6)
+
+    def test_unmeasurable_returns_none(self):
+        self.assertEqual(P.measured_snapshot_sample_expansion({}, {})[0], None)
+        # no overlap between subset and observed theatres
+        f, _ = P.measured_snapshot_sample_expansion(
+            {"d": self._seat_rows({"X": 100})},
+            {"d": [{"theatre_name": "A"}]})
+        self.assertIsNone(f)
+
+    def test_estimate_uses_override_not_linear(self):
+        rows = [{"theatre_name": "Big1", "showtime": "19:00",
+                 "show_date": "2026-07-19", "snapshot_time": "2026-07-19T03:00:00Z",
+                 "snapshot_bucket": "2026-07-19T03", "total_seats": "100",
+                 "reserved_seats": "50", "minutes_until_showtime": "600",
+                 "timezone": "America/New_York", "auditorium_type": "Standard"}]
+        cal = {"calibration_factors": {"amc_market_share": 0.2}}
+        est_lin = P.estimate_snapshot_day(rows, "2026-07-19", cal, 425)
+        est_meas = P.estimate_snapshot_day(rows, "2026-07-19", cal, 425,
+                                           sample_norm_override=(1.5, 1))
+        self.assertGreater(est_lin["sample_normalization_factor"], 10)  # 425/1 linear (rep-damped)
+        self.assertAlmostEqual(est_meas["sample_normalization_factor"], 1.5)
