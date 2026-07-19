@@ -6112,14 +6112,47 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         cal,
     )
     if pickup_profile and pickup_profile.get("n_matched_showtimes", 0) > 0:
-        same_week_scale = pickup_profile["projected_revenue_scale"]
+        # COMPOSE the two same-film calibrations — they measure DIFFERENT error
+        # components and are complements, not substitutes:
+        #   * pickup anchors (matched showtimes) calibrate reserved->final
+        #     projection, but both sides live inside the snapshot subset, so
+        #     fleet-extrapolation level errors CANCEL and go unseen;
+        #   * aggregate anchors (snapshot-day vs seat-day estimate) cross the
+        #     subset boundary and catch exactly that level bias (The Odyssey
+        #     2026-07-19: pickup said x0.98 while aggregate read x0.71-0.77 on
+        #     observed days — the legacy x2.125 subset inflation — and the old
+        #     either/or logic threw the aggregate away).
         same_week_anchors = pickup_profile.get("anchors", [])
-        same_week_scale_source = "matched_showtime_pickup"
+        pickup_overall = pickup_profile["projected_revenue_scale"]
+        # The aggregate anchor (snapshot-day vs OBSERVED seat-day estimate)
+        # contains BOTH error components — projection AND fleet-extrapolation
+        # level — while pickup anchors measure projection only (both sides live
+        # inside the snapshot subset, so level errors cancel). Multiplying them
+        # would double-count projection; the consistent decomposition is LEVEL
+        # from the aggregate, DAY-SHAPE from pickup:
+        #   day_scale = pickup_day x (aggregate / pickup_overall)
+        # With no aggregate anchors this reduces exactly to the old
+        # pickup-only behavior.
+        if aggregate_same_week_anchors:
+            level_adjust = aggregate_same_week_scale / max(pickup_overall, 1e-9)
+            same_week_scale_source = "matched_showtime_pickup x aggregate_level"
+        else:
+            level_adjust = 1.0
+            same_week_scale_source = "matched_showtime_pickup"
+        same_week_scale = _clamp(
+            pickup_overall * level_adjust,
+            SNAPSHOT_SAME_WEEK_SCALE_MIN,
+            SNAPSHOT_SAME_WEEK_SCALE_MAX,
+        )
         same_week_day_scales = {
-            day: snapshot_pickup_scale_for_day(
-                day,
-                same_week_anchors,
-                fallback_scale=same_week_scale,
+            day: _clamp(
+                snapshot_pickup_scale_for_day(
+                    day,
+                    same_week_anchors,
+                    fallback_scale=pickup_overall,
+                ) * level_adjust,
+                SNAPSHOT_SAME_WEEK_SCALE_MIN,
+                SNAPSHOT_SAME_WEEK_SCALE_MAX,
             )
             for day in all_snapshot_details
         }

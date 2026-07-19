@@ -2193,11 +2193,19 @@ class PredictionNormalizationTest(unittest.TestCase):
             regular_seat_data={"2026-05-08": [friday_seat]},
         )
 
-        self.assertAlmostEqual(2.0, layer["snapshot_same_week_scale"], places=6)
-        self.assertEqual("matched_showtime_pickup", layer["snapshot_same_week_scale_source"])
+        # Level/shape decomposition (2026-07-19): pickup anchors measure
+        # projection only (level errors cancel inside the snapshot subset);
+        # the aggregate day-level anchor carries the level signal. Here pickup
+        # says x2.0 but the aggregate reads the snapshot day estimates at 2x
+        # the observed Friday (x0.5) -> level-from-aggregate wins: 2.0 x
+        # (0.5/2.0) = 0.5. (Old either/or semantics discarded the aggregate
+        # entirely — the bug class behind the Odyssey Sunday over-read.)
+        self.assertAlmostEqual(0.5, layer["snapshot_same_week_scale"], places=6)
+        self.assertEqual("matched_showtime_pickup x aggregate_level",
+                         layer["snapshot_same_week_scale_source"])
         self.assertEqual(1, layer["snapshot_pickup_profile"]["n_matched_showtimes"])
         self.assertAlmostEqual(
-            raw_saturday["domestic_mid"] * 2.0,
+            raw_saturday["domestic_mid"] * 0.5,
             layer["snapshot_daily_details"]["Saturday"]["pre_day_shape_domestic_mid"],
             places=6,
         )
