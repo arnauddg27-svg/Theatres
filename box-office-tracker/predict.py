@@ -132,7 +132,10 @@ SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
 SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
 SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
-SNAPSHOT_MEASURED_NORM_FROM = "2026-07-17"  # measured subset-expansion era start
+# Era boundary sits between the last legacy weekend's show dates (<= 2026-07-13)
+# and the first measured-era weekend's PREVIEW date (2026-07-16): the min
+# snapshot show-date is compared, so the cutoff must precede Thursday previews.
+SNAPSHOT_MEASURED_NORM_FROM = "2026-07-14"  # measured subset-expansion era start
 SNAPSHOT_SAME_WEEK_SCALE_MIN = 0.50
 SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN = 0.70
