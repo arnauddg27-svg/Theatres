@@ -4702,11 +4702,13 @@ CROSS_CHAIN_MIN_RC_ROWS = 40
 # occupancy formula's two blind spots (saturated tentpoles, supply-constrained
 # films). It reduces EXACTLY to the validated occupancy formula when both chains
 # allocate the same showings per theatre. RC showings counts (discovered_
-# showtimes) only exist from 2026-07-16, so volume mode is UNBACKTESTABLE —
-# per the validate-then-apply discipline it runs LOG-ONLY (computed, printed,
-# stored on the prediction) until its first live validation (The Odyssey,
-# 2026-07-17 weekend), then CROSS_CHAIN_VOLUME_APPLY flips on.
-CROSS_CHAIN_VOLUME_APPLY = False
+# showtimes) only exist from 2026-07-16, so volume mode ran LOG-ONLY until its
+# pre-registered live validation on The Odyssey (2026-07-17, actual $124.5M):
+# frozen Thursday hypotheses — volume ~$132M (+6.0%) vs live gated-fleet
+# $113.9M (-8.5%) vs capacity ~$93M (-25%); flipping the flag also moved the
+# canonical Thursday backtest 18.5% -> 18.0% MAE (Odyssey -16% -> +9%).
+# Volume wins whenever volume_days data exists; older weekends are unaffected.
+CROSS_CHAIN_VOLUME_APPLY = True
 CROSS_CHAIN_MIN_VOLUME_DAYS = 1
 _CROSS_CHAIN_CACHE = {}
 

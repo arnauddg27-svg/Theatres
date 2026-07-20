@@ -139,6 +139,8 @@ class VolumeShareTests(unittest.TestCase):
         self.assertIsNone(P.cross_chain_volume_share("F", self._cc(1.2, days=0), CAL))
         self.assertIsNone(P.cross_chain_volume_share("F", self._cc(1.2, rc_rows=5), CAL))
 
-    def test_log_only_by_default(self):
-        # validate-then-apply: the flag stays off until the first live validation
-        self.assertFalse(P.CROSS_CHAIN_VOLUME_APPLY)
+    def test_volume_mode_applied_after_odyssey_validation(self):
+        # validate-then-apply satisfied: The Odyssey (2026-07-17, $124.5M) —
+        # frozen volume hypothesis +6.0% beat gated-fleet -8.5% and capacity
+        # -25%, and the flip improved the Thursday backtest 18.5% -> 18.0%.
+        self.assertTrue(P.CROSS_CHAIN_VOLUME_APPLY)
