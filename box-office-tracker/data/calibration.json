@@ -1519,13 +1519,15 @@
     {
       "movie": "The Odyssey",
       "weekend_of": "2026-07-17",
-      "date": "2026-07-20",
+      "date": "2026-07-21",
       "predicted_mid": 124.86,
       "predicted_low": 92.41,
       "predicted_high": 147.5,
-      "actual_total": 124.5,
+      "actual_total": 123.5,
       "daily_actuals": {
-        "Weekend": 124.5
+        "Friday": 50.98,
+        "Saturday": 41.74,
+        "Sunday": 30.79
       },
       "daily_predictions": {
         "Thursday": 19.78,
@@ -1533,14 +1535,14 @@
         "Saturday": 44.92,
         "Sunday": 33.5
       },
-      "error_pct": 0.3,
+      "error_pct": 1.1,
       "n_theatres": 424,
       "n_days": 4,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers 3-day estimate 2026-07-20",
-      "actual_status": "provisional",
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
       "raw_daily_predictions": {
         "Thursday": 18.66,
         "Friday": 29.68,
@@ -1603,16 +1605,16 @@
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.1978,
+    "amc_market_share": 0.1986,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1115,
-      "Friday": 0.3179,
-      "Saturday": 0.3217,
+      "Thursday": 0.1062,
+      "Friday": 0.3224,
+      "Saturday": 0.3225,
       "Sunday": 0.2489
     },
     "format_scale_factors": {},
@@ -2020,7 +2022,7 @@
       {
         "movie": "The Odyssey",
         "weekend_of": "2026-07-17",
-        "abs_error_pct": 0.3,
+        "abs_error_pct": 1.1,
         "n_theatres": 424,
         "n_days": 4,
         "coverage_ratio": 0.887,
@@ -2030,36 +2032,40 @@
           "Saturday": 0.993,
           "Sunday": 0.571
         },
-        "daily_errors": {},
+        "daily_errors": {
+          "Friday": 40.9,
+          "Saturday": 7.6,
+          "Sunday": 8.8
+        },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-07-20",
+    "last_updated": "2026-07-21",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 10,
-          "support": 3.247
+          "n": 9,
+          "support": 3.0115
         },
         "Friday": {
           "n": 12,
-          "support": 5.2995
+          "support": 5.535
         },
         "Saturday": {
           "n": 19,
-          "support": 7.7615
+          "support": 7.997
         },
         "Sunday": {
           "n": 18,
-          "support": 7.5605
+          "support": 7.796
         }
       },
       "leads": {
         "same_day": {
-          "n": 57,
-          "support": 23.4045
+          "n": 56,
+          "support": 23.8755
         },
         "next_day": {
           "n": 2,
@@ -2079,10 +2085,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.15660420481614734,
-        "Friday": 0.3051168586838258,
-        "Saturday": 0.30179307476161216,
-        "Sunday": 0.23648586173841468
+        "Thursday": 0.15581197073246567,
+        "Friday": 0.307606213392664,
+        "Saturday": 0.30121761306819383,
+        "Sunday": 0.23536420280667644
       },
       "trained_on": [
         "Michael",
@@ -2103,14 +2109,15 @@
         "Minions & Monsters",
         "Young Washington",
         "Moana (2026)",
-        "Evil Dead Burn"
+        "Evil Dead Burn",
+        "The Odyssey"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.2173667026003536,
-        "resid_scale": 0.33968469457026895
+        "log_ratio_mean": 0.2181040830724758,
+        "resid_scale": 0.33852328994615627
       },
       "identity": {
-        "seat_sd": 0.40327902886791356
+        "seat_sd": 0.40270014761464246
       },
       "seat": {
         "features": [
@@ -2123,12 +2130,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.3614025558747005,
-          0.9168676923332969,
-          0.022601664925100195,
-          0.06606931094063967,
-          -0.022205327353978486,
-          0.04020000484687247,
+          0.27451884606555677,
+          0.9279273025646401,
+          0.08967546669994284,
+          0.16306250119612062,
+          -0.01611780664593704,
+          0.5520163639663302,
           0.0
         ],
         "prior": [
@@ -2140,8 +2147,8 @@
           0.0,
           0.0
         ],
-        "lambda": 10.0,
-        "daily_resid_sd": 0.3461695349160588
+        "lambda": 0.3,
+        "daily_resid_sd": 0.34258661943682145
       },
       "snapshot": {
         "features": [
@@ -2155,12 +2162,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7030578040406351,
-          0.6963145813212517,
-          -0.0895072871839073,
-          0.35561480016095137,
-          0.06997500761792234,
-          0.12635322685190403,
+          0.6703084503529995,
+          0.7215653082537301,
+          -0.09847504394668949,
+          0.38530191830423566,
+          0.06691665019091327,
+          0.0986670754015349,
           0.0,
           0.0
         ],
@@ -2175,17 +2182,17 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.5858243544949411
+        "daily_resid_sd": 0.5770209853717752
       },
       "weekend": {
-        "log_half_width": 0.5106,
-        "resid_mean": 0.18610723847973776,
-        "df": 17,
-        "loo_hit_rate": 0.9444,
+        "log_half_width": 0.4896,
+        "resid_mean": 0.1670900467650771,
+        "df": 18,
+        "loo_hit_rate": 0.9474,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 25.51,
-        "loo_median_ae_pct": 17.16,
-        "n_movies": 18
+        "loo_mae_pct": 24.17,
+        "loo_median_ae_pct": 16.67,
+        "n_movies": 19
       },
       "loo_detail": [
         {
@@ -2202,13 +2209,13 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.5,
+          "pred_m": 24.47,
           "actual_m": 15.09,
           "observed_share": 0.843
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.57,
+          "pred_m": 14.55,
           "actual_m": 17.2,
           "observed_share": 0.699
         },
@@ -2226,7 +2233,7 @@
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 5.27,
+          "pred_m": 5.26,
           "actual_m": 7.35,
           "observed_share": 0.843
         },
@@ -2250,9 +2257,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 40.48,
+          "pred_m": 40.61,
           "actual_m": 44.53,
-          "observed_share": 0.537
+          "observed_share": 0.535
         },
         {
           "movie": "Toy Story 5",
@@ -2280,27 +2287,33 @@
         },
         {
           "movie": "Young Washington",
-          "pred_m": 12.81,
+          "pred_m": 12.79,
           "actual_m": 19.37,
           "observed_share": 0.843
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 30.6,
+          "pred_m": 30.56,
           "actual_m": 43.0,
-          "observed_share": 0.765
+          "observed_share": 0.766
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 18.58,
+          "pred_m": 18.55,
           "actual_m": 13.7,
-          "observed_share": 0.763
+          "observed_share": 0.764
+        },
+        {
+          "movie": "The Odyssey",
+          "pred_m": 121.39,
+          "actual_m": 123.5,
+          "observed_share": 0.764
         }
       ],
       "bakeoff": {
-        "identity": 25.51,
-        "global_ratio": 26.86,
-        "regression": 26.59
+        "identity": 24.17,
+        "global_ratio": 25.45,
+        "regression": 24.7
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
