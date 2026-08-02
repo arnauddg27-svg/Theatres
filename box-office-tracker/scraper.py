@@ -1234,6 +1234,14 @@ def _fetch_polymarket_public_search_events():
     return []
 
 
+# Set by fetch_polymarket_box_office: True when at least one Polymarket feed
+# answered (even with zero markets), False when every feed errored. Lets the
+# no-markets exits distinguish "quiet release weekend, nothing to track" (clean
+# skip, exit 0 — e.g. 2026-07-24 had no box office market and every lane
+# alarm-failed for two days) from "market discovery is broken" (real failure).
+POLYMARKET_LAST_FETCH_OK = None
+
+
 def fetch_polymarket_box_office():
     """
     Find active opening-weekend box office bracket events on Polymarket.
@@ -1245,16 +1253,20 @@ def fetch_polymarket_box_office():
 
     Returns list of dicts with movie info.
     """
+    global POLYMARKET_LAST_FETCH_OK
     print("\n📊 Checking Polymarket for active box office markets...")
 
+    feed_ok = False
     events = []
     try:
         events.extend(_fetch_polymarket_events_feed())
+        feed_ok = True
     except Exception as e:
         print(f"  ⚠️  Polymarket events API error: {e}")
 
     try:
         search_events = _fetch_polymarket_public_search_events()
+        feed_ok = True
         if search_events:
             print(f"  🔎 Public search returned {len(search_events)} box-office candidate event(s)")
             seen_ids = {str(e.get("id", "")) for e in events}
@@ -1291,6 +1303,7 @@ def fetch_polymarket_box_office():
     for m in markets_found:
         print(f"    • {m['movie_title']} (vol: ${m['volume']:,.0f})")
 
+    POLYMARKET_LAST_FETCH_OK = feed_ok
     return markets_found
 
 
@@ -4033,6 +4046,10 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     )
 
     if not poly_markets:
+        if POLYMARKET_LAST_FETCH_OK:
+            print("↷ Polymarket answered but lists no box office market for "
+                  "this weekend — nothing to collect (clean skip).")
+            return
         fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
@@ -4501,6 +4518,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     )
 
     if not poly_markets:
+        if POLYMARKET_LAST_FETCH_OK:
+            issue = ("No box office market listed on Polymarket for this "
+                     "weekend — nothing to scrape (clean skip)")
+            print(f"\n↷ {issue}")
+            log_run(tz_group, [], [], [issue])
+            return
         log_run(tz_group, [], [], ["No active Polymarket box office markets found"])
         fail_phase("\n❌ No active box office markets on Polymarket and no saved CSV fallback.")
 

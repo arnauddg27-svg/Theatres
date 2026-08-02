@@ -180,6 +180,30 @@ SLOTS: tuple[Slot, ...] = (
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),
     ),
+    # AMC queue-wall resilience: on 2026-07-29 AMC put its whole site behind a
+    # Queue-It waiting room (Spider-Man on-sale surge) and the two daily AMC
+    # snapshot lanes read 0% coverage for days. The wall flaps on ~hour time-
+    # scales — a Friday PT leg at 19:23Z passed clean minutes after the ET leg
+    # was fully walled — so two extra daily attempts catch open windows. The
+    # scraper still aborts politely on any queue redirect; snapshot-only runs
+    # bypass the scrape dedup guard, and snapshot_bucket dedup makes extra
+    # passes pure additional readings whenever AMC is healthy.
+    Slot(
+        "snapshot 14:30Z",
+        "box office scrape snapshot",
+        frozenset({0, 4, 5, 6}),
+        14,
+        30,
+        pipeline_inputs("scrape", "ALL", "true", "true", "true"),
+    ),
+    Slot(
+        "snapshot 22:30Z",
+        "box office scrape snapshot",
+        frozenset({0, 4, 5, 6}),
+        22,
+        30,
+        pipeline_inputs("scrape", "ALL", "true", "true", "true"),
+    ),
     # Fandango (Regal/Cinemark) pre-reservation snapshots — SHARDED across the
     # opening-weekend night. Fandango's seat limit is a per-Azure-range budget
     # that recovers in ~1 h, so fan-out can't beat it; instead 6 slots one hour

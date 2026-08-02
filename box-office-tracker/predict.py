@@ -2528,6 +2528,28 @@ def seat_data_quality(n_theatres, n_days, coverage_ratio=None):
     return _clamp(0.70 * theatre_component + 0.30 * day_component, 0.0, 1.0)
 
 
+# A capture outage (e.g. the 2026-07-29 AMC Queue-It wall, which starved the
+# Spider-Man weekend to 81/425 theatres and 1% weighted coverage) leaves the
+# headline echoing priors instead of measuring demand. Below ALL of these
+# floors the prediction is flagged as an outage read; numbers stay untouched
+# (the flag is display/consumer-level honesty, not a model change).
+DATA_OUTAGE_MAX_SEAT_COVERAGE = 0.05
+DATA_OUTAGE_MAX_SEAT_QUALITY = 0.25
+DATA_OUTAGE_MAX_SNAPSHOT_WEIGHT = 0.15
+
+
+def detect_data_outage(pred):
+    """True when the seat AND snapshot layers are both too starved to measure."""
+    coverage = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
+    quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
+    if coverage > DATA_OUTAGE_MAX_SEAT_COVERAGE or quality > DATA_OUTAGE_MAX_SEAT_QUALITY:
+        return False
+    snap_weight = pred.get("snapshot_effective_model_weight")
+    if snap_weight is None:
+        snap_weight = pred.get("snapshot_original_model_weight")
+    return _coverage_value(snap_weight, default=0.0) < DATA_OUTAGE_MAX_SNAPSHOT_WEIGHT
+
+
 def confidence_interval_factors(n_days, coverage_ratio=None):
     """Low/high multipliers for seat-only intervals, adjusted for coverage."""
     low, high = DAY_CONFIDENCE.get(n_days, (0.70, 1.40))
@@ -7577,6 +7599,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
+    result["data_outage"] = detect_data_outage(result)
     return result
 
 
@@ -8735,6 +8758,12 @@ def print_prediction(pred, verbose=False):
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
+    if pred.get("data_outage"):
+        cov = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
+        quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
+        print(f"    ⚠️  DATA OUTAGE: seat panel critically degraded "
+              f"(weighted coverage {cov:.0%}, quality {quality:.0%}, snapshot "
+              f"weight starved) — this headline echoes priors, do not trust it")
     disagreement = pred.get("model_component_disagreement") or {}
     if disagreement.get("severity") in {"medium", "high"}:
         ratios = disagreement.get("ratios") or {}
