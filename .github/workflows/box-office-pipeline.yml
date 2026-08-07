@@ -219,7 +219,7 @@ jobs:
           git commit -m "data: box office ${{ github.event.inputs.tz_group }} collect-links"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase --autostash -X ours origin main && git push && break
+            git pull --rebase --autostash origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
@@ -544,7 +544,7 @@ jobs:
           git commit -F "$commit_msg"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase --autostash -X ours origin main && git push && break
+            git pull --rebase --autostash origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — derived artifacts not committed."
@@ -628,9 +628,16 @@ jobs:
           # missing pathspec would fail the step under `set -e`.
           # NO concurrent-commit race: all scrape-fandango runs share one workflow
           # concurrency group (cancel-in-progress: false), so a run fully finishes
-          # (incl. push) before the next starts. The rebase loop therefore only
-          # replays onto unrelated AMC commits (different files → no conflict), so
-          # `-X ours` can never drop another shard's appended rows.
+          # (incl. push) before the next starts, and the rebase loop only replays
+          # onto unrelated AMC commits (different files → no conflict).
+          # `-X ours` was REMOVED here and in every other push loop: during a
+          # REBASE `ours` is upstream, so a conflicting hunk kept origin/main and
+          # silently dropped the commit being replayed. Live loss on 2026-08-07 —
+          # the CT collect-links leg committed 9,196 insertions and the rebase
+          # reported `dropping <sha> -- patch contents already upstream`, then
+          # exited 0. Without the strategy option a genuine conflict stops the
+          # rebase, the retry loop runs, and a persistent conflict fails the step
+          # loudly instead of reporting success over lost data.
           fandango_csv=box-office-tracker/data/fandango-pre-reservation-snapshots.csv
           if [ -f "$fandango_csv" ]; then
             git add "$fandango_csv"
@@ -642,7 +649,7 @@ jobs:
           git commit -m "data: box office fandango snapshot (shard ${{ github.event.inputs.fandango_shard || '0' }})"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase --autostash -X ours origin main && git push && break
+            git pull --rebase --autostash origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — Fandango data not committed."
@@ -728,7 +735,7 @@ jobs:
           git commit -m "data: box office calibration"
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
-            git pull --rebase --autostash -X ours origin main && git push && break
+            git pull --rebase --autostash origin main && git push && break
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then exit 1; fi
             sleep $((i * 15))
