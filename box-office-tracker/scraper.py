@@ -1093,6 +1093,12 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
     return [current_date]
 
 
+# A cinema "business day" runs past midnight — the last shows of 2026-08-07
+# start at 22:00-23:00 and AMC keeps listing them into the small hours. The
+# repair window follows that day, not the calendar date.
+PHASE1_REPAIR_THEATRE_DAY_HOURS = 6
+
+
 def phase1_target_date_is_repairable(tz_group, target_date):
     """True when AMC can still plausibly expose showtime links for target_date."""
     try:
@@ -1100,6 +1106,29 @@ def phase1_target_date_is_repairable(tz_group, target_date):
     except (TypeError, ValueError):
         return False
     return target_day >= local_now(tz_group).date()
+
+
+def phase1_target_date_is_within_theatre_day(tz_group, target_date):
+    """Looser window for a LAST-RESORT repair when no cached links exist.
+
+    A cinema business day runs past midnight: the last shows of a date start at
+    22:00-23:00 and AMC keeps listing them into the small hours. The strict
+    calendar check above is right for deciding whether to spend the repair
+    budget when usable cached links exist — but it also made the 07:00 UTC
+    regular scrape structurally UNREPAIRABLE (that slot runs 00:00-03:00 local,
+    so phase1_expected_date, now - 12h, is always the previous calendar day).
+    With no cached links the only other branch is fail_phase, so that timezone
+    lost every seat read for the weekend. When there is nothing to fall back
+    on, trying is strictly better than failing.
+    """
+    try:
+        target_day = datetime.strptime(target_date, "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return False
+    theatre_day = (
+        local_now(tz_group) - timedelta(hours=PHASE1_REPAIR_THEATRE_DAY_HOURS)
+    ).date()
+    return target_day >= theatre_day
 
 
 # ─── Polymarket Scraper ─────────────────────────────────────────────────────
@@ -4416,10 +4445,17 @@ async def ensure_phase1_links_async(tz_group="ALL"):
                 "will use cached links and filter any unlinked active movie."
             )
             return
-        fail_phase(
-            f"❌ Phase 1 links for {tz_group} {target_date} are missing or stale, "
-            "and the show date has already rolled off AMC, so an automatic "
-            "repair cannot rebuild them."
+        if not phase1_target_date_is_within_theatre_day(tz_group, target_date):
+            fail_phase(
+                f"❌ Phase 1 links for {tz_group} {target_date} are missing or stale, "
+                "and the show date has already rolled off AMC, so an automatic "
+                "repair cannot rebuild them."
+            )
+        print(
+            f"\n⚠️  Phase 1 links for {tz_group} {target_date} are missing and the "
+            f"calendar date has rolled over, but the theatre day has not and "
+            f"there are no usable cached links — attempting a last-resort repair "
+            f"instead of failing the whole timezone."
         )
     print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
     await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
