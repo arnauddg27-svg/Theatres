@@ -4616,6 +4616,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         reason = "--force was set" if force else "forward-cache links cover this show date"
                         print(f"\n⚠️  showtime-links.json is stale ({age_hours:.1f}h old) — proceeding because {reason}.")
                 print(f"\n📂 Phase 1 links{age_str} ({len(saved_links)} theatres)")
+            elif links_weekend and snapshots_only and repair_snapshot_links:
+                # Self-heal instead of stranding the weekend. Phase 1 runs
+                # Tue-Thu; if it skipped (Polymarket listed the market later)
+                # or failed, this file still points at the PRIOR weekend and
+                # every snapshot slot — 3/day x 4 days, the whole pre-
+                # reservation dataset — used to hard-fail here with "run
+                # Phase 1 first" and no scheduled slot left to fix it. That
+                # is what cost the 2026-08-07 weekend. The repair path below
+                # already rebuilds exactly the slices this run needs; it was
+                # simply unreachable for the most common stale state.
+                print(f"\n⚠️  showtime-links.json is from weekend {links_weekend} "
+                      f"(current: {current_weekend}) — rebuilding the snapshot "
+                      f"slices for this weekend instead of aborting.")
+                saved_links = {}
+                collected_at_str = ""
             elif links_weekend:
                 fail_phase(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
             else:
