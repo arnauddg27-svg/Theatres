@@ -139,7 +139,8 @@ def _github_run_is_active(run_id: str | None) -> bool | None | str:
 
 
 def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int,
-                   hard_ttl_seconds: float | None = None) -> bool:
+                   hard_ttl_seconds: float | None = None,
+                   current_run_id: str | None = None) -> bool:
     if hard_ttl_seconds is None:
         hard_ttl_seconds = ttl_seconds * AMC_LOCK_HARD_TTL_MULTIPLIER
     created_at = metadata.get("created_at_epoch")
@@ -149,6 +150,20 @@ def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int,
         age = ttl_seconds + 1
     if age < ttl_seconds:
         return False
+
+    # A lock held by MY OWN workflow run was leaked by an earlier leg of this
+    # run: the scrape matrix is max-parallel: 1, so no sibling leg can be
+    # holding it while I am the one executing. The liveness probe cannot see
+    # this — it asks GitHub about the WORKFLOW run id, which is shared by every
+    # leg, so it reports "in_progress" (that's me) and the lock looked alive
+    # forever. The remaining legs then burned their full wait budget and failed,
+    # and the lock only became breakable after the whole run ended.
+    if current_run_id and str(metadata.get("run_id") or "") == str(current_run_id):
+        print(
+            f"AMC lock: holder run {current_run_id} is THIS run — an earlier "
+            f"leg leaked it (legs are sequential), breaking after {age:.0f}s"
+        )
+        return True
 
     active = _github_run_is_active(str(metadata.get("run_id") or ""))
     if active is True:
@@ -219,7 +234,8 @@ def acquire(args: argparse.Namespace) -> int:
             sha, metadata = existing
             owner = metadata.get("run_id", "unknown")
             mode = metadata.get("mode", "unknown")
-            if _lock_is_stale(metadata, args.ttl_minutes * 60):
+            if _lock_is_stale(metadata, args.ttl_minutes * 60,
+                              current_run_id=run_id):
                 print(f"AMC lock: breaking stale lock {sha[:12]} from run {owner} ({mode})")
                 if _delete_lock(repo_root, args.lock_branch, sha):
                     continue

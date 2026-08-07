@@ -132,6 +132,32 @@ class LockStaleTest(unittest.TestCase):
                   "run_id": ""}
         self.assertTrue(self.mod._lock_is_stale(orphan, self.ttl))
 
+    def test_self_leaked_lock_is_breakable_by_sibling_leg(self):
+        """A lock held by MY OWN workflow run was leaked by an earlier leg.
+
+        run_id is the WORKFLOW run id, shared by all three matrix legs. The
+        liveness probe therefore reports "active" (that's me), so a leaked lock
+        could never go stale: the remaining legs burned their full wait budget
+        and failed, and it only became breakable once the whole run ended. The
+        matrix is max-parallel: 1, so no sibling can hold it while I execute.
+        """
+        self._patch_probe(True)   # probe says active — it is seeing MY run
+        self.assertTrue(
+            self.mod._lock_is_stale(self.over_ttl, self.ttl, current_run_id="999"))
+
+    def test_another_runs_active_lock_is_still_protected(self):
+        # a DIFFERENT run that is genuinely active must never be broken
+        self._patch_probe(True)
+        self.assertFalse(
+            self.mod._lock_is_stale(self.over_ttl, self.ttl, current_run_id="12345"))
+
+    def test_self_leaked_lock_still_respects_ttl(self):
+        # inside TTL the holder may legitimately still be working
+        self._patch_probe(True)
+        fresh = {"created_at_epoch": __import__("time").time() - 5, "run_id": "999"}
+        self.assertFalse(
+            self.mod._lock_is_stale(fresh, self.ttl, current_run_id="999"))
+
     def test_under_ttl_never_stale(self):
         self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
         fresh = {"created_at_epoch": __import__("time").time() - 10, "run_id": "999"}
