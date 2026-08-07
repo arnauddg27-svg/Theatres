@@ -843,6 +843,9 @@ def auto_calibrate():
                          daily_calibration_fields_from_prediction,
                          daily_sellout_fractions_from_prediction,
                          national_theatre_count_for_movie,
+                         load_cross_chain_occupancy, load_reviews_data,
+                         load_showtime_link_daypart_profiles,
+                         movie_mapping_get,
                          predict_movie)
 
     cal = load_calibration()
@@ -864,6 +867,15 @@ def auto_calibrate():
     # factor against the wrong baseline.
     theatre_counts = load_theatre_counts()
     metadata = load_movie_metadata()
+    # Same reasoning as theatre_counts above: predict_movie defaults these to
+    # None, and each omitted layer silently degrades the recorded prediction —
+    # cross-chain falls back to the fleet prior, reviews to a neutral 1.0,
+    # daypart rescue off. predicted_mid is the calibration GROUND TRUTH (it
+    # feeds the bake-off, the conformal band and every reported MAE), so it
+    # must be produced by the same model the forecast path runs.
+    cross_chain_data = load_cross_chain_occupancy(weekend_of=last_fri)
+    reviews_data = load_reviews_data(weekend_of=last_fri)
+    showtime_link_profiles = load_showtime_link_daypart_profiles(weekend_of=last_fri)
 
     if not seat_data:
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
@@ -914,6 +926,9 @@ def auto_calibrate():
             national_theatre_count=nat_count,
             snapshot_data=snapshot_data.get(movie, {}),
             social_data=social_data,
+            cross_chain_data=cross_chain_data,
+            reviews_data=reviews_data,
+            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
         )
         if not pred:
             print(f"    No prediction possible")
@@ -1111,6 +1126,9 @@ if __name__ == "__main__":
                              daily_calibration_fields_from_prediction,
                              daily_sellout_fractions_from_prediction,
                              national_theatre_count_for_movie,
+                             load_cross_chain_occupancy, load_reviews_data,
+                             load_showtime_link_daypart_profiles,
+                             movie_mapping_get,
                              predict_movie)
         cal = load_calibration()
         weekend_of = _last_friday()
@@ -1163,6 +1181,13 @@ if __name__ == "__main__":
             national_theatre_count=nat_count,
             snapshot_data=snapshot_data.get(matched_movie, {}),
             social_data=social_data,
+            # side inputs must match the forecast path, else the recorded
+            # predicted_mid is a degraded model's number (see auto_calibrate)
+            cross_chain_data=load_cross_chain_occupancy(weekend_of=weekend_of),
+            reviews_data=load_reviews_data(weekend_of=weekend_of),
+            showtime_link_profiles=movie_mapping_get(
+                load_showtime_link_daypart_profiles(weekend_of=weekend_of),
+                matched_movie, {}),
         )
         if not pred:
             print(f"No prediction found for {matched_movie!r}; not recording actual.")

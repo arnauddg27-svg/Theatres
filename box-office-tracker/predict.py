@@ -3533,6 +3533,9 @@ def _empirical_history_prediction(entry, cal):
     movie_seat_data = movie_mapping_get(historical_seat_data, movie)
     if not movie_seat_data:
         return None
+    # Cross-chain must be wired here too: these predictions are the BASELINE
+    # the empirical residuals are measured against, so omitting a layer teaches
+    # the correction the residuals of a model variant that no longer exists.
     return predict_movie(
         movie,
         movie_seat_data,
@@ -3543,6 +3546,7 @@ def _empirical_history_prediction(entry, cal):
         social_data={},
         daily_actual_overrides={},
         showtime_link_profiles={},
+        cross_chain_data=load_cross_chain_occupancy(weekend_of=weekend_of),
         apply_empirical_regression=False,
     )
 
@@ -9086,6 +9090,19 @@ def main():
     replay_weekend = calibration_freeze_weekend
     seat_data = load_seat_data(weekend_of=replay_weekend)
     seat_data = filter_seat_data_through(seat_data, through_date)
+    # load_seat_data(None) resolves to the newest weekend PRESENT IN THE CSV,
+    # but every other loader called with None falls back to _current_weekend_
+    # friday() — today's Friday. Between a weekend closing and the next one's
+    # first scrape those disagree (2026-08-07: seats on 2026-07-31, "current"
+    # 2026-08-07), and each mismatched loader silently returned empty. That
+    # voided the whole per-film cross-chain share on the live forecast path —
+    # the same failure as the archive-blind loader, one level up. Pin every
+    # side-input to the weekend the seat rows actually came from.
+    if replay_weekend is None and seat_data:
+        replay_weekend = max(
+            (seat_data_weekend_of(rows) for rows in seat_data.values()),
+            default=None,
+        )
     poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
     snapshot_data = load_pre_reservation_data(
         weekend_of=replay_weekend,
