@@ -9293,6 +9293,558 @@
           }
         ]
       }
+    },
+    "AMC Hiram 14": {
+      "tz": "ET",
+      "cohort": "expansion",
+      "dates": {
+        "2026-08-07": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "145486941",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "145486942",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "145784567",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266007+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-08": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "145784507",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "145486889",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "145486890",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "145486891",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "145486892",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "145784568",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267599+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-09": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "145486893",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "145486894",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145486895",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145486896",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145784553",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267690+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-08-07",
+      "movies": {
+        "One Night Only": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "145486941",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "145486942",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "145784567",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Pottsgrove 12": {
+      "tz": "ET",
+      "cohort": "expansion",
+      "dates": {
+        "2026-08-07": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145369212",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145369213",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145369214",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266010+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-09": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "145369288",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "145369289",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145369290",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145369291",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145369292",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267615+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-08": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "145369283",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "145369284",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145369285",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145369286",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145369287",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267654+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-08-07",
+      "movies": {
+        "One Night Only": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "145369212",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "145369213",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145369214",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC 19th St. East 6": {
+      "tz": "ET",
+      "cohort": "expansion",
+      "dates": {
+        "2026-08-07": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145492944",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "145492945",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266013+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-09": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "145492956",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "145492958",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145492960",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "145492962",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267606+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-08": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "145492949",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "145492947",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "145492950",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145492952",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "145492954",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267612+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-08-07",
+      "movies": {
+        "One Night Only": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145492944",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "145492945",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC 309 Cinema 9": {
+      "tz": "ET",
+      "cohort": "expansion",
+      "dates": {
+        "2026-08-07": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145447197",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145447202",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145447204",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266016+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-08": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "145819874",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "145447209",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145447206",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145447211",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145447213",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267631+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-09": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "145819876",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "145447218",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145447215",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145447220",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145447221",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.267684+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-08-07",
+      "movies": {
+        "One Night Only": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "145447197",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "145447202",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145447204",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Midlothian 10": {
+      "tz": "ET",
+      "cohort": "core",
+      "dates": {
+        "2026-08-09": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "145796217",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "10:30am",
+                "showtime_id": "145796218",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "145796216",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145796214",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "145796215",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266545+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-08-08": {
+          "movies": {
+            "One Night Only": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "145796222",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "145796221",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145796219",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "145796220",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-08-07T16:25:29.266809+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-08-09",
+      "movies": {
+        "One Night Only": [
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "145796217",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "10:30am",
+            "showtime_id": "145796218",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:50pm",
+            "showtime_id": "145796216",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145796214",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "145796215",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
     }
   }
 }
