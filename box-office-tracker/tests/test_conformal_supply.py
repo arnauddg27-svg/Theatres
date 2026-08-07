@@ -119,3 +119,56 @@ class SnapshotSampleExpansionTests(unittest.TestCase):
                                            sample_norm_override=(1.5, 1))
         self.assertGreater(est_lin["sample_normalization_factor"], 10)  # 425/1 linear (rep-damped)
         self.assertAlmostEqual(est_meas["sample_normalization_factor"], 1.5)
+
+
+class ExcludedDayVisibilityTests(unittest.TestCase):
+    """A day dropped by the regression coverage floor must say so.
+
+    seat_regression.COVERAGE_FLOOR (0.60) drops a day from the weekend
+    assembly and the total is re-extrapolated from the surviving days. The day
+    was still printed with a full "day $XX.XM" estimate, so the output implied
+    it had been counted. Measured: a Saturday at 0.59 coverage prints $30.0M
+    while the weekend silently goes $97.6M -> $77.4M.
+    """
+
+    def test_below_floor_day_is_dropped_by_the_regression(self):
+        import json
+        import seat_regression as SR
+        block = (json.load(open(P.CALIBRATION_JSON))["calibration_factors"]
+                 .get("regression") or {})
+        below = SR.predict_weekend(block, {"Friday": 20.0, "Saturday": 30.0},
+                                   {"Friday": 1.0, "Saturday": 0.59}, {}, {})
+        at_floor = SR.predict_weekend(block, {"Friday": 20.0, "Saturday": 30.0},
+                                      {"Friday": 1.0, "Saturday": 0.60}, {}, {})
+        self.assertNotIn("Saturday", below["per_day"])
+        self.assertIn("Saturday", at_floor["per_day"])
+        self.assertLess(below["mid_m"], at_floor["mid_m"])
+
+    def test_excluded_day_is_flagged_and_printed(self):
+        import io
+        import contextlib
+        details = {
+            "date": "2026-07-18", "n_theatres": 400, "domestic_mid": 30e6,
+            "domestic_low": 25e6, "domestic_high": 35e6,
+            "excluded_from_weekend": True,
+            "excluded_reason": "effective coverage 45% < 60% regression floor",
+        }
+        pred = {
+            "movie": "T", "daily_details": {"Saturday": details},
+            "daily_estimates": {"Saturday": 30e6},
+            "n_theatres_total": 400, "n_days": 1, "seat_mid_m": 77.4,
+            "seat_low_m": 70.0, "seat_high_m": 85.0,
+            "regression_mid_m": 77.4, "regression_low_m": 70.0,
+            "regression_high_m": 85.0, "snapshot_days": [], "audience_type": "",
+        }
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            # sections after the daily block may want fields this fixture omits;
+            # the daily block itself must already have printed the warning.
+            try:
+                P.print_prediction(pred)
+            except Exception:
+                pass
+        out = buf.getvalue()
+        self.assertIn("NOT COUNTED", out)
+        self.assertIn("60%", out)

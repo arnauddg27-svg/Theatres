@@ -7400,6 +7400,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             if details.get("sellout_fraction") is not None
         },
     )
+    # A day whose effective coverage falls under seat_regression.COVERAGE_FLOOR
+    # is dropped from the weekend assembly and the total is re-extrapolated from
+    # the surviving days' day-share. It was still printed with a full estimate,
+    # so the output implied it had been used: at 0.59 coverage a Saturday reads
+    # "day $30.0M" while the weekend silently drops $97.6M -> $77.4M. Mark it.
+    for day_name, details in daily_details.items():
+        if day_name not in calibrated_daily and daily_estimates.get(day_name):
+            details["excluded_from_weekend"] = True
+            details["excluded_reason"] = (
+                f"effective coverage "
+                f"{_coverage_value(daily_coverage_ratios.get(day_name), default=0.0):.0%}"
+                f" < {seat_regression.COVERAGE_FLOOR:.0%} regression floor"
+            )
     for day_name, calibrated in calibrated_daily.items():
         details = daily_details.get(day_name)
         if not details:
@@ -8566,6 +8579,13 @@ def print_prediction(pred, verbose=False):
                 amc_input = "reported actual input"
             else:
                 amc_input = f"seat-implied {fmt_m(dom_m)}"
+        excluded_note = ""
+        if details.get("excluded_from_weekend"):
+            excluded_note = (
+                f"  ⚠️  NOT COUNTED in the weekend total "
+                f"({details.get('excluded_reason', 'below the regression coverage floor')}); "
+                f"the weekend is extrapolated from the other days"
+            )
         print(f"    {day} ({details['date']}): "
               f"{amc_input} → day {day_model} "
               f"[{details['n_theatres']} theatres{coverage_str}, {spd:.1f} showings/cinema"
@@ -8575,7 +8595,8 @@ def print_prediction(pred, verbose=False):
               f"{preview_note}"
               f"{share_note}"
               f"{missing_tz_str}"
-              f"{', ' + str(details.get('n_no_data')) + ' no data' if details.get('n_no_data') else ''}]")
+              f"{', ' + str(details.get('n_no_data')) + ' no data' if details.get('n_no_data') else ''}]"
+              f"{excluded_note}")
 
     # Seat + historical comps are diagnostics unless COMPS_IN_FORECAST is enabled.
     comps_visible = (
