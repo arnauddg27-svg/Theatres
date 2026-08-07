@@ -367,12 +367,30 @@ def recent_pipeline_run_exists(
         if run.get("display_title") not in titles:
             continue
         created_at = parse_github_time(run["created_at"])
-        if lower_bound <= created_at <= upper_bound:
+        if not (lower_bound <= created_at <= upper_bound):
+            continue
+        # A run that FAILED did not service the slot. Counting it as serviced
+        # (the old behaviour — this check looked only at display_title and
+        # created_at) meant no failed slot was ever retried by either the
+        # primary scheduler or the VPS watchdog: a leg that died in 30s on a
+        # queue wall, a lock timeout or a stale-links abort silently consumed
+        # the slot for the rest of the weekend. Treat only successful and
+        # still-running runs as servicing it, so a failure gets re-dispatched
+        # while the slot is still inside its lookback/grace window.
+        if run.get("status") == "completed" and run.get("conclusion") not in (
+            None, "success", "skipped", "neutral",
+        ):
             print(
-                f"Skipping {titles[0]}: existing run {run.get('display_title')} "
-                f"{run.get('html_url')} created at {run['created_at']}"
+                f"Ignoring failed run for {titles[0]}: {run.get('display_title')} "
+                f"{run.get('html_url')} concluded {run.get('conclusion')}; "
+                f"slot is still due"
             )
-            return True
+            continue
+        print(
+            f"Skipping {titles[0]}: existing run {run.get('display_title')} "
+            f"{run.get('html_url')} created at {run['created_at']}"
+        )
+        return True
     return False
 
 

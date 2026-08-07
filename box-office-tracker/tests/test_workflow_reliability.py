@@ -21,9 +21,24 @@ class WorkflowReliabilityTest(unittest.TestCase):
     def test_all_push_loops_autostash_before_rebase(self):
         self.assertNotIn("git pull --rebase -X ours origin main", self.workflow)
         self.assertGreaterEqual(
-            self.workflow.count("git pull --rebase --autostash -X ours origin main"),
+            self.workflow.count("git pull --rebase --autostash origin main"),
             3,
         )
+
+    def test_no_push_loop_uses_ours_strategy(self):
+        """-X ours on a REBASE silently discards the commit being replayed.
+
+        `ours` is upstream during a rebase, so a conflicting hunk keeps
+        origin/main and drops the local patch. Confirmed live 2026-08-07: the
+        CT collect-links leg committed 9,196 insertions and the rebase logged
+        `dropping <sha> -- patch contents already upstream`, then exited 0 —
+        a green run over a lost weekend of theatre links. Without the strategy
+        option a real conflict stops the rebase and the step fails loudly.
+        """
+        for line in self.workflow.splitlines():
+            if "git pull --rebase" in line:
+                self.assertNotIn("-X ours", line, f"push loop still discards data: {line.strip()}")
+                self.assertNotIn("-X theirs", line, f"push loop overwrites upstream: {line.strip()}")
 
     def test_snapshot_scrapes_have_separate_concurrency_lane(self):
         start = self.workflow.index("concurrency:")

@@ -34,6 +34,18 @@ class DataOutageDetectionTests(unittest.TestCase):
             "seat_weighted_coverage_ratio": 0.04, "seat_data_quality": 0.30,
             "snapshot_effective_model_weight": 0.05}))
 
+    def test_uses_the_weight_field_the_snapshot_layer_actually_writes(self):
+        # snapshot_{original,effective}_model_weight are written only by the
+        # disagreement profiler, which is not wired into production. Reading
+        # them alone left this clause permanently true. A healthy snapshot
+        # layer reports snapshot_model_weight, and that must veto the flag.
+        healthy_snapshot = {"seat_weighted_coverage_ratio": 0.01,
+                            "seat_data_quality": 0.08,
+                            "snapshot_model_weight": 0.45}
+        self.assertFalse(P.detect_data_outage(healthy_snapshot))
+        starved = dict(healthy_snapshot, snapshot_model_weight=0.05)
+        self.assertTrue(P.detect_data_outage(starved))
+
     def test_missing_fields_default_safe(self):
         # No coverage fields at all (e.g. very old preds) -> defaults healthy
         self.assertFalse(P.detect_data_outage({}))

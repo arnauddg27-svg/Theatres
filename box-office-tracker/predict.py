@@ -2544,9 +2544,16 @@ def detect_data_outage(pred):
     quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
     if coverage > DATA_OUTAGE_MAX_SEAT_COVERAGE or quality > DATA_OUTAGE_MAX_SEAT_QUALITY:
         return False
+    # snapshot_{original,effective}_model_weight are only ever written by the
+    # disagreement profiler, which is not wired into the production path, so
+    # reading them alone made this clause constantly true (0.0 < the floor) and
+    # the "AND the snapshot layer is also starved" half of the test inert.
+    # snapshot_model_weight is the field the snapshot layer actually sets.
     snap_weight = pred.get("snapshot_effective_model_weight")
     if snap_weight is None:
         snap_weight = pred.get("snapshot_original_model_weight")
+    if snap_weight is None:
+        snap_weight = pred.get("snapshot_model_weight")
     return _coverage_value(snap_weight, default=0.0) < DATA_OUTAGE_MAX_SNAPSHOT_WEIGHT
 
 

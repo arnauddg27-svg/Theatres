@@ -139,6 +139,44 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
         self.assertTrue(exists)
 
+    def _run_exists_with(self, run):
+        class FakeClient:
+            repo = "owner/repo"
+
+            def request_json(self, method, path, body=None):
+                return {"workflow_runs": [run]}
+
+        return schedule.recent_pipeline_run_exists(
+            client=FakeClient(),
+            workflow="box-office-pipeline.yml",
+            titles=("box office scheduled snapshot 02:30Z", "box office scrape snapshot"),
+            scheduled_at=schedule.parse_utc("2026-05-24T02:30:00Z"),
+            now=schedule.parse_utc("2026-05-24T04:00:00Z"),
+        )
+
+    def test_failed_run_does_not_consume_its_slot(self):
+        # A leg that died in 30s (queue wall, lock timeout, stale links) used to
+        # count as "slot serviced", so neither scheduler ever retried it and the
+        # weekend's capture was lost. A failure must leave the slot due.
+        base = {"display_title": "box office scrape snapshot",
+                "created_at": "2026-05-24T02:35:00Z",
+                "html_url": "https://example.test/run",
+                "status": "completed"}
+        for bad in ("failure", "cancelled", "timed_out", "startup_failure"):
+            with self.subTest(conclusion=bad):
+                self.assertFalse(self._run_exists_with(dict(base, conclusion=bad)))
+        for ok in ("success", "skipped"):
+            with self.subTest(conclusion=ok):
+                self.assertTrue(self._run_exists_with(dict(base, conclusion=ok)))
+
+    def test_in_progress_run_still_holds_its_slot(self):
+        # a run that is still going must NOT be duplicated
+        self.assertTrue(self._run_exists_with({
+            "display_title": "box office scrape snapshot",
+            "created_at": "2026-05-24T02:35:00Z",
+            "html_url": "https://example.test/run",
+            "status": "in_progress", "conclusion": None}))
+
     def test_scheduled_dispatch_sends_slot_metadata(self):
         class FakeClient:
             repo = "owner/repo"
