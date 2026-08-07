@@ -51,6 +51,20 @@ class SchedulerRetrySlotTests(unittest.TestCase):
         spec.loader.exec_module(mod)
         return mod.SLOTS
 
+    def test_late_listed_market_still_gets_links_thursday(self):
+        # One Night Only (2026-08-07) was listed after Wednesday's Phase 1
+        # cleanly skipped, so links stayed on the prior weekend and every
+        # Friday snapshot lane hard-failed. One Thursday pass per group closes
+        # that window; the late pair stays Tue/Wed to bound cost.
+        slots = [s for s in self._slots() if s.inputs.get("phase") == "collect-links"]
+        early = [s for s in slots if s.name.endswith(("13Z", "15Z", "17Z"))]
+        late = [s for s in slots if s.name.endswith(("19Z", "21Z", "23Z"))]
+        self.assertEqual(3, len(early))
+        for s in early:
+            self.assertIn(4, s.cron_days)   # Thursday
+        for s in late:
+            self.assertNotIn(4, s.cron_days)
+
     def test_amc_snapshot_has_wall_retry_slots(self):
         slots = self._slots()
         amc_snap = [s for s in slots if s.title == "box office scrape snapshot"]

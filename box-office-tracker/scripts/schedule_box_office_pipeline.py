@@ -123,11 +123,17 @@ class Slot:
 # Snapshot runs at 02:30 UTC, so UTC Sunday is Saturday night in U.S. time.
 # Do not include UTC Monday here: that would be Sunday night locally, just
 # before the Monday 07:00 UTC post-Sunday regular scrape.
+# Collect-links runs Tue/Wed, but Polymarket sometimes lists a weekend's
+# market later than that (One Night Only appeared after Wed 2026-08-05, so
+# Phase 1 cleanly skipped, showtime-links stayed on the prior weekend, and
+# every Friday snapshot lane hard-failed "run Phase 1 first" — the weekend's
+# capture was lost). The early slot in each group also runs Thursday so a
+# late-listed market still gets links before previews.
 SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links ET 13Z",
         "box office collect-links ET",
-        frozenset({2, 3}),
+        frozenset({2, 3, 4}),
         13,
         0,
         pipeline_inputs("collect-links", "ET"),
@@ -135,7 +141,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links CT 15Z",
         "box office collect-links CT",
-        frozenset({2, 3}),
+        frozenset({2, 3, 4}),
         15,
         0,
         pipeline_inputs("collect-links", "CT"),
@@ -143,7 +149,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links PT 17Z",
         "box office collect-links PT",
-        frozenset({2, 3}),
+        frozenset({2, 3, 4}),
         17,
         0,
         pipeline_inputs("collect-links", "PT"),
