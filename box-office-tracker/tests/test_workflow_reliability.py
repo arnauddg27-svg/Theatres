@@ -40,6 +40,22 @@ class WorkflowReliabilityTest(unittest.TestCase):
                 self.assertNotIn("-X ours", line, f"push loop still discards data: {line.strip()}")
                 self.assertNotIn("-X theirs", line, f"push loop overwrites upstream: {line.strip()}")
 
+    def test_finalize_has_a_vps_independent_rotation_net(self):
+        """Rotation must not depend solely on the self-hosted VPS runner.
+
+        rotate_pre_reservation_snapshots.py is invoked from the weekly
+        `calibrate` job (runs-on: [self-hosted, vps]). If that droplet is
+        offline the live CSVs grow ~25MB/weekend until they cross GitHub's
+        100MB push limit — the failure that bricked the snapshot lane on
+        2026-07-12. finalize runs on ubuntu-latest and carries a size-gated
+        fallback so the cliff cannot return while the VPS is down.
+        """
+        start = self.workflow.index("  finalize:")
+        end = self.workflow.index("\n  calibrate:", start)
+        block = self.workflow[start:end]
+        self.assertIn("rotate_pre_reservation_snapshots.py", block)
+        self.assertIn("ubuntu-latest", block)
+
     def test_snapshot_scrapes_have_separate_concurrency_lane(self):
         start = self.workflow.index("concurrency:")
         end = self.workflow.index("\njobs:", start)

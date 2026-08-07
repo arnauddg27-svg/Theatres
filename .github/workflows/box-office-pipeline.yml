@@ -458,6 +458,31 @@ jobs:
         working-directory: box-office-tracker
         run: python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"
 
+      - name: Size safety net — rotate settled weekends if a canonical CSV is large
+        working-directory: box-office-tracker
+        run: |
+          # Rotation normally runs in the weekly `calibrate` job, which is
+          # runs-on: [self-hosted, vps]. A single droplet is a single point of
+          # failure: if it is offline, rotation silently stops, the live CSVs
+          # grow ~25MB/weekend and eventually cross GitHub's 100MB push limit —
+          # which is exactly what bricked the snapshot lane on 2026-07-12. This
+          # net runs on ubuntu-latest, so the cliff cannot come back while the
+          # VPS is down. Well below the limit it is a no-op.
+          limit=$((60 * 1024 * 1024))
+          need=0
+          for f in data/seat-counts.csv data/pre-reservation-snapshots.csv; do
+            [ -f "$f" ] || continue
+            size=$(wc -c < "$f")
+            echo "$f: $((size / 1024 / 1024))MB"
+            [ "$size" -gt "$limit" ] && need=1
+          done
+          if [ "$need" = "1" ]; then
+            echo "::warning::A canonical CSV passed 60MB — rotating settled weekends here because the weekly VPS rotation has not kept up."
+            python3 scripts/rotate_pre_reservation_snapshots.py
+          else
+            echo "Both canonical CSVs are comfortably under the limit; no rotation needed."
+          fi
+
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard
         run: |
