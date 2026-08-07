@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import csv
+import gzip
 import json
 import sys
 from collections import defaultdict
@@ -37,14 +38,28 @@ SELLOUT_OCCUPANCY = 0.95
 EARLY_MINUTES = 60
 
 
+def _snapshot_readers():
+    """Live snapshot CSV plus every rotated per-weekend gzip archive.
+
+    Settled weekends rotate out of the live CSV (100MB push cap), so reading
+    it alone would silently limit this tool to the two most recent weekends.
+    """
+    archive_dir = ROOT / "data" / "pre-reservation-archive"
+    if archive_dir.is_dir():
+        for path in sorted(archive_dir.glob("*.csv.gz")):
+            with gzip.open(path, "rt", newline="") as f:
+                yield csv.DictReader(f)
+    if PRE_RESERVATION_CSV.exists():
+        with open(PRE_RESERVATION_CSV, newline="") as f:
+            yield csv.DictReader(f)
+
+
 def early_sellout_fractions():
     """{(movie, weekend, day): fraction of snapshotted showtimes selling out early}."""
     sold_early = {}
     seen = set()
-    if not PRE_RESERVATION_CSV.exists():
-        return {}
-    with open(PRE_RESERVATION_CSV, newline="") as f:
-        for row in csv.DictReader(f):
+    for reader in _snapshot_readers():
+        for row in reader:
             try:
                 total = float(row.get("total_seats") or 0)
                 reserved = float(row.get("reserved_seats") or 0)

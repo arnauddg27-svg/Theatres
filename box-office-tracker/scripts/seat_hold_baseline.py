@@ -18,6 +18,7 @@ Usage:
 from __future__ import annotations
 
 import csv
+import gzip
 import statistics
 import sys
 from collections import defaultdict
@@ -29,14 +30,30 @@ PRE_RESERVATION_CSV = ROOT / "data" / "pre-reservation-snapshots.csv"
 MIN_LEAD_MINUTES = 1440  # >= 1 day before showtime
 
 
+def _snapshot_readers():
+    """Live snapshot CSV plus every rotated per-weekend gzip archive.
+
+    Settled weekends rotate out of the live CSV (100MB push cap), so reading
+    it alone would silently limit this tool to the two most recent weekends.
+    """
+    archive_dir = ROOT / "data" / "pre-reservation-archive"
+    if archive_dir.is_dir():
+        for path in sorted(archive_dir.glob("*.csv.gz")):
+            with gzip.open(path, "rt", newline="") as f:
+                yield csv.DictReader(f)
+    if PRE_RESERVATION_CSV.exists():
+        with open(PRE_RESERVATION_CSV, newline="") as f:
+            yield csv.DictReader(f)
+
+
 def main(argv):
     min_lead = MIN_LEAD_MINUTES
     if "--min-lead-minutes" in argv:
         min_lead = int(argv[argv.index("--min-lead-minutes") + 1])
 
     earliest = {}  # showtime identity -> (minutes_until, occ, format)
-    with open(PRE_RESERVATION_CSV, newline="") as f:
-        for row in csv.DictReader(f):
+    for reader in _snapshot_readers():
+        for row in reader:
             try:
                 total = float(row.get("total_seats") or 0)
                 reserved = float(row.get("reserved_seats") or 0)
