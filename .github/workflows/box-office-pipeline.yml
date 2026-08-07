@@ -417,12 +417,19 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   finalize:
     needs: scrape
-    # Run regardless of whether individual matrix legs succeeded (always()),
-    # but skip if scrape didn't run at all (phase != scrape) or was cancelled.
+    # Run regardless of how the individual matrix legs ended (always()), and
+    # skip only if scrape never ran at all (phase != scrape).
+    # 'cancelled' MUST be included: legs upload their artifacts with
+    # if: always() precisely so partial rows survive a bad leg, but excluding
+    # cancelled meant a manual cancel — or the concurrency cancellation that
+    # can land on a running leg — orphaned those artifacts permanently
+    # (download-artifact only sees the CURRENT run's artifacts, so there is no
+    # way to replay them later). The finalize guard already no-ops when
+    # nothing merged, so running here is free when there is nothing to do.
     if: >
       always() &&
       github.event.inputs.phase == 'scrape' &&
-      (needs.scrape.result == 'success' || needs.scrape.result == 'failure')
+      needs.scrape.result != 'skipped'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 

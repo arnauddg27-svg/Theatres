@@ -360,6 +360,15 @@ def _is_future_pre_reservation_row(row: dict[str, str]) -> bool:
     return minutes_until_showtime >= 0
 
 
+# weekend -> rows refused because that weekend is already archived. Reported at
+# the end of a merge: the drop is correct, but silently dropping EVERY row made
+# a recovery rerun look like a clean no-op. Artifacts are retained 14 days while
+# rotation archives a weekend ~10 days after it ends, so a rerun inside that gap
+# merges nothing and the finalize guard reports "no net canonical data changes"
+# — a green run with no data and no explanation.
+ARCHIVED_WEEKEND_DROPS: dict[str, int] = {}
+
+
 def _archived_weekend_filter(data_dir: Path, subdir: str, prefix: str):
     """Refuse rows whose weekend has been rotated into an archive."""
     archive_dir = data_dir / subdir
@@ -367,10 +376,27 @@ def _archived_weekend_filter(data_dir: Path, subdir: str, prefix: str):
     def _filter(row: dict[str, str]) -> bool:
         weekend = str(row.get("weekend_of", "") or "").strip()
         if weekend and (archive_dir / f"{prefix}-{weekend}.csv.gz").exists():
+            key = f"{prefix}:{weekend}"
+            ARCHIVED_WEEKEND_DROPS[key] = ARCHIVED_WEEKEND_DROPS.get(key, 0) + 1
             return False
         return True
 
     return _filter
+
+
+def report_archived_weekend_drops() -> None:
+    """Print what the archived-weekend guard refused, so it is never silent."""
+    if not ARCHIVED_WEEKEND_DROPS:
+        return
+    total = sum(ARCHIVED_WEEKEND_DROPS.values())
+    print(f"\n\u26a0\ufe0f  archived-weekend guard refused {total} artifact row(s) "
+          f"(already rotated into per-weekend archives):")
+    for key in sorted(ARCHIVED_WEEKEND_DROPS):
+        prefix, _, weekend = key.partition(":")
+        print(f"    {weekend} [{prefix}]: {ARCHIVED_WEEKEND_DROPS[key]} row(s)")
+    print("    If this was a recovery rerun, its rows are settled and already "
+          "archived — re-merging them is what breached the 100MB push limit "
+          "on 2026-07-12. Nothing was lost.")
 
 
 def _seat_row_filter(data_dir: Path):
@@ -551,6 +577,7 @@ def main() -> int:
     print(f"Run logs copied: {summary.run_logs_copied}")
     print(f"Run logs skipped: {summary.run_logs_skipped}")
     print(f"Scrape markers: {', '.join(sorted(summary.markers)) or 'none'}")
+    report_archived_weekend_drops()
     return 0
 
 

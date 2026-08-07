@@ -1,12 +1,15 @@
 import csv
 import sys
 import tempfile
+import contextlib
+import io
 import unittest
 from pathlib import Path
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts import merge_scrape_artifacts as M  # noqa: E402
 from scripts.merge_scrape_artifacts import (  # noqa: E402
     POLY_FIELDS,
     PRE_RESERVATION_FIELDS,
@@ -420,3 +423,45 @@ class ArchivedWeekendGuardTest(unittest.TestCase):
             self.assertFalse(f(archived))   # settled weekend -> refused
             self.assertTrue(f(live))        # live weekend -> accepted
             self.assertFalse(f(past))       # past-showtime still refused
+
+
+class ArchivedWeekendDropReportingTests(unittest.TestCase):
+    """The guard is correct, but it must not be silent.
+
+    Artifacts live 14 days; rotation archives a weekend ~10 days after it ends.
+    A recovery rerun inside that gap merges ZERO rows, and the finalize guard
+    then reports "no net canonical data changes" — a green run with no data and
+    no explanation of why.
+    """
+
+    def setUp(self):
+        M.ARCHIVED_WEEKEND_DROPS.clear()
+
+    def tearDown(self):
+        M.ARCHIVED_WEEKEND_DROPS.clear()
+
+    def test_refused_rows_are_counted_per_weekend(self):
+        with tempfile.TemporaryDirectory() as d:
+            data_dir = Path(d)
+            (data_dir / "seat-archive").mkdir()
+            (data_dir / "seat-archive" / "seat-counts-2026-05-01.csv.gz").write_bytes(b"")
+            f = M._seat_row_filter(data_dir)
+            for _ in range(3):
+                self.assertFalse(f({"weekend_of": "2026-05-01"}))
+            self.assertTrue(f({"weekend_of": "2026-07-31"}))
+            self.assertEqual({"seat-counts:2026-05-01": 3}, dict(M.ARCHIVED_WEEKEND_DROPS))
+
+    def test_report_names_the_weekend_and_count(self):
+        M.ARCHIVED_WEEKEND_DROPS["seat-counts:2026-05-01"] = 12345
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            M.report_archived_weekend_drops()
+        out = buf.getvalue()
+        self.assertIn("2026-05-01", out)
+        self.assertIn("12345", out)
+
+    def test_report_is_silent_when_nothing_was_dropped(self):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            M.report_archived_weekend_drops()
+        self.assertEqual("", buf.getvalue())
