@@ -2957,7 +2957,7 @@ def historical_residual_regression(pred, cal):
 
     values = []
     metadata = load_movie_metadata()
-    for entry in (cal or {}).get("history", [])[-20:]:
+    for entry in seat_regression.fitting_history((cal or {}).get("history", []))[-20:]:
         if not _actual_status_is_final(entry):
             continue
         if _movie_matches(pred.get("movie", ""), entry.get("movie", "")):
@@ -3584,7 +3584,7 @@ def empirical_seat_training_examples(cal, exclude_movie=None):
     cache_key = _empirical_cache_key("seat", cal)
     if cache_key not in _EMPIRICAL_SEAT_EXAMPLES_CACHE:
         examples = []
-        for entry in (cal or {}).get("history", []) or []:
+        for entry in seat_regression.fitting_history((cal or {}).get("history", [])):
             movie = (entry.get("movie") or "").strip()
             weekend_of = entry.get("weekend_of") or ""
             daily_actuals = _history_daily_actuals(entry)
@@ -3639,7 +3639,7 @@ def empirical_snapshot_training_examples(cal, exclude_movie=None):
     cache_key = _empirical_cache_key("snapshot", cal)
     if cache_key not in _EMPIRICAL_SNAPSHOT_EXAMPLES_CACHE:
         examples = []
-        for entry in (cal or {}).get("history", []) or []:
+        for entry in seat_regression.fitting_history((cal or {}).get("history", [])):
             movie = (entry.get("movie") or "").strip()
             weekend_of = entry.get("weekend_of") or ""
             snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
@@ -4413,7 +4413,7 @@ def conformal_ratio_band(cal, movie, predicted_mid=None):
     key = _movie_lookup_key(movie or "")
     entries = [
         (e["predicted_mid"], e["actual_total"] / e["predicted_mid"])
-        for e in ((cal or {}).get("history", []) or [])
+        for e in seat_regression.fitting_history((cal or {}).get("history", []))
         if e.get("actual_total") and e.get("predicted_mid")
         and e["predicted_mid"] > 0
         and _movie_lookup_key(e.get("movie", "")) != key
@@ -4801,8 +4801,13 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
         return {}
     amc = {}
     amc_day = {}    # movie -> date -> {"occ": [..], "slots": set, "theatres": set}
-    with open(SEAT_CSV, "r") as f:
-        for row in csv.DictReader(f):
+    # Archive-aware: settled weekends rotate out of the live CSV, so reading
+    # SEAT_CSV directly made a weekend's AMC side vanish the moment it was
+    # archived — the cross-chain share then silently fell back to the fleet
+    # prior on every historical replay (Evil Dead Burn 26.6 -> 42.6 the day
+    # 2026-07-10 rotated, dragging the canonical backtest 18.1% -> 21.2%).
+    for reader in _seat_row_sources(weekend_of):
+        for row in reader:
             if (row.get("weekend_of") or "").strip() != weekend_of:
                 continue
             if through_date and (row.get("date") or "") > through_date:

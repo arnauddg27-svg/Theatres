@@ -144,3 +144,52 @@ class VolumeShareTests(unittest.TestCase):
         # frozen volume hypothesis +6.0% beat gated-fleet -8.5% and capacity
         # -25%, and the flip improved the Thursday backtest 18.5% -> 18.0%.
         self.assertTrue(P.CROSS_CHAIN_VOLUME_APPLY)
+
+
+class CrossChainArchiveTests(unittest.TestCase):
+    """A rotated weekend must keep its AMC side (predict.py read SEAT_CSV raw)."""
+
+    def _write(self, path, fields, rows):
+        with open(path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            w.writerows(rows)
+
+    def test_archived_weekend_still_yields_amc_side(self):
+        import gzip
+        seat_fields = ["weekend_of", "date", "movie_title", "occupancy_pct",
+                       "theatre_name", "showtime"]
+        seat_rows = [{"weekend_of": "2026-07-10", "date": "2026-07-09",
+                      "movie_title": "F", "occupancy_pct": "20",
+                      "theatre_name": f"AMC {i}", "showtime": "19:00"}
+                     for i in range(60)]
+        with tempfile.TemporaryDirectory() as d:
+            live = Path(d) / "seat.csv"
+            arch_dir = Path(d) / "seat-archive"
+            arch_dir.mkdir()
+            fan = Path(d) / "fan.csv"
+            # weekend fully rotated: live holds a DIFFERENT weekend only
+            self._write(live, seat_fields, [dict(seat_rows[0], weekend_of="2026-07-17")])
+            with gzip.open(arch_dir / "seat-counts-2026-07-10.csv.gz", "wt", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=seat_fields)
+                w.writeheader()
+                w.writerows(seat_rows)
+            self._write(fan, ["weekend_of", "snapshot_time", "movie_title",
+                              "occupancy_pct", "chain", "show_date"],
+                        [{"weekend_of": "2026-07-10",
+                          "snapshot_time": "2026-07-09T03:00:00Z",
+                          "movie_title": "F", "occupancy_pct": "10",
+                          "chain": "REGL", "show_date": "2026-07-09"}
+                         for _ in range(50)])
+            orig = (P.SEAT_CSV, P.SEAT_ARCHIVE_DIR, P.FANDANGO_SNAPSHOTS_CSV)
+            try:
+                P.SEAT_CSV, P.SEAT_ARCHIVE_DIR = str(live), str(arch_dir)
+                P.FANDANGO_SNAPSHOTS_CSV = str(fan)
+                P._CROSS_CHAIN_CACHE.clear()
+                cc = P.load_cross_chain_occupancy(weekend_of="2026-07-10")
+                self.assertIn("F", cc)
+                self.assertAlmostEqual(cc["F"]["amc_occ"], 20.0)
+                self.assertEqual(cc["F"]["amc_rows"], 60)
+            finally:
+                P.SEAT_CSV, P.SEAT_ARCHIVE_DIR, P.FANDANGO_SNAPSHOTS_CSV = orig
+                P._CROSS_CHAIN_CACHE.clear()

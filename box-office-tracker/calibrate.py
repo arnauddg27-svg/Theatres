@@ -538,7 +538,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   social_signal=None, model_version=None,
                   actual_source=None, actual_status="final",
                   replace_existing=False, daily_sellout_fractions=None,
-                  exclude_from_day_weights=False):
+                  exclude_from_day_weights=False, data_outage=False):
     """Record daily predicted-vs-actual and update all calibration factors."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
@@ -564,6 +564,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         entry["model_version"] = model_version
     if exclude_from_day_weights:
         entry["exclude_from_day_weights"] = True
+    if data_outage:
+        # Recorded for the record, excluded from every fit (see
+        # seat_regression.is_data_outage_entry).
+        entry["data_outage"] = True
     cohort_key = _normalize_model_cohort_key(model_cohort_key)
     if cohort_key:
         entry["model_cohort_key"] = cohort_key
@@ -660,13 +664,13 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):
         factors.pop(_dead, None)
     factors["snapshot_calibration_support"] = snapshot_calibration_support(
-        cal["history"]
+        seat_regression.fitting_history(cal["history"])
     )
 
     # 2. Update day weights from actual daily proportions
     #    Average the actual day splits across all movies with daily data
     all_day_weights = []
-    for h in cal["history"]:
+    for h in seat_regression.fitting_history(cal["history"]):
         # Skip weekends with anomalous day shapes (e.g. a July-4th Saturday
         # crater) — they would corrupt the normal Thu/Fri/Sat/Sun weights.
         if h.get("exclude_from_day_weights"):
@@ -693,7 +697,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
 
     # 3. Update per-day accuracy (predicted vs actual for each day)
     day_errors = {}
-    for h in cal["history"]:
+    for h in seat_regression.fitting_history(cal["history"]):
         da = h.get("daily_actuals", {})
         dp = h.get("daily_predictions", {})
         for day in da:
@@ -703,7 +707,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
 
     # 4. Update AMC market share
     share_estimates = []
-    for h in cal["history"]:
+    for h in seat_regression.fitting_history(cal["history"]):
         if h.get("actual_total", 0) > 0 and h.get("predicted_mid", 0) > 0:
             share = factors.get("amc_market_share", 0.25)
             implied = (h["predicted_mid"] * share) / h["actual_total"]
@@ -806,6 +810,7 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             actual_source=actual_source,
             actual_status=actual_status,
             replace_existing=True,
+            data_outage=bool(pred.get("data_outage")),
         )
         entries.append(entry)
 
@@ -1223,7 +1228,9 @@ if __name__ == "__main__":
             actual_source=actual_source,
             actual_status=actual_status,
             replace_existing=True,
+            data_outage=bool(pred.get("data_outage")),
         )
-        print(f"Recorded: {matched_movie} actual=${actual_val}M")
+        outage_note = " [DATA OUTAGE - excluded from fits]" if pred.get("data_outage") else ""
+        print(f"Recorded: {matched_movie} actual=${actual_val}M{outage_note}")
     else:
         auto_calibrate()

@@ -24,6 +24,21 @@ _T95 = {
 }
 
 
+def is_data_outage_entry(entry) -> bool:
+    """True for weekends whose capture collapsed (flag set at record time).
+
+    Such a row measures the outage, not the model: Spider-Man 2026-07-31 read
+    1% seat coverage behind AMC's Queue-It wall and recorded -72% error.
+    Excluded from every fit; kept in history as the record of record.
+    """
+    return bool((entry or {}).get("data_outage"))
+
+
+def fitting_history(history):
+    """History rows admissible for calibration fitting (outages removed)."""
+    return [h for h in (history or []) if not is_data_outage_entry(h)]
+
+
 def t_quantile_95(df: int) -> float:
     """Two-sided 90% interval multiplier (t_{0.95,df}); ~1.645 as df->inf."""
     df = int(max(1, df))
@@ -709,6 +724,7 @@ def fit_regression_calibration(history):
     the simpler tiers as history grows. Returns the `regression` calibration
     block persisted into calibration.json.
     """
+    history = fitting_history(history)
     seat_rows = build_seat_rows(history)
     day_shares = learn_day_shares(history)
     block = {

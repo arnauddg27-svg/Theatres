@@ -1668,7 +1668,9 @@
       "coverage_ratio": 0.034,
       "calibration_excluded_days": [
         "Friday"
-      ]
+      ],
+      "data_outage": true,
+      "data_outage_reason": "AMC Queue-It wall 2026-07-29..08-02: 81/425 theatres, 1% weighted seat coverage, 5% snapshot weight"
     }
   ],
   "calibration_factors": {
