@@ -193,3 +193,48 @@ class CrossChainArchiveTests(unittest.TestCase):
             finally:
                 P.SEAT_CSV, P.SEAT_ARCHIVE_DIR, P.FANDANGO_SNAPSHOTS_CSV = orig
                 P._CROSS_CHAIN_CACHE.clear()
+
+
+class CrossChainInactiveReasonTests(unittest.TestCase):
+    """Gated-off must be distinguishable from never-wired.
+
+    cross_chain_share returns None for five different reasons and the caller
+    then silently uses the fleet prior. That made "this film has no Fandango
+    coverage" identical to "we collected the data and discarded it at a gate" —
+    and identical again to "the loader was pointed at the wrong weekend", which
+    is exactly how the archive-blind loader and the weekend-key bug both hid.
+    """
+
+    def test_each_gate_reports_a_distinct_reason(self):
+        cases = {
+            "no cross-chain rows": {},
+            "too few AMC rows": {"F": {"amc_occ": 25, "rc_occ": 13,
+                                       "amc_rows": 10, "rc_rows": 100}},
+            "too few Regal/Cinemark rows": {"F": {"amc_occ": 25, "rc_occ": 13,
+                                                  "amc_rows": 100, "rc_rows": 5}},
+            "saturation gate": {"F": {"amc_occ": 42.1, "rc_occ": 21,
+                                      "amc_rows": 100, "rc_rows": 100}},
+        }
+        seen = set()
+        for expected_fragment, cc in cases.items():
+            with self.subTest(case=expected_fragment):
+                reason = P.cross_chain_inactive_reason("F", cc)
+                self.assertIsNotNone(reason)
+                self.assertIn(expected_fragment, reason)
+                seen.add(reason)
+        self.assertEqual(len(cases), len(seen), "reasons must be distinguishable")
+
+    def test_healthy_data_reports_no_reason(self):
+        healthy = {"F": {"amc_occ": 25, "rc_occ": 13.5,
+                         "amc_rows": 100, "rc_rows": 100}}
+        self.assertIsNone(P.cross_chain_inactive_reason("F", healthy))
+        # and the share itself is genuinely available for that input
+        self.assertIsNotNone(P.cross_chain_share("F", healthy, CAL))
+
+    def test_reason_agrees_with_the_share_gate(self):
+        # every input that yields no share must yield a reason, and vice versa
+        for cc in ({}, {"F": {"amc_occ": 42.1, "rc_occ": 21, "amc_rows": 100, "rc_rows": 100}},
+                   {"F": {"amc_occ": 25, "rc_occ": 13.5, "amc_rows": 100, "rc_rows": 100}}):
+            share = P.cross_chain_share("F", cc, CAL)
+            reason = P.cross_chain_inactive_reason("F", cc)
+            self.assertEqual(share is None, reason is not None, f"disagreement on {cc}")

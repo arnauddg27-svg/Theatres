@@ -4868,6 +4868,34 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
     return out
 
 
+def cross_chain_inactive_reason(movie, cross_chain_data):
+    """Why the cross-chain share is unavailable, or None when it is available.
+
+    `cross_chain_share` returns None for five different reasons and the caller
+    then silently uses the fleet prior, so "this film has no Fandango coverage"
+    looked identical to "we collected the data and threw it away at a gate" —
+    and identical again to "the loader was wired to the wrong weekend", which
+    is how the archive-blind and weekend-key bugs both hid. Naming the reason
+    makes a wiring bug distinguishable from a data-availability fact.
+    """
+    info = movie_mapping_get(cross_chain_data or {}, movie, None)
+    if not info:
+        return "no cross-chain rows loaded for this movie/weekend"
+    amc_rows, rc_rows = info.get("amc_rows", 0), info.get("rc_rows", 0)
+    if amc_rows < CROSS_CHAIN_MIN_AMC_ROWS:
+        return f"too few AMC rows ({amc_rows} < {CROSS_CHAIN_MIN_AMC_ROWS})"
+    if rc_rows < CROSS_CHAIN_MIN_RC_ROWS:
+        return f"too few Regal/Cinemark rows ({rc_rows} < {CROSS_CHAIN_MIN_RC_ROWS})"
+    occ_a, occ_rc = info.get("amc_occ") or 0.0, info.get("rc_occ") or 0.0
+    if occ_a <= 0 or occ_rc <= 0:
+        return f"non-positive occupancy (AMC {occ_a:.1f}%, RC {occ_rc:.1f}%)"
+    if occ_a > CROSS_CHAIN_MAX_AMC_OCC:
+        return (f"saturation gate: AMC occupancy {occ_a:.1f}% > "
+                f"{CROSS_CHAIN_MAX_AMC_OCC:.0f}% (supply-constrained, "
+                f"occupancy stops measuring chain preference)")
+    return None
+
+
 def cross_chain_share(movie, cross_chain_data, cal):
     """Bounded per-film AMC share from cross-chain occupancy (None = no signal)."""
     info = movie_mapping_get(cross_chain_data or {}, movie, None)
@@ -7601,6 +7629,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if cross_chain_volume_value is not None:
         result["cross_chain_volume_share"] = round(cross_chain_volume_value, 4)
         result["cross_chain_volume_applied"] = bool(CROSS_CHAIN_VOLUME_APPLY)
+    if cross_chain_share_value is None and cross_chain_volume_value is None:
+        # Record WHY the layer is off so a wiring bug is distinguishable from a
+        # genuine data-availability fact (see cross_chain_inactive_reason).
+        if share_override_resolved is not None:
+            result["cross_chain_inactive_reason"] = "per-film share override in metadata"
+        elif (getattr(movie_metadata, "audience_type", "") or "") == FAMILY_WALKUP_AUDIENCE:
+            result["cross_chain_inactive_reason"] = (
+                "family gate: Fandango never sees walk-ups, which dominate family titles")
+        else:
+            result["cross_chain_inactive_reason"] = cross_chain_inactive_reason(
+                movie, cross_chain_data)
     if cross_chain_share_value is not None:
         info = movie_mapping_get(cross_chain_data or {}, movie, {}) or {}
         result["cross_chain_share"] = round(cross_chain_share_value, 4)
@@ -8301,6 +8340,11 @@ def print_prediction(pred, verbose=False):
         print(f"  Cross-chain share: {pred['cross_chain_share']:.1%} "
               f"(AMC occ {d.get('amc_occ', 0):.1f}% vs Regal/Cinemark {d.get('rc_occ', 0):.1f}%"
               f" on {d.get('rc_rows', 0)} rows; fleet {d.get('fleet_share', 0):.1%})")
+    elif pred.get("cross_chain_inactive_reason"):
+        # A silent fallback to the fleet prior is how both the archive-blind
+        # loader and the wrong-weekend wiring hid for days. Say it out loud.
+        print(f"  Cross-chain share: INACTIVE (using fleet prior) — "
+              f"{pred['cross_chain_inactive_reason']}")
 
     # Seat-based
     days_str = ", ".join(
