@@ -43,6 +43,7 @@ class CleanStats:
     removed_exact_duplicates: int = 0
     removed_known_bad_duplicates: int = 0
     removed_url_movie_mismatches: int = 0
+    removed_ambiguous_url_rows: int = 0
     normalized_missing_formats: int = 0
     removed_calibration_entries: int = 0
     unresolved_duplicate_url_groups: list[str] = field(default_factory=list)
@@ -56,6 +57,7 @@ class CleanStats:
                 self.removed_exact_duplicates,
                 self.removed_known_bad_duplicates,
                 self.removed_url_movie_mismatches,
+                self.removed_ambiguous_url_rows,
                 self.normalized_missing_formats,
                 self.removed_calibration_entries,
             ]
@@ -68,6 +70,7 @@ class CleanStats:
             f"exact_duplicates={self.removed_exact_duplicates}",
             f"known_bad_duplicates={self.removed_known_bad_duplicates}",
             f"url_movie_mismatches={self.removed_url_movie_mismatches}",
+            f"ambiguous_url_rows={self.removed_ambiguous_url_rows}",
             f"missing_formats={self.normalized_missing_formats}",
             f"calibration_entries={self.removed_calibration_entries}",
             f"unresolved_url_groups={len(self.unresolved_duplicate_url_groups)}",
@@ -153,6 +156,19 @@ def _find_cross_movie_url_collisions(
     return collisions
 
 
+def _collision_keys(rows: list[dict[str, str]], *, date_col: str) -> set:
+    """Keys whose seat-map URL is claimed by more than one movie."""
+    groups: dict = {}
+    for row in rows:
+        key = _url_key(row, date_col=date_col)
+        if key is None:
+            continue
+        movie = _clean_movie(row.get("movie_title"))
+        if movie:
+            groups.setdefault(key, set()).add(movie)
+    return {key for key, movies in groups.items() if len(movies) > 1}
+
+
 def _url_key(row: dict[str, str], *, date_col: str) -> tuple[str, str, str, str] | None:
     url = (row.get("amc_seat_map_url") or "").strip()
     if not url:
@@ -191,6 +207,7 @@ def clean_csv_file(
     date_col: str,
     check: bool,
     canonical_movie_by_url: dict[tuple[str, str, str, str], str] | None = None,
+    quarantine_unresolved: bool = False,
 ) -> CleanCsvResult:
     stats = CleanStats(file=str(path))
     if not path.exists():
@@ -234,7 +251,33 @@ def clean_csv_file(
         rows,
         date_col=date_col,
     )
-    if stats.unresolved_duplicate_url_groups:
+    if stats.unresolved_duplicate_url_groups and quarantine_unresolved:
+        # Pre-reservation rows are for FUTURE show dates by definition, so the
+        # seat CSV — the only source of a canonical URL->movie mapping — can
+        # never resolve a collision there. Raising therefore bricked finalize
+        # PERMANENTLY: on 2026-08-09 one AMC showtime reported both
+        # "One Night Only" and "Super Troopers 3", and every hourly retry
+        # re-collected ~2,000 rows and threw them all away at this check.
+        # Both attributions cannot be right and we cannot tell which is, so
+        # drop just that URL group (keeping both would double-count the same
+        # seats against two films) and report it loudly. Losing a handful of
+        # ambiguous rows beats losing every row in the file.
+        ambiguous_keys = _collision_keys(rows, date_col=date_col)
+        kept = []
+        for row in rows:
+            key = _url_key(row, date_col=date_col)
+            if key is not None and key in ambiguous_keys:
+                stats.removed_ambiguous_url_rows += 1
+                continue
+            kept.append(row)
+        rows = kept   # `changed` is derived from removed_ambiguous_url_rows
+        print(
+            f"\u26a0\ufe0f  {path.name}: dropped {stats.removed_ambiguous_url_rows} row(s) in "
+            f"{len(stats.unresolved_duplicate_url_groups)} ambiguous seat-map group(s) "
+            f"rather than failing the merge:", file=sys.stderr)
+        for group in stats.unresolved_duplicate_url_groups:
+            print(f"    {group}", file=sys.stderr)
+    elif stats.unresolved_duplicate_url_groups:
         raise CanonicalDataError(
             f"{path} has unexpected cross-movie seat-map collisions:\n"
             + "\n".join(stats.unresolved_duplicate_url_groups)
@@ -301,6 +344,7 @@ def collect_stats(repo_root: Path, *, check: bool) -> list[CleanStats]:
         date_col="show_date",
         check=check,
         canonical_movie_by_url=canonical_url_movies,
+        quarantine_unresolved=True,
     )
     stats = [
         seat_result.stats,
