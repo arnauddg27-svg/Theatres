@@ -1,5 +1,7 @@
+import datetime as dt
 import sys
 import unittest
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -85,9 +87,21 @@ class SchedulerRetrySlotTests(unittest.TestCase):
         self.assertIn("snapshot 22:30Z", names)
         base = next(s for s in amc_snap if s.name == "snapshot 02:30Z")
         for s in amc_snap:
-            # retries are exact clones: same inputs, same cron days
+            # the retries must carry the same PHASE INPUTS as the original...
             self.assertEqual(s.inputs, base.inputs)
-            self.assertEqual(s.cron_days, base.cron_days)
+        # ...but pinning cron_days to the 02:30Z set would block a future
+        # correction, so assert the invariant that actually holds instead.
+        # The LOCAL day differs per hour and that is correct: 02:30Z is 22:30
+        # local, so it captures the EVE of each show day (Wed night -> Thursday
+        # previews), while 14:30Z/22:30Z are 10:30/18:30 local and capture the
+        # same day. What every slot must share is four consecutive UTC days
+        # excluding UTC Monday, which at all three hours lands after the
+        # weekend has closed — Sunday is collected by the Monday 07:00Z
+        # regular scrape instead.
+        for s in amc_snap:
+            with self.subTest(slot=s.name):
+                self.assertEqual(4, len(s.cron_days), f"{s.name}: {sorted(s.cron_days)}")
+                self.assertNotIn(1, s.cron_days, f"{s.name} includes UTC Monday")
 
 
 if __name__ == "__main__":

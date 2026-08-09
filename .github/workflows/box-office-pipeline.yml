@@ -419,17 +419,18 @@ jobs:
     needs: scrape
     # Run regardless of how the individual matrix legs ended (always()), and
     # skip only if scrape never ran at all (phase != scrape).
-    # 'cancelled' MUST be included: legs upload their artifacts with
-    # if: always() precisely so partial rows survive a bad leg, but excluding
-    # cancelled meant a manual cancel — or the concurrency cancellation that
-    # can land on a running leg — orphaned those artifacts permanently
-    # (download-artifact only sees the CURRENT run's artifacts, so there is no
-    # way to replay them later). The finalize guard already no-ops when
-    # nothing merged, so running here is free when there is nothing to do.
+    # 'cancelled' is deliberately EXCLUDED. It was briefly included to stop a
+    # cancel orphaning uploaded artifacts, but that reasoning was wrong: this
+    # workflow sets cancel-in-progress: false, so concurrency never cancels a
+    # RUNNING leg — only pending runs, which produce no artifacts. The only
+    # real path is a MANUAL cancel, and an operator cancelling a bad run must
+    # not have finalize proceed to merge, clean, rotate and push to main
+    # anyway. Cancel stays a stop button on the one job that writes canonical
+    # data; losing that run's artifacts is the intended cost.
     if: >
       always() &&
       github.event.inputs.phase == 'scrape' &&
-      needs.scrape.result != 'skipped'
+      (needs.scrape.result == 'success' || needs.scrape.result == 'failure')
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -769,6 +770,17 @@ jobs:
             git rebase --abort 2>/dev/null || true
             git pull --rebase --autostash origin main && git push && break
             echo "Push attempt $i failed, retrying..."
-            if [ "$i" = "3" ]; then exit 1; fi
+            if [ "$i" = "3" ]; then
+              echo "All 3 push attempts failed — calibration not committed."
+              # calibrate is the only job on the persistent VPS runner
+              # (clean: false). Without this, a conflict leaves
+              # .git/rebase-merge behind and the next run's `git reset --hard`
+              # does NOT clear it — the runner stays wedged. The other three
+              # push loops already abort here; this one was the odd one out,
+              # harmless only while `-X ours` guaranteed the rebase never
+              # stopped.
+              git rebase --abort 2>/dev/null || true
+              exit 1
+            fi
             sleep $((i * 15))
           done

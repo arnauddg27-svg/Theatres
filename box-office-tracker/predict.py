@@ -7408,11 +7408,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     for day_name, details in daily_details.items():
         if day_name not in calibrated_daily and daily_estimates.get(day_name):
             details["excluded_from_weekend"] = True
-            details["excluded_reason"] = (
-                f"effective coverage "
-                f"{_coverage_value(daily_coverage_ratios.get(day_name), default=0.0):.0%}"
-                f" < {seat_regression.COVERAGE_FLOOR:.0%} regression floor"
-            )
+            cov = _coverage_value(daily_coverage_ratios.get(day_name), default=0.0)
+            if cov < seat_regression.COVERAGE_FLOOR:
+                details["excluded_reason"] = (
+                    f"effective coverage {cov:.0%} < "
+                    f"{seat_regression.COVERAGE_FLOOR:.0%} regression floor")
+            else:
+                # _assemble_per_day also drops a day when the tier has no seat
+                # coefficient or combine_sources yields nothing. Naming coverage
+                # there would print a self-contradiction like "95% < 60%".
+                details["excluded_reason"] = (
+                    f"the regression produced no usable estimate for this day "
+                    f"(coverage {cov:.0%} is above the floor, so the cause is "
+                    f"the fitted tier, not coverage)")
     for day_name, calibrated in calibrated_daily.items():
         details = daily_details.get(day_name)
         if not details:

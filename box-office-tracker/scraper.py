@@ -1269,6 +1269,14 @@ def _fetch_polymarket_public_search_events():
 # skip, exit 0 — e.g. 2026-07-24 had no box office market and every lane
 # alarm-failed for two days) from "market discovery is broken" (real failure).
 POLYMARKET_LAST_FETCH_OK = None
+# True only when at least one box-office-shaped event was successfully PARSED.
+# "The socket answered" is not enough evidence for a clean skip: if Polymarket
+# renames a field or changes its title wording so _event_to_box_office_market
+# returns None for everything, the feed still returns 200 and we would exit 0
+# with zero rows — a parser regression taking the pipeline dark for a weekend
+# with every signal green, which is the exact failure class these guards exist
+# to prevent.
+POLYMARKET_LAST_PARSE_OK = None
 
 
 def fetch_polymarket_box_office():
@@ -1282,7 +1290,7 @@ def fetch_polymarket_box_office():
 
     Returns list of dicts with movie info.
     """
-    global POLYMARKET_LAST_FETCH_OK
+    global POLYMARKET_LAST_FETCH_OK, POLYMARKET_LAST_PARSE_OK
     print("\n📊 Checking Polymarket for active box office markets...")
 
     feed_ok = False
@@ -1308,6 +1316,7 @@ def fetch_polymarket_box_office():
         print(f"  ⚠️  Polymarket public-search fallback error: {e}")
 
     candidates_by_movie = {}
+    parsed_any = False
 
     for event in events:
         if not _is_active_polymarket_event(event):
@@ -1315,6 +1324,7 @@ def fetch_polymarket_box_office():
         market = _event_to_box_office_market(event)
         if market is None:
             continue
+        parsed_any = True
         candidates_by_movie.setdefault(market["movie_title"], []).append(market)
 
     markets_found = []
@@ -1333,6 +1343,11 @@ def fetch_polymarket_box_office():
         print(f"    • {m['movie_title']} (vol: ${m['volume']:,.0f})")
 
     POLYMARKET_LAST_FETCH_OK = feed_ok
+    POLYMARKET_LAST_PARSE_OK = parsed_any
+    if feed_ok and not parsed_any and events:
+        print(f"  ⚠️  {len(events)} event(s) returned but NONE parsed as a box "
+              f"office market — possible parser/schema regression, not a quiet "
+              f"weekend.")
     return markets_found
 
 
@@ -4075,9 +4090,10 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     )
 
     if not poly_markets:
-        if POLYMARKET_LAST_FETCH_OK:
-            print("↷ Polymarket answered but lists no box office market for "
-                  "this weekend — nothing to collect (clean skip).")
+        if POLYMARKET_LAST_FETCH_OK and POLYMARKET_LAST_PARSE_OK:
+            print("↷ Polymarket answered and parsed fine but lists no box "
+                  "office market for this weekend — nothing to collect "
+                  "(clean skip).")
             return
         fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
@@ -4554,7 +4570,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     )
 
     if not poly_markets:
-        if POLYMARKET_LAST_FETCH_OK:
+        if POLYMARKET_LAST_FETCH_OK and POLYMARKET_LAST_PARSE_OK:
             issue = ("No box office market listed on Polymarket for this "
                      "weekend — nothing to scrape (clean skip)")
             print(f"\n↷ {issue}")

@@ -900,6 +900,15 @@ def auto_calibrate():
                                                   through_date=weekend_end)
     reviews_data = load_reviews_data(weekend_of=last_fri, through_date=weekend_end)
     showtime_link_profiles = load_showtime_link_daypart_profiles(weekend_of=last_fri)
+    if not showtime_link_profiles:
+        # showtime-links.json holds ONE weekend. calibrate runs Wednesday for
+        # the weekend that just closed, while the file already points at the
+        # upcoming one, so this is {} on every scheduled run. Wiring it in was
+        # therefore a no-op that merely LOOKED wired — the same silence these
+        # fixes exist to remove. Say it out loud rather than pretend.
+        print("  ⚠️  no showtime-link daypart profiles for "
+              f"{last_fri} (the links file holds only the current weekend) — "
+              "the daypart rescue is inactive for this recording")
 
     if not seat_data:
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")

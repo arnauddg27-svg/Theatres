@@ -56,6 +56,25 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("rotate_pre_reservation_snapshots.py", block)
         self.assertIn("ubuntu-latest", block)
 
+    def test_scrape_matrix_stays_sequential_for_the_lock_self_break(self):
+        """amc_lock breaks a lock whose holder run id equals the CURRENT run.
+
+        That is only safe because the scrape matrix is max-parallel: 1, so no
+        sibling leg can hold the lock while another executes — a holder
+        carrying my own run id must be a FINISHED earlier leg. The invariant
+        lives in this workflow file, but the code relying on it is in
+        scripts/amc_lock.py and cannot see it. Raising max-parallel (the
+        obvious optimisation now that each leg gets its own IP) would let leg
+        CT break leg ET's LIVE lock and double-run AMC, corrupting data. Assert
+        it here so that change fails loudly instead.
+        """
+        start = self.workflow.index("  scrape:")
+        end = self.workflow.index("  finalize:", start)
+        block = self.workflow[start:end]
+        self.assertIn("max-parallel: 1", block)
+        self.assertIn("current_run_id", SCHEDULER_SCRIPT.parent.joinpath(
+            "amc_lock.py").read_text())
+
     def test_snapshot_scrapes_have_separate_concurrency_lane(self):
         start = self.workflow.index("concurrency:")
         end = self.workflow.index("\njobs:", start)
