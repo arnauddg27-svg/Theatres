@@ -174,6 +174,21 @@ def daily_actuals_from_reported_total(movie, actual_total, daily_actual_override
     return known
 
 
+def _weekend_through_date(weekend_of):
+    """Last day of the opening weekend (Sunday) for leak-safe side inputs.
+
+    The recorded prediction already uses the whole weekend's captured seat
+    rows, so the weekend's own Sunday is the right horizon: it keeps inputs
+    consistent with that data while excluding anything published after the
+    weekend closed.
+    """
+    try:
+        friday = datetime.strptime(weekend_of, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        return None
+    return (friday + timedelta(days=2)).strftime("%Y-%m-%d")
+
+
 def actual_status_is_final(entry):
     """Legacy calibration rows without status are treated as final actuals."""
     return (entry.get("actual_status") or "final") != "provisional"
@@ -873,8 +888,17 @@ def auto_calibrate():
     # daypart rescue off. predicted_mid is the calibration GROUND TRUTH (it
     # feeds the bake-off, the conformal band and every reported MAE), so it
     # must be produced by the same model the forecast path runs.
-    cross_chain_data = load_cross_chain_occupancy(weekend_of=last_fri)
-    reviews_data = load_reviews_data(weekend_of=last_fri)
+    # LEAK GUARD: load_reviews_data keeps the LATEST as_of_date per movie, and
+    # by calibrate time (Wednesday) reviews.csv already holds Sat/Sun/Mon rows
+    # for the closed weekend. Recording predicted_mid from those would give the
+    # calibration ground truth — which feeds historical MAE, the tier bake-off
+    # and conformal_ratio_band — information the forecast never had, biasing
+    # reported accuracy optimistically and narrowing the band. Bound every
+    # side input to the weekend's own horizon, as the forecast path does.
+    weekend_end = _weekend_through_date(last_fri)
+    cross_chain_data = load_cross_chain_occupancy(weekend_of=last_fri,
+                                                  through_date=weekend_end)
+    reviews_data = load_reviews_data(weekend_of=last_fri, through_date=weekend_end)
     showtime_link_profiles = load_showtime_link_daypart_profiles(weekend_of=last_fri)
 
     if not seat_data:
@@ -1183,8 +1207,10 @@ if __name__ == "__main__":
             social_data=social_data,
             # side inputs must match the forecast path, else the recorded
             # predicted_mid is a degraded model's number (see auto_calibrate)
-            cross_chain_data=load_cross_chain_occupancy(weekend_of=weekend_of),
-            reviews_data=load_reviews_data(weekend_of=weekend_of),
+            cross_chain_data=load_cross_chain_occupancy(
+                weekend_of=weekend_of, through_date=_weekend_through_date(weekend_of)),
+            reviews_data=load_reviews_data(
+                weekend_of=weekend_of, through_date=_weekend_through_date(weekend_of)),
             showtime_link_profiles=movie_mapping_get(
                 load_showtime_link_daypart_profiles(weekend_of=weekend_of),
                 matched_movie, {}),

@@ -169,6 +169,49 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             with self.subTest(conclusion=ok):
                 self.assertTrue(self._run_exists_with(dict(base, conclusion=ok)))
 
+    def _run_exists_with_many(self, runs):
+        class FakeClient:
+            repo = "owner/repo"
+
+            def request_json(self, method, path, body=None):
+                return {"workflow_runs": runs}
+
+        return schedule.recent_pipeline_run_exists(
+            client=FakeClient(),
+            workflow="box-office-pipeline.yml",
+            titles=("box office scheduled snapshot 02:30Z", "box office scrape snapshot"),
+            scheduled_at=schedule.parse_utc("2026-05-24T02:30:00Z"),
+            now=schedule.parse_utc("2026-05-24T04:00:00Z"),
+        )
+
+    def test_persistent_failure_stops_retrying(self):
+        """Circuit breaker: retrying is right for a transient fault, wrong for a
+        permanent one. An unresolvable seat-map collision failed the 22:30Z and
+        02:30Z slots 8 times in one night, each run re-collecting ~2,000 rows
+        and discarding them. After MAX_SLOT_RETRIES the slot must stop."""
+        def failed(n):
+            return [{"display_title": "box office scrape snapshot",
+                     "created_at": "2026-05-24T02:35:00Z",
+                     "html_url": f"https://example.test/run{i}",
+                     "status": "completed", "conclusion": "failure"}
+                    for i in range(n)]
+
+        # under the limit -> still due, keep retrying
+        self.assertFalse(self._run_exists_with_many(failed(schedule.MAX_SLOT_RETRIES - 1)))
+        # at the limit -> stop re-dispatching
+        self.assertTrue(self._run_exists_with_many(failed(schedule.MAX_SLOT_RETRIES)))
+
+    def test_a_success_among_failures_still_holds_the_slot(self):
+        runs = [{"display_title": "box office scrape snapshot",
+                 "created_at": "2026-05-24T02:35:00Z",
+                 "html_url": "https://example.test/ok",
+                 "status": "completed", "conclusion": "success"}]
+        runs += [{"display_title": "box office scrape snapshot",
+                  "created_at": "2026-05-24T02:35:00Z",
+                  "html_url": f"https://example.test/bad{i}",
+                  "status": "completed", "conclusion": "failure"} for i in range(5)]
+        self.assertTrue(self._run_exists_with_many(runs))
+
     def test_in_progress_run_still_holds_its_slot(self):
         # a run that is still going must NOT be duplicated
         self.assertTrue(self._run_exists_with({

@@ -82,12 +82,51 @@ class QuarantineAmbiguousUrlTests(unittest.TestCase):
             self.assertEqual(0, res.stats.removed_ambiguous_url_rows)
             self.assertEqual(2, len(res.rows))
 
-    def test_pre_reservation_lane_enables_quarantine(self):
-        """The seat lane keeps the strict check; only snapshots quarantine."""
-        src = (ROOT / "scripts" / "clean_canonical_data.py").read_text()
-        snapshot_call = src[src.index("pre-reservation-snapshots.csv"):]
-        snapshot_call = snapshot_call[:snapshot_call.index(")")]
-        self.assertIn("quarantine_unresolved=True", snapshot_call)
+    def _data_dir(self, tmpdir, snapshot_rows, seat_rows=None):
+        data = Path(tmpdir) / "data"
+        data.mkdir()
+        with (data / "pre-reservation-snapshots.csv").open("w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=FIELDS)
+            w.writeheader()
+            w.writerows(snapshot_rows)
+        seat_fields = ["weekend_of", "date", "timezone", "movie_title",
+                       "amc_seat_map_url"]
+        with (data / "seat-counts.csv").open("w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=seat_fields)
+            w.writeheader()
+            for r in (seat_rows or []):
+                w.writerow(r)
+        return Path(tmpdir)
+
+    def test_real_cleaning_pass_survives_a_collision(self):
+        """Behavioural: the configuration finalize actually runs must not raise."""
+        rows = [_row("One Night Only", COLLIDING_URL),
+                _row("Super Troopers 3", COLLIDING_URL)]
+        with tempfile.TemporaryDirectory() as d:
+            root = self._data_dir(d, rows)
+            C.collect_stats(root, check=False)   # must not raise
+
+    def test_audit_mode_still_raises_on_the_same_data(self):
+        """--check is the audit path: an unresolvable collision must surface,
+        not be reclassified as routine pending cleanup."""
+        rows = [_row("One Night Only", COLLIDING_URL),
+                _row("Super Troopers 3", COLLIDING_URL)]
+        with tempfile.TemporaryDirectory() as d:
+            root = self._data_dir(d, rows)
+            with self.assertRaises(C.CanonicalDataError):
+                C.collect_stats(root, check=True)
+
+    def test_seat_lane_keeps_the_strict_raise(self):
+        """Only the snapshot lane quarantines; seat collisions still hard-fail,
+        because seat rows are post-showtime and can be resolved properly."""
+        seat_rows = [{"weekend_of": "2026-08-07", "date": "2026-08-09",
+                      "timezone": "ET", "movie_title": m,
+                      "amc_seat_map_url": COLLIDING_URL}
+                     for m in ("One Night Only", "Super Troopers 3")]
+        with tempfile.TemporaryDirectory() as d:
+            root = self._data_dir(d, [], seat_rows=seat_rows)
+            with self.assertRaises(C.CanonicalDataError):
+                C.collect_stats(root, check=False)
 
 
 if __name__ == "__main__":

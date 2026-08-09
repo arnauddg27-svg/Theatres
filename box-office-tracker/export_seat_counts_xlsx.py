@@ -7,6 +7,7 @@ pipeline writes during Phase 2.
 """
 
 import csv
+import gzip
 from collections import Counter
 from pathlib import Path
 
@@ -60,12 +61,26 @@ def _format_pct_column(ws, headers, column_name):
 
 
 def load_rows():
-    if not SEAT_CSV.exists():
-        return [], []
-    with SEAT_CSV.open("r", newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
-        headers = reader.fieldnames or []
+    """Every seat row: the live CSV plus every rotated per-weekend archive.
+
+    Reading only SEAT_CSV silently dropped each weekend as it rotated out —
+    the committed workbook shrank from 3.36MB to 2.56MB the day weekend
+    2026-07-10 was archived, losing it from the export with no error.
+    """
+    archive_dir = SEAT_CSV.parent / "seat-archive"
+    headers = []
+    rows = []
+    if archive_dir.is_dir():
+        for path in sorted(archive_dir.glob("*.csv.gz")):
+            with gzip.open(path, "rt", newline="") as f:
+                reader = csv.DictReader(f)
+                rows.extend(reader)
+                headers = headers or (reader.fieldnames or [])
+    if SEAT_CSV.exists():
+        with SEAT_CSV.open("r", newline="") as f:
+            reader = csv.DictReader(f)
+            rows.extend(reader)
+            headers = reader.fieldnames or headers
     return headers, rows
 
 

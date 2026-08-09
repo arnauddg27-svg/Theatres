@@ -29,6 +29,7 @@ ALLOWED = {
     "_seat_row_sources",
     "_pre_reservation_row_sources",
     "_snapshot_readers",
+    "load_rows",   # export_seat_counts_xlsx: reads archives then the live CSV
     # "which weekend is newest?" probes: the newest weekend is by definition
     # still live, never archived, so scanning the live file is correct here
     "load_seat_data",
@@ -51,15 +52,32 @@ def _direct_opens(path):
                 best = (start, name)
         return best[1] if best else "<module>"
 
+    def _canonical_name(node):
+        """CANONICAL constant referenced as a bare name or an attribute."""
+        if isinstance(node, ast.Name):
+            return node.id if node.id in CANONICAL else None
+        if isinstance(node, ast.Attribute):
+            return node.attr if node.attr in CANONICAL else None
+        return None
+
     hits = []
     for node in ast.walk(tree):
-        if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
-                and node.func.id == "open" and node.args):
+        if not isinstance(node, ast.Call):
             continue
-        arg = node.args[0]
-        name = (arg.id if isinstance(arg, ast.Name)
-                else arg.attr if isinstance(arg, ast.Attribute) else None)
-        if name in CANONICAL:
+        func = node.func
+        # form 1: open(SEAT_CSV) / open(P.SEAT_CSV) / gzip.open(SEAT_CSV)
+        if ((isinstance(func, ast.Name) and func.id == "open")
+                or (isinstance(func, ast.Attribute) and func.attr == "open"
+                    and isinstance(func.value, ast.Name)
+                    and func.value.id in {"gzip", "io"})):
+            if node.args and _canonical_name(node.args[0]):
+                hits.append((enclosing(node.lineno), node.lineno))
+            continue
+        # form 2: SEAT_CSV.open(...) — a pathlib read, which the original
+        # guard missed entirely. export_seat_counts_xlsx.py used exactly this
+        # and silently dropped every rotated weekend from the workbook.
+        if (isinstance(func, ast.Attribute) and func.attr == "open"
+                and _canonical_name(func.value)):
             hits.append((enclosing(node.lineno), node.lineno))
     return hits
 
@@ -75,8 +93,21 @@ class ArchiveAwareReaderTests(unittest.TestCase):
             f"_pre_reservation_row_sources(...) instead, or add the function "
             f"to ALLOWED with a reason if the live file really is correct.")
 
+    # scraper.py WRITES/appends and dedupes against the live file by design.
+    WRITERS = {"scraper.py"}
+
     def test_predict_has_no_unsanctioned_direct_reads(self):
         self._check(ROOT / "predict.py")
+
+    def test_tracker_root_modules_have_no_unsanctioned_direct_reads(self):
+        """The original guard only scanned predict.py and scripts/, so it could
+        not see export_seat_counts_xlsx.py — which was archive-blind and had
+        already dropped weekend 2026-07-10 from the committed workbook."""
+        for module in sorted(ROOT.glob("*.py")):
+            if module.name in self.WRITERS:
+                continue
+            with self.subTest(module=module.name):
+                self._check(module)
 
     def test_analysis_scripts_have_no_unsanctioned_direct_reads(self):
         # scraper.py is excluded on purpose: it WRITES/appends and dedupes

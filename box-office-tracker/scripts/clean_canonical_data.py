@@ -344,7 +344,11 @@ def collect_stats(repo_root: Path, *, check: bool) -> list[CleanStats]:
         date_col="show_date",
         check=check,
         canonical_movie_by_url=canonical_url_movies,
-        quarantine_unresolved=True,
+        # --check is the AUDIT mode: it must still raise on an unresolvable
+        # collision, otherwise the ambiguity is reclassified as routine
+        # "pending cleanup" and becomes invisible to the operator. Only the
+        # real cleaning pass (which finalize runs) quarantines to stay alive.
+        quarantine_unresolved=not check,
     )
     stats = [
         seat_result.stats,

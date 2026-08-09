@@ -22,6 +22,16 @@ OUTPUT_FILES = [
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"
+# Rotation moves settled weekends OUT of the canonical CSVs and INTO these
+# per-weekend gzip archives. If finalize ever rotates (the size safety net) and
+# these are not staged, it commits the TRUNCATED csvs while the only copy of the
+# rotated weekend sits untracked on an ephemeral runner that is then destroyed —
+# permanent loss of ~25MB of snapshots + ~9MB of seat rows per weekend, on a
+# green run. The calibrate job already stages them for exactly this reason.
+ARCHIVE_DIRS = [
+    "box-office-tracker/data/pre-reservation-archive",
+    "box-office-tracker/data/seat-archive",
+]
 
 
 def _run(cmd: list[str], cwd: Path, check: bool = False) -> subprocess.CompletedProcess[str]:
@@ -122,6 +132,8 @@ def main() -> int:
             _stage_if_exists(repo_root, rel_path)
         _stage_if_exists(repo_root, CALIBRATION_FREEZE_DIR)
         _stage_if_exists(repo_root, RUN_LOG_DIR)
+        for rel_path in ARCHIVE_DIRS:
+            _stage_if_exists(repo_root, rel_path)
 
         _fail_if_expected_change_not_staged(
             repo_root,

@@ -76,6 +76,9 @@ def _report_http_error(exc: urllib.error.HTTPError, marker_path: str) -> int:
     return 1
 
 
+# How many failures of the SAME slot to retry before giving up and alarming.
+MAX_SLOT_RETRIES = 3
+
 API = "https://api.github.com"
 DEFAULT_WORKFLOW = "box-office-pipeline.yml"
 DEFAULT_REF = "main"
@@ -363,6 +366,7 @@ def recent_pipeline_run_exists(
     ).get("workflow_runs", [])
     lower_bound = scheduled_at - dt.timedelta(minutes=5)
     upper_bound = now + dt.timedelta(minutes=5)
+    failed: list[dict] = []
     for run in runs:
         if run.get("display_title") not in titles:
             continue
@@ -380,10 +384,26 @@ def recent_pipeline_run_exists(
         if run.get("status") == "completed" and run.get("conclusion") not in (
             None, "success", "skipped", "neutral",
         ):
+            failed.append(run)
+            if len(failed) >= MAX_SLOT_RETRIES:
+                # CIRCUIT BREAKER. Retrying is right for a transient fault, but
+                # a PERSISTENT one then re-runs every slot forever: an
+                # unresolvable seat-map collision failed the 22:30Z and 02:30Z
+                # slots 8 times in a night, each run re-collecting ~2,000 rows
+                # and discarding them at finalize. Stop re-dispatching and say
+                # so loudly — a slot that failed this many times needs a human,
+                # not another attempt.
+                print(
+                    f"::warning::{titles[0]} has failed {len(failed)} times in a "
+                    f"row; NOT re-dispatching. Latest: {run.get('html_url')} "
+                    f"({run.get('conclusion')}). This is a persistent fault — "
+                    f"retrying cannot fix it."
+                )
+                return True
             print(
                 f"Ignoring failed run for {titles[0]}: {run.get('display_title')} "
                 f"{run.get('html_url')} concluded {run.get('conclusion')}; "
-                f"slot is still due"
+                f"slot is still due ({len(failed)}/{MAX_SLOT_RETRIES} attempts used)"
             )
             continue
         print(
