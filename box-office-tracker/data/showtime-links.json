@@ -2,7 +2,7 @@
   "date": "2026-08-07",
   "weekend_of": "2026-08-07",
   "collected_local_date": "2026-08-09",
-  "collected_at": "2026-08-09T23:06:24.795436+00:00",
+  "collected_at": "2026-08-10T01:03:52.307831+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -94,7 +94,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652335+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -144,44 +144,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:00am",
-            "showtime_id": "145350005",
+            "showtime_id": "145350010",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "145350006",
+            "showtime_id": "145350011",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "145350007",
+            "showtime_id": "145350012",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "5:00pm",
+            "showtime_id": "145350076",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "145350008",
+            "showtime_id": "145350013",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "145350009",
+            "showtime_id": "145350014",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:10am",
+            "showtime_id": "144545066",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144545062",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "144545063",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:40pm",
-            "showtime_id": "144545059",
+            "showtime_id": "144545064",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144545060",
+            "showtime_id": "144545065",
             "format": "Laser at AMC"
           }
         ]
@@ -271,7 +291,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652299+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -321,44 +341,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "145348676",
+            "showtime": "12:30pm",
+            "showtime_id": "145735691",
             "format": "undefined"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145348677",
+            "showtime": "3:15pm",
+            "showtime_id": "145735690",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "145348679",
-            "format": "undefined"
+            "showtime": "5:30pm",
+            "showtime_id": "145735745",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145348682",
+            "showtime_id": "145735990",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145348684",
+            "showtime": "8:15pm",
+            "showtime_id": "145735746",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145735693",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "144546274",
+            "showtime": "10:30am",
+            "showtime_id": "145735730",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "145735731",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "145735732",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145735733",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "144546275",
+            "showtime_id": "145735734",
             "format": "undefined"
           }
         ]
@@ -448,7 +488,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652452+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -498,44 +538,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "145437298",
+            "showtime": "11:15am",
+            "showtime_id": "145437303",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:25pm",
-            "showtime_id": "145437297",
+            "showtime": "2:00pm",
+            "showtime_id": "145437302",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "145437296",
+            "showtime": "4:35pm",
+            "showtime_id": "145437301",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "145437295",
+            "showtime": "7:15pm",
+            "showtime_id": "145437300",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145437294",
+            "showtime": "10:00pm",
+            "showtime_id": "145437299",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144582138",
+            "showtime": "11:30am",
+            "showtime_id": "144582146",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "144582137",
+            "showtime": "2:15pm",
+            "showtime_id": "144582145",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144582144",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "144582143",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "144582142",
             "format": "Laser at AMC"
           }
         ]
@@ -625,7 +680,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652419+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -675,44 +730,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:00am",
-            "showtime_id": "145888086",
+            "showtime_id": "145888087",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145292359",
+            "showtime_id": "145292361",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145292358",
+            "showtime_id": "145292360",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145292422",
+            "showtime": "7:15pm",
+            "showtime_id": "145292425",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145292423",
+            "showtime": "10:00pm",
+            "showtime_id": "145292426",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "144734706",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "144734705",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144734702",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144734829",
+            "showtime_id": "144734824",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144734831",
+            "showtime_id": "144734827",
             "format": "Laser at AMC"
           }
         ]
@@ -852,49 +922,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652354+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:05am",
-            "showtime_id": "145722609",
+            "showtime_id": "145722602",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:20pm",
-            "showtime_id": "145490929",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "145490933",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "145490928",
+            "showtime_id": "145490932",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:40pm",
-            "showtime_id": "145490927",
+            "showtime_id": "145490931",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "145490926",
+            "showtime_id": "145490930",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "145722412",
+            "showtime_id": "145722417",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "144572154",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "144572153",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144572159",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145722575",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:10pm",
-            "showtime_id": "144572207",
+            "showtime_id": "145722576",
             "format": "Laser at AMC"
           }
         ]
@@ -1024,49 +1114,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652438+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "145497623",
+            "showtime": "10:30am",
+            "showtime_id": "145880149",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145497622",
+            "showtime": "1:15pm",
+            "showtime_id": "145880148",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "145497621",
+            "showtime": "3:30pm",
+            "showtime_id": "145497624",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145497619",
+            "showtime": "6:15pm",
+            "showtime_id": "145497625",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145497620",
+            "showtime": "9:00pm",
+            "showtime_id": "145497626",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:15pm",
-            "showtime_id": "144594383",
+            "showtime": "12:15pm",
+            "showtime_id": "144594386",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144594387",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "144594384",
+            "showtime": "5:15pm",
+            "showtime_id": "144594388",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "144594389",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "144594390",
             "format": "Laser at AMC"
           }
         ]
@@ -1221,59 +1326,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652346+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145360971",
+            "showtime_id": "145360975",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "145361036",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
             "showtime": "3:00pm",
-            "showtime_id": "145360969",
+            "showtime_id": "145360973",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "145360968",
+            "showtime_id": "145360972",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145898093",
+            "showtime_id": "145898094",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "145360970",
+            "showtime_id": "145360974",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145903696",
+            "showtime_id": "145903697",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "144695682",
+            "showtime": "10:30am",
+            "showtime_id": "144695690",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "144695681",
+            "showtime": "1:20pm",
+            "showtime_id": "144695689",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "144695688",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144695687",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "144695686",
             "format": "Laser at AMC"
           }
         ]
@@ -1543,7 +1658,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652303+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -1593,44 +1708,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "145442085",
+            "showtime": "11:15am",
+            "showtime_id": "145442090",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "145442081",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "145442082",
+            "showtime": "2:00pm",
+            "showtime_id": "145442086",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "145442083",
+            "showtime": "4:45pm",
+            "showtime_id": "145442087",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "145442084",
+            "showtime": "7:30pm",
+            "showtime_id": "145442088",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "145442089",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "144699459",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "144699460",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144699461",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144699456",
+            "showtime_id": "144699462",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144699457",
+            "showtime_id": "144699463",
             "format": "Laser at AMC"
           }
         ]
@@ -1755,45 +1885,60 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652231+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "145772485",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "2:45pm",
-            "showtime_id": "145359863",
+            "showtime_id": "145359867",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "145359864",
+            "showtime_id": "145359868",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145359865",
+            "showtime_id": "145359869",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145359866",
-            "format": "Laser at AMC"
+            "showtime_id": "145359870",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145772318",
+            "showtime": "2:15pm",
+            "showtime_id": "144691050",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145772320",
+            "showtime": "5:30pm",
+            "showtime_id": "144691049",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145772529",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145772531",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
@@ -1912,7 +2057,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652273+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -1982,64 +2127,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:00am",
-            "showtime_id": "145486613",
+            "showtime_id": "145486618",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145486612",
+            "showtime_id": "145486617",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "145858056",
+            "showtime_id": "145858141",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145486611",
+            "showtime_id": "145486616",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:40pm",
-            "showtime_id": "145858055",
+            "showtime_id": "145858143",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145486609",
+            "showtime_id": "145486614",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "145858059",
+            "showtime_id": "145858144",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "145858167",
+            "showtime_id": "145858283",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145486610",
+            "showtime_id": "145486615",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "145858142",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "2:10pm",
+            "showtime_id": "144702915",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144702914",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144702948",
+            "showtime_id": "145858327",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145858256",
+            "showtime_id": "145858328",
             "format": "Laser at AMC"
           }
         ]
@@ -2169,49 +2329,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652292+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:00am",
-            "showtime_id": "145473322",
+            "showtime_id": "145473327",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145473321",
+            "showtime_id": "145473326",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145473320",
+            "showtime_id": "145473325",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145473318",
+            "showtime_id": "145473323",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145473319",
+            "showtime_id": "145473324",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "144553074",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144553073",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144553072",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144553065",
+            "showtime_id": "144553070",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144553066",
+            "showtime_id": "144553071",
             "format": "Laser at AMC"
           }
         ]
@@ -2321,7 +2496,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652448+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -2386,59 +2561,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:45am",
-            "showtime_id": "145325315",
-            "format": "Laser at AMC"
+            "showtime_id": "145325320",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:20pm",
-            "showtime_id": "145744345",
+            "showtime_id": "145744339",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145325314",
+            "showtime_id": "145325319",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:05pm",
-            "showtime_id": "145744344",
+            "showtime_id": "145744338",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145325313",
+            "showtime_id": "145325318",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:50pm",
-            "showtime_id": "145744343",
+            "showtime_id": "145744337",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145325311",
+            "showtime_id": "145325316",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "145744341",
+            "showtime_id": "145744335",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145325312",
+            "showtime_id": "145325317",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "144546406",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144546405",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144546404",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
-            "showtime_id": "144546396",
+            "showtime_id": "144546402",
             "format": "Laser at AMC"
           }
         ]
@@ -2496,7 +2686,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652434+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -2534,32 +2724,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:00am",
-            "showtime_id": "145749629",
+            "showtime_id": "145749633",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "145375394",
+            "showtime_id": "145375398",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145375393",
+            "showtime_id": "145375397",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145375391",
+            "showtime_id": "145375395",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145375392",
+            "showtime_id": "145375396",
             "format": "Laser at AMC"
           }
         ]
@@ -2739,64 +2929,89 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652280+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:45am",
-            "showtime_id": "145494011",
+            "showtime_id": "145494006",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "145494010",
-            "format": "Laser at AMC"
+            "showtime_id": "145870786",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "145867951",
+            "showtime_id": "145870864",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "145867958",
+            "showtime_id": "145870876",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "145867952",
+            "showtime_id": "145870865",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "145867956",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime_id": "145870877",
+            "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "145870878",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "145870807",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "145870868",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145870918",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "145870810",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "145867904",
+            "showtime_id": "145870812",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "145867915",
+            "showtime_id": "145870782",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145867905",
+            "showtime_id": "145870811",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "145867916",
+            "showtime_id": "145870783",
             "format": "Laser at AMC"
           }
         ]
@@ -2881,7 +3096,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652350+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -2931,44 +3146,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "145484489",
+            "showtime": "11:05am",
+            "showtime_id": "145808547",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "145808557",
             "format": "undefined"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145484488",
+            "showtime": "4:00pm",
+            "showtime_id": "145484468",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "145484484",
+            "showtime": "6:45pm",
+            "showtime_id": "145484469",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145484486",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "145801219",
+            "showtime": "10:15pm",
+            "showtime_id": "145808545",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "144700964",
+            "showtime": "11:00am",
+            "showtime_id": "144701011",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "144701012",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "144701013",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "145808550",
             "format": "undefined"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "145808552",
+            "showtime_id": "145808551",
             "format": "undefined"
           }
         ]
@@ -3173,74 +3403,94 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652361+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:50am",
-            "showtime_id": "145362843",
+            "showtime": "10:25am",
+            "showtime_id": "145812082",
+            "format": "undefined"
+          },
+          {
+            "showtime": "11:15am",
+            "showtime_id": "145362848",
             "format": "undefined"
           },
           {
             "showtime": "12:15pm",
-            "showtime_id": "145812242",
+            "showtime_id": "145812248",
             "format": "undefined"
           },
           {
-            "showtime": "1:50pm",
-            "showtime_id": "145362842",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "2:10pm",
+            "showtime_id": "145362847",
+            "format": "undefined"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "145812241",
+            "showtime_id": "145812247",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "145362841",
+            "showtime": "4:50pm",
+            "showtime_id": "145362846",
             "format": "undefined"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "145892779",
+            "showtime_id": "145812246",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145362840",
+            "showtime": "7:40pm",
+            "showtime_id": "145362845",
             "format": "undefined"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "145812243",
+            "showtime_id": "145812245",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145812208",
+            "showtime": "9:30pm",
+            "showtime_id": "145812039",
             "format": "undefined"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "145362844",
+            "showtime": "10:30pm",
+            "showtime_id": "145362849",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "144597745",
+            "showtime": "10:45am",
+            "showtime_id": "145812103",
             "format": "undefined"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "144597491",
+            "showtime": "1:40pm",
+            "showtime_id": "144597752",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144597751",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144597749",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "144597492",
             "format": "undefined"
           }
         ]
@@ -3360,7 +3610,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652227+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -3430,64 +3680,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:15am",
-            "showtime_id": "145853481",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "11:45am",
-            "showtime_id": "145494887",
+            "showtime_id": "145494892",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "145494886",
+            "showtime_id": "145494891",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "145852957",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:25pm",
-            "showtime_id": "145853480",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "145494885",
+            "showtime_id": "145853478",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "145853482",
+            "showtime": "5:15pm",
+            "showtime_id": "145494890",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145852956",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "145494883",
+            "showtime_id": "145494888",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "145853483",
+            "showtime": "8:45pm",
+            "showtime_id": "145852955",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145494884",
+            "showtime_id": "145494889",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "144697012",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144697011",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144697010",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144697004",
+            "showtime_id": "144697009",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144697003",
+            "showtime_id": "144697008",
             "format": "Laser at AMC"
           }
         ]
@@ -3622,49 +3887,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652401+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145772760",
+            "showtime_id": "145772758",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145475886",
+            "showtime_id": "145475904",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145475885",
+            "showtime_id": "145475903",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145475884",
+            "showtime_id": "145475902",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145475804",
+            "showtime_id": "145475905",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "145772743",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "144704374",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144704373",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "144704367",
+            "showtime_id": "144704371",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "144704368",
+            "showtime_id": "144704372",
             "format": "Laser at AMC"
           }
         ]
@@ -3786,6 +4066,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "145910897",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "145468067",
                 "format": "Laser at AMC"
@@ -3829,59 +4114,74 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652339+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145468059",
+            "showtime_id": "145468064",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145468060",
+            "showtime_id": "145468065",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145468061",
+            "showtime_id": "145468066",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145887468",
+            "showtime": "6:20pm",
+            "showtime_id": "145910897",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145468062",
+            "showtime_id": "145468067",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145887469",
+            "showtime": "9:35pm",
+            "showtime_id": "145888793",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145468063",
+            "showtime": "10:10pm",
+            "showtime_id": "145468068",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145754407",
+            "showtime": "11:00am",
+            "showtime_id": "144667056",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145754242",
+            "showtime": "1:45pm",
+            "showtime_id": "144667058",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144667059",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144667060",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "144667062",
             "format": "Laser at AMC"
           }
         ]
@@ -4151,7 +4451,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652343+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -4201,44 +4501,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:45am",
-            "showtime_id": "145332806",
+            "showtime_id": "145332811",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "145332805",
+            "showtime_id": "145332810",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "145332804",
+            "showtime_id": "145332809",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "145332803",
+            "showtime_id": "145332808",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145332802",
-            "format": "Laser at AMC"
+            "showtime_id": "145332807",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "144590679",
+            "showtime": "10:45am",
+            "showtime_id": "144713657",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "144590680",
+            "showtime": "1:45pm",
+            "showtime_id": "144713656",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144713655",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "144713653",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "144713654",
             "format": "Laser at AMC"
           }
         ]
@@ -4318,7 +4633,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652307+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -4363,39 +4678,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:50am",
-            "showtime_id": "145715491",
+            "showtime": "10:15am",
+            "showtime_id": "145715479",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "145478933",
+            "showtime": "1:00pm",
+            "showtime_id": "145478924",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "145478934",
+            "showtime": "3:45pm",
+            "showtime_id": "145478925",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145478945",
+            "showtime_id": "145478941",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145478946",
+            "showtime_id": "145715471",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "2:15pm",
+            "showtime_id": "144644801",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144644800",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144644795",
+            "showtime_id": "144644799",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "144644798",
             "format": "Laser at AMC"
           }
         ]
@@ -4520,44 +4850,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652405+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:40am",
-            "showtime_id": "145348532",
+            "showtime": "11:50am",
+            "showtime_id": "145348540",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "145348530",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "145348531",
+            "showtime": "4:15pm",
+            "showtime_id": "145348486",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145348484",
+            "showtime": "7:00pm",
+            "showtime_id": "145348487",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "145348485",
+            "showtime": "9:40pm",
+            "showtime_id": "145348488",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144547142",
+            "showtime": "12:15pm",
+            "showtime_id": "144547100",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "144547099",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144547140",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "144547139",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144547141",
+            "showtime_id": "144547138",
             "format": "Laser at AMC"
           }
         ]
@@ -4687,49 +5037,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652219+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:15am",
-            "showtime_id": "145448525",
+            "showtime_id": "145846949",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "145448523",
+            "showtime_id": "145846948",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "145448519",
+            "showtime": "4:30pm",
+            "showtime_id": "145448531",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145448521",
+            "showtime": "7:15pm",
+            "showtime_id": "145448527",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145448558",
+            "showtime": "10:00pm",
+            "showtime_id": "145448529",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "144704485",
+            "showtime": "10:45am",
+            "showtime_id": "144704498",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "144704486",
+            "showtime": "1:30pm",
+            "showtime_id": "144704492",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "144704491",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144704489",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "144704490",
             "format": "Laser at AMC"
           }
         ]
@@ -4814,7 +5179,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652236+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -4864,44 +5229,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "145793604",
+            "showtime": "10:30am",
+            "showtime_id": "145793692",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "145793687",
+            "showtime_id": "145793691",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145793686",
+            "showtime_id": "145793690",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145793684",
+            "showtime_id": "145793688",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145793685",
+            "showtime": "9:30pm",
+            "showtime_id": "145793689",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145793722",
+            "showtime": "10:15am",
+            "showtime_id": "145793713",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145793723",
+            "showtime": "12:45pm",
+            "showtime_id": "145793721",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "145793720",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "145793719",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "145793718",
             "format": "Laser at AMC"
           }
         ]
@@ -4959,7 +5339,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652423+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -4997,32 +5377,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145319947",
+            "showtime_id": "145319952",
             "format": "undefined"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145319946",
+            "showtime": "1:45pm",
+            "showtime_id": "145319951",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "145319945",
+            "showtime": "4:30pm",
+            "showtime_id": "145319950",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145319944",
+            "showtime": "7:15pm",
+            "showtime_id": "145319949",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145319943",
+            "showtime_id": "145319948",
             "format": "undefined"
           }
         ]
@@ -5177,54 +5557,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652416+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145751421",
+            "showtime_id": "145751413",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145369774",
+            "showtime_id": "145369777",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145369772",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:40pm",
-            "showtime_id": "145902260",
+            "showtime_id": "145369775",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145369773",
+            "showtime_id": "145369776",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "145909561",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145369791",
+            "showtime_id": "145369790",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "145751392",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:35pm",
+            "showtime_id": "144716638",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144716637",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144716631",
+            "showtime_id": "144716635",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "144716632",
+            "showtime_id": "144716636",
             "format": "Laser at AMC"
           }
         ]
@@ -5314,7 +5709,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652244+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -5369,49 +5764,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:40am",
-            "showtime_id": "145535369",
+            "showtime_id": "145491420",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "145535368",
+            "showtime_id": "145491419",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:20pm",
-            "showtime_id": "145491415",
+            "showtime_id": "145491418",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "145491413",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "145757346",
+            "showtime_id": "145491416",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145491414",
+            "showtime_id": "145491417",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "144715945",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "144715944",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "144715943",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144715936",
+            "showtime_id": "144715941",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "144715937",
+            "showtime_id": "144715942",
             "format": "Laser at AMC"
           }
         ]
@@ -5496,7 +5901,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652240+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -5551,49 +5956,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:05am",
-            "showtime_id": "145860236",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:50am",
-            "showtime_id": "145500868",
+            "showtime_id": "145500873",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:50pm",
-            "showtime_id": "145500869",
+            "showtime_id": "145500874",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:40pm",
-            "showtime_id": "145500870",
+            "showtime_id": "145500875",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "145500871",
+            "showtime_id": "145500876",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145500872",
+            "showtime_id": "145500877",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "144569561",
+            "showtime": "10:30am",
+            "showtime_id": "144569563",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "144569562",
+            "showtime": "1:15pm",
+            "showtime_id": "144569564",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "144569565",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144569566",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "144569567",
             "format": "Laser at AMC"
           }
         ]
@@ -5678,7 +6093,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652387+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -5728,44 +6143,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:45am",
-            "showtime_id": "145695461",
+            "showtime_id": "145695482",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "145325029",
+            "showtime_id": "145325034",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:10pm",
-            "showtime_id": "145325028",
+            "showtime_id": "145325033",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:50pm",
-            "showtime_id": "145325026",
+            "showtime_id": "145325031",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145325027",
-            "format": "Laser at AMC"
+            "showtime_id": "145325032",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "2:30pm",
+            "showtime_id": "144546194",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144546193",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144546188",
+            "showtime_id": "144546192",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144546133",
+            "showtime_id": "144546134",
             "format": "Laser at AMC"
           }
         ]
@@ -5900,49 +6325,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652284+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145485355",
+            "showtime_id": "145485362",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:30pm",
-            "showtime_id": "145485354",
+            "showtime": "2:35pm",
+            "showtime_id": "145485361",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:05pm",
-            "showtime_id": "145485353",
+            "showtime": "5:10pm",
+            "showtime_id": "145485360",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "145485352",
+            "showtime": "7:45pm",
+            "showtime_id": "145485358",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145485357",
+            "showtime": "10:20pm",
+            "showtime_id": "145485359",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "144704559",
+            "showtime": "12:10pm",
+            "showtime_id": "144704567",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "144704558",
+            "showtime": "2:45pm",
+            "showtime_id": "144704566",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144704565",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "144704564",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:50pm",
+            "showtime_id": "144704563",
             "format": "Laser at AMC"
           }
         ]
@@ -6032,7 +6472,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652262+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -6082,44 +6522,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "145837772",
+            "showtime": "11:30am",
+            "showtime_id": "145837697",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:30pm",
-            "showtime_id": "145419795",
+            "showtime": "2:15pm",
+            "showtime_id": "145419799",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "145419794",
+            "showtime": "5:00pm",
+            "showtime_id": "145419798",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "145419792",
+            "showtime": "7:45pm",
+            "showtime_id": "145419796",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145419793",
+            "showtime": "10:30pm",
+            "showtime_id": "145419797",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "144550648",
+            "showtime": "11:45am",
+            "showtime_id": "144550657",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144550656",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144550655",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "144550653",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144550649",
+            "showtime_id": "144550654",
             "format": "Laser at AMC"
           }
         ]
@@ -6231,6 +6686,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:10pm",
+                "showtime_id": "145912066",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:40pm",
                 "showtime_id": "145479316",
                 "format": "Laser at AMC"
@@ -6264,49 +6724,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652383+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:40am",
-            "showtime_id": "145479333",
+            "showtime_id": "145479334",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:20pm",
-            "showtime_id": "145479314",
+            "showtime_id": "145479318",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145479315",
+            "showtime_id": "145479319",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "145912066",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "145479312",
+            "showtime_id": "145479316",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "145479313",
+            "showtime_id": "145479317",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144685654",
+            "showtime": "11:50am",
+            "showtime_id": "144685664",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "144685655",
+            "showtime": "2:40pm",
+            "showtime_id": "144685663",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:20pm",
+            "showtime_id": "144685662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "144685660",
             "format": "Laser at AMC"
           }
         ]
@@ -6426,44 +6901,59 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652379+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "145494837",
+            "showtime": "2:30pm",
+            "showtime_id": "145494848",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "145494836",
+            "showtime": "5:10pm",
+            "showtime_id": "145494847",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145293669",
+            "showtime": "7:45pm",
+            "showtime_id": "145293670",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "145494835",
+            "showtime": "10:30pm",
+            "showtime_id": "145494849",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "144547516",
+            "showtime": "10:00am",
+            "showtime_id": "144547535",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "144547518",
+            "showtime": "12:45pm",
+            "showtime_id": "144547536",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "144547537",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "144547514",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "144547515",
             "format": "Laser at AMC"
           }
         ]
@@ -6593,49 +7083,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652427+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:35am",
-            "showtime_id": "145503154",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "145503159",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145503134",
+            "showtime_id": "145503158",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:55pm",
-            "showtime_id": "145503135",
+            "showtime_id": "145503157",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "145503153",
+            "showtime_id": "145503156",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "145503152",
+            "showtime_id": "145503155",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:10am",
+            "showtime_id": "144715163",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144715159",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144715160",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144715156",
+            "showtime_id": "144715161",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144715157",
+            "showtime_id": "144715162",
             "format": "Laser at AMC"
           }
         ]
@@ -6687,7 +7192,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:45pm",
+                "showtime": "11:00pm",
                 "showtime_id": "145350438",
                 "format": "Laser at AMC"
               }
@@ -6720,7 +7225,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652409+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -6770,44 +7275,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "145768950",
+            "showtime": "11:15am",
+            "showtime_id": "145768951",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145350435",
+            "showtime_id": "145350447",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145350431",
+            "showtime_id": "145350444",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145350429",
+            "showtime_id": "145350441",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145350426",
+            "showtime": "11:00pm",
+            "showtime_id": "145350438",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "145768959",
+            "showtime": "11:15am",
+            "showtime_id": "145768918",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "145768958",
+            "showtime": "2:45pm",
+            "showtime_id": "145768961",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "145768916",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145768985",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "145768952",
             "format": "Laser at AMC"
           }
         ]
@@ -6957,44 +7477,74 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652270+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145475747",
+            "showtime_id": "145475752",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145475748",
+            "showtime_id": "145475753",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145475749",
+            "showtime_id": "145475754",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145475750",
+            "showtime_id": "145475755",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "145734196",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145475751",
+            "showtime_id": "145475756",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "145862700",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "144583278",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "144583279",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "144583280",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "144583276",
+            "showtime_id": "144583281",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "144583282",
             "format": "Laser at AMC"
           }
         ]
@@ -7134,49 +7684,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652321+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "145381433",
+            "showtime": "10:15am",
+            "showtime_id": "145738235",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "11:45am",
+            "showtime_id": "145381438",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "2:30pm",
-            "showtime_id": "145381432",
+            "showtime_id": "145381437",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "145381431",
+            "showtime_id": "145381436",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "145381429",
+            "showtime_id": "145381434",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145381430",
+            "showtime_id": "145381435",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "144665915",
+            "showtime": "11:15am",
+            "showtime_id": "144665924",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144665923",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "144665916",
+            "showtime": "4:45pm",
+            "showtime_id": "144665922",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "144665920",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "144665921",
             "format": "Laser at AMC"
           }
         ]
@@ -7234,7 +7804,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652310+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -7272,32 +7842,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "145490749",
+            "showtime": "10:50am",
+            "showtime_id": "145490754",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:50pm",
-            "showtime_id": "145490748",
+            "showtime": "1:45pm",
+            "showtime_id": "145490753",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "145490747",
+            "showtime": "4:45pm",
+            "showtime_id": "145490752",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145490746",
+            "showtime_id": "145490751",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145490750",
+            "showtime": "9:15pm",
+            "showtime_id": "145490755",
             "format": "Laser at AMC"
           }
         ]
@@ -7392,7 +7962,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652441+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -7447,49 +8017,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:55am",
-            "showtime_id": "145493159",
+            "showtime": "11:00am",
+            "showtime_id": "145493162",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145493173",
+            "showtime_id": "145493175",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145493174",
+            "showtime_id": "145493176",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145493160",
+            "showtime_id": "145493163",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145758129",
+            "showtime": "9:15pm",
+            "showtime_id": "145758169",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145493161",
+            "showtime_id": "145493164",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "144716161",
+            "showtime": "11:45am",
+            "showtime_id": "144716170",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144716169",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144716168",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "144716166",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144716162",
+            "showtime_id": "144716167",
             "format": "Laser at AMC"
           }
         ]
@@ -7709,84 +8294,109 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652390+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:45am",
-            "showtime_id": "145410723",
+            "showtime_id": "145410737",
             "format": "undefined"
           },
           {
             "showtime": "10:45am",
-            "showtime_id": "145410805",
+            "showtime_id": "145410810",
             "format": "undefined"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "145410724",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "145410738",
+            "format": "undefined"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "145410806",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "145410725",
+            "showtime_id": "145410811",
             "format": "undefined"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145410807",
+            "showtime_id": "145410739",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "145410812",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145410726",
+            "showtime_id": "145410740",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145410808",
+            "showtime_id": "145410813",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145410727",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "145410809",
+            "showtime": "10:45pm",
+            "showtime_id": "145410741",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "12:15pm",
+            "showtime_id": "144696672",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "144696744",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "144696671",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "144696745",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "144696673",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "144696746",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144696669",
+            "showtime_id": "144696674",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "144696752",
+            "showtime_id": "144696747",
             "format": "undefined"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144696670",
+            "showtime_id": "144696675",
             "format": "undefined"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144696753",
+            "showtime_id": "144696748",
             "format": "undefined"
           }
         ]
@@ -7871,7 +8481,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652455+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -7921,44 +8531,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:45am",
-            "showtime_id": "145349047",
+            "showtime_id": "145349052",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "145349046",
+            "showtime_id": "145349051",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145349045",
+            "showtime_id": "145349050",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145349044",
+            "showtime_id": "145349049",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "145349048",
+            "showtime_id": "145349053",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "144554500",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144554501",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144554502",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144554497",
+            "showtime_id": "144554503",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144554498",
+            "showtime_id": "144554504",
             "format": "Laser at AMC"
           }
         ]
@@ -8048,7 +8673,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652277+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -8093,39 +8718,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "145774216",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "2:30pm",
-            "showtime_id": "145377756",
+            "showtime_id": "145377760",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "145377755",
+            "showtime_id": "145377759",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "145377753",
+            "showtime_id": "145377757",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145377754",
+            "showtime_id": "145377758",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "144591281",
+            "showtime": "10:00am",
+            "showtime_id": "145774437",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "144591282",
+            "showtime": "1:45pm",
+            "showtime_id": "144591288",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144591287",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144591285",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "144591286",
             "format": "Laser at AMC"
           }
         ]
@@ -8215,7 +8860,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652266+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -8265,44 +8910,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "145841010",
+            "showtime": "10:45am",
+            "showtime_id": "145841008",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "145480197",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "145480198",
+            "showtime": "1:30pm",
+            "showtime_id": "145480195",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "145480199",
+            "showtime": "4:15pm",
+            "showtime_id": "145480196",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "145480200",
+            "showtime": "7:15pm",
+            "showtime_id": "145480201",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "145480202",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144696427",
+            "showtime": "11:00am",
+            "showtime_id": "145841030",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "144696428",
+            "showtime": "1:45pm",
+            "showtime_id": "144696479",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144696480",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "144696429",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "144696430",
             "format": "Laser at AMC"
           }
         ]
@@ -8426,55 +9086,70 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:50pm",
+                "showtime": "10:30pm",
                 "showtime_id": "144868548",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652328+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:25am",
-            "showtime_id": "145717960",
+            "showtime": "10:10am",
+            "showtime_id": "145717962",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "145484312",
+            "showtime": "12:50pm",
+            "showtime_id": "145484316",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:35pm",
+            "showtime_id": "145484317",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:50pm",
-            "showtime_id": "145484313",
+            "showtime": "6:15pm",
+            "showtime_id": "145484318",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145484314",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "145484315",
+            "showtime": "9:00pm",
+            "showtime_id": "145484319",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "144868533",
+            "showtime": "10:15am",
+            "showtime_id": "145717846",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "144868536",
+            "showtime": "1:30pm",
+            "showtime_id": "144868554",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "144868551",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "144868545",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "144868548",
             "format": "Laser at AMC"
           }
         ]
@@ -8594,44 +9269,59 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652394+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:20am",
-            "showtime_id": "145833345",
+            "showtime": "2:30pm",
+            "showtime_id": "145398314",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "145398310",
+            "showtime": "5:10pm",
+            "showtime_id": "145398315",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "145398316",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "145398311",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "145398312",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "145398313",
+            "showtime": "10:25pm",
+            "showtime_id": "145398317",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "144667293",
+            "showtime": "10:00am",
+            "showtime_id": "145859135",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "144667294",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:05pm",
+            "showtime_id": "144667295",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "144667296",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "144667297",
             "format": "Laser at AMC"
           }
         ]
@@ -8711,7 +9401,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652376+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -8761,44 +9451,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:20am",
-            "showtime_id": "145479597",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "2:00pm",
-            "showtime_id": "145479593",
+            "showtime_id": "145479598",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:40pm",
-            "showtime_id": "145479594",
+            "showtime_id": "145479599",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "145479595",
+            "showtime_id": "145479600",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145479596",
+            "showtime_id": "145479601",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "144708949",
+            "showtime": "11:30am",
+            "showtime_id": "144708959",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "144708956",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "144708955",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "144708953",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144708950",
+            "showtime_id": "144708954",
             "format": "Laser at AMC"
           }
         ]
@@ -8928,49 +9628,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652317+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "145817371",
+            "showtime": "10:15am",
+            "showtime_id": "145817236",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145486747",
+            "showtime": "1:00pm",
+            "showtime_id": "145486655",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "145486746",
+            "showtime": "3:45pm",
+            "showtime_id": "145486654",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145486749",
+            "showtime": "6:30pm",
+            "showtime_id": "145486673",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145486748",
+            "showtime": "9:00pm",
+            "showtime_id": "145486672",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144700145",
+            "showtime": "10:45am",
+            "showtime_id": "145817362",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "144700143",
+            "showtime": "12:15pm",
+            "showtime_id": "144700152",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "144700151",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "144700150",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "144700149",
             "format": "Laser at AMC"
           }
         ]
@@ -9100,49 +9815,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652324+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:15am",
-            "showtime_id": "145759014",
+            "showtime_id": "145759030",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "145377291",
+            "showtime_id": "145377295",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145377290",
+            "showtime_id": "145377294",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145377289",
+            "showtime_id": "145377293",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145377288",
+            "showtime_id": "145377292",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "145758981",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "145758979",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "145758993",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "145759002",
+            "showtime_id": "145758994",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145758970",
+            "showtime_id": "145758978",
             "format": "Laser at AMC"
           }
         ]
@@ -9277,49 +10007,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652357+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:30am",
-            "showtime_id": "145492410",
+            "showtime": "10:15am",
+            "showtime_id": "145492401",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "145492409",
+            "showtime": "1:00pm",
+            "showtime_id": "145492400",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "145492348",
+            "showtime": "3:45pm",
+            "showtime_id": "145492399",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145492347",
+            "showtime": "6:30pm",
+            "showtime_id": "145492398",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145492349",
+            "showtime": "9:15pm",
+            "showtime_id": "145492397",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:15pm",
-            "showtime_id": "144685444",
+            "showtime": "10:45am",
+            "showtime_id": "144685452",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "144685443",
+            "showtime": "1:30pm",
+            "showtime_id": "144685451",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "144685450",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144685449",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "144685448",
             "format": "Laser at AMC"
           }
         ]
@@ -9449,49 +10194,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652314+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "145767632",
+            "showtime": "10:30am",
+            "showtime_id": "145767626",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:45pm",
-            "showtime_id": "145767631",
+            "showtime": "1:30pm",
+            "showtime_id": "145767627",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "145767945",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "145767630",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "145486315",
+            "showtime": "7:15pm",
+            "showtime_id": "145767946",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "145486316",
+            "showtime_id": "145767628",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "145767653",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144691850",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145767655",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "144691841",
+            "showtime_id": "145767657",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145767648",
+            "showtime_id": "145767654",
             "format": "Laser at AMC"
           }
         ]
@@ -9581,7 +10341,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652368+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -9646,59 +10406,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:50am",
-            "showtime_id": "145486150",
+            "showtime": "11:15am",
+            "showtime_id": "145486137",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:40pm",
-            "showtime_id": "145486149",
+            "showtime": "2:05pm",
+            "showtime_id": "145486136",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145486148",
+            "showtime_id": "145486147",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "145767336",
+            "showtime": "7:20pm",
+            "showtime_id": "145486145",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "145486121",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "145486122",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "145767318",
+            "showtime": "10:10pm",
+            "showtime_id": "145486146",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "144700251",
+            "showtime": "11:10am",
+            "showtime_id": "144700277",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144700270",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "145767337",
+            "showtime": "4:10pm",
+            "showtime_id": "144700269",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "144700252",
+            "showtime": "7:50pm",
+            "showtime_id": "144700253",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "144700254",
             "format": "Laser at AMC"
           }
         ]
@@ -9783,7 +10543,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652259+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -9833,44 +10593,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:15am",
-            "showtime_id": "145471519",
+            "showtime_id": "145471524",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:55pm",
-            "showtime_id": "145471518",
+            "showtime_id": "145471523",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:35pm",
-            "showtime_id": "145471517",
+            "showtime_id": "145471522",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145471515",
+            "showtime_id": "145471520",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "145471516",
+            "showtime_id": "145471521",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:25am",
+            "showtime_id": "144692446",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:05pm",
+            "showtime_id": "144692445",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:20pm",
+            "showtime_id": "144692444",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144692438",
+            "showtime_id": "144692443",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144692437",
+            "showtime_id": "144692442",
             "format": "Laser at AMC"
           }
         ]
@@ -10005,49 +10780,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652223+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145487406",
+            "showtime_id": "145487407",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145487398",
+            "showtime_id": "145487402",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145487399",
+            "showtime_id": "145487403",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145487400",
+            "showtime_id": "145487404",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145487401",
+            "showtime_id": "145487405",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "144703270",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144703248",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144703249",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144703246",
+            "showtime_id": "144703250",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144703247",
+            "showtime_id": "144703251",
             "format": "Laser at AMC"
           }
         ]
@@ -10132,7 +10922,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652252+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -10177,39 +10967,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "145356178",
+            "showtime": "10:40am",
+            "showtime_id": "145356183",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145356177",
-            "format": "Laser at AMC"
+            "showtime": "1:20pm",
+            "showtime_id": "145356182",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145356179",
+            "showtime_id": "145356184",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145356180",
+            "showtime_id": "145356185",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "145356186",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "144684958",
+            "showtime": "11:15am",
+            "showtime_id": "144684966",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "144684957",
+            "showtime": "2:00pm",
+            "showtime_id": "144684965",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144684964",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "144684963",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "144684962",
             "format": "Laser at AMC"
           }
         ]
@@ -10344,49 +11154,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652296+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145464398",
+            "showtime_id": "145464426",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "145464421",
+            "showtime_id": "145464425",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "145464420",
+            "showtime_id": "145464424",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "145464418",
+            "showtime_id": "145464422",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "145464419",
+            "showtime_id": "145464423",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144679314",
+            "showtime": "11:45am",
+            "showtime_id": "144679323",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "144679322",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "144679321",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "144679319",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "144679315",
+            "showtime_id": "144679320",
             "format": "Laser at AMC"
           }
         ]
@@ -10472,37 +11297,32 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652365+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:15am",
-            "showtime_id": "145845650",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "2:00pm",
-            "showtime_id": "145467808",
-            "format": "Laser at AMC"
+            "showtime_id": "145845627",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145467809",
+            "showtime_id": "145467813",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145467810",
+            "showtime_id": "145845628",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145845608",
+            "showtime": "10:15pm",
+            "showtime_id": "145467815",
             "format": "Laser at AMC"
           }
         ]
@@ -10632,49 +11452,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652444+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:15am",
-            "showtime_id": "145481296",
+            "showtime_id": "145481297",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "145481307",
+            "showtime_id": "145481311",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145481306",
+            "showtime_id": "145481310",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145481304",
+            "showtime_id": "145481308",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145481305",
+            "showtime_id": "145481309",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "144712319",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "144686339",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144686338",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "144686332",
+            "showtime_id": "144686336",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "144686333",
+            "showtime_id": "144686337",
             "format": "Laser at AMC"
           }
         ]
@@ -10754,7 +11589,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652247+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -10804,44 +11639,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "145562222",
+            "showtime": "12:50pm",
+            "showtime_id": "145337463",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "3:50pm",
-            "showtime_id": "145337482",
+            "showtime_id": "145337461",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "145337481",
+            "showtime": "7:20pm",
+            "showtime_id": "145337460",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145337483",
+            "showtime": "10:20pm",
+            "showtime_id": "145337465",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "144880112",
+            "showtime": "11:40am",
+            "showtime_id": "144880120",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "144880119",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144880118",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "144880110",
+            "showtime_id": "144880116",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "144880111",
+            "showtime": "10:30pm",
+            "showtime_id": "144880117",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -10931,7 +11776,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652372+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -10976,39 +11821,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "145468806",
+            "showtime": "11:30am",
+            "showtime_id": "145468811",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "145768712",
+            "showtime": "2:15pm",
+            "showtime_id": "145468810",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "145468804",
+            "showtime": "5:00pm",
+            "showtime_id": "145468809",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145468805",
+            "showtime": "7:45pm",
+            "showtime_id": "145468807",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145468808",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "144593692",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144593694",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144593696",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144593686",
+            "showtime_id": "144593697",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144593688",
+            "showtime_id": "144593699",
             "format": "Laser at AMC"
           }
         ]
@@ -11093,7 +11958,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652255+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -11138,39 +12003,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:10am",
-            "showtime_id": "145744021",
+            "showtime": "10:50am",
+            "showtime_id": "145744020",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "145466853",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145466846",
+            "showtime_id": "145466851",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145466842",
+            "showtime_id": "145466848",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:25pm",
-            "showtime_id": "145466844",
+            "showtime_id": "145466850",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "144699612",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "144699611",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "144699608",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144699604",
+            "showtime_id": "144699609",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:35pm",
-            "showtime_id": "144699605",
+            "showtime_id": "144699610",
             "format": "Laser at AMC"
           }
         ]
@@ -11260,7 +12145,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652459+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -11310,44 +12195,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:45am",
-            "showtime_id": "145464116",
+            "showtime_id": "145464124",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:20pm",
-            "showtime_id": "145464114",
+            "showtime": "2:30pm",
+            "showtime_id": "145464123",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145464122",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "145464112",
+            "showtime": "8:00pm",
+            "showtime_id": "145464118",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145464108",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "145464110",
+            "showtime": "10:45pm",
+            "showtime_id": "145464120",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "144686143",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "144686142",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "145864049",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144686136",
+            "showtime_id": "145864139",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144686137",
+            "showtime_id": "145864136",
             "format": "Laser at AMC"
           }
         ]
@@ -11482,49 +12382,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652430+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "145760964",
-            "format": "undefined"
-          },
-          {
-            "showtime": "1:45pm",
-            "showtime_id": "145482226",
+            "showtime": "11:45am",
+            "showtime_id": "145816560",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "145482225",
+            "showtime": "2:30pm",
+            "showtime_id": "145816559",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145482223",
+            "showtime": "5:15pm",
+            "showtime_id": "145816558",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "145482224",
+            "showtime": "7:00pm",
+            "showtime_id": "145482227",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "145482228",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "144689510",
+            "showtime": "10:15am",
+            "showtime_id": "145816486",
             "format": "undefined"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145760909",
+            "showtime": "1:00pm",
+            "showtime_id": "145816485",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "145816484",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144689514",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "144689513",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "144689569",
             "format": "undefined"
           }
         ]
@@ -11604,7 +12524,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652398+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -11654,44 +12574,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "145328141",
+            "showtime": "10:20am",
+            "showtime_id": "145831160",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145328124",
+            "showtime": "1:20pm",
+            "showtime_id": "145328127",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "145328123",
+            "showtime": "4:00pm",
+            "showtime_id": "145328126",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145328158",
+            "showtime_id": "145328155",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145328159",
+            "showtime_id": "145328156",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "145831216",
+            "showtime": "1:00pm",
+            "showtime_id": "145831159",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145831215",
+            "showtime": "4:00pm",
+            "showtime_id": "145831207",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "145831209",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145831022",
             "format": "Laser at AMC"
           }
         ]
@@ -11821,49 +12751,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652478+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:15am",
-            "showtime_id": "145758861",
-            "format": "Laser at AMC"
+            "showtime_id": "145758860",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "145496982",
+            "showtime_id": "145496986",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145496981",
+            "showtime_id": "145496985",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145496979",
+            "showtime_id": "145496983",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145496980",
+            "showtime_id": "145496984",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "144674322",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "144674321",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144674320",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:45pm",
-            "showtime_id": "144674313",
+            "showtime_id": "144674318",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144674314",
+            "showtime_id": "144674319",
             "format": "Laser at AMC"
           }
         ]
@@ -11948,7 +12893,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652485+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -11993,39 +12938,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:30am",
-            "showtime_id": "145841422",
+            "showtime": "11:00am",
+            "showtime_id": "145684755",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "145684759",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145684763",
+            "showtime_id": "145684756",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145684764",
+            "showtime_id": "145684757",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145684760",
+            "showtime_id": "145684758",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "145684699",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "145684698",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "145684697",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "145684702",
+            "showtime_id": "145684695",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145841425",
+            "showtime_id": "145841415",
             "format": "Laser at AMC"
           }
         ]
@@ -12104,13 +13069,13 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
+                "showtime": "11:00pm",
                 "showtime_id": "144709104",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652474+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -12160,44 +13125,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:00am",
-            "showtime_id": "145312366",
+            "showtime_id": "145312368",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145312365",
+            "showtime_id": "145312367",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "145312377",
+            "showtime_id": "145312380",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145312376",
+            "showtime_id": "145312379",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145312375",
+            "showtime_id": "145312378",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "144709110",
+            "showtime": "11:30am",
+            "showtime_id": "144709102",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "144709111",
+            "showtime": "2:15pm",
+            "showtime_id": "144709101",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "144709100",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "144709103",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "144709104",
             "format": "Laser at AMC"
           }
         ]
@@ -12282,7 +13262,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652489+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -12332,44 +13312,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "145470380",
+            "showtime": "10:15am",
+            "showtime_id": "145758581",
             "format": "undefined"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "145470379",
+            "showtime": "2:00pm",
+            "showtime_id": "145470406",
             "format": "undefined"
           },
           {
-            "showtime": "5:05pm",
-            "showtime_id": "145758598",
+            "showtime": "2:30pm",
+            "showtime_id": "145758602",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145470401",
+            "showtime": "5:45pm",
+            "showtime_id": "145758604",
             "format": "undefined"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145758587",
+            "showtime": "11:00pm",
+            "showtime_id": "145758565",
             "format": "undefined"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "145758613",
+            "showtime": "10:45am",
+            "showtime_id": "145758612",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "145758623",
+            "showtime": "1:15pm",
+            "showtime_id": "145758610",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145758579",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "145758580",
             "format": "undefined"
           }
         ]
@@ -12489,7 +13479,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652510+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -12559,64 +13549,84 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:00am",
-            "showtime_id": "145763907",
+            "showtime_id": "145763913",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:30pm",
-            "showtime_id": "145431315",
+            "showtime": "11:45am",
+            "showtime_id": "145431321",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "145763906",
+            "showtime_id": "145763912",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "145431316",
+            "showtime": "2:30pm",
+            "showtime_id": "145431322",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:40pm",
-            "showtime_id": "145763829",
+            "showtime": "4:30pm",
+            "showtime_id": "145763911",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "145431317",
+            "showtime": "5:15pm",
+            "showtime_id": "145431323",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:25pm",
-            "showtime_id": "145763830",
+            "showtime": "7:15pm",
+            "showtime_id": "145763909",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "145431318",
+            "showtime": "8:00pm",
+            "showtime_id": "145431324",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "145763831",
+            "showtime": "10:00pm",
+            "showtime_id": "145763910",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "145431325",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "144625103",
+            "showtime": "12:00pm",
+            "showtime_id": "144625111",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "144625110",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144625109",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "144625107",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "144625102",
+            "showtime_id": "144625108",
             "format": "Laser at AMC"
           }
         ]
@@ -12674,7 +13684,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652482+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -12712,32 +13722,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "12:25pm",
-            "showtime_id": "145825312",
+            "showtime": "12:10pm",
+            "showtime_id": "145825302",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "145825311",
+            "showtime": "2:45pm",
+            "showtime_id": "145825306",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "145825310",
+            "showtime": "5:20pm",
+            "showtime_id": "145825305",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145825308",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "145825309",
+            "showtime": "8:00pm",
+            "showtime_id": "145825304",
             "format": "Laser at AMC"
           }
         ]
@@ -12822,7 +13827,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652507+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -12872,44 +13877,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:20am",
-            "showtime_id": "145401241",
+            "showtime_id": "145401246",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:05pm",
-            "showtime_id": "145401240",
+            "showtime_id": "145401245",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:50pm",
-            "showtime_id": "145401239",
+            "showtime_id": "145401244",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "145401238",
+            "showtime_id": "145401243",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145401237",
+            "showtime_id": "145401242",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "144602353",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "144602354",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "144602355",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144602351",
+            "showtime_id": "144602356",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144602352",
+            "showtime_id": "144602357",
             "format": "Laser at AMC"
           }
         ]
@@ -13039,44 +14059,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652471+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "145373451",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "145373652",
+            "showtime": "11:45am",
+            "showtime_id": "145373620",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "145373649",
+            "showtime": "2:30pm",
+            "showtime_id": "145373619",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145373650",
+            "showtime": "5:15pm",
+            "showtime_id": "145373618",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145907702",
+            "showtime": "8:00pm",
+            "showtime_id": "145373616",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "145373617",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "144696854",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "144696853",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144696852",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:15pm",
-            "showtime_id": "144696796",
+            "showtime_id": "144696850",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "144696851",
             "format": "Laser at AMC"
           }
         ]
@@ -13171,7 +14211,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652503+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -13231,54 +14271,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145423117",
+            "showtime_id": "145423107",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145905495",
+            "showtime": "2:50pm",
+            "showtime_id": "145423106",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:40pm",
-            "showtime_id": "145423123",
+            "showtime": "3:05pm",
+            "showtime_id": "145906979",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "145423124",
+            "showtime_id": "145423105",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "145423115",
+            "showtime_id": "145423103",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145905837",
+            "showtime": "9:00pm",
+            "showtime_id": "145906980",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "145423116",
+            "showtime_id": "145423104",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "144679629",
+            "showtime": "12:30pm",
+            "showtime_id": "144679632",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "145750056",
+            "showtime": "3:15pm",
+            "showtime_id": "144679633",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "144679634",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "145750022",
             "format": "Laser at AMC"
           }
         ]
@@ -13350,6 +14400,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "145911973",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "145370761",
                 "format": "Laser at AMC"
@@ -13383,7 +14438,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652499+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -13443,54 +14498,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "10:00am",
-            "showtime_id": "145370760",
-            "format": "Laser at AMC"
+            "showtime_id": "145370765",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "145370759",
+            "showtime_id": "145370764",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "145370758",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "145887498",
+            "showtime_id": "145370763",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145370757",
+            "showtime_id": "145370762",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "145887503",
+            "showtime": "9:00pm",
+            "showtime_id": "145911973",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145370756",
+            "showtime_id": "145370761",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "144708082",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "144708081",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144708080",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "144708074",
+            "showtime_id": "144708079",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "144708073",
+            "showtime_id": "144708078",
             "format": "Laser at AMC"
           }
         ]
@@ -13625,49 +14690,69 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652463+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:20am",
-            "showtime_id": "145732398",
+            "showtime": "10:00am",
+            "showtime_id": "145749869",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "145492643",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "145492644",
+            "showtime": "12:50pm",
+            "showtime_id": "145492647",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:50pm",
-            "showtime_id": "145492645",
+            "showtime": "3:40pm",
+            "showtime_id": "145492648",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "145492646",
+            "showtime": "6:30pm",
+            "showtime_id": "145492649",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "145492650",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "145749872",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
-            "showtime": "7:25pm",
-            "showtime_id": "144646794",
+            "showtime": "10:25am",
+            "showtime_id": "144646802",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "144646795",
+            "showtime": "1:10pm",
+            "showtime_id": "144646801",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "144646798",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "144646799",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "144646800",
             "format": "Laser at AMC"
           }
         ]
@@ -13807,59 +14892,64 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652496+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
-            "showtime": "10:50am",
-            "showtime_id": "145762770",
+            "showtime": "10:45am",
+            "showtime_id": "145762779",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "145332850",
+            "showtime_id": "145332852",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145332851",
+            "showtime_id": "145332853",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "145332868",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "145906785",
+            "showtime_id": "145332864",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "145332867",
+            "showtime_id": "145332865",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:55pm",
-            "showtime_id": "145903695",
+            "showtime_id": "145903694",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "2:35pm",
+            "showtime_id": "144659415",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144659414",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:15pm",
-            "showtime_id": "144659410",
+            "showtime_id": "144659413",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "144659420",
+            "showtime_id": "144659419",
             "format": "Laser at AMC"
           }
         ]
@@ -13922,7 +15012,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652467+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -13960,32 +15050,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145480110",
+            "showtime_id": "145480115",
             "format": "undefined"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145480109",
+            "showtime_id": "145480114",
             "format": "undefined"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145480108",
+            "showtime_id": "145480112",
             "format": "undefined"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145480106",
+            "showtime_id": "145480111",
             "format": "undefined"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145480107",
+            "showtime": "10:25pm",
+            "showtime_id": "145480113",
             "format": "undefined"
           }
         ]
@@ -14075,7 +15165,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652492+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-08": {
@@ -14125,44 +15215,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "One Night Only": [
           {
             "showtime": "11:30am",
-            "showtime_id": "145482373",
+            "showtime_id": "145482378",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "145482372",
+            "showtime_id": "145482377",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "145482371",
+            "showtime_id": "145482376",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145482369",
+            "showtime_id": "145482374",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145482370",
+            "showtime_id": "145482375",
             "format": "Laser at AMC"
           }
         ],
         "Super Troopers 3": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "144593551",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "144593549",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "144593547",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:15pm",
-            "showtime_id": "144593535",
+            "showtime_id": "144593545",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "144593533",
+            "showtime_id": "144593543",
             "format": "Laser at AMC"
           }
         ]
@@ -77189,7 +78294,7 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.651996+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-08-09": {
@@ -77202,17 +78307,17 @@
               }
             ]
           },
-          "collected_at": "2026-08-09T01:07:58.652412+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-08-08",
+      "show_date": "2026-08-09",
       "movies": {
         "Super Troopers 3": [
           {
-            "showtime": "8:10pm",
-            "showtime_id": "145824841",
+            "showtime": "8:00pm",
+            "showtime_id": "145824834",
             "format": "Laser at AMC"
           }
         ]
