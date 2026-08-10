@@ -337,7 +337,15 @@ def canonical_data_dir(repo_root: Path) -> Path:
 
 def collect_stats(repo_root: Path, *, check: bool) -> list[CleanStats]:
     data = canonical_data_dir(repo_root)
-    seat_result = clean_csv_file(data / "seat-counts.csv", date_col="date", check=check)
+    # The seat lane needs the SAME quarantine as the snapshot lane. The
+    # original reasoning — "seat rows are post-showtime so a canonical
+    # URL->movie mapping can resolve them" — was wrong: _canonical_movie_by_url
+    # only maps a URL claimed by exactly ONE movie, so a URL claimed by two in
+    # the seat file itself is equally unresolvable and bricks finalize just as
+    # permanently. It did, on 2026-08-10, discarding Sunday's seat counts.
+    # --check stays strict in both lanes so audits still surface the ambiguity.
+    seat_result = clean_csv_file(data / "seat-counts.csv", date_col="date",
+                                 check=check, quarantine_unresolved=not check)
     canonical_url_movies = _canonical_movie_by_url(seat_result.rows, date_col="date")
     snapshot_result = clean_csv_file(
         data / "pre-reservation-snapshots.csv",

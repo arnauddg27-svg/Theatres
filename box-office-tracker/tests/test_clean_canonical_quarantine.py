@@ -116,9 +116,24 @@ class QuarantineAmbiguousUrlTests(unittest.TestCase):
             with self.assertRaises(C.CanonicalDataError):
                 C.collect_stats(root, check=True)
 
-    def test_seat_lane_keeps_the_strict_raise(self):
-        """Only the snapshot lane quarantines; seat collisions still hard-fail,
-        because seat rows are post-showtime and can be resolved properly."""
+    def test_seat_lane_also_survives_a_collision(self):
+        """The seat lane bricks identically — it needed the same quarantine.
+
+        The first fix left it strict on the theory that seat rows are
+        post-showtime and therefore resolvable. Wrong: _canonical_movie_by_url
+        only maps a URL claimed by exactly ONE movie, so a URL claimed by two
+        in the seat file itself is equally unresolvable. On 2026-08-10 the same
+        showtime collided there and discarded Sunday's seat counts.
+        """
+        seat_rows = [{"weekend_of": "2026-08-07", "date": "2026-08-09",
+                      "timezone": "ET", "movie_title": m,
+                      "amc_seat_map_url": COLLIDING_URL}
+                     for m in ("One Night Only", "Super Troopers 3")]
+        with tempfile.TemporaryDirectory() as d:
+            root = self._data_dir(d, [], seat_rows=seat_rows)
+            C.collect_stats(root, check=False)   # must not raise
+
+    def test_seat_lane_audit_mode_still_raises(self):
         seat_rows = [{"weekend_of": "2026-08-07", "date": "2026-08-09",
                       "timezone": "ET", "movie_title": m,
                       "amc_seat_map_url": COLLIDING_URL}
@@ -126,7 +141,7 @@ class QuarantineAmbiguousUrlTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             root = self._data_dir(d, [], seat_rows=seat_rows)
             with self.assertRaises(C.CanonicalDataError):
-                C.collect_stats(root, check=False)
+                C.collect_stats(root, check=True)
 
 
 if __name__ == "__main__":
