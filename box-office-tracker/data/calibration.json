@@ -1814,64 +1814,192 @@
       "calibration_excluded_days": [
         "Saturday"
       ]
+    },
+    {
+      "movie": "The End of Oak Street",
+      "weekend_of": "2026-08-14",
+      "date": "2026-08-18",
+      "predicted_mid": 21.7,
+      "predicted_low": 15.49,
+      "predicted_high": 49.04,
+      "actual_total": 21.01,
+      "daily_actuals": {
+        "Friday": 7.93,
+        "Saturday": 7.38,
+        "Sunday": 5.7
+      },
+      "daily_predictions": {
+        "Thursday": 3.64,
+        "Friday": 5.39,
+        "Saturday": 6.79,
+        "Sunday": 5.54
+      },
+      "error_pct": 3.3,
+      "n_theatres": 414,
+      "n_days": 4,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 2.87,
+        "Friday": 4.25,
+        "Saturday": 6.13,
+        "Sunday": 4.98
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0075,
+        "Saturday": 0.0099,
+        "Sunday": 0.0056
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 3.64,
+        "Friday": 3.5,
+        "Saturday": 5.83,
+        "Sunday": 4.63
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.473,
+        "Friday": 0.473,
+        "Saturday": 0.471,
+        "Sunday": 0.471
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.0087,
+        "adjustment_pct": 0.87,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.435,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.3998,
+        "reach": 324.02,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 408,
+        "Friday": 411,
+        "Saturday": 411,
+        "Sunday": 414
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.96,
+        "Friday": 0.967,
+        "Saturday": 0.967,
+        "Sunday": 0.974
+      },
+      "coverage_ratio": 0.967
+    },
+    {
+      "movie": "PAW Patrol: The Dino Movie",
+      "weekend_of": "2026-08-14",
+      "date": "2026-08-18",
+      "predicted_mid": 12.9,
+      "predicted_low": 9.21,
+      "predicted_high": 29.15,
+      "actual_total": 20.25,
+      "daily_actuals": {
+        "Thursday": 1.9,
+        "Friday": 5.42,
+        "Saturday": 7.28,
+        "Sunday": 5.66
+      },
+      "daily_predictions": {
+        "Thursday": 0.65,
+        "Friday": 3.27,
+        "Saturday": 6.83,
+        "Sunday": 5.65
+      },
+      "error_pct": -36.3,
+      "n_theatres": 417,
+      "n_days": 4,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 0.46,
+        "Friday": 2.52,
+        "Saturday": 6.19,
+        "Sunday": 5.11
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0142,
+        "Saturday": 0.0197,
+        "Sunday": 0.0109
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.37,
+        "Friday": 1.49,
+        "Saturday": 5.75,
+        "Sunday": 4.64
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.473,
+        "Friday": 0.473,
+        "Saturday": 0.471,
+        "Sunday": 0.471
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.98807,
+        "adjustment_pct": -1.19,
+        "sentiment_score": 0.0,
+        "buzz_score": -1.0,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.2386,
+        "reach": 30.56,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 411,
+        "Friday": 414,
+        "Saturday": 413,
+        "Sunday": 417
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.967,
+        "Friday": 0.974,
+        "Saturday": 0.972,
+        "Sunday": 0.981
+      },
+      "coverage_ratio": 0.974
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.1965,
+    "amc_market_share": 0.2018,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.1114,
-      "Friday": 0.3208,
-      "Saturday": 0.3216,
-      "Sunday": 0.2462
+      "Thursday": 0.1063,
+      "Friday": 0.3209,
+      "Saturday": 0.3243,
+      "Sunday": 0.2485
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "In the Grey",
-        "weekend_of": "2026-05-15",
-        "abs_error_pct": 6.5,
-        "n_theatres": 363,
-        "n_days": 3,
-        "coverage_ratio": 0.451,
-        "daily_coverage_ratios": {
-          "Friday": 0.388,
-          "Saturday": 0.384,
-          "Sunday": 0.582
-        },
-        "daily_errors": {
-          "Friday": 47.9,
-          "Saturday": 34.0,
-          "Sunday": 16.7
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "The Mandalorian and Grogu",
-        "weekend_of": "2026-05-22",
-        "abs_error_pct": 2.0,
-        "n_theatres": 427,
-        "n_days": 4,
-        "coverage_ratio": 0.951,
-        "daily_coverage_ratios": {
-          "Thursday": 1.0,
-          "Friday": 0.984,
-          "Saturday": 0.934,
-          "Sunday": 0.887
-        },
-        "daily_errors": {
-          "Friday": 38.2,
-          "Saturday": 8.9,
-          "Sunday": 1.0
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Passenger",
         "weekend_of": "2026-05-22",
@@ -2216,9 +2344,9 @@
           "Sunday": 0.967
         },
         "daily_errors": {
-          "Friday": 24.7,
-          "Saturday": 22.1,
-          "Sunday": 17.5
+          "Friday": 24.5,
+          "Saturday": 22.3,
+          "Sunday": 17.2
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -2226,7 +2354,7 @@
       {
         "movie": "Super Troopers 3",
         "weekend_of": "2026-08-07",
-        "abs_error_pct": 55.7,
+        "abs_error_pct": 55.8,
         "n_theatres": 392,
         "n_days": 2,
         "coverage_ratio": 0.666,
@@ -2235,38 +2363,81 @@
           "Sunday": 0.92
         },
         "daily_errors": {
-          "Saturday": 63.7,
-          "Sunday": 42.7
+          "Saturday": 64.0,
+          "Sunday": 42.2
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The End of Oak Street",
+        "weekend_of": "2026-08-14",
+        "abs_error_pct": 3.3,
+        "n_theatres": 414,
+        "n_days": 4,
+        "coverage_ratio": 0.967,
+        "daily_coverage_ratios": {
+          "Thursday": 0.96,
+          "Friday": 0.967,
+          "Saturday": 0.967,
+          "Sunday": 0.974
+        },
+        "daily_errors": {
+          "Friday": 32.0,
+          "Saturday": 7.9,
+          "Sunday": 2.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "PAW Patrol: The Dino Movie",
+        "weekend_of": "2026-08-14",
+        "abs_error_pct": 36.3,
+        "n_theatres": 417,
+        "n_days": 4,
+        "coverage_ratio": 0.974,
+        "daily_coverage_ratios": {
+          "Thursday": 0.967,
+          "Friday": 0.974,
+          "Saturday": 0.972,
+          "Sunday": 0.981
+        },
+        "daily_errors": {
+          "Thursday": 66.0,
+          "Friday": 39.7,
+          "Saturday": 6.2,
+          "Sunday": 0.1
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-08-11",
+    "last_updated": "2026-08-18",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 8,
-          "support": 2.8095
+          "n": 10,
+          "support": 3.519
         },
         "Friday": {
-          "n": 10,
-          "support": 4.222
+          "n": 11,
+          "support": 4.933
         },
         "Saturday": {
           "n": 18,
-          "support": 6.494
+          "support": 6.96
         },
         "Sunday": {
           "n": 18,
-          "support": 6.784
+          "support": 7.25
         }
       },
       "leads": {
         "same_day": {
-          "n": 50,
-          "support": 18.8835
+          "n": 53,
+          "support": 21.236
         },
         "next_day": {
           "n": 4,
@@ -2286,10 +2457,10 @@
       "version": 1,
       "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.15670640507510084,
-        "Friday": 0.30725746898788553,
-        "Saturday": 0.3020894793879233,
-        "Sunday": 0.23394664654909025
+        "Thursday": 0.15276428432468095,
+        "Friday": 0.3068766095658384,
+        "Saturday": 0.3045181740694993,
+        "Sunday": 0.2358409320399813
       },
       "trained_on": [
         "Michael",
@@ -2313,14 +2484,16 @@
         "Evil Dead Burn",
         "The Odyssey",
         "One Night Only",
-        "Super Troopers 3"
+        "Super Troopers 3",
+        "The End of Oak Street",
+        "PAW Patrol: The Dino Movie"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.22836542262176582,
-        "resid_scale": 0.3327426484847147
+        "log_ratio_mean": 0.2523782997534138,
+        "resid_scale": 0.35364310458603415
       },
       "identity": {
-        "seat_sd": 0.40356961774871025
+        "seat_sd": 0.4344631763540758
       },
       "seat": {
         "features": [
@@ -2333,12 +2506,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.27849720421315144,
-          0.9245564599762517,
-          0.08505850802430917,
-          0.1528323213943332,
-          -0.021439738615524204,
-          0.7406500587244244,
+          0.359354710991461,
+          0.8854999251086055,
+          0.1338906599838004,
+          0.18927297301370435,
+          0.0029957197342449105,
+          0.46630911958111143,
           0.0
         ],
         "prior": [
@@ -2350,8 +2523,8 @@
           0.0,
           0.0
         ],
-        "lambda": 0.1,
-        "daily_resid_sd": 0.3300535811799152
+        "lambda": 0.3,
+        "daily_resid_sd": 0.33891634735393034
       },
       "snapshot": {
         "features": [
@@ -2365,12 +2538,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.6124170049705282,
-          0.7451584559398607,
-          -0.08586033176964536,
-          0.40525167964983727,
-          0.061094737957138545,
-          0.015842684969428755,
+          0.6630987775877186,
+          0.7189030600661303,
+          -0.03340948896998262,
+          0.42001717862000704,
+          0.06323022331348452,
+          0.009521951394690285,
           0.0,
           0.0
         ],
@@ -2385,144 +2558,156 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.5655411571667088
+        "daily_resid_sd": 0.5457615078087859
       },
       "weekend": {
-        "log_half_width": 0.3659,
-        "resid_mean": 0.01535180708928996,
-        "df": 19,
-        "loo_hit_rate": 0.9,
+        "log_half_width": 0.3538,
+        "resid_mean": 0.004452530984661696,
+        "df": 21,
+        "loo_hit_rate": 0.9091,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 23.41,
-        "loo_median_ae_pct": 17.45,
-        "n_movies": 20
+        "loo_mae_pct": 20.47,
+        "loo_median_ae_pct": 13.84,
+        "n_movies": 22
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 133.54,
+          "pred_m": 124.22,
           "actual_m": 97.0,
           "observed_share": 1.0
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 42.95,
+          "pred_m": 42.42,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 20.08,
+          "pred_m": 20.05,
           "actual_m": 15.09,
-          "observed_share": 0.843
+          "observed_share": 0.847
         },
         {
           "movie": "Obsession",
-          "pred_m": 21.29,
+          "pred_m": 22.23,
           "actual_m": 17.2,
           "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 82.36,
+          "pred_m": 79.25,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 59.66,
+          "pred_m": 59.52,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 6.68,
+          "pred_m": 7.25,
           "actual_m": 7.35,
           "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 49.28,
+          "pred_m": 50.01,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 25.89,
+          "pred_m": 26.91,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "The Amazing Digital Circus: The Last Act",
-          "pred_m": 19.16,
+          "pred_m": 20.34,
           "actual_m": 20.24,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 48.44,
+          "pred_m": 48.04,
           "actual_m": 44.53,
-          "observed_share": 0.534
+          "observed_share": 0.539
         },
         {
           "movie": "Toy Story 5",
-          "pred_m": 126.72,
+          "pred_m": 122.39,
           "actual_m": 160.0,
           "observed_share": 1.0
         },
         {
           "movie": "Supergirl",
-          "pred_m": 41.82,
+          "pred_m": 42.64,
           "actual_m": 37.1,
           "observed_share": 1.0
         },
         {
           "movie": "Jackass: Best and Last",
-          "pred_m": 12.18,
+          "pred_m": 12.97,
           "actual_m": 8.46,
           "observed_share": 1.0
         },
         {
           "movie": "Minions & Monsters",
-          "pred_m": 36.47,
+          "pred_m": 36.89,
           "actual_m": 47.21,
           "observed_share": 1.0
         },
         {
           "movie": "Young Washington",
-          "pred_m": 15.96,
+          "pred_m": 16.67,
           "actual_m": 19.37,
           "observed_share": 1.0
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 40.06,
+          "pred_m": 40.76,
           "actual_m": 43.0,
           "observed_share": 1.0
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 25.43,
+          "pred_m": 26.45,
           "actual_m": 13.7,
           "observed_share": 1.0
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 117.92,
+          "pred_m": 116.46,
           "actual_m": 123.5,
           "observed_share": 1.0
         },
         {
           "movie": "One Night Only",
-          "pred_m": 5.6,
+          "pred_m": 6.13,
           "actual_m": 5.51,
-          "observed_share": 0.848
+          "observed_share": 0.852
+        },
+        {
+          "movie": "The End of Oak Street",
+          "pred_m": 24.15,
+          "actual_m": 21.01,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "PAW Patrol: The Dino Movie",
+          "pred_m": 17.64,
+          "actual_m": 20.25,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 25.21,
-        "global_ratio": 26.31,
-        "regression": 23.41
+        "identity": 24.14,
+        "global_ratio": 25.07,
+        "regression": 20.47
       },
       "bakeoff_winner": "regression",
       "meets_mae_target": false
