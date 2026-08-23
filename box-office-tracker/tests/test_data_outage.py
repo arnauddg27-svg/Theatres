@@ -106,3 +106,48 @@ class SchedulerRetrySlotTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MetadataMissingWarningTests(unittest.TestCase):
+    """A film with no metadata row must say its audience protections are off.
+
+    PAW Patrol (2026-08-14) had no movie-metadata.csv row, so the broad_family
+    cross-chain gate never engaged; the volume share drifted 10% -> 23% as
+    walk-up-blind Regal/Cinemark snapshots accumulated across the weekend, and
+    the film recorded -36% while every layer LOOKED correctly wired. 18 of the
+    27 recorded films had no metadata row — the gate was dead by default.
+    """
+
+    def test_flag_set_when_metadata_absent(self):
+        import predict as P
+        import io, contextlib
+        pred = {"movie": "T", "daily_details": {}, "daily_estimates": {},
+                "n_theatres_total": 1, "n_days": 0, "seat_mid_m": 1.0,
+                "seat_low_m": 0.5, "seat_high_m": 1.5, "regression_mid_m": 1.0,
+                "regression_low_m": 0.5, "regression_high_m": 1.5,
+                "snapshot_days": [], "audience_type": "",
+                "metadata_missing": True}
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            try:
+                P.print_prediction(pred)
+            except Exception:
+                pass
+        self.assertIn("NO AUDIENCE METADATA", buf.getvalue())
+
+    def test_no_warning_when_metadata_present(self):
+        import predict as P
+        import io, contextlib
+        pred = {"movie": "T", "daily_details": {}, "daily_estimates": {},
+                "n_theatres_total": 1, "n_days": 0, "seat_mid_m": 1.0,
+                "seat_low_m": 0.5, "seat_high_m": 1.5, "regression_mid_m": 1.0,
+                "regression_low_m": 0.5, "regression_high_m": 1.5,
+                "snapshot_days": [], "audience_type": "broad_family",
+                "metadata_missing": False}
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            try:
+                P.print_prediction(pred)
+            except Exception:
+                pass
+        self.assertNotIn("NO AUDIENCE METADATA", buf.getvalue())

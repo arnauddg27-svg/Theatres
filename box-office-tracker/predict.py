@@ -6963,6 +6963,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     )
     movie_metadata_map = load_movie_metadata()
     movie_metadata = metadata_for_movie(movie, movie_metadata_map)
+    # A missing metadata row silently disables every audience-conditional
+    # protection: the broad_family cross-chain gate (the walk-up confound),
+    # the audience-aware Friday->weekend multiplier, and genre handling.
+    # PAW Patrol (2026-08-14) had no row, so the family gate never engaged,
+    # the volume share drifted 10% -> 23% as walk-up-blind RC snapshots
+    # accumulated, and the film recorded -36% — while the layer looked wired.
+    metadata_missing = movie_metadata is None or not (
+        getattr(movie_metadata, "audience_type", "") or "").strip()
     if not national_theatre_count and movie_metadata and movie_metadata.national_theatre_count:
         national_theatre_count = movie_metadata.national_theatre_count
     if (
@@ -7647,6 +7655,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
     result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
+    result["metadata_missing"] = bool(metadata_missing)
     if cross_chain_volume_value is not None:
         result["cross_chain_volume_share"] = round(cross_chain_volume_value, 4)
         result["cross_chain_volume_applied"] = bool(CROSS_CHAIN_VOLUME_APPLY)
@@ -8353,6 +8362,13 @@ def print_prediction(pred, verbose=False):
     movie = pred["movie"]
     print(f"\n  {movie.upper()}")
     print(f"  {'─' * len(movie)}")
+    if pred.get("metadata_missing"):
+        # Configuration warning first: a missing metadata row silently disables
+        # the broad_family cross-chain gate (PAW Patrol recorded -36% this way),
+        # the audience-aware Friday multiplier and genre handling.
+        print("  \u26a0\ufe0f  NO AUDIENCE METADATA for this film — the broad_family "
+              "cross-chain gate, audience-aware Friday multiplier and genre "
+              "handling are all inactive. Add a row to movie-metadata.csv.")
     if pred.get("cross_chain_volume_share") is not None:
         applied = "APPLIED" if pred.get("cross_chain_volume_applied") else "log-only, validating on this weekend's actual"
         print(f"  Cross-chain VOLUME share: {pred['cross_chain_volume_share']:.1%} ({applied})")
