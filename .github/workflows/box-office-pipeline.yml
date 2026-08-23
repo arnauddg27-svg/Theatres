@@ -109,7 +109,13 @@ permissions:
 # pending run per concurrency group, so pre-reservation probes must not share
 # the same pending slot as the model-driving post-show scrape.
 concurrency:
-  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && 'snapshot' || 'regular') }}
+  # Snapshot dispatches are additionally keyed by schedule_slot: GitHub keeps
+  # ONE pending run per group, so with a shared 'snapshot' group a slow 02:30Z
+  # run left the queued 14:30Z retry to be CANCELLED by the 22:30Z dispatch —
+  # the retries added for the queue-wall incident were most likely to vanish
+  # under exactly the degraded conditions they exist for (audit finding). The
+  # AMC lock, not the concurrency group, is the execution serializer.
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || 'regular') }}
   cancel-in-progress: false
 
 jobs:
@@ -154,6 +160,13 @@ jobs:
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
+        # The 3600s wait is the MAXIMUM the job budget allows (wait + 250m
+        # Phase 1 + 50m buffers = exactly the 360m cap, pinned by
+        # test_amc_lock_wait_budget_fits_job_timeouts). Thursday contention
+        # with the 14:30Z snapshot slot (audit finding) is handled by the
+        # scheduler's failed-slot retry instead: a timed-out acquire is a RED
+        # run now, re-dispatched within ~30 minutes — better than a longer
+        # blocking wait the budget cannot afford.
         timeout-minutes: 90
         env:
           GH_TOKEN: ${{ github.token }}
@@ -523,6 +536,12 @@ jobs:
             else
               echo "Merged rows were duplicate or cleaned away; no net canonical data changes."
             fi
+            # STALENESS LABEL (audit finding): skipping finalize means the
+            # committed predictions/xlsx stay as they were — but nothing said
+            # so, and a reader of the repo saw stale forecasts presented as
+            # current. Say when they were last actually regenerated.
+            last_pred=$(git log -1 --format="%cI" -- box-office-tracker/data/seat-counts.xlsx 2>/dev/null || echo "unknown")
+            echo "::notice::finalize skipped — predictions/xlsx NOT regenerated this run; last regeneration was $last_pred"
             echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi

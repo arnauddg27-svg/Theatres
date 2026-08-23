@@ -127,8 +127,26 @@ def main():
     for lane in ("amc_seat", "amc_snapshot", "fandango"):
         for off in OFFSETS:
             cap_day = friday + dt.timedelta(days=off)
-            if cap_day >= today:
-                continue          # that day's capture windows haven't finished
+            if cap_day > today:
+                continue
+            if cap_day == today:
+                # The day is unfinished, but the overnight + core slots all end
+                # by ~11Z: past 15Z a stone-zero on a producing lane deserves a
+                # same-day heads-up instead of tomorrow's post-mortem (the
+                # 2026-08-21 Thursday gap was only flagged after the preview
+                # window had closed for good).
+                now_utc = dt.datetime.now(dt.timezone.utc)
+                got_today = now_counts[lane].get(off, 0) / now_films
+                base_today = median(
+                    [baselines[wk][lane].get(off, 0) / base_films[wk]
+                     for wk in base_wks])
+                if (now_utc.hour >= 15 and got_today == 0 and base_today > 0
+                        and str(today) == now_utc.date().isoformat()):
+                    print(f"::warning::capture SILENT TODAY — {lane} day "
+                          f"{off:+d} ({cap_day}): 0 rows so far vs median "
+                          f"{base_today:.0f}/film; the day is not over, but "
+                          f"the overnight and core slots have all run")
+                continue
             base = median([baselines[wk][lane].get(off, 0) / base_films[wk]
                            for wk in base_wks])
             got = now_counts[lane].get(off, 0) / now_films
@@ -153,6 +171,29 @@ def main():
             print(f"  {lane:<13} day {off:+d} ({cap_day}): {got:>8.0f} vs median {base:>7.0f} rows/film  {status}")
     if not warned:
         print("all lanes at or above the completeness floor")
+
+    # Side data (advisory only): these feed layers that go silently neutral
+    # when their files stop accruing, and nothing else counts them.
+    try:
+        import glob
+        poly_rows = 0
+        with open(os.path.join(P.DATA_DIR, "polymarket-markets.csv"), newline="") as f:
+            for r in csv.DictReader(f):
+                notes = (r.get("notes") or "")
+                wk = (notes.split("=", 1)[1].strip()
+                      if notes.startswith("weekend_of=") else "")
+                if wk == current or (not wk and (r.get("date") or "") >= current):
+                    poly_rows += 1
+        films = sorted(P.load_seat_data(weekend_of=current).keys())
+        reviews = P.load_reviews_data(weekend_of=current)
+        missing_reviews = [m for m in films if not P.movie_mapping_get(reviews, m, None)]
+        print(f"side data: polymarket rows for {current}: {poly_rows}"
+              f"{' (NONE — market context will be absent)' if not poly_rows else ''}")
+        if films and missing_reviews:
+            print(f"side data: no review rows for: {', '.join(missing_reviews)}"
+                  f" — the word-of-mouth layer is neutral for these")
+    except Exception as e:
+        print(f"side-data advisory failed: {e}")
     return 0
 
 
