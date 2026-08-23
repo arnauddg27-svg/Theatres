@@ -4401,7 +4401,14 @@ def attach_review_signal(pred, reviews_data):
 # multiplier. Validated +1.5 pts MAE on the as-of-Saturday history (n=11); every
 # blend weight 33–67% improves, so it isn't knife-edged. Inert until Friday is
 # observed, so the as-of-Thursday path is unchanged.
-FRIDAY_ANCHOR_BLEND_WEIGHT = 0.5
+# 0.5 -> 0.25 (2026-08-23): the new Friday-stage backtest measured the anchor
+# COSTING accuracy at w=0.5 (MAE 20.6% vs 20.1% at w=0.25 vs 19.6% with no
+# anchor, n=21) while the Friday-stage under-bias (~-10.5% signed) stays flat
+# across weights — i.e. the bias lives in the seat layer, and the anchor adds
+# noise on top. Halved rather than removed: the July validate_anchor_decay
+# evidence showed it protects genuinely soft Fridays (Supergirl class), and
+# the harness is new — revisit full removal once it has more films.
+FRIDAY_ANCHOR_BLEND_WEIGHT = 0.25
 _FRIDAY_WEEKEND_MULTIPLIERS = None   # (global, {audience_type: (mult, n)})
 
 # Conformal interval floor. Audit 2026-07-08: only 8/18 recorded actuals fell
@@ -4714,7 +4721,19 @@ def amc_market_share_override_for(target_metadata):
 # coverage (all history pre-2026-06-26) are byte-identical. An operator
 # metadata override always wins. Self-strengthens as covered weekends accrue.
 FANDANGO_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "fandango-pre-reservation-snapshots.csv")
-CROSS_CHAIN_WALKUP_K = 1.15
+# Walk-up multiplier, RE-DERIVED FROM EVIDENCE 2026-08-23 (was a 1.15 prior).
+# Method: for each film with a freeze, an actual, and cross-chain coverage,
+# replay the AMC-captured gross, compute the true AMC share, and invert
+# share = wa*q/(wa*q + (1-wa)*K) for the implied K. Clean films (capture-
+# degraded stranded-weekend pair excluded — their inflated K_i of 2.8/6.9 are
+# artifacts of under-captured AMC gross): Supergirl 1.03, Odyssey 1.13,
+# Oak Street 1.13, Jackass 1.28, Evil Dead Burn 1.55 -> non-family median
+# 1.133. The Thursday backtest independently prefers the same value
+# (K=1.13 -> 17.1%, 1.15 -> 17.2%, 1.20 -> 17.6%, 1.28 -> 18.1%). Two
+# independent lines agree; the prior was a good guess, now measured.
+# Family evidence (PAW, n=1): K ~ 1.52 — higher, as walk-up theory predicts;
+# a family-specific K needs n>=3 before it can be considered.
+CROSS_CHAIN_WALKUP_K = 1.13
 # v2 (validated on the 5 films with cross-chain data + actuals, 2026-07-13,
 # scripts/validate_crosschain_v2.py):
 #   * wA is a FIXED capacity constant, not the drifting calibrated fleet share —
