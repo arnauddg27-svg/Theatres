@@ -144,6 +144,11 @@ jobs:
 
       - name: Dedup guard — skip if today's collect-links already committed
         id: dedup
+        env:
+          # Must match the Phase 1 step below — the guard falls back to a
+          # 0.80 module default and would skip retry slots on links the
+          # scraper itself deems insufficient.
+          PHASE1_MIN_FRESH_LINK_RATIO: '0.90'
         run: |
           python3 box-office-tracker/scripts/collect_links_dedup_guard.py \
             --tz "${{ github.event.inputs.tz_group }}" \
@@ -209,11 +214,15 @@ jobs:
           exit "$status"
 
       - name: Commit showtime links
-        # Only commit a successful Phase 1. The scraper now validates fresh
-        # link coverage before writing showtime-links.json. Commit while still
+        # Commit on failure too: the scraper saves the merged link cache
+        # (atomically, marked degraded) BEFORE its coverage gate, so a red
+        # Phase 1 still leaves partial links worth publishing — the merge is
+        # a monotonic union and the dedup guard never skips on a degraded
+        # cache, so retry slots keep re-collecting until the bar is met.
+        # "!cancelled()": a stop button must not publish. Commit while still
         # holding the AMC lock so the next timezone cannot re-sync a stale
         # shared cache before this timezone's canonical links reach main.
-        if: success() && steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
+        if: "!cancelled() && steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'"
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -416,6 +425,7 @@ jobs:
           retention-days: 14
           path: |
             box-office-tracker/data/scrape-manifest/${{ matrix.tz }}.env
+            box-office-tracker/data/scrape-manifest/${{ matrix.tz }}-snapshot-fatal.marker
             box-office-tracker/data/seat-counts.csv
             box-office-tracker/data/pre-reservation-snapshots.csv
             box-office-tracker/data/polymarket-markets.csv
@@ -490,6 +500,19 @@ jobs:
         # green while making the crash an ::error:: annotation.
         run: python3 scripts/capture_completeness.py || echo "::error::capture_completeness watchdog CRASHED — the green-but-empty net is down; fix it"
 
+      - name: Slot ledger (informational)
+        working-directory: box-office-tracker
+        # Every other monitor watches RUNS; a slot neither dispatch layer
+        # ever fired (GitHub cron gap >75min while the VPS watchdog is down)
+        # left zero trace. Recompute yesterday's expected slots from the
+        # schedulers' own table and warn on any with no run at all. Same
+        # crash-surfacing shape as the watchdog above: the script always
+        # exits 0, so a step failure means the ledger itself died.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 scripts/schedule_box_office_pipeline.py --reconcile yesterday || echo "::error::slot ledger CRASHED — missed-slot detection is down; fix it"
+
       - name: Clean canonical training data
         working-directory: box-office-tracker
         run: python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"
@@ -540,7 +563,8 @@ jobs:
             # committed predictions/xlsx stay as they were — but nothing said
             # so, and a reader of the repo saw stale forecasts presented as
             # current. Say when they were last actually regenerated.
-            last_pred=$(git log -1 --format="%cI" -- box-office-tracker/data/seat-counts.xlsx 2>/dev/null || echo "unknown")
+            last_pred=$(git log -1 --format="%cI" -- box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true)
+            [ -z "$last_pred" ] && last_pred="unknown (no regeneration within the shallow fetch window)" 
             echo "::notice::finalize skipped — predictions/xlsx NOT regenerated this run; last regeneration was $last_pred"
             echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
             exit 0

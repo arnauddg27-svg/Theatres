@@ -85,16 +85,16 @@ def lane_counts(weekend_of):
                     films.add(r.get("movie_title", ""))
                     out["fandango"][off] += 1
     films.discard("")
-    return out, max(1, len(films))
+    return out, films
 
 
-def settled_weekends(current):
-    """Most recent BASELINE_WEEKENDS weekends before `current`, from history."""
+def settled_weekends(current, n=BASELINE_WEEKENDS):
+    """Most recent `n` settled weekends before `current`, from history."""
     import json
     hist = json.load(open(os.path.join(P.DATA_DIR, "calibration.json")))["history"]
     wks = sorted({e.get("weekend_of") for e in hist
                   if e.get("weekend_of") and e["weekend_of"] < current})
-    return wks[-BASELINE_WEEKENDS:]
+    return wks[-n:]
 
 
 def median(xs):
@@ -119,8 +119,10 @@ def main():
         return 0
     baselines, base_films = {}, {}
     for wk in base_wks:
-        baselines[wk], base_films[wk] = lane_counts(wk)
-    now_counts, now_films = lane_counts(current)
+        counts, film_set = lane_counts(wk)
+        baselines[wk], base_films[wk] = counts, max(1, len(film_set))
+    now_counts, now_film_set = lane_counts(current)
+    now_films = max(1, len(now_film_set))
 
     print(f"capture completeness — weekend {current} vs median of {base_wks}")
     warned = 0
@@ -130,11 +132,18 @@ def main():
             if cap_day > today:
                 continue
             if cap_day == today:
-                # The day is unfinished, but the overnight + core slots all end
-                # by ~11Z: past 15Z a stone-zero on a producing lane deserves a
-                # same-day heads-up instead of tomorrow's post-mortem (the
-                # 2026-08-21 Thursday gap was only flagged after the preview
-                # window had closed for good).
+                # The day is unfinished, but the snapshot lanes' overnight +
+                # core slots all end by ~11Z: past 15Z a stone-zero on a
+                # producing lane deserves a same-day heads-up instead of
+                # tomorrow's post-mortem (the 2026-08-21 Thursday gap was only
+                # flagged after the preview window had closed for good).
+                # amc_seat is EXCLUDED: its rows for show-day D are only ever
+                # written by the NEXT morning's 07Z regular scrape, so a
+                # same-day zero is the healthy state, not silence — the first
+                # production run (2026-08-23, a healthy Sunday) fired this
+                # warning spuriously on every weekend day by construction.
+                if lane == "amc_seat":
+                    continue
                 now_utc = dt.datetime.now(dt.timezone.utc)
                 got_today = now_counts[lane].get(off, 0) / now_films
                 base_today = median(
@@ -172,11 +181,36 @@ def main():
     if not warned:
         print("all lanes at or above the completeness floor")
 
+    # DRIFT GUARD: the trailing-4 median normalizes a gradual bleed — with a
+    # steady per-weekend decay r, current/median ~ r^2.5, so the 0.25 floor
+    # only trips below r~0.5 and a lane losing 20%/weekend never warns while
+    # reaching ~10% volume in 10 weeks. Compare the baseline window against
+    # the 4 weekends BEFORE it: a halving between windows is drift, not noise.
+    all_wks = settled_weekends(current, n=2 * BASELINE_WEEKENDS)
+    if len(all_wks) >= 2 * BASELINE_WEEKENDS:
+        prior_wks = all_wks[:BASELINE_WEEKENDS]
+        prior, prior_films = {}, {}
+        for wk in prior_wks:
+            counts, film_set = lane_counts(wk)
+            prior[wk], prior_films[wk] = counts, max(1, len(film_set))
+        for lane in ("amc_seat", "amc_snapshot", "fandango"):
+            recent_med = median([sum(baselines[wk][lane].values()) / base_films[wk]
+                                 for wk in base_wks])
+            prior_med = median([sum(prior[wk][lane].values()) / prior_films[wk]
+                                for wk in prior_wks])
+            if prior_med > 0 and recent_med < 0.5 * prior_med:
+                print(f"::warning::capture DRIFT — {lane}: trailing-4-weekend "
+                      f"median {recent_med:.0f} rows/film is under half the "
+                      f"prior window's {prior_med:.0f}; a gradual bleed "
+                      f"normalizes into the baseline and never trips the "
+                      f"per-day floor")
+
     # Side data (advisory only): these feed layers that go silently neutral
     # when their files stop accruing, and nothing else counts them.
     try:
         import glob
         poly_rows = 0
+        poly_titles = set()
         with open(os.path.join(P.DATA_DIR, "polymarket-markets.csv"), newline="") as f:
             for r in csv.DictReader(f):
                 notes = (r.get("notes") or "")
@@ -184,6 +218,23 @@ def main():
                       if notes.startswith("weekend_of=") else "")
                 if wk == current or (not wk and (r.get("date") or "") >= current):
                     poly_rows += 1
+                    if (r.get("movie_title") or "").strip():
+                        poly_titles.add(r["movie_title"].strip())
+        # FILM-COUNT BLINDNESS GUARD: rows are normalized per OBSERVED film,
+        # so a tracked title that produced nothing anywhere (links never
+        # materialized, run_async filtered it out, every leg green) simply
+        # vanishes from the denominator and every lane reads "ok". From
+        # opening Friday onward a market-tracked title must exist in at least
+        # one lane.
+        if today >= friday:
+            observed = {f: True for f in now_film_set}
+            ghosts = [t for t in sorted(poly_titles)
+                      if not P.movie_mapping_get(observed, t, None)]
+            for t in ghosts:
+                print(f"::warning::tracked film ABSENT from every capture "
+                      f"lane — '{t}' has a {current} market but zero rows in "
+                      f"seat, snapshot, and fandango data; per-film "
+                      f"normalization cannot see this loss")
         films = sorted(P.load_seat_data(weekend_of=current).keys())
         reviews = P.load_reviews_data(weekend_of=current)
         missing_reviews = [m for m in films if not P.movie_mapping_get(reviews, m, None)]

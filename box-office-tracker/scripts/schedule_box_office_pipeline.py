@@ -418,6 +418,74 @@ def scheduled_display_title(slot: Slot) -> str:
     return f"box office scheduled {slot.name}"
 
 
+def expected_slots_for_date(date: dt.date) -> list[tuple[dt.datetime, Slot]]:
+    """Every slot whose cron fires on this UTC date, with its scheduled time."""
+    out = []
+    for slot in SLOTS:
+        scheduled_at = dt.datetime(date.year, date.month, date.day,
+                                   slot.hour, slot.minute, tzinfo=dt.timezone.utc)
+        if cron_dow(scheduled_at) in slot.cron_days:
+            out.append((scheduled_at, slot))
+    return sorted(out, key=lambda item: item[0])
+
+
+# A run created within this window of its scheduled time counts as the slot
+# having been DISPATCHED (watchdog fallbacks land 30-75 min late; scheduler
+# retries later still). The ledger asks "did any layer fire at all?", not
+# "did it succeed?" — failures are the retry system's domain.
+RECONCILE_GRACE_MINUTES = 180
+
+
+def missing_slots(
+    expected: list[tuple[dt.datetime, Slot]],
+    runs: list[dict],
+    grace_minutes: int = RECONCILE_GRACE_MINUTES,
+) -> list[tuple[dt.datetime, Slot]]:
+    """Expected slots with NO run (any conclusion) near their time."""
+    missing = []
+    for scheduled_at, slot in expected:
+        titles = (scheduled_display_title(slot), slot.title)
+        lower = scheduled_at - dt.timedelta(minutes=5)
+        upper = scheduled_at + dt.timedelta(minutes=grace_minutes)
+        for run in runs:
+            if run.get("display_title") not in titles:
+                continue
+            created_at = parse_github_time(run["created_at"])
+            if lower <= created_at <= upper:
+                break
+        else:
+            missing.append((scheduled_at, slot))
+    return missing
+
+
+def reconcile_date(*, client: GitHubClient, workflow: str, date: dt.date) -> int:
+    """After-the-fact slot ledger (audit 2026-08-23).
+
+    Every monitor before this one watches RUNS — a slot that was never
+    dispatched at all (GitHub cron gap >75 min while the VPS watchdog is
+    down: both layers share the same 30-min shape) left zero trace anywhere.
+    Recompute yesterday's expected slots from the same table the schedulers
+    use and warn for any with no run whatsoever. Advisory: always exits 0.
+    """
+    expected = expected_slots_for_date(date)
+    next_day = date + dt.timedelta(days=1)
+    runs = client.request_json(
+        "GET",
+        f"/repos/{client.repo}/actions/workflows/{workflow}/runs"
+        f"?event=workflow_dispatch&per_page=100&created={date}..{next_day}",
+    ).get("workflow_runs", [])
+    gone = missing_slots(expected, runs)
+    print(f"slot ledger for {date}: {len(expected)} expected, "
+          f"{len(expected) - len(gone)} dispatched, {len(gone)} missing")
+    for scheduled_at, slot in gone:
+        print(
+            f"::warning::slot NEVER DISPATCHED — {slot.name} expected at "
+            f"{scheduled_at.strftime('%H:%MZ')} on {date} has no run at all; "
+            f"both dispatch layers (GitHub cron + VPS watchdog) missed it"
+        )
+    return 0
+
+
 def dispatch_slot(
     *,
     client: GitHubClient,
@@ -477,6 +545,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         default=_DEFAULT_TOKEN_ERROR_MARKER,
         help="file written when the GitHub token is rejected (401/403); cleared on success",
     )
+    parser.add_argument(
+        "--reconcile",
+        default=None,
+        metavar="DATE",
+        help="slot-ledger mode: report expected slots on DATE (YYYY-MM-DD or "
+             "'yesterday', UTC) that no run ever serviced; dispatches nothing",
+    )
     return parser.parse_args(argv)
 
 
@@ -493,6 +568,22 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     now = parse_utc(args.now) if args.now else dt.datetime.now(dt.timezone.utc).replace(second=0, microsecond=0)
+
+    if args.reconcile:
+        token = os.environ.get(args.token_env) or os.environ.get("GH_TOKEN")
+        if not token:
+            print(f"{args.token_env} or GH_TOKEN is required for --reconcile", file=sys.stderr)
+            return 1
+        if args.reconcile == "yesterday":
+            target = (now - dt.timedelta(days=1)).date()
+        else:
+            target = dt.date.fromisoformat(args.reconcile)
+        return reconcile_date(
+            client=GitHubClient(repo=args.repo, token=token),
+            workflow=args.workflow,
+            date=target,
+        )
+
     due = candidate_due_slots(
         now=now,
         lookback_minutes=args.lookback_minutes,

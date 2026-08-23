@@ -475,6 +475,18 @@ def _fresh_theatre_link_coverage_ok(
         return True
 
     saved_links = _load_showtime_links(repo_root)
+    # A cache saved below its coverage gate is marked degraded (the scraper
+    # now saves BEFORE failing, so partial links reach the repo). Never skip
+    # a collect-links slot on a degraded cache — that would convert a loud
+    # partial into a quiet permanent one.
+    coverage_meta = saved_links.get("link_coverage")
+    if isinstance(coverage_meta, dict) and coverage_meta.get("degraded"):
+        print(
+            f"{tz} link cache is marked DEGRADED "
+            f"(saved at {coverage_meta.get('ratio', '?')} coverage, "
+            f"threshold {coverage_meta.get('min_ratio', '?')}); running"
+        )
+        return False
     theatres = saved_links.get("theatres") or {}
     if not isinstance(theatres, dict):
         theatres = {}

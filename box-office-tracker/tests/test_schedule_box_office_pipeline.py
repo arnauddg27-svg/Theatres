@@ -343,3 +343,80 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SlotLedgerTests(unittest.TestCase):
+    """--reconcile: after-the-fact detection of slots NEITHER layer dispatched.
+
+    Every pre-existing monitor watches runs; a >75-min GitHub cron gap while
+    the VPS watchdog is down (both layers share the same 30-min shape) left
+    zero trace anywhere. The ledger recomputes expected slots from the same
+    SLOTS table the schedulers dispatch from.
+    """
+
+    def test_expected_slots_match_cron_days(self):
+        # Sat 2026-08-22: the ledger's expectation must be nonzero and every
+        # slot's cron_days must actually contain Saturday
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)
+        self.assertTrue(expected)
+        for scheduled_at, slot in expected:
+            self.assertIn(schedule.cron_dow(scheduled_at), slot.cron_days)
+            self.assertEqual(scheduled_at.date(), sat)
+
+    def test_missing_slot_detected(self):
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)
+        # runs exist for every slot except the first
+        runs = [
+            {"display_title": schedule.scheduled_display_title(slot),
+             "created_at": scheduled_at.strftime("%Y-%m-%dT%H:%M:%SZ")}
+            for scheduled_at, slot in expected[1:]
+        ]
+        gone = schedule.missing_slots(expected, runs)
+        self.assertEqual([expected[0][1].name], [s.name for _, s in gone])
+
+    def test_failed_run_still_counts_as_dispatched(self):
+        # the ledger asks "did any layer fire?", not "did it succeed?" —
+        # failures are the retry system's and circuit breaker's domain
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)
+        runs = [
+            {"display_title": schedule.scheduled_display_title(slot),
+             "created_at": scheduled_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+             "status": "completed", "conclusion": "failure"}
+            for scheduled_at, slot in expected
+        ]
+        self.assertEqual([], schedule.missing_slots(expected, runs))
+
+    def test_late_watchdog_dispatch_counts(self):
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)
+        scheduled_at, slot = expected[0]
+        late = scheduled_at + dt.timedelta(minutes=70)   # VPS fallback window
+        runs = [{"display_title": slot.title,
+                 "created_at": late.strftime("%Y-%m-%dT%H:%M:%SZ")}]
+        gone = schedule.missing_slots([(scheduled_at, slot)], runs)
+        self.assertEqual([], gone)
+
+    def test_run_outside_grace_does_not_count(self):
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)
+        scheduled_at, slot = expected[0]
+        far = scheduled_at + dt.timedelta(minutes=schedule.RECONCILE_GRACE_MINUTES + 30)
+        runs = [{"display_title": schedule.scheduled_display_title(slot),
+                 "created_at": far.strftime("%Y-%m-%dT%H:%M:%SZ")}]
+        gone = schedule.missing_slots([(scheduled_at, slot)], runs)
+        self.assertEqual(1, len(gone))
+
+    def test_reconcile_always_advisory(self):
+        # wired into finalize with the watchdog's crash-surfacing shape; the
+        # function itself must return 0 even when slots are missing
+        class FakeClient:
+            repo = "o/r"
+            def request_json(self, method, path, body=None):
+                return {"workflow_runs": []}
+        rc = schedule.reconcile_date(client=FakeClient(),
+                                     workflow="wf.yml",
+                                     date=dt.date(2026, 8, 22))
+        self.assertEqual(0, rc)

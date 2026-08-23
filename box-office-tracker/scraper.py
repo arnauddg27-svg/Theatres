@@ -604,6 +604,12 @@ REGULAR_PHASE2_BASE_DEADLINE_SEC = _env_int("REGULAR_PHASE2_BASE_DEADLINE_SEC", 
 REGULAR_PHASE2_PER_THEATRE_SEC = _env_float("REGULAR_PHASE2_PER_THEATRE_SEC", 9.0, minimum=0.0)
 REGULAR_PHASE2_PER_SHOWTIME_SEC = _env_float("REGULAR_PHASE2_PER_SHOWTIME_SEC", 10.0, minimum=0.0)
 REGULAR_PHASE2_MIN_COVERAGE_RATIO = _env_float("REGULAR_PHASE2_MIN_COVERAGE_RATIO", 0.90, minimum=0.0)
+# Below this fresh-link ratio a partial Phase 1 cache is too sparse to trust
+# for a regular scrape (a Queue-It wall profile, not a thin night); between
+# this floor and PHASE1_MIN_FRESH_LINK_RATIO the leg proceeds LOUDLY on the
+# smaller panel — post-showtime seat reads are unrecoverable, so an ~88%%
+# panel beats the 0%% a hard fail used to leave.
+REGULAR_PHASE2_PARTIAL_LINK_FLOOR = _env_float("REGULAR_PHASE2_PARTIAL_LINK_FLOOR", 0.50, minimum=0.0)
 try:
     PHASE1_MIN_FRESH_LINK_RATIO = float(os.getenv("PHASE1_MIN_FRESH_LINK_RATIO", "0.80"))
 except ValueError:
@@ -896,63 +902,6 @@ def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written,
     if ratio is not None and ratio < fatal_ratio:
         return True
     return False
-
-
-def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
-                                    saved_links=None, expected_dates=None):
-    expected_by_movie = {title: set() for title in (movie_titles or [])}
-    if saved_links is not None and expected_dates is not None:
-        for theatre in expected_theatres:
-            name = theatre.get("name")
-            entry = saved_links.get(name)
-            if not name or not entry:
-                continue
-            expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
-            movies = phase1_entry_movies(entry, expected_date)
-            for title in movie_titles or []:
-                if movies.get(title):
-                    expected_by_movie[title].add(name)
-    else:
-        expected_names = {
-            theatre.get("name")
-            for theatre in expected_theatres
-            if theatre.get("name")
-        }
-        expected_by_movie = {title: set(expected_names) for title in (movie_titles or [])}
-
-    expected_names = set().union(*expected_by_movie.values()) if expected_by_movie else set()
-    observed_by_movie = {title: set() for title in (movie_titles or [])}
-    for result in results:
-        movie = result.get("movie")
-        theatre = result.get("theatre")
-        if movie in observed_by_movie and theatre in expected_names:
-            observed_by_movie[movie].add(theatre)
-
-    by_movie = {}
-    for title in movie_titles or []:
-        expected_total = len(expected_by_movie.get(title, set()))
-        observed = len(observed_by_movie.get(title, set()))
-        ratio = (observed / expected_total) if expected_total else 1.0
-        by_movie[title] = {
-            "expected": expected_total,
-            "observed": observed,
-            "ratio": ratio,
-        }
-    return {
-        "expected_total": len(expected_names),
-        "by_movie": by_movie,
-    }
-
-
-def regular_phase2_coverage_failures(report, min_ratio=REGULAR_PHASE2_MIN_COVERAGE_RATIO):
-    failures = []
-    for title, details in report.get("by_movie", {}).items():
-        if details["expected"] and details["ratio"] < min_ratio:
-            failures.append(
-                f"{title} {details['observed']}/{details['expected']} "
-                f"theatres ({details['ratio']:.1%})"
-            )
-    return failures
 
 
 def regular_phase2_theatre_coverage(expected_theatres, results, movie_titles,
@@ -3568,7 +3517,19 @@ async def repair_regular_snapshot_preserved_fallbacks_async(
                 if gap["timezone"] == group and gap["show_date"] == date_str
             })
             print(f"    - repairing {group} {date_str}: {', '.join(missing)}")
-            await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+            try:
+                await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+            except SystemExit as e:
+                print(
+                    f"      ⚠️  fresh-link repair did not complete "
+                    f"(exit {getattr(e, 'code', 1)}) — continuing with the "
+                    "partial link cache"
+                )
+            except Exception as e:
+                print(
+                    f"      ⚠️  fresh-link repair errored ({e}) — continuing "
+                    "with the partial link cache"
+                )
 
         try:
             with open(LINKS_JSON) as f:
@@ -4376,6 +4337,47 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     coverage_label = f"Phase 1 collected links for {tz_group}"
     if any(len(dates) > 1 for dates in collection_dates_by_group.values()):
         coverage_label = f"Phase 1 full-weekend links for {tz_group}"
+
+    # SAVE BEFORE THE GATE (audit 2026-08-23): the all-or-nothing coverage
+    # fail_phase below used to discard the entire merged link cache — every
+    # 100%%-covered date included — over one 85%% date. The merge with the
+    # existing cache is a monotonic union, so writing first can only add
+    # links; the gate still fails the job red so retry slots keep firing.
+    # Atomic write: the commit step may now run after a failure/cancel, and
+    # must never see a torn file.
+    DATA_DIR.mkdir(exist_ok=True)
+    links["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
+    links["showtime_windows"] = {
+        "default": f"{DEFAULT_COLLECTION_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+        "Saturday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+        "Sunday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
+    }
+    # Use the latest successful Phase 1 refresh time. Weekend Phase 2 runs for
+    # MT/PT happen more than 12h after the ET/noon collection window, so keeping
+    # the earliest timestamp would incorrectly mark fresh same-day links as stale.
+    links["collected_at"] = datetime.now(timezone.utc).isoformat()
+    _date_ratios = [
+        (dr["fresh"] / dr["expected"])
+        for dr in (fresh_report.get("by_date") or {}).values() if dr["expected"]
+    ]
+    _degraded = bool(fresh_report["expected_total"]) and (
+        fresh_report["ratio"] < PHASE1_MIN_FRESH_LINK_RATIO
+        or any(r < PHASE1_MIN_FRESH_LINK_RATIO for r in _date_ratios)
+    )
+    links["link_coverage"] = {
+        "ratio": round(fresh_report["ratio"], 4),
+        "fresh": fresh_report["fresh_count"],
+        "expected": fresh_report["expected_total"],
+        "min_ratio": PHASE1_MIN_FRESH_LINK_RATIO,
+        "degraded": _degraded,
+    }
+    _tmp_links = LINKS_JSON.with_suffix(".json.tmp")
+    with open(_tmp_links, "w") as f:
+        json.dump(links, f, indent=2)
+    os.replace(_tmp_links, LINKS_JSON)
+    print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}"
+          + ("  [DEGRADED — below coverage threshold; retry slots will re-collect]" if _degraded else ""))
+
     require_phase1_coverage(fresh_report, coverage_label)
     active_link_gaps = warn_active_market_phase1_link_gaps(
         poly_markets,
@@ -4413,23 +4415,6 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
     save_polymarket_data(poly_markets, weekend_of=current_weekend)
-
-    DATA_DIR.mkdir(exist_ok=True)
-    links["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
-    links["showtime_windows"] = {
-        "default": f"{DEFAULT_COLLECTION_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
-        "Saturday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
-        "Sunday": f"{WEEKEND_FULL_DAY_START_HOUR}:00-{COLLECTION_END_HOUR}:00",
-    }
-    # Use the latest successful Phase 1 refresh time. Weekend Phase 2 runs for
-    # MT/PT happen more than 12h after the ET/noon collection window, so keeping
-    # the earliest timestamp would incorrectly mark fresh same-day links as stale.
-    links["collected_at"] = datetime.now(timezone.utc).isoformat()
-
-    with open(LINKS_JSON, "w") as f:
-        json.dump(links, f, indent=2)
-
-    print(f"\n✅ Saved {total_links} showtime links from {len(links['theatres'])} theatres total → {LINKS_JSON}")
 
 
 async def ensure_phase1_links_async(tz_group="ALL"):
@@ -4528,12 +4513,55 @@ async def ensure_phase1_links_async(tz_group="ALL"):
             f"instead of failing the whole timezone."
         )
     print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
-    await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
+    rebuild_incomplete = False
+    try:
+        await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
+    except SystemExit as e:
+        # The rebuild saves the merged cache BEFORE its coverage gate, so a
+        # below-threshold rebuild leaves a usable partial file. Letting the
+        # SystemExit propagate here killed the entire regular leg — trading
+        # an ~88%% panel for 0%% of an unrecoverable night.
+        rebuild_incomplete = True
+        print(
+            f"\n⚠️  Phase 1 rebuild for {tz_group} {target_date} did not meet "
+            f"its coverage gate (exit {getattr(e, 'code', 1)}) — evaluating "
+            "the partial link cache instead of failing the leg."
+        )
+    except Exception as e:
+        rebuild_incomplete = True
+        print(
+            f"\n⚠️  Phase 1 rebuild for {tz_group} {target_date} errored ({e}) "
+            "— evaluating whatever link cache is on disk instead of failing "
+            "the leg."
+        )
 
-    with open(LINKS_JSON) as f:
-        repaired_links = json.load(f).get("theatres", {})
+    try:
+        with open(LINKS_JSON) as f:
+            repaired_links = json.load(f).get("theatres", {})
+    except Exception as e:
+        fail_phase(f"❌ Could not reload Phase 1 links after rebuild for {tz_group}: {e}")
     repaired_report = phase1_link_coverage(repaired_links, theatres_map, [tz_group], expected_dates)
-    require_phase1_coverage(repaired_report, f"Phase 1 repaired links for {tz_group}")
+    repaired_label = f"Phase 1 repaired links for {tz_group}"
+    if not rebuild_incomplete:
+        require_phase1_coverage(repaired_report, repaired_label)
+    else:
+        print_phase1_coverage(repaired_report, repaired_label,
+                              min_ratio=PHASE1_MIN_FRESH_LINK_RATIO)
+        partial_ratio = (repaired_report["ratio"]
+                         if repaired_report["expected_total"] else 1.0)
+        if partial_ratio < REGULAR_PHASE2_PARTIAL_LINK_FLOOR:
+            fail_phase(
+                f"❌ {repaired_label}: {partial_ratio:.1%} fresh theatre "
+                f"coverage is below the partial-links floor "
+                f"({REGULAR_PHASE2_PARTIAL_LINK_FLOOR:.0%}) — a wall profile, "
+                "too sparse to trust for a regular scrape."
+            )
+        print(
+            f"::warning::{repaired_label}: proceeding with PARTIAL fresh links "
+            f"({partial_ratio:.1%} < {PHASE1_MIN_FRESH_LINK_RATIO:.0%}); "
+            "tonight's panel is smaller and coverage percentages this run are "
+            "fractions of the shrunken panel"
+        )
     require_active_market_phase1_links(
         poly_markets,
         repaired_links,
