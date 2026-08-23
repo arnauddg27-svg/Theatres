@@ -663,6 +663,31 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     weekend_of = weekend_of or opening_weekend_friday()
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     if not titles:
+        # State (showtime-links.json / theatre-counts) only refreshes when
+        # Phase 1 runs (Tue-Thu). When a weekend's Polymarket market is listed
+        # late — One Night Only 2026-08-07, then Insidious/Mutiny 2026-08-21 —
+        # those passes cleanly skip, state stays on the PRIOR weekend, and this
+        # lane silently captured nothing on Thursday and Friday (green runs,
+        # zero rows), losing the preview-day volume q that the cross-chain
+        # share and the family early-window policy depend on. This collector
+        # never needed links — it discovers showtimes on Fandango BY TITLE —
+        # so fall back to live Polymarket discovery before giving up.
+        try:
+            from scraper import (fetch_polymarket_box_office,
+                                 select_collection_markets, local_now)
+            live = select_collection_markets(
+                fetch_polymarket_box_office(),
+                local_now("ET"),
+                "Fandango title fallback",
+                weekend_override=weekend_of,
+            )
+            titles = [m["movie_title"] for m in (live or [])]
+            if titles:
+                print(f"↷ State had no titles for weekend_of={weekend_of}; "
+                      f"live Polymarket discovery found: {', '.join(titles)}")
+        except Exception as e:
+            print(f"⚠️  Live Polymarket title fallback failed: {e}")
+    if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {}
     target_slugs = {slugify_title(t): t for t in titles}

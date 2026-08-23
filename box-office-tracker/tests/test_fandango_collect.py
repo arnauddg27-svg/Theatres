@@ -358,3 +358,28 @@ class NearestOrderTest(unittest.TestCase):
         self.assertEqual(near[0]["sdate"], "2026-06-20 11:00")
         # discovered count attached either way (volume signal for cross-chain)
         self.assertEqual(near[0]["discovered"], 2)
+
+
+class LiveTitleFallbackTests(unittest.TestCase):
+    """When Phase-1 state has no titles, discover them live by Polymarket.
+
+    2026-08-21: markets listed late, Tue-Thu Phase 1 skipped, showtime-links
+    stayed on the prior weekend, and every Thursday/Friday Fandango slot said
+    "No tracked titles" on a green run — the weekend's first two days of
+    Regal/Cinemark capture (incl. the preview-day volume q) were lost. The
+    collector discovers showtimes by TITLE, so links were never required.
+    """
+
+    def test_fallback_present_and_ordered_after_state(self):
+        src = open(Path(__file__).resolve().parents[1] / "fandango_collect.py").read()
+        i_state = src.index("tracked_movie_titles_from_state(weekend_of)")
+        i_live = src.index("live Polymarket discovery", i_state)
+        i_giveup = src.index("No tracked titles for weekend_of=", i_live)
+        self.assertTrue(i_state < i_live < i_giveup,
+                        "fallback must sit between state lookup and the give-up")
+
+    def test_fallback_failure_cannot_crash_collection(self):
+        src = open(Path(__file__).resolve().parents[1] / "fandango_collect.py").read()
+        i = src.index("Fandango title fallback")
+        block = src[i - 600:i + 900]
+        self.assertIn("except Exception", block)
