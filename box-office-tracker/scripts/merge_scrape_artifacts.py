@@ -191,6 +191,18 @@ def _filter_pre_reservation_sources(artifact_root: Path, sources: list[Path]) ->
         # the model-driving scrape and ignore their partial snapshot sidecar.
         if writes_snapshots and not successful and not snapshots_only:
             continue
+        # A snapshot-only leg that tripped the FATAL coverage floor writes a
+        # marker next to its manifest. Honour the refusal: without this, the
+        # snapshots_only exemption above merged the "refused" sparse rows into
+        # canonical anyway, defeating the floor (verified 2026-08-23).
+        artifact_dir = _artifact_dir_for_source(artifact_root, source)
+        tz = manifest.get("timezone", "")
+        fatal_markers = (list(artifact_dir.rglob(
+            f"scrape-manifest/{tz}-snapshot-fatal.marker")) if tz else [])
+        if fatal_markers:
+            print(f"  dropping {source} — leg {tz} tripped the snapshot "
+                  f"fatal-coverage floor and refused its own rows")
+            continue
         filtered.append(source)
     return filtered
 

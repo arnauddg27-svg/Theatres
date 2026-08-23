@@ -41,16 +41,25 @@ def _offset(weekend_of, day):
 
 
 def lane_counts(weekend_of):
-    """{lane: {offset: rows}} for one weekend, archive-aware."""
+    """({lane: {offset: rows}}, n_films) for one weekend, archive-aware.
+
+    Row counts scale with how many films a weekend tracks, so comparisons are
+    PER FILM: a legit 1-film weekend after 2-film weekends would otherwise
+    read as a ~50% capture gap (alarm fatigue), while a real 60% loss on a
+    2-film weekend after quiet ones would pass clean.
+    """
+    films = set()
     out = {"amc_seat": defaultdict(int), "amc_snapshot": defaultdict(int),
            "fandango": defaultdict(int)}
     seat = P.load_seat_data(weekend_of=weekend_of)
+    films.update(seat.keys())
     for movie_days in seat.values():
         for day, rows in movie_days.items():
             off = _offset(weekend_of, day)
             if off in OFFSETS:
                 out["amc_seat"][off] += len(rows)
     snap = P.load_pre_reservation_data(weekend_of=weekend_of)
+    films.update(snap.keys())
     for movie_days in snap.values():
         for rows in movie_days.values():
             for r in rows:
@@ -73,8 +82,10 @@ def lane_counts(weekend_of):
                 cap = (r.get("snapshot_time") or "")[:10]
                 off = _offset(weekend_of, cap)
                 if off in OFFSETS:
+                    films.add(r.get("movie_title", ""))
                     out["fandango"][off] += 1
-    return out
+    films.discard("")
+    return out, max(1, len(films))
 
 
 def settled_weekends(current):
@@ -106,8 +117,10 @@ def main():
     if not base_wks:
         print("no settled baseline weekends; nothing to compare")
         return 0
-    baselines = {wk: lane_counts(wk) for wk in base_wks}
-    now_counts = lane_counts(current)
+    baselines, base_films = {}, {}
+    for wk in base_wks:
+        baselines[wk], base_films[wk] = lane_counts(wk)
+    now_counts, now_films = lane_counts(current)
 
     print(f"capture completeness — weekend {current} vs median of {base_wks}")
     warned = 0
@@ -116,8 +129,9 @@ def main():
             cap_day = friday + dt.timedelta(days=off)
             if cap_day >= today:
                 continue          # that day's capture windows haven't finished
-            base = median([baselines[wk][lane].get(off, 0) for wk in base_wks])
-            got = now_counts[lane].get(off, 0)
+            base = median([baselines[wk][lane].get(off, 0) / base_films[wk]
+                           for wk in base_wks])
+            got = now_counts[lane].get(off, 0) / now_films
             if base <= 0:
                 # A lane/day with a zero median is either one that never
                 # produces (fine) or one that has been DEAD for every baseline
@@ -133,10 +147,10 @@ def main():
                 status = "LOW"
                 warned += 1
                 print(f"::warning::capture gap — {lane} day {off:+d} "
-                      f"({cap_day}): {got} rows vs median {base:.0f} "
+                      f"({cap_day}): {got:.0f} rows/film vs median {base:.0f} "
                       f"({got / base:.0%}); every run may still be green — "
                       f"check the lane's skip messages")
-            print(f"  {lane:<13} day {off:+d} ({cap_day}): {got:>6} vs median {base:>7.0f}  {status}")
+            print(f"  {lane:<13} day {off:+d} ({cap_day}): {got:>8.0f} vs median {base:>7.0f} rows/film  {status}")
     if not warned:
         print("all lanes at or above the completeness floor")
     return 0

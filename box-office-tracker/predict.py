@@ -1642,7 +1642,15 @@ def load_polymarket_data(weekend_of=None, through_date=None):
             date_str = row.get("date", "").strip()
             if through_date and date_str and date_str > through_date:
                 continue
-            row_weekend = _opening_weekend_for_date(date_str) if date_str else ""
+            # Prefer the explicit collection-weekend stamp (notes column,
+            # "weekend_of=YYYY-MM-DD", written since 2026-08-23): the legacy
+            # observation-date mapping sends Mon-Wed rows for the UPCOMING
+            # weekend to the PRIOR Friday (dependency audit D6).
+            notes = (row.get("notes") or "").strip()
+            if notes.startswith("weekend_of="):
+                row_weekend = notes.split("=", 1)[1].strip()
+            else:
+                row_weekend = _opening_weekend_for_date(date_str) if date_str else ""
             rows.append((idx, row, row_weekend, date_str))
 
     if weekend_of is None:

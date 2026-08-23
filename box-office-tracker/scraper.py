@@ -438,6 +438,19 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
             f"   ⚠️  Snapshot selection dropped {sum(dropped_by_group.values())} theatre(s) "
             f"with no current Phase 1 links ({summary})"
         )
+        # DENOMINATOR-SHRINK GUARD (soft-fail audit finding 5): every later
+        # coverage percentage is measured against the link-having pool, so a
+        # links-starved weekend can read "48/50 = 96% coverage" while the
+        # real fleet is 200+. When the drop halves the pool or worse, say so
+        # loudly — the percentages that follow are honest fractions of a
+        # dishonest base.
+        total_dropped = sum(dropped_by_group.values())
+        total_kept = sum(len(v) for v in theatres_by_group.values())
+        if total_kept and total_dropped >= total_kept:
+            print(f"::warning::snapshot theatre pool halved or worse by missing "
+                  f"Phase 1 links ({total_dropped} dropped vs {total_kept} kept) — "
+                  f"coverage percentages this run are fractions of the SHRUNKEN "
+                  f"pool, not the fleet")
     if not theatres_by_group:
         return set()
     signal_scores = signal_scores if signal_scores is not None else snapshot_theatre_signal_scores()
@@ -1317,12 +1330,28 @@ def fetch_polymarket_box_office():
 
     candidates_by_movie = {}
     parsed_any = False
+    parse_near_misses = []
 
     for event in events:
         if not _is_active_polymarket_event(event):
             continue
         market = _event_to_box_office_market(event)
         if market is None:
+            # An ACTIVE event that looks box-office-shaped but failed to
+            # convert is a parser/schema regression candidate, not a quiet
+            # weekend. The old global parsed_any let ONE parseable event
+            # anywhere (e.g. a holdover market) vouch for the whole feed, so a
+            # misparse of this weekend's only opening market clean-skipped the
+            # entire weekend green (soft-fail audit finding 4).
+            title = str(event.get("title") or "")
+            tl = title.lower()
+            # Mirror the matcher's own precondition exactly: only an event
+            # with BOTH keywords is in this lane's target class. Holdover
+            # markets ("4th weekend box office") and comparison markets fail
+            # conversion BY DESIGN and must not veto quiet-weekend skips.
+            if ("opening weekend" in tl and "box office" in tl
+                    and not is_comparison_box_office_market(title)):
+                parse_near_misses.append(title[:80])
             continue
         parsed_any = True
         candidates_by_movie.setdefault(market["movie_title"], []).append(market)
@@ -1343,7 +1372,14 @@ def fetch_polymarket_box_office():
         print(f"    • {m['movie_title']} (vol: ${m['volume']:,.0f})")
 
     POLYMARKET_LAST_FETCH_OK = feed_ok
-    POLYMARKET_LAST_PARSE_OK = parsed_any
+    # A clean skip is only safe when nothing box-office-shaped failed to
+    # parse: near-misses veto it so the run fails loud instead of green.
+    POLYMARKET_LAST_PARSE_OK = parsed_any and not parse_near_misses
+    if parse_near_misses:
+        print(f"  \u26a0\ufe0f  {len(parse_near_misses)} box-office-shaped event(s) "
+              f"FAILED to parse — refusing to treat this as a quiet weekend:")
+        for t in parse_near_misses[:5]:
+            print(f"      - {t}")
     if feed_ok and not parsed_any and events:
         print(f"  ⚠️  {len(events)} event(s) returned but NONE parsed as a box "
               f"office market — possible parser/schema regression, not a quiet "
@@ -1376,11 +1412,18 @@ def load_movies_from_csv(weekend_of):
                 continue
             if is_comparison_box_office_market(question or title):
                 continue
-            try:
-                row_dt = datetime.strptime(date_str, "%Y-%m-%d")
-                row_weekend = opening_weekend_friday(row_dt)
-            except ValueError:
-                continue
+            stamped = ""
+            notes = row.get("notes", "") or ""
+            if notes.startswith("weekend_of="):
+                stamped = notes.split("=", 1)[1].strip()
+            if stamped:
+                row_weekend = stamped
+            else:
+                try:
+                    row_dt = datetime.strptime(date_str, "%Y-%m-%d")
+                    row_weekend = opening_weekend_friday(row_dt)
+                except ValueError:
+                    continue
             if row_weekend != weekend_of:
                 continue
             if title not in seen:
@@ -1632,9 +1675,20 @@ def is_comparison_box_office_market(title):
     return len(quoted_spans) >= 2 and bool(re.search(r"\bvs\.?\b", lowered))
 
 
-def save_polymarket_data(markets):
-    """Save Polymarket bracket markets to CSV — one row per bracket question."""
+def save_polymarket_data(markets, weekend_of=None):
+    """Save Polymarket bracket markets to CSV — one row per bracket question.
+
+    weekend_of stamps the COLLECTION weekend into the notes column
+    ("weekend_of=YYYY-MM-DD"). Without it, readers must infer the weekend from
+    the observation date via opening_weekend_friday — and rows observed Mon-Wed
+    for the UPCOMING weekend map to the PRIOR Friday, bleeding next weekend's
+    market into the closing weekend's collection and poly data (dependency
+    audit finding D6). The notes column is reused so the append-only CSV needs
+    no schema migration; readers prefer the stamp and fall back to the legacy
+    date mapping for old rows.
+    """
     today = datetime.now().strftime("%Y-%m-%d")
+    note = f"weekend_of={weekend_of}" if weekend_of else ""
 
     existing = set()
     if POLY_CSV.exists():
@@ -1659,7 +1713,7 @@ def save_polymarket_data(markets):
                 writer.writerow([
                     today, m["movie_title"], m["market_url"],
                     bkt["market_question"], bkt["outcome_prices"],
-                    bkt["volume"], bkt["market_id"], "",
+                    bkt["volume"], bkt["market_id"], note,
                 ])
                 new_count += 1
 
@@ -4358,7 +4412,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         )
     movie_titles = [m["movie_title"] for m in poly_markets]
     fetch_bom_theatre_counts(movie_titles)
-    save_polymarket_data(poly_markets)
+    save_polymarket_data(poly_markets, weekend_of=current_weekend)
 
     DATA_DIR.mkdir(exist_ok=True)
     links["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
@@ -4942,7 +4996,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     if not poly_markets:
         log_run(tz_group, [], [], ["No active Polymarket markets have current Phase 1 links"])
         fail_phase("\n❌ No active box office markets have current AMC Phase 1 links.")
-    save_polymarket_data(poly_markets)
+    save_polymarket_data(poly_markets, weekend_of=weekend)
 
     movie_titles = [m["movie_title"] for m in poly_markets]
     market_urls = {m["movie_title"]: m["market_url"] for m in poly_markets}
@@ -5203,6 +5257,23 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     f"fatal floor {SNAPSHOT_FATAL_COVERAGE_RATIO:.0%}; refusing to commit "
                     "misleadingly sparse snapshot data."
                 )
+                # Make the refusal REAL. The leg exits 1, but its artifact
+                # still carries the local CSV, and the merge filter keeps
+                # snapshot-only sources regardless of job status — so the
+                # "refused" sparse rows merged into canonical anyway
+                # (soft-fail audit 2026-08-23, verified). This marker travels
+                # with the artifact; merge drops the leg's snapshot source
+                # when it is present.
+                try:
+                    marker_dir = os.path.join(DATA_DIR, "scrape-manifest")
+                    os.makedirs(marker_dir, exist_ok=True)
+                    with open(os.path.join(
+                            marker_dir, f"{tz_group}-snapshot-fatal.marker"), "w") as mf:
+                        mf.write(
+                            f"coverage={snapshot_report['ratio']:.4f} "
+                            f"floor={SNAPSHOT_FATAL_COVERAGE_RATIO}\n")
+                except OSError as e:
+                    print(f"  ⚠️  could not write fatal-floor marker: {e}")
             else:
                 print(
                     "\n⚠️  Snapshot coverage is partial, but rows were captured; "
