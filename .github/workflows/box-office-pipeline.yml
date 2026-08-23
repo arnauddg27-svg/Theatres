@@ -470,8 +470,12 @@ jobs:
         # of settled weekends and emits ::warning:: on gaps. ALWAYS exits 0 —
         # a watchdog that can brick finalize would repeat the
         # clean_canonical_data incident.
-        continue-on-error: true
-        run: python3 scripts/capture_completeness.py
+        # No continue-on-error: the script always exits 0 by design, so the
+        # only way this step fails is the watchdog itself crashing — and a
+        # dead watchdog swallowed by continue-on-error could stay dead for
+        # weeks (nothing watches the watchdog). The || arm keeps finalize
+        # green while making the crash an ::error:: annotation.
+        run: python3 scripts/capture_completeness.py || echo "::error::capture_completeness watchdog CRASHED — the green-but-empty net is down; fix it"
 
       - name: Clean canonical training data
         working-directory: box-office-tracker

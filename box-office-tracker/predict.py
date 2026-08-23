@@ -1956,10 +1956,36 @@ def save_calibration(cal):
 
 
 def load_theatre_counts():
-    """Load national theatre counts from theatre-counts.json (scraped from BOM)."""
+    """Load national theatre counts from theatre-counts.json (scraped from BOM).
+
+    STALENESS GATE (dependency audit D5, 2026-08-23): the file is pruned and
+    re-stamped per collection window, but this loader served whatever it held
+    with no weekend check — and national_theatre_count_for_movie does substring
+    fuzzy matching, so a stale file could hand a franchise sequel LAST
+    weekend's count as a fresh footprint factor (and via calibrate, into
+    predicted_mid — calibration ground truth). A file whose _updated stamp
+    maps to a different weekend than the current one now yields {}, which
+    every consumer already handles via the metadata fallback.
+    """
     if os.path.exists(THEATRE_COUNTS_JSON):
         with open(THEATRE_COUNTS_JSON) as f:
             data = json.load(f)
+        updated = str(data.get("_updated") or "")
+        if updated:
+            try:
+                updated_dt = datetime.fromisoformat(updated.replace("Z", "+00:00"))
+                try:
+                    from scraper import opening_weekend_friday
+                    updated_weekend = opening_weekend_friday(
+                        updated_dt.replace(tzinfo=None))
+                except ImportError:
+                    # scraper unavailable (heavy deps): keep the pre-gate
+                    # behaviour rather than misclassify with a reimplementation
+                    updated_weekend = _current_weekend_friday()
+                if updated_weekend != _current_weekend_friday():
+                    return {}
+            except (ValueError, TypeError):
+                return {}
         return {k: v for k, v in data.items() if not k.startswith("_")}
     return {}
 
@@ -9153,14 +9179,6 @@ def main():
 
         # Try to find the last prediction for this movie
         seat_data = load_seat_data()
-        poly_data = load_polymarket_data()
-        snapshot_data = load_pre_reservation_data()
-        social_data = load_social_signal_data()
-        reviews_data = load_reviews_data()
-        daily_actual_overrides = load_daily_actual_overrides()
-        showtime_link_profiles = load_showtime_link_daypart_profiles()
-        theatre_counts = load_theatre_counts()
-        metadata = load_movie_metadata()
         movie_match = None
         for m in seat_data:
             if movie_name.lower() in m.lower():
@@ -9171,11 +9189,26 @@ def main():
             print(f"No seat-count prediction found for {movie_name!r}; not recording actual.")
             return
 
+        # EVERY side input must come from the MOVIE's weekend (an actual is
+        # often recorded days later, when each loader's default resolves its
+        # weekend independently — seat data from the seat CSV's max, the rest
+        # from today's Friday or their own CSV maxes). Near a boundary that
+        # built the recorded prediction — the calibration GROUND TRUTH behind
+        # MAE, the bake-off and the conformal band — from mixed-weekend
+        # inputs. Cross-chain was pinned in the original fix; the dependency
+        # audit (2026-08-23) found the other five loaders were not.
+        record_weekend = seat_data_weekend_of(seat_data[movie_match])
+        poly_data = load_polymarket_data(weekend_of=record_weekend)
+        snapshot_data = load_pre_reservation_data(weekend_of=record_weekend)
+        social_data = load_social_signal_data(weekend_of=record_weekend)
+        reviews_data = load_reviews_data(weekend_of=record_weekend)
+        daily_actual_overrides = load_daily_actual_overrides(weekend_of=record_weekend)
+        showtime_link_profiles = load_showtime_link_daypart_profiles(weekend_of=record_weekend)
+        theatre_counts = load_theatre_counts()
+        metadata = load_movie_metadata()
+
         nat_count = national_theatre_count_for_movie(movie_match, theatre_counts, metadata=metadata)
-        # cross-chain occupancy must come from the MOVIE's weekend (an actual is
-        # often recorded days later, when the "current" weekend has moved on)
-        cross_chain_data = load_cross_chain_occupancy(
-            weekend_of=seat_data_weekend_of(seat_data[movie_match]))
+        cross_chain_data = load_cross_chain_occupancy(weekend_of=record_weekend)
         pred = predict_movie(movie_match, seat_data[movie_match],
                             movie_mapping_get(poly_data, movie_match, []), cal,
                             national_theatre_count=nat_count,

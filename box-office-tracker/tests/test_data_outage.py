@@ -182,3 +182,32 @@ class DisagreementAnnotationTests(unittest.TestCase):
         after = src[i:]
         self.assertIn("model_component_disagreement_profile(result)", after)
         self.assertIn("not applied", after)
+
+
+class ZeroOutputFloorTests(unittest.TestCase):
+    """Lanes with work to do must fail loudly on zero output, not exit green.
+
+    Soft-fail audit 2026-08-23: the regular (model-driving) lane could print
+    'Run complete — 0 seat counts' and exit 0; fandango's main() discarded
+    collect()'s totals entirely. Green-zero is reserved for genuinely quiet
+    weekends (no tracked titles anywhere)."""
+
+    def test_regular_lane_floor_present(self):
+        src = (Path(__file__).resolve().parents[1] / "scraper.py").read_text()
+        i = src.index("Run complete")
+        block = src[i:i + 1600]
+        self.assertIn("wrote ZERO seat rows", block)
+        self.assertIn("not snapshots_only and poly_markets and written_rows == 0", block)
+
+    def test_fandango_floor_present(self):
+        src = (Path(__file__).resolve().parents[1] / "fandango_collect.py").read_text()
+        i = src.index("OUTPUT FLOOR")
+        block = src[i:i + 1400]
+        self.assertIn('totals.get("written", 0) == 0', block)
+        self.assertIn("sys.exit(1)", block)
+
+    def test_quiet_weekend_still_green_in_fandango(self):
+        # collect() returns {} when no titles anywhere -> the floor must not fire
+        src = (Path(__file__).resolve().parents[1] / "fandango_collect.py").read_text()
+        i = src.index("OUTPUT FLOOR")
+        self.assertIn("if totals and", src[i:i + 1400])

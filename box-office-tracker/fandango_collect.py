@@ -871,11 +871,24 @@ def main():
         global FANDANGO_CSV
         FANDANGO_CSV = Path(out_override)
 
-    collect(weekend_of=args.weekend, titles=titles, zips=zips,
-            per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
-            concurrency=args.concurrency, deadline_sec=args.deadline_sec,
-            show_dates=show_dates, shard=args.shard, num_shards=args.num_shards,
-            headless=not args.no_headless)
+    totals = collect(weekend_of=args.weekend, titles=titles, zips=zips,
+                     per_theatre_cap=args.per_theatre_cap, max_theatres=args.max_theatres,
+                     concurrency=args.concurrency, deadline_sec=args.deadline_sec,
+                     show_dates=show_dates, shard=args.shard, num_shards=args.num_shards,
+                     headless=not args.no_headless)
+    # OUTPUT FLOOR (soft-fail audit 2026-08-23). main() used to discard the
+    # totals, so a run that resolved titles and then wrote NOTHING — throttle
+    # hard-stop, all theatres blocked, seat-map DOM drift — exited 0 and was
+    # indistinguishable from success; the 2026-08-21 lane went green-zero for
+    # two days that way. A GENUINELY quiet weekend (no titles from state or
+    # live discovery) stays a green skip: collect() returns {} then, and
+    # exiting red on quiet weekends would re-create the failed-slot alarm
+    # noise the clean-skip work removed. Titles present + zero rows = red, so
+    # the scheduler retries and the circuit breaker escalates.
+    if totals and totals.get("written", 0) == 0:
+        print("\u274c Titles were tracked but zero Fandango rows were written "
+              "— failing loudly instead of green-zero.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

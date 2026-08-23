@@ -4685,13 +4685,37 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 collected_at_str = ""
             elif links_weekend:
                 fail_phase(f"\n❌ showtime-links.json is from weekend {links_weekend} (current: {current_weekend}) — run Phase 1 first.")
+            elif snapshots_only and repair_snapshot_links:
+                # Same self-heal as the wrong-weekend branch: a legacy-schema
+                # file (no weekend metadata) used to hard-fail every snapshot
+                # slot with nothing scheduled to fix it — the 2026-08-07
+                # stranding through a different door (dependency audit D4).
+                print("\n⚠️  showtime-links.json has no weekend metadata — "
+                      "rebuilding the snapshot slices instead of aborting.")
+                saved_links = {}
+                collected_at_str = ""
             else:
                 fail_phase(
                     "\n❌ showtime-links.json uses the legacy schema without "
                     "weekend/window metadata — run Phase 1 collect-links first."
                 )
+        except SystemExit:
+            raise
         except Exception as e:
-            fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
+            if snapshots_only and repair_snapshot_links:
+                print(f"\n⚠️  Could not load showtime-links.json ({e}) — "
+                      f"rebuilding the snapshot slices instead of aborting.")
+                saved_links = {}
+                links_meta = {}
+                collected_at_str = ""
+            else:
+                fail_phase(f"\n❌ Could not load showtime-links.json: {e} — run Phase 1 first.")
+    elif snapshots_only and repair_snapshot_links:
+        print("\n⚠️  showtime-links.json not found — rebuilding the snapshot "
+              "slices instead of aborting.")
+        saved_links = {}
+        links_meta = {}
+        collected_at_str = ""
     else:
         fail_phase("\n❌ showtime-links.json not found — run Phase 1 first.")
 
@@ -5232,6 +5256,19 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     )
     print(f"✅ Run complete — {written_rows} seat counts logged{snapshot_msg}, {len(all_issues)} issues")
     print(f"{'='*60}")
+    # OUTPUT FLOOR (soft-fail audit 2026-08-23). The snapshot lane gained a
+    # fatal coverage floor after the Queue-It wall, but the REGULAR lane — the
+    # one that writes the model's ground-truth seat counts — could log
+    # "✅ Run complete — 0 seat counts" and exit 0 (fleet-wide wall, seat-map
+    # DOM drift, deadline exhaustion all reach here). Zero rows on a run that
+    # had movies to scrape means nothing was captured and nothing is lost by
+    # failing: red gets the scheduler retry + circuit breaker instead of a
+    # green run and a finalize that quietly freezes predictions. Partial
+    # capture (>0 rows) stays green — partial post-show data is real revenue
+    # and must commit; the completeness watchdog grades its volume.
+    if not snapshots_only and poly_markets and written_rows == 0:
+        fail_phase("❌ Regular scrape wrote ZERO seat rows for tracked titles "
+                   "— failing loudly instead of green-zero.")
 
 
 def generate_weekend_summary():

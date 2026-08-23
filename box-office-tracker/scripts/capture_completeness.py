@@ -58,8 +58,15 @@ def lane_counts(weekend_of):
                 off = _offset(weekend_of, cap)
                 if off in OFFSETS:
                     out["amc_snapshot"][off] += 1
-    if os.path.exists(FANDANGO_CSV):
-        with open(FANDANGO_CSV, newline="") as f:
+    # Archive-tolerant: the Fandango CSV is not rotated today, but the day it
+    # is, a bare open() here would silently lose every baseline weekend — the
+    # exact archive-blind class from the cross-chain loader incident.
+    import glob
+    import gzip
+    fandango_sources = ([FANDANGO_CSV] if os.path.exists(FANDANGO_CSV) else []) +         sorted(glob.glob(os.path.join(P.DATA_DIR, "fandango-archive", "*.csv.gz")))
+    for src in fandango_sources:
+        op = gzip.open if src.endswith(".gz") else open
+        with op(src, "rt", newline="") as f:
             for r in csv.DictReader(f):
                 if (r.get("weekend_of") or "") != weekend_of:
                     continue
@@ -112,7 +119,15 @@ def main():
             base = median([baselines[wk][lane].get(off, 0) for wk in base_wks])
             got = now_counts[lane].get(off, 0)
             if base <= 0:
-                continue          # lane/day never produces (e.g. seat Thursday pre-preview)
+                # A lane/day with a zero median is either one that never
+                # produces (fine) or one that has been DEAD for every baseline
+                # weekend — which would otherwise normalize into permanent
+                # silence. Say which, once, instead of skipping mutely.
+                if got == 0 and any(
+                        sum(baselines[wk][lane].values()) > 0 for wk in base_wks):
+                    print(f"  {lane:<13} day {off:+d} ({cap_day}): quiet, and the "
+                          f"baseline is also zero — dead-lane normalization risk")
+                continue
             status = "ok"
             if got < WARN_FRACTION * base:
                 status = "LOW"

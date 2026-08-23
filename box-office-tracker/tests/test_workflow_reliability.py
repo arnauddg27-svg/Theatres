@@ -312,10 +312,12 @@ class WorkflowReliabilityTest(unittest.TestCase):
             "continue-on-error: true",
             block[block.index("run: python predict.py"):],
         )
-        # 3 = the two best-effort word-of-mouth fetches (RT + Wikipedia) plus
-        # the capture-completeness watchdog, each deliberately unable to fail
-        # the merge-and-commit path
-        self.assertEqual(block.count("continue-on-error: true"), 3)
+        # 2 = the two best-effort word-of-mouth fetches (RT + Wikipedia). The
+        # completeness watchdog deliberately does NOT use continue-on-error —
+        # that would swallow its own crash; it keeps finalize green via an
+        # `|| echo ::error::` arm that makes a dead watchdog visible instead.
+        self.assertEqual(block.count("continue-on-error: true"), 2)
+        self.assertIn("watchdog CRASHED", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
         self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)
