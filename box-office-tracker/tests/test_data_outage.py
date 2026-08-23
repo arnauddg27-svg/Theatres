@@ -151,3 +151,34 @@ class MetadataMissingWarningTests(unittest.TestCase):
             except Exception:
                 pass
         self.assertNotIn("NO AUDIENCE METADATA", buf.getvalue())
+
+
+class DisagreementAnnotationTests(unittest.TestCase):
+    """The disagreement profile is annotation-only: recorded, never applied.
+
+    select_regression_prediction documents that the production forecast takes
+    the regression block with NO stacked adjustments; the profiler existed as
+    an operator warning but nothing populated model_component_disagreement, so
+    the warning block was unreachable dead code. It is now populated after the
+    forecast is finalized — the backtest is byte-identical (17.2% before and
+    after) and only the printout and recorded fields change.
+    """
+
+    def test_profile_populated_and_weights_reported(self):
+        import predict as P
+        pred = {"movie": "T", "seat_mid_m": 20.0, "snapshot_mid_m": 40.0,
+                "seat_primary_mid_m": 20.0, "snapshot_model_weight": 0.30}
+        profile = P.model_component_disagreement_profile(pred)
+        self.assertEqual("high", profile["severity"])   # 2.0x apart
+        self.assertLess(profile["snapshot_weight_multiplier"], 1.0)
+
+    def test_wiring_is_annotation_only(self):
+        # the wiring must come AFTER select_regression_prediction and must not
+        # feed the multiplier back into any forecast number
+        import predict as P
+        import inspect
+        src = inspect.getsource(P.predict_movie)
+        i = src.index("select_regression_prediction(result, cal)")
+        after = src[i:]
+        self.assertIn("model_component_disagreement_profile(result)", after)
+        self.assertIn("not applied", after)

@@ -1118,8 +1118,19 @@ def active_model_cohort_key():
 
 
 def use_url_showtime_identity():
-    """Opt in to URL-level screen identity without changing the default model."""
-    return os.getenv("THEATRE_MODEL_SHOWTIME_IDENTITY", "").strip().lower() in URL_SHOWTIME_IDENTITY_VALUES
+    """URL-level screen identity — ON by default (2026-08-23 audit).
+
+    The default (theatre|format|showtime) key collapsed rows that share a slot
+    label but carry DIFFERENT amc_seat_map_urls. Audit found 109 such groups in
+    the live CSV; 91 had different auditorium sizes — i.e. genuine simultaneous
+    second screenings (busy films get double-booked screens), whose revenue was
+    silently dropped. And when AMC double-LISTS one physical screening, sales
+    split across the two URLs, so summing both is correct in that case too.
+    Canonical Thursday backtest: 17.2% -> 17.2% (neutral — the double-listing
+    era is recent); the correction only adds revenue on double-booked slots.
+    Set THEATRE_MODEL_SHOWTIME_IDENTITY=legacy to restore the old collapsing.
+    """
+    return os.getenv("THEATRE_MODEL_SHOWTIME_IDENTITY", "").strip().lower() != "legacy"
 
 
 def _add_theatre_cohorts(cohort_sets, path, default_cohort):
@@ -7702,6 +7713,20 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         attach_empirical_seat_snapshot_regression(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
+    # ANNOTATION ONLY. The production forecast deliberately applies no
+    # component-disagreement buffer (see select_regression_prediction's
+    # docstring), but the profile itself was designed as an operator warning
+    # and its print block sat unreachable because nothing ever populated
+    # model_component_disagreement. Populate it without touching any number:
+    # severity/ratios are recorded and printed, and the effective snapshot
+    # weight is reported for visibility, not applied.
+    profile = model_component_disagreement_profile(result)
+    if profile:
+        result["model_component_disagreement"] = profile
+        weight = _coverage_value(result.get("snapshot_model_weight"), default=0.0)
+        result["snapshot_original_model_weight"] = round(weight, 4)
+        result["snapshot_effective_model_weight"] = round(
+            weight * (profile.get("snapshot_weight_multiplier") or 1.0), 4)
     result["data_outage"] = detect_data_outage(result)
     return result
 
