@@ -312,7 +312,10 @@ class WorkflowReliabilityTest(unittest.TestCase):
             "continue-on-error: true",
             block[block.index("run: python predict.py"):],
         )
-        self.assertEqual(block.count("continue-on-error: true"), 2)
+        # 3 = the two best-effort word-of-mouth fetches (RT + Wikipedia) plus
+        # the capture-completeness watchdog, each deliberately unable to fail
+        # the merge-and-commit path
+        self.assertEqual(block.count("continue-on-error: true"), 3)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)
         self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)
@@ -580,3 +583,13 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    def test_finalize_runs_the_completeness_watchdog_informationally(self):
+        """Green-but-empty lanes must trip a volume watchdog, and the watchdog
+        itself must never be able to fail finalize (continue-on-error)."""
+        start = self.workflow.index("  finalize:")
+        end = self.workflow.index("  calibrate:", start)
+        block = self.workflow[start:end]
+        self.assertIn("capture_completeness.py", block)
+        i = block.index("capture_completeness.py")
+        self.assertIn("continue-on-error: true", block[max(0, i - 700):i])

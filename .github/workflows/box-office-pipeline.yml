@@ -462,6 +462,17 @@ jobs:
             --marker-file /tmp/box-office-scrape-markers.txt \
             --summary-file /tmp/box-office-merge-summary.json
 
+      - name: Capture completeness watchdog (informational)
+        working-directory: box-office-tracker
+        # Every silent-loss incident shared one shape: lanes exited 0 while
+        # producing no rows, and nothing watched output volume. This compares
+        # the current weekend's per-day per-lane row counts against the median
+        # of settled weekends and emits ::warning:: on gaps. ALWAYS exits 0 —
+        # a watchdog that can brick finalize would repeat the
+        # clean_canonical_data incident.
+        continue-on-error: true
+        run: python3 scripts/capture_completeness.py
+
       - name: Clean canonical training data
         working-directory: box-office-tracker
         run: python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"
