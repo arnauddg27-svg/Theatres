@@ -7005,16 +7005,34 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     share_override_resolved = amc_market_share_override_for(movie_metadata)
     cross_chain_share_value = None
     cross_chain_volume_value = None
-    if share_override_resolved is None and \
-            (getattr(movie_metadata, "audience_type", "") or "") != FAMILY_WALKUP_AUDIENCE:
+    _is_family = (getattr(movie_metadata, "audience_type", "") or "") == FAMILY_WALKUP_AUDIENCE
+    if share_override_resolved is None and not _is_family:
         cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
-        # Volume mode (uncensored; no saturation gate) — the family gate still
-        # applies since RC occupancy remains walk-up-blind in both modes.
         cross_chain_volume_value = cross_chain_volume_share(movie, cross_chain_data, cal)
         if CROSS_CHAIN_VOLUME_APPLY and cross_chain_volume_value is not None:
             share_override_resolved = cross_chain_volume_value
         else:
             share_override_resolved = cross_chain_share_value
+    elif share_override_resolved is None and _is_family:
+        # FAMILY + VOLUME, early window only. Backfilling broad_family tags and
+        # replaying the backtest showed the blanket family gate is WRONG at the
+        # Thursday stage: with the gate, PAW Patrol's Thursday read collapsed
+        # +17% -> -38% and the backtest 17.1% -> 18.7%. The preview-day volume
+        # ratio (advance window, q measured before walk-ups accumulate) read
+        # family AMC share well (PAW q=0.29 -> 10%, near Toy Story's true 0.176
+        # / Minions' true ~0.14 class). The confound is the DRIFT: across the
+        # weekend the AMC side accumulates post-showtime fill (walk-ups
+        # included) while RC stays advance-online-only, so q inflated 0.29 ->
+        # 1.10 and the share 10% -> 23%, suppressing the nowcast to -36%.
+        # Policy: family films use the volume share while it rests on a single
+        # matched day (the preview read); once multi-day accumulation starts,
+        # fall back to the fleet prior. Occupancy mode stays fully gated.
+        vol = cross_chain_volume_share(movie, cross_chain_data, cal)
+        info = movie_mapping_get(cross_chain_data or {}, movie, {}) or {}
+        if (CROSS_CHAIN_VOLUME_APPLY and vol is not None
+                and (info.get("volume_days") or 0) <= 1):
+            cross_chain_volume_value = vol
+            share_override_resolved = vol
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")

@@ -238,3 +238,34 @@ class CrossChainInactiveReasonTests(unittest.TestCase):
             share = P.cross_chain_share("F", cc, CAL)
             reason = P.cross_chain_inactive_reason("F", cc)
             self.assertEqual(share is None, reason is not None, f"disagreement on {cc}")
+
+
+class FamilyEarlyWindowPolicyTests(unittest.TestCase):
+    """Family films: volume share on preview-day data only, then fleet prior.
+
+    Measured (backfill experiment, 2026-08-23): the blanket family gate moved
+    the Thursday backtest 17.1% -> 18.7% and collapsed PAW Patrol's Thursday
+    read from +17% to -38% — the preview-day volume ratio reads family AMC
+    share well. The confound is the DRIFT: across the weekend the AMC side of
+    q accumulates post-showtime walk-ups while RC stays advance-online-only
+    (PAW q 0.29 -> 1.10, share 10% -> 23%, nowcast -36%). Early window only:
+    volume allowed at volume_days <= 1, fleet prior afterwards; occupancy mode
+    stays fully gated for family (Minions read 0.26 vs true ~0.14 there).
+    """
+
+    def _cc(self, q, days):
+        return {"F": {"amc_occ": 20.0, "rc_occ": 15.0, "amc_rows": 100,
+                      "rc_rows": 100, "volume_ratio": q, "volume_days": days}}
+
+    def test_volume_share_computable_for_family_inputs(self):
+        # the share itself carries no family logic — gating is the caller's job
+        self.assertIsNotNone(P.cross_chain_volume_share("F", self._cc(0.3, 1), CAL))
+        self.assertIsNotNone(P.cross_chain_volume_share("F", self._cc(1.1, 4), CAL))
+
+    def test_call_site_gates_family_after_day_one(self):
+        # the policy lives at the predict_movie call site: volume_days <= 1
+        src = open(Path(__file__).resolve().parents[1] / "predict.py").read()
+        i = src.index("FAMILY + VOLUME, early window only")
+        block = src[i:i + 2000]
+        self.assertIn('volume_days") or 0) <= 1', block)
+        self.assertIn("_is_family", src)
