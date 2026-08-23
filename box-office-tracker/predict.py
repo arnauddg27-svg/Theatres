@@ -7528,6 +7528,14 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     poly_result = None
     if poly_data:
         poly_result = polymarket_expected_value(poly_data)
+        if poly_result:
+            # Market context is a SNAPSHOT from the last scrape, not a live
+            # quote. On resolution day the live market converges fast (Mutiny
+            # closed at 98% "<$8M" while the stored rows still implied $10.3M),
+            # so an unlabelled number reads as fresher than it is. Stamp it.
+            snap_dates = [r.get("date", "") for r in poly_data if r.get("date")]
+            if snap_dates:
+                poly_result["as_of"] = max(snap_dates)
 
     # Stage F: model forecast. Polymarket is retained as market context only;
     # it must never pull the seat/comp forecast up or down.
@@ -8905,8 +8913,9 @@ def print_prediction(pred, verbose=False):
     # Polymarket
     poly = pred["poly_result"]
     if poly:
+        as_of = f" [snapshot {poly['as_of']}, not live]" if poly.get("as_of") else ""
         print(f"  Polymarket ctx:{fmt_m(poly['ev']):>10}  "
-              f"({fmt_m(poly['low'])} - {fmt_m(poly['high'])})")
+              f"({fmt_m(poly['low'])} - {fmt_m(poly['high'])}){as_of}")
         bb = poly["best_bracket"]
         vol_str = f"${poly['total_volume']:,.0f}" if poly['total_volume'] else "—"
         print(f"    Brackets: {len(poly['brackets'])}, vol {vol_str}")
