@@ -1983,6 +1983,126 @@
         "Sunday": 0.981
       },
       "coverage_ratio": 0.974
+    },
+    {
+      "movie": "Insidious: Out of the Further",
+      "date": "2026-08-25",
+      "predicted_mid": 24.2,
+      "predicted_low": 16.9,
+      "predicted_high": 54.6,
+      "seat_raw_estimate": 3.6,
+      "polymarket_ev": 16.8,
+      "actual": 25.3,
+      "actual_total": 25.3,
+      "n_theatres": 419,
+      "days_collected": 2,
+      "n_days": 2,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "weekend_of": "2026-08-21",
+      "reference_amc_theatres": 425,
+      "daily_predictions": {
+        "Friday": 8.19,
+        "Saturday": 7.43
+      },
+      "raw_daily_predictions": {
+        "Friday": 6.41,
+        "Saturday": 6.63
+      },
+      "snapshot_daily_predictions": {
+        "Saturday": 4.5,
+        "Sunday": 4.06
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Saturday": 0.896,
+        "Sunday": 0.48
+      },
+      "snapshot_daily_lead_buckets": {
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.00135,
+        "adjustment_pct": 0.13,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.0865,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.3119,
+        "reach": 90.1,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Friday": 413,
+        "Saturday": 419
+      },
+      "daily_coverage_ratios": {
+        "Friday": 0.972,
+        "Saturday": 0.986
+      },
+      "coverage_ratio": 0.979
+    },
+    {
+      "movie": "Mutiny",
+      "date": "2026-08-25",
+      "predicted_mid": 5.6,
+      "predicted_low": 3.4,
+      "predicted_high": 12.7,
+      "seat_raw_estimate": 1.1,
+      "polymarket_ev": 10.3,
+      "actual": 7.5,
+      "actual_total": 7.5,
+      "n_theatres": 406,
+      "days_collected": 2,
+      "n_days": 2,
+      "model_version": "seat-regression-v26-reported-actual-guardrails",
+      "model_cohort_key": "core,expansion",
+      "weekend_of": "2026-08-21",
+      "reference_amc_theatres": 425,
+      "daily_predictions": {
+        "Friday": 1.56,
+        "Saturday": 2.11
+      },
+      "raw_daily_predictions": {
+        "Friday": 1.0,
+        "Saturday": 1.61
+      },
+      "snapshot_daily_predictions": {
+        "Saturday": 1.21,
+        "Sunday": 1.38
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Saturday": 0.889,
+        "Sunday": 0.468
+      },
+      "snapshot_daily_lead_buckets": {
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99855,
+        "adjustment_pct": -0.14,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.0983,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.2944,
+        "reach": 69.74,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Friday": 400,
+        "Saturday": 406
+      },
+      "daily_coverage_ratios": {
+        "Friday": 0.941,
+        "Saturday": 0.955
+      },
+      "coverage_ratio": 0.948
     }
   ],
   "calibration_factors": {
@@ -2413,7 +2533,7 @@
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-08-18",
+    "last_updated": "2026-08-25",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
@@ -2422,26 +2542,26 @@
           "support": 3.519
         },
         "Friday": {
-          "n": 11,
-          "support": 4.933
+          "n": 10,
+          "support": 4.702
         },
         "Saturday": {
           "n": 18,
-          "support": 6.96
+          "support": 7.175
         },
         "Sunday": {
-          "n": 18,
-          "support": 7.25
+          "n": 19,
+          "support": 7.49
         }
       },
       "leads": {
         "same_day": {
-          "n": 53,
-          "support": 21.236
+          "n": 55,
+          "support": 21.924
         },
         "next_day": {
-          "n": 4,
-          "support": 1.426
+          "n": 2,
+          "support": 0.962
         },
         "multi_day": {
           "n": 0,
