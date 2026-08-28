@@ -124,9 +124,15 @@ class Slot:
 
 # UTC weekday numbers match cron: Sunday=0, Monday=1, ... Saturday=6.
 # Snapshot runs at 02:30 UTC, so UTC Sunday is Saturday night in U.S. time.
-# Do not include UTC Monday here: that would be Sunday night locally, just
-# before the Monday 07:00 UTC post-Sunday regular scrape.
-# Collect-links runs Tue/Wed, but Polymarket sometimes lists a weekend's
+# Do not include UTC Monday in the 02:30Z snapshot: that would be Sunday night
+# locally, just before the Monday 07:00 UTC post-Sunday regular scrape.
+# Pre-reservation snapshots also run Monday-Wednesday (early-lead reads of the
+# UPCOMING weekend's advance sales): the daytime 14:30Z/22:30Z slots run every
+# UTC day, and 02:30Z adds UTC Tue/Wed (Monday/Tuesday night locally;
+# Wednesday night was already covered via UTC Thursday). Monday collect-links
+# slots exist so those early snapshots have fresh links; where a slice is
+# missing the snapshot lane's targeted link repair rebuilds it.
+# Collect-links runs Mon-Wed, but Polymarket sometimes lists a weekend's
 # market later than that (One Night Only appeared after Wed 2026-08-05, so
 # Phase 1 cleanly skipped, showtime-links stayed on the prior weekend, and
 # every Friday snapshot lane hard-failed "run Phase 1 first" — the weekend's
@@ -136,7 +142,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links ET 13Z",
         "box office collect-links ET",
-        frozenset({2, 3, 4}),
+        frozenset({1, 2, 3, 4}),
         13,
         0,
         pipeline_inputs("collect-links", "ET"),
@@ -144,7 +150,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links CT 15Z",
         "box office collect-links CT",
-        frozenset({2, 3, 4}),
+        frozenset({1, 2, 3, 4}),
         15,
         0,
         pipeline_inputs("collect-links", "CT"),
@@ -152,7 +158,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links PT 17Z",
         "box office collect-links PT",
-        frozenset({2, 3, 4}),
+        frozenset({1, 2, 3, 4}),
         17,
         0,
         pipeline_inputs("collect-links", "PT"),
@@ -160,7 +166,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links ET 19Z",
         "box office collect-links ET",
-        frozenset({2, 3}),
+        frozenset({1, 2, 3}),
         19,
         0,
         pipeline_inputs("collect-links", "ET"),
@@ -168,7 +174,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links CT 21Z",
         "box office collect-links CT",
-        frozenset({2, 3}),
+        frozenset({1, 2, 3}),
         21,
         0,
         pipeline_inputs("collect-links", "CT"),
@@ -176,7 +182,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "collect-links PT 23Z",
         "box office collect-links PT",
-        frozenset({2, 3}),
+        frozenset({1, 2, 3}),
         23,
         0,
         pipeline_inputs("collect-links", "PT"),
@@ -184,7 +190,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "snapshot 02:30Z",
         "box office scrape snapshot",
-        frozenset({0, 4, 5, 6}),
+        frozenset({0, 2, 3, 4, 5, 6}),
         2,
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),
@@ -200,7 +206,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "snapshot 14:30Z",
         "box office scrape snapshot",
-        frozenset({0, 4, 5, 6}),
+        frozenset({0, 1, 2, 3, 4, 5, 6}),
         14,
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),
@@ -208,7 +214,7 @@ SLOTS: tuple[Slot, ...] = (
     Slot(
         "snapshot 22:30Z",
         "box office scrape snapshot",
-        frozenset({0, 4, 5, 6}),
+        frozenset({0, 1, 2, 3, 4, 5, 6}),
         22,
         30,
         pipeline_inputs("scrape", "ALL", "true", "true", "true"),

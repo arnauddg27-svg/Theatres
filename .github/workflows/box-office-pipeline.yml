@@ -345,7 +345,7 @@ jobs:
             export SNAPSHOT_MAX_CONCURRENT_TABS=3
             # 200 theatres ≈ 2x the sellout/demand-velocity sample (measured
             # ~1.6s/row ≈ 5,600 rows in the 9000s deadline — Thu-Sun probes fit
-            # fully; only the low-value Wednesday long-lead probe may truncate,
+            # fully; only the low-value Mon-Wed long-lead probes may truncate,
             # and demand-first ordering drops the least-informative tail).
             # Budget chain: lock wait 120m + step 190m + 50m buffers = 360m job cap,
             # so the extra room comes from the repair budget (2700 -> 1800), not

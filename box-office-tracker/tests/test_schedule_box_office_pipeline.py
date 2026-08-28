@@ -42,9 +42,11 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         self.assertEqual(slot.inputs["phase"], "scrape-fandango")
         self.assertEqual(slot.cron_days, frozenset({0, 4, 5, 6}))
         self.assertEqual((slot.hour, slot.minute), (3, 0))
-        # It runs the same nights as the AMC snapshot.
+        # It runs opening-weekend nights only — a subset of the AMC snapshot
+        # nights, which since the Mon-Wed early-lead expansion also cover
+        # Monday/Tuesday night (UTC Tue/Wed).
         amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
-        self.assertEqual(slot.cron_days, amc.cron_days)
+        self.assertTrue(slot.cron_days < amc.cron_days)
 
     def test_fandango_full_pool_plus_core_second_pass(self):
         fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
@@ -76,6 +78,65 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         )
 
         self.assertNotIn("snapshot 02:30Z", [slot.name for _, slot in due])
+
+    def test_snapshot_slots_cover_monday_through_wednesday(self):
+        # 2026-05-04 is a Monday UTC: both daytime snapshot slots must fire.
+        daytime = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-04T23:00:00Z"),
+            lookback_minutes=720,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+        names = [slot.name for _, slot in daytime]
+        self.assertIn("snapshot 14:30Z", names)
+        self.assertIn("snapshot 22:30Z", names)
+
+        # Monday and Tuesday night locally = 02:30Z on UTC Tue/Wed.
+        for utc_day in ("2026-05-05", "2026-05-06"):
+            night = schedule.candidate_due_slots(
+                now=schedule.parse_utc(f"{utc_day}T03:30:00Z"),
+                lookback_minutes=75,
+                mode="primary",
+                fallback_grace_minutes=90,
+            )
+            self.assertIn(
+                "snapshot 02:30Z",
+                [slot.name for _, slot in night],
+                utc_day,
+            )
+
+    def test_fandango_slots_stay_weekend_only(self):
+        # The Fandango lane is rate-limit-bound and gated out of the model;
+        # the Mon-Wed pre-reservation expansion applies to the AMC lane only.
+        due = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-05T23:30:00Z"),  # Tuesday UTC
+            lookback_minutes=1440,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+        self.assertEqual(
+            [],
+            [slot.name for _, slot in due if "fandango" in slot.name],
+        )
+
+    def test_weekly_phase1_schedule_has_all_monday_slots(self):
+        due = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-04T23:30:00Z"),  # Monday UTC
+            lookback_minutes=720,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+
+        names = [slot.name for _, slot in due]
+        for slot_name in (
+            "collect-links ET 13Z",
+            "collect-links CT 15Z",
+            "collect-links PT 17Z",
+            "collect-links ET 19Z",
+            "collect-links CT 21Z",
+            "collect-links PT 23Z",
+        ):
+            self.assertIn(slot_name, names)
 
     def test_watchdog_uses_short_grace_to_protect_snapshot_date_boundary(self):
         too_early = schedule.candidate_due_slots(

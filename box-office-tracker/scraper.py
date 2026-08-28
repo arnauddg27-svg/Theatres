@@ -736,17 +736,15 @@ def phase2_snapshot_collection_dates(local):
     by selecting only the top historical-signal theatres rather than truncating
     the future-day window.
     """
-    if local.weekday() == 2:  # Wednesday pre-opening
+    if local.weekday() in (0, 1, 2):  # Mon-Wed pre-opening (early-lead reads)
         weekend = phase1_weekend_anchor(local, full_weekend=True)
         start = local + timedelta(days=1)
-    elif local.weekday() in (3, 4, 5, 6):  # Thu-Sun opening weekend
+    else:  # Thu-Sun opening weekend
         weekend = opening_weekend_friday(local)
         # A delayed 02:30Z snapshot can cross midnight in ET while the full
         # show day is still ahead. Keep that current local show date until the
         # early-morning cutoff instead of silently losing the Friday/Sunday read.
         start = local if local.hour < SNAPSHOT_SAME_DAY_CUTOFF_HOUR else local + timedelta(days=1)
-    else:
-        return [local.strftime("%Y-%m-%d")]
 
     start_date = start.strftime("%Y-%m-%d")
     end_date = opening_weekend_show_dates(weekend)[-1]
@@ -1007,6 +1005,8 @@ def opening_weekend_show_dates(weekend_of):
 
 def phase1_weekend_anchor(ref_dt, full_weekend=False):
     """Weekend key Phase 1 should collect links for."""
+    if full_weekend and ref_dt.weekday() == 0:  # Monday early-lead links
+        return (ref_dt + timedelta(days=4)).strftime("%Y-%m-%d")
     if full_weekend and ref_dt.weekday() == 1:  # Tuesday warm-cache links
         return (ref_dt + timedelta(days=3)).strftime("%Y-%m-%d")
     if full_weekend and ref_dt.weekday() == 2:  # Wednesday pre-opening links
@@ -1018,8 +1018,9 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
                             full_weekend=False):
     """Dates Phase 1 should visit for one timezone.
 
-    Full-weekend expansion starts with a Tuesday warm-cache pass, then
-    Wednesday/Thursday/Friday fill gaps and refresh late schedule changes.
+    Full-weekend expansion starts with a Monday early-lead pass, then
+    Tuesday/Wednesday/Thursday/Friday fill gaps and refresh late schedule
+    changes.
 
     A same-day full-weekend run ALWAYS keeps the current local day in its
     collection set, even in the evening. AMC serves the whole day's listing
@@ -1048,7 +1049,7 @@ def phase1_collection_dates(tz_group, target_date=None, ref_dt=None,
         weekend_dates = opening_weekend_show_dates(
             phase1_weekend_anchor(base_dt, full_weekend=True)
         )
-        if base_dt.weekday() in (1, 2):
+        if base_dt.weekday() in (0, 1, 2):
             return weekend_dates
         if base_dt.weekday() in (3, 4, 5):
             return [date_str for date_str in weekend_dates if date_str >= current_date]
@@ -4094,7 +4095,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     else:
         target_ref_dt = ref_local
     live_markets = fetch_polymarket_box_office()
-    preopening_full_weekend = bool(full_weekend and target_ref_dt.weekday() in (1, 2))
+    preopening_full_weekend = bool(full_weekend and target_ref_dt.weekday() in (0, 1, 2))
     current_weekend = phase1_weekend_anchor(target_ref_dt, full_weekend=full_weekend)
     poly_markets = select_collection_markets(
         live_markets,
@@ -4636,7 +4637,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     # Step 1: Get Polymarket movies
     # Step 2: Build flat list of theatres to scrape
-    snapshot_preopening = bool(snapshots_only and local.weekday() == 2)
+    snapshot_preopening = bool(snapshots_only and local.weekday() in (0, 1, 2))
     weekend = (
         phase1_weekend_anchor(local, full_weekend=True)
         if snapshot_preopening

@@ -128,6 +128,34 @@ class ScraperLoggingTest(unittest.TestCase):
 
         self.assertEqual(["2026-05-23", "2026-05-24"], dates)
 
+    def test_phase1_full_weekend_dates_expand_from_monday_early_lead(self):
+        dates = scraper.phase1_collection_dates(
+            "ET",
+            ref_dt=datetime(2026, 5, 4, 12, 0),  # Monday
+            full_weekend=True,
+        )
+
+        self.assertEqual(
+            ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+            dates,
+        )
+        self.assertEqual(
+            "2026-05-01",
+            scraper.opening_weekend_friday(datetime(2026, 5, 4, 12, 0)),
+        )
+        self.assertEqual(
+            "2026-05-08",
+            scraper.phase1_weekend_anchor(datetime(2026, 5, 4, 12, 0), full_weekend=True),
+        )
+
+    def test_snapshot_dates_monday_and_tuesday_target_upcoming_weekend(self):
+        for day in (4, 5):  # Monday, Tuesday
+            dates = scraper.phase2_snapshot_collection_dates(datetime(2026, 5, day, 12, 0))
+            self.assertEqual(
+                ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"],
+                dates,
+            )
+
     def test_phase1_full_weekend_dates_expand_from_tuesday_warm_cache(self):
         dates = scraper.phase1_collection_dates(
             "ET",
@@ -707,17 +735,19 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual("0", rows[1]["seats_available"])
         self.assertEqual("100", rows[1]["occupancy_pct"])
 
-    def test_snapshot_only_phase2_expects_current_local_date(self):
+    def test_snapshot_only_phase2_expects_upcoming_weekend_on_preopening_day(self):
         old_local_now = scraper.local_now
         try:
-            scraper.local_now = lambda tz: datetime(2026, 5, 5, 9, 30)
+            scraper.local_now = lambda tz: datetime(2026, 5, 5, 9, 30)  # Tuesday
 
             self.assertEqual(
                 {"ET": "2026-05-04"},
                 scraper.phase2_expected_dates(["ET"], snapshots_only=False),
             )
+            # Mon-Wed are pre-opening snapshot days: the early-lead probe
+            # targets the UPCOMING weekend, starting with its Thursday.
             self.assertEqual(
-                {"ET": "2026-05-05"},
+                {"ET": "2026-05-07"},
                 scraper.phase2_expected_dates(["ET"], snapshots_only=True),
             )
         finally:

@@ -144,6 +144,8 @@ def _opening_weekend_show_dates(weekend_of: str) -> list[str]:
 
 
 def _phase1_weekend_anchor(ref_dt: datetime, full_weekend: bool = True) -> str:
+    if full_weekend and ref_dt.weekday() == 0:  # Monday early-lead links.
+        return (ref_dt + timedelta(days=4)).strftime("%Y-%m-%d")
     if full_weekend and ref_dt.weekday() == 1:  # Tuesday warm-cache links.
         return (ref_dt + timedelta(days=3)).strftime("%Y-%m-%d")
     if full_weekend and ref_dt.weekday() == 2:  # Wednesday fallback links.
@@ -172,7 +174,7 @@ def _phase1_expected_dates(tz: str, now: datetime | None = None) -> list[str]:
     weekend_dates = _opening_weekend_show_dates(
         _phase1_weekend_anchor(local, full_weekend=True)
     )
-    if local.weekday() in (1, 2):
+    if local.weekday() in (0, 1, 2):
         return weekend_dates
     if local.weekday() in (3, 4, 5):
         current_start = _collection_window_start_hour(current_date)

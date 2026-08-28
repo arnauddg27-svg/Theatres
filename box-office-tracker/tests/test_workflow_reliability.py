@@ -491,7 +491,12 @@ class WorkflowReliabilityTest(unittest.TestCase):
         ):
             self.assertIn(slot, script)
 
-        self.assertIn("frozenset({2, 3})", script)
+        # Collect-links runs Mon-Wed (early slots also Thursday); AMC snapshot
+        # slots cover Mon-Wed pre-opening days, Fandango stays weekend-only.
+        self.assertIn("frozenset({1, 2, 3})", script)
+        self.assertIn("frozenset({1, 2, 3, 4})", script)
+        self.assertIn("frozenset({0, 2, 3, 4, 5, 6})", script)
+        self.assertIn("frozenset({0, 1, 2, 3, 4, 5, 6})", script)
         self.assertIn("frozenset({0, 4, 5, 6})", script)
         self.assertIn("frozenset({0, 1, 5, 6})", script)
         self.assertIn("frozenset({3})", script)
