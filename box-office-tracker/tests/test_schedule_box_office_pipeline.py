@@ -40,19 +40,24 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
     def test_fandango_slot_dispatches_isolated_phase(self):
         slot = next(s for s in schedule.SLOTS if s.name == "snapshot fandango 03Z")
         self.assertEqual(slot.inputs["phase"], "scrape-fandango")
-        self.assertEqual(slot.cron_days, frozenset({0, 4, 5, 6}))
+        self.assertEqual(slot.cron_days, frozenset({0, 2, 3, 4, 5, 6}))
         self.assertEqual((slot.hour, slot.minute), (3, 0))
-        # It runs opening-weekend nights only — a subset of the AMC snapshot
-        # nights, which since the Mon-Wed early-lead expansion also cover
-        # Monday/Tuesday night (UTC Tue/Wed).
+        # It runs the same nights as the AMC 02:30Z snapshot, including the
+        # Mon-Wed pre-opening nights and excluding UTC Monday (Sunday night).
         amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
-        self.assertTrue(slot.cron_days < amc.cron_days)
+        self.assertEqual(slot.cron_days, amc.cron_days)
 
     def test_fandango_full_pool_plus_core_second_pass(self):
         fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
         self.assertEqual(len(fslots), 12)
         self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
-        self.assertTrue(all(s.cron_days == frozenset({0, 4, 5, 6}) for s in fslots))
+        # Overnight + core passes cover Mon-Wed pre-opening nights too; the
+        # near-showtime afternoon pass is weekend-only (no shows within hours
+        # exist pre-opening). No fandango slot fires on UTC Monday (Sun night).
+        for s in fslots:
+            expected = (frozenset({0, 4, 5, 6}) if s.hour in (16, 18, 20)
+                        else frozenset({0, 2, 3, 4, 5, 6}))
+            self.assertEqual(expected, s.cron_days, s.name)
         by_hour = {s.hour: int(s.inputs["fandango_shard"]) for s in fslots}
         # 03-08Z cover all 6 shards once → the full ~320 pool per night
         self.assertEqual({h: by_hour[h] for h in range(3, 9)},
@@ -105,18 +110,41 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
                 utc_day,
             )
 
-    def test_fandango_slots_stay_weekend_only(self):
-        # The Fandango lane is rate-limit-bound and gated out of the model;
-        # the Mon-Wed pre-reservation expansion applies to the AMC lane only.
-        due = schedule.candidate_due_slots(
-            now=schedule.parse_utc("2026-05-05T23:30:00Z"),  # Tuesday UTC
-            lookback_minutes=1440,
+    def test_fandango_preopening_nights_and_weekend_only_near_pass(self):
+        # Monday night local = UTC Tuesday: the overnight fandango pass fires.
+        monday_night = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-05T03:30:00Z"),  # Tuesday UTC 03:30
+            lookback_minutes=75,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+        self.assertIn(
+            "snapshot fandango 03Z",
+            [slot.name for _, slot in monday_night],
+        )
+
+        # Sunday night local = UTC Monday: no fandango slot fires.
+        sunday_night = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-04T11:30:00Z"),  # Monday UTC
+            lookback_minutes=720,
             mode="primary",
             fallback_grace_minutes=90,
         )
         self.assertEqual(
             [],
-            [slot.name for _, slot in due if "fandango" in slot.name],
+            [s.name for _, s in sunday_night if "fandango" in s.name],
+        )
+
+        # Tuesday afternoon UTC: the near-showtime pass stays weekend-only.
+        tuesday_pm = schedule.candidate_due_slots(
+            now=schedule.parse_utc("2026-05-05T20:30:00Z"),  # Tuesday UTC
+            lookback_minutes=330,
+            mode="primary",
+            fallback_grace_minutes=90,
+        )
+        self.assertEqual(
+            [],
+            [s.name for _, s in tuesday_pm if "fandango near" in s.name],
         )
 
     def test_weekly_phase1_schedule_has_all_monday_slots(self):

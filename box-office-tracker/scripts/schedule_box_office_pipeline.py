@@ -224,36 +224,42 @@ SLOTS: tuple[Slot, ...] = (
     # that recovers in ~1 h, so fan-out can't beat it; instead 6 slots one hour
     # apart each scrape a different 1/6 of the pool (one fresh IP, alone), and
     # together cover all ~320 theatres in a single night. Same cron_days as the
-    # AMC snapshot. Isolated lane; gated out of the model until Phase C.
+    # AMC 02:30Z snapshot, including its Mon-Wed pre-opening nights (UTC
+    # Tue/Wed/Thu): fandango_collect anchors those forward to the upcoming
+    # Friday and renders date-parameterized theater pages. UTC Monday (Sunday
+    # night) stays excluded. Isolated lane; gated out of the model until
+    # Phase C.
     Slot("snapshot fandango 03Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 3, 0, fandango_slot_inputs(0, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 3, 0, fandango_slot_inputs(0, 6)),
     Slot("snapshot fandango 04Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 4, 0, fandango_slot_inputs(1, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 4, 0, fandango_slot_inputs(1, 6)),
     Slot("snapshot fandango 05Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 5, 0, fandango_slot_inputs(2, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 5, 0, fandango_slot_inputs(2, 6)),
     Slot("snapshot fandango 06Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 6, 0, fandango_slot_inputs(3, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 6, 0, fandango_slot_inputs(3, 6)),
     Slot("snapshot fandango 07Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 7, 0, fandango_slot_inputs(4, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 7, 0, fandango_slot_inputs(4, 6)),
     Slot("snapshot fandango 08Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 8, 0, fandango_slot_inputs(5, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 8, 0, fandango_slot_inputs(5, 6)),
     # SECOND nightly pass over the core ~160 theatres (shards 0-2 of the 6-way
     # split) at 09-11Z — gives those a second pre-reservation reading each night
     # (evening via 03-05Z + overnight here) so we capture how fast seats fill,
     # while the full 320 still gets one reading. Spaced ≥1 h from the evening
     # slots and from each other so Fandango's per-range limit stays recovered.
     Slot("snapshot fandango core 09Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 9, 0, fandango_slot_inputs(0, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 9, 0, fandango_slot_inputs(0, 6)),
     Slot("snapshot fandango core 10Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 10, 0, fandango_slot_inputs(1, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 10, 0, fandango_slot_inputs(1, 6)),
     Slot("snapshot fandango core 11Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 11, 0, fandango_slot_inputs(2, 6)),
+         frozenset({0, 2, 3, 4, 5, 6}), 11, 0, fandango_slot_inputs(2, 6)),
     # NEAR-SHOWTIME afternoon pass over the core theatres, nearest-show-first:
     # the overnight slots capture at a median 13-16h lead (advance sales only),
     # which is why family-film occupancy reads near zero and the cross-chain
     # share stays family-gated. These read matinee/early-evening shows 1-4h out,
     # where advance-online occupancy best approximates final attendance —
     # accumulating the like-for-like data that eventually lifts the family gate.
+    # Weekend-only by design: pre-opening days have no shows within hours, so a
+    # near-showtime pass is meaningless there.
     Slot("snapshot fandango near 16Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 16, 0, fandango_slot_inputs(0, 6, order="nearest")),
     Slot("snapshot fandango near 18Z", "box office scrape-fandango ALL",
