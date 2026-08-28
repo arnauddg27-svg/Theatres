@@ -61,6 +61,7 @@ from scraper import (
     PRE_RESERVATION_DEDUPE_FIELDS,
     opening_weekend_friday,
     opening_weekend_show_dates,
+    phase1_weekend_anchor,
     tracked_movie_titles_from_state,
     snapshot_bucket,
     should_record_pre_reservation_snapshot,
@@ -243,6 +244,24 @@ def showtime_timing(sdate, tz_name, now_utc):
     show_date = show_dt.strftime("%Y-%m-%d")
     dow = _DOW[show_dt.weekday()]
     return minutes_after, minutes_until, show_date, dow
+
+
+def page_visit_dates(window_dates, show_dates, ref_dt):
+    """Which theater-page dates to render for one theatre. Pure — unit-tested.
+
+    The default (dateless) theater-page serves only the CURRENT local day —
+    verified from 306 production runs whose captures never exceed a ~43h lead —
+    so it can never see the opening weekend from Monday-Wednesday. On those
+    pre-opening days (and for explicit ad-hoc show_dates) each window date is
+    rendered via ``theater-page?date=YYYY-MM-DD``. Thu-Sun keeps the proven
+    dateless visit: same-day shows plus the overnight roll to the next day.
+    ``None`` in the result means "render the default page".
+    """
+    if show_dates:
+        return sorted(set(show_dates))
+    if ref_dt.weekday() in (0, 1, 2):  # Mon-Wed pre-opening (early-lead reads)
+        return sorted(window_dates)
+    return [None]
 
 
 def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
@@ -517,18 +536,34 @@ def _capture_theatre(page, th, shared):
     slug = th.get("slug", "")
     tz_name = th.get("timezone", "")
     stats = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0, "seat_fails": 0}
-    try:
-        page.goto(f"https://www.fandango.com/{slug}/theater-page",
-                  wait_until="domcontentloaded", timeout=45000)
-        page.wait_for_timeout(3000)
-        if looks_blocked(page):
-            stats["blocks"] += 1
-            print(f"  {slug}: BLOCKED on theater-page")
-            return [], stats
-        entries = page.evaluate(SHOWTIME_ENTRIES_JS)
-    except Exception as e:
-        print(f"  {slug}: theater-page ERROR {str(e)[:80]}")
-        return [], stats
+    entries = []
+    seen_hrefs = set()
+    for page_date in shared.get("page_dates", [None]):
+        url = f"https://www.fandango.com/{slug}/theater-page"
+        if page_date:
+            url += f"?date={page_date}"
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=45000)
+            page.wait_for_timeout(3000)
+            if looks_blocked(page):
+                stats["blocks"] += 1
+                print(f"  {slug}: BLOCKED on theater-page"
+                      f"{f' date={page_date}' if page_date else ''}")
+                return [], stats
+            # Merge across dated renders; sdate in each jump href keeps the
+            # showtime's own date, so a date param Fandango ignored simply
+            # yields entries the window filter drops (loudly zero, not wrong).
+            for e in page.evaluate(SHOWTIME_ENTRIES_JS):
+                href = e.get("href", "")
+                if href in seen_hrefs:
+                    continue
+                seen_hrefs.add(href)
+                entries.append(e)
+        except Exception as e:
+            print(f"  {slug}: theater-page ERROR {str(e)[:80]}")
+            if not entries:
+                return [], stats
+            break
 
     wanted = select_wanted_showtimes(entries, shared["target_slugs"],
                                      shared["window_dates"], tz_name,
@@ -660,7 +695,12 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
 
     show_dates overrides the opening-weekend window (used for ad-hoc test runs
     that capture an arbitrary date, e.g. validating GitHub seat capture today)."""
-    weekend_of = weekend_of or opening_weekend_friday()
+    # Mon-Wed anchor FORWARD to the upcoming Friday (early-lead pre-opening
+    # reads, mirroring the AMC snapshot lane); Thu-Sun this is
+    # opening_weekend_friday. Runner-local time is UTC on GitHub-hosted jobs,
+    # matching the UTC slot table.
+    ref_now = datetime.now()
+    weekend_of = weekend_of or phase1_weekend_anchor(ref_now, full_weekend=True)
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     if not titles:
         # State (showtime-links.json / theatre-counts) only refreshes when
@@ -721,13 +761,17 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     run_id = run_id or f"fandango-{snapshot_bucket(check_time)}"
     concurrency = max(1, min(concurrency, len(theatres)))
 
+    page_dates = page_visit_dates(window_dates, show_dates, ref_now)
     print(f"Fandango collect • egress_ip={_egress_ip()} • weekend_of={weekend_of} "
           f"• {len(theatres)} theatres • {concurrency} workers "
           f"• cap={per_theatre_cap}/theatre • deadline={deadline_sec}s "
-          f"• titles={list(target_slugs.values())}")
+          f"• titles={list(target_slugs.values())}"
+          + (f" • dated theater-page visits: {page_dates}"
+             if page_dates != [None] else ""))
 
     shared = {
         "target_slugs": target_slugs, "window_dates": window_dates,
+        "page_dates": page_dates,
         "order": FANDANGO_ORDER,
         "now_utc": now_utc, "weekend_of": weekend_of, "run_id": run_id,
         "check_time": check_time, "per_theatre_cap": per_theatre_cap,
@@ -818,6 +862,16 @@ def _selftest():
     # showtime_id is the showtime datetime (Fandango's mid is the movie id, not per-showtime)
     assert row["chain"] == "REGL" and row["showtime_id"] == "2026-06-20 19:55"
     assert row["amc_seat_map_url"] == seat_url and row["occupancy_pct"] == "25.0"
+
+    # page_visit_dates: explicit show_dates always render dated pages; Mon-Wed
+    # pre-opening renders every window date; Thu-Sun keeps the dateless visit.
+    window = {"2026-09-03", "2026-09-04", "2026-09-05", "2026-09-06"}
+    assert page_visit_dates(window, ["2026-08-30"], datetime(2026, 8, 28)) == ["2026-08-30"]
+    for day in (8, 31), (9, 1), (9, 2):  # Mon/Tue/Wed
+        got = page_visit_dates(window, None, datetime(2026, *day))
+        assert got == sorted(window), (day, got)
+    for day in (9, 3), (9, 4), (9, 5), (9, 6):  # Thu-Sun
+        assert page_visit_dates(window, None, datetime(2026, *day)) == [None], day
 
     # dedupe key includes chain (so REGL/CNMK never collapse)
     r2 = dict(row); r2["chain"] = "CNMK"
