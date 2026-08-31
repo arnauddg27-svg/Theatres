@@ -204,9 +204,15 @@ class ZeroOutputFloorTests(unittest.TestCase):
     def test_fandango_floor_present(self):
         src = (Path(__file__).resolve().parents[1] / "fandango_collect.py").read_text()
         i = src.index("OUTPUT FLOOR")
-        block = src[i:i + 1400]
+        block = src[i:i + 2400]
         self.assertIn('totals.get("written", 0) == 0', block)
         self.assertIn("sys.exit(1)", block)
+        # Pre-opening exception (2026-08-31): dated visits + zero MATCHED
+        # showtimes + zero blocks = schedule not posted yet -> clean skip.
+        # Any match or any block with zero rows written must stay red.
+        self.assertIn('totals.get("dated_visits")', block)
+        self.assertIn('totals.get("matched", 0) == 0', block)
+        self.assertIn('totals.get("blocks", 0) == 0', block)
 
     def test_quiet_weekend_still_green_in_fandango(self):
         # collect() returns {} when no titles anywhere -> the floor must not fire

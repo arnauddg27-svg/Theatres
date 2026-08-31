@@ -146,17 +146,18 @@ def overview_core_slug(href):
     Fandango movie-overview slugs come in two shapes:
     ``{title-slug}-{year}-{fandangoId}`` (e.g. ``toy-story-5-2026-243393``) and
     ``{title-slug}-{fandangoId}`` with NO year (e.g. ``coyote-vs-acme-246329``).
-    Strip a trailing ``-YYYY-NNNN`` OR a bare ``-NNNN`` id so we compare against
-    the bare title slug. The id is always 4+ digits, so requiring ``\\d{4,}``
-    leaves a real sequel number (``toy-story-5``) untouched. Missing the bare-id
-    form cost 'Coyote vs. Acme' its entire 2026-08-28 Fandango capture.
+    Strip a trailing ``-YYYY-NNNN`` (id of any length, matching the original
+    behavior) OR a bare ``-NNNN`` id of 4+ digits, so we compare against the
+    bare title slug. Requiring 4+ digits for the bare form leaves a real sequel
+    number (``toy-story-5``) untouched. Missing the bare-id form cost
+    'Coyote vs. Acme' its entire 2026-08-28 Fandango capture.
     """
     if not href:
         return ""
     path = urlparse(href).path or href
     m = re.search(r"/([a-z0-9\-]+)/movie-overview", path)
     core = m.group(1) if m else ""
-    return re.sub(r"-(?:\d{4}-)?\d{4,}$", "", core)
+    return re.sub(r"-(?:\d{4}-\d+|\d{4,})$", "", core)
 
 
 # Roman numerals / number words normalize to digits so 'mortal-kombat-ii'
@@ -279,6 +280,15 @@ def page_visit_dates(window_dates, show_dates, ref_dt):
     if show_dates:
         return sorted(set(show_dates))
     if ref_dt.weekday() in (0, 1, 2):  # Mon-Wed pre-opening (early-lead reads)
+        return sorted(window_dates)
+    if ref_dt.weekday() == 3 and ref_dt.hour < 9:
+        # UTC Thursday 03-08Z is still WEDNESDAY EVENING at every US theatre
+        # (03Z = 23:00 ET / 20:00 PT), so the dateless page serves Wednesday's
+        # shows — never in the Thu-Sun window. This made the Wednesday-night
+        # overnight slots structurally near-zero (17 rows total across ~10
+        # weekends vs 218-323 for Fri/Sat/Sun at the same hour). Render the
+        # window dates instead; from 09Z the local pages have rolled to
+        # Thursday and the proven dateless visit works.
         return sorted(window_dates)
     return [None]
 
@@ -820,6 +830,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
             totals[k] += agg.get(k, 0)
     totals["throttled_stop"] = shared["stop"].is_set()
     totals["pauses"] = shared["resume_count"]
+    totals["dated_visits"] = page_dates != [None]
 
     print("\n=== Fandango collect summary ===")
     print(f"  pool={len(theatres)} visited={totals['visited']}"
@@ -906,8 +917,15 @@ def _selftest():
     for day in (8, 31), (9, 1), (9, 2):  # Mon/Tue/Wed
         got = page_visit_dates(window, None, datetime(2026, *day))
         assert got == sorted(window), (day, got)
-    for day in (9, 3), (9, 4), (9, 5), (9, 6):  # Thu-Sun
-        assert page_visit_dates(window, None, datetime(2026, *day)) == [None], day
+    # UTC Thursday before 09Z is Wednesday evening at every US theatre — the
+    # overnight 03-08Z slots must render dated pages or they read ~nothing.
+    for hour in (3, 8):
+        got = page_visit_dates(window, None, datetime(2026, 9, 3, hour))
+        assert got == sorted(window), (hour, got)
+    # From 09Z Thursday the local pages have rolled to Thursday: dateless.
+    for args in ((2026, 9, 3, 9), (2026, 9, 3, 16), (2026, 9, 4, 3),
+                 (2026, 9, 5, 3), (2026, 9, 6, 12)):  # Thu 09Z+, Fri-Sun
+        assert page_visit_dates(window, None, datetime(*args)) == [None], args
 
     # dedupe key includes chain (so REGL/CNMK never collapse)
     r2 = dict(row); r2["chain"] = "CNMK"
@@ -976,6 +994,20 @@ def main():
     # noise the clean-skip work removed. Titles present + zero rows = red, so
     # the scheduler retries and the circuit breaker escalates.
     if totals and totals.get("written", 0) == 0:
+        # Pre-opening exception: on dated early-lead visits (Mon-Wed and the
+        # Wednesday-night 03-08Z slots), zero MATCHED showtimes with zero
+        # blocks means the chains simply have not posted the weekend schedule
+        # yet — there is nothing to capture, and now that the workflow step
+        # propagates this exit code (PIPESTATUS fix), exiting red here would
+        # burn the slot's 3 retries and trip the circuit breaker every early
+        # week. matched > 0 with zero rows written, or any block, is still a
+        # real failure and stays red.
+        if (totals.get("dated_visits")
+                and totals.get("matched", 0) == 0
+                and totals.get("blocks", 0) == 0):
+            print("\u21b7 Pre-opening dated visits found no matching showtimes "
+                  "yet (schedule not posted) — nothing to capture (clean skip).")
+            return
         print("\u274c Titles were tracked but zero Fandango rows were written "
               "— failing loudly instead of green-zero.")
         sys.exit(1)
