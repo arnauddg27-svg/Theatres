@@ -106,6 +106,10 @@ on:
         description: 'scrape-cinemark ad-hoc test: comma-separated titles (empty = tracked).'
         required: false
         default: ''
+      cinemark_mode:
+        description: 'scrape-cinemark: pre (default, pre-reservation snapshots) or post (day-of finals census — shows already started).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -964,6 +968,7 @@ jobs:
         timeout-minutes: 40
         env:
           CINEMARK_MAX_THEATRES: ${{ github.event.inputs.cinemark_max_theatres }}
+          CINEMARK_MODE: ${{ github.event.inputs.cinemark_mode }}
           CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
           CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
           # Test runs (show_dates set) write a throwaway CSV, never canonical.

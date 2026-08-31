@@ -172,9 +172,22 @@ def theatre_from_url(url):
     }
 
 
-def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap):
-    """entries: [{'href','movie_href'}] -> capped in-window pre-show picks.
-    Prime-time first (distance from 7pm), mirroring the Fandango lane."""
+# Post-show census window: a show that STARTED up to this many minutes ago is
+# read as a day-of finals candidate (seats sold at/after showtime). Whether
+# Cinemark still renders the seat map post-start is probed empirically; the
+# completeness floor drops any page that no longer renders.
+CINEMARK_POST_SHOW_WINDOW_MIN = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 480)
+
+
+def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
+                     mode="pre"):
+    """entries: [{'href','movie_href'}] -> capped in-window picks.
+
+    mode='pre'  : still-upcoming shows (pre-reservation snapshots).
+    mode='post' : shows that already STARTED (day-of finals census — seats
+                  sold at/after showtime), newest first so near-final state
+                  is preferred.
+    Pre mode sorts prime-time first (distance from 7pm), mirroring Fandango."""
     from fandango_collect import showtime_timing
     wanted = []
     for e in entries:
@@ -189,13 +202,20 @@ def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap)
             parsed["sdate"], tz_name, now_utc)
         if m_after is None or show_date not in window_dates:
             continue
-        if not should_record_pre_reservation_snapshot(m_after):
+        if mode == "post":
+            if not (0 <= m_after <= CINEMARK_POST_SHOW_WINDOW_MIN):
+                continue
+        elif not should_record_pre_reservation_snapshot(m_after):
             continue
         hour = int(parsed["sdate"][11:13])
         wanted.append({**parsed, "title": title, "minutes_until": m_until,
+                       "post_show": mode == "post",
                        "show_date": show_date, "day_of_week": dow,
                        "_prime": abs(hour - 19)})
-    wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
+    if mode == "post":
+        wanted.sort(key=lambda w: -w["minutes_until"])  # most recently started first
+    else:
+        wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
     counts = {}
     for w in wanted:
         key = (w["title"], w["show_date"])
@@ -231,7 +251,8 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
         "occupancy_pct": occupancy,
         "amc_seat_map_url": f"{BASE}/TicketSeatMap/?TheaterId={pick['theater_id']}"
                             f"&ShowtimeId={pick['showtime_id']}",
-        "notes": f"cinemark-direct; discovered_showtimes={pick['discovered']}; "
+        "notes": f"cinemark-direct{'; post-show-census' if pick.get('post_show') else ''}; "
+                 f"discovered_showtimes={pick['discovered']}; "
                  f"unavailable={seats.get('unavailable', '')}",
         "chain": "CNMK",
     }
@@ -391,7 +412,8 @@ def discover(page):
 
 # ── Collection ───────────────────────────────────────────────────────────────
 
-def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
+def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
+            mode="pre"):
     from playwright.sync_api import sync_playwright
 
     weekend_of = weekend_of or phase1_weekend_anchor(datetime.now(), full_weekend=True)
@@ -435,7 +457,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
               "date_nav_ok": 0, "date_nav_empty": 0, "date_nav_failed": 0}
     rows = []
 
-    print(f"Cinemark collect • weekend_of={weekend_of} • {len(pool)} theatres "
+    print(f"Cinemark collect [{mode}] • weekend_of={weekend_of} • {len(pool)} theatres "
           f"• cap={CINEMARK_PER_THEATRE_CAP}/theatre • deadline={CINEMARK_DEADLINE_SEC}s "
           f"• titles={list(target_slugs.values())}", flush=True)
 
@@ -462,7 +484,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                 # dateless page serves only the CURRENT local day, so reach
                 # every other wanted date through the date picker.
                 covered = entry_dates(entries)
-                missing = sorted(d for d in window_dates if d not in covered)
+                missing = ([] if mode == "post"
+                           else sorted(d for d in window_dates if d not in covered))
                 for want in missing[:4]:
                     if time.monotonic() > deadline:
                         break
@@ -496,7 +519,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                 continue
             picks = select_showtimes(entries or [], target_slugs, window_dates,
                                      th.get("timezone", "America/Chicago"),
-                                     now_utc, CINEMARK_PER_THEATRE_CAP)
+                                     now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode)
             totals["matched"] += len(picks)
             for pick in picks:
                 if time.monotonic() > deadline:
@@ -643,6 +666,9 @@ def main():
     ap.add_argument("--weekend", help="weekend_of override (YYYY-MM-DD)")
     ap.add_argument("--titles", nargs="*",
                     help="override tracked titles (or env CINEMARK_TITLES, comma-sep)")
+    ap.add_argument("--post-show", action="store_true",
+                    help="day-of finals census: read shows that already started "
+                         "(or env CINEMARK_MODE=post)")
     ap.add_argument("--dates", nargs="*",
                     help="ad-hoc test: capture these YYYY-MM-DD dates instead of "
                          "the weekend window (or env CINEMARK_SHOW_DATES)")
@@ -674,8 +700,10 @@ def main():
     show_dates = args.dates or [d.strip() for d in
                                 (os.environ.get("CINEMARK_SHOW_DATES") or "").split(",")
                                 if d.strip()]
+    mode = "post" if (args.post_show
+                      or os.environ.get("CINEMARK_MODE") == "post") else "pre"
     totals = collect(weekend_of=args.weekend, titles=titles or None,
-                     show_dates=show_dates or None)
+                     show_dates=show_dates or None, mode=mode)
     if totals and totals.get("written", 0) == 0 and totals.get("matched", 0) > 0:
         print("❌ Showtimes matched but zero rows written — failing loudly.")
         return 1
