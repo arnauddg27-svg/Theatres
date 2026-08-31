@@ -254,6 +254,13 @@ def acquire(args: argparse.Namespace) -> int:
             sha, metadata = existing
             owner = metadata.get("run_id", "unknown")
             mode = metadata.get("mode", "unknown")
+            if metadata.get("payload_unreadable"):
+                # Distinct from "held by run unknown": we could not READ the
+                # payload (fetch failed, or the branch advanced mid-read), so
+                # we are deliberately treating the lock as held. Name the
+                # condition so a stuck-unreadable lock is diagnosable from logs.
+                print(f"AMC lock: payload for {sha[:12]} unreadable this poll "
+                      f"(fetch failed or lock moved) — assuming held")
             if _lock_is_stale(metadata, args.ttl_minutes * 60,
                               current_run_id=run_id):
                 print(f"AMC lock: breaking stale lock {sha[:12]} from run {owner} ({mode})")
