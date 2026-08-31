@@ -292,6 +292,70 @@ def looks_blocked_text(text):
     return any(m in low for m in BLOCK_MARKERS)
 
 
+# ── Date navigation ──────────────────────────────────────────────────────────
+# The site ignores ?showDate/?date URL params; upcoming days are reached by
+# clicking the showtimes page's date control. The click is SELF-VERIFYING:
+# harvested TicketSeatMap hrefs carry Showtime=YYYY-MM-DD..., so a click that
+# landed on the wrong day yields zero picks for the wanted date (loud in
+# stats), never wrong-date data.
+
+DATE_NAV_JS = r"""(dateStr) => {
+  const iso = dateStr;                       // YYYY-MM-DD
+  const d = new Date(iso + 'T12:00:00');
+  const dayNum = String(d.getDate());
+  const sels = [
+    `[data-date='${iso}']`, `[data-show-date='${iso}']`, `[data-day='${iso}']`,
+    `a[href*='${iso}']`, `[data-date='${iso}T00:00:00']`,
+  ];
+  for (const s of sels) {
+    const el = document.querySelector(s);
+    if (el) { el.click(); return 'sel:' + s; }
+  }
+  // Date-carousel fallback: a control whose text is the bare day number,
+  // inside something date/day/calendar-ish.
+  const zones = document.querySelectorAll(
+    "[class*='date' i], [class*='day' i], [class*='calendar' i]");
+  for (const z of zones) {
+    for (const el of z.querySelectorAll('a, button, li, span')) {
+      if ((el.textContent || '').trim() === dayNum) { el.click(); return 'daynum'; }
+    }
+  }
+  return null;
+}"""
+
+DATE_CENSUS_JS = r"""() =>
+  [...document.querySelectorAll(
+     "[data-date], [data-show-date], [class*='date' i] a, [class*='date' i] button, " +
+     "[class*='day' i] a, [class*='day' i] button")]
+    .slice(0, 15)
+    .map(el => ({ tag: el.tagName.toLowerCase(),
+                  cls: String(el.className || '').slice(0, 50),
+                  attrs: [...el.attributes].filter(a => a.name.startsWith('data-'))
+                           .map(a => a.name + '=' + String(a.value).slice(0, 24)).slice(0, 4),
+                  text: (el.textContent || '').trim().slice(0, 20) }))"""
+
+
+def harvest_entries(page):
+    return page.evaluate(r"""() =>
+      [...document.querySelectorAll("a[href*='TicketSeatMap']")].map(a => {
+        let n = a, movie = '';
+        for (let d = 0; d < 12 && n; d++, n = n.parentElement) {
+          const mo = n.querySelector && n.querySelector("a[href*='/movies/']");
+          if (mo) { movie = mo.getAttribute('href') || ''; break; }
+        }
+        return { href: a.getAttribute('href'), movie_href: movie };
+      })""") or []
+
+
+def entry_dates(entries):
+    dates = set()
+    for e in entries:
+        parsed = parse_seatmap_href(e.get("href", ""))
+        if parsed:
+            dates.add(parsed["sdate"][:10])
+    return dates
+
+
 # ── Discovery ────────────────────────────────────────────────────────────────
 
 def discover(page):
@@ -367,7 +431,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                     else set(opening_weekend_show_dates(weekend_of)))
     deadline = time.monotonic() + CINEMARK_DEADLINE_SEC
     totals = {"visited": 0, "matched": 0, "captured": 0, "written": 0,
-              "skipped": 0, "blocks": 0, "incomplete": 0}
+              "skipped": 0, "blocks": 0, "incomplete": 0,
+              "date_nav_ok": 0, "date_nav_empty": 0, "date_nav_failed": 0}
     rows = []
 
     print(f"Cinemark collect • weekend_of={weekend_of} • {len(pool)} theatres "
@@ -392,15 +457,40 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                     totals["blocks"] += 1
                     print(f"  {th['slug']}: BLOCKED", flush=True)
                     continue
-                entries = page.evaluate(r"""() =>
-                  [...document.querySelectorAll("a[href*='TicketSeatMap']")].map(a => {
-                    let n = a, movie = '';
-                    for (let d = 0; d < 12 && n; d++, n = n.parentElement) {
-                      const mo = n.querySelector && n.querySelector("a[href*='/movies/']");
-                      if (mo) { movie = mo.getAttribute('href') || ''; break; }
-                    }
-                    return { href: a.getAttribute('href'), movie_href: movie };
-                  })""")
+                entries = harvest_entries(page)
+                # Remaining-weekend coverage (the AMC snapshot semantic): the
+                # dateless page serves only the CURRENT local day, so reach
+                # every other wanted date through the date picker.
+                covered = entry_dates(entries)
+                missing = sorted(d for d in window_dates if d not in covered)
+                for want in missing[:4]:
+                    if time.monotonic() > deadline:
+                        break
+                    try:
+                        how = page.evaluate(DATE_NAV_JS, want)
+                    except Exception:
+                        how = None
+                    if not how:
+                        totals["date_nav_failed"] += 1
+                        if not totals.get("_date_census_dumped"):
+                            totals["_date_census_dumped"] = True
+                            try:
+                                census = page.evaluate(DATE_CENSUS_JS)
+                            except Exception:
+                                census = None
+                            print(f"    date-nav: no control for {want}; "
+                                  f"census={census}", flush=True)
+                        continue
+                    page.wait_for_timeout(3000)
+                    extra = harvest_entries(page)
+                    extra = [e for e in extra
+                             if (parse_seatmap_href(e.get("href", "")) or {})
+                             .get("sdate", "")[:10] == want]
+                    if extra:
+                        totals["date_nav_ok"] += 1
+                        entries.extend(extra)
+                    else:
+                        totals["date_nav_empty"] += 1
             except Exception as e:
                 print(f"  {th['slug']}: page ERROR {str(e)[:80]}", flush=True)
                 continue
@@ -470,7 +560,9 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
     print(f"\n=== Cinemark collect summary ===\n"
           f"  visited={totals['visited']} matched={totals['matched']} "
           f"captured={totals['captured']} written={written} deduped={deduped} "
-          f"incomplete={totals['incomplete']} blocks={totals['blocks']}\n"
+          f"incomplete={totals['incomplete']} blocks={totals['blocks']} "
+          f"date_nav ok/empty/failed={totals['date_nav_ok']}/"
+          f"{totals['date_nav_empty']}/{totals['date_nav_failed']}\n"
           f"  -> {CINEMARK_CSV}", flush=True)
     return totals
 
