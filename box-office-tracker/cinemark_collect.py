@@ -325,6 +325,9 @@ DATE_NAV_JS = r"""(dateStr) => {
   const d = new Date(iso + 'T12:00:00');
   const dayNum = String(d.getDate());
   const sels = [
+    // Cinemark's showtimes carousel (census, run 33427874238):
+    // <a class="showdate-link" data-datevalue="YYYY-MM-DD">. 15 days deep.
+    `a.showdate-link[data-datevalue='${iso}']`, `[data-datevalue='${iso}']`,
     `[data-date='${iso}']`, `[data-show-date='${iso}']`, `[data-day='${iso}']`,
     `a[href*='${iso}']`, `[data-date='${iso}T00:00:00']`,
   ];
