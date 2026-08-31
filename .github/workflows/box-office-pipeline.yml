@@ -797,6 +797,13 @@ jobs:
         working-directory: box-office-tracker
         run: python3 calibrate.py
 
+      - name: Share-truth audit (informational)
+        # Measures each recorded film's ground-truth AMC share (seats sold per
+        # national dollar) against the fleet prior — the largest open error
+        # channel per the 2026-08-28 post-mortem. Warn-only, never fails.
+        working-directory: box-office-tracker
+        run: python3 scripts/share_truth_audit.py || echo "::warning::share_truth_audit crashed — the share-error monitor is down"
+
       - name: Rotate settled pre-reservation snapshots
         # The live snapshot CSV grows ~15-25MB per weekend and GitHub hard-blocks
         # pushes at 100MB (it hit 99MB on 2026-07-12 and killed a finalize push).

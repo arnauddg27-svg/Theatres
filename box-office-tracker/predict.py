@@ -79,7 +79,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v26-reported-actual-guardrails"
+MODEL_VERSION = "seat-regression-v27-volume-divergence-cap"
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -4807,7 +4807,32 @@ CROSS_CHAIN_MIN_RC_ROWS = 40
 # Volume wins whenever volume_days data exists; older weekends are unaffected.
 CROSS_CHAIN_VOLUME_APPLY = True
 CROSS_CHAIN_MIN_VOLUME_DAYS = 1
+# Volume mode measures SUPPLY allocation (how many showings each chain
+# scheduled), which tracks demand only when the chains guessed right. On
+# expectation-surprise films it inverts: Super Troopers 3 over-performed and
+# volume read a 40% AMC share against a ~12% ground truth (AMC seats sold per
+# national dollar), while the occupancy signal read 28.8%. When the two
+# signals disagree by more than this many share points, cap volume's pull to
+# occupancy +/- the divergence limit. Backtested 2026-08-31 over 29
+# film-weekends of seats-per-dollar ground truth: mean |log share error|
+# 0.253 -> 0.247, binds only on the ST3-style blowup, never hurts.
+CROSS_CHAIN_VOLUME_MAX_DIVERGENCE = 0.05
 _CROSS_CHAIN_CACHE = {}
+
+
+def capped_volume_share(volume_share, occupancy_share,
+                        max_divergence=CROSS_CHAIN_VOLUME_MAX_DIVERGENCE):
+    """Bound the volume-mode share to within max_divergence of occupancy.
+
+    Pure helper (unit-tested). Returns volume_share unchanged when either
+    signal is missing or they already agree within the limit.
+    """
+    if volume_share is None or occupancy_share is None:
+        return volume_share
+    delta = volume_share - occupancy_share
+    if abs(delta) <= max_divergence:
+        return volume_share
+    return occupancy_share + (max_divergence if delta > 0 else -max_divergence)
 
 
 def _seat_showings_per_cinema_day(seat_data):
@@ -7073,6 +7098,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if share_override_resolved is None and not _is_family:
         cross_chain_share_value = cross_chain_share(movie, cross_chain_data, cal)
         cross_chain_volume_value = cross_chain_volume_share(movie, cross_chain_data, cal)
+        # Supply-allocation guard: see CROSS_CHAIN_VOLUME_MAX_DIVERGENCE.
+        cross_chain_volume_value = capped_volume_share(
+            cross_chain_volume_value, cross_chain_share_value,
+        )
         if CROSS_CHAIN_VOLUME_APPLY and cross_chain_volume_value is not None:
             share_override_resolved = cross_chain_volume_value
         else:

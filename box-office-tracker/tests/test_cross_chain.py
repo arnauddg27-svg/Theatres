@@ -269,3 +269,19 @@ class FamilyEarlyWindowPolicyTests(unittest.TestCase):
         block = src[i:i + 2000]
         self.assertIn('volume_days") or 0) <= 1', block)
         self.assertIn("_is_family", src)
+
+
+class VolumeDivergenceCapTest(unittest.TestCase):
+    """Volume mode measures supply allocation; cap its pull vs occupancy."""
+
+    def test_cap_binds_only_beyond_divergence(self):
+        import predict as P
+        # ST3 shape: volume 0.40 vs occupancy 0.288 -> capped to 0.338
+        self.assertAlmostEqual(0.338, P.capped_volume_share(0.40, 0.288), places=3)
+        # Downside divergence caps symmetrically
+        self.assertAlmostEqual(0.235, P.capped_volume_share(0.15, 0.285), places=3)
+        # Within the limit: untouched (Dog Stars shape, 0.169 vs 0.197)
+        self.assertEqual(0.169, P.capped_volume_share(0.169, 0.197))
+        # Missing either signal: volume passes through unchanged
+        self.assertIsNone(P.capped_volume_share(None, 0.25))
+        self.assertEqual(0.4, P.capped_volume_share(0.4, None))
