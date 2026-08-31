@@ -43,6 +43,7 @@ THEATRES_JSON    = DATA_DIR / "theatres-all.json"
 THEATRES_EXPANSION_JSON = DATA_DIR / "theatres-expansion.json"
 LINKS_JSON       = DATA_DIR / "showtime-links.json"   # Phase 1 output / Phase 2 input
 THEATRE_COUNTS_JSON = DATA_DIR / "theatre-counts.json"  # National theatre counts from BOM
+MOVIE_METADATA_CSV = DATA_DIR / "movie-metadata.csv"  # Hand-maintained audience metadata
 
 
 CORE_COHORT = "core"
@@ -1455,6 +1456,36 @@ def tracked_movie_titles_from_state(weekend_of):
             print(f"  ⚠️  Could not read tracked movies from theatre counts: {e}")
 
     return unique_preserving_order(titles)
+
+
+def movie_titles_missing_metadata(movie_titles, metadata_csv=None):
+    """Tracked titles with no movie-metadata.csv row or no audience_type.
+
+    The audience classification drives the broad_family cross-chain gate and
+    the audience-aware Friday multiplier; a missing row silently disables both
+    (PAW Patrol 2026-08-14 recorded -36% that way, and both 2026-08-28 films
+    ran unprotected). The file is hand-maintained, so surface the gap LOUDLY
+    at collect-links time — days before the first snapshot slot — instead of
+    as a buried print in the prediction output once the weekend is running.
+    """
+    path = Path(metadata_csv) if metadata_csv else MOVIE_METADATA_CSV
+    have = {}
+    try:
+        with open(path, newline="") as f:
+            for row in csv.DictReader(f):
+                name = str(row.get("movie", "") or "").strip().lower()
+                if not name:
+                    continue
+                audience = str(row.get("audience_type", "") or "").strip()
+                have[name] = bool(audience) or have.get(name, False)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print(f"  ⚠️  Could not read movie metadata ({e}); treating all titles as unmetadata'd")
+    return [
+        title for title in movie_titles
+        if not have.get(str(title or "").strip().lower())
+    ]
 
 
 def markets_for_tracked_titles(movie_titles, live_markets=None):
@@ -4114,6 +4145,14 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         fail_phase("❌ No active Polymarket box office markets and no saved CSV fallback.")
 
     movie_titles = [m["movie_title"] for m in poly_markets]
+    missing_metadata = movie_titles_missing_metadata(movie_titles)
+    if missing_metadata:
+        names = ", ".join(missing_metadata)
+        print(f"⚠️  No movie-metadata.csv row (or empty audience_type) for: {names}")
+        print(f"::warning::tracked film(s) missing audience metadata: {names} — "
+              f"the broad_family cross-chain gate and audience-aware Friday "
+              f"multiplier will be OFF for their predictions; add a row to "
+              f"box-office-tracker/data/movie-metadata.csv before Thursday previews")
     today = target_date or ref_local.strftime("%Y-%m-%d")
     groups = phase1_groups(tz_group)
     collection_dates_by_group = {

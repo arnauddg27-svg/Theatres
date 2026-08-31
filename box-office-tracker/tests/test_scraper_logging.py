@@ -128,6 +128,34 @@ class ScraperLoggingTest(unittest.TestCase):
 
         self.assertEqual(["2026-05-23", "2026-05-24"], dates)
 
+    def test_missing_metadata_check_flags_absent_and_empty_audience(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "movie-metadata.csv"
+            path.write_text(
+                "movie,weekend_of,genre,audience_type\n"
+                "PAW Patrol: The Dino Movie,2026-08-14,animation,broad_family\n"
+                "No Audience Film,2026-09-04,drama,\n"
+            )
+            missing = scraper.movie_titles_missing_metadata(
+                ["PAW Patrol: The Dino Movie", "No Audience Film", "Absent Film"],
+                metadata_csv=path,
+            )
+            self.assertEqual(["No Audience Film", "Absent Film"], missing)
+            # Case-insensitive title matching, like the metadata loader.
+            self.assertEqual(
+                [],
+                scraper.movie_titles_missing_metadata(
+                    ["paw patrol: the dino movie"], metadata_csv=path,
+                ),
+            )
+            # A missing file flags everything rather than crashing Phase 1.
+            self.assertEqual(
+                ["Any Film"],
+                scraper.movie_titles_missing_metadata(
+                    ["Any Film"], metadata_csv=Path(tmp) / "nope.csv",
+                ),
+            )
+
     def test_phase1_full_weekend_dates_expand_from_monday_early_lead(self):
         dates = scraper.phase1_collection_dates(
             "ET",
