@@ -145,6 +145,50 @@ def probe_browser(chain, pages, report):
         for url in pages:
             visit(url)
 
+        # RECON: dump the locator page's real link patterns and framework data
+        # so the next iteration stops guessing URL shapes.
+        try:
+            hrefs = page.eval_on_selector_all(
+                "a[href]", "els => els.map(e => e.getAttribute('href'))") or []
+            uniq = []
+            for h in hrefs:
+                h = (h or "").split("?")[0]
+                if h and h not in uniq and not h.startswith(("#", "javascript")):
+                    uniq.append(h)
+            report[chain]["all_hrefs_sample"] = uniq[:80]
+            nd = page.evaluate(
+                "() => { const el = document.getElementById('__NEXT_DATA__');"
+                " return el ? el.textContent.slice(0, 4000) : null; }")
+            if nd:
+                report[chain]["next_data_head"] = nd
+            # IN-PAGE fetch: runs in the browser context with the site's own
+            # cookies/clearance, so it sees what the front-end sees even when
+            # plain requests get 403. Read-only GETs of candidate data routes.
+            candidates = {
+                "cinemark": [
+                    "/api/theaters/search?query=dallas",
+                    "/api/showtimes/theater/355",
+                ],
+                "regal": [
+                    "/api/getTheatres",
+                    "/api/theatres",
+                ],
+            }[chain]
+            fetches = []
+            for path in candidates:
+                res = page.evaluate(
+                    "async (p) => { try { const r = await fetch(p, {headers: {'accept':'application/json'}});"
+                    " const t = await r.text(); return {status: r.status,"
+                    " ctype: r.headers.get('content-type') || '', head: t.slice(0, 500)}; }"
+                    " catch (e) { return {error: String(e).slice(0, 200)}; } }", path)
+                res["path"] = path
+                fetches.append(res)
+                print(f"  [in-page] {chain} {path} -> {res.get('status', res.get('error'))} "
+                      f"{(res.get('ctype') or '')[:30]}")
+            report[chain]["in_page_fetches"] = fetches
+        except Exception as e:
+            report[chain]["recon_error"] = str(e)[:250]
+
         # DEEPEN: harvest a real theatre-detail link from the locator page,
         # visit it, then follow ONE showtime toward seat selection (pre-
         # payment, same depth the Fandango collector uses). Read-only.
