@@ -101,6 +101,14 @@ def pipeline_inputs(
     }
 
 
+def cinemark_slot_inputs(mode: str = "") -> dict[str, str]:
+    """Inputs for a Cinemark direct-lane slot (mode '' = pre, 'post' = census)."""
+    inputs = pipeline_inputs("scrape-cinemark", "ALL", "false", "true", "true")
+    if mode:
+        inputs["cinemark_mode"] = mode
+    return inputs
+
+
 def fandango_slot_inputs(shard: int, num_shards: int,
                          order: str | None = None) -> dict[str, str]:
     """Inputs for one Fandango shard slot — phase + which 1/N slice of the pool."""
@@ -266,6 +274,21 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 4, 5, 6}), 18, 0, fandango_slot_inputs(1, 6, order="nearest")),
     Slot("snapshot fandango near 20Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 20, 0, fandango_slot_inputs(2, 6, order="nearest")),
+    # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31:
+    # zero blocks over 35 sustained minutes from one IP, so no sharding —
+    # one long job per pass). Read structure per design:
+    #   pre passes EVERY day, covering today + all remaining/upcoming window
+    #   days via the 15-day date carousel (Mon-Wed = upcoming weekend only);
+    #   post census on show days only (UTC Fri/Sat/Sun/Mon early hours =
+    #   Thu-Sun evenings locally): revisits seat-map URLs stored by the pre
+    #   passes for shows that have since started (the page drops started
+    #   shows, so day-of finals must come from stored links — AMC pattern).
+    Slot("cinemark pre 09:20Z", "box office scrape-cinemark ALL",
+         frozenset({0, 1, 2, 3, 4, 5, 6}), 9, 20, cinemark_slot_inputs()),
+    Slot("cinemark pre 19:20Z", "box office scrape-cinemark ALL",
+         frozenset({0, 1, 2, 3, 4, 5, 6}), 19, 20, cinemark_slot_inputs()),
+    Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
+         frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",

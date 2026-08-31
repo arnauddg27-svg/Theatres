@@ -626,6 +626,33 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     page.wait_for_timeout(1500)
                     seats = page.evaluate(SEAT_COUNT_JS)
                     if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
+                        # "Performing security verification" interstitial: a
+                        # transient JS challenge that auto-clears for real
+                        # browsers (load-sensitive — ~55% of pages under the
+                        # sustained scale run, 2/28 on a small run). Wait it
+                        # out and retry once.
+                        try:
+                            body = (page.inner_text("body") or "")[:400].lower()
+                        except Exception:
+                            body = ""
+                        if "security verification" in body or "verifies" in body:
+                            totals["challenges"] = totals.get("challenges", 0) + 1
+                            try:
+                                page.wait_for_selector(
+                                    "[class*='seatblock' i], button[class*='seat' i]",
+                                    timeout=15000)
+                            except Exception:
+                                page.reload(wait_until="domcontentloaded",
+                                            timeout=30000)
+                                try:
+                                    page.wait_for_selector(
+                                        "[class*='seatblock' i], "
+                                        "button[class*='seat' i]", timeout=12000)
+                                except Exception:
+                                    pass
+                            page.wait_for_timeout(1200)
+                            seats = page.evaluate(SEAT_COUNT_JS)
+                    if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
                         # Seat grid may live in an embedded frame — evaluate()
                         # does not pierce iframes.
                         for fr in page.frames[1:]:
@@ -677,6 +704,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
           f"  visited={totals['visited']} matched={totals['matched']} "
           f"captured={totals['captured']} written={written} deduped={deduped} "
           f"incomplete={totals['incomplete']} blocks={totals['blocks']} "
+          f"challenges={totals.get('challenges', 0)} "
           f"date_nav ok/empty/failed={totals['date_nav_ok']}/"
           f"{totals['date_nav_empty']}/{totals['date_nav_failed']}\n"
           f"  -> {CINEMARK_CSV}", flush=True)

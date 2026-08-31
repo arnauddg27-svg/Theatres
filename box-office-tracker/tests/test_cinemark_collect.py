@@ -40,15 +40,28 @@ class CinemarkCollectTest(unittest.TestCase):
             finally:
                 os.environ.pop("CINEMARK_OUTPUT", None)
 
-    def test_no_scheduler_slots_yet(self):
-        # Manual-dispatch validation phase: the lane must NOT be scheduled
-        # until a validated capture lands (Fandango rollout discipline).
-        sched = (Path(__file__).resolve().parents[1] /
-                 "scripts" / "schedule_box_office_pipeline.py").read_text()
-        # ("Cinemark" the word appears in Fandango slot comments; what must
-        # not exist is a dispatchable slot or phase for this lane.)
-        self.assertNotIn("scrape-cinemark", sched)
-        self.assertNotIn("snapshot cinemark", sched)
+    def test_scheduler_slots_implement_the_three_read_design(self):
+        # Deliberately ENABLED 2026-08-31 after scale (zero blocks, run
+        # 33426873143) and upcoming-day (run 33430418143) validation.
+        # Structure pinned: pre passes EVERY day; post census only on UTC
+        # Fri/Sat/Sun/Mon early hours (= Thu-Sun evenings locally); before
+        # Thursday, pre-reservation only.
+        import importlib.util
+        sched_path = (Path(__file__).resolve().parents[1] /
+                      "scripts" / "schedule_box_office_pipeline.py")
+        spec = importlib.util.spec_from_file_location("sched_cin_test", sched_path)
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = mod
+        spec.loader.exec_module(mod)
+        cin = [s for s in mod.SLOTS if s.inputs.get("phase") == "scrape-cinemark"]
+        self.assertEqual(3, len(cin))
+        pre = [s for s in cin if s.inputs.get("cinemark_mode") != "post"]
+        post = [s for s in cin if s.inputs.get("cinemark_mode") == "post"]
+        self.assertEqual(2, len(pre))
+        self.assertEqual(1, len(post))
+        for s in pre:
+            self.assertEqual(frozenset(range(7)), s.cron_days, s.name)
+        self.assertEqual(frozenset({0, 1, 5, 6}), post[0].cron_days)
 
 
 if __name__ == "__main__":

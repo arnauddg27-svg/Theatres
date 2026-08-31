@@ -943,7 +943,7 @@ jobs:
   scrape-cinemark:
     if: github.event.inputs.phase == 'scrape-cinemark'
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 115
 
     steps:
       - name: Checkout repo
@@ -965,7 +965,7 @@ jobs:
 
       - name: Cinemark collect
         working-directory: box-office-tracker
-        timeout-minutes: 40
+        timeout-minutes: 100
         env:
           CINEMARK_MAX_THEATRES: ${{ github.event.inputs.cinemark_max_theatres }}
           CINEMARK_MODE: ${{ github.event.inputs.cinemark_mode }}
@@ -980,9 +980,15 @@ jobs:
           if [ "${{ github.event.inputs.cinemark_discover }}" = "true" ]; then
             FLAG="--discover"
           fi
+          # Scheduled/full-pool runs get a 90-min collection budget (306
+          # theatres, zero-block tolerance validated, no sharding needed);
+          # capped ad-hoc tests stay on the snappy 35-min default.
+          if [ -z "$CINEMARK_MAX_THEATRES" ]; then
+            export CINEMARK_DEADLINE_SEC="${CINEMARK_DEADLINE_SEC:-5400}"
+          fi
           # -u + PIPESTATUS: output must survive kills and tee must not mask
           # the exit code (both lessons already paid for in the Fandango lane).
-          timeout 2280 python -u cinemark_collect.py $FLAG 2>&1 | tee "../cinemark-logs/cinemark-${{ github.run_id }}.log"
+          timeout 5700 python -u cinemark_collect.py $FLAG 2>&1 | tee "../cinemark-logs/cinemark-${{ github.run_id }}.log"
           exit "${PIPESTATUS[0]}"
 
       - name: Commit Cinemark data
