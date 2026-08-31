@@ -260,6 +260,25 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 2, 3, 4, 5, 6}), 10, 0, fandango_slot_inputs(1, 6)),
     Slot("snapshot fandango core 11Z", "box office scrape-fandango ALL",
          frozenset({0, 2, 3, 4, 5, 6}), 11, 0, fandango_slot_inputs(2, 6)),
+    # SECOND-PASS SYMMETRY (2026-08-31, expanded 331-theatre Regal-only pool):
+    # shards 3-5 historically got only their single overnight read while shards
+    # 0-2 got velocity (09-11Z) and near-showtime (16-20Z) passes. With the
+    # lane Regal-only and the budget per-slot unchanged (~55 renders at cap 1),
+    # give shards 3-5 the same treatment: a 12-14Z velocity pass and a 21-23Z
+    # near-showtime pass (17:00-19:00 ET — evening shows 1-4h out). All slots
+    # stay >=1h apart, matching the budget's ~1h recovery.
+    Slot("snapshot fandango core 12Z", "box office scrape-fandango ALL",
+         frozenset({0, 2, 3, 4, 5, 6}), 12, 0, fandango_slot_inputs(3, 6)),
+    Slot("snapshot fandango core 13Z", "box office scrape-fandango ALL",
+         frozenset({0, 2, 3, 4, 5, 6}), 13, 0, fandango_slot_inputs(4, 6)),
+    Slot("snapshot fandango core 14Z", "box office scrape-fandango ALL",
+         frozenset({0, 2, 3, 4, 5, 6}), 14, 0, fandango_slot_inputs(5, 6)),
+    Slot("snapshot fandango near 21Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 21, 0, fandango_slot_inputs(3, 6, order="nearest")),
+    Slot("snapshot fandango near 22Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 22, 0, fandango_slot_inputs(4, 6, order="nearest")),
+    Slot("snapshot fandango near 23Z", "box office scrape-fandango ALL",
+         frozenset({0, 4, 5, 6}), 23, 0, fandango_slot_inputs(5, 6, order="nearest")),
     # NEAR-SHOWTIME afternoon pass over the core theatres, nearest-show-first:
     # the overnight slots capture at a median 13-16h lead (advance sales only),
     # which is why family-film occupancy reads near zero and the cross-chain

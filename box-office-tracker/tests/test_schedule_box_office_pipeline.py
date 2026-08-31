@@ -49,30 +49,39 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
     def test_fandango_full_pool_plus_core_second_pass(self):
         fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
-        self.assertEqual(len(fslots), 12)
+        # 18 since the 2026-08-31 second-pass symmetry: with the expanded
+        # 331-theatre Regal-only pool, EVERY shard gets three daily reads —
+        # overnight long-lead, a velocity re-read, and a near-showtime pass.
+        self.assertEqual(len(fslots), 18)
         self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
-        # Overnight + core passes cover Mon-Wed pre-opening nights too; the
-        # near-showtime afternoon pass is weekend-only (no shows within hours
-        # exist pre-opening). No fandango slot fires on UTC Monday (Sun night).
+        near_hours = (16, 18, 20, 21, 22, 23)
+        # Overnight + velocity passes cover Mon-Wed pre-opening nights too; the
+        # near-showtime passes are weekend-only (no shows within hours exist
+        # pre-opening). No fandango slot fires on UTC Monday (Sun night).
         for s in fslots:
-            expected = (frozenset({0, 4, 5, 6}) if s.hour in (16, 18, 20)
+            expected = (frozenset({0, 4, 5, 6}) if s.hour in near_hours
                         else frozenset({0, 2, 3, 4, 5, 6}))
             self.assertEqual(expected, s.cron_days, s.name)
         by_hour = {s.hour: int(s.inputs["fandango_shard"]) for s in fslots}
-        # 03-08Z cover all 6 shards once → the full ~320 pool per night
+        # 03-08Z cover all 6 shards once → the full pool per night
         self.assertEqual({h: by_hour[h] for h in range(3, 9)},
                          {3: 0, 4: 1, 5: 2, 6: 3, 7: 4, 8: 5})
-        # 09-11Z re-run shards 0-2 → the core ~160 get a 2nd reading (velocity)
-        self.assertEqual({h: by_hour[h] for h in range(9, 12)},
-                         {9: 0, 10: 1, 11: 2})
-        # 16-20Z afternoon near-showtime pass over the core, nearest-show-first
-        # (like-for-like occupancy for the cross-chain share; family-gate data)
-        self.assertEqual({h: by_hour[h] for h in (16, 18, 20)},
-                         {16: 0, 18: 1, 20: 2})
-        near = [s for s in fslots if s.hour in (16, 18, 20)]
+        # 09-14Z velocity re-reads: every shard's 2nd reading
+        self.assertEqual({h: by_hour[h] for h in range(9, 15)},
+                         {9: 0, 10: 1, 11: 2, 12: 3, 13: 4, 14: 5})
+        # near-showtime passes, nearest-show-first, all shards
+        self.assertEqual({h: by_hour[h] for h in near_hours},
+                         {16: 0, 18: 1, 20: 2, 21: 3, 22: 4, 23: 5})
+        near = [s for s in fslots if s.hour in near_hours]
         self.assertTrue(all(s.inputs.get("fandango_order") == "nearest" for s in near))
-        others = [s for s in fslots if s.hour not in (16, 18, 20)]
+        others = [s for s in fslots if s.hour not in near_hours]
         self.assertTrue(all("fandango_order" not in s.inputs for s in others))
+        # every shard has exactly 3 daily reads, all slots >=1h apart
+        from collections import Counter
+        self.assertEqual({"0": 3, "1": 3, "2": 3, "3": 3, "4": 3, "5": 3},
+                         dict(Counter(s.inputs["fandango_shard"] for s in fslots)))
+        hours = sorted(s.hour for s in fslots)
+        self.assertEqual(len(hours), len(set(hours)))
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(
@@ -180,8 +189,10 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             fallback_grace_minutes=30,
         )
 
-        self.assertEqual([], too_early)
-        self.assertEqual(["snapshot 02:30Z"], [slot.name for _, slot in ready])
+        # Membership on the slot under test: other slots (e.g. the Saturday
+        # 23Z fandango near pass) legitimately share these windows.
+        self.assertNotIn("snapshot 02:30Z", [s.name for _, s in too_early])
+        self.assertIn("snapshot 02:30Z", [s.name for _, s in ready])
 
     def test_weekly_phase1_schedule_has_all_tuesday_and_wednesday_slots(self):
         due = schedule.candidate_due_slots(
