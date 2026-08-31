@@ -176,7 +176,11 @@ def theatre_from_url(url):
 # read as a day-of finals candidate (seats sold at/after showtime). Whether
 # Cinemark still renders the seat map post-start is probed empirically; the
 # completeness floor drops any page that no longer renders.
-CINEMARK_POST_SHOW_WINDOW_MIN = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 480)
+# 18h default: the single 06:20Z post pass then covers the WHOLE prior show
+# day (matinees included, starts from ~12:20Z), not just evening shows.
+# Whether Cinemark still renders maps that long after start is measured by
+# the pass's own incomplete counts (render decay shows up per-lead there).
+CINEMARK_POST_SHOW_WINDOW_MIN = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
 
 
 def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
@@ -421,7 +425,16 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             mode="pre"):
     from playwright.sync_api import sync_playwright
 
-    weekend_of = weekend_of or phase1_weekend_anchor(datetime.now(), full_weekend=True)
+    if not weekend_of:
+        if mode == "post":
+            # Census reads belong to the weekend whose shows JUST PLAYED.
+            # phase1_weekend_anchor points Mon-Wed at the UPCOMING weekend,
+            # which would silently drop every stored Sunday-evening row at
+            # the Monday 06:20Z post pass (audit catch 2026-08-31).
+            from scraper import opening_weekend_friday
+            weekend_of = opening_weekend_friday(datetime.now())
+        else:
+            weekend_of = phase1_weekend_anchor(datetime.now(), full_weekend=True)
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     if not titles:
         try:
