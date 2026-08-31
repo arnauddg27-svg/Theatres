@@ -465,12 +465,12 @@ jobs:
         run: |
           set +e
           mkdir -p ../chain-probe
-          python -u scripts/probe_chain_apis.py 2>&1 | tee ../chain-probe/probe.log
-          rc=${PIPESTATUS[0]}
-          # Focused Cinemark seat-flow probe (go/no-go for the direct collector).
-          # -u so output survives a kill; the script self-caps at ~3 min.
-          python -u scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
-          exit "$rc"
+          # Cinemark direct-collector go/no-go. The generic probe's Regal
+          # deepen block hangs on Cloudflare, so run only the hardened Cinemark
+          # seat-flow probe, wrapped in a shell `timeout` backstop (the script
+          # also self-caps at ~3 min). -u so output survives any kill.
+          timeout 300 python -u scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
+          exit 0
 
       - name: Upload probe report
         if: always()
