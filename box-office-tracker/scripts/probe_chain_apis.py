@@ -122,25 +122,75 @@ def probe_browser(chain, pages, report):
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1440, "height": 900})
         page = ctx.new_page()
         page.on("response", on_response)
-        for url in pages:
-            note = {"page": url}
+
+        def visit(url, wait_ms=8000):
+            note = {"page": url[:200]}
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                page.wait_for_timeout(8000)
-                title = page.title()
-                note["title"] = title[:120]
+                page.wait_for_timeout(wait_ms)
+                note["title"] = page.title()[:120]
                 body_text = (page.inner_text("body") or "")[:2000].lower()
                 note["blocked"] = ("blocked" in body_text and "sorry" in body_text) or \
                                   "verify you are a human" in body_text
-                # Count visible showtime-looking buttons as a crude signal.
                 note["time_buttons"] = page.locator(
                     "a:has-text('PM'), a:has-text('AM'), "
                     "button:has-text('PM'), button:has-text('AM')").count()
             except Exception as e:
                 note["error"] = str(e)[:200]
             page_notes.append(note)
-            print(f"  [browser] {chain} {url} -> title={note.get('title', '?')!r} "
+            print(f"  [browser] {chain} {url[:90]} -> title={note.get('title','?')!r} "
                   f"blocked={note.get('blocked')} time_buttons={note.get('time_buttons')}")
+            return note
+
+        for url in pages:
+            visit(url)
+
+        # DEEPEN: harvest a real theatre-detail link from the locator page,
+        # visit it, then follow ONE showtime toward seat selection (pre-
+        # payment, same depth the Fandango collector uses). Read-only.
+        try:
+            hrefs = page.eval_on_selector_all(
+                "a[href*='/theatres/']",
+                "els => els.map(e => e.getAttribute('href'))")
+            detail = [h for h in hrefs or []
+                      if h and h.count('/') >= 3 and 'theatres' in h][:3]
+            report[chain]["theatre_links_sample"] = detail
+            if detail:
+                base = pages[0].split('/theatres')[0]
+                turl = detail[0] if detail[0].startswith('http') else base + detail[0]
+                tnote = visit(turl, wait_ms=9000)
+                if tnote.get("time_buttons", 0) > 0 and not tnote.get("blocked"):
+                    st = page.locator(
+                        "a:has-text('PM'), button:has-text('PM'), "
+                        "a:has-text('AM'), button:has-text('AM')").first
+                    st_href = None
+                    try:
+                        st_href = st.get_attribute("href")
+                    except Exception:
+                        pass
+                    report[chain]["showtime_href_sample"] = (st_href or "")[:300]
+                    try:
+                        st.click(timeout=10000)
+                        page.wait_for_timeout(12000)
+                        note2 = {"page": "after-showtime-click",
+                                 "final_url": page.url[:250],
+                                 "title": page.title()[:120]}
+                        seaty = page.locator(
+                            "[class*='seat' i], [id*='seat' i], "
+                            "svg [class*='seat' i], [data-seat], "
+                            "[aria-label*='seat' i]").count()
+                        note2["seat_elements"] = seaty
+                        body_text = (page.inner_text("body") or "")[:3000].lower()
+                        note2["mentions_login"] = ("sign in" in body_text
+                                                  or "log in" in body_text)
+                        note2["mentions_seat"] = "seat" in body_text
+                        page_notes.append(note2)
+                        print(f"  [browser] {chain} after-click -> {note2['final_url'][:80]} "
+                              f"seat_elements={seaty} mentions_seat={note2['mentions_seat']}")
+                    except Exception as e:
+                        report[chain]["showtime_click_error"] = str(e)[:200]
+        except Exception as e:
+            report[chain]["deepen_error"] = str(e)[:250]
         browser.close()
     report[chain]["browser_pages"] = page_notes
     report[chain]["xhr_endpoints"] = captured
