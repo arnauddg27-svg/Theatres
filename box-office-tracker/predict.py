@@ -80,6 +80,19 @@ URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-u
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
 MODEL_VERSION = "seat-regression-v27-volume-divergence-cap"
+# Feed snapshot per-day estimates into the production weekend assembly so the
+# forecast runs the shape the LOO/bake-off/conformal band are fitted on
+# (apply_regression_snapshot_weekend). OFF after adversarial testing
+# 2026-08-31: (a) at the live Thu/Fri stage the final is served by the
+# complete-snapshot exception path in select_regression_prediction, so the
+# wiring changes nothing where it was meant to help; (b) on full-observation
+# replays the fitted snap_coef — trained mostly on walk-up films whose
+# snapshots under-read — INFLATES accurate snapshot reads (The Dog Stars
+# 2026-08-28: 14.3 -> 17.9 vs actual 8.0), and Wednesday's calibrate would
+# record that inflated number as the training baseline. The +5pt LOO
+# improvement (18.31% vs 23.65%) conflates partial-day and full-day cases;
+# do NOT enable without a split-case backtest that separates them.
+REGRESSION_USE_SNAPSHOT_DAYS = False
 COMPS_IN_FORECAST = False
 SNAPSHOT_LAYER_MAX_WEIGHT = 0.70
 DYNAMIC_AMC_SHARE_MAX_WEIGHT = 0.85
@@ -6863,6 +6876,72 @@ def snapshot_calibration_fields_from_prediction(pred):
     return snapshot_predictions, snapshot_coverage, snapshot_leads
 
 
+def apply_regression_snapshot_weekend(pred, cal):
+    """Re-run the fitted weekend assembly with seat AND snapshot day sources.
+
+    The calibration fit (_assemble_entry) trains on per-day SEAT estimates —
+    which by recording time carry the empirical per-day corrections — combined
+    with per-day SNAPSHOT estimates by inverse variance. The forecast path
+    used to end with the empirical layer's day-sum weekend (seat-only,
+    day-weight rescale + DAY_CONFIDENCE band), so the reported LOO MAE and
+    conformal band described a shape production never served (measured
+    2026-08-31: augmented 18.31% vs production-shape 23.65%, band 0.336 vs
+    0.429 log half-width). Running this AFTER the empirical layer, on its
+    adjusted daily_estimates, with snapshot inputs extracted by the same
+    function calibration recording uses, makes forecast and fit shapes match.
+
+    The DAY_CONFIDENCE floor is kept as insurance: it only ever WIDENS the
+    band (the b09e837 falsely-narrow-upside fix must not regress on
+    partial-weekend forecasts).
+    """
+    if not REGRESSION_USE_SNAPSHOT_DAYS:
+        return
+    snap_preds_m, _snap_cov, snap_leads = (
+        snapshot_calibration_fields_from_prediction(pred)
+    )
+    if not snap_preds_m:
+        return
+    daily_estimates = pred.get("daily_estimates") or {}
+    if not daily_estimates:
+        return
+    daily_details = pred.get("daily_details") or {}
+    coverage = {
+        day: details.get("effective_coverage_ratio", details.get("coverage_ratio"))
+        for day, details in daily_details.items()
+        if details.get("coverage_ratio") is not None
+    }
+    mid, low, high, _per_day = days_to_weekend(
+        daily_estimates,
+        cal,
+        daily_coverage_ratios=coverage,
+        daily_snapshot_estimates={
+            day: value * 1_000_000.0 for day, value in snap_preds_m.items()
+        },
+        daily_lead_buckets=snap_leads,
+        daily_sellout_fractions={
+            day: details["sellout_fraction"]
+            for day, details in daily_details.items()
+            if details.get("sellout_fraction") is not None
+        },
+    )
+    if not mid or mid <= 0:
+        return
+    n_seat_days = len([d for d in daily_estimates if d in OPENING_WEEKEND_DAYS])
+    lo_mult, hi_mult = DAY_CONFIDENCE.get(n_seat_days, (0.70, 1.40))
+    low = min(low, mid * lo_mult)
+    high = max(high, mid * hi_mult)
+    pred["pre_snapshot_regression_seat_mid_m"] = pred.get("seat_mid_m")
+    pred["seat_mid_m"] = mid / 1_000_000
+    pred["seat_low_m"] = min(low, mid) / 1_000_000
+    pred["seat_high_m"] = max(high, mid) / 1_000_000
+    if pred.get("seat_empirical_regression_applied"):
+        # The empirical layer pins blended_* to seat_* — keep them in step.
+        pred["blended_m"] = pred["seat_mid_m"]
+        pred["blend_low_m"] = pred["seat_low_m"]
+        pred["blend_high_m"] = pred["seat_high_m"]
+    pred["regression_snapshot_days"] = sorted(snap_preds_m)
+
+
 def daily_calibration_fields_from_prediction(pred):
     """Extract per-day seat predictions used to train calibration.
 
@@ -7801,6 +7880,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         }
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
+    apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
     # ANNOTATION ONLY. The production forecast deliberately applies no

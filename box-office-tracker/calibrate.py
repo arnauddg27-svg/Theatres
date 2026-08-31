@@ -333,6 +333,14 @@ def rebuild_historical_accuracy(cal):
 
 
 def save_calibration(cal):
+    """Persist calibration atomically.
+
+    NOTE for diagnostics: the on-disk calibration_factors.regression block is
+    effectively a CACHE — sanitize_calibration refits it from history on every
+    load_calibration(), so production always runs the fresh fit even when the
+    file lags. Reading the raw JSON to judge "what factors production uses"
+    is therefore misleading (it misled two audits before this note).
+    """
     # Atomic write (temp file + rename): a crash or concurrent writer mid-dump
     # must never leave calibration.json truncated/corrupted.
     os.makedirs(DATA_DIR, exist_ok=True)
