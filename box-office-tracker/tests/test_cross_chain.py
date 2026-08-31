@@ -96,15 +96,55 @@ class LoadCrossChainOccupancyTests(unittest.TestCase):
                 P.SEAT_CSV, P.FANDANGO_SNAPSHOTS_CSV = orig
                 P._CROSS_CHAIN_CACHE.clear()
 
-    def test_absent_fandango_file_is_empty(self):
-        orig = P.FANDANGO_SNAPSHOTS_CSV
+    def test_absent_rc_files_is_empty(self):
+        orig = (P.FANDANGO_SNAPSHOTS_CSV, P.CINEMARK_SNAPSHOTS_CSV)
         try:
             P.FANDANGO_SNAPSHOTS_CSV = "/nonexistent/fan.csv"
+            P.CINEMARK_SNAPSHOTS_CSV = "/nonexistent/cnmk.csv"
             P._CROSS_CHAIN_CACHE.clear()
             self.assertEqual(P.load_cross_chain_occupancy(weekend_of="2026-05-01"), {})
         finally:
-            P.FANDANGO_SNAPSHOTS_CSV = orig
+            P.FANDANGO_SNAPSHOTS_CSV, P.CINEMARK_SNAPSHOTS_CSV = orig
             P._CROSS_CHAIN_CACHE.clear()
+
+    def test_cinemark_direct_csv_blends_into_rc_side(self):
+        # 2026-08-31 regime: Fandango carries REGL only, the Cinemark direct
+        # lane carries CNMK. The RC side must be the blend of both files —
+        # Regal-only rc_occ runs far below the level CROSS_CHAIN_WALKUP_K was
+        # calibrated on.
+        import tempfile
+        from pathlib import Path as _P
+        with tempfile.TemporaryDirectory() as td:
+            seat = _P(td) / "seat.csv"
+            fan = _P(td) / "fan.csv"
+            cnmk = _P(td) / "cnmk.csv"
+            self._write(seat, ["weekend_of", "date", "movie_title", "occupancy_pct"], [
+                {"weekend_of": "2026-09-04", "date": "2026-09-04",
+                 "movie_title": "F", "occupancy_pct": "20"},
+            ])
+            self._write(fan, ["weekend_of", "snapshot_time", "movie_title",
+                              "occupancy_pct", "chain"], [
+                {"weekend_of": "2026-09-04", "snapshot_time": "2026-09-03T03:00:00Z",
+                 "movie_title": "F", "occupancy_pct": "6", "chain": "REGL"},
+            ])
+            self._write(cnmk, ["weekend_of", "snapshot_time", "movie_title",
+                               "occupancy_pct", "chain"], [
+                {"weekend_of": "2026-09-04", "snapshot_time": "2026-09-03T04:00:00Z",
+                 "movie_title": "F", "occupancy_pct": "30", "chain": "CNMK"},
+            ])
+            orig = (P.SEAT_CSV, P.FANDANGO_SNAPSHOTS_CSV, P.CINEMARK_SNAPSHOTS_CSV)
+            try:
+                P.SEAT_CSV = str(seat)
+                P.FANDANGO_SNAPSHOTS_CSV = str(fan)
+                P.CINEMARK_SNAPSHOTS_CSV = str(cnmk)
+                P._CROSS_CHAIN_CACHE.clear()
+                cc = P.load_cross_chain_occupancy(weekend_of="2026-09-04")
+                self.assertAlmostEqual(cc["F"]["rc_occ"], 18.0)   # (6+30)/2
+                self.assertEqual(cc["F"]["rc_rows"], 2)
+            finally:
+                (P.SEAT_CSV, P.FANDANGO_SNAPSHOTS_CSV,
+                 P.CINEMARK_SNAPSHOTS_CSV) = orig
+                P._CROSS_CHAIN_CACHE.clear()
 
 
 if __name__ == "__main__":

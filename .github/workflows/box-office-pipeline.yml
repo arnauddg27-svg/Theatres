@@ -769,19 +769,24 @@ jobs:
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
           FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
-          # cap=1 with the EXPANDED Regal-only pool (331 theatres since the
-          # 2026-08-31 national-grid discovery): 331/6 shards ~= 55 renders
-          # per slot, matching the budget pressure the per-Azure-range limit
-          # has tolerated for months (~53). The volume gain is BREADTH —
-          # +76% Regal theatres covered per night — not per-theatre depth;
-          # cap=2 here would double renders/slot and throttle the tails.
+          # cap=1 with the EXPANDED Regal-only pool (380 theatres since the
+          # 2026-08-31 two-round discovery): 380/6 shards = 63-64 theatres,
+          # OVER the ~55-render budget the per-Azure-range limit has tolerated
+          # for months (~53). Scheduled (sharded) runs therefore cap at 55
+          # theatres/run below; shard -> shuffle -> cap order means each run
+          # samples a rotating random 55 of its shard, and the three daily
+          # reads per shard cover the remainder. The volume gain is BREADTH —
+          # not per-theatre depth; cap=2 here would double renders/slot and
+          # throttle the tails.
           FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
           FANDANGO_DEADLINE_SEC: '2100'   # 35 min — self-stop with margin under the 40-min step timeout
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
           FANDANGO_ZIPS: ${{ github.event.inputs.fandango_zips }}
-          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres }}
+          # Sharded (scheduled) runs cap at 55 renders — the proven per-slot
+          # budget; ad-hoc unsharded runs keep whole-pool semantics.
+          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres != '' && github.event.inputs.fandango_max_theatres || (github.event.inputs.fandango_num_shards != '' && '55' || '') }}
           # Test runs (show_dates set) write to a throwaway file, never canonical.
           FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
         run: |
@@ -985,9 +990,13 @@ jobs:
           if [ "${{ github.event.inputs.cinemark_discover }}" = "true" ]; then
             FLAG="--discover"
           fi
-          # Scheduled/full-pool runs get a 90-min collection budget (306
-          # theatres, zero-block tolerance validated, no sharding needed);
-          # capped ad-hoc tests stay on the snappy 35-min default.
+          # Scheduled/full-pool runs get a 90-min collection budget. At real
+          # per-theatre cost (~25-35s, more when the security-verification
+          # interstitial fires) that covers ~150-250 of the 306 theatres per
+          # pass; the collector shuffles the pool so each pass samples it
+          # broadly and the two daily pre passes rotate coverage. The run
+          # self-stops cleanly at the deadline; capped ad-hoc tests stay on
+          # the snappy 35-min default.
           if [ -z "$CINEMARK_MAX_THEATRES" ]; then
             export CINEMARK_DEADLINE_SEC="${CINEMARK_DEADLINE_SEC:-5400}"
           fi

@@ -82,9 +82,9 @@ CINEMARK_SHARD = _env_int("CINEMARK_SHARD", 0)
 CINEMARK_MIN_SEATS = 20      # completeness floor: a real auditorium has >= this
 CINEMARK_POLITE_SEC = (1.0, 2.5)
 
-# US state abbreviations -> IANA timezone (coarse; per-theatre showtime math
-# only needs the LOCAL date/day, and each state's dominant zone is right for
-# that purpose; split-zone states use their majority zone).
+# US state abbreviations -> IANA timezone. The tz drives MINUTE-level pre/post
+# windows (showtime_timing), not just the local date, so split-zone states get
+# city-level overrides below for pool theatres on the minority side.
 STATE_TZ = {
     "ct": "America/New_York", "de": "America/New_York", "fl": "America/New_York",
     "ga": "America/New_York", "ma": "America/New_York", "md": "America/New_York",
@@ -105,6 +105,13 @@ STATE_TZ = {
     "ca": "America/Los_Angeles", "nv": "America/Los_Angeles",
     "or": "America/Los_Angeles", "wa": "America/Los_Angeles",
     "ak": "America/Anchorage", "hi": "Pacific/Honolulu",
+}
+
+# split-zone corrections, keyed on "state-city" (audit: El Paso is Mountain,
+# Paducah is Central — the state majority zone is wrong for both).
+CITY_TZ = {
+    "tx-el-paso": "America/Denver",
+    "ky-paducah": "America/Chicago",
 }
 
 THEATRE_URL_RE = re.compile(r"/theatres/([a-z]{2})-([a-z0-9\-]+)/([a-z0-9\-]+)/?$")
@@ -151,7 +158,20 @@ def match_movie_slug(movie_href, target_slugs):
     for slug, title in target_slugs.items():
         if _slug_tokens(slug) == tokens:
             return title
+    # Near-miss visibility (the Fandango lane's lesson, paid for twice): a
+    # variant slug that silently zeroes a tracked film must show up in logs.
+    for slug, title in target_slugs.items():
+        t = _slug_tokens(slug)
+        if t and tokens and (t <= tokens or len(t & tokens) / len(t) >= 0.6):
+            if core not in _NEAR_MISS_SEEN:
+                _NEAR_MISS_SEEN.add(core)
+                print(f"  slug near-miss: {core!r} vs tracked {slug!r} "
+                      f"({title}) — matcher variant?", flush=True)
+            break
     return None
+
+
+_NEAR_MISS_SEEN = set()
 
 
 def theatre_from_url(url):
@@ -167,7 +187,7 @@ def theatre_from_url(url):
         "name": slug.replace("-", " ").title(),
         "state": state,
         "city": city.replace("-", " ").title(),
-        "timezone": STATE_TZ[state],
+        "timezone": CITY_TZ.get(f"{state}-{city}", STATE_TZ[state]),
         "chain": "CNMK",
     }
 
@@ -213,11 +233,14 @@ def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
             continue
         hour = int(parsed["sdate"][11:13])
         wanted.append({**parsed, "title": title, "minutes_until": m_until,
+                       "minutes_after": m_after,
                        "post_show": mode == "post",
                        "show_date": show_date, "day_of_week": dow,
                        "_prime": abs(hour - 19)})
     if mode == "post":
-        wanted.sort(key=lambda w: -w["minutes_until"])  # most recently started first
+        # Most recently started first: minutes_until is 0 for every started
+        # show, so it cannot order a post pass — minutes_after can.
+        wanted.sort(key=lambda w: w["minutes_after"])
     else:
         wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
     counts = {}
@@ -253,8 +276,13 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
         "reserved_seats": reserved,
         "available_seats": available,
         "occupancy_pct": occupancy,
+        # Store the ORIGINAL href absolutized, never a reconstruction: the
+        # post-show census revisits this exact URL, and rebuilding it without
+        # Showtime/CinemarkMovieId breaks the seat render (validation run
+        # 33424701048: 10/10 incomplete).
         "amc_seat_map_url": (
             pick["href"] if str(pick.get("href", "")).startswith("http")
+            else BASE + pick["href"] if pick.get("href")
             else f"{BASE}/TicketSeatMap/?TheaterId={pick['theater_id']}"
                  f"&ShowtimeId={pick['showtime_id']}"),
         "notes": f"cinemark-direct{'; post-show-census' if pick.get('post_show') else ''}; "
@@ -518,6 +546,17 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     })
         print(f"  post-show revisit candidates from stored rows: {len(revisit)}",
               flush=True)
+        totals["revisit_candidates"] = len(revisit)
+
+    # Per-theatre flush (the Fandango lane's lesson): rows already captured
+    # must survive a mid-run death — one uncaught surprise at theatre 200
+    # must not lose theatres 1-199.
+    def _flush():
+        w, d = append_rows(rows)
+        totals["written"] = totals.get("written", 0) + w
+        totals["deduped"] = totals.get("deduped", 0) + d
+        totals["skipped"] += d
+        rows.clear()
 
     with sync_playwright() as p:
         browser = p.chromium.launch(
@@ -551,6 +590,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             rows.append(build_row(item["theatre"], item["pick"], seats,
                                   weekend_of, run_id, check_time))
             time.sleep(random.uniform(*CINEMARK_POLITE_SEC))
+        _flush()
         for th in pool:
             if time.monotonic() > deadline:
                 print("⏱  deadline reached; stopping cleanly", flush=True)
@@ -608,7 +648,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     else:
                         totals["date_nav_empty"] += 1
             except Exception as e:
-                print(f"  {th['slug']}: page ERROR {str(e)[:80]}", flush=True)
+                print(f"  {th.get('slug', '?')}: page ERROR {str(e)[:80]}",
+                      flush=True)
                 continue
             picks = select_showtimes(entries or [], target_slugs, window_dates,
                                      th.get("timezone", "America/Chicago"),
@@ -708,14 +749,15 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                 totals["captured"] += 1
                 rows.append(build_row(th, pick, seats, weekend_of, run_id, check_time))
                 time.sleep(random.uniform(*CINEMARK_POLITE_SEC))
+            _flush()
         browser.close()
 
-    written, deduped = append_rows(rows)
-    totals["written"] = written
-    totals["skipped"] += deduped
+    _flush()
+    totals.setdefault("written", 0)
     print(f"\n=== Cinemark collect summary ===\n"
           f"  visited={totals['visited']} matched={totals['matched']} "
-          f"captured={totals['captured']} written={written} deduped={deduped} "
+          f"captured={totals['captured']} written={totals['written']} "
+          f"deduped={totals.get('deduped', 0)} "
           f"incomplete={totals['incomplete']} blocks={totals['blocks']} "
           f"challenges={totals.get('challenges', 0)} "
           f"date_nav ok/empty/failed={totals['date_nav_ok']}/"
@@ -789,6 +831,25 @@ def _selftest():
     assert row["reserved_seats"] == 24 and row["total_seats"] == 124
     assert row["chain"] == "CNMK" and row["occupancy_pct"] == 19.4
     assert set(row) == set(CINEMARK_FIELDS), set(CINEMARK_FIELDS) ^ set(row)
+    # Stored URL must be the ORIGINAL href absolutized — the post census
+    # revisits it, and a param-stripped reconstruction breaks the render.
+    assert row["amc_seat_map_url"] == BASE + picks[0]["href"], row["amc_seat_map_url"]
+
+    # Post mode picks the most recently STARTED show first (minutes_until is
+    # 0 for every started show and cannot order a post pass).
+    post_entries = [
+        {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=8&Showtime=2026-08-31T10:00:00",
+         "movie_href": "/movies/toy-story-5"},          # started 5h ago (CT)
+        {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=9&Showtime=2026-08-31T13:30:00",
+         "movie_href": "/movies/toy-story-5"},          # started 1.5h ago
+    ]
+    post_picks = select_showtimes(post_entries, targets, {"2026-08-31"},
+                                  "America/Chicago", now, cap=1, mode="post")
+    assert [p["showtime_id"] for p in post_picks] == ["9"], post_picks
+
+    # split-zone city overrides beat the state majority zone
+    ep = theatre_from_url("https://www.cinemark.com/theatres/tx-el-paso/cinemark-west")
+    assert ep and ep["timezone"] == "America/Denver", ep
     print("cinemark_collect selftest OK")
 
 
@@ -840,6 +901,15 @@ def main():
                      show_dates=show_dates or None, mode=mode)
     if totals and totals.get("written", 0) == 0 and totals.get("matched", 0) > 0:
         print("❌ Showtimes matched but zero rows written — failing loudly.")
+        return 1
+    # Revisit captures never increment `matched` (page-harvest picks do), so
+    # an all-incomplete post census — e.g. seat-map render decay after start —
+    # would otherwise exit green with zero rows.
+    if (totals and mode == "post"
+            and totals.get("revisit_candidates", 0) > 0
+            and totals.get("captured", 0) == 0):
+        print("❌ Post census: every stored-URL revisit came back incomplete "
+              "— seat maps may no longer render post-start. Failing loudly.")
         return 1
     return 0
 

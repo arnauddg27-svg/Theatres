@@ -11,12 +11,16 @@ grosses the next morning and calibrate.py already has a working fetcher, so
 this script closes the loop: every finalize, fetch the tracked weekend's
 completed days and upsert them into the overrides CSV.
 
-Leak safety: rows carry as_of_date = today. calibrate.py's recording replay
-loads overrides with through_date = the weekend's Sunday, so anything fetched
-after the weekend closes is excluded from the recorded baseline, while rows
-fetched DURING the weekend are included — matching what the live forecast
-actually knew. Informational by design: always exits 0 (a fetch hiccup must
-not brick finalize; the next finalize retries).
+Leak safety (audited 2026-08-31): calibrate.py's recording replay
+(predict_pre_actual_movie) hard-injects daily_actual_overrides={}, so NO
+override row — in-weekend or post-weekend — ever touches a recorded
+predicted_mid. That is a blanket exclusion, deliberately stronger than an
+as_of/through_date filter: the recorded error measures the raw model, not
+the anchor-corrected number production served. Anchors improve LIVE
+forecasts only. Rows still carry as_of_date for provenance and revision
+upserts. Informational by design: the workflow step runs with
+continue-on-error, so a fetch hiccup cannot brick finalize (the next
+finalize retries).
 """
 import csv
 import os

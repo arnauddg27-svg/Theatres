@@ -78,11 +78,15 @@ class PostModeAnchorTest(unittest.TestCase):
         from datetime import datetime, timezone
         targets = {"the-dog-stars": "The Dog Stars"}
         now = datetime(2026, 8, 31, 6, 20, tzinfo=timezone.utc)  # Mon 06:20Z
+        # Stale matinee deliberately FIRST in DOM order: the expectation below
+        # only holds if select_showtimes actually sorts by minutes-started
+        # (the original -minutes_until key was a no-op — 0 for every started
+        # show — and this test passed vacuously in DOM order).
         entries = [
-            {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=10&Showtime=2026-08-30T19:30:00",
-             "movie_href": "/movies/the-dog-stars"},   # Sun 19:30 CT, started ~5h ago
             {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=11&Showtime=2026-08-30T13:00:00",
              "movie_href": "/movies/the-dog-stars"},   # Sun matinee, ~11.5h ago
+            {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=10&Showtime=2026-08-30T19:30:00",
+             "movie_href": "/movies/the-dog-stars"},   # Sun 19:30 CT, started ~5h ago
             {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=12&Showtime=2026-08-31T19:00:00",
              "movie_href": "/movies/the-dog-stars"},   # future -> excluded in post
         ]

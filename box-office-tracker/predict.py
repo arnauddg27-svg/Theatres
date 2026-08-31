@@ -4768,6 +4768,12 @@ def amc_market_share_override_for(target_metadata):
 # coverage (all history pre-2026-06-26) are byte-identical. An operator
 # metadata override always wins. Self-strengthens as covered weekends accrue.
 FANDANGO_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "fandango-pre-reservation-snapshots.csv")
+# The Cinemark DIRECT lane (2026-08-31) took over CNMK coverage when the
+# Fandango lane went Regal-only. Same schema, same chain column. Both feed
+# the RC side below: CROSS_CHAIN_WALKUP_K and the share weights were fit on
+# the REGL+CNMK blend, and Regal-only rc_occ runs 3-10x lower than the blend
+# (CNMK skews high) — dropping CNMK would push every share toward the clamp.
+CINEMARK_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "cinemark-pre-reservation-snapshots.csv")
 # Walk-up multiplier, RE-DERIVED FROM EVIDENCE 2026-08-23 (was a 1.15 prior).
 # Method: for each film with a freeze, an actual, and cross-chain coverage,
 # replay the AMC-captured gross, compute the true AMC share, and invert
@@ -4876,39 +4882,45 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
     """Per-movie mean occupancy at AMC vs Regal/Cinemark (Fandango) for a weekend.
 
     Returns {movie: {"amc_occ", "rc_occ", "amc_rows", "rc_rows"}} for movies with
-    rows on BOTH sides. Leak-safe: AMC rows filtered by show date <= through_date,
-    Fandango rows by snapshot_time date <= through_date. Returns {} when the
-    Fandango file is absent/empty (all pre-multichain history)."""
+    rows on BOTH sides. The RC side blends the Fandango CSV (REGL since
+    2026-08-31, REGL+CNMK before) with the Cinemark direct CSV (CNMK since
+    2026-09-04) — disjoint theatre sets, so no double-counting. Leak-safe:
+    AMC rows filtered by show date <= through_date, RC rows by snapshot_time
+    date <= through_date. Returns {} when no RC file exists (all
+    pre-multichain history)."""
     if weekend_of is None:
         weekend_of = _current_weekend_friday()
     key = (weekend_of, through_date)
     if key in _CROSS_CHAIN_CACHE:
         return _CROSS_CHAIN_CACHE[key]
-    if not os.path.exists(FANDANGO_SNAPSHOTS_CSV):
+    rc_paths = [p for p in (FANDANGO_SNAPSHOTS_CSV, CINEMARK_SNAPSHOTS_CSV)
+                if os.path.exists(p)]
+    if not rc_paths:
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
     rc = {}
     rc_day = {}     # movie -> show_date -> [(occ, discovered_spc or None)]
-    with open(FANDANGO_SNAPSHOTS_CSV, "r") as f:
-        for row in csv.DictReader(f):
-            if (row.get("weekend_of") or "").strip() != weekend_of:
-                continue
-            snap_date = (row.get("snapshot_time") or "")[:10]
-            if through_date and snap_date and snap_date > through_date:
-                continue
-            occ = _occ_pct(row)
-            if occ is None:
-                continue
-            movie = row.get("movie_title", "").strip()
-            rc.setdefault(movie, []).append(occ)
-            disc = None
-            note = row.get("notes") or ""
-            if "discovered_showtimes=" in note:
-                raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
-                if raw.isdigit():
-                    disc = int(raw)
-            rc_day.setdefault(movie, {}).setdefault(
-                row.get("show_date", ""), []).append((occ, disc))
+    for rc_path in rc_paths:
+        with open(rc_path, "r") as f:
+            for row in csv.DictReader(f):
+                if (row.get("weekend_of") or "").strip() != weekend_of:
+                    continue
+                snap_date = (row.get("snapshot_time") or "")[:10]
+                if through_date and snap_date and snap_date > through_date:
+                    continue
+                occ = _occ_pct(row)
+                if occ is None:
+                    continue
+                movie = row.get("movie_title", "").strip()
+                rc.setdefault(movie, []).append(occ)
+                disc = None
+                note = row.get("notes") or ""
+                if "discovered_showtimes=" in note:
+                    raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
+                    if raw.isdigit():
+                        disc = int(raw)
+                rc_day.setdefault(movie, {}).setdefault(
+                    row.get("show_date", ""), []).append((occ, disc))
     if not rc:
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
@@ -9319,7 +9331,12 @@ def main():
         snapshot_data = load_pre_reservation_data(weekend_of=record_weekend)
         social_data = load_social_signal_data(weekend_of=record_weekend)
         reviews_data = load_reviews_data(weekend_of=record_weekend)
-        daily_actual_overrides = load_daily_actual_overrides(weekend_of=record_weekend)
+        # {} not None: recording an actual-anchored prediction as "what the
+        # model predicted" would score the model against itself. Post-weekend
+        # the auto-fetcher GUARANTEES Sat/Sun override rows exist, so loading
+        # them here made every late --actual entry look artificially good.
+        # Matches calibrate.py's replay hygiene (predict_pre_actual_movie).
+        daily_actual_overrides = {}
         showtime_link_profiles = load_showtime_link_daypart_profiles(weekend_of=record_weekend)
         theatre_counts = load_theatre_counts()
         metadata = load_movie_metadata()

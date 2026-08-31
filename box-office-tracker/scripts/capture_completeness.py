@@ -31,6 +31,7 @@ BASELINE_WEEKENDS = 4      # most recent settled weekends form the baseline
 OFFSETS = (-1, 0, 1, 2)    # Thu, Fri, Sat, Sun relative to the opening Friday
 
 FANDANGO_CSV = os.path.join(P.DATA_DIR, "fandango-pre-reservation-snapshots.csv")
+CINEMARK_CSV = os.path.join(P.DATA_DIR, "cinemark-pre-reservation-snapshots.csv")
 
 
 def _offset(weekend_of, day):
@@ -50,7 +51,7 @@ def lane_counts(weekend_of):
     """
     films = set()
     out = {"amc_seat": defaultdict(int), "amc_snapshot": defaultdict(int),
-           "fandango": defaultdict(int)}
+           "fandango": defaultdict(int), "cinemark": defaultdict(int)}
     seat = P.load_seat_data(weekend_of=weekend_of)
     films.update(seat.keys())
     for movie_days in seat.values():
@@ -72,18 +73,27 @@ def lane_counts(weekend_of):
     # exact archive-blind class from the cross-chain loader incident.
     import glob
     import gzip
-    fandango_sources = ([FANDANGO_CSV] if os.path.exists(FANDANGO_CSV) else []) +         sorted(glob.glob(os.path.join(P.DATA_DIR, "fandango-archive", "*.csv.gz")))
-    for src in fandango_sources:
-        op = gzip.open if src.endswith(".gz") else open
-        with op(src, "rt", newline="") as f:
-            for r in csv.DictReader(f):
-                if (r.get("weekend_of") or "") != weekend_of:
-                    continue
-                cap = (r.get("snapshot_time") or "")[:10]
-                off = _offset(weekend_of, cap)
-                if off in OFFSETS:
-                    films.add(r.get("movie_title", ""))
-                    out["fandango"][off] += 1
+    rc_lanes = {
+        "fandango": ([FANDANGO_CSV] if os.path.exists(FANDANGO_CSV) else []) +
+        sorted(glob.glob(os.path.join(P.DATA_DIR, "fandango-archive", "*.csv.gz"))),
+        # Cinemark DIRECT lane (2026-08-31): green-but-empty is the exact
+        # failure class this monitor exists for, and this lane now carries
+        # all CNMK coverage.
+        "cinemark": ([CINEMARK_CSV] if os.path.exists(CINEMARK_CSV) else []) +
+        sorted(glob.glob(os.path.join(P.DATA_DIR, "cinemark-archive", "*.csv.gz"))),
+    }
+    for lane, sources in rc_lanes.items():
+        for src in sources:
+            op = gzip.open if src.endswith(".gz") else open
+            with op(src, "rt", newline="") as f:
+                for r in csv.DictReader(f):
+                    if (r.get("weekend_of") or "") != weekend_of:
+                        continue
+                    cap = (r.get("snapshot_time") or "")[:10]
+                    off = _offset(weekend_of, cap)
+                    if off in OFFSETS:
+                        films.add(r.get("movie_title", ""))
+                        out[lane][off] += 1
     films.discard("")
     return out, films
 
@@ -126,7 +136,7 @@ def main():
 
     print(f"capture completeness — weekend {current} vs median of {base_wks}")
     warned = 0
-    for lane in ("amc_seat", "amc_snapshot", "fandango"):
+    for lane in ("amc_seat", "amc_snapshot", "fandango", "cinemark"):
         for off in OFFSETS:
             cap_day = friday + dt.timedelta(days=off)
             if cap_day > today:
@@ -193,7 +203,7 @@ def main():
         for wk in prior_wks:
             counts, film_set = lane_counts(wk)
             prior[wk], prior_films[wk] = counts, max(1, len(film_set))
-        for lane in ("amc_seat", "amc_snapshot", "fandango"):
+        for lane in ("amc_seat", "amc_snapshot", "fandango", "cinemark"):
             recent_med = median([sum(baselines[wk][lane].values()) / base_films[wk]
                                  for wk in base_wks])
             prior_med = median([sum(prior[wk][lane].values()) / prior_films[wk]
