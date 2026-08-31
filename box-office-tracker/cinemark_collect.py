@@ -202,7 +202,12 @@ def theatre_from_url(url):
 # day (matinees included, starts from ~12:20Z), not just evening shows.
 # Whether Cinemark still renders maps that long after start is measured by
 # the pass's own incomplete counts (render decay shows up per-lead there).
-CINEMARK_POST_SHOW_WINDOW_MIN = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
+# INVARIANT: must stay < 1440. Censuses run 24h apart and the dedupe key
+# includes snapshot_bucket (differs per day) — this window being shorter
+# than a day is the ONLY thing preventing yesterday's census rows from
+# being re-captured as today's (round-4 audit).
+CINEMARK_POST_SHOW_WINDOW_MIN = min(
+    _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080), 1439)
 
 
 def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
@@ -522,7 +527,11 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             seen_urls = set()
             with open(src_path, newline="") as f:
                 for r in csv.DictReader(f):
-                    if (r.get("weekend_of") or "").strip() == weekend_of:
+                    # PRE rows only: counting census rows would make the
+                    # dead-pre-lane red one-shot — Friday's post capture
+                    # would disarm it for the rest of the weekend.
+                    if ((r.get("weekend_of") or "").strip() == weekend_of
+                            and "post-show-census" not in (r.get("notes") or "")):
                         totals["weekend_rows_stored"] += 1
                     url = (r.get("amc_seat_map_url") or "").strip()
                     sdate = (r.get("showtime_id") or "").strip()

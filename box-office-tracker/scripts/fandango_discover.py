@@ -39,11 +39,18 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 # so data fixes survive future rounds.
 ZIP3_TZ = {
     "325": "America/Chicago",    # FL panhandle (Pensacola)
-    "323": "America/Chicago",    # FL panhandle (Panama City west)
+    "324": "America/Chicago",    # FL panhandle (Panama City)
+    # NOT 323 — that's Tallahassee, which is Eastern like the FL default
+    # (round-4 audit caught 323 mapped Central here; would have poisoned
+    # every future Tallahassee discovery).
     "376": "America/New_York",   # TN tri-cities (Johnson City/Kingsport)
+    "377": "America/New_York",   # Jefferson City/Morristown TN
+    "378": "America/New_York",   # Morristown TN area
     "374": "America/New_York",   # Chattanooga TN
     "379": "America/New_York",   # Knoxville TN
     "421": "America/Chicago",    # Bowling Green KY
+    "423": "America/Chicago",    # Owensboro KY
+    "424": "America/Chicago",    # Madisonville KY
     "838": "America/Los_Angeles",  # ID panhandle (Coeur d'Alene)
     "799": "America/Denver",     # El Paso TX
 }
