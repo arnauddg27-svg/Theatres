@@ -312,11 +312,12 @@ class WorkflowReliabilityTest(unittest.TestCase):
             "continue-on-error: true",
             block[block.index("run: python predict.py"):],
         )
-        # 2 = the two best-effort word-of-mouth fetches (RT + Wikipedia). The
+        # 3 = the best-effort fetches: RT reviews, Wikipedia anticipation, and
+        # The Numbers daily actuals (same-week anchors, 2026-08-31). The
         # completeness watchdog deliberately does NOT use continue-on-error —
         # that would swallow its own crash; it keeps finalize green via an
         # `|| echo ::error::` arm that makes a dead watchdog visible instead.
-        self.assertEqual(block.count("continue-on-error: true"), 2)
+        self.assertEqual(block.count("continue-on-error: true"), 3)
         self.assertIn("watchdog CRASHED", block)
         self.assertIn("pattern: scrape-*", block)
         self.assertIn("python scripts/merge_scrape_artifacts.py data/scrape-artifacts", block)

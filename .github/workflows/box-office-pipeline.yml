@@ -592,6 +592,21 @@ jobs:
         continue-on-error: true
         run: python scripts/import_reviews.py
 
+      - name: Auto-fetch reported daily actuals
+        # Same-week anchor input: The Numbers publishes each day's grosses the
+        # next morning. A reported SATURDAY actual lets the already-built
+        # same-week share/scale anchors correct the AMC-to-national divisor
+        # for the Sunday forecast (tested on 2026-08-28: both films improved).
+        # Friday numbers are deliberately NOT emitted — previews fold into
+        # them mid-weekend and Friday's share is the weekend's low outlier;
+        # both films got WORSE with a Friday anchor (see
+        # scripts/fetch_daily_actuals.py SAFE_ANCHOR_DAYS). Best effort — a
+        # fetch miss leaves the anchors unset, never fails finalize.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python scripts/fetch_daily_actuals.py
+
       - name: Auto-fetch Wikipedia anticipation (diagnostic)
         # Word-of-mouth DIAGNOSTIC only: release-week Wikipedia pageviews are a
         # leak-free anticipation signal, but the backtest showed they're
