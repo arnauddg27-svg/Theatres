@@ -260,7 +260,7 @@ SEAT_COUNT_JS = r"""() => {
                                         || isState(b, 'sold') || isState(b, 'taken'));
   // Debug census when nothing matched: what seat-ish nodes DOES the page have?
   let census = null;
-  if (seats.length === 0) {
+  if (seats.length < 20) {
     const all = [...document.querySelectorAll("[class*='seat' i]")];
     const byTag = {};
     const classSamples = [];
@@ -270,7 +270,11 @@ SEAT_COUNT_JS = r"""() => {
       if (classSamples.length < 8 && cls(el) && !classSamples.includes(cls(el)))
         classSamples.push(cls(el).slice(0, 80));
     }
-    census = { total_seatish: all.length, byTag, classSamples };
+    census = { total_seatish: all.length, byTag, classSamples,
+               iframes: [...document.querySelectorAll('iframe')]
+                          .map(f => (f.src || '').slice(0, 90)),
+               qty_controls: document.querySelectorAll(
+                 "select, [class*='quantity' i], [class*='qty' i], [class*='ticket-type' i]").length };
   }
   return { total: seats.length, available: available.length,
            unavailable: unavailable.length, census,
@@ -418,6 +422,19 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                         pass
                     page.wait_for_timeout(1500)
                     seats = page.evaluate(SEAT_COUNT_JS)
+                    if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
+                        # Seat grid may live in an embedded frame — evaluate()
+                        # does not pierce iframes.
+                        for fr in page.frames[1:]:
+                            try:
+                                alt = fr.evaluate(SEAT_COUNT_JS)
+                            except Exception:
+                                continue
+                            if int((alt or {}).get("total") or 0) > \
+                                    int((seats or {}).get("total") or 0):
+                                alt["title"] = alt.get("title") or (seats or {}).get("title", "")
+                                alt["from_frame"] = fr.url[:90]
+                                seats = alt
                 except Exception as e:
                     print(f"    seatmap ERROR {str(e)[:60]}", flush=True)
                     continue
