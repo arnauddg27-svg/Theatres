@@ -485,11 +485,10 @@ jobs:
         run: |
           set +e
           mkdir -p ../chain-probe
-          # Cinemark direct-collector go/no-go. The generic probe's Regal
-          # deepen block hangs on Cloudflare, so run only the hardened Cinemark
-          # seat-flow probe, wrapped in a shell `timeout` backstop (the script
-          # also self-caps at ~3 min). -u so output survives any kill.
-          timeout 300 python -u scripts/probe_cinemark_seatmap.py 2>&1 | tee ../chain-probe/cinemark-seatmap.log
+          # Current probe-lane payload: Regal-pool expansion discovery
+          # (~350-zip national grid + widened Edwards/UA brand detection).
+          # Artifact-only; the expanded pool is reviewed and committed locally.
+          timeout 1500 python -u scripts/fandango_discover.py 2>&1 | tee ../chain-probe/fandango-discover.log
           exit 0
 
       - name: Upload probe report
