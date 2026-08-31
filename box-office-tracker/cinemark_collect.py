@@ -249,8 +249,10 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
         "reserved_seats": reserved,
         "available_seats": available,
         "occupancy_pct": occupancy,
-        "amc_seat_map_url": f"{BASE}/TicketSeatMap/?TheaterId={pick['theater_id']}"
-                            f"&ShowtimeId={pick['showtime_id']}",
+        "amc_seat_map_url": (
+            pick["href"] if str(pick.get("href", "")).startswith("http")
+            else f"{BASE}/TicketSeatMap/?TheaterId={pick['theater_id']}"
+                 f"&ShowtimeId={pick['showtime_id']}"),
         "notes": f"cinemark-direct{'; post-show-census' if pick.get('post_show') else ''}; "
                  f"discovered_showtimes={pick['discovered']}; "
                  f"unavailable={seats.get('unavailable', '')}",
@@ -464,11 +466,78 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
           f"• cap={CINEMARK_PER_THEATRE_CAP}/theatre • deadline={CINEMARK_DEADLINE_SEC}s "
           f"• titles={list(target_slugs.values())}", flush=True)
 
+    # Post-show census, stage 1: revisit seat-map URLs stored by earlier PRE
+    # runs for shows that have since started (mirrors AMC: Phase 1 collects
+    # links, the post-show pass revisits them). The showtimes page drops
+    # started shows from its listing, so stored URLs are the reliable source;
+    # page harvest below stays as a best-effort supplement.
+    revisit = []
+    if mode == "post":
+        src_path = Path(os.environ.get("CINEMARK_POST_SOURCE") or CINEMARK_CSV)
+        if src_path.exists():
+            seen_urls = set()
+            with open(src_path, newline="") as f:
+                for r in csv.DictReader(f):
+                    url = (r.get("amc_seat_map_url") or "").strip()
+                    sdate = (r.get("showtime_id") or "").strip()
+                    tz = (r.get("timezone") or "America/Chicago").strip()
+                    title = (r.get("movie_title") or "").strip()
+                    if not url or not sdate or url in seen_urls:
+                        continue
+                    if title not in target_slugs.values():
+                        continue
+                    from fandango_collect import showtime_timing
+                    m_after, m_until, show_date, dow = showtime_timing(
+                        sdate, tz, now_utc)
+                    if m_after is None or not (0 <= m_after <= CINEMARK_POST_SHOW_WINDOW_MIN):
+                        continue
+                    seen_urls.add(url)
+                    revisit.append({
+                        "theatre": {"name": r.get("theatre_name", ""),
+                                    "city": r.get("theatre_city", ""),
+                                    "timezone": tz},
+                        "pick": {"title": title, "sdate": sdate,
+                                 "show_date": show_date, "day_of_week": dow,
+                                 "minutes_until": m_until, "post_show": True,
+                                 "discovered": 1,
+                                 "theater_id": "", "showtime_id": "",
+                                 "href": url},
+                    })
+        print(f"  post-show revisit candidates from stored rows: {len(revisit)}",
+              flush=True)
+
     with sync_playwright() as p:
         browser = p.chromium.launch(
             headless=headless, args=["--disable-blink-features=AutomationControlled"])
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1440, "height": 900})
         page = ctx.new_page()
+        for item in revisit:
+            if time.monotonic() > deadline:
+                break
+            try:
+                page.goto(item["pick"]["href"], wait_until="domcontentloaded",
+                          timeout=30000)
+                try:
+                    page.wait_for_selector(
+                        "[class*='seatblock' i], button[class*='seat' i]",
+                        timeout=10000)
+                except Exception:
+                    pass
+                page.wait_for_timeout(1500)
+                seats = page.evaluate(SEAT_COUNT_JS)
+            except Exception as e:
+                print(f"    revisit ERROR {str(e)[:60]}", flush=True)
+                continue
+            if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
+                totals["incomplete"] += 1
+                print(f"    revisit incomplete (map gone post-start?): "
+                      f"total={(seats or {}).get('total')} "
+                      f"{item['pick']['sdate']}", flush=True)
+                continue
+            totals["captured"] += 1
+            rows.append(build_row(item["theatre"], item["pick"], seats,
+                                  weekend_of, run_id, check_time))
+            time.sleep(random.uniform(*CINEMARK_POLITE_SEC))
         for th in pool:
             if time.monotonic() > deadline:
                 print("⏱  deadline reached; stopping cleanly", flush=True)
@@ -524,6 +593,12 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                                      th.get("timezone", "America/Chicago"),
                                      now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode)
             totals["matched"] += len(picks)
+            if mode == "post" and not picks:
+                times = sorted((parse_seatmap_href(e.get("href", "")) or {})
+                               .get("sdate", "")[11:] for e in (entries or []))[:8]
+                print(f"  {th['slug']}: post-harvest empty — {len(entries or [])} "
+                      f"listed showtimes, earliest {times[:4]} (page likely "
+                      f"drops started shows)", flush=True)
             for pick in picks:
                 if time.monotonic() > deadline:
                     break
