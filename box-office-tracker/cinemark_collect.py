@@ -240,14 +240,40 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
 # ── Seat-map DOM reading (validated selectors from probe 33423747388) ────────
 
 SEAT_COUNT_JS = r"""() => {
-  const btns = [...document.querySelectorAll("button[class*='seat' i]")];
-  const isState = (el, word) => (el.className || '').toLowerCase().includes(word);
+  const cls = el => String(el.className && el.className.baseVal !== undefined
+                          ? el.className.baseVal : el.className || '').toLowerCase();
+  const isState = (el, word) => cls(el).includes(word);
   const legendish = el => !!el.closest("[class*='legend' i], [class*='zoom' i]");
-  const seats = btns.filter(b => !legendish(b));
+  // Layout variant A: seats as <button class="...seat...">.
+  let seats = [...document.querySelectorAll("button[class*='seat' i]")]
+      .filter(b => !legendish(b));
+  // Variant B: any element (div/svg) whose class carries both a seat marker
+  // and a state marker (available/unavailable/occupied/sold/selected).
+  if (seats.length === 0) {
+    seats = [...document.querySelectorAll("[class*='seat' i]")]
+      .filter(el => !legendish(el))
+      .filter(el => /available|unavailable|occupied|sold|selected|open|taken/
+                    .test(cls(el)));
+  }
   const available = seats.filter(b => isState(b, 'available') && !isState(b, 'unavailable'));
-  const unavailable = seats.filter(b => isState(b, 'unavailable') || isState(b, 'occupied') || isState(b, 'sold'));
+  const unavailable = seats.filter(b => isState(b, 'unavailable') || isState(b, 'occupied')
+                                        || isState(b, 'sold') || isState(b, 'taken'));
+  // Debug census when nothing matched: what seat-ish nodes DOES the page have?
+  let census = null;
+  if (seats.length === 0) {
+    const all = [...document.querySelectorAll("[class*='seat' i]")];
+    const byTag = {};
+    const classSamples = [];
+    for (const el of all.slice(0, 400)) {
+      const t = el.tagName.toLowerCase();
+      byTag[t] = (byTag[t] || 0) + 1;
+      if (classSamples.length < 8 && cls(el) && !classSamples.includes(cls(el)))
+        classSamples.push(cls(el).slice(0, 80));
+    }
+    census = { total_seatish: all.length, byTag, classSamples };
+  }
   return { total: seats.length, available: available.length,
-           unavailable: unavailable.length,
+           unavailable: unavailable.length, census,
            title: (document.querySelector('.seats-tickets-title') || {}).textContent || '' };
 }"""
 
@@ -399,6 +425,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                     totals["incomplete"] += 1
                     print(f"    incomplete: total={seats.get('total') if seats else None} "
                           f"title={((seats or {}).get('title') or '')[:40]!r} "
+                          f"census={(seats or {}).get('census')} "
                           f"url={page.url[:110]}", flush=True)
                     continue
                 page_title = (seats.get("title") or "").strip()
