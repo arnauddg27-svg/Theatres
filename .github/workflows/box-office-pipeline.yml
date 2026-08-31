@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), probe-chains (read-only Regal/Cinemark direct-API feasibility probe, artifact only), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), probe-chains (read-only feasibility probe), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -88,6 +88,14 @@ on:
         default: ''
       fandango_order:
         description: 'Fandango showtime pick order: prime (default) or nearest (near-showtime afternoon slots).'
+        required: false
+        default: ''
+      cinemark_discover:
+        description: 'scrape-cinemark: true = crawl the sitemap into theatres-cinemark.json instead of collecting.'
+        required: false
+        default: 'false'
+      cinemark_max_theatres:
+        description: 'scrape-cinemark: cap theatres visited (validation runs). Empty = whole pool.'
         required: false
         default: ''
 
@@ -914,3 +922,78 @@ jobs:
             fi
             sleep $((i * 15))
           done
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # scrape-cinemark — Cinemark DIRECT pre-reservation lane (split-lane Phase C
+  # scaling; see cinemark_collect.py docstring). Manual dispatch only until
+  # validated — no scheduler slots yet. Writes ONLY its own isolated CSV.
+  # ──────────────────────────────────────────────────────────────────────────
+  scrape-cinemark:
+    if: github.event.inputs.phase == 'scrape-cinemark'
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install chromium --with-deps
+
+      - name: Cinemark collect
+        working-directory: box-office-tracker
+        timeout-minutes: 40
+        env:
+          CINEMARK_MAX_THEATRES: ${{ github.event.inputs.cinemark_max_theatres }}
+        run: |
+          set +e
+          mkdir -p ../cinemark-logs
+          FLAG=""
+          if [ "${{ github.event.inputs.cinemark_discover }}" = "true" ]; then
+            FLAG="--discover"
+          fi
+          # -u + PIPESTATUS: output must survive kills and tee must not mask
+          # the exit code (both lessons already paid for in the Fandango lane).
+          timeout 2280 python -u cinemark_collect.py $FLAG 2>&1 | tee "../cinemark-logs/cinemark-${{ github.run_id }}.log"
+          exit "${PIPESTATUS[0]}"
+
+      - name: Commit Cinemark data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in box-office-tracker/data/theatres-cinemark.json \
+                   box-office-tracker/data/cinemark-pre-reservation-snapshots.csv; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --staged --quiet; then
+            echo "No Cinemark data to commit."
+            exit 0
+          fi
+          git commit -m "data: box office cinemark direct lane"
+          for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
+            git pull --rebase --autostash origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            [ "$i" = "3" ] && exit 1
+            sleep 15
+          done
+
+      - name: Upload log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cinemark-${{ github.run_id }}
+          path: cinemark-logs/
+          retention-days: 14
