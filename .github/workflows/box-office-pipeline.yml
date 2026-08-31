@@ -98,6 +98,14 @@ on:
         description: 'scrape-cinemark: cap theatres visited (validation runs). Empty = whole pool.'
         required: false
         default: ''
+      cinemark_show_dates:
+        description: 'scrape-cinemark ad-hoc test: capture these YYYY-MM-DD dates; makes the run a throwaway (artifact CSV, no canonical commit).'
+        required: false
+        default: ''
+      cinemark_titles:
+        description: 'scrape-cinemark ad-hoc test: comma-separated titles (empty = tracked).'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -956,6 +964,10 @@ jobs:
         timeout-minutes: 40
         env:
           CINEMARK_MAX_THEATRES: ${{ github.event.inputs.cinemark_max_theatres }}
+          CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
+          CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
+          # Test runs (show_dates set) write a throwaway CSV, never canonical.
+          CINEMARK_OUTPUT: ${{ github.event.inputs.cinemark_show_dates != '' && '../cinemark-logs/cinemark-test-capture.csv' || '' }}
         run: |
           set +e
           mkdir -p ../cinemark-logs
@@ -969,7 +981,7 @@ jobs:
           exit "${PIPESTATUS[0]}"
 
       - name: Commit Cinemark data
-        if: always()
+        if: always() && github.event.inputs.cinemark_show_dates == ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
