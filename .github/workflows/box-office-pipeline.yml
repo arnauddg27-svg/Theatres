@@ -465,10 +465,11 @@ jobs:
         run: |
           set +e
           mkdir -p ../chain-probe
-          python scripts/probe_chain_apis.py 2>&1 | tee ../chain-probe/probe.log
+          python -u scripts/probe_chain_apis.py 2>&1 | tee ../chain-probe/probe.log
           rc=${PIPESTATUS[0]}
           # Focused Cinemark seat-flow probe (go/no-go for the direct collector).
-          python scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
+          # -u so output survives a kill; the script self-caps at ~3 min.
+          python -u scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
           exit "$rc"
 
       - name: Upload probe report
