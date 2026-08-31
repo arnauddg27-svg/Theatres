@@ -293,7 +293,7 @@ def discover(page):
 
 # ── Collection ───────────────────────────────────────────────────────────────
 
-def collect(weekend_of=None, titles=None, headless=True):
+def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
     from playwright.sync_api import sync_playwright
 
     weekend_of = weekend_of or phase1_weekend_anchor(datetime.now(), full_weekend=True)
@@ -326,7 +326,11 @@ def collect(weekend_of=None, titles=None, headless=True):
     now_utc = datetime.now(timezone.utc)
     check_time = now_utc.isoformat()
     run_id = f"cinemark-{snapshot_bucket(check_time)}"
-    window_dates = set(opening_weekend_show_dates(weekend_of))
+    # Ad-hoc test override (fandango --dates convention): capture arbitrary
+    # dates, e.g. validating live seat capture on a Monday when the tracked
+    # window (Thu-Sun of the UPCOMING weekend) is legitimately empty.
+    window_dates = (set(show_dates) if show_dates
+                    else set(opening_weekend_show_dates(weekend_of)))
     deadline = time.monotonic() + CINEMARK_DEADLINE_SEC
     totals = {"visited": 0, "matched": 0, "captured": 0, "written": 0,
               "skipped": 0, "blocks": 0, "incomplete": 0}
@@ -486,7 +490,11 @@ def main():
     ap.add_argument("--discover", action="store_true",
                     help="crawl the sitemap into data/theatres-cinemark.json")
     ap.add_argument("--weekend", help="weekend_of override (YYYY-MM-DD)")
-    ap.add_argument("--titles", nargs="*")
+    ap.add_argument("--titles", nargs="*",
+                    help="override tracked titles (or env CINEMARK_TITLES, comma-sep)")
+    ap.add_argument("--dates", nargs="*",
+                    help="ad-hoc test: capture these YYYY-MM-DD dates instead of "
+                         "the weekend window (or env CINEMARK_SHOW_DATES)")
     args = ap.parse_args()
     if args.selftest:
         _selftest()
@@ -509,7 +517,14 @@ def main():
                        "theatres": theatres}, f, indent=1)
         print(f"✓ wrote {len(theatres)} theatres -> {THEATRES_JSON}")
         return 0
-    totals = collect(weekend_of=args.weekend, titles=args.titles)
+    titles = args.titles or [t.strip() for t in
+                             (os.environ.get("CINEMARK_TITLES") or "").split(",")
+                             if t.strip()]
+    show_dates = args.dates or [d.strip() for d in
+                                (os.environ.get("CINEMARK_SHOW_DATES") or "").split(",")
+                                if d.strip()]
+    totals = collect(weekend_of=args.weekend, titles=titles or None,
+                     show_dates=show_dates or None)
     if totals and totals.get("written", 0) == 0 and totals.get("matched", 0) > 0:
         print("❌ Showtimes matched but zero rows written — failing loudly.")
         return 1
