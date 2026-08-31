@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), probe-chains (read-only Regal/Cinemark direct-API feasibility probe, artifact only), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -438,6 +438,44 @@ jobs:
   # predictions and xlsx from the fully-merged CSV. A single writer here
   # means no race on these derived artifacts.
   # ──────────────────────────────────────────────────────────────────────────
+  # ──────────────────────────────────────────────────────────────────────────
+  # probe-chains — read-only feasibility probe of Regal/Cinemark DIRECT sites
+  # (Phase C scaling: the Fandango lane is capped by a per-Azure-range seat
+  # budget; the chains' own sites are independent rate-limit domains). Runs a
+  # handful of page loads from a US runner, captures which JSON endpoints the
+  # theatre pages call, and uploads the report as an artifact. Never commits.
+  # ──────────────────────────────────────────────────────────────────────────
+  probe-chains:
+    if: github.event.inputs.phase == 'probe-chains'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: |
+          pip install requests playwright
+          python -m playwright install chromium --with-deps
+
+      - name: Probe chain sites
+        working-directory: box-office-tracker
+        run: |
+          set +e
+          mkdir -p ../chain-probe
+          python scripts/probe_chain_apis.py 2>&1 | tee ../chain-probe/probe.log
+          exit "${PIPESTATUS[0]}"
+
+      - name: Upload probe report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chain-probe-${{ github.run_id }}
+          path: chain-probe/
+          retention-days: 14
+
   finalize:
     needs: scrape
     # Run regardless of how the individual matrix legs ended (always()), and
