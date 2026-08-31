@@ -1,8 +1,8 @@
 {
  "_cohort": "fandango",
- "_note": "Regal/Cinemark theatres discovered via Fandango across US metros (chain from slug prefix; timezone inherited from the metro). A national pool \u2014 each scheduled run samples a rotating subset within its time budget. Gated OUT of the AMC model until Phase C. See fandango_collect.py.",
+ "_note": "Regal/Cinemark theatres discovered via Fandango (chain from slug prefix; timezone from the metro/zip). National pool after the 2026-08-31 two-round zip-grid discovery. The lane collects FANDANGO_CHAINS (default REGL) only \u2014 CNMK entries stay on file for ad-hoc use; Cinemark production coverage moved to the direct lane (cinemark_collect.py). Scheduled runs sample a rotating capped subset per shard. See fandango_collect.py.",
  "_updated": "2026-08-31T20:31:18.473479+00:00",
- "_count": 320,
+ "_count": 660,
  "theatres": [
   {
    "name": "Regal Atlas Park",
@@ -4880,7 +4880,7 @@
    "chain": "REGL",
    "city": "Pensacola, FL",
    "dma": "Pensacola, FL",
-   "timezone": "America/New_York",
+   "timezone": "America/Chicago",
    "zip": "32501",
    "discovered": "2026-08-31-expansion"
   },

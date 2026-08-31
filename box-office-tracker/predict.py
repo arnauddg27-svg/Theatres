@@ -4908,13 +4908,21 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                 snap_date = (row.get("snapshot_time") or "")[:10]
                 if through_date and snap_date and snap_date > through_date:
                     continue
+                note = row.get("notes") or ""
+                # Post-show census rows are near-FINAL occupancy; rc_occ and
+                # CROSS_CHAIN_WALKUP_K are calibrated on PRE-reservation
+                # occupancy, and a post row's discovered_showtimes=1 would
+                # drag the spc_rc median and inflate volume_ratio q. The
+                # census lane feeds the (future) Phase C denominator, not
+                # this signal.
+                if "post-show-census" in note:
+                    continue
                 occ = _occ_pct(row)
                 if occ is None:
                     continue
                 movie = row.get("movie_title", "").strip()
                 rc.setdefault(movie, []).append(occ)
                 disc = None
-                note = row.get("notes") or ""
                 if "discovered_showtimes=" in note:
                     raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
                     if raw.isdigit():
@@ -9386,12 +9394,18 @@ def main():
         ) = (
             snapshot_calibration_fields_from_prediction(pred)
         )
+        # Recording GROUND TRUTH is the opposite concern from the prediction
+        # hygiene above: the fetched daily grosses must be kept OUT of the
+        # replayed prediction but IN the recorded entry (calibrate's per-day
+        # error reporting reads entry["daily_actuals"]). Load them fresh here.
+        recording_overrides = load_daily_actual_overrides(
+            weekend_of=record_weekend)
         record_daily_actuals = {}
         for day_name in daily_predictions:
             actual_gross_m = daily_actual_override_gross_m_for(
                 movie_match,
                 day_name,
-                daily_actual_overrides,
+                recording_overrides,
             )
             if actual_gross_m is not None and actual_gross_m > 0:
                 record_daily_actuals[day_name] = actual_gross_m

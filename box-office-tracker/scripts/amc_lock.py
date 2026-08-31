@@ -109,11 +109,31 @@ def _read_lock_metadata(repo_root: Path, branch: str) -> tuple[str, dict[str, An
         # fetch failed). Unreadable must mean "assume HELD", never "breakable":
         # the sentinel below makes _lock_is_stale return False, and the next
         # poll re-resolves the sha and tries again.
-        return sha, {"payload_unreadable": True}
+        return sha, _unreadable_sentinel(repo_root, sha)
     try:
         return sha, json.loads(result.stdout)
     except json.JSONDecodeError:
-        return sha, {"payload_unreadable": True}
+        return sha, _unreadable_sentinel(repo_root, sha)
+
+
+def _unreadable_sentinel(repo_root: Path, sha: str) -> dict[str, Any]:
+    """Sentinel for an unreadable lock payload, dated by the lock COMMIT.
+
+    The commit's committer timestamp is readable even when the payload JSON is
+    corrupt (and often even when `git show` of the file failed, since the fetch
+    may have landed the commit object). Carrying it lets _lock_is_stale bound a
+    permanently-corrupted lock at the HARD ceiling instead of deadlocking every
+    AMC lane forever (2026-08-31 audit: the bare sentinel made hard_ttl
+    unreachable — a bad manual push to the lock branch would have required a
+    manual ref deletion to ever recover)."""
+    sentinel: dict[str, Any] = {"payload_unreadable": True}
+    result = _git(repo_root, "log", "-1", "--format=%ct", sha)
+    if result.returncode == 0:
+        try:
+            sentinel["commit_epoch"] = float(result.stdout.strip())
+        except ValueError:
+            pass
+    return sentinel
 
 
 def _github_run_is_active(run_id: str | None) -> bool | None | str:
@@ -158,10 +178,24 @@ def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int,
     if hard_ttl_seconds is None:
         hard_ttl_seconds = ttl_seconds * AMC_LOCK_HARD_TTL_MULTIPLIER
     if metadata.get("payload_unreadable"):
-        # We could not read the lock payload at all, so we know nothing about
-        # its age or holder. Never break what we cannot read — a waiter that
-        # eventually times out is a visible red run; a wrongly broken live lock
-        # is a silent AMC double-run.
+        # We could not read the lock payload, so we know nothing about its
+        # holder. Never break on the normal TTL — a waiter that times out is a
+        # visible red run; a wrongly broken live lock is a silent AMC
+        # double-run. But a payload that stays unreadable FOREVER (corrupted
+        # commit on the lock branch) must not deadlock every lane until a human
+        # deletes the ref: when the lock COMMIT's own timestamp is readable and
+        # the HARD ceiling has passed, break as the last resort.
+        commit_epoch = metadata.get("commit_epoch")
+        if commit_epoch is not None:
+            try:
+                commit_age = time.time() - float(commit_epoch)
+            except (TypeError, ValueError):
+                return False
+            if commit_age >= hard_ttl_seconds:
+                print(f"AMC lock: payload unreadable but lock commit is "
+                      f"{commit_age:.0f}s old (>= hard ceiling "
+                      f"{hard_ttl_seconds:.0f}s) — breaking as last resort")
+                return True
         return False
     created_at = metadata.get("created_at_epoch")
     try:

@@ -113,6 +113,22 @@ class LockStaleTest(unittest.TestCase):
         self._patch_probe(False)  # even a "dead holder" probe must not matter
         self.assertFalse(self.mod._lock_is_stale({"payload_unreadable": True}, self.ttl))
 
+    def test_unreadable_payload_breaks_at_hard_ceiling_via_commit_age(self):
+        # A payload that stays unreadable FOREVER (corrupted commit on the lock
+        # branch) must not deadlock every AMC lane until a human deletes the
+        # ref: with the lock COMMIT's own timestamp readable, the hard ceiling
+        # is the last-resort break (2026-08-31 audit finding).
+        import time as _t
+        self._patch_probe(False)
+        hard = self.ttl * self.mod.AMC_LOCK_HARD_TTL_MULTIPLIER
+        fresh = {"payload_unreadable": True, "commit_epoch": _t.time() - 10}
+        ancient = {"payload_unreadable": True,
+                   "commit_epoch": _t.time() - hard - 60}
+        undated = {"payload_unreadable": True}
+        self.assertFalse(self.mod._lock_is_stale(fresh, self.ttl))
+        self.assertTrue(self.mod._lock_is_stale(ancient, self.ttl))
+        self.assertFalse(self.mod._lock_is_stale(undated, self.ttl))
+
     def test_metadata_read_fetches_lock_object_from_remote(self):
         # Reproduce the CI shape end-to-end: the lock commit is pushed from a
         # throwaway temp repo, so it exists ONLY on the remote — never in the

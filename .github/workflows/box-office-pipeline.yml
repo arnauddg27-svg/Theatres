@@ -785,8 +785,9 @@ jobs:
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
           FANDANGO_ZIPS: ${{ github.event.inputs.fandango_zips }}
           # Sharded (scheduled) runs cap at 55 renders — the proven per-slot
-          # budget; ad-hoc unsharded runs keep whole-pool semantics.
-          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres != '' && github.event.inputs.fandango_max_theatres || (github.event.inputs.fandango_num_shards != '' && '55' || '') }}
+          # budget; ad-hoc unsharded runs (empty OR explicit '0' = whole pool)
+          # keep whole-pool semantics.
+          FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres != '' && github.event.inputs.fandango_max_theatres || (github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards != '0' && '55' || '') }}
           # Test runs (show_dates set) write to a throwaway file, never canonical.
           FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
         run: |

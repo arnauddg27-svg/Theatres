@@ -112,6 +112,8 @@ STATE_TZ = {
 CITY_TZ = {
     "tx-el-paso": "America/Denver",
     "ky-paducah": "America/Chicago",
+    "in-valparaiso": "America/Chicago",   # Porter County IN is Central
+    "tn-oak-ridge": "America/New_York",   # Knoxville area is Eastern
 }
 
 THEATRE_URL_RE = re.compile(r"/theatres/([a-z]{2})-([a-z0-9\-]+)/([a-z0-9\-]+)/?$")
@@ -910,6 +912,19 @@ def main():
             and totals.get("captured", 0) == 0):
         print("❌ Post census: every stored-URL revisit came back incomplete "
               "— seat maps may no longer render post-start. Failing loudly.")
+        return 1
+    # The mirror hole (72h dry-run audit): with NO stored pre rows at all,
+    # revisit_candidates is 0 and the guard above never arms — the showtimes
+    # page drops started shows, so page harvest is near-empty too and a whole
+    # census day would vanish on a green run. Titles resolved (totals
+    # non-empty) + nothing to revisit + nothing captured = the pre lane
+    # produced no data all week; that is a red, not a quiet zero.
+    if (totals and mode == "post"
+            and totals.get("revisit_candidates", 0) == 0
+            and totals.get("captured", 0) == 0):
+        print("❌ Post census: no stored pre-reservation URLs to revisit and "
+              "page harvest captured nothing — did the pre lane write any "
+              "rows this week? Failing loudly.")
         return 1
     return 0
 

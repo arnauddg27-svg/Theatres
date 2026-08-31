@@ -128,9 +128,15 @@ class LoadCrossChainOccupancyTests(unittest.TestCase):
                  "movie_title": "F", "occupancy_pct": "6", "chain": "REGL"},
             ])
             self._write(cnmk, ["weekend_of", "snapshot_time", "movie_title",
-                               "occupancy_pct", "chain"], [
+                               "occupancy_pct", "chain", "notes"], [
                 {"weekend_of": "2026-09-04", "snapshot_time": "2026-09-03T04:00:00Z",
-                 "movie_title": "F", "occupancy_pct": "30", "chain": "CNMK"},
+                 "movie_title": "F", "occupancy_pct": "30", "chain": "CNMK",
+                 "notes": "cinemark-direct; discovered_showtimes=4"},
+                # Post-show census rows are near-FINAL occupancy and must be
+                # excluded — rc_occ is calibrated on pre-reservation reads.
+                {"weekend_of": "2026-09-04", "snapshot_time": "2026-09-05T06:30:00Z",
+                 "movie_title": "F", "occupancy_pct": "95", "chain": "CNMK",
+                 "notes": "cinemark-direct; post-show-census; discovered_showtimes=1"},
             ])
             orig = (P.SEAT_CSV, P.FANDANGO_SNAPSHOTS_CSV, P.CINEMARK_SNAPSHOTS_CSV)
             try:
