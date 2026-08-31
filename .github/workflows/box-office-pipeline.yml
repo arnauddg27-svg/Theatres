@@ -948,8 +948,10 @@ jobs:
 
   # ──────────────────────────────────────────────────────────────────────────
   # scrape-cinemark — Cinemark DIRECT pre-reservation lane (split-lane Phase C
-  # scaling; see cinemark_collect.py docstring). Manual dispatch only until
-  # validated — no scheduler slots yet. Writes ONLY its own isolated CSV.
+  # scaling; see cinemark_collect.py docstring). SCHEDULED since 0801d96:
+  # pre 09:20Z + 19:20Z daily, post census 06:20Z Fri/Sat/Sun/Mon — avoid
+  # manual dispatches near those hours (title-dedup would suppress the slot).
+  # Writes ONLY its own isolated CSV.
   # ──────────────────────────────────────────────────────────────────────────
   scrape-cinemark:
     if: github.event.inputs.phase == 'scrape-cinemark'

@@ -517,10 +517,13 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     revisit = []
     if mode == "post":
         src_path = Path(os.environ.get("CINEMARK_POST_SOURCE") or CINEMARK_CSV)
+        totals["weekend_rows_stored"] = 0
         if src_path.exists():
             seen_urls = set()
             with open(src_path, newline="") as f:
                 for r in csv.DictReader(f):
+                    if (r.get("weekend_of") or "").strip() == weekend_of:
+                        totals["weekend_rows_stored"] += 1
                     url = (r.get("amc_seat_map_url") or "").strip()
                     sdate = (r.get("showtime_id") or "").strip()
                     tz = (r.get("timezone") or "America/Chicago").strip()
@@ -916,15 +919,18 @@ def main():
     # The mirror hole (72h dry-run audit): with NO stored pre rows at all,
     # revisit_candidates is 0 and the guard above never arms — the showtimes
     # page drops started shows, so page harvest is near-empty too and a whole
-    # census day would vanish on a green run. Titles resolved (totals
-    # non-empty) + nothing to revisit + nothing captured = the pre lane
-    # produced no data all week; that is a red, not a quiet zero.
+    # census day would vanish on a green run. Scoped to the WEEKEND (round-3
+    # audit): candidates can legitimately be 0 on a healthy lane — e.g.
+    # Friday 06:20Z with zero Thursday previews at Cinemark, Fri-Sun rows all
+    # still in the future — so the red arms only when the pre lane wrote
+    # NOTHING for this weekend all week.
     if (totals and mode == "post"
+            and totals.get("weekend_rows_stored", 0) == 0
             and totals.get("revisit_candidates", 0) == 0
             and totals.get("captured", 0) == 0):
-        print("❌ Post census: no stored pre-reservation URLs to revisit and "
-              "page harvest captured nothing — did the pre lane write any "
-              "rows this week? Failing loudly.")
+        print("❌ Post census: the pre lane stored ZERO rows for this weekend, "
+              "nothing to revisit, and page harvest captured nothing — census "
+              "day lost. Failing loudly.")
         return 1
     return 0
 

@@ -64,10 +64,6 @@ class CinemarkCollectTest(unittest.TestCase):
         self.assertEqual(frozenset({0, 1, 5, 6}), post[0].cron_days)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class PostModeAnchorTest(unittest.TestCase):
     def test_post_window_covers_full_show_day(self):
         # 18h window: the Monday/weekend 06:20Z pass must census matinees
@@ -95,3 +91,7 @@ class PostModeAnchorTest(unittest.TestCase):
         self.assertEqual(["10", "11"],
                          [p["showtime_id"] for p in picks])  # newest started first
         self.assertTrue(all(p["post_show"] for p in picks))
+
+
+if __name__ == "__main__":
+    unittest.main()

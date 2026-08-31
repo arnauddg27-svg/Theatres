@@ -32,6 +32,22 @@ POOL = Path(__file__).resolve().parents[1] / "data" / "theatres-fandango.json"
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
+# Split-zone corrections by 3-digit zip prefix — beats the state majority
+# zone (round-3 audit: 5 committed theatres were an hour off, which shifts
+# the minute-level pre/post windows, not just the local date). Applied before
+# STATE_TZ in the discovery loop; existing pool entries are add-only-merged,
+# so data fixes survive future rounds.
+ZIP3_TZ = {
+    "325": "America/Chicago",    # FL panhandle (Pensacola)
+    "323": "America/Chicago",    # FL panhandle (Panama City west)
+    "376": "America/New_York",   # TN tri-cities (Johnson City/Kingsport)
+    "374": "America/New_York",   # Chattanooga TN
+    "379": "America/New_York",   # Knoxville TN
+    "421": "America/Chicago",    # Bowling Green KY
+    "838": "America/Los_Angeles",  # ID panhandle (Coeur d'Alene)
+    "799": "America/Denver",     # El Paso TX
+}
+
 STATE_TZ = {
     "CT": "America/New_York", "DE": "America/New_York", "FL": "America/New_York",
     "GA": "America/New_York", "MA": "America/New_York", "MD": "America/New_York",
@@ -389,7 +405,8 @@ def main():
                 "chain": chain,
                 "city": city,
                 "dma": city,
-                "timezone": STATE_TZ.get(state, "America/Chicago"),
+                "timezone": ZIP3_TZ.get(zipc[:3],
+                                        STATE_TZ.get(state, "America/Chicago")),
                 "zip": zipc,
                 "discovered": "2026-08-31-expansion",
             }
@@ -406,6 +423,9 @@ def main():
     out = dict(existing)
     out["theatres"] = merged
     out["_updated"] = datetime.now(timezone.utc).isoformat()
+    # Keep the header honest — round-3 audit: carrying _count forward verbatim
+    # re-creates a stale count on every discovery round.
+    out["_count"] = len(merged)
     with open(os.path.join(REPORT_DIR, "theatres-fandango-expanded.json"), "w") as f:
         json.dump(out, f, indent=1)
 
