@@ -1,7 +1,7 @@
 {
  "_cohort": "fandango",
  "_note": "Regal/Cinemark theatres discovered via Fandango across US metros (chain from slug prefix; timezone inherited from the metro). A national pool \u2014 each scheduled run samples a rotating subset within its time budget. Gated OUT of the AMC model until Phase C. See fandango_collect.py.",
- "_updated": "2026-08-31T20:16:23.004019+00:00",
+ "_updated": "2026-08-31T20:31:18.473479+00:00",
  "_count": 320,
  "theatres": [
   {
@@ -5182,6 +5182,1106 @@
    "dma": "Honolulu, HI",
    "timezone": "Pacific/Honolulu",
    "zip": "96813",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Abilene And Xd",
+   "slug": "cinemark-abilene-and-xd-aayfi",
+   "chain": "CNMK",
+   "city": "Abilene, TX",
+   "dma": "Abilene, TX",
+   "timezone": "America/Chicago",
+   "zip": "79601",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Allen 16 And Xd",
+   "slug": "cinemark-allen-16-and-xd-aatzm",
+   "chain": "CNMK",
+   "city": "McKinney, TX",
+   "dma": "McKinney, TX",
+   "timezone": "America/Chicago",
+   "zip": "75069",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Ames Movies 12",
+   "slug": "cinemark-ames-movies-12-aaiqo",
+   "chain": "CNMK",
+   "city": "Ames, IA",
+   "dma": "Ames, IA",
+   "timezone": "America/Chicago",
+   "zip": "50010",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Asheboro",
+   "slug": "cinemark-asheboro-aaree",
+   "chain": "CNMK",
+   "city": "Graham, NC",
+   "dma": "Graham, NC",
+   "timezone": "America/New_York",
+   "zip": "27253",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark At Richmond Centre",
+   "slug": "cinemark-at-richmond-centre-aavcj",
+   "chain": "CNMK",
+   "city": "Frankfort, KY",
+   "dma": "Frankfort, KY",
+   "timezone": "America/New_York",
+   "zip": "40601",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Beaumont 15 And Xd",
+   "slug": "cinemark-beaumont-15-and-xd-aaipu",
+   "chain": "CNMK",
+   "city": "Orange, TX",
+   "dma": "Orange, TX",
+   "timezone": "America/Chicago",
+   "zip": "77630",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Bistro Boca Raton And Xd",
+   "slug": "cinemark-bistro-boca-raton-and-xd-aaouv",
+   "chain": "CNMK",
+   "city": "Margate, FL",
+   "dma": "Margate, FL",
+   "timezone": "America/New_York",
+   "zip": "33063",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Bistro Lake Charles",
+   "slug": "cinemark-bistro-lake-charles-aaxvh",
+   "chain": "CNMK",
+   "city": "Lake Charles, LA",
+   "dma": "Lake Charles, LA",
+   "timezone": "America/Chicago",
+   "zip": "70601",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Cedar Hill",
+   "slug": "cinemark-cedar-hill-aatbq",
+   "chain": "CNMK",
+   "city": "Cedar Hill, TX",
+   "dma": "Cedar Hill, TX",
+   "timezone": "America/Chicago",
+   "zip": "75104",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Cedar Park",
+   "slug": "cinemark-cedar-park-aaunk",
+   "chain": "CNMK",
+   "city": "Killeen, TX",
+   "dma": "Killeen, TX",
+   "timezone": "America/Chicago",
+   "zip": "76542",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Central Plano",
+   "slug": "cinemark-central-plano-aacbz",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Century At The River And Xd",
+   "slug": "cinemark-century-at-the-river-and-xd-aaqmo",
+   "chain": "CNMK",
+   "city": "Big Bear Lake, CA",
+   "dma": "Big Bear Lake, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "92315",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Century La Quinta And Xd",
+   "slug": "cinemark-century-la-quinta-and-xd-aaxrh",
+   "chain": "CNMK",
+   "city": "Big Bear Lake, CA",
+   "dma": "Big Bear Lake, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "92315",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Century Odessa 12",
+   "slug": "cinemark-century-odessa-12-aagbb",
+   "chain": "CNMK",
+   "city": "Odessa, TX",
+   "dma": "Odessa, TX",
+   "timezone": "America/Chicago",
+   "zip": "79762",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Century Oro Valley Marketplace",
+   "slug": "cinemark-century-oro-valley-marketplace-aauzr",
+   "chain": "CNMK",
+   "city": "Green Valley, AZ",
+   "dma": "Green Valley, AZ",
+   "timezone": "America/Phoenix",
+   "zip": "85614",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Cinema Big Spring 4",
+   "slug": "cinemark-cinema-big-spring-4-aatzw",
+   "chain": "CNMK",
+   "city": "Midland, TX",
+   "dma": "Midland, TX",
+   "timezone": "America/Chicago",
+   "zip": "79701",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark City Center And Xd",
+   "slug": "cinemark-city-center-and-xd-aaxgd",
+   "chain": "CNMK",
+   "city": "Hopewell, VA",
+   "dma": "Hopewell, VA",
+   "timezone": "America/New_York",
+   "zip": "23860",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Cleburne Cinema 6",
+   "slug": "cinemark-cleburne-cinema-6-aainh",
+   "chain": "CNMK",
+   "city": "Burleson, TX",
+   "dma": "Burleson, TX",
+   "timezone": "America/Chicago",
+   "zip": "76028",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Colony Square",
+   "slug": "cinemark-colony-square-aauca",
+   "chain": "CNMK",
+   "city": "Newark, OH",
+   "dma": "Newark, OH",
+   "timezone": "America/New_York",
+   "zip": "43055",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Cypress And Xd",
+   "slug": "cinemark-cypress-and-xd-aatui",
+   "chain": "CNMK",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Davenport 18 Xd And Imax",
+   "slug": "cinemark-davenport-18-xd-and-imax-aakow",
+   "chain": "CNMK",
+   "city": "Moline, IL",
+   "dma": "Moline, IL",
+   "timezone": "America/Chicago",
+   "zip": "61265",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Denton 14",
+   "slug": "cinemark-denton-14-aatfb",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Farmington At Station Park And Xd",
+   "slug": "cinemark-farmington-at-station-park-and-xd-aawix",
+   "chain": "CNMK",
+   "city": "Kaysville, UT",
+   "dma": "Kaysville, UT",
+   "timezone": "America/Denver",
+   "zip": "84037",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Frisco Square And Xd",
+   "slug": "cinemark-frisco-square-and-xd-aawfx",
+   "chain": "CNMK",
+   "city": "McKinney, TX",
+   "dma": "McKinney, TX",
+   "timezone": "America/Chicago",
+   "zip": "75069",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Greeley",
+   "slug": "cinemark-greeley-aarlq",
+   "chain": "CNMK",
+   "city": "Greeley, CO",
+   "dma": "Greeley, CO",
+   "timezone": "America/Denver",
+   "zip": "80631",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Harlingen 16 And Xd",
+   "slug": "cinemark-harlingen-16-and-xd-aaojj",
+   "chain": "CNMK",
+   "city": "Brownsville, TX",
+   "dma": "Brownsville, TX",
+   "timezone": "America/Chicago",
+   "zip": "78521",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Helena And Xd",
+   "slug": "cinemark-helena-and-xd-aatln",
+   "chain": "CNMK",
+   "city": "Helena, MT",
+   "dma": "Helena, MT",
+   "timezone": "America/Denver",
+   "zip": "59601",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Katy And Xd",
+   "slug": "cinemark-katy-and-xd-aamzu",
+   "chain": "CNMK",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Lake Charles And Xd",
+   "slug": "cinemark-lake-charles-and-xd-aasww",
+   "chain": "CNMK",
+   "city": "Lake Charles, LA",
+   "dma": "Lake Charles, LA",
+   "timezone": "America/Chicago",
+   "zip": "70601",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Legacy And Xd",
+   "slug": "cinemark-legacy-and-xd-aanhh",
+   "chain": "CNMK",
+   "city": "McKinney, TX",
+   "dma": "McKinney, TX",
+   "timezone": "America/Chicago",
+   "zip": "75069",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Lewisville And Xd",
+   "slug": "cinemark-lewisville-and-xd-aaudu",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Louis Joliet Mall",
+   "slug": "cinemark-louis-joliet-mall-aavir",
+   "chain": "CNMK",
+   "city": "Joliet, IL",
+   "dma": "Joliet, IL",
+   "timezone": "America/Chicago",
+   "zip": "60435",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Lufkin",
+   "slug": "cinemark-lufkin-aatvj",
+   "chain": "CNMK",
+   "city": "Nacogdoches, TX",
+   "dma": "Nacogdoches, TX",
+   "timezone": "America/Chicago",
+   "zip": "75965",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Mall Del Norte",
+   "slug": "cinemark-mall-del-norte-aaukd",
+   "chain": "CNMK",
+   "city": "Laredo, TX",
+   "dma": "Laredo, TX",
+   "timezone": "America/Chicago",
+   "zip": "78041",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Mansfield And Xd",
+   "slug": "cinemark-mansfield-and-xd-aatnp",
+   "chain": "CNMK",
+   "city": "Burleson, TX",
+   "dma": "Burleson, TX",
+   "timezone": "America/Chicago",
+   "zip": "76028",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Miami Valley",
+   "slug": "cinemark-miami-valley-aavcs",
+   "chain": "CNMK",
+   "city": "Springfield, OH",
+   "dma": "Springfield, OH",
+   "timezone": "America/New_York",
+   "zip": "45501",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark North Mckinney And Xd",
+   "slug": "cinemark-north-mckinney-and-xd-aayoy",
+   "chain": "CNMK",
+   "city": "McKinney, TX",
+   "dma": "McKinney, TX",
+   "timezone": "America/Chicago",
+   "zip": "75069",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Ontario Towne Center",
+   "slug": "cinemark-ontario-towne-center-aaswv",
+   "chain": "CNMK",
+   "city": "Newark, OH",
+   "dma": "Newark, OH",
+   "timezone": "America/New_York",
+   "zip": "43055",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark River Valley Mall And Xd",
+   "slug": "cinemark-river-valley-mall-and-xd-aaxhy",
+   "chain": "CNMK",
+   "city": "Newark, OH",
+   "dma": "Newark, OH",
+   "timezone": "America/New_York",
+   "zip": "43055",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Roanoke And Xd",
+   "slug": "cinemark-roanoke-and-xd-aaxpt",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Rosenberg 12",
+   "slug": "cinemark-rosenberg-12-aatyq",
+   "chain": "CNMK",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Round Rock 14",
+   "slug": "cinemark-round-rock-14-aauem",
+   "chain": "CNMK",
+   "city": "Killeen, TX",
+   "dma": "Killeen, TX",
+   "timezone": "America/Chicago",
+   "zip": "76542",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Signature Stadium Kalispell 14",
+   "slug": "cinemark-signature-stadium-kalispell-14-aauph",
+   "chain": "CNMK",
+   "city": "Kalispell, MT",
+   "dma": "Kalispell, MT",
+   "timezone": "America/Denver",
+   "zip": "59901",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Spanish Fork And Xd",
+   "slug": "cinemark-spanish-fork-and-xd-aayhd",
+   "chain": "CNMK",
+   "city": "Spanish Fork, UT",
+   "dma": "Spanish Fork, UT",
+   "timezone": "America/Denver",
+   "zip": "84660",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Spring Klein And Xd",
+   "slug": "cinemark-spring-klein-and-xd-aaxaa",
+   "chain": "CNMK",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Stone Hill Town Center",
+   "slug": "cinemark-stone-hill-town-center-aawih",
+   "chain": "CNMK",
+   "city": "Killeen, TX",
+   "dma": "Killeen, TX",
+   "timezone": "America/Chicago",
+   "zip": "76542",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Sunrise Mall And Xd",
+   "slug": "cinemark-sunrise-mall-and-xd-aaovx",
+   "chain": "CNMK",
+   "city": "Brownsville, TX",
+   "dma": "Brownsville, TX",
+   "timezone": "America/Chicago",
+   "zip": "78521",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark The Woodlands And Xd",
+   "slug": "cinemark-the-woodlands-and-xd-aacct",
+   "chain": "CNMK",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Grapevine And Xd",
+   "slug": "cinemark-tinseltown-grapevine-and-xd-aacbr",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Oak Ridge",
+   "slug": "cinemark-tinseltown-oak-ridge-aajkk",
+   "chain": "CNMK",
+   "city": "Jefferson City, TN",
+   "dma": "Jefferson City, TN",
+   "timezone": "America/Chicago",
+   "zip": "37760",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Pueblo",
+   "slug": "cinemark-tinseltown-pueblo-aaiql",
+   "chain": "CNMK",
+   "city": "Pueblo, CO",
+   "dma": "Pueblo, CO",
+   "timezone": "America/Denver",
+   "zip": "81001",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Salisbury",
+   "slug": "cinemark-tinseltown-salisbury-aaiqf",
+   "chain": "CNMK",
+   "city": "Statesville, NC",
+   "dma": "Statesville, NC",
+   "timezone": "America/New_York",
+   "zip": "28677",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Usa Benton",
+   "slug": "cinemark-tinseltown-usa-benton-aaiqa",
+   "chain": "CNMK",
+   "city": "Hot Springs, AR",
+   "dma": "Hot Springs, AR",
+   "timezone": "America/Chicago",
+   "zip": "71901",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown Usa Kenosha",
+   "slug": "cinemark-tinseltown-usa-kenosha-aaiqh",
+   "chain": "CNMK",
+   "city": "Gurnee, IL",
+   "dma": "Gurnee, IL",
+   "timezone": "America/Chicago",
+   "zip": "60031",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tinseltown West Monroe 17",
+   "slug": "cinemark-tinseltown-west-monroe-17-aaiqn",
+   "chain": "CNMK",
+   "city": "Ruston, LA",
+   "dma": "Ruston, LA",
+   "timezone": "America/Chicago",
+   "zip": "71270",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Towne Centre And Xd",
+   "slug": "cinemark-towne-centre-and-xd-aawfu",
+   "chain": "CNMK",
+   "city": "Conway, AR",
+   "dma": "Conway, AR",
+   "timezone": "America/Chicago",
+   "zip": "72032",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Tupelo Movies 8",
+   "slug": "cinemark-tupelo-movies-8-aainx",
+   "chain": "CNMK",
+   "city": "Tupelo, MS",
+   "dma": "Tupelo, MS",
+   "timezone": "America/Chicago",
+   "zip": "38801",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Valley Ranch And Xd",
+   "slug": "cinemark-valley-ranch-and-xd-aayic",
+   "chain": "CNMK",
+   "city": "Conroe, TX",
+   "dma": "Conroe, TX",
+   "timezone": "America/Chicago",
+   "zip": "77303",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark West Plano And Xd",
+   "slug": "cinemark-west-plano-and-xd-aacut",
+   "chain": "CNMK",
+   "city": "Denton, TX",
+   "dma": "Denton, TX",
+   "timezone": "America/Chicago",
+   "zip": "76201",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Wichita Falls 14",
+   "slug": "cinemark-wichita-falls-14-aatsy",
+   "chain": "CNMK",
+   "city": "Lawton, OK",
+   "dma": "Lawton, OK",
+   "timezone": "America/Chicago",
+   "zip": "73505",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Cinemark Yuba City",
+   "slug": "cinemark-yuba-city-aavbg",
+   "chain": "CNMK",
+   "city": "Auburn, CA",
+   "dma": "Auburn, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "95602",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal American Mall",
+   "slug": "regal-american-mall-aatxm",
+   "chain": "REGL",
+   "city": "Findlay, OH",
+   "dma": "Findlay, OH",
+   "timezone": "America/New_York",
+   "zip": "45840",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Arbor Place",
+   "slug": "regal-arbor-place-aanqu",
+   "chain": "REGL",
+   "city": "Rome, GA",
+   "dma": "Rome, GA",
+   "timezone": "America/New_York",
+   "zip": "30165",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Arnot Mall",
+   "slug": "regal-arnot-mall-aajvu",
+   "chain": "REGL",
+   "city": "Ithaca, NY",
+   "dma": "Ithaca, NY",
+   "timezone": "America/New_York",
+   "zip": "14850",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Arroyo Grande",
+   "slug": "regal-arroyo-grande-aaacm",
+   "chain": "REGL",
+   "city": "Santa Maria, CA",
+   "dma": "Santa Maria, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "93454",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Auburn California",
+   "slug": "regal-auburn-california-aaqli",
+   "chain": "REGL",
+   "city": "Auburn, CA",
+   "dma": "Auburn, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "95602",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Augusta",
+   "slug": "regal-augusta-aafwz",
+   "chain": "REGL",
+   "city": "Lewiston, ME",
+   "dma": "Lewiston, ME",
+   "timezone": "America/New_York",
+   "zip": "04240",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Avalon",
+   "slug": "regal-avalon-aaxie",
+   "chain": "REGL",
+   "city": "Blue Ridge, GA",
+   "dma": "Blue Ridge, GA",
+   "timezone": "America/New_York",
+   "zip": "30513",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Aviation Mall",
+   "slug": "regal-aviation-mall-aaggd",
+   "chain": "REGL",
+   "city": "Saratoga Springs, NY",
+   "dma": "Saratoga Springs, NY",
+   "timezone": "America/New_York",
+   "zip": "12866",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Benders Landing 4dx Screenx Rpx And Vip",
+   "slug": "regal-benders-landing-4dx-screenx-rpx-and-vip-aayuh",
+   "chain": "REGL",
+   "city": "Rosenberg, TX",
+   "dma": "Rosenberg, TX",
+   "timezone": "America/Chicago",
+   "zip": "77471",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Birkdale",
+   "slug": "regal-birkdale-aapkd",
+   "chain": "REGL",
+   "city": "Statesville, NC",
+   "dma": "Statesville, NC",
+   "timezone": "America/New_York",
+   "zip": "28677",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Clarksville",
+   "slug": "regal-clarksville-aarnd",
+   "chain": "REGL",
+   "city": "Clarksville, TN",
+   "dma": "Clarksville, TN",
+   "timezone": "America/Chicago",
+   "zip": "37040",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Cobblestone Square",
+   "slug": "regal-cobblestone-square-aanqy",
+   "chain": "REGL",
+   "city": "Elyria, OH",
+   "dma": "Elyria, OH",
+   "timezone": "America/New_York",
+   "zip": "44035",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Dawson",
+   "slug": "regal-dawson-aatfw",
+   "chain": "REGL",
+   "city": "Blue Ridge, GA",
+   "dma": "Blue Ridge, GA",
+   "timezone": "America/New_York",
+   "zip": "30513",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Deerfield Town Center And Rpx",
+   "slug": "regal-deerfield-town-center-and-rpx-aaunb",
+   "chain": "REGL",
+   "city": "Hamilton, OH",
+   "dma": "Hamilton, OH",
+   "timezone": "America/New_York",
+   "zip": "45011",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Eagle Ridge Mall",
+   "slug": "regal-eagle-ridge-mall-aaehs",
+   "chain": "REGL",
+   "city": "Sebring, FL",
+   "dma": "Sebring, FL",
+   "timezone": "America/New_York",
+   "zip": "33870",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Edwards Nampa Spectrum",
+   "slug": "regal-edwards-nampa-spectrum-aaodf",
+   "chain": "REGL",
+   "city": "Nampa, ID",
+   "dma": "Nampa, ID",
+   "timezone": "America/Denver",
+   "zip": "83687",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Edwards Santa Maria And Rpx",
+   "slug": "regal-edwards-santa-maria-and-rpx-aaxbx",
+   "chain": "REGL",
+   "city": "Santa Maria, CA",
+   "dma": "Santa Maria, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "93454",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Everett",
+   "slug": "regal-everett-aatzs",
+   "chain": "REGL",
+   "city": "Mount Vernon, WA",
+   "dma": "Mount Vernon, WA",
+   "timezone": "America/Los_Angeles",
+   "zip": "98273",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Forum",
+   "slug": "regal-forum-aakly",
+   "chain": "REGL",
+   "city": "Rolla, MO",
+   "dma": "Rolla, MO",
+   "timezone": "America/Chicago",
+   "zip": "65401",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Franklin Square",
+   "slug": "regal-franklin-square-aakrj",
+   "chain": "REGL",
+   "city": "Statesville, NC",
+   "dma": "Statesville, NC",
+   "timezone": "America/New_York",
+   "zip": "28677",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Goldstream And Imax",
+   "slug": "regal-goldstream-and-imax-aanzs",
+   "chain": "REGL",
+   "city": "Fairbanks, AK",
+   "dma": "Fairbanks, AK",
+   "timezone": "America/Anchorage",
+   "zip": "99701",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Hamilton Mill",
+   "slug": "regal-hamilton-mill-aauxt",
+   "chain": "REGL",
+   "city": "Lawrenceville, GA",
+   "dma": "Lawrenceville, GA",
+   "timezone": "America/New_York",
+   "zip": "30044",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Hollywood Gainesville",
+   "slug": "regal-hollywood-gainesville-aahmg",
+   "chain": "REGL",
+   "city": "Blue Ridge, GA",
+   "dma": "Blue Ridge, GA",
+   "timezone": "America/New_York",
+   "zip": "30513",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Hollywood Merced",
+   "slug": "regal-hollywood-merced-aapkt",
+   "chain": "REGL",
+   "city": "Merced, CA",
+   "dma": "Merced, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "95340",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Janss Marketplace",
+   "slug": "regal-janss-marketplace-aaxvn",
+   "chain": "REGL",
+   "city": "Camarillo, CA",
+   "dma": "Camarillo, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "93010",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Keauhou",
+   "slug": "regal-keauhou-aaqnb",
+   "chain": "REGL",
+   "city": "Kailua-Kona, HI",
+   "dma": "Kailua-Kona, HI",
+   "timezone": "Pacific/Honolulu",
+   "zip": "96740",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Mall Of Georgia",
+   "slug": "regal-mall-of-georgia-aankx",
+   "chain": "REGL",
+   "city": "Lawrenceville, GA",
+   "dma": "Lawrenceville, GA",
+   "timezone": "America/New_York",
+   "zip": "30044",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Manchester Rock Hill",
+   "slug": "regal-manchester-rock-hill-aaozr",
+   "chain": "REGL",
+   "city": "Shelby, NC",
+   "dma": "Shelby, NC",
+   "timezone": "America/New_York",
+   "zip": "28150",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Massillon",
+   "slug": "regal-massillon-aatlk",
+   "chain": "REGL",
+   "city": "Canton, OH",
+   "dma": "Canton, OH",
+   "timezone": "America/New_York",
+   "zip": "44701",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Medina",
+   "slug": "regal-medina-aajoc",
+   "chain": "REGL",
+   "city": "Canton, OH",
+   "dma": "Canton, OH",
+   "timezone": "America/New_York",
+   "zip": "44701",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Medlock Crossing",
+   "slug": "regal-medlock-crossing-aamem",
+   "chain": "REGL",
+   "city": "Lawrenceville, GA",
+   "dma": "Lawrenceville, GA",
+   "timezone": "America/New_York",
+   "zip": "30044",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal New Town",
+   "slug": "regal-new-town-aatvd",
+   "chain": "REGL",
+   "city": "Hopewell, VA",
+   "dma": "Hopewell, VA",
+   "timezone": "America/New_York",
+   "zip": "23860",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Poulsbo",
+   "slug": "regal-poulsbo-aamgl",
+   "chain": "REGL",
+   "city": "Mount Vernon, WA",
+   "dma": "Mount Vernon, WA",
+   "timezone": "America/Los_Angeles",
+   "zip": "98273",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Providence",
+   "slug": "regal-providence-aaumq",
+   "chain": "REGL",
+   "city": "Murfreesboro, TN",
+   "dma": "Murfreesboro, TN",
+   "timezone": "America/Chicago",
+   "zip": "37130",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Rancho Mirage And Imax",
+   "slug": "regal-rancho-mirage-and-imax-aankh",
+   "chain": "REGL",
+   "city": "Big Bear Lake, CA",
+   "dma": "Big Bear Lake, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "92315",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Regency",
+   "slug": "regal-regency-aagaa",
+   "chain": "REGL",
+   "city": "Panama City, FL",
+   "dma": "Panama City, FL",
+   "timezone": "America/New_York",
+   "zip": "32407",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal San Jacinto Metro",
+   "slug": "regal-san-jacinto-metro-aahqi",
+   "chain": "REGL",
+   "city": "Big Bear Lake, CA",
+   "dma": "Big Bear Lake, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "92315",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Southpark Mall",
+   "slug": "regal-southpark-mall-aaunp",
+   "chain": "REGL",
+   "city": "Hopewell, VA",
+   "dma": "Hopewell, VA",
+   "timezone": "America/New_York",
+   "zip": "23860",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Spartan",
+   "slug": "regal-spartan-aarms",
+   "chain": "REGL",
+   "city": "Shelby, NC",
+   "dma": "Shelby, NC",
+   "timezone": "America/New_York",
+   "zip": "28150",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Spotlight",
+   "slug": "regal-spotlight-aagti",
+   "chain": "REGL",
+   "city": "Norman, OK",
+   "dma": "Norman, OK",
+   "timezone": "America/Chicago",
+   "zip": "73069",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Star",
+   "slug": "regal-star-aakjs",
+   "chain": "REGL",
+   "city": "Orange, TX",
+   "dma": "Orange, TX",
+   "timezone": "America/Chicago",
+   "zip": "77630",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Starlight Anderson",
+   "slug": "regal-starlight-anderson-aaovb",
+   "chain": "REGL",
+   "city": "Brevard, NC",
+   "dma": "Brevard, NC",
+   "timezone": "America/New_York",
+   "zip": "28712",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Streets Of Indian Lake",
+   "slug": "regal-streets-of-indian-lake-aausn",
+   "chain": "REGL",
+   "city": "Clarksville, TN",
+   "dma": "Clarksville, TN",
+   "timezone": "America/Chicago",
+   "zip": "37040",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Swamp Fox",
+   "slug": "regal-swamp-fox-aaqih",
+   "chain": "REGL",
+   "city": "Florence, SC",
+   "dma": "Florence, SC",
+   "timezone": "America/New_York",
+   "zip": "29501",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Three Rivers Mall And Rpx",
+   "slug": "regal-three-rivers-mall-and-rpx-aaxid",
+   "chain": "REGL",
+   "city": "Longview, WA",
+   "dma": "Longview, WA",
+   "timezone": "America/Los_Angeles",
+   "zip": "98632",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Ua Lee Hills",
+   "slug": "regal-ua-lee-hills-aajui",
+   "chain": "REGL",
+   "city": "Alexandria, LA",
+   "dma": "Alexandria, LA",
+   "timezone": "America/Chicago",
+   "zip": "71301",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Ukiah",
+   "slug": "regal-ukiah-aakem",
+   "chain": "REGL",
+   "city": "Willits, CA",
+   "dma": "Willits, CA",
+   "timezone": "America/Los_Angeles",
+   "zip": "95490",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Warren Broken Arrow",
+   "slug": "regal-warren-broken-arrow-aaxlj",
+   "chain": "REGL",
+   "city": "Catoosa, OK",
+   "dma": "Catoosa, OK",
+   "timezone": "America/Chicago",
+   "zip": "74015",
+   "discovered": "2026-08-31-expansion"
+  },
+  {
+   "name": "Regal Willoughby Commons",
+   "slug": "regal-willoughby-commons-aajai",
+   "chain": "REGL",
+   "city": "Medina, OH",
+   "dma": "Medina, OH",
+   "timezone": "America/New_York",
+   "zip": "44256",
    "discovered": "2026-08-31-expansion"
   }
  ]
