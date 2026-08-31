@@ -143,15 +143,20 @@ def slugify_title(title):
 def overview_core_slug(href):
     """'/toy-story-5-2026-243393/movie-overview' -> 'toy-story-5'.
 
-    Fandango movie-overview slugs are ``{title-slug}-{year}-{fandangoId}``; strip
-    the trailing ``-YYYY-NNNN`` so we compare against the bare title slug.
+    Fandango movie-overview slugs come in two shapes:
+    ``{title-slug}-{year}-{fandangoId}`` (e.g. ``toy-story-5-2026-243393``) and
+    ``{title-slug}-{fandangoId}`` with NO year (e.g. ``coyote-vs-acme-246329``).
+    Strip a trailing ``-YYYY-NNNN`` OR a bare ``-NNNN`` id so we compare against
+    the bare title slug. The id is always 4+ digits, so requiring ``\\d{4,}``
+    leaves a real sequel number (``toy-story-5``) untouched. Missing the bare-id
+    form cost 'Coyote vs. Acme' its entire 2026-08-28 Fandango capture.
     """
     if not href:
         return ""
     path = urlparse(href).path or href
     m = re.search(r"/([a-z0-9\-]+)/movie-overview", path)
     core = m.group(1) if m else ""
-    return re.sub(r"-\d{4}-\d+$", "", core)
+    return re.sub(r"-(?:\d{4}-)?\d{4,}$", "", core)
 
 
 # Roman numerals / number words normalize to digits so 'mortal-kombat-ii'
@@ -183,9 +188,23 @@ def match_target_title(overview_href, target_slugs):
     hit = target_slugs.get(core)
     if hit or not core:
         return hit
+    # Second candidate: strip only a bare trailing id (5+ digits) from the RAW
+    # slug. The primary strip above can over-consume when a title itself ends
+    # in a 4-digit number ('blade-runner-2049-246329' -> 'blade-runner'); this
+    # candidate yields 'blade-runner-2049'. Fandango ids are 5-6 digits, so
+    # \d{5,} never eats a real sequel/year in the title.
+    path = urlparse(overview_href).path or overview_href or ""
+    m = re.search(r"/([a-z0-9\-]+)/movie-overview", path)
+    raw = m.group(1) if m else ""
+    alt = re.sub(r"-\d{5,}$", "", raw)
+    if alt != core:
+        hit = target_slugs.get(alt)
+        if hit:
+            return hit
     core_tokens = _slug_tokens(core)
+    alt_tokens = _slug_tokens(alt) if alt != core else core_tokens
     for slug, title in target_slugs.items():
-        if _slug_tokens(slug) == core_tokens:
+        if _slug_tokens(slug) in (core_tokens, alt_tokens):
             return title
     for slug, title in target_slugs.items():
         slug_tokens = _slug_tokens(slug)
@@ -829,6 +848,23 @@ def _selftest():
 
     assert overview_core_slug("/toy-story-5-2026-243393/movie-overview") == "toy-story-5"
     assert overview_core_slug("https://www.fandango.com/backrooms-2026-244954/movie-overview") == "backrooms"
+    # Bare-id slug (no year segment) — the shape that dropped 'Coyote vs. Acme'.
+    assert overview_core_slug("/coyote-vs-acme-246329/movie-overview") == "coyote-vs-acme"
+    assert match_target_title(
+        "/coyote-vs-acme-246329/movie-overview",
+        {slugify_title("Coyote vs. Acme"): "Coyote vs. Acme"},
+    ) == "Coyote vs. Acme"
+    # Title ending in a 4-digit number + bare id: primary strip over-consumes
+    # ('blade-runner'), the bare-id candidate must still land the exact match.
+    assert match_target_title(
+        "/blade-runner-2049-246329/movie-overview",
+        {slugify_title("Blade Runner 2049"): "Blade Runner 2049"},
+    ) == "Blade Runner 2049"
+    # Year-form slugs must keep matching exactly as before.
+    assert match_target_title(
+        "/coyote-vs-acme-2026-246329/movie-overview",
+        {slugify_title("Coyote vs. Acme"): "Coyote vs. Acme"},
+    ) == "Coyote vs. Acme"
 
     targets = {slugify_title(t): t for t in ["Toy Story 5", "Backrooms"]}
     assert match_target_title("/toy-story-5-2026-243393/movie-overview", targets) == "Toy Story 5"

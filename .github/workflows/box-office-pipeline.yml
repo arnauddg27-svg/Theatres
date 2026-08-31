@@ -703,8 +703,16 @@ jobs:
           # Test runs (show_dates set) write to a throwaway file, never canonical.
           FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
         run: |
+          set +e
           mkdir -p ../fandango-logs
+          # tee must not mask the collector's exit code: fandango_collect exits 1
+          # when tracked titles yielded zero rows (green-zero guard). Without
+          # PIPESTATUS the step took tee's status (always 0), so a zero-row run
+          # concluded success and the scheduler's retry/circuit-breaker never
+          # engaged. Mirror the Phase 1 step.
           python fandango_collect.py 2>&1 | tee "../fandango-logs/fandango-${{ github.run_id }}.log"
+          status=${PIPESTATUS[0]}
+          exit "$status"
 
       - name: Commit Fandango snapshot data
         # always() so partial rows from a timed-out/failed collect still commit

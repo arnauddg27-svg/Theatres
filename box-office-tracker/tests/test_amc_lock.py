@@ -105,6 +105,52 @@ class LockStaleTest(unittest.TestCase):
     def _patch_probe(self, value):
         self.mod._github_run_is_active = lambda run_id: value
 
+    def test_unreadable_payload_is_never_stale(self):
+        # The lock commit lives on a branch actions/checkout never fetches, so
+        # a failed `git show` is the NORMAL CI state, not an orphan. The old
+        # code surfaced it as an empty payload, which read as an over-TTL
+        # orphan — every lane instantly broke every other lane's LIVE lock.
+        self._patch_probe(False)  # even a "dead holder" probe must not matter
+        self.assertFalse(self.mod._lock_is_stale({"payload_unreadable": True}, self.ttl))
+
+    def test_metadata_read_fetches_lock_object_from_remote(self):
+        # Reproduce the CI shape end-to-end: the lock commit is pushed from a
+        # throwaway temp repo, so it exists ONLY on the remote — never in the
+        # reader's object store. _read_lock_metadata must fetch it and return
+        # the real payload, not (sha, {}).
+        import tempfile as _tf
+        from pathlib import Path as _P
+        with _tf.TemporaryDirectory() as tmp:
+            root = _P(tmp)
+            bare = root / "origin.git"
+            repo = root / "repo"
+            run(["git", "init", "--bare", str(bare)])
+            run(["git", "clone", str(bare), str(repo)])
+            run(["git", "config", "user.name", "Test"], cwd=repo)
+            run(["git", "config", "user.email", "test@example.com"], cwd=repo)
+            (repo / "README.md").write_text("test\n")
+            run(["git", "add", "README.md"], cwd=repo)
+            run(["git", "commit", "-m", "init"], cwd=repo)
+            run(["git", "push", "origin", "HEAD:main"], cwd=repo)
+
+            ok, sha = self.mod._create_lock_commit(
+                repo, self.mod.LOCK_BRANCH,
+                {"created_at_epoch": __import__("time").time(), "run_id": "42"},
+            )
+            self.assertTrue(ok, sha)
+            # The reader's local store must not already contain the object.
+            probe = run(["git", "cat-file", "-e", sha], cwd=repo, check=False)
+            self.assertNotEqual(0, probe.returncode, "lock object unexpectedly local")
+
+            got = self.mod._read_lock_metadata(repo, self.mod.LOCK_BRANCH)
+            self.assertIsNotNone(got)
+            got_sha, metadata = got
+            self.assertEqual(sha, got_sha)
+            self.assertEqual("42", metadata.get("run_id"))
+            self.assertNotIn("payload_unreadable", metadata)
+            # And a fresh, readable lock is held, not stale.
+            self.assertFalse(self.mod._lock_is_stale(metadata, self.ttl))
+
     def test_api_failure_over_ttl_does_not_break_active_lock(self):
         # UNKNOWN (API unreachable) + age over TTL but under hard ceiling -> KEEP lock.
         self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
