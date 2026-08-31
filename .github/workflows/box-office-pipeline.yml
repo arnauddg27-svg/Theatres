@@ -466,7 +466,10 @@ jobs:
           set +e
           mkdir -p ../chain-probe
           python scripts/probe_chain_apis.py 2>&1 | tee ../chain-probe/probe.log
-          exit "${PIPESTATUS[0]}"
+          rc=${PIPESTATUS[0]}
+          # Focused Cinemark seat-flow probe (go/no-go for the direct collector).
+          python scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
+          exit "$rc"
 
       - name: Upload probe report
         if: always()
