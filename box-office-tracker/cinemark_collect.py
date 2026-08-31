@@ -242,48 +242,31 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
 SEAT_COUNT_JS = r"""() => {
   const cls = el => String(el.className && el.className.baseVal !== undefined
                           ? el.className.baseVal : el.className || '').toLowerCase();
-  const isState = (el, word) => cls(el).includes(word);
-  const legendish = el => !!el.closest("[class*='legend' i], [class*='zoom' i]");
-  // Layout variant A: seats as <button class="...seat...">.
-  let seats = [...document.querySelectorAll("button[class*='seat' i]")]
-      .filter(b => !legendish(b));
-  // Variant B: any element (div/svg) whose class carries both a seat marker
-  // and a state marker (available/unavailable/occupied/sold/selected).
+  // Vista EVG seat map (grid-class census, validation run 33426153254):
+  // every physical seat is a 'seatblock' cell whose class carries a
+  // CONCATENATED state prefix — seatavailable / seatunavailable /
+  // leftloveseatavailable / dboxavailable / wheelchairavailable / ... —
+  // while 'seatblank seatblock' cells are aisle gaps, not seats. NOTE:
+  // 'unavailable' contains 'available' as a substring, so test unavailable
+  // FIRST when classifying.
+  let seats = [...document.querySelectorAll("[class*='seatblock' i]")]
+      .filter(el => !cls(el).includes('seatblank'));
+  // Fallback: button-rendered layout (seen on the original probe theatre).
   if (seats.length === 0) {
-    seats = [...document.querySelectorAll("[class*='seat' i]")]
-      .filter(el => !legendish(el))
-      .filter(el => /available|unavailable|occupied|sold|selected|open|taken/
-                    .test(cls(el)));
+    const legendish = el => !!el.closest("[class*='legend' i], [class*='zoom' i]");
+    seats = [...document.querySelectorAll("button[class*='seat' i]")]
+        .filter(b => !legendish(b));
   }
-  // Variant C: Vista EVG seat map (evgseatcontainer) — seats carry
-  // CONCATENATED state classes (seatavailable / seatunavailable / ...).
-  if (seats.length === 0) {
-    const grid = document.querySelector(
-      ".evgseatcontainer, [class*='seatmap' i], [class*='seat-map' i]");
-    if (grid) {
-      seats = [...grid.querySelectorAll('*')].filter(el => {
-        const c = cls(el);
-        return /(^|\s)seat[a-z]/.test(c) && !/container|legend|row|label|screen/.test(c);
-      });
-    }
-  }
-  const available = seats.filter(b => isState(b, 'available') && !isState(b, 'unavailable'));
-  const unavailable = seats.filter(b => isState(b, 'unavailable') || isState(b, 'occupied')
-                                        || isState(b, 'sold') || isState(b, 'taken'));
-  // Debug census when nothing matched: what seat-ish nodes DOES the page have?
+  const unavailable = seats.filter(el => {
+    const c = cls(el);
+    return c.includes('unavailable') || c.includes('occupied')
+        || c.includes('sold') || c.includes('taken') || c.includes('selected');
+  });
+  const available = seats.filter(el => cls(el).includes('available')
+                                       && !cls(el).includes('unavailable'));
+  // Debug census whenever the count is implausibly low.
   let census = null;
   if (seats.length < 20) {
-    const all = [...document.querySelectorAll("[class*='seat' i]")];
-    const byTag = {};
-    const classSamples = [];
-    for (const el of all.slice(0, 400)) {
-      const t = el.tagName.toLowerCase();
-      byTag[t] = (byTag[t] || 0) + 1;
-      if (classSamples.length < 8 && cls(el) && !classSamples.includes(cls(el)))
-        classSamples.push(cls(el).slice(0, 80));
-    }
-    // Class-frequency histogram INSIDE the grid: high-frequency classes
-    // are the per-seat state classes.
     const grid = document.querySelector(
       ".evgseatcontainer, [class*='seatmap' i], [class*='seat-map' i]");
     const freq = {};
@@ -293,13 +276,8 @@ SEAT_COUNT_JS = r"""() => {
         if (c) freq[c] = (freq[c] || 0) + 1;
       }
     }
-    const gridClassFreq = Object.entries(freq).sort((a, b) => b[1] - a[1])
-      .slice(0, 15).map(([c, n]) => c.slice(0, 50) + ':' + n);
-    census = { total_seatish: all.length, byTag, classSamples, gridClassFreq,
-               iframes: [...document.querySelectorAll('iframe')]
-                          .map(f => (f.src || '').slice(0, 90)),
-               qty_controls: document.querySelectorAll(
-                 "select, [class*='quantity' i], [class*='qty' i], [class*='ticket-type' i]").length };
+    census = { gridClassFreq: Object.entries(freq).sort((a, b) => b[1] - a[1])
+                 .slice(0, 12).map(([c, n]) => c.slice(0, 50) + ':' + n) };
   }
   return { total: seats.length, available: available.length,
            unavailable: unavailable.length, census,
@@ -441,8 +419,9 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                     page.goto(href if href.startswith("http") else BASE + href,
                               wait_until="domcontentloaded", timeout=30000)
                     try:
-                        page.wait_for_selector("button[class*='seat' i]",
-                                               timeout=12000)
+                        page.wait_for_selector(
+                            "[class*='seatblock' i], button[class*='seat' i]",
+                            timeout=12000)
                     except Exception:
                         pass
                     page.wait_for_timeout(1500)
