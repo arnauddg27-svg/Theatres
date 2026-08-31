@@ -469,7 +469,7 @@ jobs:
           # deepen block hangs on Cloudflare, so run only the hardened Cinemark
           # seat-flow probe, wrapped in a shell `timeout` backstop (the script
           # also self-caps at ~3 min). -u so output survives any kill.
-          timeout 300 python -u scripts/probe_cinemark_deep.py 2>&1 | tee ../chain-probe/cinemark-deep.log
+          timeout 300 python -u scripts/probe_cinemark_seatmap.py 2>&1 | tee ../chain-probe/cinemark-seatmap.log
           exit 0
 
       - name: Upload probe report
