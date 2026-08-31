@@ -255,6 +255,18 @@ SEAT_COUNT_JS = r"""() => {
       .filter(el => /available|unavailable|occupied|sold|selected|open|taken/
                     .test(cls(el)));
   }
+  // Variant C: Vista EVG seat map (evgseatcontainer) — seats carry
+  // CONCATENATED state classes (seatavailable / seatunavailable / ...).
+  if (seats.length === 0) {
+    const grid = document.querySelector(
+      ".evgseatcontainer, [class*='seatmap' i], [class*='seat-map' i]");
+    if (grid) {
+      seats = [...grid.querySelectorAll('*')].filter(el => {
+        const c = cls(el);
+        return /(^|\s)seat[a-z]/.test(c) && !/container|legend|row|label|screen/.test(c);
+      });
+    }
+  }
   const available = seats.filter(b => isState(b, 'available') && !isState(b, 'unavailable'));
   const unavailable = seats.filter(b => isState(b, 'unavailable') || isState(b, 'occupied')
                                         || isState(b, 'sold') || isState(b, 'taken'));
@@ -270,7 +282,20 @@ SEAT_COUNT_JS = r"""() => {
       if (classSamples.length < 8 && cls(el) && !classSamples.includes(cls(el)))
         classSamples.push(cls(el).slice(0, 80));
     }
-    census = { total_seatish: all.length, byTag, classSamples,
+    // Class-frequency histogram INSIDE the grid: high-frequency classes
+    // are the per-seat state classes.
+    const grid = document.querySelector(
+      ".evgseatcontainer, [class*='seatmap' i], [class*='seat-map' i]");
+    const freq = {};
+    if (grid) {
+      for (const el of grid.querySelectorAll('*')) {
+        const c = cls(el).trim();
+        if (c) freq[c] = (freq[c] || 0) + 1;
+      }
+    }
+    const gridClassFreq = Object.entries(freq).sort((a, b) => b[1] - a[1])
+      .slice(0, 15).map(([c, n]) => c.slice(0, 50) + ':' + n);
+    census = { total_seatish: all.length, byTag, classSamples, gridClassFreq,
                iframes: [...document.querySelectorAll('iframe')]
                           .map(f => (f.src || '').slice(0, 90)),
                qty_controls: document.querySelectorAll(
