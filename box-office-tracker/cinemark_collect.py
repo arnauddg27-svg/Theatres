@@ -184,6 +184,7 @@ def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap)
         parsed = parse_seatmap_href(e.get("href", ""))
         if not parsed:
             continue
+        parsed["href"] = e.get("href", "")
         m_after, m_until, show_date, dow = showtime_timing(
             parsed["sdate"], tz_name, now_utc)
         if m_after is None or show_date not in window_dates:
@@ -378,17 +379,27 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None):
                 if time.monotonic() > deadline:
                     break
                 try:
-                    page.goto(f"{BASE}/TicketSeatMap/?TheaterId={pick['theater_id']}"
-                              f"&ShowtimeId={pick['showtime_id']}"
-                              f"&CinemarkMovieId=0&Showtime={pick['sdate'][:10]}T{pick['sdate'][11:]}:00",
+                    # Navigate the ORIGINAL href — reconstructing it with
+                    # CinemarkMovieId=0 broke the seat render (validation run
+                    # 33424701048: 10/10 incomplete).
+                    href = pick["href"]
+                    page.goto(href if href.startswith("http") else BASE + href,
                               wait_until="domcontentloaded", timeout=30000)
-                    page.wait_for_timeout(3500)
+                    try:
+                        page.wait_for_selector("button[class*='seat' i]",
+                                               timeout=12000)
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(1500)
                     seats = page.evaluate(SEAT_COUNT_JS)
                 except Exception as e:
                     print(f"    seatmap ERROR {str(e)[:60]}", flush=True)
                     continue
                 if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                     totals["incomplete"] += 1
+                    print(f"    incomplete: total={seats.get('total') if seats else None} "
+                          f"title={((seats or {}).get('title') or '')[:40]!r} "
+                          f"url={page.url[:110]}", flush=True)
                     continue
                 page_title = (seats.get("title") or "").strip()
                 if page_title and slugify_title(page_title) != slugify_title(pick["title"]):
