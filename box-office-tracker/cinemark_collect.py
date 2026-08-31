@@ -556,8 +556,16 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                 # dateless page serves only the CURRENT local day, so reach
                 # every other wanted date through the date picker.
                 covered = entry_dates(entries)
+                try:
+                    from zoneinfo import ZoneInfo
+                    today_local = datetime.now(
+                        ZoneInfo(th.get("timezone", "America/Chicago"))
+                    ).strftime("%Y-%m-%d")
+                except Exception:
+                    today_local = datetime.now(timezone.utc).strftime("%Y-%m-%d")
                 missing = ([] if mode == "post"
-                           else sorted(d for d in window_dates if d not in covered))
+                           else sorted(d for d in window_dates
+                                       if d not in covered and d > today_local))
                 for want in missing[:4]:
                     if time.monotonic() > deadline:
                         break
@@ -635,10 +643,17 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     continue
                 if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                     totals["incomplete"] += 1
+                    snippet = ""
+                    if not ((seats or {}).get("title") or "").strip():
+                        try:
+                            snippet = (page.inner_text("body") or "")[:180]
+                            snippet = " ".join(snippet.split())[:160]
+                        except Exception:
+                            pass
                     print(f"    incomplete: total={seats.get('total') if seats else None} "
                           f"title={((seats or {}).get('title') or '')[:40]!r} "
                           f"census={(seats or {}).get('census')} "
-                          f"url={page.url[:110]}", flush=True)
+                          f"url={page.url[:110]} body={snippet!r}", flush=True)
                     continue
                 page_title = (seats.get("title") or "").strip()
                 if page_title and slugify_title(page_title) != slugify_title(pick["title"]):
