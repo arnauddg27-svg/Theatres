@@ -467,15 +467,32 @@ def append_unique_fandango_rows(rows, csv_path=None):
     return len(pending), skipped
 
 
+# Which chains this lane COLLECTS (comma-sep env override). Default REGL-only
+# since 2026-08-31: Cinemark moved to its own direct lane (cinemark_collect.py,
+# independent rate budget, all 306 theatres), so every Fandango seat render
+# spent on a CNMK theatre wastes the per-Azure-range budget that is this
+# lane's binding constraint. Regal-only roughly doubles Regal depth per slot.
+# CNMK theatres stay in theatres-fandango.json and remain collectable via
+# FANDANGO_CHAINS=REGL,CNMK for comparisons. NOTE: from this change on, the
+# Fandango CSV gains only REGL rows; predict's cross-chain rc side becomes
+# Regal-only (Regal already supplied the majority of rows, e.g. 487/782 on
+# weekend 2026-08-28, so CROSS_CHAIN_MIN_RC_ROWS stays satisfied).
+FANDANGO_CHAINS = frozenset(
+    c.strip().upper()
+    for c in (os.environ.get("FANDANGO_CHAINS") or "REGL").split(",")
+    if c.strip()
+)
+
+
 def load_fandango_theatres(zips=None):
-    """Load Regal/Cinemark theatres from theatres-fandango.json (chain-filtered)."""
+    """Load this lane's chain-filtered theatres from theatres-fandango.json."""
     if not THEATRES_JSON.exists():
         return []
     with open(THEATRES_JSON) as f:
         data = json.load(f)
     out = []
     for th in data.get("theatres", []):
-        if th.get("chain", "").upper() not in WANTED_CHAINS:
+        if th.get("chain", "").upper() not in FANDANGO_CHAINS:
             continue
         if zips and str(th.get("zip", "")) not in {str(z) for z in zips}:
             continue

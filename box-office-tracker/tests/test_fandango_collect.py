@@ -383,3 +383,16 @@ class LiveTitleFallbackTests(unittest.TestCase):
         i = src.index("Fandango title fallback")
         block = src[i - 600:i + 900]
         self.assertIn("except Exception", block)
+
+
+class FandangoChainSplitTest(unittest.TestCase):
+    def test_lane_collects_regal_only_by_default(self):
+        # Since 2026-08-31 Cinemark has its own direct lane; Fandango's
+        # per-Azure-range budget goes entirely to Regal. Override with
+        # FANDANGO_CHAINS=REGL,CNMK for comparisons.
+        import fandango_collect as fc
+        self.assertEqual(frozenset({"REGL"}), fc.FANDANGO_CHAINS)
+        pool = fc.load_fandango_theatres()
+        if pool:  # data file present in the repo
+            self.assertTrue(all(t["chain"] == "REGL" for t in pool))
+            self.assertGreater(len(pool), 150)

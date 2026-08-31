@@ -770,7 +770,11 @@ jobs:
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
           FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
-          FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
+          # 2 since 2026-08-31: the lane is REGL-only (Cinemark moved to its
+          # direct lane), so each 6-way shard is ~31 theatres instead of ~53.
+          # cap=2 keeps renders/slot (~62) at the old budget pressure while
+          # doubling per-theatre showtime depth for Regal.
+          FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '2' }}
           FANDANGO_DEADLINE_SEC: '2100'   # 35 min — self-stop with margin under the 40-min step timeout
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
