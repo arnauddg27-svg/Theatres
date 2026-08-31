@@ -1992,8 +1992,8 @@
       "predicted_high": 54.6,
       "seat_raw_estimate": 3.6,
       "polymarket_ev": 16.8,
-      "actual": 25.3,
-      "actual_total": 25.3,
+      "actual": 25.11,
+      "actual_total": 25.11,
       "n_theatres": 419,
       "days_collected": 2,
       "n_days": 2,
@@ -2042,7 +2042,16 @@
         "Friday": 0.972,
         "Saturday": 0.986
       },
-      "coverage_ratio": 0.979
+      "coverage_ratio": 0.979,
+      "daily_actuals": {
+        "Thursday": 3.0,
+        "Friday": 7.68,
+        "Saturday": 8.67,
+        "Sunday": 5.76
+      },
+      "error_pct": -3.6,
+      "actual_status": "final",
+      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)"
     },
     {
       "movie": "Mutiny",
@@ -2052,8 +2061,8 @@
       "predicted_high": 12.7,
       "seat_raw_estimate": 1.1,
       "polymarket_ev": 10.3,
-      "actual": 7.5,
-      "actual_total": 7.5,
+      "actual": 7.71,
+      "actual_total": 7.71,
       "n_theatres": 406,
       "days_collected": 2,
       "n_days": 2,
@@ -2102,7 +2111,15 @@
         "Friday": 0.941,
         "Saturday": 0.955
       },
-      "coverage_ratio": 0.948
+      "coverage_ratio": 0.948,
+      "daily_actuals": {
+        "Friday": 2.88,
+        "Saturday": 2.79,
+        "Sunday": 2.04
+      },
+      "error_pct": -27.4,
+      "actual_status": "final",
+      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)"
     }
   ],
   "calibration_factors": {
@@ -2547,17 +2564,17 @@
         },
         "Saturday": {
           "n": 18,
-          "support": 7.175
+          "support": 7.3845
         },
         "Sunday": {
           "n": 19,
-          "support": 7.49
+          "support": 7.489
         }
       },
       "leads": {
         "same_day": {
           "n": 55,
-          "support": 21.924
+          "support": 22.1325
         },
         "next_day": {
           "n": 2,
