@@ -202,12 +202,18 @@ def theatre_from_url(url):
 # day (matinees included, starts from ~12:20Z), not just evening shows.
 # Whether Cinemark still renders maps that long after start is measured by
 # the pass's own incomplete counts (render decay shows up per-lead there).
-# INVARIANT: must stay < 1440. Censuses run 24h apart and the dedupe key
-# includes snapshot_bucket (differs per day) — this window being shorter
-# than a day is the ONLY thing preventing yesterday's census rows from
-# being re-captured as today's (round-4 audit).
-CINEMARK_POST_SHOW_WINDOW_MIN = min(
-    _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080), 1439)
+# INVARIANT: censuses run ~24h apart but dispatch jitter is real (watchdog
+# fires 30-75 min late), and the dedupe key includes snapshot_bucket
+# (differs per day) — this window staying comfortably under a day is the
+# ONLY thing preventing yesterday's census rows from being re-captured as
+# today's. Ceiling 1350 = 1440 minus ~90 min of worst realistic skew
+# (round-5 audit: a 1439 ceiling re-captured rows whenever day N ran ~70
+# min late and day N+1 on time).
+_CINEMARK_WINDOW_RAW = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
+CINEMARK_POST_SHOW_WINDOW_MIN = min(_CINEMARK_WINDOW_RAW, 1350)
+if _CINEMARK_WINDOW_RAW > 1350:
+    print(f"CINEMARK_POST_SHOW_WINDOW_MIN={_CINEMARK_WINDOW_RAW} clamped to "
+          f"1350 (duplicate-capture ceiling)", flush=True)
 
 
 def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,

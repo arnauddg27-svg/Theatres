@@ -44,8 +44,8 @@ ZIP3_TZ = {
     # (round-4 audit caught 323 mapped Central here; would have poisoned
     # every future Tallahassee discovery).
     "376": "America/New_York",   # TN tri-cities (Johnson City/Kingsport)
-    "377": "America/New_York",   # Jefferson City/Morristown TN
-    "378": "America/New_York",   # Morristown TN area
+    "377": "America/New_York",   # Jefferson City/Greeneville TN
+    "378": "America/New_York",   # Morristown/Sevierville TN
     "374": "America/New_York",   # Chattanooga TN
     "379": "America/New_York",   # Knoxville TN
     "421": "America/Chicago",    # Bowling Green KY
