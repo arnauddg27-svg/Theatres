@@ -110,6 +110,14 @@ on:
         description: 'scrape-cinemark: pre (default, pre-reservation snapshots) or post (day-of finals census — shows already started).'
         required: false
         default: ''
+      cinemark_shard:
+        description: 'scrape-cinemark: which 1/N slice of the pool (with cinemark_num_shards). Empty = whole pool.'
+        required: false
+        default: ''
+      cinemark_num_shards:
+        description: 'scrape-cinemark: shard count. Live run 33549713848: cinemark.com tarpits the runner after ~150 pages, so full-pool passes lose the tail to 30s timeouts.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -982,6 +990,8 @@ jobs:
         env:
           CINEMARK_MAX_THEATRES: ${{ github.event.inputs.cinemark_max_theatres }}
           CINEMARK_MODE: ${{ github.event.inputs.cinemark_mode }}
+          CINEMARK_SHARD: ${{ github.event.inputs.cinemark_shard }}
+          CINEMARK_NUM_SHARDS: ${{ github.event.inputs.cinemark_num_shards }}
           CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
           CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
           # Test runs (show_dates set) write a throwaway CSV, never canonical.

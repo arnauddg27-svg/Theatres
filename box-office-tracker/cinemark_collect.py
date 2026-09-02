@@ -611,9 +611,22 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                                   weekend_of, run_id, check_time))
             time.sleep(random.uniform(*CINEMARK_POLITE_SEC))
         _flush()
+        # Tarpit breaker: after ~150 pages cinemark.com stops serving this
+        # runner — every subsequent goto times out 30s apart (run
+        # 33549713848 burned ~80 minutes on a dead tail). A streak of
+        # consecutive page failures means the rest of the pool is lost too;
+        # stop cleanly, keep what's captured, and let the next slot's fresh
+        # runner IP take its shard.
+        timeout_streak = 0
         for th in pool:
             if time.monotonic() > deadline:
                 print("⏱  deadline reached; stopping cleanly", flush=True)
+                break
+            if timeout_streak >= 8:
+                print(f"🛑 {timeout_streak} consecutive page failures — "
+                      f"tarpitted; stopping the pool walk cleanly "
+                      f"(visited={totals['visited']})", flush=True)
+                totals["tarpit_stop"] = 1
                 break
             totals["visited"] += 1
             try:
@@ -668,9 +681,11 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     else:
                         totals["date_nav_empty"] += 1
             except Exception as e:
+                timeout_streak += 1
                 print(f"  {th.get('slug', '?')}: page ERROR {str(e)[:80]}",
                       flush=True)
                 continue
+            timeout_streak = 0
             picks = select_showtimes(entries or [], target_slugs, window_dates,
                                      th.get("timezone", "America/Chicago"),
                                      now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode)

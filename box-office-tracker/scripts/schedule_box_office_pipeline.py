@@ -101,11 +101,20 @@ def pipeline_inputs(
     }
 
 
-def cinemark_slot_inputs(mode: str = "") -> dict[str, str]:
-    """Inputs for a Cinemark direct-lane slot (mode '' = pre, 'post' = census)."""
+def cinemark_slot_inputs(mode: str = "", shard: int | None = None,
+                         num_shards: int | None = None) -> dict[str, str]:
+    """Inputs for a Cinemark direct-lane slot (mode '' = pre, 'post' = census).
+
+    Pre slots shard the pool: cinemark.com tarpits the runner after ~150
+    pages (run 33549713848: theatres 1-150 fine, then every goto times out
+    30s apart), so a full-pool pass loses its tail. Two daily pre slots x
+    half the pool = full coverage under the threshold."""
     inputs = pipeline_inputs("scrape-cinemark", "ALL", "false", "true", "true")
     if mode:
         inputs["cinemark_mode"] = mode
+    if shard is not None and num_shards is not None:
+        inputs["cinemark_shard"] = str(shard)
+        inputs["cinemark_num_shards"] = str(num_shards)
     return inputs
 
 
@@ -303,9 +312,11 @@ SLOTS: tuple[Slot, ...] = (
     #   passes for shows that have since started (the page drops started
     #   shows, so day-of finals must come from stored links — AMC pattern).
     Slot("cinemark pre 09:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 2, 3, 4, 5, 6}), 9, 20, cinemark_slot_inputs()),
+         frozenset({0, 1, 2, 3, 4, 5, 6}), 9, 20,
+         cinemark_slot_inputs(shard=0, num_shards=2)),
     Slot("cinemark pre 19:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 2, 3, 4, 5, 6}), 19, 20, cinemark_slot_inputs()),
+         frozenset({0, 1, 2, 3, 4, 5, 6}), 19, 20,
+         cinemark_slot_inputs(shard=1, num_shards=2)),
     Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),
     Slot(
