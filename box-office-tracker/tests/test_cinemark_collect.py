@@ -71,6 +71,42 @@ class CinemarkCollectTest(unittest.TestCase):
         self.assertNotIn("cinemark_shard", post[0].inputs)
 
 
+class TarpitPolicyTest(unittest.TestCase):
+    def test_tarpit_verdict_policy(self):
+        # No tarpit -> ok; tarpit with almost nothing -> red (only a RED run
+        # gets the scheduler's fresh-IP retries); tarpit after real captures
+        # -> warn (a retry would mostly re-walk collected theatres).
+        self.assertEqual("ok", cc.tarpit_verdict({}))
+        self.assertEqual("ok", cc.tarpit_verdict({"captured": 5}))
+        self.assertEqual("red", cc.tarpit_verdict({"tarpit_stop": 1, "captured": 0}))
+        self.assertEqual("red", cc.tarpit_verdict({"tarpit_stop": 1, "captured": 19}))
+        self.assertEqual("warn", cc.tarpit_verdict({"tarpit_stop": 1, "captured": 20}))
+
+
+class DispatchInputContractTest(unittest.TestCase):
+    def test_every_slot_dispatch_key_is_a_declared_workflow_input(self):
+        # HTTP 422 on an unknown input = the slot NEVER runs. This class has
+        # been hand-audited repeatedly (new cinemark_shard inputs being the
+        # latest); pin it instead.
+        import importlib.util
+        import re
+        root = Path(__file__).resolve().parents[2]
+        yml = (root / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        block = yml.split("workflow_dispatch:", 1)[1].split("\npermissions:", 1)[0]
+        declared = set(re.findall(r"^      (\w+):", block, re.M))
+        self.assertGreater(len(declared), 15, declared)
+        sched_path = (Path(__file__).resolve().parents[1] /
+                      "scripts" / "schedule_box_office_pipeline.py")
+        spec = importlib.util.spec_from_file_location("sched_422_test", sched_path)
+        mod = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = mod
+        spec.loader.exec_module(mod)
+        allowed = declared | {"schedule_slot", "schedule_mode"}
+        for slot in mod.SLOTS:
+            unknown = set(slot.inputs) - allowed
+            self.assertFalse(unknown, f"{slot.name} sends undeclared inputs {unknown}")
+
+
 class PostModeAnchorTest(unittest.TestCase):
     def test_post_window_covers_full_show_day(self):
         # 18h window: the Monday/weekend 06:20Z pass must census matinees

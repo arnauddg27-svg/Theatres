@@ -75,7 +75,11 @@ def _env_int(name, default):
 
 
 CINEMARK_DEADLINE_SEC = _env_int("CINEMARK_DEADLINE_SEC", 2100)
-CINEMARK_PER_THEATRE_CAP = _env_int("CINEMARK_PER_THEATRE_CAP", 2)
+# Breadth over depth (tarpit audit): at cap 2 a high-match day costs up to
+# 2 seat-map loads/theatre on top of the theatre page — 153+306 loads blows
+# past the ~200-250-load tarpit wall. Cap 1 matches the Fandango lane; the
+# second daily pre pass supplies the velocity read.
+CINEMARK_PER_THEATRE_CAP = _env_int("CINEMARK_PER_THEATRE_CAP", 1)
 CINEMARK_MAX_THEATRES = _env_int("CINEMARK_MAX_THEATRES", 0)
 CINEMARK_NUM_SHARDS = _env_int("CINEMARK_NUM_SHARDS", 0)
 CINEMARK_SHARD = _env_int("CINEMARK_SHARD", 0)
@@ -888,6 +892,21 @@ def _selftest():
     print("cinemark_collect selftest OK")
 
 
+def tarpit_verdict(totals):
+    """Exit policy for a tarpit-stopped run (pure, unit-tested).
+
+    'red'  — tarpit fired with almost nothing captured: the whole shard-day
+             is at stake and only a RED run gets the scheduler's fresh-IP
+             retries.
+    'warn' — tarpit fired after real captures: keep the green (a retry would
+             mostly re-walk collected theatres) but say so loudly.
+    'ok'   — no tarpit.
+    """
+    if not totals or not totals.get("tarpit_stop"):
+        return "ok"
+    return "red" if totals.get("captured", 0) < 20 else "warn"
+
+
 def main():
     ap = argparse.ArgumentParser(description="Cinemark direct pre-reservation collector")
     ap.add_argument("--selftest", action="store_true")
@@ -934,6 +953,16 @@ def main():
                       or os.environ.get("CINEMARK_MODE") == "post") else "pre"
     totals = collect(weekend_of=args.weekend, titles=titles or None,
                      show_dates=show_dates or None, mode=mode)
+    verdict = tarpit_verdict(totals)
+    if verdict == "red":
+        print("❌ Tarpitted with almost nothing captured — the shard's day "
+              "would be lost on a green exit (retries only re-dispatch RED "
+              "runs, and a fresh runner IP is exactly the cure). Failing.")
+        return 1
+    if verdict == "warn":
+        print("::warning::cinemark tarpit stopped the pool walk early — "
+              f"captured={totals.get('captured', 0)} before the wall; the "
+              "shard tail is lost until the next pass.")
     if totals and totals.get("written", 0) == 0 and totals.get("matched", 0) > 0:
         print("❌ Showtimes matched but zero rows written — failing loudly.")
         return 1
