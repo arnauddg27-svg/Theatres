@@ -1,8 +1,8 @@
 {
   "date": "2026-09-04",
   "weekend_of": "2026-09-04",
-  "collected_local_date": "2026-09-02",
-  "collected_at": "2026-09-02T21:30:28.477490+00:00",
+  "collected_local_date": "2026-09-03",
+  "collected_at": "2026-09-03T15:42:21.166468+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -384,6 +384,13 @@
                 "showtime_id": "146374757",
                 "format": "undefined"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "146201759",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -519,54 +526,19 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-06",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "146374771",
-            "format": "undefined"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "146374772",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "146374773",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "146374762",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "146738985",
+            "showtime": "6:30pm",
+            "showtime_id": "146374757",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "1:10pm",
-            "showtime_id": "146201756",
-            "format": "undefined"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146201745",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "146201746",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "146201747",
+            "showtime": "7:40pm",
+            "showtime_id": "146201759",
             "format": "undefined"
           }
         ]
@@ -4723,6 +4695,13 @@
                 "showtime_id": "146372198",
                 "format": "undefined"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145917245",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -4838,29 +4817,19 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146372200",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146372201",
+            "showtime": "6:45pm",
+            "showtime_id": "146372198",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "145917246",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "145917247",
+            "showtime": "7:45pm",
+            "showtime_id": "145917245",
             "format": "undefined"
           }
         ]
@@ -9274,6 +9243,18 @@
                 "showtime_id": "146384420",
                 "format": "Laser at AMC"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146166192",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146166188",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -9382,29 +9363,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146384446",
+            "showtime": "6:40pm",
+            "showtime_id": "146384419",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146384447",
+            "showtime": "9:15pm",
+            "showtime_id": "146384420",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146166194",
+            "showtime": "7:30pm",
+            "showtime_id": "146166192",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146166193",
+            "showtime": "9:30pm",
+            "showtime_id": "146166188",
             "format": "Laser at AMC"
           }
         ]
@@ -11587,7 +11568,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-02T15:41:35.668144+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-05": {
@@ -11692,29 +11673,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-03",
+      "show_date": "2026-09-04",
       "movies": {
         "Onslaught": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "146371422",
+            "showtime_id": "146371424",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146371423",
+            "showtime": "10:15pm",
+            "showtime_id": "146371425",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "145997215",
+            "showtime_id": "145997216",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145997227",
+            "showtime": "10:00pm",
+            "showtime_id": "145997257",
             "format": "Laser at AMC"
           }
         ]
@@ -12196,6 +12177,18 @@
                 "showtime": "6:35pm",
                 "showtime_id": "146298836",
                 "format": "undefined"
+              },
+              {
+                "showtime": "8:55pm",
+                "showtime_id": "146813293",
+                "format": "undefined"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "146055769",
+                "format": "undefined"
               }
             ]
           },
@@ -12275,6 +12268,18 @@
             "showtime": "6:35pm",
             "showtime_id": "146298836",
             "format": "undefined"
+          },
+          {
+            "showtime": "8:55pm",
+            "showtime_id": "146813293",
+            "format": "undefined"
+          }
+        ],
+        "By Any Means": [
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "146055769",
+            "format": "undefined"
           }
         ]
       }
@@ -12326,9 +12331,26 @@
                 "showtime_id": "146370070",
                 "format": "undefined"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "146144238",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146144237",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146144236",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-09-01T21:44:29.985609+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-05": {
@@ -12443,24 +12465,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-03",
+      "show_date": "2026-09-04",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146370068",
+            "showtime": "5:30pm",
+            "showtime_id": "146370071",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146370069",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146370070",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "146144234",
+            "showtime": "5:00pm",
+            "showtime_id": "146144238",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146144235",
+            "showtime": "7:45pm",
+            "showtime_id": "146144237",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146144236",
             "format": "undefined"
           }
         ]
@@ -12476,6 +12513,18 @@
               {
                 "showtime": "6:45pm",
                 "showtime_id": "146352531",
+                "format": "Laser at AMC"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "145934905",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "145934906",
                 "format": "Laser at AMC"
               }
             ]
@@ -12570,6 +12619,18 @@
           {
             "showtime": "6:45pm",
             "showtime_id": "146352531",
+            "format": "Laser at AMC"
+          }
+        ],
+        "By Any Means": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145934905",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "145934906",
             "format": "Laser at AMC"
           }
         ]
@@ -13091,9 +13152,26 @@
                 "showtime_id": "146226589",
                 "format": "undefined"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "146051122",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146051123",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146051124",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-09-01T14:11:43.287730+00:00",
+          "collected_at": "2026-09-03T15:42:21.150702+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-05": {
@@ -13726,6 +13804,18 @@
                 "showtime_id": "146213629",
                 "format": "Laser at AMC"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "146119694",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "146119657",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -13829,49 +13919,24 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-06",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "146213582",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "146213580",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "146213618",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "146213523",
+            "showtime": "6:45pm",
+            "showtime_id": "146213629",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "146119692",
+            "showtime": "5:00pm",
+            "showtime_id": "146119694",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146119691",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "146119706",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:05pm",
-            "showtime_id": "146119653",
+            "showtime": "7:05pm",
+            "showtime_id": "146119657",
             "format": "Laser at AMC"
           }
         ]
@@ -13940,23 +14005,55 @@
           "movies": {
             "Onslaught": [
               {
-                "showtime": "1:00pm",
+                "showtime": "12:00pm",
+                "showtime_id": "146786871",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:25pm",
                 "showtime_id": "146232304",
                 "format": "undefined"
               },
               {
-                "showtime": "3:35pm",
+                "showtime": "4:50pm",
                 "showtime_id": "146232305",
                 "format": "undefined"
               },
               {
-                "showtime": "6:15pm",
+                "showtime": "7:25pm",
                 "showtime_id": "146232306",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146786807",
+                "format": "undefined"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "146126895",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "146126896",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "146126885",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146786858",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-09-01T21:44:29.985650+00:00",
+          "collected_at": "2026-09-03T15:42:21.150759+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-06": {
@@ -14638,6 +14735,18 @@
                 "showtime_id": "146338125",
                 "format": "Laser at AMC"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146135282",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146135283",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -14740,6 +14849,18 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "146338125",
+            "format": "Laser at AMC"
+          }
+        ],
+        "By Any Means": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146135282",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146135283",
             "format": "Laser at AMC"
           }
         ]
@@ -14911,7 +15032,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-02T15:41:35.668215+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-06": {
@@ -14981,39 +15102,84 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-03",
+      "show_date": "2026-09-05",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146373820",
+            "showtime": "11:00am",
+            "showtime_id": "146744572",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146373827",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146373833",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "146373832",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146744546",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146373819",
+            "showtime_id": "146373840",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146373768",
+            "showtime": "10:10pm",
+            "showtime_id": "146373767",
             "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "146744383",
+            "format": "English Spoken with Spanish Subtitles"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146133943",
+            "showtime": "10:50am",
+            "showtime_id": "146744423",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146133944",
+            "showtime": "11:10am",
+            "showtime_id": "146744562",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146133953",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "146133952",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "146744382",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "146133938",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146133945",
+            "showtime_id": "146133939",
             "format": "Laser at AMC"
           }
         ]
@@ -15806,29 +15972,54 @@
               }
             ]
           },
-          "collected_at": "2026-09-02T15:41:35.668250+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-03",
+      "show_date": "2026-09-06",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146375168",
+            "showtime": "12:30pm",
+            "showtime_id": "146375195",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146375169",
+            "showtime": "3:00pm",
+            "showtime_id": "146375187",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "146375188",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146375184",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146201223",
+            "showtime": "1:30pm",
+            "showtime_id": "146201232",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146201233",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146201234",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146201235",
             "format": "undefined"
           }
         ]
@@ -16297,6 +16488,11 @@
             ],
             "By Any Means": [
               {
+                "showtime": "6:45pm",
+                "showtime_id": "145948372",
+                "format": "undefined"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "146706042",
                 "format": "undefined"
@@ -16410,6 +16606,11 @@
         ],
         "By Any Means": [
           {
+            "showtime": "6:45pm",
+            "showtime_id": "145948372",
+            "format": "undefined"
+          },
+          {
             "showtime": "9:30pm",
             "showtime_id": "146706042",
             "format": "undefined"
@@ -16432,6 +16633,18 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "146287420",
+                "format": "undefined"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146195738",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146195739",
                 "format": "undefined"
               }
             ]
@@ -16581,29 +16794,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146287421",
+            "showtime": "6:45pm",
+            "showtime_id": "146287419",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146287422",
+            "showtime": "9:30pm",
+            "showtime_id": "146287420",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "146195740",
+            "showtime": "6:30pm",
+            "showtime_id": "146195738",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146195741",
+            "showtime": "9:30pm",
+            "showtime_id": "146195739",
             "format": "undefined"
           }
         ]
@@ -16998,6 +17211,23 @@
                 "showtime_id": "146360158",
                 "format": "Laser at AMC"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "146139113",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146139228",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146139229",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -17085,6 +17315,23 @@
           {
             "showtime": "10:20pm",
             "showtime_id": "146360158",
+            "format": "Laser at AMC"
+          }
+        ],
+        "By Any Means": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "146139113",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146139228",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146139229",
             "format": "Laser at AMC"
           }
         ]
@@ -17270,9 +17517,21 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:45pm",
+                "showtime": "10:00pm",
                 "showtime_id": "146328116",
                 "format": "IMAX with Laser at AMC"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146104561",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146104484",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -17379,9 +17638,21 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
+            "showtime": "10:00pm",
             "showtime_id": "146328116",
             "format": "IMAX with Laser at AMC"
+          }
+        ],
+        "By Any Means": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146104561",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146104484",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -18102,7 +18373,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "9:35pm",
+                "showtime": "9:20pm",
                 "showtime_id": "146715803",
                 "format": "undefined"
               }
@@ -18228,7 +18499,7 @@
             "format": "undefined"
           },
           {
-            "showtime": "9:35pm",
+            "showtime": "9:20pm",
             "showtime_id": "146715803",
             "format": "undefined"
           }
@@ -20825,6 +21096,18 @@
                 "showtime_id": "146385885",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146017056",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146017057",
+                "format": "Dine-In Delivery to Seat"
+              }
             ]
           },
           "collected_at": null,
@@ -20933,49 +21216,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-06",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "146385898",
+            "showtime": "6:45pm",
+            "showtime_id": "146385884",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146385897",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "146385896",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146385895",
+            "showtime": "9:30pm",
+            "showtime_id": "146385885",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "146017054",
+            "showtime": "7:30pm",
+            "showtime_id": "146017056",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "146017055",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "146017044",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146017045",
+            "showtime": "10:15pm",
+            "showtime_id": "146017057",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -22192,6 +22455,13 @@
                 "showtime_id": "146362983",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146115527",
+                "format": "Dine-In Delivery to Seat"
+              }
             ]
           },
           "collected_at": null,
@@ -22322,34 +22592,19 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146362985",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "146362984",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146362986",
+            "showtime": "6:30pm",
+            "showtime_id": "146362983",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146115528",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "146115524",
+            "showtime": "6:45pm",
+            "showtime_id": "146115527",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -26563,6 +26818,18 @@
                 "showtime_id": "146371605",
                 "format": "Laser at AMC"
               }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146111021",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146110986",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -26686,59 +26953,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-06",
+      "show_date": "2026-09-03",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "146640235",
+            "showtime": "7:45pm",
+            "showtime_id": "146371604",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "146371662",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "146371661",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "146371671",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146371660",
+            "showtime": "10:15pm",
+            "showtime_id": "146371605",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "146640242",
+            "showtime": "6:45pm",
+            "showtime_id": "146111021",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "146136028",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "146136029",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "146136030",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "146136031",
+            "showtime": "9:30pm",
+            "showtime_id": "146110986",
             "format": "Laser at AMC"
           }
         ]
@@ -29843,34 +30080,54 @@
               }
             ]
           },
-          "collected_at": "2026-09-02T15:41:35.668649+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-06",
       "movies": {
         "Onslaught": [
           {
+            "showtime": "1:45pm",
+            "showtime_id": "146374378",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146374367",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146374360",
+            "showtime_id": "146374368",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146374373",
+            "showtime_id": "146374369",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146188173",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146188174",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146188167",
+            "showtime_id": "146188175",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146188168",
+            "showtime_id": "146188176",
             "format": "Laser at AMC"
           }
         ]
@@ -69235,7 +69492,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-02T15:41:35.668131+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-06": {
@@ -69290,24 +69547,49 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-03",
+      "show_date": "2026-09-05",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146740774",
+            "showtime": "1:15pm",
+            "showtime_id": "146781232",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146740775",
+            "showtime": "2:45pm",
+            "showtime_id": "146781306",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "146781305",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146781304",
             "format": "undefined"
           }
         ],
         "By Any Means": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146148509",
+            "showtime": "12:00pm",
+            "showtime_id": "146781273",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146781420",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146781274",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146781307",
             "format": "undefined"
           }
         ]
@@ -71529,8 +71811,8 @@
   },
   "link_coverage": {
     "ratio": 0.9583,
-    "fresh": 253,
-    "expected": 264,
+    "fresh": 759,
+    "expected": 792,
     "min_ratio": 0.9,
     "degraded": false
   }
