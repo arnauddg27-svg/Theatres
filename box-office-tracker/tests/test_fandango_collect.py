@@ -128,6 +128,40 @@ class DiscoveryLogicTests(unittest.TestCase):
         self.assertEqual([w["sdate"] for w in allv],
                          ["2026-06-20 19:30", "2026-06-20 22:00", "2026-06-20 11:00"])
 
+    def test_capped_pick_balances_films_across_theatres(self):
+        # 2026-09-03 starvation: at cap=1 with two tracked films, the film
+        # owning the 7pm slots won the single pick at nearly every theatre
+        # (BAM 277 picks vs Onslaught 1 at Cinemark). The per-theatre CRC32
+        # preference must beat the prime sort — deterministically, and
+        # differently across theatres.
+        def href(sd):
+            q = sd.replace(" ", "+").replace(":", "%3A")
+            return f"https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate={q}&mid=1"
+        entries = [
+            # Film B owns prime time; film A only has a matinee.
+            {"movieOverview": "/aaa-film-2026-111111/movie-overview",
+             "href": href("2026-06-20 11:00")},
+            {"movieOverview": "/bbb-film-2026-222222/movie-overview",
+             "href": href("2026-06-20 19:00")},
+        ]
+        targets = {fc.slugify_title("Aaa Film"): "Aaa Film",
+                   fc.slugify_title("Bbb Film"): "Bbb Film"}
+        window = {"2026-06-20"}
+        now = datetime(2026, 6, 20, 8, 0, tzinfo=timezone.utc)
+        # crc32('theatre-0')%2 == 0 -> prefers sorted()[0] = "Aaa Film";
+        # crc32('theatre-4')%2 == 1 -> prefers "Bbb Film".
+        pick0 = fc.select_wanted_showtimes(entries, targets, window, "UTC",
+                                           now, cap=1, balance_key="theatre-0")
+        pick4 = fc.select_wanted_showtimes(entries, targets, window, "UTC",
+                                           now, cap=1, balance_key="theatre-4")
+        self.assertEqual("Aaa Film", pick0[0]["title"])
+        self.assertEqual("Bbb Film", pick4[0]["title"])
+        # No balance key (or one film) -> old prime behavior, untouched.
+        legacy = fc.select_wanted_showtimes(entries, targets, window, "UTC",
+                                            now, cap=1)
+        self.assertEqual("Bbb Film", legacy[0]["title"])
+        self.assertIsNone(fc.preferred_pick_title({"Only Film"}, "theatre-0"))
+
     def test_timing_pre_show_vs_past(self):
         m_after, m_until, sd, dow = fc.showtime_timing("2026-06-20 19:55", "UTC", NOW)
         self.assertLess(m_after, 0)          # show is in the future

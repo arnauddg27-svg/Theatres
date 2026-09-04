@@ -293,8 +293,24 @@ def page_visit_dates(window_dates, show_dates, ref_dt):
     return [None]
 
 
+def preferred_pick_title(titles_present, balance_key):
+    """Stable per-theatre film preference for capped picks.
+
+    With cap=1 and two tracked films, a global sort (prime/nearest) makes
+    whichever film owns the 7pm slots win the single pick at nearly every
+    theatre (2026-09-03: By Any Means 277 picks, Onslaught 1 at Cinemark) —
+    starving the other film's cross-chain signal. CRC32 of the theatre slug
+    splits the pool ~50/50 deterministically, and each theatre keeps the
+    SAME film all week (clean per-theatre velocity series)."""
+    titles = sorted(titles_present)
+    if len(titles) < 2 or not balance_key:
+        return None
+    import zlib
+    return titles[zlib.crc32(str(balance_key).encode()) % len(titles)]
+
+
 def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
-                            now_utc, cap, order="prime"):
+                            now_utc, cap, order="prime", balance_key=None):
     """From a theatre's showtime buttons, pick the tracked-title showtimes worth
     capturing: in-window date, still pre-show, capped. Pure — unit-tested offline.
 
@@ -333,11 +349,14 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         counts[key] = counts.get(key, 0) + 1
     for w in wanted:
         w["discovered"] = counts[(w["title"], w["show_date"])]
+    pref = preferred_pick_title({w["title"] for w in wanted}, balance_key)
     if order == "nearest":
-        wanted.sort(key=lambda w: (w["minutes_until"], w["_prime"]))
+        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
+                                   w["minutes_until"], w["_prime"]))
     else:
         # Prime-time evening shows first (highest occupancy signal), then by date.
-        wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
+        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
+                                   w["_prime"], w["show_date"]))
     if cap and cap > 0:
         wanted = wanted[:cap]
     return wanted
@@ -614,7 +633,8 @@ def _capture_theatre(page, th, shared):
     wanted = select_wanted_showtimes(entries, shared["target_slugs"],
                                      shared["window_dates"], tz_name,
                                      shared["now_utc"], shared["per_theatre_cap"],
-                                     order=shared.get("order", "prime"))
+                                     order=shared.get("order", "prime"),
+                                     balance_key=slug)
     stats["matched"] = len(wanted)
     rows = []
     for w in wanted:

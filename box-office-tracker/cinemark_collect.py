@@ -221,7 +221,7 @@ if _CINEMARK_WINDOW_RAW > 1350:
 
 
 def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
-                     mode="pre"):
+                     mode="pre", balance_key=None):
     """entries: [{'href','movie_href'}] -> capped in-window picks.
 
     mode='pre'  : still-upcoming shows (pre-reservation snapshots).
@@ -254,12 +254,19 @@ def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
                        "post_show": mode == "post",
                        "show_date": show_date, "day_of_week": dow,
                        "_prime": abs(hour - 19)})
+    # Per-theatre film preference beats the global sort so a capped pick
+    # cannot starve one film pool-wide (2026-09-03: BAM 277 picks,
+    # Onslaught 1 — the 7pm-slot owner won everywhere at cap 1).
+    from fandango_collect import preferred_pick_title
+    pref = preferred_pick_title({w["title"] for w in wanted}, balance_key)
     if mode == "post":
         # Most recently started first: minutes_until is 0 for every started
         # show, so it cannot order a post pass — minutes_after can.
-        wanted.sort(key=lambda w: w["minutes_after"])
+        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
+                                   w["minutes_after"]))
     else:
-        wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
+        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
+                                   w["_prime"], w["show_date"]))
     counts = {}
     for w in wanted:
         key = (w["title"], w["show_date"])
@@ -692,7 +699,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             timeout_streak = 0
             picks = select_showtimes(entries or [], target_slugs, window_dates,
                                      th.get("timezone", "America/Chicago"),
-                                     now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode)
+                                     now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode,
+                                     balance_key=th.get("slug"))
             totals["matched"] += len(picks)
             if mode == "post" and not picks:
                 times = sorted((parse_seatmap_href(e.get("href", "")) or {})
