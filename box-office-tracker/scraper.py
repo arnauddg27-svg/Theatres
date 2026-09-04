@@ -2076,6 +2076,12 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
                 body_snippet = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
             except Exception:
                 body_snippet = ""
+            if _is_cloudflare_block(title, body_snippet):
+                # title read failed or CF served a variant title: the body
+                # still names the block (audit-8 — this was the exact
+                # 2026-09-03 profile when unwired).
+                print("      🧱 Cloudflare block page (body) on seat map — aborting theatre")
+                return CF_BLOCK_SENTINEL
             print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
             return None
     finally:
@@ -5244,12 +5250,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
                 return
-            if cf_block_streak >= CF_BLOCK_ABORT_AFTER:
-                all_issues.append(f"{name}: {CF_BLOCK_ISSUE} — leg aborted, skipped")
-                return
             async with sem:
                 if asyncio.get_event_loop().time() >= overall_deadline:
                     all_issues.append(f"{name}: overall deadline reached — skipped")
+                    return
+                # Checked INSIDE the semaphore: every coroutine of a 60-theatre
+                # chunk is created at streak 0 and parks here, so a pre-sem
+                # check could never fire (audit-8).
+                if cf_block_streak >= CF_BLOCK_ABORT_AFTER:
+                    all_issues.append(f"{name}: {CF_BLOCK_ISSUE} — leg aborted, skipped")
                     return
                 saved_entry = saved_links[name]
                 expected_show_date = phase2_theatre_expected_date(
@@ -5311,9 +5320,17 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     written_rows += w
                     skipped_rows += s
 
+        browser_dead = False
+
         async def run_scrape_batch(theatres, label):
-            nonlocal browser
+            nonlocal browser, browser_dead
             if not theatres:
+                return
+            if browser_dead:
+                all_issues.extend(
+                    f"{t['name']}: browser relaunch failed earlier — skipped"
+                    for t in theatres
+                )
                 return
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.extend(
@@ -5349,6 +5366,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         # Never let a relaunch failure escape: the coverage
                         # report + snapshot fatal-floor marker below must
                         # still run, or partial rows merge unguarded.
+                        browser_dead = True
                         all_issues.extend(
                             f"{t['name']}: browser relaunch failed ({str(exc)[:60]}) — skipped"
                             for t in theatres[start:]

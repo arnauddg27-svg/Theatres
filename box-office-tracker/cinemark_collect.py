@@ -654,8 +654,10 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     time.sleep(300)
                     timeout_streak = 0
                 else:
-                    print(f"🛑 {timeout_streak} consecutive page failures after a "
-                          f"pause — tarpitted; stopping the pool walk cleanly "
+                    why = ("after a pause" if totals.get("tarpit_pauses")
+                           else "too close to the deadline to pause")
+                    print(f"🛑 {timeout_streak} consecutive page failures {why} — "
+                          f"tarpitted; stopping the pool walk cleanly "
                           f"(visited={totals['visited']})", flush=True)
                     totals["tarpit_stop"] = 1
                     break
