@@ -367,18 +367,24 @@ jobs:
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 190
+        env:
+          # Residential egress for the seat lane (Cloudflare blocks hosting-
+          # provider IPs on /showtimes/*/seats since 2026-09-02). Unset = direct.
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
         run: |
           export PHASE1_MIN_FRESH_LINK_RATIO=0.90
+          if [ -n "$AMC_SEAT_PROXY_URL" ]; then echo "AMC seat proxy: configured (trimmed page loads)"; else echo "AMC seat proxy: none (direct)"; fi
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
             export SNAPSHOT_MAX_CONCURRENT_TABS=3
-            # 200 theatres ≈ 2x the sellout/demand-velocity sample (measured
-            # ~1.6s/row ≈ 5,600 rows in the 9000s deadline — Thu-Sun probes fit
-            # fully; only the low-value Mon-Wed long-lead probes may truncate,
-            # and demand-first ordering drops the least-informative tail).
             # Budget chain: lock wait 120m + step 190m + 50m buffers = 360m job cap,
             # so the extra room comes from the repair budget (2700 -> 1800), not
-            # the step timeout.
-            export SNAPSHOT_TOP_THEATRE_CAP=200
+            # the step timeout. Demand-first ordering drops the least-informative
+            # tail when the cap binds.
+            # 120 (was 200) since 2026-09-04: snapshots were ~2/3 of AMC seat-page
+            # volume; with seat traffic billed per GB through the residential
+            # proxy, the operator chose to trade snapshot breadth for cost. The
+            # post-show census (the model's core input) is uncapped.
+            export SNAPSHOT_TOP_THEATRE_CAP=120
             export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=9000
             export PHASE1_DEADLINE_SEC=1800

@@ -601,6 +601,60 @@ PHASE2_DEADLINE_SEC = _env_int("PHASE2_DEADLINE_SEC", 60 * 60, minimum=60)
 # snapshot slots). Chunked recycling both prevents the buildup and bounds
 # the blast radius of any crash to one chunk's remainder.
 BROWSER_RECYCLE_THEATRES = _env_int("BROWSER_RECYCLE_THEATRES", 60, minimum=10)
+
+# ── Seat-lane egress (2026-09-04) ─────────────────────────────────────────────
+# Cloudflare blocks AMC's seat-map route for every hosting-provider IP (GitHub
+# runners = Azure, VPS = DigitalOcean) — verified: identical hard block from
+# both; the SAME headless Chromium from a residential IP renders the map. So
+# the seat lane routes through a residential proxy when the secret is set.
+# Phase 1 (listing pages) is not blocked and stays direct. Empty = off.
+AMC_SEAT_PROXY_URL = (os.environ.get("AMC_SEAT_PROXY_URL") or "").strip()
+# Residential proxies bill per GB: a seat page is ~986 KB of which the HTML
+# (all we read — the map is server-rendered, seats_sold = input.disabled) is
+# ~178 KB. Trimming aborts scripts/styles/fonts/images. Default ON with a
+# proxy. A Cloudflare JS interstitial ("Just a moment…") needs scripts, so
+# fetch_amc_seat_map_pw retries that one page untrimmed.
+AMC_SEAT_TRIM = bool(_env_int("AMC_SEAT_TRIM", 1 if AMC_SEAT_PROXY_URL else 0))
+_TRIM_RESOURCE_TYPES = frozenset(
+    {"script", "stylesheet", "font", "image", "media", "ping", "other", "manifest"})
+
+
+def proxy_settings_from_url(url):
+    """'http://user:pass@host:port' -> Playwright proxy dict, or None."""
+    url = (url or "").strip()
+    if not url:
+        return None
+    from urllib.parse import urlsplit
+    parts = urlsplit(url if "://" in url else "http://" + url)
+    if not parts.hostname:
+        return None
+    server = f"{parts.scheme}://{parts.hostname}"
+    if parts.port:
+        server += f":{parts.port}"
+    settings = {"server": server}
+    if parts.username:
+        from urllib.parse import unquote
+        settings["username"] = unquote(parts.username)
+        settings["password"] = unquote(parts.password or "")
+    return settings
+
+
+def _should_block_request(resource_type, url, trim):
+    """Abort decision for seat-page sub-requests (pure, unit-tested)."""
+    if "_rsc=" in (url or ""):
+        return True          # RSC always: 403s from cloud IPs and breaks hydration
+    return bool(trim) and (resource_type or "") in _TRIM_RESOURCE_TYPES
+
+
+_SEAT_PROXY = proxy_settings_from_url(AMC_SEAT_PROXY_URL)
+
+
+async def _launch_seat_browser(p):
+    """Chromium for the seat lane — through the residential proxy when set."""
+    kwargs = {"headless": True, "args": _CHROMIUM_ARGS}
+    if _SEAT_PROXY:
+        kwargs["proxy"] = _SEAT_PROXY
+    return await p.chromium.launch(**kwargs)
 REGULAR_PHASE2_MIN_DEADLINE_SEC = _env_int("REGULAR_PHASE2_MIN_DEADLINE_SEC", 9000, minimum=60)
 REGULAR_PHASE2_MAX_DEADLINE_SEC = _env_int(
     "REGULAR_PHASE2_MAX_DEADLINE_SEC",
@@ -2037,9 +2091,14 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 
     # Silence Next.js RSC requests — they 403 from cloud IPs and break hydration.
     # The seat map data is SSR'd into the page for active shows, so we don't need them.
+    trim = AMC_SEAT_TRIM
+
     async def block_rsc(route):
-        if "_rsc=" in route.request.url:
+        req = route.request
+        if "_rsc=" in req.url:
             await route.fulfill(status=200, content_type="text/plain", body="")
+        elif _should_block_request(req.resource_type, req.url, trim):
+            await route.abort()
         else:
             await route.continue_()
 
@@ -2059,6 +2118,17 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
             title = await page.title()
         except Exception:
             title = ""
+        if trim and "just a moment" in title.lower():
+            # Cloudflare JS interstitial: it needs scripts to clear. Retry this
+            # one page untrimmed (~3% of loads in the logs), keep trimming the rest.
+            print("      🔁 Cloudflare JS check with trim on — retrying this page untrimmed")
+            trim = False
+            await page.reload(wait_until="domcontentloaded", timeout=30000)
+            await page.wait_for_timeout(2500)
+            try:
+                title = await page.title()
+            except Exception:
+                title = ""
         print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
         if _is_cloudflare_block(title):
             print("      🧱 Cloudflare block page on seat map — aborting theatre")
@@ -5239,7 +5309,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     overall_deadline = asyncio.get_event_loop().time() + phase2_deadline_sec
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
+        browser = await _launch_seat_browser(p)
+        print(f"🌐 seat-lane egress: proxy={'ON' if _SEAT_PROXY else 'off'} "
+              f"trim={'ON' if AMC_SEAT_TRIM else 'off'}", flush=True)
 
         cf_block_streak = 0
 
@@ -5360,8 +5432,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     except Exception:
                         pass
                     try:
-                        browser = await p.chromium.launch(
-                            headless=True, args=_CHROMIUM_ARGS)
+                        browser = await _launch_seat_browser(p)
                     except Exception as exc:
                         # Never let a relaunch failure escape: the coverage
                         # report + snapshot fatal-floor marker below must

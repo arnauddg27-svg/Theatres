@@ -104,7 +104,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("timeout-minutes: 190", phase_block)
         self.assertIn("PHASE2_DEADLINE_SEC=9000", phase_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
-        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=200", phase_block)
+        # 120 since 2026-09-04: seat traffic is billed per GB through the
+        # residential proxy; the operator traded snapshot breadth for cost.
+        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=120", phase_block)
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
         # Snapshot scrape + targeted link repair must fit the step timeout:
