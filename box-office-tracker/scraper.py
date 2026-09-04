@@ -1997,6 +1997,25 @@ def _extract_seats_from_next_data(props, showtime_id):
 
 
 QUEUE_SENTINEL = {"__queue__": True}
+# Cloudflare WAF hard block ("Attention Required! | Cloudflare" / "Sorry, you
+# have been blocked"). From 2026-09-02 ~16Z every GitHub-hosted seat-map
+# navigation landed here — 3,039 block pages in one leg, 0 seat rows, and
+# the run still burned its full 2.5h budget because nothing recognised the
+# page (it was logged as "No seat inputs"). Residential real-browser loads
+# render the map fine: it is datacenter-IP reputation, not a site change.
+CF_BLOCK_SENTINEL = {"__cf_block__": True}
+CF_BLOCK_ISSUE = "Cloudflare block page on seat map"
+# A leg where this many consecutive theatres are Cloudflare-blocked is dead
+# for its whole egress IP — stop launching theatres and fail fast so the
+# retry/fatal-marker machinery engages within minutes, not hours.
+CF_BLOCK_ABORT_AFTER = _env_int("CF_BLOCK_ABORT_AFTER", 12, minimum=3)
+
+
+def _is_cloudflare_block(title, body_snippet=""):
+    """True for Cloudflare's hard block interstitial (not a JS challenge)."""
+    t = (title or "").lower()
+    b = (body_snippet or "").lower()
+    return ("attention required" in t and "cloudflare" in t) or "you have been blocked" in b
 
 
 async def fetch_amc_seat_map_pw(page, showtime_id):
@@ -2041,6 +2060,9 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         except Exception:
             title = ""
         print(f"      🔍 Landed on: {final_url} | title: {title[:60]}")
+        if _is_cloudflare_block(title):
+            print("      🧱 Cloudflare block page on seat map — aborting theatre")
+            return CF_BLOCK_SENTINEL
         try:
             await page.wait_for_selector(
                 'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
@@ -3947,12 +3969,20 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
                     queue_blocked = True
                     break
+                if seat_data is CF_BLOCK_SENTINEL:
+                    issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
+                    queue_blocked = True
+                    break
                 if seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
                     if seat_data is QUEUE_SENTINEL:
                         issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
+                        queue_blocked = True
+                        break
+                    if seat_data is CF_BLOCK_SENTINEL:
+                        issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
                         queue_blocked = True
                         break
 
@@ -5205,11 +5235,17 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
+        cf_block_streak = 0
+
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
+            nonlocal cf_block_streak
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
+                return
+            if cf_block_streak >= CF_BLOCK_ABORT_AFTER:
+                all_issues.append(f"{name}: {CF_BLOCK_ISSUE} — leg aborted, skipped")
                 return
             async with sem:
                 if asyncio.get_event_loop().time() >= overall_deadline:
@@ -5253,6 +5289,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             results, issues, csv_rows, snapshot_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
+            if results or snapshot_rows:
+                cf_block_streak = 0
+            elif any(CF_BLOCK_ISSUE in i for i in issues):
+                cf_block_streak += 1
+                if cf_block_streak == CF_BLOCK_ABORT_AFTER:
+                    print(f"\n🧱 {cf_block_streak} consecutive theatres hit the Cloudflare "
+                          f"block page — this egress IP is blocked for seat maps; "
+                          f"aborting the leg fast (coverage floor will fail it red).",
+                          flush=True)
             if snapshot_rows:
                 all_snapshot_rows.extend(snapshot_rows)
                 async with snapshot_write_lock:
