@@ -303,8 +303,8 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 4, 5, 6}), 18, 0, fandango_slot_inputs(1, 6, order="nearest")),
     Slot("snapshot fandango near 20Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 20, 0, fandango_slot_inputs(2, 6, order="nearest")),
-    # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31:
-    # one long job per pass). Read structure per design:
+    # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31;
+    # pre passes 3-way sharded since 2026-09-04). Read structure per design:
     #   pre passes EVERY day, covering today + all remaining/upcoming window
     #   days via the 15-day date carousel (Mon-Wed = upcoming weekend only);
     #   post census on show days only (UTC Fri/Sat/Sun/Mon early hours =
