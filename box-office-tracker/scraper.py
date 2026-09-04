@@ -612,28 +612,51 @@ AMC_SEAT_PROXY_URL = (os.environ.get("AMC_SEAT_PROXY_URL") or "").strip()
 # Residential proxies bill per GB: a seat page is ~986 KB of which the HTML
 # (all we read — the map is server-rendered, seats_sold = input.disabled) is
 # ~178 KB. Trimming aborts scripts/styles/fonts/images. Default ON with a
-# proxy. A Cloudflare JS interstitial ("Just a moment…") needs scripts, so
+# proxy (AMC_SEAT_TRIM is defined below, after the secret is parsed). A
+# Cloudflare JS interstitial ("Just a moment…") needs scripts, so
 # fetch_amc_seat_map_pw retries that one page untrimmed.
-AMC_SEAT_TRIM = bool(_env_int("AMC_SEAT_TRIM", 1 if AMC_SEAT_PROXY_URL else 0))
 _TRIM_RESOURCE_TYPES = frozenset(
     {"script", "stylesheet", "font", "image", "media", "ping", "other", "manifest"})
+_PROXY_SCHEMES = ("http", "https")
+
+
+class ProxyUrlError(ValueError):
+    """Our own shape complaints about AMC_SEAT_PROXY_URL — the ONLY error
+    text that may be printed, because it never quotes the secret."""
 
 
 def proxy_settings_from_url(url):
-    """'http://user:pass@host:port' -> Playwright proxy dict, or None."""
+    """'http://user:pass@host:port' -> Playwright proxy dict, or None.
+
+    STRICT (audit-10): a password with an unencoded '/', '?' or '#' makes
+    urlsplit read everything after it as a path — with a NUMERIC prefix that
+    parsed silently into a bogus server ('http://user:12') with no credentials,
+    and every navigation then failed as a "proxy refusal" pointing the
+    operator at the provider instead of the secret. Anything that is not
+    exactly scheme://[user:pass@]host[:port] raises ValueError, which
+    _load_seat_proxy turns into a loud ::error:: and a direct run.
+    """
     url = (url or "").strip()
     if not url:
         return None
-    from urllib.parse import urlsplit
+    from urllib.parse import urlsplit, unquote
     parts = urlsplit(url if "://" in url else "http://" + url)
+    if parts.scheme not in _PROXY_SCHEMES:
+        # Playwright rejects socks5 WITH credentials at launch(); keep the
+        # contract to the two schemes the residential providers actually use.
+        raise ProxyUrlError(f"unsupported proxy scheme {parts.scheme!r}")
+    if parts.path or parts.query or parts.fragment:
+        raise ProxyUrlError("proxy URL has a path/query/fragment — percent-encode the password")
+    if "@" in url and parts.username is None:
+        raise ProxyUrlError("proxy URL has '@' but no user:pass — percent-encode the password")
     if not parts.hostname:
-        return None
-    server = f"{parts.scheme}://{parts.hostname}"
-    if parts.port:
-        server += f":{parts.port}"
+        raise ProxyUrlError("proxy URL has no host")
+    parts.port  # raises ValueError on a non-numeric port
+    # Build the server from the raw netloc so an IPv6 literal keeps its
+    # brackets ('[::1]:8080' — hostname() strips them).
+    server = f"{parts.scheme}://{parts.netloc.rpartition('@')[2]}"
     settings = {"server": server}
-    if parts.username:
-        from urllib.parse import unquote
+    if parts.username is not None:
         settings["username"] = unquote(parts.username)
         settings["password"] = unquote(parts.password or "")
     return settings
@@ -654,13 +677,59 @@ def _load_seat_proxy():
     try:
         return proxy_settings_from_url(AMC_SEAT_PROXY_URL)
     except Exception as exc:
-        print(f"::error::AMC_SEAT_PROXY_URL is unparseable ({type(exc).__name__}: "
-              f"{str(exc)[:80]}) — percent-encode the password; running DIRECT",
-              flush=True)
+        # NEVER echo str(exc): urlsplit's message quotes the offending
+        # fragment ("Port could not be cast to integer value as 'Abc123'"),
+        # i.e. a PREFIX of the password, and GitHub only masks the exact full
+        # secret (audit-10). Our own ValueErrors carry no secret text.
+        detail = str(exc) if isinstance(exc, ProxyUrlError) else type(exc).__name__
+        print(f"::error::AMC_SEAT_PROXY_URL is unparseable ({detail}) — "
+              f"percent-encode the password; running DIRECT", flush=True)
         return None
 
 
 _SEAT_PROXY = _load_seat_proxy()
+# Keyed on the PARSED proxy, not the raw secret: a malformed secret runs
+# direct, so trimming (and the egress banner) must say off too.
+AMC_SEAT_TRIM = bool(_env_int("AMC_SEAT_TRIM", 1 if _SEAT_PROXY else 0))
+
+
+def _sentinel_issue(seat_data, theatre_name):
+    """Issue text for a fetch that returned an egress sentinel, else None.
+
+    The sentinels are NON-EMPTY dicts — truthy — so any call site that
+    forgets one of them falls through to `seat_data["occupancy_pct"]` and
+    a KeyError per showtime that neither resets nor advances the abort
+    streak (today's slow walk, with a different message). One helper, one
+    identity check per sentinel, unit-tested.
+    """
+    if seat_data is QUEUE_SENTINEL:
+        return f"{theatre_name}: AMC queue redirect — theatre skipped"
+    if seat_data is CF_BLOCK_SENTINEL:
+        return f"{theatre_name}: {CF_BLOCK_ISSUE} — theatre skipped"
+    if seat_data is PROXY_BLOCK_SENTINEL:
+        return f"{theatre_name}: {PROXY_BLOCK_ISSUE} — theatre skipped"
+    return None
+
+
+def _next_block_streak(streak, results, snapshot_rows, issues):
+    """(new_streak, why_or_None) after one theatre's outcome.
+
+    Any real data resets the streak; a Cloudflare-block or proxy-refusal
+    issue advances it; anything else (timeouts, missing maps, exceptions)
+    leaves it unchanged. `why` is set exactly when the streak reaches
+    CF_BLOCK_ABORT_AFTER, naming the cause for the abort banner.
+    """
+    if results or snapshot_rows:
+        return 0, None
+    proxy = any(PROXY_BLOCK_ISSUE in i for i in issues)
+    if not proxy and not any(CF_BLOCK_ISSUE in i for i in issues):
+        return streak, None
+    streak += 1
+    why = None
+    if streak == CF_BLOCK_ABORT_AFTER:
+        why = ("the residential proxy is refusing connections" if proxy
+               else "this egress IP is Cloudflare-blocked for seat maps")
+    return streak, why
 
 
 async def _launch_seat_browser(p):
@@ -2092,6 +2161,14 @@ def _is_proxy_error(exc_text):
 CF_BLOCK_ABORT_AFTER = _env_int("CF_BLOCK_ABORT_AFTER", 12, minimum=3)
 
 
+def _is_cloudflare_challenge(title, body_snippet=""):
+    """True for Cloudflare's JS/managed challenge page ("Just a moment…")."""
+    t = (title or "").lower()
+    b = (body_snippet or "").lower()
+    return ("just a moment" in t) or ("verify you are human" in b) or \
+        ("checking your browser" in b) or ("performing security verification" in b)
+
+
 def _is_cloudflare_block(title, body_snippet=""):
     """True for Cloudflare's hard block interstitial (not a JS challenge)."""
     t = (title or "").lower()
@@ -2193,11 +2270,27 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
                 # 2026-09-03 profile when unwired).
                 print("      🧱 Cloudflare block page (body) on seat map — aborting theatre")
                 return CF_BLOCK_SENTINEL
+            try:
+                title_now = (await page.title()).lower()
+            except Exception:
+                title_now = ""
+            if _is_cloudflare_challenge(title_now, body_snippet):
+                # A managed JS challenge that did not clear in the (untrimmed)
+                # 12s wait is a wall for this egress just like the hard block
+                # — residential IPs get challenges where datacenter IPs got
+                # blocks. Without this it read as "No seat inputs" → one more
+                # retry → 4 page loads per showtime and no streak movement
+                # (audit-10).
+                print("      🧱 Cloudflare challenge not cleared on seat map — aborting theatre")
+                return CF_BLOCK_SENTINEL
             print(f"      ⚠️  No seat inputs. Page: {body_snippet[:120]}")
             return None
     finally:
         try:
-            await page.unroute("**/*")
+            # ignoreErrors: with trim on, hundreds of aborted sub-requests can
+            # still be in flight when the page navigates/closes; their route
+            # callbacks otherwise die as "Task exception was never retrieved".
+            await page.unroute_all(behavior="ignoreErrors")
         except Exception:
             pass
 
@@ -4082,34 +4175,16 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
 
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
-                if seat_data is QUEUE_SENTINEL:
-                    issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
-                    queue_blocked = True
-                    break
-                if seat_data is CF_BLOCK_SENTINEL:
-                    issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
-                    queue_blocked = True
-                    break
-                if seat_data is PROXY_BLOCK_SENTINEL:
-                    issues.append(f"{theatre['name']}: {PROXY_BLOCK_ISSUE} — theatre skipped")
-                    queue_blocked = True
-                    break
-                if seat_data is None:
+                sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
+                if sentinel_issue is None and seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
-                    if seat_data is QUEUE_SENTINEL:
-                        issues.append(f"{theatre['name']}: AMC queue redirect — theatre skipped")
-                        queue_blocked = True
-                        break
-                    if seat_data is CF_BLOCK_SENTINEL:
-                        issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
-                        queue_blocked = True
-                        break
-                    if seat_data is PROXY_BLOCK_SENTINEL:
-                        issues.append(f"{theatre['name']}: {PROXY_BLOCK_ISSUE} — theatre skipped")
-                        queue_blocked = True
-                        break
+                    sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
+                if sentinel_issue is not None:
+                    issues.append(sentinel_issue)
+                    queue_blocked = True
+                    break
 
                 showtime_hour = parse_showtime_hour(st)
                 delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
@@ -5358,7 +5433,19 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     overall_deadline = asyncio.get_event_loop().time() + phase2_deadline_sec
 
     async with async_playwright() as p:
-        browser = await _launch_seat_browser(p)
+        try:
+            browser = await _launch_seat_browser(p)
+            launch_failed = False
+        except Exception as exc:
+            # Same contract as the chunk relaunch below: a launch failure
+            # (proxy settings Chromium rejects, missing browser binary) must
+            # reach the coverage report + fatal marker, not die as a
+            # traceback before them (audit-10).
+            browser = None
+            launch_failed = True
+            print(f"::error::seat-lane browser failed to launch "
+                  f"({type(exc).__name__}: {str(exc)[:80]}) — this leg yields no rows",
+                  flush=True)
         print(f"🌐 seat-lane egress: proxy={'ON' if _SEAT_PROXY else 'off'} "
               f"trim={'ON' if AMC_SEAT_TRIM else 'off'}", flush=True)
 
@@ -5419,17 +5506,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             results, issues, csv_rows, snapshot_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
-            if results or snapshot_rows:
-                cf_block_streak = 0
-            elif any((CF_BLOCK_ISSUE in i) or (PROXY_BLOCK_ISSUE in i) for i in issues):
-                cf_block_streak += 1
-                if cf_block_streak == CF_BLOCK_ABORT_AFTER:
-                    why = ("the residential proxy is refusing connections"
-                           if any(PROXY_BLOCK_ISSUE in i for i in issues)
-                           else "this egress IP is Cloudflare-blocked for seat maps")
-                    print(f"\n🧱 {cf_block_streak} consecutive theatres failed — {why}; "
-                          f"aborting the leg fast (coverage floor will fail it red).",
-                          flush=True)
+            cf_block_streak, why = _next_block_streak(
+                cf_block_streak, results, snapshot_rows, issues)
+            if why:
+                print(f"\n🧱 {cf_block_streak} consecutive theatres failed — {why}; "
+                      f"aborting the leg fast (coverage floor will fail it red).",
+                      flush=True)
             if snapshot_rows:
                 all_snapshot_rows.extend(snapshot_rows)
                 async with snapshot_write_lock:
@@ -5443,7 +5525,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     written_rows += w
                     skipped_rows += s
 
-        browser_dead = False
+        browser_dead = launch_failed
 
         async def run_scrape_batch(theatres, label):
             nonlocal browser, browser_dead
@@ -5451,7 +5533,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 return
             if browser_dead:
                 all_issues.extend(
-                    f"{t['name']}: browser relaunch failed earlier — skipped"
+                    f"{t['name']}: seat-lane browser unavailable (launch/relaunch failed) — skipped"
                     for t in theatres
                 )
                 return

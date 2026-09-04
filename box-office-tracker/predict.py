@@ -164,7 +164,7 @@ SNAPSHOT_UNTRAINED_LEAD_SUPPORT_FLOOR = 0.35
 SNAPSHOT_ONE_ANCHOR_SUPPORT_FLOOR = 0.55
 SNAPSHOT_TWO_ANCHOR_SUPPORT_FLOOR = 0.70
 SNAPSHOT_MISSING_SHARE_SIGNAL_FLOOR = 0.50
-SNAPSHOT_STRATEGIC_THEATRE_CAP = 100
+SNAPSHOT_STRATEGIC_THEATRE_CAP = 120  # = scraper.SNAPSHOT_TOP_THEATRE_CAP (pinned by test_seat_proxy)
 # Samples more than six hours before showtime are outside the intended
 # collection window and usually indicate stale link/date metadata.
 MAX_REASONABLE_PRE_SHOW_MINUTES = 360

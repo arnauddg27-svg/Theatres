@@ -2361,9 +2361,13 @@ class PredictionNormalizationTest(unittest.TestCase):
                 "snapshot_to_lead_scale_factors": {"same_day": 1.0},
             },
         }
+        # One full capped probe: as many theatres as the strategic cap
+        # (= scraper.SNAPSHOT_TOP_THEATRE_CAP; the two are pinned equal in
+        # test_seat_proxy) so strategic coverage reads exactly 1.0.
+        cap = predict.SNAPSHOT_STRATEGIC_THEATRE_CAP
         rows = [
             self._snapshot_row(f"AMC {idx}", "Saturday", "2026-05-16")
-            for idx in range(100)
+            for idx in range(cap)
         ]
 
         details = predict.estimate_snapshot_day(
@@ -2373,8 +2377,8 @@ class PredictionNormalizationTest(unittest.TestCase):
             expected_amc_theatres=425,
         )
 
-        self.assertAlmostEqual(100 / 425, details["coverage_ratio"], places=6)
-        self.assertEqual(100, details["strategic_expected_theatres"])
+        self.assertAlmostEqual(cap / 425, details["coverage_ratio"], places=6)
+        self.assertEqual(cap, details["strategic_expected_theatres"])
         self.assertAlmostEqual(1.0, details["strategic_coverage_ratio"], places=6)
         self.assertAlmostEqual(
             1.0,
@@ -2402,7 +2406,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         }
         rows = [
             self._snapshot_row(f"AMC {idx}", "Saturday", "2026-05-16")
-            for idx in range(100)
+            for idx in range(predict.SNAPSHOT_STRATEGIC_THEATRE_CAP)
         ]
 
         layer = predict.build_snapshot_future_layer(
