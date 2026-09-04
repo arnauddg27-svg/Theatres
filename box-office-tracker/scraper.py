@@ -1205,7 +1205,7 @@ def _event_to_box_office_market(event):
     title = event.get("title", "")
     title_lower = title.lower()
 
-    # Same filter as trade.py: must have BOTH keywords. Non-opening markets
+    # Must have BOTH keywords. Non-opening markets
     # need a separate model path before they can safely drive collection.
     if "opening weekend" not in title_lower or "box office" not in title_lower:
         return None
@@ -1307,10 +1307,10 @@ def fetch_polymarket_box_office():
     """
     Find active opening-weekend box office bracket events on Polymarket.
 
-    Uses the same logic as trade.py: searches the Gamma events API for
+    Searches the Gamma events API for
     events with "opening weekend" AND "box office" in the title, then
     extracts the quoted movie name. This ensures scraper.py collects
-    seat data for exactly the movies trade.py will try to trade.
+    seat data for exactly the movies the weekend's markets track.
 
     Returns list of dicts with movie info.
     """
