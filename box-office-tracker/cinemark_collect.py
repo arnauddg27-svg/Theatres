@@ -77,8 +77,8 @@ def _env_int(name, default):
 CINEMARK_DEADLINE_SEC = _env_int("CINEMARK_DEADLINE_SEC", 2100)
 # Showtimes captured PER FILM per theatre: a 2-film weekend censuses both
 # films at every theatre (up to 2 seat loads/theatre at cap 1) — the
-# operator's census contract beats tarpit caution, and the streak breaker +
-# red-retry policy bound the extra load. If runs tarpit mid-shard anyway,
+# operator's census contract beats tarpit caution; the streak breaker pauses
+# on a throttle and a red exit buys a fresh-IP retry. If runs tarpit anyway,
 # the fallback lever is dropping to the BIGGER film only (by national
 # theatre count), not starving one film silently.
 CINEMARK_PER_THEATRE_CAP = _env_int("CINEMARK_PER_THEATRE_CAP", 1)
@@ -641,11 +641,24 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                 print("⏱  deadline reached; stopping cleanly", flush=True)
                 break
             if timeout_streak >= 8:
-                print(f"🛑 {timeout_streak} consecutive page failures — "
-                      f"tarpitted; stopping the pool walk cleanly "
-                      f"(visited={totals['visited']})", flush=True)
-                totals["tarpit_stop"] = 1
-                break
+                # The one observed 'tarpit' (run 33549713848) was an 11-page,
+                # ~5.5-minute transient that self-cleared — a hard stop would
+                # have abandoned the third of the pool that loaded fine after
+                # it. Pause once and resume; stop only on a second streak.
+                if (not totals.get("tarpit_pauses")
+                        and time.monotonic() + 300 < deadline):
+                    totals["tarpit_pauses"] = 1
+                    print(f"⏸️  {timeout_streak} consecutive page failures — "
+                          f"pausing 5 min for the throttle to clear "
+                          f"(visited={totals['visited']})", flush=True)
+                    time.sleep(300)
+                    timeout_streak = 0
+                else:
+                    print(f"🛑 {timeout_streak} consecutive page failures after a "
+                          f"pause — tarpitted; stopping the pool walk cleanly "
+                          f"(visited={totals['visited']})", flush=True)
+                    totals["tarpit_stop"] = 1
+                    break
             totals["visited"] += 1
             try:
                 page.goto(f"{BASE}/theatres/{th['slug']}",

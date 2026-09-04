@@ -663,6 +663,10 @@ def _capture_theatre(page, th, shared):
                     shared["budget_done"].set()
                     break
                 shared["render_budget_left"] -= 1
+                if shared["render_budget_left"] <= 0:
+                    # Set the moment the last unit is spent, so no worker
+                    # loads another theatre page just to discover it's out.
+                    shared["budget_done"].set()
         _wait_if_paused(shared)   # ride out a throttle pause window before resuming
         if shared["stop"].is_set():
             break
@@ -905,6 +909,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     print(f"  pool={len(theatres)} visited={totals['visited']}"
           f"{' (STOPPED EARLY — throttled)' if totals['throttled_stop'] else ''} "
           f"matched_showtimes={totals['matched']} renders={totals['renders']}")
+    print(f"  render_budget={FANDANGO_RENDER_BUDGET or 'unlimited'} budget_left={shared.get('render_budget_left')} budget_exhausted={shared['budget_done'].is_set()}")
     print(f"  captured={totals['captured']} written={totals['written']} "
           f"deduped={totals['skipped']} incomplete_dropped={totals['incompletes']} "
           f"seat_fails={totals['seat_fails']} blocks={totals['blocks']} "

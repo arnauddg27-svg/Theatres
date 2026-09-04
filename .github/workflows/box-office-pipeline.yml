@@ -788,13 +788,18 @@ jobs:
           # throttle the tails.
           FANDANGO_PER_THEATRE_CAP: ${{ github.event.inputs.fandango_per_theatre_cap != '' && github.event.inputs.fandango_per_theatre_cap || '1' }}
           FANDANGO_DEADLINE_SEC: '2100'   # 35 min — self-stop with margin under the 40-min step timeout
+          # Pause after 8 consecutive seat failures (was 12): at a 30-render
+          # budget, 12 spent proving a throttle left too little for the
+          # post-recovery batch. False-positive odds at a 15% background
+          # fail rate: 0.15^8 ≈ 3e-7.
+          FANDANGO_STOP_AFTER: '8'
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}
           FANDANGO_ZIPS: ${{ github.event.inputs.fandango_zips }}
-          # Sharded (scheduled) runs cap at 55 renders — the proven per-slot
-          # budget; ad-hoc unsharded runs (empty OR explicit '0' = whole pool)
-          # keep whole-pool semantics.
+          # Page-visit ceiling for sharded (scheduled) runs; the RENDER budget
+          # below is the binding constraint. Ad-hoc unsharded runs (empty OR
+          # explicit '0' = whole pool) keep whole-pool semantics.
           FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres != '' && github.event.inputs.fandango_max_theatres || (github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards != '0' && '55' || '') }}
           # HARD render budget — the binding constraint since picks went
           # per-film. 30, NOT 55: the Thursday 2026-09-03 ladder (18 hourly
@@ -966,8 +971,9 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   # scrape-cinemark — Cinemark DIRECT pre-reservation lane (split-lane Phase C
   # scaling; see cinemark_collect.py docstring). SCHEDULED since 0801d96:
-  # pre 09:20Z + 19:20Z daily, post census 06:20Z Fri/Sat/Sun/Mon — avoid
-  # manual dispatches near those hours (title-dedup would suppress the slot).
+  # pre 09:20Z / 14:20Z / 19:20Z daily (3-way shards), post census 06:20Z
+  # Fri/Sat/Sun/Mon — avoid manual dispatches near those hours (title-dedup
+  # would suppress the slot).
   # Writes ONLY its own isolated CSV.
   # ──────────────────────────────────────────────────────────────────────────
   scrape-cinemark:
@@ -1012,13 +1018,11 @@ jobs:
           if [ "${{ github.event.inputs.cinemark_discover }}" = "true" ]; then
             FLAG="--discover"
           fi
-          # Scheduled/full-pool runs get a 90-min collection budget. At real
-          # per-theatre cost (~25-35s, more when the security-verification
-          # interstitial fires) that covers ~150-250 of the 306 theatres per
-          # pass; the collector shuffles the pool so each pass samples it
-          # broadly and the two daily pre passes rotate coverage. The run
-          # self-stops cleanly at the deadline; capped ad-hoc tests stay on
-          # the snappy 35-min default.
+          # Scheduled runs get a 90-min collection budget. Pre passes are
+          # 3-way sharded (~102 theatres, ~45 min at 2 seat loads/theatre),
+          # so the deadline is ample headroom; the post census walks the
+          # whole pool after its revisit stage. The run self-stops cleanly
+          # at the deadline; capped ad-hoc tests stay on the 35-min default.
           if [ -z "$CINEMARK_MAX_THEATRES" ]; then
             export CINEMARK_DEADLINE_SEC="${CINEMARK_DEADLINE_SEC:-5400}"
           fi

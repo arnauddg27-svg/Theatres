@@ -5342,8 +5342,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         await asyncio.wait_for(browser.close(), timeout=15)
                     except Exception:
                         pass
-                    browser = await p.chromium.launch(
-                        headless=True, args=_CHROMIUM_ARGS)
+                    try:
+                        browser = await p.chromium.launch(
+                            headless=True, args=_CHROMIUM_ARGS)
+                    except Exception as exc:
+                        # Never let a relaunch failure escape: the coverage
+                        # report + snapshot fatal-floor marker below must
+                        # still run, or partial rows merge unguarded.
+                        all_issues.extend(
+                            f"{t['name']}: browser relaunch failed ({str(exc)[:60]}) — skipped"
+                            for t in theatres[start:]
+                        )
+                        print(f"  ❌ browser relaunch failed at theatre {start}: "
+                              f"{str(exc)[:80]} — skipping the rest of this batch",
+                              flush=True)
+                        break
                     print(f"  ♻️  browser recycled at theatre {start}/{len(theatres)}",
                           flush=True)
                 tasks = [bounded_scrape(t) for t in group]

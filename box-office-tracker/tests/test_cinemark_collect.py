@@ -73,6 +73,31 @@ class CinemarkCollectTest(unittest.TestCase):
         self.assertNotIn("cinemark_shard", post[0].inputs)
 
 
+class PerFilmCapTest(unittest.TestCase):
+    def test_cap_is_per_film_and_discovered_is_pre_cap(self):
+        # Mutation-proof twin of the fandango test: a GLOBAL cap=1 would
+        # return one pick; per-film must return one PER film, and the
+        # discovered_showtimes volume signal must be counted before capping.
+        from datetime import datetime, timezone
+        targets = {"aaa-film": "Aaa Film", "bbb-film": "Bbb Film"}
+        now = datetime(2026, 8, 31, 12, 0, tzinfo=timezone.utc)
+        entries = [
+            {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=1&Showtime=2026-08-31T14:00:00",
+             "movie_href": "/movies/aaa-film"},          # A matinee only
+            {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=2&Showtime=2026-08-31T19:00:00",
+             "movie_href": "/movies/bbb-film"},          # B prime
+            {"href": "/TicketSeatMap/?TheaterId=1&ShowtimeId=3&Showtime=2026-08-31T21:30:00",
+             "movie_href": "/movies/bbb-film"},          # B late
+        ]
+        picks = cc.select_showtimes(entries, targets, {"2026-08-31"},
+                                    "America/Chicago", now, cap=1)
+        self.assertEqual({"Aaa Film", "Bbb Film"}, {p["title"] for p in picks})
+        self.assertEqual(2, len(picks))
+        self.assertEqual("2", picks[0]["showtime_id"])       # prime-first order kept
+        by_title = {p["title"]: p["discovered"] for p in picks}
+        self.assertEqual({"Aaa Film": 1, "Bbb Film": 2}, by_title)  # pre-cap counts
+
+
 class TarpitPolicyTest(unittest.TestCase):
     def test_tarpit_verdict_policy(self):
         # No tarpit -> ok; tarpit with almost nothing -> red (only a RED run
