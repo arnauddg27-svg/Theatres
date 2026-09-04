@@ -107,8 +107,9 @@ def cinemark_slot_inputs(mode: str = "", shard: int | None = None,
 
     Pre slots shard the pool: cinemark.com tarpits the runner after ~150
     pages (run 33549713848: theatres 1-150 fine, then every goto times out
-    30s apart), so a full-pool pass loses its tail. Two daily pre slots x
-    half the pool = full coverage under the threshold."""
+    30s apart), so a full-pool pass loses its tail. Three daily pre slots x
+    a third of the pool (~102 theatres) = every theatre read once daily with
+    headroom even at 2 seat loads/theatre (per-film picks)."""
     inputs = pipeline_inputs("scrape-cinemark", "ALL", "false", "true", "true")
     if mode:
         inputs["cinemark_mode"] = mode
@@ -313,10 +314,17 @@ SLOTS: tuple[Slot, ...] = (
     #   shows, so day-of finals must come from stored links — AMC pattern).
     Slot("cinemark pre 09:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 2, 3, 4, 5, 6}), 9, 20,
-         cinemark_slot_inputs(shard=0, num_shards=2)),
+         cinemark_slot_inputs(shard=0, num_shards=3)),
+    # 3-way since 2026-09-04: per-film picks doubled seat loads per theatre,
+    # so 153-theatre shards (~153 + up to 306 loads) sat right at the
+    # ~200-250-load tarpit wall. 102-theatre shards keep every theatre read
+    # once daily with real headroom; the 14:20Z slot fills the midday gap.
+    Slot("cinemark pre 14:20Z", "box office scrape-cinemark ALL",
+         frozenset({0, 1, 2, 3, 4, 5, 6}), 14, 20,
+         cinemark_slot_inputs(shard=1, num_shards=3)),
     Slot("cinemark pre 19:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 2, 3, 4, 5, 6}), 19, 20,
-         cinemark_slot_inputs(shard=1, num_shards=2)),
+         cinemark_slot_inputs(shard=2, num_shards=3)),
     Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),
     Slot(

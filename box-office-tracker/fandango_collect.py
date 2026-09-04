@@ -95,11 +95,14 @@ FANDANGO_CONCURRENCY = _env_int("FANDANGO_CONCURRENCY", 3)        # parallel bro
 FANDANGO_DEADLINE_SEC = _env_int("FANDANGO_DEADLINE_SEC", 4200)   # stop launching new theatres after this
 FANDANGO_PER_THEATRE_CAP = _env_int("FANDANGO_PER_THEATRE_CAP", 3)  # showtimes captured PER FILM per theatre
 FANDANGO_MAX_THEATRES = _env_int("FANDANGO_MAX_THEATRES", 0)      # 0 = whole pool
-# Hard seat-render budget per run (0 = unlimited). The per-Azure-range limit
-# tolerates ~55 renders/slot; with the PER-FILM cap a 2-film weekend spends
-# it as ~27 theatres x 2 films (both films censused at each theatre — the
-# paired same-theatre read), and a 1-film weekend as ~55 theatres x 1.
-# Breadth adapts, the budget never overruns.
+# Hard seat-render budget per run (0 = unlimited). Scheduled runs set 30:
+# on 2026-09-03, 18 hourly slots x 55 renders ran throttled nearly all day
+# (338 captures of ~1,045 attempts; slots collapsing to 2-10) — every failed
+# render burns budget AND triggers backoff/pauses. The pre-expansion cadence
+# (~31 renders/hour) had 0 failures in 100+ runs. With the PER-FILM cap a
+# 2-film weekend spends 30 as ~15 theatres x 2 films (both films censused at
+# each theatre — the paired same-theatre read); 1-film as ~30 x 1. Breadth
+# adapts, the budget never overruns.
 FANDANGO_RENDER_BUDGET = _env_int("FANDANGO_RENDER_BUDGET", 0)
 
 # Adaptive throttle handling. Fandango rate-limits its seat-availability backend
@@ -535,6 +538,20 @@ SHOWTIME_ENTRIES_JS = r"""() => {
 }"""
 
 
+def _log_seat_failure(shared, slug, kind, url):
+    """Print the first few seat-render failures per run WITH their class.
+
+    2026-09-03: 19 slots, ~700 seat_fails, and not one line saying WHY —
+    the counters were silent, so throttle vs block vs selector drift was
+    indistinguishable from logs. Capped so a throttled run stays readable."""
+    with shared["lock"]:
+        n = shared.get("fail_logged", 0)
+        if n >= 8:
+            return
+        shared["fail_logged"] = n + 1
+    print(f"   seat-fail[{kind}] {slug} {str(url)[:100]}", flush=True)
+
+
 def _note_seat_failure(shared):
     """Record a seat-map render failure (throttle/block signal) shared across all
     workers — they hit one IP-level limit. On a sustained stall, open a pause
@@ -660,6 +677,7 @@ def _capture_theatre(page, th, shared):
             if looks_blocked(page):
                 stats["blocks"] += 1
                 stats["seat_fails"] += 1
+                _log_seat_failure(shared, slug, "blocked-page", page.url)
                 if _note_seat_failure(shared):
                     break
                 continue
@@ -673,15 +691,18 @@ def _capture_theatre(page, th, shared):
                 page.reload(wait_until="domcontentloaded", timeout=45000)
                 page.wait_for_selector(".seat-map__seat", timeout=10000)
             seats = page.evaluate(SEAT_COUNT_JS)
-        except Exception:
+        except Exception as exc:
             # seat page loaded but the map never populated ("Loading… 0 seats") —
             # the signature of the seat-availability throttle.
             stats["seat_fails"] += 1
+            _log_seat_failure(shared, slug, f"map-never-populated ({type(exc).__name__})",
+                              page.url)
             if _note_seat_failure(shared):
                 break
             continue
         if not seats or seats.get("total", 0) <= 0:
             stats["seat_fails"] += 1
+            _log_seat_failure(shared, slug, "zero-seats", page.url)
             if _note_seat_failure(shared):
                 break
             continue

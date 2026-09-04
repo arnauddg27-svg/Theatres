@@ -54,20 +54,22 @@ class CinemarkCollectTest(unittest.TestCase):
         sys.modules[spec.name] = mod
         spec.loader.exec_module(mod)
         cin = [s for s in mod.SLOTS if s.inputs.get("phase") == "scrape-cinemark"]
-        self.assertEqual(3, len(cin))
+        self.assertEqual(4, len(cin))
         pre = [s for s in cin if s.inputs.get("cinemark_mode") != "post"]
         post = [s for s in cin if s.inputs.get("cinemark_mode") == "post"]
-        self.assertEqual(2, len(pre))
+        self.assertEqual(3, len(pre))
         self.assertEqual(1, len(post))
         for s in pre:
             self.assertEqual(frozenset(range(7)), s.cron_days, s.name)
         self.assertEqual(frozenset({0, 1, 5, 6}), post[0].cron_days)
         # Pre slots SHARD the pool (tarpit after ~150 pages, run 33549713848):
-        # two half-pool passes = full daily coverage under the threshold.
-        # The post census stays unsharded — its revisit stage runs first.
-        self.assertEqual({("0", "2"), ("1", "2")},
+        # three third-pool passes = every theatre once daily with headroom
+        # for per-film (2 loads/theatre) picks. Post census stays unsharded —
+        # its revisit stage runs first.
+        self.assertEqual({("0", "3"), ("1", "3"), ("2", "3")},
                          {(s.inputs["cinemark_shard"],
                            s.inputs["cinemark_num_shards"]) for s in pre})
+        self.assertEqual({9, 14, 19}, {s.hour for s in pre})
         self.assertNotIn("cinemark_shard", post[0].inputs)
 
 
