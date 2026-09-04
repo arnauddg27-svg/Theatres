@@ -595,6 +595,12 @@ try:
 except ValueError:
     PHASE1_DEADLINE_SEC = 45 * 60
 PHASE2_DEADLINE_SEC = _env_int("PHASE2_DEADLINE_SEC", 60 * 60, minimum=60)
+# Relaunch Chromium every N theatres on long runs: a single browser process
+# serving hundreds of navigations over 3-6h eventually dies wholesale
+# (TargetClosedError killed every leg of both 2026-09-03 preview-day
+# snapshot slots). Chunked recycling both prevents the buildup and bounds
+# the blast radius of any crash to one chunk's remainder.
+BROWSER_RECYCLE_THEATRES = _env_int("BROWSER_RECYCLE_THEATRES", 60, minimum=10)
 REGULAR_PHASE2_MIN_DEADLINE_SEC = _env_int("REGULAR_PHASE2_MIN_DEADLINE_SEC", 9000, minimum=60)
 REGULAR_PHASE2_MAX_DEADLINE_SEC = _env_int(
     "REGULAR_PHASE2_MAX_DEADLINE_SEC",
@@ -5261,6 +5267,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     skipped_rows += s
 
         async def run_scrape_batch(theatres, label):
+            nonlocal browser
             if not theatres:
                 return
             if asyncio.get_event_loop().time() >= overall_deadline:
@@ -5270,8 +5277,32 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 )
                 return
             print(f"\n▶ {label} cohort batch: {len(theatres)} theatre(s)")
-            tasks = [bounded_scrape(t) for t in theatres]
-            await asyncio.gather(*tasks, return_exceptions=True)
+            # Recycle the browser between chunks: preview/weekend runs last
+            # 3-6h and a single Chromium serving hundreds of navigations
+            # eventually dies (2026-09-03: both daytime snapshot slots lost
+            # ALL legs to TargetClosedError hours in). Chunking also
+            # self-heals a mid-run crash — only the crashed chunk's
+            # remainder is lost, the next chunk starts on a fresh browser.
+            chunk = BROWSER_RECYCLE_THEATRES
+            for start in range(0, len(theatres), chunk):
+                group = theatres[start:start + chunk]
+                if asyncio.get_event_loop().time() >= overall_deadline:
+                    all_issues.extend(
+                        f"{t['name']}: overall deadline reached — skipped"
+                        for t in group
+                    )
+                    continue
+                if start:
+                    try:
+                        await asyncio.wait_for(browser.close(), timeout=15)
+                    except Exception:
+                        pass
+                    browser = await p.chromium.launch(
+                        headless=True, args=_CHROMIUM_ARGS)
+                    print(f"  ♻️  browser recycled at theatre {start}/{len(theatres)}",
+                          flush=True)
+                tasks = [bounded_scrape(t) for t in group]
+                await asyncio.gather(*tasks, return_exceptions=True)
 
         core_theatres = [
             t for t in all_theatres
