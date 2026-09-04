@@ -93,8 +93,14 @@ def _env_int(name, default):
 # runner; the workflow can override via env.
 FANDANGO_CONCURRENCY = _env_int("FANDANGO_CONCURRENCY", 3)        # parallel browsers
 FANDANGO_DEADLINE_SEC = _env_int("FANDANGO_DEADLINE_SEC", 4200)   # stop launching new theatres after this
-FANDANGO_PER_THEATRE_CAP = _env_int("FANDANGO_PER_THEATRE_CAP", 3)  # showtimes captured per theatre
+FANDANGO_PER_THEATRE_CAP = _env_int("FANDANGO_PER_THEATRE_CAP", 3)  # showtimes captured PER FILM per theatre
 FANDANGO_MAX_THEATRES = _env_int("FANDANGO_MAX_THEATRES", 0)      # 0 = whole pool
+# Hard seat-render budget per run (0 = unlimited). The per-Azure-range limit
+# tolerates ~55 renders/slot; with the PER-FILM cap a 2-film weekend spends
+# it as ~27 theatres x 2 films (both films censused at each theatre — the
+# paired same-theatre read), and a 1-film weekend as ~55 theatres x 1.
+# Breadth adapts, the budget never overruns.
+FANDANGO_RENDER_BUDGET = _env_int("FANDANGO_RENDER_BUDGET", 0)
 
 # Adaptive throttle handling. Fandango rate-limits its seat-availability backend
 # per IP: under sustained load the seat page loads but the map never populates
@@ -293,24 +299,8 @@ def page_visit_dates(window_dates, show_dates, ref_dt):
     return [None]
 
 
-def preferred_pick_title(titles_present, balance_key):
-    """Stable per-theatre film preference for capped picks.
-
-    With cap=1 and two tracked films, a global sort (prime/nearest) makes
-    whichever film owns the 7pm slots win the single pick at nearly every
-    theatre (2026-09-03: By Any Means 277 picks, Onslaught 1 at Cinemark) —
-    starving the other film's cross-chain signal. CRC32 of the theatre slug
-    splits the pool ~50/50 deterministically, and each theatre keeps the
-    SAME film all week (clean per-theatre velocity series)."""
-    titles = sorted(titles_present)
-    if len(titles) < 2 or not balance_key:
-        return None
-    import zlib
-    return titles[zlib.crc32(str(balance_key).encode()) % len(titles)]
-
-
 def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
-                            now_utc, cap, order="prime", balance_key=None):
+                            now_utc, cap, order="prime"):
     """From a theatre's showtime buttons, pick the tracked-title showtimes worth
     capturing: in-window date, still pre-show, capped. Pure — unit-tested offline.
 
@@ -349,16 +339,24 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         counts[key] = counts.get(key, 0) + 1
     for w in wanted:
         w["discovered"] = counts[(w["title"], w["show_date"])]
-    pref = preferred_pick_title({w["title"] for w in wanted}, balance_key)
     if order == "nearest":
-        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
-                                   w["minutes_until"], w["_prime"]))
+        wanted.sort(key=lambda w: (w["minutes_until"], w["_prime"]))
     else:
         # Prime-time evening shows first (highest occupancy signal), then by date.
-        wanted.sort(key=lambda w: (w["title"] != pref if pref else False,
-                                   w["_prime"], w["show_date"]))
+        wanted.sort(key=lambda w: (w["_prime"], w["show_date"]))
     if cap and cap > 0:
-        wanted = wanted[:cap]
+        # PER FILM: a multi-film weekend must census every tracked film at
+        # every theatre — a global cap let the 7pm-slot owner win the only
+        # pick pool-wide (2026-09-03: BAM 277 picks vs Onslaught 1). Twice
+        # the films = twice the picks; the RENDER budget (not this cap)
+        # bounds total load, trading theatre breadth for film completeness.
+        taken = {}
+        picks = []
+        for w in wanted:
+            if taken.get(w["title"], 0) < cap:
+                taken[w["title"]] = taken.get(w["title"], 0) + 1
+                picks.append(w)
+        wanted = picks
     return wanted
 
 
@@ -633,13 +631,21 @@ def _capture_theatre(page, th, shared):
     wanted = select_wanted_showtimes(entries, shared["target_slugs"],
                                      shared["window_dates"], tz_name,
                                      shared["now_utc"], shared["per_theatre_cap"],
-                                     order=shared.get("order", "prime"),
-                                     balance_key=slug)
+                                     order=shared.get("order", "prime"))
     stats["matched"] = len(wanted)
     rows = []
     for w in wanted:
         if shared["stop"].is_set():
             break
+        # Hard render budget (shared across workers): spend it and stop
+        # cleanly — breadth adapts to film count, the budget never overruns.
+        budget = shared.get("render_budget_left")
+        if budget is not None:
+            with shared["lock"]:
+                if shared["render_budget_left"] <= 0:
+                    shared["budget_done"].set()
+                    break
+                shared["render_budget_left"] -= 1
         _wait_if_paused(shared)   # ride out a throttle pause window before resuming
         if shared["stop"].is_set():
             break
@@ -711,10 +717,13 @@ def _worker(slice_theatres, shared):
             ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
             page = ctx.new_page()
             for th in slice_theatres:
-                if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
+                if (shared["stop"].is_set() or shared["budget_done"].is_set()
+                        or time.monotonic() >= shared["deadline"]):
                     break
                 _wait_if_paused(shared)   # ride out a throttle pause before the next theatre
-                if shared["stop"].is_set() or time.monotonic() >= shared["deadline"]:
+                if shared["stop"].is_set() or shared["budget_done"].is_set():
+                    break
+                if time.monotonic() >= shared["deadline"]:
                     break
                 agg["visited"] += 1
                 rows, stats = _capture_theatre(page, th, shared)
@@ -843,6 +852,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         "check_time": check_time, "per_theatre_cap": per_theatre_cap,
         "polite": polite, "headless": headless,
         "deadline": time.monotonic() + deadline_sec, "lock": threading.Lock(),
+        "render_budget_left": FANDANGO_RENDER_BUDGET or None,
+        "budget_done": threading.Event(),
         # adaptive throttle state, shared across workers (one IP-level limit)
         "stop": threading.Event(), "consec_fail": 0, "backoff_extra": 0.0,
         "backoff_after": FANDANGO_BACKOFF_AFTER, "stop_after": FANDANGO_STOP_AFTER,

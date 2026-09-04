@@ -796,6 +796,10 @@ jobs:
           # budget; ad-hoc unsharded runs (empty OR explicit '0' = whole pool)
           # keep whole-pool semantics.
           FANDANGO_MAX_THEATRES: ${{ github.event.inputs.fandango_max_theatres != '' && github.event.inputs.fandango_max_theatres || (github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards != '0' && '55' || '') }}
+          # HARD render budget (the binding constraint since picks went
+          # per-film): a 2-film weekend spends 55 as ~27 theatres x both
+          # films — paired same-theatre reads; a 1-film weekend as 55 x 1.
+          FANDANGO_RENDER_BUDGET: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards != '0' && '55' || '' }}
           # Test runs (show_dates set) write to a throwaway file, never canonical.
           FANDANGO_OUTPUT: ${{ github.event.inputs.fandango_show_dates != '' && '../fandango-logs/fandango-test-capture.csv' || '' }}
         run: |

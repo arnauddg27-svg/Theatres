@@ -128,12 +128,12 @@ class DiscoveryLogicTests(unittest.TestCase):
         self.assertEqual([w["sdate"] for w in allv],
                          ["2026-06-20 19:30", "2026-06-20 22:00", "2026-06-20 11:00"])
 
-    def test_capped_pick_balances_films_across_theatres(self):
-        # 2026-09-03 starvation: at cap=1 with two tracked films, the film
-        # owning the 7pm slots won the single pick at nearly every theatre
-        # (BAM 277 picks vs Onslaught 1 at Cinemark). The per-theatre CRC32
-        # preference must beat the prime sort — deterministically, and
-        # differently across theatres.
+    def test_cap_is_per_film_so_no_film_is_starved(self):
+        # 2026-09-03 starvation: a GLOBAL cap=1 let the 7pm-slot owner win
+        # the single pick at nearly every theatre (BAM 277 picks vs
+        # Onslaught 1 at Cinemark). Operator contract: two films playing =
+        # census BOTH — the cap applies per film, and the render budget
+        # (not this cap) bounds total load.
         def href(sd):
             q = sd.replace(" ", "+").replace(":", "%3A")
             return f"https://tickets.fandango.com/transaction/ticketing/mobile/jump.aspx?sdate={q}&mid=1"
@@ -143,24 +143,21 @@ class DiscoveryLogicTests(unittest.TestCase):
              "href": href("2026-06-20 11:00")},
             {"movieOverview": "/bbb-film-2026-222222/movie-overview",
              "href": href("2026-06-20 19:00")},
+            {"movieOverview": "/bbb-film-2026-222222/movie-overview",
+             "href": href("2026-06-20 21:00")},
         ]
         targets = {fc.slugify_title("Aaa Film"): "Aaa Film",
                    fc.slugify_title("Bbb Film"): "Bbb Film"}
         window = {"2026-06-20"}
         now = datetime(2026, 6, 20, 8, 0, tzinfo=timezone.utc)
-        # crc32('theatre-0')%2 == 0 -> prefers sorted()[0] = "Aaa Film";
-        # crc32('theatre-4')%2 == 1 -> prefers "Bbb Film".
-        pick0 = fc.select_wanted_showtimes(entries, targets, window, "UTC",
-                                           now, cap=1, balance_key="theatre-0")
-        pick4 = fc.select_wanted_showtimes(entries, targets, window, "UTC",
-                                           now, cap=1, balance_key="theatre-4")
-        self.assertEqual("Aaa Film", pick0[0]["title"])
-        self.assertEqual("Bbb Film", pick4[0]["title"])
-        # No balance key (or one film) -> old prime behavior, untouched.
-        legacy = fc.select_wanted_showtimes(entries, targets, window, "UTC",
-                                            now, cap=1)
-        self.assertEqual("Bbb Film", legacy[0]["title"])
-        self.assertIsNone(fc.preferred_pick_title({"Only Film"}, "theatre-0"))
+        picks = fc.select_wanted_showtimes(entries, targets, window, "UTC",
+                                           now, cap=1)
+        self.assertEqual({"Aaa Film", "Bbb Film"},
+                         {w["title"] for w in picks})
+        self.assertEqual(2, len(picks))          # 1 per film, not 1 total
+        # Prime ordering preserved within the capped set: B's 19:00 beats
+        # its own 21:00, and the overall order is still prime-first.
+        self.assertEqual("2026-06-20 19:00", picks[0]["sdate"])
 
     def test_timing_pre_show_vs_past(self):
         m_after, m_until, sd, dow = fc.showtime_timing("2026-06-20 19:55", "UTC", NOW)
