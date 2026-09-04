@@ -646,7 +646,21 @@ def _should_block_request(resource_type, url, trim):
     return bool(trim) and (resource_type or "") in _TRIM_RESOURCE_TYPES
 
 
-_SEAT_PROXY = proxy_settings_from_url(AMC_SEAT_PROXY_URL)
+def _load_seat_proxy():
+    """Never let a malformed secret crash `import scraper` (audit-9): that
+    would take down every lane at module load, including Phase 1, which
+    doesn't even use the proxy. Log loudly and run direct instead — the seat
+    lane then fails fast via the Cloudflare sentinel, which is visible."""
+    try:
+        return proxy_settings_from_url(AMC_SEAT_PROXY_URL)
+    except Exception as exc:
+        print(f"::error::AMC_SEAT_PROXY_URL is unparseable ({type(exc).__name__}: "
+              f"{str(exc)[:80]}) — percent-encode the password; running DIRECT",
+              flush=True)
+        return None
+
+
+_SEAT_PROXY = _load_seat_proxy()
 
 
 async def _launch_seat_browser(p):
@@ -704,7 +718,7 @@ SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
 # 200 theatres ≈ 2x the sellout/demand-velocity sample at ~1.6s/row measured
 # throughput; per-TZ legs stay within the (raised) snapshot deadline, and the
 # demand-first ordering degrades gracefully if a heavy Wednesday probe runs long.
-SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 200, minimum=1)
+SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 120, minimum=1)  # yml exports 120 too (2026-09-04)
 SNAPSHOT_SAME_DAY_CUTOFF_HOUR = _env_int("SNAPSHOT_SAME_DAY_CUTOFF_HOUR", 6, minimum=0)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
@@ -2059,6 +2073,19 @@ QUEUE_SENTINEL = {"__queue__": True}
 # render the map fine: it is datacenter-IP reputation, not a site change.
 CF_BLOCK_SENTINEL = {"__cf_block__": True}
 CF_BLOCK_ISSUE = "Cloudflare block page on seat map"
+# Residential-proxy refusal (CONNECT rejected): the first Decodo test run
+# failed 74/74 navigations with ERR_TUNNEL_CONNECTION_FAILED because the
+# provider restricts the target category. Distinct from a Cloudflare block —
+# the fix is on the proxy side — but the same leg-level shape: nothing will
+# load, so abort fast and say WHY. Feeds the same streak counter.
+PROXY_BLOCK_SENTINEL = {"__proxy_block__": True}
+PROXY_BLOCK_ISSUE = "residential proxy refused the connection (check the provider's target allowlist)"
+_PROXY_ERROR_MARKERS = ("ERR_TUNNEL_CONNECTION_FAILED", "ERR_PROXY_CONNECTION_FAILED",
+                        "ERR_PROXY_AUTH", "ERR_NO_SUPPORTED_PROXIES", "ERR_PROXY_CERTIFICATE")
+
+
+def _is_proxy_error(exc_text):
+    return any(m in (exc_text or "") for m in _PROXY_ERROR_MARKERS)
 # A leg where this many consecutive theatres are Cloudflare-blocked is dead
 # for its whole egress IP — stop launching theatres and fail fast so the
 # retry/fatal-marker machinery engages within minutes, not hours.
@@ -2108,6 +2135,9 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         try:
             await page.goto(url, wait_until="domcontentloaded", timeout=30000)
         except Exception as e:
+            if _SEAT_PROXY and _is_proxy_error(str(e)):
+                print(f"      🔌 proxy refused the connection: {str(e)[:80]} — aborting theatre")
+                return PROXY_BLOCK_SENTINEL
             print(f"      ⚠️  Goto failed: {str(e)[:120]}")
             return None
         final_url = page.url
@@ -2123,8 +2153,19 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
             # one page untrimmed (~3% of loads in the logs), keep trimming the rest.
             print("      🔁 Cloudflare JS check with trim on — retrying this page untrimmed")
             trim = False
-            await page.reload(wait_until="domcontentloaded", timeout=30000)
+            try:
+                await page.reload(wait_until="domcontentloaded", timeout=30000)
+            except Exception as e:
+                # Same contract as goto: a failed reload is a missed page,
+                # never an exception that drops the whole theatre (audit-9).
+                if _SEAT_PROXY and _is_proxy_error(str(e)):
+                    return PROXY_BLOCK_SENTINEL
+                print(f"      ⚠️  Reload failed: {str(e)[:120]}")
+                return None
             await page.wait_for_timeout(2500)
+            final_url = page.url
+            if _is_queue_url(final_url):
+                return QUEUE_SENTINEL
             try:
                 title = await page.title()
             except Exception:
@@ -4049,6 +4090,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
                     queue_blocked = True
                     break
+                if seat_data is PROXY_BLOCK_SENTINEL:
+                    issues.append(f"{theatre['name']}: {PROXY_BLOCK_ISSUE} — theatre skipped")
+                    queue_blocked = True
+                    break
                 if seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
@@ -4059,6 +4104,10 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                         break
                     if seat_data is CF_BLOCK_SENTINEL:
                         issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} — theatre skipped")
+                        queue_blocked = True
+                        break
+                    if seat_data is PROXY_BLOCK_SENTINEL:
+                        issues.append(f"{theatre['name']}: {PROXY_BLOCK_ISSUE} — theatre skipped")
                         queue_blocked = True
                         break
 
@@ -5330,7 +5379,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 # chunk is created at streak 0 and parks here, so a pre-sem
                 # check could never fire (audit-8).
                 if cf_block_streak >= CF_BLOCK_ABORT_AFTER:
-                    all_issues.append(f"{name}: {CF_BLOCK_ISSUE} — leg aborted, skipped")
+                    all_issues.append(f"{name}: seat-map egress dead — leg aborted, skipped")
                     return
                 saved_entry = saved_links[name]
                 expected_show_date = phase2_theatre_expected_date(
@@ -5372,11 +5421,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             all_issues.extend(issues)
             if results or snapshot_rows:
                 cf_block_streak = 0
-            elif any(CF_BLOCK_ISSUE in i for i in issues):
+            elif any((CF_BLOCK_ISSUE in i) or (PROXY_BLOCK_ISSUE in i) for i in issues):
                 cf_block_streak += 1
                 if cf_block_streak == CF_BLOCK_ABORT_AFTER:
-                    print(f"\n🧱 {cf_block_streak} consecutive theatres hit the Cloudflare "
-                          f"block page — this egress IP is blocked for seat maps; "
+                    why = ("the residential proxy is refusing connections"
+                           if any(PROXY_BLOCK_ISSUE in i for i in issues)
+                           else "this egress IP is Cloudflare-blocked for seat maps")
+                    print(f"\n🧱 {cf_block_streak} consecutive theatres failed — {why}; "
                           f"aborting the leg fast (coverage floor will fail it red).",
                           flush=True)
             if snapshot_rows:
