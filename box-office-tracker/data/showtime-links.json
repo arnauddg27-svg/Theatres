@@ -1,8 +1,8 @@
 {
   "date": "2026-09-04",
   "weekend_of": "2026-09-04",
-  "collected_local_date": "2026-09-04",
-  "collected_at": "2026-09-05T02:04:27.097477+00:00",
+  "collected_local_date": "2026-09-05",
+  "collected_at": "2026-09-05T22:54:56.801533+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -6624,21 +6624,53 @@
               {
                 "showtime": "5:00pm",
                 "showtime_id": "146348679",
-                "format": "Laser at AMC"
+                "format": "English Spoken with Spanish Subtitles"
               },
               {
                 "showtime": "7:30pm",
                 "showtime_id": "146348690",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "146348681",
+                "format": "Laser at AMC"
+              }
+            ],
+            "By Any Means": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "146034160",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
-                "showtime_id": "146348681",
+                "showtime": "1:00pm",
+                "showtime_id": "146776074",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "146034159",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "146034158",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146034168",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146034169",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-01T21:44:29.985288+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-04": {
@@ -6748,39 +6780,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-04",
+      "show_date": "2026-09-06",
       "movies": {
         "Onslaught": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146348693",
+            "showtime": "12:00pm",
+            "showtime_id": "146348680",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "146348689",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146348679",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146348692",
-            "format": "Laser at AMC"
+            "showtime_id": "146348690",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146348695",
+            "showtime_id": "146348681",
             "format": "Laser at AMC"
           }
         ],
         "By Any Means": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "146034160",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146776074",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "146034159",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "146034173",
+            "showtime_id": "146034158",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146034171",
-            "format": "Laser at AMC"
+            "showtime_id": "146034168",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146034172",
+            "showtime_id": "146034169",
             "format": "Laser at AMC"
           }
         ]
@@ -82108,9 +82165,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9596,
-    "fresh": 190,
-    "expected": 198,
+    "ratio": 0.9697,
+    "fresh": 384,
+    "expected": 396,
     "min_ratio": 0.9,
     "degraded": false
   }
