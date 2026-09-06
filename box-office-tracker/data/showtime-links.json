@@ -2,7 +2,7 @@
   "date": "2026-09-04",
   "weekend_of": "2026-09-04",
   "collected_local_date": "2026-09-05",
-  "collected_at": "2026-09-06T00:01:45.150826+00:00",
+  "collected_at": "2026-09-06T01:44:13.321468+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -82747,9 +82747,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9739,
-    "fresh": 224,
-    "expected": 230,
+    "ratio": 0.9621,
+    "fresh": 127,
+    "expected": 132,
     "min_ratio": 0.9,
     "degraded": false
   }
