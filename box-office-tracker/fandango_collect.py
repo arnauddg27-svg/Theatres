@@ -45,10 +45,8 @@ from urllib.parse import urlparse, parse_qs, unquote
 from fandango_probe import (
     UA,
     CHROMIUM_ARGS,
-    WANTED_CHAINS,
     SEAT_COUNT_JS,
     theater_page_links,
-    is_wanted_chain,
     seat_url_params,
     assess_completeness,
     looks_blocked,
@@ -502,6 +500,27 @@ FANDANGO_CHAINS = frozenset(
     for c in (os.environ.get("FANDANGO_CHAINS") or "REGL").split(",")
     if c.strip()
 )
+# AMC BRIDGE (2026-09-08): FANDANGO_CHAINS=AMC reads AMC seat maps through
+# Fandango (chainCode=AMC, same seat DOM) while AMC's own seat route is
+# Cloudflare-blocked for datacenter egress. Rows land in this lane's CSV with
+# chain=AMC and the AMC lane's canonical theatre names; predict.py fills its
+# AMC snapshot layer from them wherever the native lane has nothing.
+AMC_BRIDGE_CHAIN = "AMC"
+AMC_BRIDGE_NOTE = "amc-bridge"
+
+
+def is_wanted_chain(chain):
+    """Seat-page chainCode gate — THIS lane's configured chains, not the
+    probe's static Regal/Cinemark set (which hard-excluded AMC)."""
+    return (chain or "").upper() in FANDANGO_CHAINS
+
+
+def bridge_theatre_ok(theatre):
+    """AMC pool entries are only useful when discovery matched them to an
+    AMC-lane theatre name (predict keys coverage/cohorts on those names)."""
+    if (theatre.get("chain") or "").upper() != AMC_BRIDGE_CHAIN:
+        return True
+    return bool(theatre.get("amc_match"))
 
 
 def load_fandango_theatres(zips=None):
@@ -513,6 +532,8 @@ def load_fandango_theatres(zips=None):
     out = []
     for th in data.get("theatres", []):
         if th.get("chain", "").upper() not in FANDANGO_CHAINS:
+            continue
+        if not bridge_theatre_ok(th):
             continue
         if zips and str(th.get("zip", "")) not in {str(z) for z in zips}:
             continue
@@ -716,11 +737,14 @@ def _capture_theatre(page, th, shared):
                                    seats.get("containerFits")):
             stats["incompletes"] += 1
             continue
+        note = f"discovered_showtimes={w.get('discovered', '')}"
+        if params.get("chain") == AMC_BRIDGE_CHAIN:
+            note = f"{AMC_BRIDGE_NOTE}; {note}"
         rows.append(build_fandango_row(
             th, w["title"], w["sdate"], page.url, params, seats,
             shared["weekend_of"], shared["run_id"], shared["check_time"],
             w["minutes_until"], w["show_date"], w["day_of_week"],
-            note=f"discovered_showtimes={w.get('discovered', '')}",
+            note=note,
         ))
     return rows, stats
 
@@ -862,7 +886,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     concurrency = max(1, min(concurrency, len(theatres)))
 
     page_dates = page_visit_dates(window_dates, show_dates, ref_now)
-    print(f"Fandango collect • egress_ip={_egress_ip()} • weekend_of={weekend_of} "
+    print(f"Fandango collect • chains={','.join(sorted(FANDANGO_CHAINS))} "
+          f"• egress_ip={_egress_ip()} • weekend_of={weekend_of} "
           f"• {len(theatres)} theatres • {concurrency} workers "
           f"• cap={per_theatre_cap}/theatre • deadline={deadline_sec}s "
           f"• titles={list(target_slugs.values())}"

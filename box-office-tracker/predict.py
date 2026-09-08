@@ -1361,6 +1361,7 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     data = {}
     cohort_sets = load_theatre_cohort_sets()
     model_cohorts = active_model_cohorts()
+    native_keys = set()   # (movie, show_date, theatre) the AMC lane itself read
     for reader in _pre_reservation_row_sources(weekend_of):
         has_weekend_col = "weekend_of" in (reader.fieldnames or [])
         for row in reader:
@@ -1381,7 +1382,71 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
             ):
                 continue
             data.setdefault(movie, {}).setdefault(show_date, []).append(row)
+            native_keys.add((movie, show_date, row.get("theatre_name", "")))
+    merge_amc_bridge_rows(data, native_keys, weekend_of, through_date,
+                          cohort_sets=cohort_sets, model_cohorts=model_cohorts)
     return data
+
+
+def select_amc_bridge_rows(rows, native_keys):
+    """Pure fill-in rule for AMC rows read through Fandango (chain=AMC in the
+    Fandango CSV): keep a bridge row only for a (movie, show_date, theatre)
+    the native AMC lane has NO reading for. Where both lanes read the same
+    theatre-date the native rows win outright — never both, or the same
+    showtime would be counted twice (the two lanes key showtimes differently,
+    so row-level dedupe cannot catch it)."""
+    kept = []
+    for row in rows:
+        if (row.get("chain") or "").strip().upper() != "AMC":
+            continue
+        key = (row.get("movie_title", ""), row.get("show_date", ""),
+               row.get("theatre_name", ""))
+        if key in native_keys:
+            continue
+        kept.append(row)
+    return kept
+
+
+def merge_amc_bridge_rows(data, native_keys, weekend_of, through_date=None,
+                          cohort_sets=None, model_cohorts=None):
+    """Append AMC-bridge rows into the AMC snapshot data (see
+    select_amc_bridge_rows). The bridge exists because AMC's own seat route
+    went Cloudflare-dark for datacenter egress on 2026-09-02; Fandango serves
+    the same AMC seat maps (chainCode=AMC) and the lane writes them with the
+    AMC lane's canonical theatre names, so every downstream consumer keyed on
+    theatre_name (cohorts, coverage denominators, tz reference) just works.
+    Returns the number of rows merged."""
+    if not os.path.exists(FANDANGO_SNAPSHOTS_CSV):
+        return 0
+    cohort_sets = cohort_sets if cohort_sets is not None else load_theatre_cohort_sets()
+    model_cohorts = model_cohorts if model_cohorts is not None else active_model_cohorts()
+    candidates = []
+    with open(FANDANGO_SNAPSHOTS_CSV, "r", newline="") as f:
+        for row in csv.DictReader(f):
+            if (row.get("chain") or "").strip().upper() != "AMC":
+                continue
+            if (row.get("weekend_of") or "") != weekend_of:
+                continue
+            movie = row.get("movie_title", "")
+            show_date = row.get("show_date", "")
+            if not movie or not show_date:
+                continue
+            snapshot_date = (row.get("snapshot_time", "") or "")[:10]
+            if through_date and (not snapshot_date or snapshot_date > through_date):
+                continue
+            if not model_allows_theatre(row.get("theatre_name", ""),
+                                        cohort_sets=cohort_sets,
+                                        model_cohorts=model_cohorts):
+                continue
+            candidates.append(row)
+    merged = 0
+    for row in select_amc_bridge_rows(candidates, native_keys):
+        data.setdefault(row["movie_title"], {}).setdefault(row["show_date"], []).append(row)
+        merged += 1
+    if merged:
+        print(f"↷ AMC snapshot layer: +{merged} AMC-bridge rows (Fandango chainCode=AMC) "
+              f"for theatre-dates the native AMC lane did not read")
+    return merged
 
 
 def daypart_profile_from_rows(rows, *, source=None):
@@ -4916,6 +4981,10 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                 # census lane feeds the (future) Phase C denominator, not
                 # this signal.
                 if "post-show-census" in note:
+                    continue
+                # AMC-bridge rows (Fandango reading AMC seat maps while AMC's
+                # own route is blocked) are the AMC side, never the RC side.
+                if (row.get("chain") or "").strip().upper() == "AMC":
                     continue
                 occ = _occ_pct(row)
                 if occ is None:

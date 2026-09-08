@@ -48,8 +48,10 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         self.assertEqual(slot.cron_days, amc.cron_days)
 
     def test_fandango_full_pool_plus_core_second_pass(self):
-        fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
-        # 18 since the 2026-08-31 second-pass symmetry: with the expanded
+        fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"
+                  and not s.name.startswith(schedule.AMC_BRIDGE_SLOT_PREFIX)]
+        # (AMC-bridge slots share the phase but read AMC; pinned separately in
+        # test_amc_bridge.) 18 since the 2026-08-31 second-pass symmetry: with the expanded
         # 331-theatre Regal-only pool, EVERY shard gets three daily reads —
         # overnight long-lead, a velocity re-read, and a near-showtime pass.
         self.assertEqual(len(fslots), 18)

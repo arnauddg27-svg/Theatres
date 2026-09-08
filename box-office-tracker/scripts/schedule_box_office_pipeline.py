@@ -130,6 +130,34 @@ def fandango_slot_inputs(shard: int, num_shards: int,
     return inputs
 
 
+# AMC BRIDGE (2026-09-08). AMC's own seat-map route has been Cloudflare-blocked
+# for every datacenter egress since 2026-09-02 (Azure runners, the VPS) and the
+# residential-proxy route is pending provider approval. Fandango serves the
+# SAME AMC seat maps (chainCode=AMC, identical seat DOM — verified live), so
+# these slots run the Fandango collector with FANDANGO_CHAINS=AMC (the yml keys
+# the chain off the "amc bridge" slot name) over the AMC theatres discovered on
+# Fandango and canonicalised to the AMC lane's names. Rows land in the Fandango
+# CSV with chain=AMC; predict.py fills its AMC snapshot layer from them wherever
+# the native AMC lane read nothing (native wins where both exist).
+#
+# Budget: Fandango's seat backend allows ~30 renders/hour per Azure range —
+# the SAME budget the 18 Regal slots spend at 03-14Z and (weekends) 16-23Z. The
+# bridge therefore takes only the hours Regal leaves free — 00/01/02Z and
+# 15/17/19Z — so it adds AMC reads without costing a single Regal render.
+# 6 slots x 30 renders ≈ 90 (two films) to 180 (one film) AMC theatre-reads
+# a day vs ~360 from the native lane when healthy: a partial but real AMC
+# signal. The VPS cannot host this (Fandango geo-blocks non-US egress:
+# "not available outside the United States").
+AMC_BRIDGE_SLOT_PREFIX = "amc bridge"
+
+
+def amc_bridge_slot(hour: int, shard: int, order: str | None = None,
+                    cron_days: frozenset[int] | None = None) -> "Slot":
+    days = cron_days if cron_days is not None else frozenset({0, 1, 2, 3, 4, 5, 6})
+    return Slot(f"{AMC_BRIDGE_SLOT_PREFIX} {hour:02d}Z", "box office scrape-fandango ALL",
+                days, hour, 0, fandango_slot_inputs(shard, 6, order=order))
+
+
 @dataclass(frozen=True)
 class Slot:
     name: str
@@ -303,6 +331,15 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 4, 5, 6}), 18, 0, fandango_slot_inputs(1, 6, order="nearest")),
     Slot("snapshot fandango near 20Z", "box office scrape-fandango ALL",
          frozenset({0, 4, 5, 6}), 20, 0, fandango_slot_inputs(2, 6, order="nearest")),
+    # AMC bridge (see amc_bridge_slot): Regal's free hours only. Overnight
+    # slots mirror the AMC 02:30Z snapshot's days (no UTC Monday = Sunday
+    # night); the afternoon/evening ones run every day like AMC's 14:30Z/22:30Z.
+    amc_bridge_slot(0, 0, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
+    amc_bridge_slot(1, 1, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
+    amc_bridge_slot(2, 2, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
+    amc_bridge_slot(15, 3, order="nearest"),
+    amc_bridge_slot(17, 4, order="nearest"),
+    amc_bridge_slot(19, 5, order="nearest"),
     # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31;
     # pre passes 3-way sharded since 2026-09-04). Read structure per design:
     #   pre passes EVERY day, covering today + all remaining/upcoming window

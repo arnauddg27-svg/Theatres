@@ -322,6 +322,20 @@ CHAIN_PREFIXES = (
     ("ua-", "REGL"),
     ("cinemark-", "CNMK"), ("century-", "CNMK"), ("cinearts-", "CNMK"),
     ("tinseltown-", "CNMK"),
+    # AMC BRIDGE (2026-09-08): Fandango serves AMC seat maps too (chainCode=AMC,
+    # identical seat DOM — verified live: AMC Empire 25, 207 seats). While AMC's
+    # own seat route is Cloudflare-blocked for datacenter egress, the Fandango
+    # lane can read AMC through this pool. Entries are canonicalised to the
+    # AMC lane's theatre names below so predict.py's AMC snapshot layer can
+    # consume them as fill-in rows.
+    ("amc-", "AMC"),
+)
+
+DISCOVERY_LABEL = os.environ.get("FANDANGO_DISCOVERY_LABEL", "2026-09-08-amc-bridge")
+
+AMC_NAME_SOURCES = (
+    Path(__file__).resolve().parents[1] / "data" / "theatres-all.json",
+    Path(__file__).resolve().parents[1] / "data" / "theatres-expansion.json",
 )
 
 
@@ -331,6 +345,39 @@ def chain_for_slug(slug):
         if low.startswith(prefix):
             return chain
     return None
+
+
+def _name_key(name):
+    """Normalise a theatre name for cross-source matching: case, punctuation
+    and spacing differ between Fandango slugs ('amc-dine-in-essex-green-9')
+    and AMC's own names ('AMC DINE-IN Essex Green 9'); alphanumerics agree."""
+    return re.sub(r"[^a-z0-9]", "", (name or "").lower())
+
+
+def load_amc_canonical_names(sources=AMC_NAME_SOURCES):
+    """{normalised key: canonical AMC lane name} from the AMC theatre configs."""
+    out = {}
+    for path in sources:
+        try:
+            data = json.load(open(path))
+        except (OSError, ValueError):
+            continue
+        for key, value in data.items():
+            if key.startswith("_") or not isinstance(value, list):
+                continue
+            for th in value:
+                name = (th.get("name") or "").strip() if isinstance(th, dict) else ""
+                if name:
+                    out.setdefault(_name_key(name), name)
+    return out
+
+
+def canonical_amc_name(fandango_name, canonical=None):
+    """The AMC lane's exact theatre name for a Fandango AMC entry, or None when
+    the theatre is not one the AMC lane tracks (then the bridge skips it —
+    predict.py keys coverage and cohorts on the AMC names)."""
+    canonical = canonical if canonical is not None else load_amc_canonical_names()
+    return canonical.get(_name_key(fandango_name))
 
 
 def parse_theatres(html):
@@ -397,6 +444,7 @@ def main():
                 return ""
         return ""
 
+    amc_names = load_amc_canonical_names()
     for zipc, city in ZIP_GRID:
         stats["zips"] += 1
         html = fetch(zipc)
@@ -406,8 +454,10 @@ def main():
         for slug, chain in parse_theatres(html).items():
             if slug in known or slug in found:
                 continue
+            fd_name = name_from_slug(slug)
+            amc_name = canonical_amc_name(fd_name, amc_names) if chain == "AMC" else None
             found[slug] = {
-                "name": name_from_slug(slug),
+                "name": amc_name or fd_name,
                 "slug": slug,
                 "chain": chain,
                 "city": city,
@@ -415,8 +465,12 @@ def main():
                 "timezone": ZIP3_TZ.get(zipc[:3],
                                         STATE_TZ.get(state, "America/Chicago")),
                 "zip": zipc,
-                "discovered": "2026-08-31-expansion",
+                "discovered": DISCOVERY_LABEL,
             }
+            if chain == "AMC":
+                # Only AMC-lane theatres are useful to the bridge; the flag
+                # lets the collector skip the rest without a second lookup.
+                found[slug]["amc_match"] = bool(amc_name)
         if stats["zips"] % 40 == 0:
             print(f"  {stats['zips']}/{len(ZIP_GRID)} zips, "
                   f"+{len(found)} new theatres so far", flush=True)

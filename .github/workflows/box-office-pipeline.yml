@@ -782,6 +782,13 @@ jobs:
           FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
+          # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
+          # maps through Fandango (chainCode=AMC) while AMC's own seat route is
+          # Cloudflare-blocked for datacenter egress. Keyed off the slot name
+          # rather than a new input: workflow_dispatch allows 25 inputs and
+          # this file already declares 24. For an ad-hoc AMC test, dispatch
+          # with schedule_slot="amc bridge test" (+ fandango_show_dates).
+          FANDANGO_CHAINS: ${{ contains(github.event.inputs.schedule_slot, 'amc bridge') && 'AMC' || 'REGL' }}
           FANDANGO_CONCURRENCY: ${{ github.event.inputs.fandango_concurrency != '' && github.event.inputs.fandango_concurrency || '2' }}
           # cap=1 with the EXPANDED Regal-only pool (380 theatres since the
           # 2026-08-31 two-round discovery): 380/6 shards = 63-64 theatres,
