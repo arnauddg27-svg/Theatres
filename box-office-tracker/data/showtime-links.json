@@ -2,7 +2,7 @@
   "date": "2026-09-11",
   "weekend_of": "2026-09-11",
   "collected_local_date": "2026-09-07",
-  "collected_at": "2026-09-08T00:32:05.508238+00:00",
+  "collected_at": "2026-09-08T05:13:28.273711+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -15763,30 +15763,86 @@
           },
           "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "146086552",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "146086551",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "146086550",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "146086549",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "146086543",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "146086548",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "146086547",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "146086546",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146086556",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "146086533",
+            "showtime": "1:15pm",
+            "showtime_id": "146086543",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146086555",
-            "format": "Laser at AMC"
+            "showtime": "4:30pm",
+            "showtime_id": "146086548",
+            "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "146086534",
+            "showtime": "7:40pm",
+            "showtime_id": "146086547",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146086546",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -16080,32 +16136,68 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283176+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145765298",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146267722",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "146267762",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "145765307",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145765306",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "145765305",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655571+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "146267717",
+            "showtime": "7:30pm",
+            "showtime_id": "145765298",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "145765304",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "145765303",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "145765302",
+            "showtime": "10:00pm",
+            "showtime_id": "146267722",
             "format": "Laser at AMC"
           }
         ]
@@ -16119,14 +16211,14 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "2:30pm",
-                "showtime_id": "145860066",
-                "format": "Open Caption (On-screen Subtitles)"
-              },
-              {
                 "showtime": "11:10am",
                 "showtime_id": "145860065",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "145860066",
+                "format": "Open Caption (On-screen Subtitles)"
               },
               {
                 "showtime": "5:40pm",
@@ -16140,32 +16232,40 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283182+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "145860075",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "145860073",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "145860066",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "11:10am",
-            "showtime_id": "145860065",
+            "showtime": "5:45pm",
+            "showtime_id": "145860075",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:40pm",
-            "showtime_id": "145860067",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "145860056",
+            "showtime": "8:30pm",
+            "showtime_id": "145860073",
             "format": "Laser at AMC"
           }
         ]
@@ -16200,32 +16300,60 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283189+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "145838510",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "145838511",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146438932",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146438933",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:35pm",
-            "showtime_id": "145838502",
+            "showtime": "11:30am",
+            "showtime_id": "145838510",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "146438934",
+            "showtime": "2:30pm",
+            "showtime_id": "145838511",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145838504",
+            "showtime": "6:00pm",
+            "showtime_id": "146438932",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "145838505",
+            "showtime": "9:15pm",
+            "showtime_id": "146438933",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -16250,22 +16378,60 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283201+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "145863428",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "145863436",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145863437",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145863427",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "145863428",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "145863436",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "145863426",
+            "showtime_id": "145863437",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "145863438",
+            "showtime_id": "145863427",
             "format": "Laser at AMC"
           }
         ]
@@ -16305,37 +16471,70 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283206+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145886217",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146858376",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146395086",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145886218",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145886219",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "145886248",
+            "showtime": "5:00pm",
+            "showtime_id": "145886217",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "145886249",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "145886250",
+            "showtime": "6:45pm",
+            "showtime_id": "146858376",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145886239",
+            "showtime_id": "146395086",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "145886218",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145886240",
+            "showtime_id": "145886219",
             "format": "Laser at AMC"
           }
         ]
@@ -16740,31 +16939,99 @@
           },
           "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "145889867",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "11:45am",
+                "showtime_id": "145889897",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "145889866",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "145889898",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "145889865",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "145889899",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "145889863",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145889900",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "145889883",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "145889881",
+            "showtime": "11:00am",
+            "showtime_id": "145889867",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145889882",
+            "showtime": "11:45am",
+            "showtime_id": "145889897",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145889873",
+            "showtime": "2:00pm",
+            "showtime_id": "145889866",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "145889898",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145889865",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "145889899",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "145889863",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145889900",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -16837,29 +17104,14 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "12:40pm",
-                "showtime_id": "146154349",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "3:45pm",
-                "showtime_id": "146154348",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:00pm",
-                "showtime_id": "146154347",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:15pm",
-                "showtime_id": "146154346",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "11:30am",
                 "showtime_id": "146603104",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "146154349",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "2:45pm",
@@ -16867,64 +17119,87 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "146154348",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "6:00pm",
                 "showtime_id": "146154324",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "146154347",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:15pm",
                 "showtime_id": "146154325",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146154346",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283245+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "146154331",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146575268",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "146154327",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146575269",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:40pm",
-            "showtime_id": "146154349",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "146154348",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146154347",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "146154346",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:30am",
-            "showtime_id": "146603104",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "146154328",
+            "showtime": "5:30pm",
+            "showtime_id": "146154331",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146154324",
+            "showtime_id": "146575268",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "146154327",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146154325",
-            "format": "Laser at AMC"
+            "showtime_id": "146575269",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -17120,29 +17395,14 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "1:10pm",
-                "showtime_id": "145799046",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:20pm",
-                "showtime_id": "145799045",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:30pm",
-                "showtime_id": "145799043",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:40pm",
-                "showtime_id": "145799044",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "12:10pm",
                 "showtime_id": "145799023",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "145799046",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "3:20pm",
@@ -17150,18 +17410,86 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:20pm",
+                "showtime_id": "145799045",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "6:30pm",
                 "showtime_id": "145799021",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "145799043",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:40pm",
                 "showtime_id": "145799022",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "145799044",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "145799052",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "145799051",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "145799050",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145799048",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "145799049",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:10pm",
+                "showtime_id": "145799018",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "145799020",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145799016",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "145799017",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-07T19:06:07.283270+00:00",
+          "collected_at": "2026-09-08T03:48:28.655596+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17175,29 +17503,14 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "145799046",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:20pm",
-            "showtime_id": "145799045",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "145799043",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "145799044",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "12:10pm",
             "showtime_id": "145799023",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "145799046",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:20pm",
@@ -17205,14 +17518,29 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "4:20pm",
+            "showtime_id": "145799045",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:30pm",
             "showtime_id": "145799021",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:30pm",
+            "showtime_id": "145799043",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "9:40pm",
             "showtime_id": "145799022",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "145799044",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -17267,6 +17595,54 @@
             ]
           },
           "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "145772252",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "145772253",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "145772254",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145772255",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "145772241",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "145772228",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145772227",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "145772226",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655607+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17456,22 +17832,60 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522431+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "146039983",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "146039984",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146039985",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "146039986",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146039961",
+            "showtime": "2:00pm",
+            "showtime_id": "146039983",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146039962",
+            "showtime": "4:15pm",
+            "showtime_id": "146039984",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146039985",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146039986",
             "format": "Laser at AMC"
           }
         ]
@@ -17496,7 +17910,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522436+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17761,27 +18175,50 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522472+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-11": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146848054",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145903362",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:50pm",
+                "showtime_id": "145903363",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "146402637",
+            "showtime_id": "146848054",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145903360",
+            "showtime_id": "145903362",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "145903361",
+            "showtime_id": "145903363",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -17885,54 +18322,112 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "145762217",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:30pm",
-                "showtime_id": "145762220",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "5:15pm",
                 "showtime_id": "145762464",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "145762217",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "145762468",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145762220",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522492+00:00",
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "145762238",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "145762471",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "145762232",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "145762474",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145762234",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "145762477",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145762236",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145762217",
+            "showtime": "12:45pm",
+            "showtime_id": "145762238",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "145762471",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145762232",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145762474",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145762234",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "145762477",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145762220",
+            "showtime_id": "145762236",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "145762464",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "145762468",
-            "format": "Laser at AMC"
           }
         ]
       }
@@ -17956,7 +18451,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522499+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-11": {
@@ -17974,7 +18469,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522598+00:00",
+          "collected_at": "2026-09-08T05:13:28.269327+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18436,28 +18931,28 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "7:40pm",
-                "showtime_id": "145809726",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:45pm",
-                "showtime_id": "145809727",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "6:40pm",
                 "showtime_id": "145809858",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:40pm",
+                "showtime_id": "145809726",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "145809859",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "145809727",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-07T20:28:43.522580+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18466,24 +18961,24 @@
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "145809726",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "145809727",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "6:40pm",
             "showtime_id": "145809858",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:40pm",
+            "showtime_id": "145809726",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "9:45pm",
             "showtime_id": "145809859",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "145809727",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -22025,12 +22520,1280 @@
           }
         ]
       }
+    },
+    "AMC Norwalk 20": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145800797",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "145800765",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "145800833",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "145800835",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145800763",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655409+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145800797",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "145800765",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145800833",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "145800835",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145800763",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC The Grove 14": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "146110701",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "146110702",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146836413",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146836415",
+                "format": "XL at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655461+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "146110701",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "146110702",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146836413",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146836415",
+            "format": "XL at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Otay Ranch 12": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "145880942",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "145880943",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655468+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "145880938",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "145880937",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145880936",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145880935",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "146333315",
+                "format": "Private Theatre Rentals"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655500+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145880942",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "145880943",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Palm Promenade 24": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145988378",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "145988377",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655475+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145988378",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "145988377",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Oak Tree 6": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145988576",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "145988577",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655479+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "145988576",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145988577",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Flatiron Crossing 14": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145722658",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "145722657",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145722460",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655486+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145722658",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "145722657",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145722460",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Marina Marketplace 6": {
+      "tz": "PT",
+      "cohort": "expansion",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145903006",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655492+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145903006",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN Southlands 16": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "146854896",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "145781179",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "145781178",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "146034702",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "145781158",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145781159",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655536+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "146854897",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "145781183",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "145781182",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "145781181",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "145781156",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145781157",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655542+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146854896",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "145781179",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145781178",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146034702",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145781158",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145781159",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC River Park Square 20": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "145858890",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "145858888",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "145858892",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145858893",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "145858806",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "145858805",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "145858804",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "146408577",
+                "format": "Private Theatre Rentals"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T03:48:28.655548+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "145858890",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "145858888",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "145858892",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145858893",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "145858806",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145858805",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "145858804",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146408577",
+            "format": "Private Theatre Rentals"
+          }
+        ]
+      }
+    },
+    "AMC NewPark 12": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-11": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146171637",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146171631",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146171686",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146171632",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146171684",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146171613",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146171685",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146171614",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146171684",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146171613",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "146171685",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146171614",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Covina 17": {
+      "tz": "PT",
+      "cohort": "expansion",
+      "dates": {
+        "2026-09-12": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "146111515",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146111513",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146111514",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "146111518",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146111516",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146111517",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-11": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "146111440",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "146111441",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269331+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "146111518",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146111516",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "146111517",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Kent Station 14": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145896256",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "145896257",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "145896265",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:40pm",
+                "showtime_id": "145896266",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269169+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145896256",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145896257",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "145896265",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "145896266",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Desert Ridge 18": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145870534",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145870531",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269188+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145870534",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145870531",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Northridge 10": {
+      "tz": "PT",
+      "cohort": "expansion",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "146404161",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "145889152",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269237+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "145889146",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "145889145",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "145889144",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "145889143",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269310+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:05pm",
+            "showtime_id": "146404161",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "145889152",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Del Amo 18": {
+      "tz": "PT",
+      "cohort": "expansion",
+      "dates": {
+        "2026-09-10": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "145765346",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269242+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-10",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "145765346",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Westgate 20": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "10:15am",
+                "showtime_id": "145872309",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "145872307",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "145872312",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "145872310",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "11:45am",
+                "showtime_id": "145872268",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "145872267",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "145872266",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "145872271",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269270+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "10:15am",
+            "showtime_id": "145872309",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "145872307",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "145872312",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145872310",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:45am",
+            "showtime_id": "145872268",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "145872267",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "145872266",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145872271",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Victoria Gardens 12": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "146149386",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "146149392",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "146149391",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146149390",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "146149593",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:35pm",
+                "showtime_id": "146149594",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "146149595",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269276+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "146149386",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146149392",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "146149391",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146149390",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "146149593",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:35pm",
+            "showtime_id": "146149594",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "146149595",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Pacific Place 11": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-09-11": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "145881280",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "145881298",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269294+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-11",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "145881280",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "145881298",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Rolling Hills 20": {
+      "tz": "PT",
+      "cohort": "expansion",
+      "dates": {
+        "2026-09-13": {
+          "movies": {
+            "Practical Magic 2": [
+              {
+                "showtime": "11:45am",
+                "showtime_id": "146030833",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "146030832",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146030834",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "146030797",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "146030796",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "146030795",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-08T05:13:28.269314+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-09-13",
+      "movies": {
+        "Practical Magic 2": [
+          {
+            "showtime": "11:45am",
+            "showtime_id": "146030833",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146030832",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146030834",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "146030797",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146030796",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146030795",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.5543,
-    "fresh": 439,
-    "expected": 792,
+    "ratio": 0.25,
+    "fresh": 66,
+    "expected": 264,
     "min_ratio": 0.9,
     "degraded": true
   }
