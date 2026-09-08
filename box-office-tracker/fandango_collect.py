@@ -737,7 +737,13 @@ def _capture_theatre(page, th, shared):
                 continue
             params = seat_url_params(page.url)
             if not params["is_seat_page"] or not is_wanted_chain(params["chain"]):
-                continue   # routing miss, not a throttle signal
+                # Routing miss (jump landed off the seat page, or a chainCode
+                # this lane doesn't collect) — not a throttle signal, but say
+                # so: the 2026-09-08 bridge test lost 2/10 renders here with
+                # no trace in the log.
+                print(f"  {slug}: routing miss — not a wanted seat page "
+                      f"(chain={params['chain'] or '?'}) {page.url[:90]}")
+                continue
             try:
                 page.wait_for_selector(".seat-map__seat", timeout=8000)
             except Exception:
