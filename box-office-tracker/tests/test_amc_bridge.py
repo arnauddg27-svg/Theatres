@@ -216,3 +216,36 @@ class BridgeSchedulingTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WatchdogLaneAttributionTest(unittest.TestCase):
+    def test_bridge_rows_count_as_amc_snapshot_not_fandango(self):
+        spec = importlib.util.spec_from_file_location(
+            "capture_completeness_bridge_test",
+            Path(__file__).resolve().parents[1] / "scripts" / "capture_completeness.py")
+        cc = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = cc
+        spec.loader.exec_module(cc)
+        with tempfile.TemporaryDirectory() as td:
+            fan = Path(td) / "fan.csv"
+            fields = ["weekend_of", "snapshot_time", "show_date", "movie_title", "theatre_name",
+                      "chain", "occupancy_pct", "reserved_seats", "total_seats", "notes"]
+            with open(fan, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+                w.writerows([_snap("F", "2026-09-11", "AMC Empire 25", "AMC", 20, snap="2026-09-11T15:00:00+00:00"),
+                             _snap("F", "2026-09-11", "Regal Atlas Park", "REGL", 40, snap="2026-09-11T15:00:00+00:00")])
+            orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
+                    cc.FANDANGO_CSV, cc.CINEMARK_CSV)
+            try:
+                P.FANDANGO_SNAPSHOTS_CSV = str(fan)
+                P.PRE_RESERVATION_CSV = str(Path(td) / "none-native.csv")
+                P.SEAT_CSV = str(Path(td) / "none-seat.csv")
+                cc.FANDANGO_CSV = str(fan)
+                cc.CINEMARK_CSV = str(Path(td) / "none-cnmk.csv")
+                counts, films = cc.lane_counts("2026-09-11")
+                self.assertEqual({"F"}, films)
+                self.assertEqual(1, sum(counts["fandango"].values()))       # Regal row only
+                self.assertEqual(1, sum(counts["amc_snapshot"].values()))   # the bridge row, via predict
+            finally:
+                (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
+                 cc.FANDANGO_CSV, cc.CINEMARK_CSV) = orig

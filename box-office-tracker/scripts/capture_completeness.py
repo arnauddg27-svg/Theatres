@@ -89,6 +89,12 @@ def lane_counts(weekend_of):
                 for r in csv.DictReader(f):
                     if (r.get("weekend_of") or "") != weekend_of:
                         continue
+                    # AMC-bridge rows (Fandango reading AMC seat maps) are
+                    # AMC-lane data: predict's snapshot loader already counts
+                    # them under amc_snapshot above; counting them here too
+                    # would inflate the Regal lane and double-count.
+                    if lane == "fandango" and (r.get("chain") or "").strip().upper() == "AMC":
+                        continue
                     cap = (r.get("snapshot_time") or "")[:10]
                     off = _offset(weekend_of, cap)
                     if off in OFFSETS:
