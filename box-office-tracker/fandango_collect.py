@@ -523,6 +523,35 @@ def bridge_theatre_ok(theatre):
     return bool(theatre.get("amc_match"))
 
 
+FANDANGO_AMC_TOP_ONLY = _env_int("FANDANGO_AMC_TOP_ONLY", 1)
+
+
+def amc_top_theatre_names():
+    """The native AMC snapshot lane's theatre set (timezone-balanced top
+    SNAPSHOT_TOP_THEATRE_CAP by historical seat signal). The bridge reads the
+    SAME theatres so the snapshot layer's scale factors — fit on that sample —
+    keep their regime; a random fleet sample reads lower per theatre and would
+    under-predict. Empty set on any failure (caller falls back to the pool)."""
+    try:
+        import scraper
+        theatres_map = scraper.load_theatres()
+        groups, _dates = scraper.snapshot_global_selection_inputs(theatres_map)
+        return set(scraper.select_snapshot_theatre_names(theatres_map, groups=groups) or ())
+    except Exception as exc:  # pragma: no cover - defensive
+        print(f"  ⚠️  AMC top-theatre selection unavailable ({type(exc).__name__}); using the whole matched pool")
+        return set()
+
+
+def restrict_to_amc_top(theatres, top_names):
+    """Pure: keep AMC pool entries whose canonical name is in the native lane's
+    top set; non-AMC entries pass through; an empty top set keeps everything."""
+    if not top_names:
+        return list(theatres)
+    return [t for t in theatres
+            if (t.get("chain") or "").upper() != AMC_BRIDGE_CHAIN
+            or t.get("name") in top_names]
+
+
 def load_fandango_theatres(zips=None):
     """Load this lane's chain-filtered theatres from theatres-fandango.json."""
     if not THEATRES_JSON.exists():
@@ -860,6 +889,15 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     if not theatres:
         print("⚠️  No Fandango theatres configured (data/theatres-fandango.json).")
         return {}
+    if AMC_BRIDGE_CHAIN in FANDANGO_CHAINS and FANDANGO_AMC_TOP_ONLY:
+        top = amc_top_theatre_names()
+        before = len(theatres)
+        theatres = restrict_to_amc_top(theatres, top)
+        print(f"  AMC bridge: {len(theatres)}/{before} pool theatres are in the native "
+              f"snapshot lane's top-{len(top) or 'all'} set")
+        if not theatres:
+            print("⚠️  No AMC pool theatre matches the native top set; nothing to collect.")
+            return {}
 
     num_shards = num_shards if num_shards is not None else FANDANGO_NUM_SHARDS
     shard = shard if shard is not None else FANDANGO_SHARD

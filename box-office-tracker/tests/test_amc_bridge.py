@@ -249,3 +249,20 @@ class WatchdogLaneAttributionTest(unittest.TestCase):
             finally:
                 (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
                  cc.FANDANGO_CSV, cc.CINEMARK_CSV) = orig
+
+
+class BridgeTopTheatreRegimeTest(unittest.TestCase):
+    def test_restrict_keeps_only_native_top_amc_theatres(self):
+        pool = [{"name": "AMC Empire 25", "chain": "AMC"},
+                {"name": "AMC Nowhere 4", "chain": "AMC"},
+                {"name": "Regal Atlas Park", "chain": "REGL"}]
+        kept = fc.restrict_to_amc_top(pool, {"AMC Empire 25"})
+        self.assertEqual(["AMC Empire 25", "Regal Atlas Park"], [t["name"] for t in kept])
+        # empty top set (selection unavailable) -> whole pool, never zero
+        self.assertEqual(3, len(fc.restrict_to_amc_top(pool, set())))
+
+    def test_native_top_set_is_the_snapshot_cap_and_is_amc_names(self):
+        import scraper
+        top = fc.amc_top_theatre_names()
+        self.assertEqual(scraper.SNAPSHOT_TOP_THEATRE_CAP, len(top))
+        self.assertTrue(all(n.startswith("AMC") or "Cinema" in n for n in top), sorted(top)[:5])
