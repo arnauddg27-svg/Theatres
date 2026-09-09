@@ -168,3 +168,90 @@ class RepairBudgetTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FakeContext:
+    def __init__(self, browser):
+        self.browser = browser
+        self.closed = False
+
+    async def add_init_script(self, *_):
+        pass
+
+    async def new_page(self):
+        pg = FakePage(**self.browser.next_page_kwargs())
+        pg.routes = []
+        async def route(pattern, handler):
+            pg.routes.append(pattern)
+        pg.route = route
+        return pg
+
+    async def close(self):
+        self.closed = True
+
+
+class FakeBrowser:
+    """Serves a scripted sequence of page behaviours, one per new context."""
+    def __init__(self, sequence):
+        self.sequence = list(sequence)
+        self.contexts = []
+
+    def next_page_kwargs(self):
+        return self.sequence.pop(0) if self.sequence else {"sections": None}
+
+    async def new_context(self, **_):
+        ctx = FakeContext(self)
+        self.contexts.append(ctx)
+        return ctx
+
+
+class Phase1ProxyRedrawTest(unittest.TestCase):
+    def _collect(self, browser, proxy_on):
+        orig = (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY)
+        try:
+            scraper._SEAT_PROXY = {"server": "http://x"} if proxy_on else None
+            scraper.AMC_PHASE1_PROXY = True
+            with redirect_stdout(io.StringIO()):
+                return _run(scraper._collect_links_theatre(
+                    browser, {"name": "AMC Test 9", "slug": "amc-test-9"}, "2026-09-11", ["Runner"]))
+        finally:
+            scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY = orig
+
+    def test_proxy_mode_redraws_a_blocked_listing_on_a_fresh_context(self):
+        blocked = {"title": "Attention Required! | Cloudflare", "body": "Sorry, you have been blocked"}
+        ok = {"sections": [{"movie": "Runner", "showtime": "7:00pm", "showtime_id": "1"}]}
+        b = FakeBrowser([blocked, blocked, ok])
+        out = self._collect(b, proxy_on=True)
+        self.assertEqual(["Runner"], list(out))           # third draw succeeded
+        self.assertEqual(3, len(b.contexts))              # one fresh context per draw
+        self.assertTrue(all(c.closed for c in b.contexts))
+        self.assertTrue(all(c.browser is b for c in b.contexts))
+
+    def test_proxy_mode_gives_up_after_the_retry_budget(self):
+        blocked = {"title": "Attention Required! | Cloudflare", "body": "blocked"}
+        b = FakeBrowser([blocked] * 6)
+        out = self._collect(b, proxy_on=True)
+        self.assertEqual({}, dict(out))
+        self.assertEqual("blocked", out.reason)
+        self.assertEqual(1 + scraper.AMC_PROXY_SHOWTIME_RETRIES, len(b.contexts))
+
+    def test_direct_mode_never_redraws_and_never_trims(self):
+        blocked = {"title": "Attention Required! | Cloudflare", "body": "blocked"}
+        b = FakeBrowser([blocked, {"sections": [{"movie": "Runner", "showtime": "7:00pm", "showtime_id": "1"}]}])
+        out = self._collect(b, proxy_on=False)
+        self.assertEqual("blocked", out.reason)
+        self.assertEqual(1, len(b.contexts))
+
+    def test_trim_and_threshold_follow_proxy_mode(self):
+        self.assertTrue(scraper._phase1_should_block_request("image", trim=True))
+        self.assertTrue(scraper._phase1_should_block_request("font", trim=True))
+        self.assertFalse(scraper._phase1_should_block_request("script", trim=True))   # listings hydrate
+        self.assertFalse(scraper._phase1_should_block_request("document", trim=True))
+        self.assertFalse(scraper._phase1_should_block_request("image", trim=False))
+        self.assertEqual(scraper.CF_BLOCK_ABORT_AFTER, scraper.phase1_abort_threshold(proxy_on=False))
+        self.assertEqual(4 * scraper.CF_BLOCK_ABORT_AFTER, scraper.phase1_abort_threshold(proxy_on=True))
+
+    def test_workflow_gives_phase1_the_proxy_secret(self):
+        yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        step = yml.split("- name: Phase 1 — collect showtime links", 1)[1].split("- name:", 1)[0]
+        self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", step)

@@ -691,6 +691,35 @@ _SEAT_PROXY = _load_seat_proxy()
 # Keyed on the PARSED proxy, not the raw secret: a malformed secret runs
 # direct, so trimming (and the egress banner) must say off too.
 AMC_SEAT_TRIM = bool(_env_int("AMC_SEAT_TRIM", 1 if _SEAT_PROXY else 0))
+# PHASE 1 THROUGH THE PROXY (2026-09-09 22:2xZ, runs 34410821781/34410835151):
+# once listings were classified, Cloudflare turned out to be walling the
+# showtime LISTING pages from GitHub as well (12-streak abort in 4 min, ~90%
+# of theatres blocked) — the old "0 showtime(s)" print had hidden it. So the
+# listing lane follows the seat lane through the residential proxy whenever
+# the secret is set (AMC_PHASE1_PROXY=0 forces direct). Listings need their
+# scripts (hydration) so only images/media/fonts are trimmed here.
+AMC_PHASE1_PROXY = bool(_env_int("AMC_PHASE1_PROXY", 1 if _SEAT_PROXY else 0))
+AMC_PHASE1_TRIM = bool(_env_int("AMC_PHASE1_TRIM", 1))
+_PHASE1_TRIM_RESOURCE_TYPES = frozenset({"image", "media", "font"})
+
+
+def _phase1_proxy_on():
+    return bool(_SEAT_PROXY) and AMC_PHASE1_PROXY
+
+
+def _phase1_should_block_request(resource_type, trim=None):
+    """Pure: Phase 1 sub-request trim (only ever active through the proxy)."""
+    trim = (AMC_PHASE1_TRIM and _phase1_proxy_on()) if trim is None else trim
+    return bool(trim) and (resource_type or "") in _PHASE1_TRIM_RESOURCE_TYPES
+
+
+def phase1_abort_threshold(proxy_on=None):
+    """Consecutive blocked listings that abandon a Phase 1 pass. Through a
+    rotating pool a block is a bad IP draw (~40-60% of draws on 2026-09-09),
+    so 12 in a row is a real possibility over 800+ visits — raise the bar 4x
+    there; direct egress keeps the seat lane's 12."""
+    proxy_on = _phase1_proxy_on() if proxy_on is None else proxy_on
+    return CF_BLOCK_ABORT_AFTER * (4 if proxy_on else 1)
 
 
 def _sentinel_issue(seat_data, theatre_name):
@@ -2147,7 +2176,8 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
         # Smart wait: watch for the actual showtime sections to render
         try:
             await page.wait_for_selector(
-                'section[aria-label^="Showtimes for"]', timeout=12000
+                'section[aria-label^="Showtimes for"]',
+                timeout=25000 if _phase1_proxy_on() else 12000,
             )
         except Exception:
             # No sections appeared — page may be empty, slow, or now in queue
@@ -4421,19 +4451,47 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     No seat maps fetched — just links for later.
     Returns dict: {movie_title: [{showtime, showtime_id, format}, ...]}
     """
-    context = await browser.new_context(
-        viewport={"width": 1280, "height": 800},
-        user_agent=random.choice(_USER_AGENTS),
-        locale="en-US",
-    )
-    await context.add_init_script(_STEALTH_INIT_SCRIPT)
-    page = await context.new_page()
+    async def _new_page():
+        ctx = await browser.new_context(
+            viewport={"width": 1280, "height": 800},
+            user_agent=random.choice(_USER_AGENTS),
+            locale="en-US",
+        )
+        await ctx.add_init_script(_STEALTH_INIT_SCRIPT)
+        pg = await ctx.new_page()
+        if _phase1_should_block_request("image"):
+            async def _trim(route):
+                try:
+                    if _phase1_should_block_request(route.request.resource_type):
+                        await route.abort()
+                    else:
+                        await route.continue_()
+                except Exception:
+                    pass
+            await pg.route("**/*", _trim)
+        return ctx, pg
+
+    context, page = await _new_page()
     collected = {}
     reason = "empty"
     try:
         await asyncio.sleep(random.uniform(0.5, 2.5))
         showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
         reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
+        # Rotating proxy: a Cloudflare wall is a bad IP draw — redraw with a
+        # FRESH context (new connections = new exit IP) a couple of times.
+        attempts = 1
+        while (_phase1_proxy_on() and reason in PHASE1_BLOCK_REASONS
+               and attempts <= AMC_PROXY_SHOWTIME_RETRIES):
+            try:
+                await asyncio.wait_for(context.close(), timeout=10)
+            except Exception:
+                pass
+            await asyncio.sleep(random.uniform(1.0, 2.5))
+            context, page = await _new_page()
+            showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
+            reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
+            attempts += 1
         for movie_title in movie_titles:
             movie_lower = movie_title.lower().strip()
             matching = [s for s in showtimes
@@ -4635,7 +4693,13 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     theatre_by_key = {theatre_key(t): t for t in all_theatres}
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
+        if _phase1_proxy_on():
+            browser = await _launch_seat_browser(p)
+        else:
+            browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
+        print(f"🌐 listing egress: proxy={'ON' if _phase1_proxy_on() else 'off'} "
+              f"trim={'ON' if _phase1_should_block_request('image') else 'off'} "
+              f"abort-after={phase1_abort_threshold()} blocked listings", flush=True)
 
         async def bounded(theatre):
             nonlocal p1_block_streak, p1_aborted
@@ -4657,7 +4721,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                     result = phase1_result(reason="nav_error")
                 p1_block_streak = phase1_next_block_streak(
                     p1_block_streak, getattr(result, "reason", "empty"), bool(result))
-                if p1_block_streak >= CF_BLOCK_ABORT_AFTER and not p1_aborted:
+                if p1_block_streak >= phase1_abort_threshold() and not p1_aborted:
                     p1_aborted = True
                     print(f"\n🧱 {p1_block_streak} consecutive listings blocked by Cloudflare — "
                           f"abandoning this Phase 1 pass (egress IP is dead; coverage floor "

@@ -224,12 +224,17 @@ jobs:
         working-directory: box-office-tracker
         timeout-minutes: 250
         env:
+          # Listings are Cloudflare-walled from GitHub too since 2026-09-09
+          # (classified in run 34410821781); Phase 1 follows the seat lane
+          # through the residential proxy when the secret is set.
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
           PHASE1_FULL_WEEKEND_LINKS: 'true'
           PHASE1_DEADLINE_SEC: '7200'
           PHASE1_MIN_FRESH_LINK_RATIO: '0.90'
           PHASE1_MAX_THEATRE_DATE_VISITS: '2000'
         run: |
           set +e
+          if [ -n "$AMC_SEAT_PROXY_URL" ]; then echo "AMC listing proxy: configured"; else echo "AMC listing proxy: none (direct)"; fi
           mkdir -p ../phase1-logs
           python3 scraper.py --collect-links ${{ github.event.inputs.tz_group }} 2>&1 | tee "../phase1-logs/phase1-${{ github.event.inputs.tz_group }}-attempt1.log"
           status=${PIPESTATUS[0]}
