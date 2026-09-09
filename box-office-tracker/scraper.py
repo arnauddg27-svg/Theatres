@@ -711,6 +711,45 @@ def _sentinel_issue(seat_data, theatre_name):
     return None
 
 
+# ROTATING-PROXY RETRY POLICY (2026-09-09, first DataImpulse run 34395150952):
+# through a rotating residential pool each navigation gets a different IP,
+# and some of those IPs are themselves Cloudflare-flagged — the test leg saw
+# 6 clean seat maps, 6 hard blocks, 1 challenge and 3 slow/empty renders
+# across ~15 loads. So in proxy mode a Cloudflare wall is a bad DRAW, not a
+# dead egress: retry that showtime (new IP) a couple of times, skip just that
+# showtime if it keeps failing, and only give up on the theatre after several
+# consecutive blocked showtimes. Direct mode keeps the old rule (one block =
+# the IP is dead for the whole theatre).
+AMC_PROXY_SHOWTIME_RETRIES = _env_int("AMC_PROXY_SHOWTIME_RETRIES", 2, minimum=0)
+AMC_PROXY_THEATRE_GIVEUP = _env_int("AMC_PROXY_THEATRE_GIVEUP", 4, minimum=1)
+PROXY_IP_BLOCK_NOTE = "via proxy IP — showtime skipped"
+
+
+def _proxy_retry_worthwhile(seat_data, attempts, proxy_on=None, max_retries=None):
+    """Pure: should this showtime be fetched again through a fresh proxy IP?
+    Only Cloudflare walls and empty renders qualify — a proxy REFUSAL is the
+    provider saying no (retrying it just burns time), queue redirects are
+    AMC-wide, and real data never needs a retry."""
+    proxy_on = _SEAT_PROXY is not None if proxy_on is None else proxy_on
+    max_retries = AMC_PROXY_SHOWTIME_RETRIES if max_retries is None else max_retries
+    if not proxy_on or attempts > max_retries:
+        return False
+    return seat_data is CF_BLOCK_SENTINEL or seat_data is None
+
+
+def _proxy_block_outcome(seat_data, consecutive_blocked, proxy_on=None, giveup=None):
+    """Pure: after retries are spent on a sentinel in proxy mode, decide
+    ('skip_showtime' | 'break_theatre', new_consecutive_count)."""
+    proxy_on = _SEAT_PROXY is not None if proxy_on is None else proxy_on
+    giveup = AMC_PROXY_THEATRE_GIVEUP if giveup is None else giveup
+    if not proxy_on or seat_data is not CF_BLOCK_SENTINEL:
+        return "break_theatre", consecutive_blocked + 1
+    consecutive_blocked += 1
+    if consecutive_blocked >= giveup:
+        return "break_theatre", consecutive_blocked
+    return "skip_showtime", consecutive_blocked
+
+
 def _next_block_streak(streak, results, snapshot_rows, issues):
     """(new_streak, why_or_None) after one theatre's outcome.
 
@@ -2348,7 +2387,9 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
         try:
             await page.wait_for_selector(
                 'input[aria-label*="Recliner"], input[aria-label*="Seat"], input[aria-label*="Club Rocker"]',
-                timeout=12000,
+                # residential hops are slower: 3 of ~15 proxied loads rendered
+                # the page but not the map within 12s (2026-09-09)
+                timeout=25000 if _SEAT_PROXY else 12000,
             )
         except Exception:
             if _is_queue_url(page.url):
@@ -4277,6 +4318,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
             movie_shows_map[movie_title] = shows
 
         queue_blocked = False
+        consecutive_blocked = 0   # proxy mode: blocked showtimes in a row at this theatre
         for movie_title, showtime_work in movie_shows_map.items():
             if queue_blocked:
                 break
@@ -4290,16 +4332,29 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
 
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
-                sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
-                if sentinel_issue is None and seat_data is None:
+                attempts = 1
+                if _SEAT_PROXY:
+                    # rotating pool: a wall or an empty render is a bad IP draw —
+                    # redraw (each navigation = new IP) before judging the showtime
+                    while _proxy_retry_worthwhile(seat_data, attempts):
+                        await asyncio.sleep(random.uniform(1.0, 2.5))
+                        seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                        attempts += 1
+                elif seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
-                    sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
+                sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
                 if sentinel_issue is not None:
+                    action, consecutive_blocked = _proxy_block_outcome(seat_data, consecutive_blocked)
+                    if action == "skip_showtime":
+                        issues.append(f"{theatre['name']}: {CF_BLOCK_ISSUE} {PROXY_IP_BLOCK_NOTE} "
+                                      f"({attempts} IPs tried) {st}")
+                        continue
                     issues.append(sentinel_issue)
                     queue_blocked = True
                     break
+                consecutive_blocked = 0
 
                 showtime_hour = parse_showtime_hour(st)
                 delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)

@@ -211,3 +211,38 @@ class EgressSentinelPolicyTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RotatingProxyRetryPolicyTest(unittest.TestCase):
+    """2026-09-09 first DataImpulse run: per-load outcomes were a MIX of clean
+    maps, Cloudflare blocks, a challenge and slow renders — bad IP draws, not a
+    dead egress. Direct mode keeps 'one block = theatre dead'."""
+
+    def test_retry_only_walls_and_empties_in_proxy_mode(self):
+        w = scraper._proxy_retry_worthwhile
+        cf, none, data = scraper.CF_BLOCK_SENTINEL, None, {"occupancy_pct": 1}
+        self.assertTrue(w(cf, 1, proxy_on=True, max_retries=2))
+        self.assertTrue(w(none, 2, proxy_on=True, max_retries=2))
+        self.assertFalse(w(cf, 3, proxy_on=True, max_retries=2))            # retries spent
+        self.assertFalse(w(data, 1, proxy_on=True, max_retries=2))          # real data
+        self.assertFalse(w(scraper.PROXY_BLOCK_SENTINEL, 1, proxy_on=True, max_retries=2))  # provider refusal
+        self.assertFalse(w(scraper.QUEUE_SENTINEL, 1, proxy_on=True, max_retries=2))
+        self.assertFalse(w(cf, 1, proxy_on=False, max_retries=2))           # direct: never
+
+    def test_block_outcome_skips_showtimes_then_gives_up_on_theatre(self):
+        o = scraper._proxy_block_outcome
+        cf = scraper.CF_BLOCK_SENTINEL
+        self.assertEqual(("skip_showtime", 1), o(cf, 0, proxy_on=True, giveup=4))
+        self.assertEqual(("skip_showtime", 3), o(cf, 2, proxy_on=True, giveup=4))
+        self.assertEqual(("break_theatre", 4), o(cf, 3, proxy_on=True, giveup=4))
+        # non-Cloudflare sentinels and direct mode: theatre-level break as before
+        self.assertEqual("break_theatre", o(scraper.PROXY_BLOCK_SENTINEL, 0, proxy_on=True, giveup=4)[0])
+        self.assertEqual("break_theatre", o(scraper.QUEUE_SENTINEL, 0, proxy_on=True, giveup=4)[0])
+        self.assertEqual("break_theatre", o(cf, 0, proxy_on=False, giveup=4)[0])
+
+    def test_skipped_showtime_issue_still_feeds_the_streak_only_when_theatre_is_empty(self):
+        # A theatre with some clean maps resets the leg streak even if other
+        # showtimes were blocked; a fully blocked theatre advances it.
+        issue = f"AMC T: {scraper.CF_BLOCK_ISSUE} {scraper.PROXY_IP_BLOCK_NOTE} (3 IPs tried) 7:00pm"
+        self.assertEqual((0, None), scraper._next_block_streak(5, [{"x": 1}], [], [issue]))
+        self.assertEqual((6, None), scraper._next_block_streak(5, [], [], [issue]))
