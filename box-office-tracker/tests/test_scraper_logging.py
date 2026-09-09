@@ -1623,7 +1623,7 @@ class ScraperLoggingTest(unittest.TestCase):
             }
             calls = []
 
-            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
                 calls.append((tz_group, target_date, full_weekend))
                 repaired = json.loads(tmp_links.read_text())
                 repaired["theatres"]["AMC West"]["dates"]["2026-06-04"]["movies"][
@@ -1714,7 +1714,7 @@ class ScraperLoggingTest(unittest.TestCase):
                 }
             }
 
-            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
                 # Simulate AMC still not returning the active movie links.
                 tmp_links.write_text(json.dumps(fresh_payload))
 
@@ -1796,7 +1796,7 @@ class ScraperLoggingTest(unittest.TestCase):
         }
         collect_calls = []
 
-        async def fake_collect(tz_group, target_date=None, full_weekend=None):
+        async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
             collect_calls.append((tz_group, target_date, full_weekend))
 
         try:
@@ -1860,7 +1860,7 @@ class ScraperLoggingTest(unittest.TestCase):
             }))
             calls = []
 
-            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
                 calls.append((tz_group, target_date, full_weekend))
                 repaired = json.loads(tmp_links.read_text())
                 repaired["theatres"]["AMC West"]["dates"]["2026-05-08"]["movies"][
@@ -1935,7 +1935,7 @@ class ScraperLoggingTest(unittest.TestCase):
             }))
             calls = []
 
-            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
                 calls.append((tz_group, target_date, full_weekend))
                 raise AssertionError("past-date repair should not run")
 
@@ -2007,7 +2007,7 @@ class ScraperLoggingTest(unittest.TestCase):
             }))
             calls = []
 
-            async def fake_collect(tz_group, target_date=None, full_weekend=None):
+            async def fake_collect(tz_group, target_date=None, full_weekend=None, deadline_sec=None):
                 calls.append((tz_group, target_date, full_weekend))
 
             try:
