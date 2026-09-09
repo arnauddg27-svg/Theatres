@@ -2007,6 +2007,83 @@ def _is_queue_url(url):
     return bool(url) and QUEUE_HOST in url
 
 
+class Phase1Showtimes(list):
+    """Phase 1 listing result. `reason` explains an EMPTY list:
+    'ok' (showtimes present), 'empty' (AMC page rendered, nothing listed for
+    the tracked films/date — authoritative), 'blocked' (Cloudflare hard
+    block), 'challenge' (Cloudflare JS challenge never cleared), 'queue'
+    (Queue-It redirect), 'nav_error', 'timeout', 'aborted' (pass abandoned
+    after a block streak). Before 2026-09-09 every one of these printed
+    "0 showtime(s)" and was retried wholesale — a full-weekend collect-links
+    pass re-visited ~170 zero theatres per date and held the AMC lock for
+    2h+ (runs 34396443091, 34387368815)."""
+    reason = "ok"
+
+    def __init__(self, items=(), reason="ok"):
+        super().__init__(items)
+        self.reason = reason if not len(self) else "ok"
+
+
+class Phase1Collected(dict):
+    """Per-theatre Phase 1 links {movie: [...]} carrying the listing reason."""
+    reason = "ok"
+
+
+def phase1_result(collected=None, reason="ok"):
+    out = Phase1Collected(collected or {})
+    out.reason = reason if not out else "ok"
+    return out
+
+
+PHASE1_TRANSIENT_REASONS = frozenset({"nav_error", "timeout"})
+PHASE1_BLOCK_REASONS = frozenset({"blocked", "challenge"})
+# Retry genuinely-empty listings only when they are the exception: a pass
+# where most theatres list nothing for the tracked films/date (pre-opening
+# forward dates, tickets not on sale) is a market fact, not a rate limit,
+# and re-visiting all of them doubles the pass for nothing.
+PHASE1_EMPTY_RETRY_MAX_SHARE = float(os.environ.get("PHASE1_EMPTY_RETRY_MAX_SHARE", "0.30"))
+
+
+def phase1_retry_candidates(theatres, outcome_by_key, theatre_key, aborted=False,
+                            empty_retry_max_share=None):
+    """Pure: which theatres of a finished pass deserve ONE more visit.
+
+    - transient failures (navigation error, per-theatre timeout): always;
+    - 'empty' listings: only if they are <= the share cap of the pass;
+    - blocked / challenged / queued / aborted: never (same IP, same answer —
+      the block streak fails the run red so the scheduler retries on a fresh
+      runner instead).
+    """
+    if aborted:
+        return []
+    cap = PHASE1_EMPTY_RETRY_MAX_SHARE if empty_retry_max_share is None else empty_retry_max_share
+    outcomes = [(t, outcome_by_key.get(theatre_key(t))) for t in theatres]
+    outcomes = [(t, o) for t, o in outcomes if o is not None]
+    if not outcomes:
+        return []
+    def reason(o):
+        collected = o[3]
+        if collected:
+            return "ok"
+        return getattr(collected, "reason", "empty") or "empty"
+    empties = [t for t, o in outcomes if reason(o) == "empty"]
+    transient = [t for t, o in outcomes if reason(o) in PHASE1_TRANSIENT_REASONS]
+    retry = list(transient)
+    if empties and len(empties) <= cap * len(outcomes):
+        retry.extend(empties)
+    return retry
+
+
+def phase1_next_block_streak(streak, reason, has_links):
+    """Pure: consecutive blocked/challenged listings. Any rendered AMC page
+    (links or an authoritative empty) resets it; transient errors leave it."""
+    if has_links or reason == "empty":
+        return 0
+    if reason in PHASE1_BLOCK_REASONS:
+        return streak + 1
+    return streak
+
+
 async def fetch_amc_showtimes_pw(page, theatre, date_str):
     """
     Fetch showtimes for a theatre using Playwright.
@@ -2027,7 +2104,7 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
         await page.goto(url, wait_until="domcontentloaded", timeout=30000)
         if _is_queue_url(page.url):
             print(f"    🚧 AMC queue redirect — {theatre['name']} skipped")
-            return []
+            return Phase1Showtimes(reason="queue")
         # Smart wait: watch for the actual showtime sections to render
         try:
             await page.wait_for_selector(
@@ -2037,15 +2114,32 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
             # No sections appeared — page may be empty, slow, or now in queue
             if _is_queue_url(page.url):
                 print(f"    🚧 AMC queue redirect mid-load — {theatre['name']} skipped")
-                return []
+                return Phase1Showtimes(reason="queue")
+            # Classify BEFORE calling it empty: Cloudflare's block/challenge
+            # pages have no showtime sections either, and read as "0
+            # showtime(s)" (2026-09-09 audit) — retried, never counted.
+            try:
+                title = await page.title()
+            except Exception:
+                title = ""
+            try:
+                body = await page.evaluate("() => document.body?.innerText?.slice(0,200) || ''")
+            except Exception:
+                body = ""
+            if _is_cloudflare_block(title, body):
+                print(f"    🧱 Cloudflare block on listing — {theatre['name']}")
+                return Phase1Showtimes(reason="blocked")
+            if _is_cloudflare_challenge(title, body):
+                print(f"    🧱 Cloudflare challenge not cleared on listing — {theatre['name']}")
+                return Phase1Showtimes(reason="challenge")
             await asyncio.sleep(2)
     except Exception as e:
         print(f"    ❌ Navigation failed: {e}")
-        return []
+        return Phase1Showtimes(reason="nav_error")
 
     showtimes = await page.evaluate(EXTRACT_SHOWTIMES_JS)
     print(f"    📋 {len(showtimes)} showtime(s)")
-    return showtimes
+    return Phase1Showtimes(showtimes, reason="empty")
 
 
 # Extracted to a constant so it's not duplicated across calls
@@ -3894,10 +3988,16 @@ def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_
     return usable, skipped
 
 
+PHASE1_REPAIR_BUDGET_SEC = _env_int("PHASE1_REPAIR_BUDGET_SEC", 900, minimum=60)
+PHASE1_REPAIR_MIN_PASS_SEC = 120
+
+
 async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, requested_date_sets,
                                              min_theatres=PHASE1_MIN_MOVIE_LINK_THEATRES,
                                              required_cohorts=REQUIRED_PHASE1_COHORTS,
-                                             link_filter_names=None):
+                                             link_filter_names=None,
+                                             budget_sec=None, _clock=time.monotonic,
+                                             _run_collect=None):
     """Try to fill missing snapshot link slices, then return usable partial coverage.
 
     Snapshot data is better partial than absent. This repair is deliberately
@@ -3923,8 +4023,22 @@ async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, 
         (item["timezone"], item["show_date"])
         for item in skipped
     })
-    print("\n🔧 Snapshot link repair: missing active movie links detected")
+    # ONE total wall-clock budget across every repair pass. Each pass used to
+    # run its own full PHASE1_DEADLINE_SEC (1800s) + retries: on 2026-09-09 a
+    # snapshot run spent 95 min in three repair passes without reaching
+    # Phase 2, holding the AMC lock the whole time (collect-links CT failed
+    # its 1h lock wait behind it).
+    budget = PHASE1_REPAIR_BUDGET_SEC if budget_sec is None else int(budget_sec)
+    run_collect = _run_collect or run_collect_links_async
+    started = _clock()
+    print(f"\n🔧 Snapshot link repair: missing active movie links detected "
+          f"({len(repairs)} slice(s), total budget {budget}s)")
     for group, date_str in repairs:
+        remaining = budget - int(_clock() - started)
+        if remaining < PHASE1_REPAIR_MIN_PASS_SEC:
+            print(f"    ⏱️  repair budget exhausted ({budget}s) — leaving remaining "
+                  f"slices unrepaired, continuing with partial snapshot links")
+            break
         missing_movies = sorted({
             movie
             for item in skipped
@@ -3933,10 +4047,11 @@ async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, 
         })
         print(
             f"    - repairing {group} {date_str}: "
-            f"{', '.join(missing_movies)}"
+            f"{', '.join(missing_movies)} (≤{remaining}s)"
         )
         try:
-            await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+            await run_collect(group, target_date=date_str, full_weekend=False,
+                              deadline_sec=remaining)
         except SystemExit as e:
             print(
                 f"      ⚠️  targeted Phase 1 repair did not complete "
@@ -4259,9 +4374,11 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     await context.add_init_script(_STEALTH_INIT_SCRIPT)
     page = await context.new_page()
     collected = {}
+    reason = "empty"
     try:
         await asyncio.sleep(random.uniform(0.5, 2.5))
         showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
+        reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
         for movie_title in movie_titles:
             movie_lower = movie_title.lower().strip()
             matching = [s for s in showtimes
@@ -4279,12 +4396,13 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
                 ]
     except Exception as e:
         print(f"  ⚠️  {theatre['name']}: {e}")
+        reason = "nav_error"
     finally:
         try:
             await asyncio.wait_for(context.close(), timeout=10)
         except Exception:
             pass
-    return collected
+    return phase1_result(collected, reason)
 
 
 def _cap_phase1_visits(all_theatres, expected_dates, max_visits):
@@ -4337,10 +4455,13 @@ def phase1_collection_batches(all_theatres, expected_dates):
 
 
 async def run_collect_links_async(tz_group="ALL", target_date=None,
-                                  full_weekend=None):
+                                  full_weekend=None, deadline_sec=None):
     """
     Phase 1 main: Visit all theatres, save showtime IDs to showtime-links.json.
     Run in the local Phase 1 window before shows start.
+
+    deadline_sec overrides PHASE1_DEADLINE_SEC for this pass (the snapshot
+    lane's link repair passes its REMAINING repair budget here).
     """
     print(f"{'='*60}")
     print(f"📋 Phase 1 — Collecting showtime links ({tz_group})")
@@ -4440,7 +4561,14 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         "theatres": {},
     }
     sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
-    deadline_at = time.monotonic() + PHASE1_DEADLINE_SEC
+    phase1_deadline_sec = int(deadline_sec) if deadline_sec else PHASE1_DEADLINE_SEC
+    deadline_at = time.monotonic() + phase1_deadline_sec
+    # Cloudflare block streak (mirrors Phase 2): once this many consecutive
+    # listings are blocked/challenged the whole pass is dead for this egress
+    # IP — stop visiting, let the coverage floor fail the run red quickly so
+    # the lock is released and the scheduler retries on a fresh runner.
+    p1_block_streak = 0
+    p1_aborted = False
 
     def theatre_key(theatre):
         return (
@@ -4455,8 +4583,12 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
 
         async def bounded(theatre):
+            nonlocal p1_block_streak, p1_aborted
             async with sem:
                 t_date = theatre.get("_date", today)
+                if p1_aborted:
+                    return (theatre["name"], theatre.get("_tz", ""), t_date,
+                            phase1_result(reason="aborted"))
                 try:
                     result = await asyncio.wait_for(
                         _collect_links_theatre(browser, theatre, t_date, movie_titles),
@@ -4464,10 +4596,17 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                     )
                 except asyncio.TimeoutError:
                     print(f"  ⏱️  {theatre['name']}: Phase 1 timeout — skipping")
-                    result = {}
+                    result = phase1_result(reason="timeout")
                 except Exception as e:
                     print(f"  ❌ {theatre['name']}: {e}")
-                    result = {}
+                    result = phase1_result(reason="nav_error")
+                p1_block_streak = phase1_next_block_streak(
+                    p1_block_streak, getattr(result, "reason", "empty"), bool(result))
+                if p1_block_streak >= CF_BLOCK_ABORT_AFTER and not p1_aborted:
+                    p1_aborted = True
+                    print(f"\n🧱 {p1_block_streak} consecutive listings blocked by Cloudflare — "
+                          f"abandoning this Phase 1 pass (egress IP is dead; coverage floor "
+                          f"fails the run red, lock released).", flush=True)
                 return theatre["name"], theatre.get("_tz", ""), t_date, result
 
         async def collect_with_deadline(theatres, label, budget_sec):
@@ -4477,7 +4616,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             tasks = [asyncio.create_task(bounded(t)) for t in theatres]
             done, pending = await asyncio.wait(tasks, timeout=budget_sec)
             if pending:
-                elapsed = PHASE1_DEADLINE_SEC - max(0, int(deadline_at - time.monotonic()))
+                elapsed = phase1_deadline_sec - max(0, int(deadline_at - time.monotonic()))
                 print(
                     f"\n⏱️  Phase 1 {label} deadline after {elapsed}s — "
                     f"cancelling {len(pending)} pending theatres"
@@ -4506,6 +4645,9 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         async def collect_and_merge(theatres, label):
             if not theatres:
                 return
+            if p1_aborted:
+                print(f"\n🧱 Skipping Phase 1 {label} — pass abandoned after the Cloudflare block streak")
+                return
             budget = max(0, int(deadline_at - time.monotonic()))
             if budget <= 0:
                 print(f"\n⏱️  Skipping Phase 1 {label} — deadline is exhausted")
@@ -4515,18 +4657,22 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         async def collect_batch_with_retry(theatres, label):
             await collect_and_merge(theatres, label)
 
-            # Retry theatres that returned 0 showtimes — likely hit rate-limit on first pass.
-            failed = [
-                theatre
-                for theatre in theatres
-                if theatre_key(theatre) in outcome_by_key and not outcome_by_key[theatre_key(theatre)][3]
-            ]
+            # Retry ONLY what a second visit can change (see
+            # phase1_retry_candidates): transient errors always, authoritative
+            # empties only when rare, Cloudflare walls never.
+            zero = [t for t in theatres
+                    if theatre_key(t) in outcome_by_key and not outcome_by_key[theatre_key(t)][3]]
+            failed = phase1_retry_candidates(theatres, outcome_by_key, theatre_key,
+                                             aborted=p1_aborted)
+            if zero and not failed:
+                print(f"\n↷ {len(zero)} {label} theatres listed nothing — not retrying "
+                      f"({'pass aborted' if p1_aborted else 'mass-empty or blocked: a re-visit would not change it'})")
             if not failed:
                 return
             retry_budget = max(0, int(deadline_at - time.monotonic()))
             min_retry_budget = 60 if "forward-cache" in label else 30
             if retry_budget > min_retry_budget:
-                print(f"\n🔄 Retrying {len(failed)} {label} theatres that returned 0 showtimes (5s delay)...")
+                print(f"\n🔄 Retrying {len(failed)}/{len(zero)} {label} theatres (transient or rare empties; 5s delay)...")
                 await asyncio.sleep(5)
                 merge_outcomes(
                     await collect_with_deadline(
