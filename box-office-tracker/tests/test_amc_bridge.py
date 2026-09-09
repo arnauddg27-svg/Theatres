@@ -266,3 +266,66 @@ class BridgeTopTheatreRegimeTest(unittest.TestCase):
         top = fc.amc_top_theatre_names()
         self.assertEqual(scraper.SNAPSHOT_TOP_THEATRE_CAP, len(top))
         self.assertTrue(all(n.startswith("AMC") or "Cinema" in n for n in top), sorted(top)[:5])
+
+
+class BridgeRowsEnterTheModelCorrectlyTest(unittest.TestCase):
+    """audit-11: bridge rows differ from native rows in showing depth,
+    showtime format and timezone encoding; each seam is pinned here."""
+
+    def test_24h_showtime_parses(self):
+        self.assertAlmostEqual(19.75, P._parse_showtime_hour("19:45"))
+        self.assertAlmostEqual(0.5, P._parse_showtime_hour("0:30"))
+        self.assertAlmostEqual(19.5, P._parse_showtime_hour("7:30pm"))   # native unchanged
+        self.assertIsNone(P._parse_showtime_hour("25:00"))
+        self.assertIsNone(P._parse_showtime_hour(""))
+
+    def test_iana_timezone_maps_to_model_group(self):
+        self.assertEqual("ET", P._row_timezone({"timezone": "America/New_York"}))
+        self.assertEqual("CT", P._row_timezone({"timezone": "America/Chicago"}))
+        self.assertEqual("PT", P._row_timezone({"timezone": "America/Los_Angeles"}))
+        self.assertIsNone(P._row_timezone({"timezone": "America/Denver"}))   # MT not modelled, as before
+        self.assertEqual("ET", P._row_timezone({"timezone": "ET"}))
+
+    def test_bridge_only_theatre_is_scaled_to_a_theatre_day(self):
+        native = [{"revenue": 100.0, "bridge_discovered": None} for _ in range(6)]
+        self.assertEqual((600.0, 6), P.bridge_theatre_day(native))
+        bridge = [{"revenue": 100.0, "bridge_discovered": 6}]
+        rev, n = P.bridge_theatre_day(bridge)
+        self.assertEqual(6, n)
+        self.assertAlmostEqual(100.0 * 6 * P.AMC_BRIDGE_PICK_TO_DAY_FACTOR, rev)
+        # never scales DOWN, never past the cap, mixed theatres sum as native
+        self.assertEqual((100.0, 1), P.bridge_theatre_day([{"revenue": 100.0, "bridge_discovered": 1}]))
+        rev, n = P.bridge_theatre_day([{"revenue": 100.0, "bridge_discovered": 40}])
+        self.assertEqual(P.AMC_BRIDGE_MAX_SHOWINGS, n)
+        mixed = [{"revenue": 100.0, "bridge_discovered": 6}, {"revenue": 50.0, "bridge_discovered": None}]
+        self.assertEqual((150.0, 2), P.bridge_theatre_day(mixed))
+        self.assertEqual(6, P._bridge_discovered_showings({"notes": "amc-bridge; discovered_showtimes=6"}))
+        self.assertIsNone(P._bridge_discovered_showings({"notes": "discovered_showtimes=6"}))   # Regal row
+
+    def test_estimate_showtime_revenue_carries_bridge_depth(self):
+        r = P.estimate_snapshot_showtime_revenue(_snap("F", "2026-09-11", "AMC Empire 25", "AMC", 20))
+        self.assertEqual(3, r["bridge_discovered"])
+        r = P.estimate_snapshot_showtime_revenue(_snap("F", "2026-09-11", "Regal X", "REGL", 20))
+        self.assertIsNone(r["bridge_discovered"])
+
+    def test_weekend_resolution_sees_bridge_rows_when_native_lane_is_dark(self):
+        with tempfile.TemporaryDirectory() as td:
+            fan = Path(td) / "fan.csv"
+            native = Path(td) / "native.csv"
+            fields = ["weekend_of", "snapshot_time", "show_date", "movie_title", "theatre_name",
+                      "chain", "occupancy_pct", "reserved_seats", "total_seats", "notes"]
+            with open(fan, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+                w.writerow(_snap("NewFilm", "2026-09-11", "AMC Empire 25", "AMC", 20))
+            with open(native, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
+                old = _snap("OldFilm", "2026-09-04", "AMC Empire 25", "", 22, snap="2026-09-03T15:00:00+00:00")
+                old["weekend_of"] = "2026-09-04"; w.writerow(old)
+            orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.DATA_DIR)
+            try:
+                P.FANDANGO_SNAPSHOTS_CSV = str(fan); P.PRE_RESERVATION_CSV = str(native); P.DATA_DIR = td
+                data = P.load_pre_reservation_data(weekend_of=None)
+                self.assertIn("NewFilm", data)          # resolved to 2026-09-11, the bridge's weekend
+                self.assertNotIn("OldFilm", data)
+            finally:
+                P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.DATA_DIR = orig

@@ -22,6 +22,7 @@ Usage:
     python3 predict.py --verbose                    # Full calculation breakdown
 """
 
+import glob
 import gzip
 import json, csv, os, sys, re, statistics
 import seat_regression
@@ -288,9 +289,16 @@ def _parse_showtime_hour(time_str):
     """Parse a showtime like '7:30pm' into local decimal hour."""
     if not time_str:
         return None
-    match = re.search(r"(\d{1,2}):(\d{2})\s*(AM|PM)", str(time_str).strip(), re.I)
+    text = str(time_str).strip()
+    match = re.search(r"(\d{1,2}):(\d{2})\s*(AM|PM)", text, re.I)
     if not match:
-        return None
+        # 24-hour "HH:MM" — the Fandango lanes (incl. the AMC bridge) label
+        # showtimes this way; without this branch every bridge row dropped
+        # out of the daypart profiles (audit-11).
+        m24 = re.fullmatch(r"(\d{1,2}):(\d{2})", text)
+        if not m24 or int(m24.group(1)) > 23 or int(m24.group(2)) > 59:
+            return None
+        return int(m24.group(1)) + int(m24.group(2)) / 60.0
     hour = int(match.group(1))
     minute = int(match.group(2))
     ampm = match.group(3).upper()
@@ -1348,14 +1356,20 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     regular post-show seat counts; prediction code decides when to use them.
     """
     if weekend_of is None:
-        if not os.path.exists(PRE_RESERVATION_CSV):
+        weekends = []
+        if os.path.exists(PRE_RESERVATION_CSV):
+            with open(PRE_RESERVATION_CSV, "r") as f:
+                weekends = [
+                    r.get("weekend_of", "")
+                    for r in csv.DictReader(f)
+                    if r.get("weekend_of")
+                ]
+        # When the native AMC lane is dark for a NEW weekend (the case the
+        # bridge exists for), the native max points at the PREVIOUS weekend
+        # and the bridge rows would be filtered out — let them vote too.
+        weekends.extend(_amc_bridge_weekends())
+        if not weekends:
             return {}
-        with open(PRE_RESERVATION_CSV, "r") as f:
-            weekends = [
-                r.get("weekend_of", "")
-                for r in csv.DictReader(f)
-                if r.get("weekend_of")
-            ]
         weekend_of = max(weekends) if weekends else _current_weekend_friday()
 
     data = {}
@@ -1407,6 +1421,26 @@ def select_amc_bridge_rows(rows, native_keys):
     return kept
 
 
+def _amc_bridge_sources():
+    """Live Fandango CSV plus any rotated archives (archive-aware, like the
+    other canonical readers)."""
+    paths = [FANDANGO_SNAPSHOTS_CSV] if os.path.exists(FANDANGO_SNAPSHOTS_CSV) else []
+    paths += sorted(glob.glob(os.path.join(DATA_DIR, "fandango-archive", "*.csv.gz")))
+    for path in paths:
+        opener = gzip.open if path.endswith(".gz") else open
+        with opener(path, "rt", newline="") as f:
+            yield csv.DictReader(f)
+
+
+def _amc_bridge_weekends():
+    out = set()
+    for reader in _amc_bridge_sources():
+        for row in reader:
+            if (row.get("chain") or "").strip().upper() == "AMC" and row.get("weekend_of"):
+                out.add(row["weekend_of"])
+    return sorted(out)
+
+
 def merge_amc_bridge_rows(data, native_keys, weekend_of, through_date=None,
                           cohort_sets=None, model_cohorts=None):
     """Append AMC-bridge rows into the AMC snapshot data (see
@@ -1416,13 +1450,11 @@ def merge_amc_bridge_rows(data, native_keys, weekend_of, through_date=None,
     AMC lane's canonical theatre names, so every downstream consumer keyed on
     theatre_name (cohorts, coverage denominators, tz reference) just works.
     Returns the number of rows merged."""
-    if not os.path.exists(FANDANGO_SNAPSHOTS_CSV):
-        return 0
     cohort_sets = cohort_sets if cohort_sets is not None else load_theatre_cohort_sets()
     model_cohorts = model_cohorts if model_cohorts is not None else active_model_cohorts()
     candidates = []
-    with open(FANDANGO_SNAPSHOTS_CSV, "r", newline="") as f:
-        for row in csv.DictReader(f):
+    for reader in _amc_bridge_sources():
+        for row in reader:
             if (row.get("chain") or "").strip().upper() != "AMC":
                 continue
             if (row.get("weekend_of") or "") != weekend_of:
@@ -2307,6 +2339,41 @@ def snapshot_lead_bucket(minutes_until_showtime):
     return "long_lead"
 
 
+# AMC-BRIDGE DEPTH (audit-11). The native snapshot lane captures EVERY
+# in-window showtime of a film at a theatre (typically 5-10); the bridge
+# captures ONE pick per film per theatre (Fandango render budget) and records
+# how many showings it saw as discovered_showtimes=N in the note. Summing
+# bridge rows per theatre therefore under-reads a theatre by ~1/N while the
+# theatre still counts fully in every denominator. Scale a bridge-only
+# theatre to a theatre-day: revenue x discovered x PICK_TO_DAY, where
+# PICK_TO_DAY < 1 because the pick is prime-time (or nearest-to-now) and
+# reads above the day's average showing.
+AMC_BRIDGE_PICK_TO_DAY_FACTOR = float(os.environ.get("AMC_BRIDGE_PICK_TO_DAY_FACTOR", "0.8"))
+AMC_BRIDGE_MAX_SHOWINGS = 12
+
+
+def _bridge_discovered_showings(row):
+    """discovered_showtimes=N from an amc-bridge row's note, else None."""
+    note = row.get("notes") or ""
+    if "amc-bridge" not in note or "discovered_showtimes=" not in note:
+        return None
+    raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
+    return int(raw) if raw.isdigit() else None
+
+
+def bridge_theatre_day(captured):
+    """(revenue, n_showings) for one theatre's captured results. Native rows
+    (or a mix) sum as before; a bridge-ONLY theatre is scaled to a full
+    theatre-day from its discovered showing count."""
+    revenue = sum(r["revenue"] for r in captured)
+    discovered = [r.get("bridge_discovered") for r in captured]
+    if not captured or any(d is None for d in discovered):
+        return revenue, len(captured)
+    showings = max(len(captured), min(AMC_BRIDGE_MAX_SHOWINGS, max(discovered)))
+    scale = max(1.0, showings / len(captured) * AMC_BRIDGE_PICK_TO_DAY_FACTOR)
+    return revenue * scale, showings
+
+
 def estimate_snapshot_showtime_revenue(row):
     """Estimate final showtime revenue from one pre-reservation row."""
     total_seats = _parse_numeric(row.get("total_seats", 0))
@@ -2336,6 +2403,7 @@ def estimate_snapshot_showtime_revenue(row):
     revenue = projected_reserved * ticket_price
     return {
         "revenue": revenue,
+        "bridge_discovered": _bridge_discovered_showings(row),
         "projected_occ": projected_reserved / total_seats if total_seats else 0.0,
         "reserved_occ": reserved / total_seats if total_seats else 0.0,
         "reservation_mult": multiplier,
@@ -2581,8 +2649,19 @@ def normalize_amc_sample(amc_total, observed_theatres, reference_theatres,
     return amc_total * factor, factor
 
 
+IANA_TO_TZ_GROUP = {
+    "AMERICA/NEW_YORK": "ET", "AMERICA/DETROIT": "ET", "AMERICA/INDIANA/INDIANAPOLIS": "ET",
+    "AMERICA/KENTUCKY/LOUISVILLE": "ET", "AMERICA/CHICAGO": "CT", "AMERICA/DENVER": "MT",
+    "AMERICA/PHOENIX": "MT", "AMERICA/BOISE": "MT", "AMERICA/LOS_ANGELES": "PT",
+}
+
+
 def _row_timezone(row, theatre_timezone_map=None):
     raw = (row.get("timezone") or "").strip().upper()
+    # Fandango-lane rows (incl. AMC-bridge rows) carry IANA zone names; the
+    # native lane carries ET/CT/PT. Without this map bridge-only days read
+    # as "missing timezone" and got their coverage discounted (audit-11).
+    raw = IANA_TO_TZ_GROUP.get(raw, raw)
     if raw in MODEL_TIMEZONE_GROUPS:
         return raw
     theatre_name = (row.get("theatre_name") or "").strip()
@@ -5734,13 +5813,13 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
     theatre_results = []
     showings_by_theatre = {}
     for t_name, captured_rows in captured_by_theatre.items():
-        revenue = sum(r["revenue"] for r in captured_rows)
+        revenue, n_showings = bridge_theatre_day(captured_rows)
         theatre_results.append({
             "revenue": revenue,
             "theatre_name": t_name,
-            "n_snapshot_showings": len(captured_rows),
+            "n_snapshot_showings": n_showings,
         })
-        showings_by_theatre[t_name] = len(captured_rows)
+        showings_by_theatre[t_name] = n_showings
 
     sampled_amc_total, amc_stats = sum_amc_theatres(theatre_results)
     n_amc_theatres = amc_stats.get("n_theatres", 0)

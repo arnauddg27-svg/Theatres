@@ -57,7 +57,8 @@ def occupancies(movie, w):
     A = [num(r["occupancy_pct"]) for r in seat_rows(w)
          if r["movie_title"] == movie and num(r["occupancy_pct"]) is not None]
     fan = [r for r in csv.DictReader(open("data/fandango-pre-reservation-snapshots.csv"))
-           if r.get("weekend_of") == w and r["movie_title"] == movie]
+           if r.get("weekend_of") == w and r["movie_title"] == movie
+           and (r.get("chain") or "").upper() != "AMC"]   # amc-bridge rows are the AMC side
     rc_all = [num(r["occupancy_pct"]) for r in fan if num(r["occupancy_pct"]) is not None]
     rc_near = [num(r["occupancy_pct"]) for r in fan
                if num(r["occupancy_pct"]) is not None

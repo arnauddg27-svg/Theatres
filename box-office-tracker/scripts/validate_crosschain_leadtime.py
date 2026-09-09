@@ -45,6 +45,8 @@ def main():
     raw = defaultdict(list)
     proj = defaultdict(list)
     for r in csv.DictReader(open(os.path.join(P.DATA_DIR, "fandango-pre-reservation-snapshots.csv"))):
+        if (r.get("chain") or "").upper() == "AMC":
+            continue   # amc-bridge rows are the AMC side, not Regal/Cinemark
         m = r.get("movie_title", "")
         key = next((v for k, v in films.items() if k in m), None)
         if not key or r.get("weekend_of", "") < "2026-06-26":

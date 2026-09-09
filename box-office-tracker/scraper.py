@@ -763,7 +763,11 @@ def _proxy_retry_worthwhile(seat_data, attempts, proxy_on=None, max_retries=None
     max_retries = AMC_PROXY_SHOWTIME_RETRIES if max_retries is None else max_retries
     if not proxy_on or attempts > max_retries:
         return False
-    return seat_data is CF_BLOCK_SENTINEL or seat_data is None
+    # Walls only. An empty/slow render (None) costs goto + the 25s seat wait
+    # per draw; three of those in one showtime ≈ 100s, two such showtimes
+    # blow the 180s per-theatre timeout and lose EVERY row already captured
+    # at that theatre (audit-11). None keeps the single legacy retry instead.
+    return seat_data is CF_BLOCK_SENTINEL
 
 
 def _proxy_block_outcome(seat_data, consecutive_blocked, proxy_on=None, giveup=None):
@@ -796,7 +800,8 @@ def _next_block_streak(streak, results, snapshot_rows, issues):
     why = None
     if streak == CF_BLOCK_ABORT_AFTER:
         why = ("the residential proxy is refusing connections" if proxy
-               else "this egress IP is Cloudflare-blocked for seat maps")
+               else ("the proxy pool keeps drawing Cloudflare-blocked IPs" if _SEAT_PROXY
+                     else "this egress IP is Cloudflare-blocked for seat maps"))
     return streak, why
 
 
@@ -2173,6 +2178,17 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
         if _is_queue_url(page.url):
             print(f"    🚧 AMC queue redirect — {theatre['name']} skipped")
             return Phase1Showtimes(reason="queue")
+        # A hard block is visible in the title the moment the document lands:
+        # classify it NOW rather than after the 25s section wait, or three
+        # walled draws through the proxy (~95s) overrun the 90s per-theatre
+        # timeout and get filed as a transient "timeout" (audit-11).
+        try:
+            early_title = await page.title()
+        except Exception:
+            early_title = ""
+        if _is_cloudflare_block(early_title):
+            print(f"    🧱 Cloudflare block on listing — {theatre['name']}")
+            return Phase1Showtimes(reason="blocked")
         # Smart wait: watch for the actual showtime sections to render
         try:
             await page.wait_for_selector(
@@ -3953,7 +3969,8 @@ async def repair_regular_snapshot_preserved_fallbacks_async(
             })
             print(f"    - repairing {group} {date_str}: {', '.join(missing)}")
             try:
-                await run_collect_links_async(group, target_date=date_str, full_weekend=False)
+                await run_collect_links_async(group, target_date=date_str, full_weekend=False,
+                                              deadline_sec=PHASE1_REPAIR_BUDGET_SEC)
             except SystemExit as e:
                 print(
                     f"      ⚠️  fresh-link repair did not complete "
@@ -4059,8 +4076,8 @@ def snapshot_usable_date_sets(poly_markets, saved_links, groups, requested_date_
     return usable, skipped
 
 
-PHASE1_REPAIR_BUDGET_SEC = _env_int("PHASE1_REPAIR_BUDGET_SEC", 900, minimum=60)
 PHASE1_REPAIR_MIN_PASS_SEC = 120
+PHASE1_REPAIR_BUDGET_SEC = _env_int("PHASE1_REPAIR_BUDGET_SEC", 900, minimum=PHASE1_REPAIR_MIN_PASS_SEC)
 
 
 async def repair_snapshot_phase1_links_async(poly_markets, saved_links, groups, requested_date_sets,
@@ -4363,14 +4380,13 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 await asyncio.sleep(random.uniform(0.5, 1.5))
                 seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
                 attempts = 1
-                if _SEAT_PROXY:
-                    # rotating pool: a wall or an empty render is a bad IP draw —
-                    # redraw (each navigation = new IP) before judging the showtime
-                    while _proxy_retry_worthwhile(seat_data, attempts):
-                        await asyncio.sleep(random.uniform(1.0, 2.5))
-                        seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
-                        attempts += 1
-                elif seat_data is None:
+                # rotating pool: a Cloudflare wall is a bad IP draw — redraw
+                # (each navigation = new IP) before judging the showtime
+                while _proxy_retry_worthwhile(seat_data, attempts):
+                    await asyncio.sleep(random.uniform(1.0, 2.5))
+                    seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                    attempts += 1
+                if seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
                     seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
@@ -4384,12 +4400,12 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                     issues.append(sentinel_issue)
                     queue_blocked = True
                     break
-                consecutive_blocked = 0
 
                 showtime_hour = parse_showtime_hour(st)
                 delta_minutes = int((current_hour - (showtime_hour or current_hour)) * 60)
 
                 if seat_data:
+                    consecutive_blocked = 0   # only REAL data breaks a proxy block run
                     occ = seat_data["occupancy_pct"]
                     print(f"    🪑 {theatre['name']}: {movie_title} {fmt} — "
                           f"{seat_data['seats_sold']}/{seat_data['total_seats']} ({occ}%)")
@@ -4711,7 +4727,8 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                 try:
                     result = await asyncio.wait_for(
                         _collect_links_theatre(browser, theatre, t_date, movie_titles),
-                        timeout=PHASE1_THEATRE_TIMEOUT_SEC,
+                        # proxy mode redraws walled listings on fresh contexts
+                        timeout=PHASE1_THEATRE_TIMEOUT_SEC * (2 if _phase1_proxy_on() else 1),
                     )
                 except asyncio.TimeoutError:
                     print(f"  ⏱️  {theatre['name']}: Phase 1 timeout — skipping")
@@ -4809,6 +4826,13 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         skipped = len(theatre_by_key) - len(outcome_by_key)
         if skipped > 0:
             print(f"  ⏱️  Phase 1 skipped {skipped} theatres before coverage validation")
+        if p1_aborted:
+            # The freshness gate counts CACHED same-weekend links as fresh, so
+            # an abandoned pass can still go green on yesterday's cache. Say so
+            # where the run summary shows it (audit-11).
+            print("::warning::Phase 1 pass was abandoned after a Cloudflare block streak — "
+                  "any green coverage below is CACHED links, not a fresh read; the egress "
+                  "for AMC listings is walled")
         outcomes = list(outcome_by_key.values())
 
         try:
@@ -5056,7 +5080,8 @@ async def ensure_phase1_links_async(tz_group="ALL"):
     print(f"\n🔧 Rebuilding Phase 1 links for {tz_group} show date {target_date} before scraping.")
     rebuild_incomplete = False
     try:
-        await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False)
+        await run_collect_links_async(tz_group, target_date=target_date, full_weekend=False,
+                                      deadline_sec=PHASE1_REPAIR_BUDGET_SEC)
     except SystemExit as e:
         # The rebuild saves the merged cache BEFORE its coverage gate, so a
         # below-threshold rebuild leaves a usable partial file. Letting the
@@ -5669,7 +5694,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         snapshots_only=snapshots_only,
         max_concurrent_tabs=max_concurrent_tabs,
     )
-    theatre_timeout_sec = PHASE2_THEATRE_TIMEOUT_SEC
+    # Residential hops are slower and proxy mode redraws walled showtimes:
+    # give each theatre 1.5x the direct budget so the extra draws cannot
+    # time the theatre out and drop its already-captured rows (audit-11).
+    theatre_timeout_sec = int(PHASE2_THEATRE_TIMEOUT_SEC * (1.5 if _SEAT_PROXY else 1))
     print(
         "   Runtime budget: "
         f"{phase2_deadline_sec}s internal deadline, "

@@ -222,7 +222,9 @@ class RotatingProxyRetryPolicyTest(unittest.TestCase):
         w = scraper._proxy_retry_worthwhile
         cf, none, data = scraper.CF_BLOCK_SENTINEL, None, {"occupancy_pct": 1}
         self.assertTrue(w(cf, 1, proxy_on=True, max_retries=2))
-        self.assertTrue(w(none, 2, proxy_on=True, max_retries=2))
+        # audit-11: an empty render is NOT redrawn (goto + 25s wait per draw
+        # would overrun the per-theatre timeout and drop captured rows)
+        self.assertFalse(w(none, 1, proxy_on=True, max_retries=2))
         self.assertFalse(w(cf, 3, proxy_on=True, max_retries=2))            # retries spent
         self.assertFalse(w(data, 1, proxy_on=True, max_retries=2))          # real data
         self.assertFalse(w(scraper.PROXY_BLOCK_SENTINEL, 1, proxy_on=True, max_retries=2))  # provider refusal

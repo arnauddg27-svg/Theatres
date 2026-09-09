@@ -255,3 +255,22 @@ class Phase1ProxyRedrawTest(unittest.TestCase):
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         step = yml.split("- name: Phase 1 — collect showtime links", 1)[1].split("- name:", 1)[0]
         self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", step)
+
+
+class EarlyBlockClassificationTest(unittest.TestCase):
+    def test_hard_block_is_classified_before_the_section_wait(self):
+        # audit-11: through the proxy three walled draws waited 3 x 25s and
+        # overran the 90s theatre timeout, filing the wall as "timeout".
+        class NoWaitPage(FakePage):
+            waited = False
+            async def wait_for_selector(self, *a, **k):
+                NoWaitPage.waited = True
+                raise TimeoutError()
+        page = NoWaitPage(title="Attention Required! | Cloudflare", body="Sorry, you have been blocked")
+        with redirect_stdout(io.StringIO()):
+            out = _run(scraper.fetch_amc_showtimes_pw(page, {"name": "AMC T", "slug": "amc-t"}, "2026-09-11"))
+        self.assertEqual("blocked", out.reason)
+        self.assertFalse(NoWaitPage.waited)
+
+    def test_repair_budget_floor_is_one_pass(self):
+        self.assertGreaterEqual(scraper.PHASE1_REPAIR_BUDGET_SEC, scraper.PHASE1_REPAIR_MIN_PASS_SEC)
