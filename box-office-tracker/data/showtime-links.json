@@ -2,7 +2,7 @@
   "date": "2026-09-11",
   "weekend_of": "2026-09-11",
   "collected_local_date": "2026-09-09",
-  "collected_at": "2026-09-09T22:14:36.646200+00:00",
+  "collected_at": "2026-09-09T22:33:59.894397+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -357,6 +357,16 @@
           "movies": {
             "Practical Magic 2": [
               {
+                "showtime": "5:30pm",
+                "showtime_id": "146871221",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146871227",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "145774015",
                 "format": "undefined"
@@ -364,6 +374,13 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "146126430",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "146871220",
                 "format": "undefined"
               }
             ]
@@ -451,6 +468,16 @@
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "5:30pm",
+            "showtime_id": "146871221",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146871227",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "145774015",
             "format": "undefined"
@@ -458,6 +485,13 @@
           {
             "showtime": "9:30pm",
             "showtime_id": "146126430",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "146871220",
             "format": "undefined"
           }
         ]
@@ -478,7 +512,7 @@
               {
                 "showtime": "6:10pm",
                 "showtime_id": "145787310",
-                "format": "BigD"
+                "format": "BigD at AMC"
               },
               {
                 "showtime": "8:20pm",
@@ -488,7 +522,19 @@
               {
                 "showtime": "9:20pm",
                 "showtime_id": "145787308",
-                "format": "BigD"
+                "format": "BigD at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "145069933",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "145069934",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -622,7 +668,7 @@
           {
             "showtime": "6:10pm",
             "showtime_id": "145787310",
-            "format": "BigD"
+            "format": "BigD at AMC"
           },
           {
             "showtime": "8:20pm",
@@ -632,7 +678,19 @@
           {
             "showtime": "9:20pm",
             "showtime_id": "145787308",
-            "format": "BigD"
+            "format": "BigD at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "145069933",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "145069934",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -833,6 +891,18 @@
                 "showtime_id": "145874623",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "145271179",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "145271180",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -917,6 +987,18 @@
             "showtime_id": "145874623",
             "format": "undefined"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "145271179",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "145271180",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -945,6 +1027,18 @@
               {
                 "showtime": "10:30pm",
                 "showtime_id": "146034448",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146888335",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "146888336",
                 "format": "Laser at AMC"
               }
             ]
@@ -1101,6 +1195,18 @@
             "showtime_id": "146034448",
             "format": "Laser at AMC"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146888335",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "146888336",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -1134,6 +1240,13 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "145868054",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145052894",
                 "format": "Laser at AMC"
               }
             ]
@@ -1285,6 +1398,13 @@
             "showtime_id": "145868054",
             "format": "Laser at AMC"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145052894",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -1427,6 +1547,13 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "146844973",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145049746",
                 "format": "undefined"
               }
             ]
@@ -1573,6 +1700,13 @@
             "showtime_id": "146844973",
             "format": "undefined"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145049746",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -1592,6 +1726,18 @@
                 "showtime": "7:00pm",
                 "showtime_id": "146108741",
                 "format": "BigD at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "146875727",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146374868",
+                "format": "undefined"
               }
             ]
           },
@@ -1721,6 +1867,18 @@
             "showtime": "7:00pm",
             "showtime_id": "146108741",
             "format": "BigD at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146875727",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146374868",
+            "format": "undefined"
           }
         ]
       }
@@ -2509,6 +2667,13 @@
                 "showtime_id": "145801412",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "144973936",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -2581,6 +2746,13 @@
           {
             "showtime": "7:00pm",
             "showtime_id": "145801412",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144973936",
             "format": "undefined"
           }
         ]
@@ -2713,8 +2885,25 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "146992812",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "146198870",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "146617533",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "146617534",
                 "format": "undefined"
               }
             ]
@@ -2807,8 +2996,25 @@
             "format": "undefined"
           },
           {
+            "showtime": "7:00pm",
+            "showtime_id": "146992812",
+            "format": "undefined"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "146198870",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "146617533",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "146617534",
             "format": "undefined"
           }
         ]
@@ -2840,6 +3046,18 @@
                 "showtime": "9:30pm",
                 "showtime_id": "145826034",
                 "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145018432",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "145018433",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -3000,6 +3218,18 @@
             "showtime_id": "145826034",
             "format": "Dolby Cinema at AMC"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145018432",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "145018433",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -3028,6 +3258,28 @@
               {
                 "showtime": "9:15pm",
                 "showtime_id": "146519382",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "145217739",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "146889726",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146889746",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "146889727",
                 "format": "Laser at AMC"
               }
             ]
@@ -3172,6 +3424,28 @@
           {
             "showtime": "9:15pm",
             "showtime_id": "146519382",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145217739",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146889726",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146889746",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146889727",
             "format": "Laser at AMC"
           }
         ]
@@ -3580,8 +3854,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "146913271",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:15pm",
                 "showtime_id": "145803709",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "146913270",
                 "format": "Laser at AMC"
               }
             ]
@@ -3679,8 +3963,18 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "6:20pm",
+            "showtime_id": "146913271",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:15pm",
             "showtime_id": "145803709",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "146913270",
             "format": "Laser at AMC"
           }
         ]
@@ -3835,9 +4129,21 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "146945471",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "145735613",
                 "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "145046242",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -3999,9 +4305,21 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "8:30pm",
+            "showtime_id": "146945471",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:45pm",
             "showtime_id": "145735613",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145046242",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -4026,6 +4344,13 @@
               {
                 "showtime": "9:00pm",
                 "showtime_id": "145902679",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "145054280",
                 "format": "Laser at AMC"
               }
             ]
@@ -4150,6 +4475,13 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "145902679",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "145054280",
             "format": "Laser at AMC"
           }
         ]
@@ -4610,6 +4942,13 @@
                 "showtime_id": "145890499",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "144978370",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -4659,6 +4998,13 @@
           {
             "showtime": "7:10pm",
             "showtime_id": "145890499",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "144978370",
             "format": "undefined"
           }
         ]
@@ -6005,6 +6351,18 @@
                 "showtime_id": "145956569",
                 "format": "XL at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "145194233",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:40pm",
+                "showtime_id": "145194234",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -6057,6 +6415,18 @@
             "showtime": "9:15pm",
             "showtime_id": "145956569",
             "format": "XL at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145194233",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "145194234",
+            "format": "undefined"
           }
         ]
       }
@@ -6235,6 +6605,18 @@
                 "showtime_id": "145910102",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146936901",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146937031",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -6301,6 +6683,18 @@
             "showtime_id": "145910102",
             "format": "undefined"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146936901",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146937031",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -6345,8 +6739,25 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "146897095",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "145979510",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146897093",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "145013139",
                 "format": "Laser at AMC"
               }
             ]
@@ -6416,8 +6827,25 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "6:30pm",
+            "showtime_id": "146897095",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
             "showtime_id": "145979510",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146897093",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "145013139",
             "format": "Laser at AMC"
           }
         ]
@@ -6700,6 +7128,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "146870329",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "145908149",
                 "format": "Dine-In Delivery to Seat"
@@ -6745,6 +7178,11 @@
           {
             "showtime": "5:00pm",
             "showtime_id": "145908148",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146870329",
             "format": "Dine-In Delivery to Seat"
           },
           {
@@ -8336,6 +8774,18 @@
                 "showtime_id": "145727569",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "144908835",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "144908836",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -8370,6 +8820,18 @@
             "showtime": "11:00pm",
             "showtime_id": "145727569",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "144908835",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "144908836",
+            "format": "undefined"
           }
         ]
       }
@@ -8582,6 +9044,16 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "7:20pm",
+                "showtime_id": "146899322",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "146899348",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "145719725",
                 "format": "Laser at AMC"
@@ -8590,6 +9062,28 @@
                 "showtime": "9:45pm",
                 "showtime_id": "145719708",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146899321",
+                "format": "XL at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "146899347",
+                "format": "Spanish Language Dubbed with No Subtitles"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "145023002",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "146899337",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -8645,6 +9139,16 @@
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "7:20pm",
+            "showtime_id": "146899322",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "146899348",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
             "showtime": "9:00pm",
             "showtime_id": "145719725",
             "format": "Laser at AMC"
@@ -8653,6 +9157,28 @@
             "showtime": "9:45pm",
             "showtime_id": "145719708",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146899321",
+            "format": "XL at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "146899347",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "145023002",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "146899337",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -10560,9 +11086,19 @@
           "movies": {
             "Practical Magic 2": [
               {
+                "showtime": "5:15pm",
+                "showtime_id": "146870690",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "145862799",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "146870691",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "10:15pm",
@@ -10608,9 +11144,19 @@
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "5:15pm",
+            "showtime_id": "146870690",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "145862799",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "146870691",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
@@ -11669,6 +12215,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:15pm",
+                "showtime_id": "146885374",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "145770472",
                 "format": "Laser at AMC"
@@ -11676,6 +12227,13 @@
               {
                 "showtime": "9:45pm",
                 "showtime_id": "145770319",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145048567",
                 "format": "Laser at AMC"
               }
             ]
@@ -11708,27 +12266,34 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145770465",
+            "showtime": "5:15pm",
+            "showtime_id": "145770471",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "145770431",
+            "showtime": "6:15pm",
+            "showtime_id": "146885374",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145770430",
+            "showtime": "8:30pm",
+            "showtime_id": "145770472",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "145770320",
+            "showtime_id": "145770319",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145048567",
             "format": "Laser at AMC"
           }
         ]
@@ -12137,9 +12702,31 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "146880057",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "145778165",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146880056",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "144904580",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146880286",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -12157,9 +12744,31 @@
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "6:45pm",
+            "showtime_id": "146880057",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "145778165",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146880056",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144904580",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146880286",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -13219,6 +13828,13 @@
                 "showtime_id": "145788708",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145048677",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -13329,6 +13945,13 @@
             "showtime": "10:00pm",
             "showtime_id": "145788708",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145048677",
+            "format": "undefined"
           }
         ]
       }
@@ -13992,6 +14615,18 @@
                 "showtime_id": "145828388",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "144966444",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146875250",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -14113,22 +14748,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "145828386",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "145828482",
+            "showtime": "5:15pm",
+            "showtime_id": "145828487",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145828380",
+            "showtime": "6:30pm",
+            "showtime_id": "145828390",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "145828488",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "145828388",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144966444",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146875250",
             "format": "undefined"
           }
         ]
@@ -14279,6 +14931,23 @@
                 "showtime": "10:45pm",
                 "showtime_id": "145868905",
                 "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "146382390",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146382391",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "146930228",
+                "format": "undefined"
               }
             ]
           },
@@ -14443,6 +15112,23 @@
             "showtime": "10:45pm",
             "showtime_id": "145868905",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "146382390",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146382391",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "146930228",
+            "format": "undefined"
           }
         ]
       }
@@ -15338,6 +16024,18 @@
                 "showtime_id": "145907262",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "145046118",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "146962113",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -15492,6 +16190,18 @@
             "showtime_id": "145907262",
             "format": "Dolby Cinema at AMC"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145046118",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146962113",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -15503,6 +16213,11 @@
           "movies": {
             "Practical Magic 2": [
               {
+                "showtime": "6:20pm",
+                "showtime_id": "146934789",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "145895990",
                 "format": "Laser at AMC"
@@ -15510,6 +16225,18 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "145895985",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146934759",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "145036770",
                 "format": "Laser at AMC"
               }
             ]
@@ -15598,32 +16325,34 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "145895987",
+            "showtime": "6:20pm",
+            "showtime_id": "146934789",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "145896003",
+            "showtime": "7:45pm",
+            "showtime_id": "145895990",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:05pm",
-            "showtime_id": "145896004",
+            "showtime": "9:30pm",
+            "showtime_id": "145895985",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145896005",
+            "showtime": "9:45pm",
+            "showtime_id": "146934759",
             "format": "Laser at AMC"
-          },
+          }
+        ],
+        "Runner": [
           {
-            "showtime": "9:00pm",
-            "showtime_id": "145895986",
+            "showtime": "6:45pm",
+            "showtime_id": "145036770",
             "format": "Laser at AMC"
           }
         ]
@@ -15637,23 +16366,45 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "5:00pm",
+                "showtime": "5:10pm",
                 "showtime_id": "145707832",
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "6:15pm",
+                "showtime": "6:10pm",
                 "showtime_id": "145707894",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "8:10pm",
+                "showtime": "6:50pm",
+                "showtime_id": "146929430",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:20pm",
                 "showtime_id": "145707833",
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "9:05pm",
+                "showtime": "9:20pm",
                 "showtime_id": "145707895",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146929429",
+                "format": "XL at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "144905953",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146929245",
                 "format": "Laser at AMC"
               }
             ]
@@ -15801,23 +16552,45 @@
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:00pm",
+            "showtime": "5:10pm",
             "showtime_id": "145707832",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:15pm",
+            "showtime": "6:10pm",
             "showtime_id": "145707894",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:10pm",
+            "showtime": "6:50pm",
+            "showtime_id": "146929430",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:20pm",
             "showtime_id": "145707833",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:05pm",
+            "showtime": "9:20pm",
             "showtime_id": "145707895",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146929429",
+            "format": "XL at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144905953",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146929245",
             "format": "Laser at AMC"
           }
         ]
@@ -15833,6 +16606,13 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "145988508",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145018333",
                 "format": "undefined"
               }
             ]
@@ -15907,6 +16687,13 @@
           {
             "showtime": "7:30pm",
             "showtime_id": "145988508",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145018333",
             "format": "undefined"
           }
         ]
@@ -16924,8 +17711,30 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:15pm",
+                "showtime_id": "146941364",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "145877354",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146941366",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "145051401",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "145051402",
                 "format": "undefined"
               }
             ]
@@ -17018,8 +17827,30 @@
             "format": "undefined"
           },
           {
+            "showtime": "6:15pm",
+            "showtime_id": "146941364",
+            "format": "undefined"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "145877354",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146941366",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "145051401",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "145051402",
             "format": "undefined"
           }
         ]
@@ -18646,6 +19477,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "146914407",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "145887364",
                 "format": "BigD at AMC"
@@ -18659,6 +19495,13 @@
                 "showtime": "10:00pm",
                 "showtime_id": "145887365",
                 "format": "BigD at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146392424",
+                "format": "undefined"
               }
             ]
           },
@@ -18772,6 +19615,11 @@
             "format": "undefined"
           },
           {
+            "showtime": "5:15pm",
+            "showtime_id": "146914407",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "145887364",
             "format": "BigD at AMC"
@@ -18785,6 +19633,13 @@
             "showtime": "10:00pm",
             "showtime_id": "145887365",
             "format": "BigD at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146392424",
+            "format": "undefined"
           }
         ]
       }
@@ -19272,6 +20127,23 @@
                 "showtime": "9:30pm",
                 "showtime_id": "146069531",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "146871200",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "144892180",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146901473",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -19301,6 +20173,23 @@
           {
             "showtime": "9:30pm",
             "showtime_id": "146069531",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "146871200",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144892180",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146901473",
             "format": "Laser at AMC"
           }
         ]
@@ -19632,13 +20521,25 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "5:00pm",
+                "showtime": "5:15pm",
                 "showtime_id": "146246325",
                 "format": "undefined"
               },
               {
                 "showtime": "8:15pm",
                 "showtime_id": "146246323",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "146872009",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "146872000",
                 "format": "undefined"
               }
             ]
@@ -19670,13 +20571,25 @@
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:00pm",
+            "showtime": "5:15pm",
             "showtime_id": "146246325",
             "format": "undefined"
           },
           {
             "showtime": "8:15pm",
             "showtime_id": "146246323",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "146872009",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "146872000",
             "format": "undefined"
           }
         ]
@@ -20170,6 +21083,18 @@
                 "showtime_id": "145900905",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "146939299",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146939298",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -20221,6 +21146,18 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "145900905",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "146939299",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146939298",
             "format": "undefined"
           }
         ]
@@ -27998,6 +28935,13 @@
                 "showtime_id": "145706032",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146375142",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -28107,6 +29051,13 @@
             "showtime_id": "145706032",
             "format": "undefined"
           }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146375142",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -28118,9 +29069,19 @@
           "movies": {
             "Practical Magic 2": [
               {
+                "showtime": "5:15pm",
+                "showtime_id": "146873761",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "145872510",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "146873762",
+                "format": "undefined"
               },
               {
                 "showtime": "10:15pm",
@@ -28212,9 +29173,19 @@
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "5:15pm",
+            "showtime_id": "146873761",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:15pm",
             "showtime_id": "145872510",
             "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "146873762",
+            "format": "undefined"
           },
           {
             "showtime": "10:15pm",
@@ -28239,6 +29210,13 @@
               {
                 "showtime": "8:20pm",
                 "showtime_id": "145796923",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145213056",
                 "format": "undefined"
               }
             ]
@@ -28338,6 +29316,13 @@
           {
             "showtime": "8:20pm",
             "showtime_id": "145796923",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145213056",
             "format": "undefined"
           }
         ]
@@ -29260,6 +30245,13 @@
                 "showtime_id": "145716259",
                 "format": "Laser at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "144974992",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -29278,6 +30270,13 @@
           {
             "showtime": "9:30pm",
             "showtime_id": "145716259",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144974992",
             "format": "Laser at AMC"
           }
         ]
@@ -29306,6 +30305,18 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "146026349",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:05pm",
+                "showtime_id": "144939943",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "144939944",
                 "format": "undefined"
               }
             ]
@@ -29352,6 +30363,18 @@
           {
             "showtime": "7:30pm",
             "showtime_id": "146026349",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "144939943",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "144939944",
             "format": "undefined"
           }
         ]
@@ -29473,7 +30496,7 @@
               {
                 "showtime": "5:30pm",
                 "showtime_id": "145872823",
-                "format": "Laser at AMC"
+                "format": "XL at AMC"
               },
               {
                 "showtime": "7:30pm",
@@ -29483,12 +30506,24 @@
               {
                 "showtime": "8:45pm",
                 "showtime_id": "145872824",
-                "format": "Laser at AMC"
+                "format": "XL at AMC"
               },
               {
                 "showtime": "10:45pm",
                 "showtime_id": "145872848",
                 "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "145067587",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "145067588",
+                "format": "Laser at AMC"
               }
             ]
           },
@@ -29531,7 +30566,7 @@
           {
             "showtime": "5:30pm",
             "showtime_id": "145872823",
-            "format": "Laser at AMC"
+            "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
@@ -29541,12 +30576,24 @@
           {
             "showtime": "8:45pm",
             "showtime_id": "145872824",
-            "format": "Laser at AMC"
+            "format": "XL at AMC"
           },
           {
             "showtime": "10:45pm",
             "showtime_id": "145872848",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145067587",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "145067588",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -29972,8 +31019,25 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "146890568",
+                "format": "undefined"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "145789791",
+                "format": "undefined"
+              }
+            ],
+            "Runner": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146875514",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "146875521",
                 "format": "undefined"
               }
             ]
@@ -30048,8 +31112,25 @@
             "format": "undefined"
           },
           {
+            "showtime": "7:15pm",
+            "showtime_id": "146890568",
+            "format": "undefined"
+          },
+          {
             "showtime": "9:45pm",
             "showtime_id": "145789791",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146875514",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146875521",
             "format": "undefined"
           }
         ]
@@ -30480,6 +31561,18 @@
                 "showtime_id": "145775321",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146250566",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146250567",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -30552,6 +31645,18 @@
             "showtime": "10:15pm",
             "showtime_id": "145775321",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146250566",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146250567",
+            "format": "undefined"
           }
         ]
       }
@@ -31606,6 +32711,18 @@
                 "showtime_id": "145907713",
                 "format": "undefined"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "145050660",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "145050659",
+                "format": "undefined"
+              }
             ]
           },
           "collected_at": null,
@@ -31690,6 +32807,18 @@
           {
             "showtime": "7:15pm",
             "showtime_id": "145907713",
+            "format": "undefined"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "145050660",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "145050659",
             "format": "undefined"
           }
         ]
@@ -31964,6 +33093,13 @@
                 "showtime_id": "145854426",
                 "format": "Laser at AMC"
               }
+            ],
+            "Runner": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "146993029",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -32045,17 +33181,24 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-10",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "145854398",
+            "showtime": "5:00pm",
+            "showtime_id": "145854425",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145854418",
+            "showtime": "8:00pm",
+            "showtime_id": "145854426",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "146993029",
             "format": "Laser at AMC"
           }
         ]
@@ -32487,7 +33630,12 @@
           "movies": {
             "Practical Magic 2": [
               {
-                "showtime": "7:45pm",
+                "showtime": "7:00pm",
+                "showtime_id": "146987904",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
                 "showtime_id": "145878825",
                 "format": "Dine-In Delivery to Seat"
               },
@@ -32525,7 +33673,12 @@
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:45pm",
+            "showtime": "7:00pm",
+            "showtime_id": "146987904",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
             "showtime_id": "145878825",
             "format": "Dine-In Delivery to Seat"
           },
@@ -36106,8 +37259,18 @@
           "movies": {
             "Practical Magic 2": [
               {
+                "showtime": "6:15pm",
+                "showtime_id": "146887606",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "145909838",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "146887570",
                 "format": "Laser at AMC"
               }
             ]
@@ -36149,8 +37312,18 @@
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "6:15pm",
+            "showtime_id": "146887606",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "145909838",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146887570",
             "format": "Laser at AMC"
           }
         ]
@@ -57560,10 +58733,10 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9739,
-    "fresh": 448,
-    "expected": 460,
+    "ratio": 0.9091,
+    "fresh": 720,
+    "expected": 792,
     "min_ratio": 0.9,
-    "degraded": false
+    "degraded": true
   }
 }
