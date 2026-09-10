@@ -110,10 +110,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
         # = the whole universe, 8 tabs); the 120/3 posture stays for direct.
         self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=1000", phase_block)
         self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=120", phase_block)
-        # date window per slot (2026-09-10): 02:30Z + ad-hoc = whole window,
-        # the two daytime slots = nearest 2 dates
-        self.assertIn('*02:30Z*|"") export SNAPSHOT_MAX_DATES=0', phase_block)
-        self.assertIn("*) export SNAPSHOT_MAX_DATES=2", phase_block)
+        # full collection: every slot reads the whole window (operator choice)
+        self.assertIn("export SNAPSHOT_MAX_DATES=0", phase_block)
+        self.assertNotIn("SNAPSHOT_MAX_DATES=2", phase_block)
         # finalize's predict denominator must follow the same switch
         fin_start = self.workflow.index("  finalize:")
         fin_block = self.workflow[fin_start:]
