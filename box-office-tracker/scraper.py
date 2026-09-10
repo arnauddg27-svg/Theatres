@@ -761,6 +761,8 @@ _PHASE1_TRIM_LEVELS = {
 }
 AMC_PHASE1_TRIM_LEVEL = (os.environ.get("AMC_PHASE1_TRIM_LEVEL") or "full").strip().lower()
 _PHASE1_FULL_TRIM_OK = None   # None = untested this run, True = SSR confirmed, False = needs scripts
+_PHASE1_INCONCLUSIVE_REREADS = 0
+PHASE1_MAX_INCONCLUSIVE_REREADS = 10   # all-empty passes must not pay 2 loads/theatre forever
 
 
 def _phase1_trim_types(level):
@@ -2412,8 +2414,10 @@ PROXY_BLOCK_ISSUE = "residential proxy refused the connection (check the provide
 _PROXY_ERROR_MARKERS = ("ERR_TUNNEL_CONNECTION_FAILED", "ERR_PROXY_CONNECTION_FAILED",
                         "ERR_PROXY_AUTH", "ERR_NO_SUPPORTED_PROXIES", "ERR_PROXY_CERTIFICATE",
                         # curl (the HTTP seat-fetch path) phrases the same refusals differently
-                        "(7) Failed to connect", "407 from proxy", "CONNECT tunnel failed",
-                        "Received HTTP code 4", "Received HTTP code 5")
+                        # NOT "(7) Failed to connect" / 5xx-after-CONNECT: through a
+                        # rotating pool those are one exit misbehaving, and fall
+                        # through to the browser instead (audit-14).
+                        "407 from proxy", "CONNECT tunnel failed", "Received HTTP code 4")
 
 
 def _is_proxy_error(exc_text):
@@ -2580,8 +2584,9 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 # rest of the leg (::warning). Data is never traded for bytes.
 AMC_SEAT_FETCH = (os.environ.get("AMC_SEAT_FETCH") or "auto").strip().lower()
 AMC_HTTP_PARITY_CHECKS = _env_int("AMC_HTTP_PARITY_CHECKS", 20, minimum=0)
-_HTTP_STATE = {"checked": 0, "mismatch": 0, "disabled": False, "http_ok": 0,
-               "http_fallback": 0, "http_blocked": 0, "http_bytes": 0, "session": None}
+_HTTP_STATE = {"checked": 0, "mismatch": 0, "disabled": False, "disabled_reason": "",
+               "http_ok": 0, "http_fallback": 0, "http_blocked": 0, "http_bytes": 0, "session": None}
+AMC_HTTP_PARITY_STRIKES = 2   # mismatches before the HTTP path is switched off
 
 
 def _http_seat_fetch_enabled():
@@ -2668,7 +2673,7 @@ async def fetch_amc_seat_map(page, showtime_id):
     """Dispatcher used by the seat lane: HTTP first (through the proxy), the
     browser for anything the HTTP path could not settle, plus shadow parity
     checks that switch HTTP off for the leg on the first disagreement."""
-    if not _http_seat_fetch_enabled():
+    if not _http_seat_fetch_enabled() or not showtime_id:
         return await fetch_amc_seat_map_pw(page, showtime_id)
     data = await fetch_amc_seat_map_http(showtime_id)
     if data is None:
@@ -2680,6 +2685,7 @@ async def fetch_amc_seat_map(page, showtime_id):
             # Paying for most pages twice (HTTP then browser) with little to
             # show for it — the HTTP path does not work well enough here.
             _HTTP_STATE["disabled"] = True
+            _HTTP_STATE["disabled_reason"] = "breaker"
             print(f"::warning::HTTP seat fetch succeeded on {_HTTP_STATE['http_ok']}/{attempts} "
                   f"pages — DISABLED for this leg (browser only)", flush=True)
         return await fetch_amc_seat_map_pw(page, showtime_id)
@@ -2694,15 +2700,21 @@ async def fetch_amc_seat_map(page, showtime_id):
                 and browser_data is not QUEUE_SENTINEL:
             if not _seat_counts_match(data, browser_data):
                 _HTTP_STATE["mismatch"] += 1
-                _HTTP_STATE["disabled"] = True
+                if _HTTP_STATE["mismatch"] >= AMC_HTTP_PARITY_STRIKES:
+                    # Two strikes: one disagreement can be a hot auditorium
+                    # selling 3 seats between the two reads (audit-14).
+                    _HTTP_STATE["disabled"] = True
+                    _HTTP_STATE["disabled_reason"] = "parity"
                 hint = (" — TRUNCATION suspected (http saw fewer seats): the seat block is "
                         "split by a flight script; consider dropping self.__next_f.push from "
                         "seat_fetch_http.STOP_MARKERS"
                         if int(data.get("total_seats", 0)) < int(browser_data.get("total_seats", 0))
                         else " — parser divergence")
+                state = ("HTTP path DISABLED for this leg" if _HTTP_STATE["disabled"]
+                         else f"strike {_HTTP_STATE['mismatch']}/{AMC_HTTP_PARITY_STRIKES}")
                 print(f"::warning::HTTP seat fetch disagreed with the browser on showtime "
-                      f"{showtime_id} (http {data} vs browser {browser_data}){hint} — HTTP path "
-                      f"DISABLED for this leg; browser results used", flush=True)
+                      f"{showtime_id} (http {data} vs browser {browser_data}){hint} — {state}; "
+                      f"browser result used", flush=True)
                 return browser_data
     return data
 
@@ -4734,7 +4746,7 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
             await pg.route("**/*", _trim)
         return ctx, pg
 
-    global _PHASE1_FULL_TRIM_OK
+    global _PHASE1_FULL_TRIM_OK, _PHASE1_INCONCLUSIVE_REREADS
     level = _phase1_effective_trim_level()
     context, page = await _new_page(level)
     collected = {}
@@ -4761,7 +4773,14 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
                 _PHASE1_FULL_TRIM_OK = False
                 print("  ↷ listings need scripts — Phase 1 trim falls back to LIGHT for this run")
             # An empty light re-read proves nothing about trim (dark theatre /
-            # nothing posted): leave the flag untested.
+            # nothing posted): leave the flag untested — but not forever: on an
+            # all-empty forward-date pass every theatre would pay two loads.
+            elif not retry and _PHASE1_FULL_TRIM_OK is None:
+                _PHASE1_INCONCLUSIVE_REREADS += 1
+                if _PHASE1_INCONCLUSIVE_REREADS >= PHASE1_MAX_INCONCLUSIVE_REREADS:
+                    _PHASE1_FULL_TRIM_OK = True
+                    print(f"  ↷ {_PHASE1_INCONCLUSIVE_REREADS} inconclusive light re-reads — "
+                          f"keeping FULL trim without further re-reads this run")
             showtimes = retry
             reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
         elif level == "full" and showtimes and _PHASE1_FULL_TRIM_OK is None:
@@ -6064,16 +6083,24 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     )
                 )
                 theatre_saved = phase1_entry_movies(saved_entry, t_date)
-                if snapshots_only and _SEAT_PROXY and _HTTP_STATE["disabled"]:
-                    # Browser-only fallback at full universe would run ~6h and
-                    # blow the deadline; shrink to the top set the browser path
-                    # was sized for (audit-13).
+                if (snapshots_only and _SEAT_PROXY and _HTTP_STATE["disabled"]
+                        and _HTTP_STATE["disabled_reason"] == "breaker"):
+                    # HTTP path proven not to work here (breaker, not a parity
+                    # blip): browser-only at full universe would run ~6h and
+                    # blow the deadline, so shrink to THIS leg's top set — ranked
+                    # within the leg's own groups and only theatres that have
+                    # Phase 1 links (audit-13/14).
                     if not fallback_names:
-                        fallback_names.update(select_snapshot_theatre_names(
-                            theatres_map, groups=snapshot_selection_groups,
-                            cap=AMC_BROWSER_FALLBACK_CAP) or ())
-                        print(f"::warning::HTTP seat fetch is off for this leg — browser fallback "
-                              f"limited to the top {len(fallback_names)} theatres", flush=True)
+                        leg_names = {t["name"] for t in all_theatres}
+                        ranked = select_snapshot_theatre_names(
+                            theatres_map, groups=groups_to_check,
+                            cap=AMC_BROWSER_FALLBACK_CAP) or set()
+                        fallback_names.update(n for n in ranked if n in leg_names)
+                        if not fallback_names:
+                            fallback_names.update(sorted(leg_names)[:AMC_BROWSER_FALLBACK_CAP])
+                        print(f"::warning::HTTP seat fetch is off for this leg (breaker) — browser "
+                              f"fallback limited to {len(fallback_names)} of this leg's "
+                              f"{len(leg_names)} theatres", flush=True)
                     if name not in fallback_names:
                         all_issues.append(f"{name}: browser-fallback cap — skipped")
                         return

@@ -132,8 +132,8 @@ class ParityToleranceTest(unittest.TestCase):
 class DispatcherTest(unittest.TestCase):
     def setUp(self):
         self.orig = dict(scraper._HTTP_STATE), scraper._SEAT_PROXY, scraper.AMC_SEAT_FETCH
-        scraper._HTTP_STATE.update(checked=0, mismatch=0, disabled=False, http_ok=0,
-                                   http_fallback=0, http_blocked=0, http_bytes=0)
+        scraper._HTTP_STATE.update(checked=0, mismatch=0, disabled=False, disabled_reason="",
+                                   http_ok=0, http_fallback=0, http_blocked=0, http_bytes=0)
 
     def tearDown(self):
         st, proxy, mode = self.orig
@@ -165,10 +165,15 @@ class DispatcherTest(unittest.TestCase):
             with redirect_stdout(io.StringIO()) as buf:
                 out = self._run(scraper.fetch_amc_seat_map(None, "1"))
             self.assertEqual(browser_result, out)                 # browser wins on disagreement
+            # ONE strike is not enough (a hot auditorium can sell seats between reads)
+            self.assertFalse(scraper._HTTP_STATE["disabled"])
+            self.assertIn("strike 1/2", buf.getvalue())
+            with redirect_stdout(io.StringIO()):
+                self._run(scraper.fetch_amc_seat_map(None, "2"))
             self.assertTrue(scraper._HTTP_STATE["disabled"])
-            self.assertIn("::warning::", buf.getvalue())
+            self.assertEqual("parity", scraper._HTTP_STATE["disabled_reason"])
             # disabled -> straight to the browser afterwards
-            out2 = self._run(scraper.fetch_amc_seat_map(None, "2"))
+            out2 = self._run(scraper.fetch_amc_seat_map(None, "3"))
             self.assertEqual(browser_result, out2)
         finally:
             scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw = orig
@@ -185,6 +190,7 @@ class DispatcherTest(unittest.TestCase):
                 for i in range(6):
                     self._run(scraper.fetch_amc_seat_map(None, str(i)))
             self.assertTrue(scraper._HTTP_STATE["disabled"])
+            self.assertEqual("breaker", scraper._HTTP_STATE["disabled_reason"])
             self.assertIn("DISABLED for this leg", buf.getvalue())
             self.assertEqual(5, scraper._HTTP_STATE["http_fallback"])   # 6th call went straight to the browser
         finally:
@@ -209,6 +215,15 @@ class DispatcherTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CurlProxyMarkerTest(unittest.TestCase):
+    def test_only_true_refusals_are_proxy_errors(self):
+        self.assertTrue(scraper._is_proxy_error("Failed to perform, curl: (56) Received HTTP code 407 from proxy after CONNECT"))
+        self.assertTrue(scraper._is_proxy_error("CONNECT tunnel failed, response 403"))
+        # one exit misbehaving is not a provider refusal — falls through to the browser
+        self.assertFalse(scraper._is_proxy_error("Failed to perform, curl: (7) Failed to connect to gw port 823"))
+        self.assertFalse(scraper._is_proxy_error("curl: (56) Received HTTP code 502 from proxy after CONNECT"))
 
 
 class RealClientApiPinTest(unittest.TestCase):

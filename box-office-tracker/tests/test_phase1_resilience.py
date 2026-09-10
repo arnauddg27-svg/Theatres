@@ -350,3 +350,28 @@ class AdaptiveTrimFlagSafetyTest(unittest.TestCase):
             self.assertIs(False, scraper._PHASE1_FULL_TRIM_OK)
         finally:
             (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK) = orig
+
+
+class InconclusiveRereadCapTest(unittest.TestCase):
+    def test_all_empty_pass_stops_paying_double_after_the_cap(self):
+        orig = (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL,
+                scraper._PHASE1_FULL_TRIM_OK, scraper._PHASE1_INCONCLUSIVE_REREADS, scraper.PHASE1_MAX_INCONCLUSIVE_REREADS)
+        try:
+            scraper._SEAT_PROXY = {"server": "http://x"}; scraper.AMC_PHASE1_PROXY = True
+            scraper.AMC_PHASE1_TRIM_LEVEL = "full"; scraper._PHASE1_FULL_TRIM_OK = None
+            scraper._PHASE1_INCONCLUSIVE_REREADS = 0; scraper.PHASE1_MAX_INCONCLUSIVE_REREADS = 3
+            contexts = []
+            for _ in range(3):
+                b = FakeBrowser([{"sections": None}, {"sections": None}])
+                with redirect_stdout(io.StringIO()):
+                    _run(scraper._collect_links_theatre(b, {"name": "AMC T", "slug": "amc-t"}, "2026-09-11", ["Runner"]))
+                contexts.append(len(b.contexts))
+            self.assertEqual([2, 2, 2], contexts)               # re-read each time while undecided
+            self.assertIs(True, scraper._PHASE1_FULL_TRIM_OK)   # cap reached -> settled
+            b = FakeBrowser([{"sections": None}, {"sections": None}])
+            with redirect_stdout(io.StringIO()):
+                _run(scraper._collect_links_theatre(b, {"name": "AMC T", "slug": "amc-t"}, "2026-09-11", ["Runner"]))
+            self.assertEqual(1, len(b.contexts))                # no more double loads
+        finally:
+            (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL,
+             scraper._PHASE1_FULL_TRIM_OK, scraper._PHASE1_INCONCLUSIVE_REREADS, scraper.PHASE1_MAX_INCONCLUSIVE_REREADS) = orig
