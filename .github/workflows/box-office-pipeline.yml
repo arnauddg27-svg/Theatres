@@ -720,10 +720,11 @@ jobs:
         working-directory: box-office-tracker
         env:
           # predict's capped-probe denominator must agree with the cap the
-          # scrape job actually ran (see the Phase 2 step).
-          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          # scrape job actually ran (see the Phase 2 step). Only the FACT that
+          # a proxy is configured is needed here — never the credential.
+          HAS_PROXY: ${{ secrets.AMC_SEAT_PROXY_URL != '' }}
         run: |
-          if [ -n "$AMC_SEAT_PROXY_URL" ]; then export SNAPSHOT_TOP_THEATRE_CAP=1000; else export SNAPSHOT_TOP_THEATRE_CAP=120; fi
+          if [ "$HAS_PROXY" = "true" ]; then export SNAPSHOT_TOP_THEATRE_CAP=1000; else export SNAPSHOT_TOP_THEATRE_CAP=120; fi
           python predict.py
 
       - name: Refresh Excel workbook

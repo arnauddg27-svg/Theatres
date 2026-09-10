@@ -88,15 +88,18 @@ def classify_page(html: str) -> str:
     return "other"
 
 
-SEAT_INPUT_RE_B = re.compile(rb"<input\b[^>]*aria-label", re.I)
+SEAT_INPUT_RE_B = re.compile(rb"""<input\b[^>]*aria-label\s*=\s*(?:"([^"]*)"|'([^']*)')""", re.I)
 
 
-def last_seat_input_pos(buffer: bytes, search_from: int = 0) -> int:
-    """Byte offset just past the LAST `<input … aria-label` at or after
-    search_from, or -1 when there is none in that range."""
+def last_seat_input_pos(buffer, search_from: int = 0) -> int:
+    """Byte offset just past the LAST seat input (`<input … aria-label=` whose
+    label passes is_seat_label) at or after search_from, else -1. Accepts
+    bytes or bytearray without copying."""
     pos = -1
     for m in SEAT_INPUT_RE_B.finditer(buffer, max(0, search_from)):
-        pos = m.end()
+        raw = m.group(1) if m.group(1) is not None else (m.group(2) or b"")
+        if is_seat_label(unescape(raw.decode("utf-8", "ignore"))):
+            pos = m.end()
     return pos
 
 
@@ -108,8 +111,8 @@ def should_stop(buffer: bytes, last_input_end: int) -> bool:
     behind us."""
     if last_input_end < 0:
         return False
-    tail = buffer[last_input_end:]
-    return any(marker in tail for marker in STOP_MARKERS)
+    tail = memoryview(buffer)[last_input_end:]
+    return any(buffer.find(marker, last_input_end) != -1 for marker in STOP_MARKERS) if tail else False
 
 
 class _Inflater:
@@ -172,10 +175,10 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
                 break
             # an <input …aria-label may straddle the chunk boundary: rescan a
             # little before the new bytes
-            pos = last_seat_input_pos(bytes(out), search_from=max(0, before - 512))
+            pos = last_seat_input_pos(out, search_from=max(0, before - 512))
             if pos > last_input_end:
                 last_input_end = pos
-            if should_stop(bytes(out), last_input_end) or raw >= MAX_RAW_BYTES:
+            if should_stop(out, last_input_end) or raw >= MAX_RAW_BYTES:
                 stopped = True
                 break
     finally:
@@ -185,4 +188,5 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
             pass
     html = out.decode("utf-8", "ignore")
     return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+            "url": str(getattr(resp, "url", "") or url),
             "kind": classify_page(html), "stopped_early": stopped}

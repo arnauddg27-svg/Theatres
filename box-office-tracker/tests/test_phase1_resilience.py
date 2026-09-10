@@ -323,3 +323,30 @@ class TrimLevelAndMeterTest(unittest.TestCase):
         self.assertIn("2.0 MB", scraper._egress_summary("x"))
         self.assertIn("512 KB/page", scraper._egress_summary("x"))
         scraper._egress_reset()
+
+
+class AdaptiveTrimFlagSafetyTest(unittest.TestCase):
+    """audit-12: a theatre with no showtimes must never pin the run to FULL
+    trim, and False (scripts needed) is sticky against concurrent writers."""
+
+    def _collect(self, browser):
+        with redirect_stdout(io.StringIO()):
+            return _run(scraper._collect_links_theatre(browser, {"name": "AMC T", "slug": "amc-t"}, "2026-09-11", ["Runner"]))
+
+    def test_dark_theatre_leaves_flag_untested_and_false_is_sticky(self):
+        orig = (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK)
+        try:
+            scraper._SEAT_PROXY = {"server": "http://x"}; scraper.AMC_PHASE1_PROXY = True
+            scraper.AMC_PHASE1_TRIM_LEVEL = "full"; scraper._PHASE1_FULL_TRIM_OK = None
+            # full read empty, light re-read ALSO empty -> proves nothing -> still None
+            self._collect(FakeBrowser([{"sections": None}, {"sections": None}]))
+            self.assertIsNone(scraper._PHASE1_FULL_TRIM_OK)
+            # scripts needed -> False
+            ok = {"sections": [{"movie": "Runner", "showtime": "7:00pm", "showtime_id": "1"}]}
+            self._collect(FakeBrowser([{"sections": None}, ok]))
+            self.assertIs(False, scraper._PHASE1_FULL_TRIM_OK)
+            # a later theatre that renders fine under whatever level must not flip it back
+            self._collect(FakeBrowser([ok]))
+            self.assertIs(False, scraper._PHASE1_FULL_TRIM_OK)
+        finally:
+            (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK) = orig

@@ -2403,7 +2403,10 @@ CF_BLOCK_ISSUE = "Cloudflare block page on seat map"
 PROXY_BLOCK_SENTINEL = {"__proxy_block__": True}
 PROXY_BLOCK_ISSUE = "residential proxy refused the connection (check the provider's target allowlist)"
 _PROXY_ERROR_MARKERS = ("ERR_TUNNEL_CONNECTION_FAILED", "ERR_PROXY_CONNECTION_FAILED",
-                        "ERR_PROXY_AUTH", "ERR_NO_SUPPORTED_PROXIES", "ERR_PROXY_CERTIFICATE")
+                        "ERR_PROXY_AUTH", "ERR_NO_SUPPORTED_PROXIES", "ERR_PROXY_CERTIFICATE",
+                        # curl (the HTTP seat-fetch path) phrases the same refusals differently
+                        "(7) Failed to connect", "407 from proxy", "CONNECT tunnel failed",
+                        "Received HTTP code 4", "Received HTTP code 5")
 
 
 def _is_proxy_error(exc_text):
@@ -2571,7 +2574,7 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 AMC_SEAT_FETCH = (os.environ.get("AMC_SEAT_FETCH") or "auto").strip().lower()
 AMC_HTTP_PARITY_CHECKS = _env_int("AMC_HTTP_PARITY_CHECKS", 20, minimum=0)
 _HTTP_STATE = {"checked": 0, "mismatch": 0, "disabled": False, "http_ok": 0,
-               "http_fallback": 0, "http_blocked": 0, "session": None}
+               "http_fallback": 0, "http_blocked": 0, "http_bytes": 0, "session": None}
 
 
 def _http_seat_fetch_enabled():
@@ -2604,6 +2607,7 @@ def _http_proxy_url():
 
 
 AMC_HTTP_FALLBACK_BREAKER = _env_int("AMC_HTTP_FALLBACK_BREAKER", 30, minimum=5)
+AMC_HTTP_MIN_SUCCESS_RATIO = 0.2
 
 
 def _seat_counts_match(http_data, browser_data, tolerance=2):
@@ -2621,6 +2625,8 @@ def _seat_counts_match(http_data, browser_data, tolerance=2):
 async def fetch_amc_seat_map_http(showtime_id):
     """HTTP path: dict | CF_BLOCK_SENTINEL | None (None = let the browser try)."""
     import seat_fetch_http
+    if not showtime_id:
+        return None
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
     try:
         res = await asyncio.to_thread(
@@ -2631,13 +2637,18 @@ async def fetch_amc_seat_map_http(showtime_id):
         print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
         return None
     _EGRESS["bytes"] += res["raw_bytes"]; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+    _HTTP_STATE["http_bytes"] += res["raw_bytes"]
+    if _is_queue_url(res.get("url", "")):
+        print(f"      🚧 AMC queue redirect on seat map (http) — aborting theatre")
+        return QUEUE_SENTINEL
     kind = res["kind"]
-    if kind in ("blocked", "challenge"):
+    if kind == "blocked":
         _HTTP_STATE["http_blocked"] += 1
-        print(f"      🧱 Cloudflare {kind} on seat map (http) — aborting theatre")
+        print(f"      🧱 Cloudflare block on seat map (http) — aborting theatre")
         return CF_BLOCK_SENTINEL
     if kind == "seats":
         return seat_fetch_http.parse_seat_counts(res["html"])
+    # "challenge" and "other": let the browser have its untrimmed clear attempt
     return None
 
 
@@ -2650,16 +2661,17 @@ async def fetch_amc_seat_map(page, showtime_id):
     data = await fetch_amc_seat_map_http(showtime_id)
     if data is None:
         _HTTP_STATE["http_fallback"] += 1
+        attempts = _HTTP_STATE["http_fallback"] + _HTTP_STATE["http_ok"]
         if (_HTTP_STATE["http_fallback"] >= AMC_HTTP_FALLBACK_BREAKER
-                and _HTTP_STATE["http_ok"] == 0 and not _HTTP_STATE["disabled"]):
-            # Paying for every page twice (HTTP then browser) with nothing to
-            # show for it — the HTTP path does not work in this environment.
+                and _HTTP_STATE["http_ok"] < AMC_HTTP_MIN_SUCCESS_RATIO * attempts
+                and not _HTTP_STATE["disabled"]):
+            # Paying for most pages twice (HTTP then browser) with little to
+            # show for it — the HTTP path does not work well enough here.
             _HTTP_STATE["disabled"] = True
-            print(f"::warning::HTTP seat fetch never produced a usable page in "
-                  f"{_HTTP_STATE['http_fallback']} attempts — DISABLED for this leg (browser only)",
-                  flush=True)
+            print(f"::warning::HTTP seat fetch succeeded on {_HTTP_STATE['http_ok']}/{attempts} "
+                  f"pages — DISABLED for this leg (browser only)", flush=True)
         return await fetch_amc_seat_map_pw(page, showtime_id)
-    if data is CF_BLOCK_SENTINEL or data is PROXY_BLOCK_SENTINEL:
+    if data is CF_BLOCK_SENTINEL or data is PROXY_BLOCK_SENTINEL or data is QUEUE_SENTINEL:
         return data
     _HTTP_STATE["http_ok"] += 1
     if _HTTP_STATE["checked"] < AMC_HTTP_PARITY_CHECKS:
@@ -2671,8 +2683,13 @@ async def fetch_amc_seat_map(page, showtime_id):
             if not _seat_counts_match(data, browser_data):
                 _HTTP_STATE["mismatch"] += 1
                 _HTTP_STATE["disabled"] = True
+                hint = (" — TRUNCATION suspected (http saw fewer seats): the seat block is "
+                        "split by a flight script; consider dropping self.__next_f.push from "
+                        "seat_fetch_http.STOP_MARKERS"
+                        if int(data.get("total_seats", 0)) < int(browser_data.get("total_seats", 0))
+                        else " — parser divergence")
                 print(f"::warning::HTTP seat fetch disagreed with the browser on showtime "
-                      f"{showtime_id} (http {data} vs browser {browser_data}) — HTTP path "
+                      f"{showtime_id} (http {data} vs browser {browser_data}){hint} — HTTP path "
                       f"DISABLED for this leg; browser results used", flush=True)
                 return browser_data
     return data
@@ -2680,9 +2697,12 @@ async def fetch_amc_seat_map(page, showtime_id):
 
 def _http_fetch_summary():
     st = _HTTP_STATE
+    loads = st["http_ok"] + st["http_fallback"] + st["http_blocked"]
+    per = st["http_bytes"] / 1024 / loads if loads else 0.0
     return (f"🧵 http seat fetch: ok={st['http_ok']} fallback={st['http_fallback']} "
             f"blocked={st['http_blocked']} parity_checked={st['checked']} "
-            f"mismatch={st['mismatch']} disabled={st['disabled']}")
+            f"mismatch={st['mismatch']} disabled={st['disabled']} "
+            f"http_bytes={st['http_bytes'] / 1048576:.1f} MB (~{per:.0f} KB/http page)")
 
 
 COUNT_SEATS_JS = r'''() => {
@@ -4708,15 +4728,19 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
                 pass
             context, page = await _new_page("light")
             retry = await fetch_amc_showtimes_pw(page, theatre, date_str)
-            if retry and not showtimes:
+            if retry and not showtimes and _PHASE1_FULL_TRIM_OK is not False:
+                # Real evidence that scripts are needed. False is STICKY: six
+                # concurrent theatres race on this flag and a theatre with no
+                # showtimes that day looks identical to "trim broke it" — it
+                # must never flip the run back to full (audit-12).
                 _PHASE1_FULL_TRIM_OK = False
                 print("  ↷ listings need scripts — Phase 1 trim falls back to LIGHT for this run")
-            elif getattr(retry, "reason", "empty") == "empty":
-                _PHASE1_FULL_TRIM_OK = True
+            # An empty light re-read proves nothing about trim (dark theatre /
+            # nothing posted): leave the flag untested.
             showtimes = retry
             reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
         elif level == "full" and showtimes and _PHASE1_FULL_TRIM_OK is None:
-            _PHASE1_FULL_TRIM_OK = True
+            _PHASE1_FULL_TRIM_OK = True   # sections rendered WITHOUT scripts: SSR confirmed
         # Rotating proxy: a Cloudflare wall is a bad IP draw — redraw with a
         # FRESH context (new connections = new exit IP) a couple of times.
         attempts = 1
@@ -5955,6 +5979,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # from AMC's queue-it redirect) from stalling the whole run.
     overall_deadline = asyncio.get_event_loop().time() + phase2_deadline_sec
 
+    # The HTTP seat fetch runs in the default thread pool (8 workers on a
+    # 4-vCPU runner = exactly the tab count); a theatre cancelled by its
+    # wait_for cannot cancel its thread, which would stall the others. Give
+    # the pool headroom.
+    from concurrent.futures import ThreadPoolExecutor
+    asyncio.get_running_loop().set_default_executor(ThreadPoolExecutor(max_workers=16))
     async with async_playwright() as p:
         try:
             browser = await _launch_seat_browser(p)

@@ -133,7 +133,7 @@ class DispatcherTest(unittest.TestCase):
     def setUp(self):
         self.orig = dict(scraper._HTTP_STATE), scraper._SEAT_PROXY, scraper.AMC_SEAT_FETCH
         scraper._HTTP_STATE.update(checked=0, mismatch=0, disabled=False, http_ok=0,
-                                   http_fallback=0, http_blocked=0)
+                                   http_fallback=0, http_blocked=0, http_bytes=0)
 
     def tearDown(self):
         st, proxy, mode = self.orig
@@ -209,3 +209,27 @@ class DispatcherTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RealClientApiPinTest(unittest.TestCase):
+    def test_make_session_accepts_our_options_and_fetch_raises_a_curl_error_not_typeerror(self):
+        # audit-12: the FakeSession accepts any kwargs, which let a per-request
+        # curl_options TypeError reach production. Pin the real API against a
+        # closed port: the failure must be curl_cffi's, never a TypeError.
+        from curl_cffi.requests.exceptions import RequestException
+        sess = sfh.make_session()
+        with self.assertRaises(RequestException):
+            sfh.fetch_seat_page("http://127.0.0.1:9/seats", None, session=sess, timeout=2)
+
+    def test_seat_input_anchor_ignores_non_seat_inputs(self):
+        buf = b"<input aria-label='Search movies'><script>self.__next_f.push(1)</script>"
+        self.assertEqual(-1, sfh.last_seat_input_pos(buf))          # header search is not an anchor
+        buf2 = buf + b"<input aria-label='Seat A1'>"
+        self.assertGreater(sfh.last_seat_input_pos(buf2), 0)
+        self.assertFalse(sfh.should_stop(bytearray(buf2), sfh.last_seat_input_pos(buf2)))  # marker was BEFORE
+
+    def test_result_carries_final_url_for_queue_detection(self):
+        resp = FakeResp(b"<title>x</title>", encoding=None)
+        resp.url = "https://queue.amctheatres.com/?c=amc"
+        res = sfh.fetch_seat_page("https://www.amctheatres.com/showtimes/1/seats", None, session=FakeSession(resp))
+        self.assertEqual("https://queue.amctheatres.com/?c=amc", res["url"])
