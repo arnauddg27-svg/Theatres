@@ -206,7 +206,7 @@ jobs:
         run: |
           python3 box-office-tracker/scripts/amc_lock.py acquire \
             --mode "collect-links-${{ github.event.inputs.tz_group }}" \
-            --wait-seconds 3600 \
+            --wait-seconds 7200 \
             --poll-seconds 60 \
             --github-output "$GITHUB_OUTPUT"
 
@@ -222,7 +222,9 @@ jobs:
       - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
         if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
         working-directory: box-office-tracker
-        timeout-minutes: 250
+        # 190 (was 250): lock wait 120m + step 190m + buffers = the 360m job cap
+        # (GitHub's maximum). Two proxied passes at 6 tabs fit comfortably.
+        timeout-minutes: 190
         env:
           # Listings are Cloudflare-walled from GitHub too since 2026-09-09
           # (classified in run 34410821781); Phase 1 follows the seat lane
@@ -380,20 +382,30 @@ jobs:
           export PHASE1_MIN_FRESH_LINK_RATIO=0.90
           if [ -n "$AMC_SEAT_PROXY_URL" ]; then echo "AMC seat proxy: configured (trimmed page loads)"; else echo "AMC seat proxy: none (direct)"; fi
           if [ "${{ github.event.inputs.snapshots_only }}" = "true" ]; then
-            export SNAPSHOT_MAX_CONCURRENT_TABS=3
+            # FULL COLLECTION THROUGH THE PROXY (2026-09-10, operator request).
+            # Through the rotating residential pool every request leaves from a
+            # different address, so the politeness limits that protected a
+            # single datacenter IP (3 tabs, 120-theatre cap) no longer buy
+            # anything: 8 tabs and the whole theatre universe. Direct egress
+            # keeps the old posture (it is Cloudflare-walled anyway).
+            # Cost through the proxy: ~13k seat loads/slot ≈ 2.5 GB/slot at
+            # $1/GB (DataImpulse), ~8-9 GB/day with Phase 1 — the operator
+            # accepted this over the 120-theatre cap (~2-3 GB/day).
+            if [ -n "$AMC_SEAT_PROXY_URL" ]; then
+              export SNAPSHOT_MAX_CONCURRENT_TABS=8
+              export SNAPSHOT_TOP_THEATRE_CAP=1000
+            else
+              export SNAPSHOT_MAX_CONCURRENT_TABS=3
+              export SNAPSHOT_TOP_THEATRE_CAP=120
+            fi
             # Budget chain: lock wait 120m + step 190m + 50m buffers = 360m job cap,
             # so the extra room comes from the repair budget (2700 -> 1800), not
             # the step timeout. Demand-first ordering drops the least-informative
             # tail when the cap binds.
-            # 120 (was 200) since 2026-09-04: snapshots were ~2/3 of AMC seat-page
-            # volume; with seat traffic billed per GB through the residential
-            # proxy, the operator chose to trade snapshot breadth for cost. The
-            # post-show census (the model's core input) is uncapped.
-            export SNAPSHOT_TOP_THEATRE_CAP=120
             export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=9000
             export PHASE1_DEADLINE_SEC=1800
-            export PHASE1_MAX_THEATRE_DATE_VISITS=500
+            export PHASE1_MAX_THEATRE_DATE_VISITS=1000
             export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
             echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           else
@@ -701,7 +713,13 @@ jobs:
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
-        run: python predict.py
+        env:
+          # predict's capped-probe denominator must agree with the cap the
+          # scrape job actually ran (see the Phase 2 step).
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+        run: |
+          if [ -n "$AMC_SEAT_PROXY_URL" ]; then export SNAPSHOT_TOP_THEATRE_CAP=1000; else export SNAPSHOT_TOP_THEATRE_CAP=120; fi
+          python predict.py
 
       - name: Refresh Excel workbook
         if: steps.finalize_guard.outputs.needs_finalize == 'true'

@@ -4689,7 +4689,12 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         },
         "theatres": {},
     }
-    sem = asyncio.Semaphore(MAX_CONCURRENT_TABS_PHASE1)
+    # Through the rotating proxy each tab's requests leave from different
+    # addresses, so the 2-tab politeness limit for a single datacenter IP is
+    # moot: 6 tabs cut a 45-min proxied pass to ~15 (2026-09-10).
+    sem = asyncio.Semaphore(_env_int("PHASE1_MAX_CONCURRENT_TABS",
+                                     6 if _phase1_proxy_on() else MAX_CONCURRENT_TABS_PHASE1,
+                                     minimum=1))
     phase1_deadline_sec = int(deadline_sec) if deadline_sec else PHASE1_DEADLINE_SEC
     deadline_at = time.monotonic() + phase1_deadline_sec
     # Cloudflare block streak (mirrors Phase 2): once this many consecutive

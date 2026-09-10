@@ -89,6 +89,8 @@ class WorkflowReliabilityTest(unittest.TestCase):
         scrape_end = self.workflow.index("  finalize:", scrape_start)
         scrape_block = self.workflow[scrape_start:scrape_end]
 
+        # proxied: 8 tabs over the whole universe; direct: the old 3-tab posture
+        self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=8", scrape_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", scrape_block)
         self.assertNotIn("SNAPSHOT_DELAY_SECONDS", scrape_block)
         self.assertNotIn("Stagger snapshot-only matrix leg", scrape_block)
@@ -104,9 +106,14 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("timeout-minutes: 190", phase_block)
         self.assertIn("PHASE2_DEADLINE_SEC=9000", phase_block)
         self.assertIn("SNAPSHOT_MAX_CONCURRENT_TABS=3", phase_block)
-        # 120 since 2026-09-04: seat traffic is billed per GB through the
-        # residential proxy; the operator traded snapshot breadth for cost.
+        # 2026-09-10: FULL collection through the residential proxy (cap 1000
+        # = the whole universe, 8 tabs); the 120/3 posture stays for direct.
+        self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=1000", phase_block)
         self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=120", phase_block)
+        # finalize's predict denominator must follow the same switch
+        fin_start = self.workflow.index("  finalize:")
+        fin_block = self.workflow[fin_start:]
+        self.assertIn("export SNAPSHOT_TOP_THEATRE_CAP=1000", fin_block)
         self.assertIn("SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO=0.90", phase_block)
         # Snapshot scrape + targeted link repair must fit the step timeout:
@@ -312,7 +319,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         # that the only such steps are those two known fetches.
         self.assertNotIn(
             "continue-on-error: true",
-            block[block.index("run: python predict.py"):],
+            block[block.index("python predict.py"):],
         )
         # 3 = the best-effort fetches: RT reviews, Wikipedia anticipation, and
         # The Numbers daily actuals (same-week anchors, 2026-08-31). The
@@ -326,7 +333,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn('python scripts/clean_canonical_data.py --repo-root "$GITHUB_WORKSPACE"', block)
         self.assertLess(
             block.index("python scripts/clean_canonical_data.py"),
-            block.index("run: python predict.py"),
+            block.index("python predict.py"),
         )
         self.assertIn("--summary-file /tmp/box-office-merge-summary.json", block)
         self.assertIn("git status --short --", block)
@@ -387,7 +394,7 @@ class WorkflowReliabilityTest(unittest.TestCase):
         release_start = collect_block.index("      - name: Release AMC lock", phase_start)
         phase_block = collect_block[phase_start:release_start]
 
-        self.assertIn("timeout-minutes: 250", phase_block)
+        self.assertIn("timeout-minutes: 190", phase_block)  # 2026-09-10: 120m lock wait + 190m step + buffers = 360m cap
         self.assertIn("PHASE1_FULL_WEEKEND_LINKS: 'true'", phase_block)
         self.assertIn("PHASE1_DEADLINE_SEC: '7200'", phase_block)
         self.assertIn("PHASE1_MIN_FRESH_LINK_RATIO: '0.90'", phase_block)
