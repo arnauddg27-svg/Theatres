@@ -2561,6 +2561,112 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
     return seat_data
 
 
+# ── Streaming HTTP seat fetch (2026-09-10) ───────────────────────────────────
+# Same observation, a fraction of the bytes: see seat_fetch_http.py. Enabled
+# automatically through the proxy (AMC_SEAT_FETCH=auto|http|browser). Safety:
+# every showtime the HTTP path cannot classify falls back to the browser, and
+# the first AMC_HTTP_PARITY_CHECKS showtimes of a leg are ALSO fetched in the
+# browser and compared — any count mismatch disables the HTTP path for the
+# rest of the leg (::warning). Data is never traded for bytes.
+AMC_SEAT_FETCH = (os.environ.get("AMC_SEAT_FETCH") or "auto").strip().lower()
+AMC_HTTP_PARITY_CHECKS = _env_int("AMC_HTTP_PARITY_CHECKS", 20, minimum=0)
+_HTTP_STATE = {"checked": 0, "mismatch": 0, "disabled": False, "http_ok": 0,
+               "http_fallback": 0, "http_blocked": 0, "session": None}
+
+
+def _http_seat_fetch_enabled():
+    if _HTTP_STATE["disabled"]:
+        return False
+    if AMC_SEAT_FETCH == "browser":
+        return False
+    if AMC_SEAT_FETCH == "http":
+        return True
+    return _SEAT_PROXY is not None   # auto: only where bytes are billed
+
+
+def _http_session():
+    if _HTTP_STATE["session"] is None:
+        from curl_cffi import requests as cffi_requests
+        _HTTP_STATE["session"] = cffi_requests.Session(impersonate="chrome")
+    return _HTTP_STATE["session"]
+
+
+def _http_proxy_url():
+    if not _SEAT_PROXY:
+        return None
+    server = _SEAT_PROXY["server"]
+    user, pw = _SEAT_PROXY.get("username"), _SEAT_PROXY.get("password")
+    if user is None:
+        return server
+    from urllib.parse import quote, urlsplit
+    parts = urlsplit(server)
+    return f"{parts.scheme}://{quote(user, safe='')}:{quote(pw or '', safe='')}@{parts.netloc}"
+
+
+def _seat_counts_match(a, b):
+    return bool(a) and bool(b) and a.get("total_seats") == b.get("total_seats") \
+        and a.get("seats_sold") == b.get("seats_sold")
+
+
+async def fetch_amc_seat_map_http(showtime_id):
+    """HTTP path: dict | CF_BLOCK_SENTINEL | None (None = let the browser try)."""
+    import seat_fetch_http
+    url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
+    try:
+        res = await asyncio.to_thread(
+            seat_fetch_http.fetch_seat_page, url, _http_proxy_url(), session=_http_session())
+    except Exception as e:
+        if _is_proxy_error(str(e)):
+            return PROXY_BLOCK_SENTINEL
+        print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
+        return None
+    _EGRESS["bytes"] += res["raw_bytes"]; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+    kind = res["kind"]
+    if kind in ("blocked", "challenge"):
+        _HTTP_STATE["http_blocked"] += 1
+        print(f"      🧱 Cloudflare {kind} on seat map (http) — aborting theatre")
+        return CF_BLOCK_SENTINEL
+    if kind == "seats":
+        return seat_fetch_http.parse_seat_counts(res["html"])
+    return None
+
+
+async def fetch_amc_seat_map(page, showtime_id):
+    """Dispatcher used by the seat lane: HTTP first (through the proxy), the
+    browser for anything the HTTP path could not settle, plus shadow parity
+    checks that switch HTTP off for the leg on the first disagreement."""
+    if not _http_seat_fetch_enabled():
+        return await fetch_amc_seat_map_pw(page, showtime_id)
+    data = await fetch_amc_seat_map_http(showtime_id)
+    if data is None:
+        _HTTP_STATE["http_fallback"] += 1
+        return await fetch_amc_seat_map_pw(page, showtime_id)
+    if data is CF_BLOCK_SENTINEL or data is PROXY_BLOCK_SENTINEL:
+        return data
+    _HTTP_STATE["http_ok"] += 1
+    if _HTTP_STATE["checked"] < AMC_HTTP_PARITY_CHECKS:
+        _HTTP_STATE["checked"] += 1
+        browser_data = await fetch_amc_seat_map_pw(page, showtime_id)
+        if isinstance(browser_data, dict) and browser_data.get("total_seats") \
+                and browser_data is not CF_BLOCK_SENTINEL and browser_data is not PROXY_BLOCK_SENTINEL \
+                and browser_data is not QUEUE_SENTINEL:
+            if not _seat_counts_match(data, browser_data):
+                _HTTP_STATE["mismatch"] += 1
+                _HTTP_STATE["disabled"] = True
+                print(f"::warning::HTTP seat fetch disagreed with the browser on showtime "
+                      f"{showtime_id} (http {data} vs browser {browser_data}) — HTTP path "
+                      f"DISABLED for this leg; browser results used", flush=True)
+                return browser_data
+    return data
+
+
+def _http_fetch_summary():
+    st = _HTTP_STATE
+    return (f"🧵 http seat fetch: ok={st['http_ok']} fallback={st['http_fallback']} "
+            f"blocked={st['http_blocked']} parity_checked={st['checked']} "
+            f"mismatch={st['mismatch']} disabled={st['disabled']}")
+
+
 COUNT_SEATS_JS = r'''() => {
     const inputs = document.querySelectorAll('input[aria-label]');
     let total = 0;
@@ -4453,18 +4559,18 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                 flags = show.get("flags", "")
 
                 await asyncio.sleep(random.uniform(0.5, 1.5))
-                seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                seat_data = await fetch_amc_seat_map(page, show.get("showtime_id"))
                 attempts = 1
                 # rotating pool: a Cloudflare wall is a bad IP draw — redraw
                 # (each navigation = new IP) before judging the showtime
                 while _proxy_retry_worthwhile(seat_data, attempts):
                     await asyncio.sleep(random.uniform(1.0, 2.5))
-                    seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                    seat_data = await fetch_amc_seat_map(page, show.get("showtime_id"))
                     attempts += 1
                 if seat_data is None:
                     # One retry with a short delay to work around transient blocks
                     await asyncio.sleep(random.uniform(2.0, 4.0))
-                    seat_data = await fetch_amc_seat_map_pw(page, show.get("showtime_id"))
+                    seat_data = await fetch_amc_seat_map(page, show.get("showtime_id"))
                 sentinel_issue = _sentinel_issue(seat_data, theatre["name"])
                 if sentinel_issue is not None:
                     action, consecutive_blocked = _proxy_block_outcome(seat_data, consecutive_blocked)
@@ -6000,6 +6106,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         except Exception:
             pass
     print(_egress_summary("seat lane"), flush=True)
+    if _http_seat_fetch_enabled() or _HTTP_STATE["checked"] or _HTTP_STATE["disabled"]:
+        print(_http_fetch_summary(), flush=True)
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
     if snapshot_rows_skipped:
