@@ -415,6 +415,19 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn('if [ -f "box-office-tracker/data/polymarket-markets.csv" ]; then', commit_block)
         self.assertNotIn("box-office-tracker/data/polymarket-markets.csv 2>/dev/null || true", commit_block)
 
+    def test_lock_acquire_steps_outlive_their_own_wait(self):
+        # audit-13: collect-links waited 7200s inside a 90-minute step and died
+        # at 90 min while a full-universe snapshot slot held the lock ~2h50.
+        for job, nxt in (("  collect-links:", "  scrape:"), ("  scrape:", "  finalize:")):
+            start = self.workflow.index(job)
+            block = self.workflow[start:self.workflow.index(nxt, start + 1)]
+            acquire = block.index("amc_lock.py acquire")
+            step_start = block.rfind("      - name:", 0, acquire)
+            step = block[step_start:acquire]
+            step_timeout = int(re.search(r"timeout-minutes: (\d+)", step).group(1))
+            wait_min = int(re.search(r"--wait-seconds (\d+)", block[acquire:]).group(1)) // 60
+            self.assertGreaterEqual(step_timeout, wait_min + 5, f"{job.strip()} acquire step {step_timeout}m < wait {wait_min}m")
+
     def test_amc_lock_wait_budget_fits_job_timeouts(self):
         collect_start = self.workflow.index("  collect-links:")
         scrape_start = self.workflow.index("  scrape:")

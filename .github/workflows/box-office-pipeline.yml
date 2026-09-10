@@ -200,7 +200,11 @@ jobs:
         # scheduler's failed-slot retry instead: a timed-out acquire is a RED
         # run now, re-dispatched within ~30 minutes — better than a longer
         # blocking wait the budget cannot afford.
-        timeout-minutes: 90
+        # 130 (was 90, audit-13): the step must OUTLIVE its own 7200 s lock
+        # wait, or it dies at 90 min while a full-universe snapshot slot holds
+        # the lock ~2h50 — collect-links CT 15Z / PT 23Z would fail every
+        # Mon-Wed. Budget: 130 + 190 (Phase 1 step) + buffers = 360.
+        timeout-minutes: 130
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -388,9 +392,8 @@ jobs:
             # single datacenter IP (3 tabs, 120-theatre cap) no longer buy
             # anything: 8 tabs and the whole theatre universe. Direct egress
             # keeps the old posture (it is Cloudflare-walled anyway).
-            # Cost through the proxy: ~13k seat loads/slot ≈ 2.5 GB/slot at
-            # $1/GB (DataImpulse), ~8-9 GB/day with Phase 1 — the operator
-            # accepted this over the 120-theatre cap (~2-3 GB/day).
+            # Cost through the proxy is METERED per leg (📶 / 🧵 lines in the
+            # log); the streaming HTTP seat fetch reads a fraction of each page.
             if [ -n "$AMC_SEAT_PROXY_URL" ]; then
               export SNAPSHOT_MAX_CONCURRENT_TABS=8
               export SNAPSHOT_TOP_THEATRE_CAP=1000

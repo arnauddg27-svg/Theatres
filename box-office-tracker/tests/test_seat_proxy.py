@@ -213,6 +213,30 @@ if __name__ == "__main__":
     unittest.main()
 
 
+class FullUniverseSafetyTest(unittest.TestCase):
+    def test_fatal_floor_is_about_few_rows_not_a_small_fraction_of_a_big_universe(self):
+        # 24% of 950 slices is ~230 slices — never "too sparse to record"
+        big = {"expected_total": 950, "observed_total": 230, "ratio": 230 / 950}
+        self.assertFalse(scraper.snapshot_coverage_failure_is_fatal(big, 2000))
+        # but 24% of 120 (29 slices) still is
+        small = {"expected_total": 120, "observed_total": 29, "ratio": 29 / 120}
+        self.assertTrue(scraper.snapshot_coverage_failure_is_fatal(small, 200))
+        self.assertTrue(scraper.snapshot_coverage_failure_is_fatal({"expected_total": 950, "observed_total": 0, "ratio": 0}, 0))
+
+    def test_timed_out_theatre_keeps_its_rows(self):
+        sink = scraper._new_theatre_sink()
+        sink["csv_rows"].append({"a": 1}); sink["pre_reservation_rows"].extend([{"b": 1}, {"b": 2}])
+        sink["issues"].append("AMC T: earlier issue")
+        results, issues, csv_rows, snap = scraper._harvest_sink(sink, "AMC T", 270)
+        self.assertEqual(1, len(csv_rows)); self.assertEqual(2, len(snap))
+        self.assertEqual(2, len(issues)); self.assertIn("partial (3 rows kept)", issues[-1])
+
+    def test_http_overhead_constant_is_sane(self):
+        self.assertGreaterEqual(scraper.HTTP_FETCH_OVERHEAD_BYTES, 4096)
+        self.assertLessEqual(scraper.HTTP_FETCH_OVERHEAD_BYTES, 16384)
+        self.assertGreaterEqual(scraper.AMC_BROWSER_FALLBACK_CAP, 100)
+
+
 class RotatingProxyRetryPolicyTest(unittest.TestCase):
     """2026-09-09 first DataImpulse run: per-load outcomes were a MIX of clean
     maps, Cloudflare blocks, a challenge and slow renders — bad IP draws, not a

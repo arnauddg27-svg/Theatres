@@ -908,6 +908,7 @@ try:
     SNAPSHOT_FATAL_COVERAGE_RATIO = float(os.getenv("SNAPSHOT_FATAL_COVERAGE_RATIO", "0.25"))
 except ValueError:
     SNAPSHOT_FATAL_COVERAGE_RATIO = 0.25
+SNAPSHOT_FATAL_MIN_SLICES = _env_int("SNAPSHOT_FATAL_MIN_SLICES", 60, minimum=1)
 PHASE1_FULL_WEEKEND_LINKS = _env_bool("PHASE1_FULL_WEEKEND_LINKS", True)
 try:
     PHASE1_MAX_THEATRE_DATE_VISITS = int(os.getenv("PHASE1_MAX_THEATRE_DATE_VISITS", "2000"))
@@ -1187,6 +1188,12 @@ def snapshot_coverage_failure_is_fatal(report, snapshot_rows_written,
         return False
     if snapshot_rows_written <= 0 and report.get("observed_total", 0) <= 0:
         return True
+    # A RATIO floor scales with the universe: at ~950 expected theatre-dates,
+    # 24% coverage is ~230 slices (~2,000 rows) — twice the whole old
+    # 120-theatre sample — and would be thrown away. Sparse means FEW rows,
+    # not a small fraction of a big universe (audit-13).
+    if report.get("observed_total", 0) >= SNAPSHOT_FATAL_MIN_SLICES:
+        return False
     ratio = report.get("ratio")
     if ratio is not None and ratio < fatal_ratio:
         return True
@@ -2608,6 +2615,10 @@ def _http_proxy_url():
 
 AMC_HTTP_FALLBACK_BREAKER = _env_int("AMC_HTTP_FALLBACK_BREAKER", 30, minimum=5)
 AMC_HTTP_MIN_SUCCESS_RATIO = 0.2
+AMC_BROWSER_FALLBACK_CAP = _env_int("AMC_BROWSER_FALLBACK_CAP", 200, minimum=10)
+# Per-fetch bytes the body counter cannot see: CONNECT + TLS handshake + request
+# and response headers on a fresh proxy tunnel (audit-13 estimate).
+HTTP_FETCH_OVERHEAD_BYTES = 6 * 1024
 
 
 def _seat_counts_match(http_data, browser_data, tolerance=2):
@@ -2636,8 +2647,9 @@ async def fetch_amc_seat_map_http(showtime_id):
             return PROXY_BLOCK_SENTINEL
         print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
         return None
-    _EGRESS["bytes"] += res["raw_bytes"]; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
-    _HTTP_STATE["http_bytes"] += res["raw_bytes"]
+    billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
+    _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+    _HTTP_STATE["http_bytes"] += billed
     if _is_queue_url(res.get("url", "")):
         print(f"      🚧 AMC queue redirect on seat map (http) — aborting theatre")
         return QUEUE_SENTINEL
@@ -4492,9 +4504,21 @@ def linked_markets_for_phase1_saved_links(poly_markets, saved_links, groups,
 
 # ─── Main Orchestrator ───────────────────────────────────────────────────────
 
+def _new_theatre_sink():
+    """Lists a theatre pass fills AS IT GOES, so a per-theatre timeout can
+    still harvest what was captured instead of dropping it (audit-13)."""
+    return {"results": [], "issues": [], "csv_rows": [], "pre_reservation_rows": []}
+
+
+def _harvest_sink(sink, name, timeout_sec):
+    """Outcome tuple for a theatre that timed out: keep everything it read."""
+    issues = list(sink["issues"]) + [f"{name}: timeout after {timeout_sec}s — partial ({len(sink['csv_rows']) + len(sink['pre_reservation_rows'])} rows kept)"]
+    return sink["results"], issues, sink["csv_rows"], sink["pre_reservation_rows"]
+
+
 async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
                           weekend_of="", run_id="", saved_movies=None, test_mode=False,
-                          capture_pre_reservations=False):
+                          capture_pre_reservations=False, sink=None):
     """
     Scrape one theatre's seat maps using pre-collected Phase 1 showtime IDs.
 
@@ -4523,10 +4547,11 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     ])
     page = await context.new_page()
     await attach_byte_meter(context, page)
-    results = []
-    issues = []
-    csv_rows = []
-    pre_reservation_rows = []
+    sink = sink if sink is not None else _new_theatre_sink()
+    results = sink["results"]
+    issues = sink["issues"]
+    csv_rows = sink["csv_rows"]
+    pre_reservation_rows = sink["pre_reservation_rows"]
     # Use the passed date_str (already adjusted to local TZ) as the CSV date stamp
     today = date_str
     day_of_week = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
@@ -6004,6 +6029,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
               f"trim={'ON' if AMC_SEAT_TRIM else 'off'}", flush=True)
 
         cf_block_streak = 0
+        fallback_names = set()
 
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
@@ -6038,6 +6064,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     )
                 )
                 theatre_saved = phase1_entry_movies(saved_entry, t_date)
+                if snapshots_only and _SEAT_PROXY and _HTTP_STATE["disabled"]:
+                    # Browser-only fallback at full universe would run ~6h and
+                    # blow the deadline; shrink to the top set the browser path
+                    # was sized for (audit-13).
+                    if not fallback_names:
+                        fallback_names.update(select_snapshot_theatre_names(
+                            theatres_map, groups=snapshot_selection_groups,
+                            cap=AMC_BROWSER_FALLBACK_CAP) or ())
+                        print(f"::warning::HTTP seat fetch is off for this leg — browser fallback "
+                              f"limited to the top {len(fallback_names)} theatres", flush=True)
+                    if name not in fallback_names:
+                        all_issues.append(f"{name}: browser-fallback cap — skipped")
+                        return
+                sink = _new_theatre_sink()
                 try:
                     outcome = await asyncio.wait_for(
                         _scrape_theatre(
@@ -6046,13 +6086,14 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                             saved_movies=theatre_saved,
                             test_mode=bool(test_max),
                             capture_pre_reservations=capture_pre_reservations,
+                            sink=sink,
                         ),
                         timeout=theatre_timeout_sec,
                     )
                 except asyncio.TimeoutError:
-                    all_issues.append(f"{name}: timeout after {theatre_timeout_sec}s — skipped")
-                    print(f"  ⏱️  {name}: timeout after {theatre_timeout_sec}s — moving on")
-                    return
+                    outcome = _harvest_sink(sink, name, theatre_timeout_sec)
+                    print(f"  ⏱️  {name}: timeout after {theatre_timeout_sec}s — keeping "
+                          f"{len(outcome[2]) + len(outcome[3])} rows already read")
                 except Exception as e:
                     all_issues.append(f"{name}: {e}")
                     print(f"  ❌ {name}: {e}")
