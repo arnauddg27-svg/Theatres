@@ -77,3 +77,17 @@ class SnapshotWeekendWiringTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SnapshotDateWindowCapTest(unittest.TestCase):
+    def test_max_dates_keeps_the_nearest_dates_only(self):
+        from datetime import datetime
+        import scraper
+        # Tuesday 2026-09-08 12:00 local -> pre-opening window Thu..Sun of 2026-09-11
+        local = datetime(2026, 9, 8, 12, 0)
+        full = scraper.phase2_snapshot_collection_dates(local, max_dates=0)
+        self.assertEqual(["2026-09-10", "2026-09-11", "2026-09-12", "2026-09-13"], full)
+        self.assertEqual(full[:2], scraper.phase2_snapshot_collection_dates(local, max_dates=2))
+        self.assertEqual(full, scraper.phase2_snapshot_collection_dates(local, max_dates=9))
+        # the module default (env unset) is the full window
+        self.assertEqual(0, scraper.SNAPSHOT_MAX_DATES)

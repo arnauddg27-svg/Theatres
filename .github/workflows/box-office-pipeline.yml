@@ -402,12 +402,22 @@ jobs:
             # so the extra room comes from the repair budget (2700 -> 1800), not
             # the step timeout. Demand-first ordering drops the least-informative
             # tail when the cap binds.
+            # Date window per slot: the late-evening 02:30Z slot (US 22:30 ET,
+            # the day's sales banked) reads the whole remaining window; the two
+            # daytime slots read only the nearest 2 show dates. Far dates move
+            # slowly and the model keeps each date's freshest run, so this cuts
+            # ~1/3 of seat loads with no model change. Ad-hoc runs (no slot)
+            # keep the full window.
+            case "${{ github.event.inputs.schedule_slot }}" in
+              *02:30Z*|"") export SNAPSHOT_MAX_DATES=0 ;;
+              *) export SNAPSHOT_MAX_DATES=2 ;;
+            esac
             export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=9000
             export PHASE1_DEADLINE_SEC=1800
             export PHASE1_MAX_THEATRE_DATE_VISITS=1000
             export SNAPSHOT_MIN_THEATRE_COVERAGE_RATIO=0.80
-            echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
+            echo "Snapshot lane: top theatres=$SNAPSHOT_TOP_THEATRE_CAP max tabs=$SNAPSHOT_MAX_CONCURRENT_TABS max dates=${SNAPSHOT_MAX_DATES} (0=all) deadline=${PHASE2_DEADLINE_SEC}s targeted-link-repair=on"
           else
             export PHASE2_THEATRE_TIMEOUT_SEC=180
             export PHASE1_DEADLINE_SEC=2400

@@ -1008,13 +1008,23 @@ def phase2_expected_dates(groups, snapshots_only=False):
     return {group: phase1_expected_date(group) for group in groups}
 
 
-def phase2_snapshot_collection_dates(local):
+# Efficiency (2026-09-10): far-out show dates change slowly, and the model
+# keeps each (show_date, theatre) slice's freshest run within 8h, so a date
+# read once a day is as good as three times. The yml gives the late-evening
+# 02:30Z slot the whole window and the two daytime slots the nearest N dates
+# (SNAPSHOT_MAX_DATES); 0 = all (ad-hoc runs, and the default in code).
+SNAPSHOT_MAX_DATES = _env_int("SNAPSHOT_MAX_DATES", 0, minimum=0)
+
+
+def phase2_snapshot_collection_dates(local, max_dates=None):
     """Return show dates a snapshot-only Phase 2 should probe.
 
     Snapshot probes cover the remaining opening weekend. Runtime is controlled
     by selecting only the top historical-signal theatres rather than truncating
-    the future-day window.
+    the future-day window — except the explicit SNAPSHOT_MAX_DATES cap, which
+    keeps the NEAREST dates (the ones whose reservations move).
     """
+    max_dates = SNAPSHOT_MAX_DATES if max_dates is None else max_dates
     if local.weekday() in (0, 1, 2):  # Mon-Wed pre-opening (early-lead reads)
         weekend = phase1_weekend_anchor(local, full_weekend=True)
         start = local + timedelta(days=1)
@@ -1032,6 +1042,8 @@ def phase2_snapshot_collection_dates(local):
         for date_str in opening_weekend_show_dates(weekend)
         if start_date <= date_str <= end_date
     ]
+    if max_dates and len(dates) > max_dates:
+        dates = dates[:max_dates]
     if dates:
         return dates
     return []
