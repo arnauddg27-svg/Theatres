@@ -2586,8 +2586,8 @@ def _http_seat_fetch_enabled():
 
 def _http_session():
     if _HTTP_STATE["session"] is None:
-        from curl_cffi import requests as cffi_requests
-        _HTTP_STATE["session"] = cffi_requests.Session(impersonate="chrome")
+        import seat_fetch_http
+        _HTTP_STATE["session"] = seat_fetch_http.make_session()
     return _HTTP_STATE["session"]
 
 
@@ -2603,9 +2603,19 @@ def _http_proxy_url():
     return f"{parts.scheme}://{quote(user, safe='')}:{quote(pw or '', safe='')}@{parts.netloc}"
 
 
-def _seat_counts_match(a, b):
-    return bool(a) and bool(b) and a.get("total_seats") == b.get("total_seats") \
-        and a.get("seats_sold") == b.get("seats_sold")
+AMC_HTTP_FALLBACK_BREAKER = _env_int("AMC_HTTP_FALLBACK_BREAKER", 30, minimum=5)
+
+
+def _seat_counts_match(http_data, browser_data, tolerance=2):
+    """Parity rule: the auditorium (total) must agree exactly; the browser
+    read happens a few seconds LATER, so it may show up to `tolerance` more
+    seats sold — never fewer."""
+    if not http_data or not browser_data:
+        return False
+    if http_data.get("total_seats") != browser_data.get("total_seats"):
+        return False
+    delta = int(browser_data.get("seats_sold", 0)) - int(http_data.get("seats_sold", 0))
+    return 0 <= delta <= tolerance
 
 
 async def fetch_amc_seat_map_http(showtime_id):
@@ -2640,6 +2650,14 @@ async def fetch_amc_seat_map(page, showtime_id):
     data = await fetch_amc_seat_map_http(showtime_id)
     if data is None:
         _HTTP_STATE["http_fallback"] += 1
+        if (_HTTP_STATE["http_fallback"] >= AMC_HTTP_FALLBACK_BREAKER
+                and _HTTP_STATE["http_ok"] == 0 and not _HTTP_STATE["disabled"]):
+            # Paying for every page twice (HTTP then browser) with nothing to
+            # show for it — the HTTP path does not work in this environment.
+            _HTTP_STATE["disabled"] = True
+            print(f"::warning::HTTP seat fetch never produced a usable page in "
+                  f"{_HTTP_STATE['http_fallback']} attempts — DISABLED for this leg (browser only)",
+                  flush=True)
         return await fetch_amc_seat_map_pw(page, showtime_id)
     if data is CF_BLOCK_SENTINEL or data is PROXY_BLOCK_SENTINEL:
         return data

@@ -52,11 +52,21 @@ class ParserParityTest(unittest.TestCase):
         self.assertEqual("challenge", sfh.classify_page("<title>Just a moment...</title>"))
         self.assertEqual("other", sfh.classify_page("<title>Select Seats</title><p>We use cookies</p>"))
 
-    def test_early_stop_rule(self):
-        self.assertFalse(sfh.should_stop(b"self.__next_f.push", seen_seat_input=False))
-        self.assertTrue(sfh.should_stop(b"...self.__next_f.push(", seen_seat_input=True))
-        self.assertTrue(sfh.should_stop(b"</main>", True))
-        self.assertFalse(sfh.should_stop(b"<input aria-label='Seat A1'>", True))
+    def test_early_stop_rule_only_counts_markers_after_the_last_seat_input(self):
+        # no seat input yet -> never stop, even on a marker
+        self.assertFalse(sfh.should_stop(b"<script>self.__next_f.push(1)</script>", -1))
+        buf = b"<script>self.__next_f.push(1)</script><input aria-label='Seat A1'><input aria-label='Seat A2'>"
+        pos = sfh.last_seat_input_pos(buf)
+        self.assertGreater(pos, 0)
+        # marker BEFORE the seats must not stop the read (Next.js interleaves flight scripts)
+        self.assertFalse(sfh.should_stop(buf, pos))
+        # marker AFTER the last seat input ends the read
+        self.assertTrue(sfh.should_stop(buf + b" disabled></form></main>", pos))
+        self.assertTrue(sfh.should_stop(buf + b"<script>self.__next_f.push(", pos))
+        # incremental rescan finds an input that straddles a chunk boundary
+        whole = b"x" * 1000 + b"<input aria-label='Seat B1'>"
+        self.assertEqual(sfh.last_seat_input_pos(whole), sfh.last_seat_input_pos(whole, search_from=990))
+        self.assertEqual(-1, sfh.last_seat_input_pos(whole, search_from=1010))
 
 
 class FakeResp:
@@ -108,6 +118,17 @@ class StreamingFetchTest(unittest.TestCase):
         self.assertFalse(res["stopped_early"])
 
 
+class ParityToleranceTest(unittest.TestCase):
+    def test_browser_may_show_a_couple_more_sold_never_fewer(self):
+        h = {"total_seats": 100, "seats_sold": 10}
+        self.assertTrue(scraper._seat_counts_match(h, {"total_seats": 100, "seats_sold": 10}))
+        self.assertTrue(scraper._seat_counts_match(h, {"total_seats": 100, "seats_sold": 12}))
+        self.assertFalse(scraper._seat_counts_match(h, {"total_seats": 100, "seats_sold": 13}))
+        self.assertFalse(scraper._seat_counts_match(h, {"total_seats": 100, "seats_sold": 9}))
+        self.assertFalse(scraper._seat_counts_match(h, {"total_seats": 101, "seats_sold": 10}))
+        self.assertFalse(scraper._seat_counts_match(None, h))
+
+
 class DispatcherTest(unittest.TestCase):
     def setUp(self):
         self.orig = dict(scraper._HTTP_STATE), scraper._SEAT_PROXY, scraper.AMC_SEAT_FETCH
@@ -133,7 +154,9 @@ class DispatcherTest(unittest.TestCase):
     def test_parity_mismatch_disables_http_and_uses_browser(self):
         scraper.AMC_SEAT_FETCH = "http"
         http_result = {"total_seats": 100, "seats_sold": 10, "seats_available": 90, "occupancy_pct": 10.0}
-        browser_result = {"total_seats": 100, "seats_sold": 12, "seats_available": 88, "occupancy_pct": 12.0}
+        # a DIFFERENT auditorium size is a real disagreement (a couple more sold
+        # seats in the later browser read is not — see ParityToleranceTest)
+        browser_result = {"total_seats": 98, "seats_sold": 10, "seats_available": 88, "occupancy_pct": 10.2}
         async def fake_http(sid): return dict(http_result)
         async def fake_pw(page, sid): return dict(browser_result)
         orig = (scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw)
@@ -149,6 +172,23 @@ class DispatcherTest(unittest.TestCase):
             self.assertEqual(browser_result, out2)
         finally:
             scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw = orig
+
+    def test_breaker_disables_http_after_only_fallbacks(self):
+        scraper.AMC_SEAT_FETCH = "http"
+        async def fake_http(sid): return None
+        async def fake_pw(page, sid): return {"total_seats": 5, "seats_sold": 1}
+        orig = (scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw, scraper.AMC_HTTP_FALLBACK_BREAKER)
+        try:
+            scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw = fake_http, fake_pw
+            scraper.AMC_HTTP_FALLBACK_BREAKER = 5
+            with redirect_stdout(io.StringIO()) as buf:
+                for i in range(6):
+                    self._run(scraper.fetch_amc_seat_map(None, str(i)))
+            self.assertTrue(scraper._HTTP_STATE["disabled"])
+            self.assertIn("DISABLED for this leg", buf.getvalue())
+            self.assertEqual(5, scraper._HTTP_STATE["http_fallback"])   # 6th call went straight to the browser
+        finally:
+            scraper.fetch_amc_seat_map_http, scraper.fetch_amc_seat_map_pw, scraper.AMC_HTTP_FALLBACK_BREAKER = orig
 
     def test_http_none_falls_back_and_sentinels_pass_through(self):
         scraper.AMC_SEAT_FETCH = "http"

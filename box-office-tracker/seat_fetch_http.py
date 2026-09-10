@@ -88,12 +88,28 @@ def classify_page(html: str) -> str:
     return "other"
 
 
-def should_stop(buffer: bytes, seen_seat_input: bool) -> bool:
-    """Pure early-stop rule: after the first seat input, stop at the first
-    marker that can only follow the seat block."""
-    if not seen_seat_input:
+SEAT_INPUT_RE_B = re.compile(rb"<input\b[^>]*aria-label", re.I)
+
+
+def last_seat_input_pos(buffer: bytes, search_from: int = 0) -> int:
+    """Byte offset just past the LAST `<input … aria-label` at or after
+    search_from, or -1 when there is none in that range."""
+    pos = -1
+    for m in SEAT_INPUT_RE_B.finditer(buffer, max(0, search_from)):
+        pos = m.end()
+    return pos
+
+
+def should_stop(buffer: bytes, last_input_end: int) -> bool:
+    """Pure early-stop rule: stop only at a marker that appears AFTER the last
+    seat input seen so far. Next.js streams flight-data scripts interleaved
+    with markup, so a marker BEFORE the seat block must never end the read
+    (that would truncate the seats); a marker after it means the block is
+    behind us."""
+    if last_input_end < 0:
         return False
-    return any(marker in buffer for marker in STOP_MARKERS)
+    tail = buffer[last_input_end:]
+    return any(marker in tail for marker in STOP_MARKERS)
 
 
 class _Inflater:
@@ -113,27 +129,33 @@ class _Inflater:
             self.feed = lambda b: b
 
 
+def make_session(impersonate: str = "chrome"):
+    """curl_cffi session that hands us the body AS SENT ON THE WIRE (compressed),
+    so raw_bytes == what the proxy bills; we inflate incrementally ourselves.
+    curl_cffi keeps one curl handle per THREAD inside a Session, so one shared
+    session is safe across asyncio.to_thread workers."""
+    from curl_cffi import requests as cffi_requests
+    from curl_cffi.const import CurlOpt
+    return cffi_requests.Session(impersonate=impersonate,
+                                 curl_options={CurlOpt.HTTP_CONTENT_DECODING: 0})
+
+
 def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
                     impersonate: str = "chrome", session=None) -> dict:
     """Stream the seat page and stop early. Returns
     {'html': str, 'raw_bytes': int, 'status': int, 'kind': str, 'stopped_early': bool}.
     Never raises for HTTP-level trouble; network errors propagate to the caller.
     """
-    from curl_cffi import requests as cffi_requests
-    from curl_cffi.const import CurlOpt
-
-    sess = session or cffi_requests.Session(impersonate=impersonate)
+    sess = session or make_session(impersonate)
     kwargs = {"stream": True, "timeout": timeout,
               "headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                           "Accept-Language": "en-US,en;q=0.9"}}
     if proxy_url:
         kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
-    # Receive the body as sent on the wire (compressed) so raw_bytes == billed bytes.
-    kwargs["curl_options"] = {CurlOpt.HTTP_CONTENT_DECODING: 0}
     resp = sess.get(url, **kwargs)
     raw = 0
     out = bytearray()
-    seen_seat = False
+    last_input_end = -1
     stopped = False
     try:
         inflater = _Inflater(resp.headers.get("content-encoding", ""))
@@ -141,16 +163,19 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
             if not chunk:
                 continue
             raw += len(chunk)
+            before = len(out)
             try:
                 out += inflater.feed(chunk)
             except Exception:
                 # decoder confusion: keep what we have, stop reading
                 stopped = True
                 break
-            if not seen_seat:
-                tail = bytes(out[-CHUNK * 4:])
-                seen_seat = b"aria-label" in tail and INPUT_TAG_RE.search(tail.decode("utf-8", "ignore")) is not None
-            if should_stop(bytes(out[-CHUNK * 3:]), seen_seat) or raw >= MAX_RAW_BYTES:
+            # an <input …aria-label may straddle the chunk boundary: rescan a
+            # little before the new bytes
+            pos = last_seat_input_pos(bytes(out), search_from=max(0, before - 512))
+            if pos > last_input_end:
+                last_input_end = pos
+            if should_stop(bytes(out), last_input_end) or raw >= MAX_RAW_BYTES:
                 stopped = True
                 break
     finally:
