@@ -713,6 +713,68 @@ def _phase1_should_block_request(resource_type, trim=None):
     return bool(trim) and (resource_type or "") in _PHASE1_TRIM_RESOURCE_TYPES
 
 
+# EGRESS BYTE METER (2026-09-10): the proxy bills per GB and estimates from
+# raw page size were 4-5x too high (pages arrive compressed). Every seat-lane
+# and Phase 1 page attaches a CDP Network listener; each leg prints what it
+# actually pulled so cost is measured, not guessed.
+_EGRESS = {"bytes": 0, "responses": 0, "documents": 0}
+
+
+def _egress_reset():
+    _EGRESS.update(bytes=0, responses=0, documents=0)
+
+
+def _egress_summary(label):
+    mb = _EGRESS["bytes"] / 1048576
+    docs = _EGRESS["documents"] or 1
+    return (f"📶 {label} egress: {mb:.1f} MB over {_EGRESS['responses']} responses, "
+            f"{_EGRESS['documents']} page loads (~{_EGRESS['bytes'] / docs / 1024:.0f} KB/page)")
+
+
+async def attach_byte_meter(context, page):
+    """Count wire bytes (encodedDataLength = compressed, what the proxy bills)
+    for everything this page loads. Best-effort: never lets a CDP hiccup
+    break scraping."""
+    try:
+        cdp = await context.new_cdp_session(page)
+        await cdp.send("Network.enable")
+        types = {}
+        cdp.on("Network.requestWillBeSent",
+               lambda ev: types.__setitem__(ev.get("requestId"), ev.get("type", "")))
+        def _done(ev):
+            _EGRESS["bytes"] += int(ev.get("encodedDataLength", 0) or 0)
+            _EGRESS["responses"] += 1
+            if types.get(ev.get("requestId")) == "Document":
+                _EGRESS["documents"] += 1
+        cdp.on("Network.loadingFinished", _done)
+    except Exception:
+        pass
+
+
+# Phase 1 trim levels. Listings are Next.js pages; if the showtime sections are
+# server-rendered, scripts (the bulk of the page) can go too. "full" is tried
+# first and the run falls back to "light" by itself the first time a rendered
+# page has no sections under full trim but does under light (adaptive).
+_PHASE1_TRIM_LEVELS = {
+    "light": frozenset({"image", "media", "font"}),
+    "full": frozenset({"image", "media", "font", "script", "stylesheet", "ping", "other", "manifest"}),
+}
+AMC_PHASE1_TRIM_LEVEL = (os.environ.get("AMC_PHASE1_TRIM_LEVEL") or "full").strip().lower()
+_PHASE1_FULL_TRIM_OK = None   # None = untested this run, True = SSR confirmed, False = needs scripts
+
+
+def _phase1_trim_types(level):
+    return _PHASE1_TRIM_LEVELS.get(level, _PHASE1_TRIM_LEVELS["light"])
+
+
+def _phase1_effective_trim_level():
+    if not (AMC_PHASE1_TRIM and _phase1_proxy_on()):
+        return None
+    if AMC_PHASE1_TRIM_LEVEL == "full" and _PHASE1_FULL_TRIM_OK is not False:
+        return "full"
+    return "light"
+
+
 def phase1_abort_threshold(proxy_on=None):
     """Consecutive blocked listings that abandon a Phase 1 pass. Through a
     rotating pool a block is a bad IP draw (~40-60% of draws on 2026-09-09),
@@ -4304,6 +4366,7 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
          "domain": ".amctheatres.com", "path": "/", "sameSite": "Lax"},
     ])
     page = await context.new_page()
+    await attach_byte_meter(context, page)
     results = []
     issues = []
     csv_rows = []
@@ -4467,7 +4530,7 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     No seat maps fetched — just links for later.
     Returns dict: {movie_title: [{showtime, showtime_id, format}, ...]}
     """
-    async def _new_page():
+    async def _new_page(level=None):
         ctx = await browser.new_context(
             viewport={"width": 1280, "height": 800},
             user_agent=random.choice(_USER_AGENTS),
@@ -4475,10 +4538,13 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
         )
         await ctx.add_init_script(_STEALTH_INIT_SCRIPT)
         pg = await ctx.new_page()
-        if _phase1_should_block_request("image"):
+        await attach_byte_meter(ctx, pg)
+        level = level or _phase1_effective_trim_level()
+        if level:
+            blocked = _phase1_trim_types(level)
             async def _trim(route):
                 try:
-                    if _phase1_should_block_request(route.request.resource_type):
+                    if (route.request.resource_type or "") in blocked or "_rsc=" in route.request.url:
                         await route.abort()
                     else:
                         await route.continue_()
@@ -4487,13 +4553,34 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
             await pg.route("**/*", _trim)
         return ctx, pg
 
-    context, page = await _new_page()
+    global _PHASE1_FULL_TRIM_OK
+    level = _phase1_effective_trim_level()
+    context, page = await _new_page(level)
     collected = {}
     reason = "empty"
     try:
         await asyncio.sleep(random.uniform(0.5, 2.5))
         showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
         reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
+        if level == "full" and not showtimes and reason == "empty" and _PHASE1_FULL_TRIM_OK is None:
+            # Adaptive: a rendered page with no sections under FULL trim may
+            # simply need its scripts. Re-read once with light trim; the
+            # answer settles the trim level for the rest of this run.
+            try:
+                await asyncio.wait_for(context.close(), timeout=10)
+            except Exception:
+                pass
+            context, page = await _new_page("light")
+            retry = await fetch_amc_showtimes_pw(page, theatre, date_str)
+            if retry and not showtimes:
+                _PHASE1_FULL_TRIM_OK = False
+                print("  ↷ listings need scripts — Phase 1 trim falls back to LIGHT for this run")
+            elif getattr(retry, "reason", "empty") == "empty":
+                _PHASE1_FULL_TRIM_OK = True
+            showtimes = retry
+            reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
+        elif level == "full" and showtimes and _PHASE1_FULL_TRIM_OK is None:
+            _PHASE1_FULL_TRIM_OK = True
         # Rotating proxy: a Cloudflare wall is a bad IP draw — redraw with a
         # FRESH context (new connections = new exit IP) a couple of times.
         attempts = 1
@@ -4663,6 +4750,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         PHASE1_MAX_THEATRE_DATE_VISITS,
     )
 
+    _egress_reset()
     print(f"\n🏛️  Visiting {len(all_theatres)} theatres to collect links...")
     print(f"   Cohorts: {_cohort_counts(all_theatres)}")
     total_requested_visits = len(all_theatres) + len(capacity_skipped)
@@ -4719,7 +4807,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         else:
             browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
         print(f"🌐 listing egress: proxy={'ON' if _phase1_proxy_on() else 'off'} "
-              f"trim={'ON' if _phase1_should_block_request('image') else 'off'} "
+              f"trim={_phase1_effective_trim_level() or 'off'} "
               f"abort-after={phase1_abort_threshold()} blocked listings", flush=True)
 
         async def bounded(theatre):
@@ -4844,6 +4932,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             await asyncio.wait_for(browser.close(), timeout=15)
         except Exception:
             pass
+    print(_egress_summary(f"Phase 1 ({tz_group})"), flush=True)
 
     total_links = 0
     for outcome in outcomes:
@@ -5744,6 +5833,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             print(f"::error::seat-lane browser failed to launch "
                   f"({type(exc).__name__}: {str(exc)[:80]}) — this leg yields no rows",
                   flush=True)
+        _egress_reset()
         print(f"🌐 seat-lane egress: proxy={'ON' if _SEAT_PROXY else 'off'} "
               f"trim={'ON' if AMC_SEAT_TRIM else 'off'}", flush=True)
 
@@ -5897,6 +5987,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             await asyncio.wait_for(browser.close(), timeout=15)
         except Exception:
             pass
+    print(_egress_summary("seat lane"), flush=True)
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
     if snapshot_rows_skipped:

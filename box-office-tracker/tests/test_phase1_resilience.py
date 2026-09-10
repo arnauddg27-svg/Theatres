@@ -274,3 +274,52 @@ class EarlyBlockClassificationTest(unittest.TestCase):
 
     def test_repair_budget_floor_is_one_pass(self):
         self.assertGreaterEqual(scraper.PHASE1_REPAIR_BUDGET_SEC, scraper.PHASE1_REPAIR_MIN_PASS_SEC)
+
+
+class TrimLevelAndMeterTest(unittest.TestCase):
+    def test_trim_levels(self):
+        full, light = scraper._phase1_trim_types("full"), scraper._phase1_trim_types("light")
+        self.assertIn("script", full); self.assertNotIn("script", light)
+        self.assertNotIn("document", full); self.assertNotIn("xhr", full)
+        self.assertEqual(light, scraper._phase1_trim_types("nonsense"))
+
+    def test_effective_level_follows_proxy_and_adaptive_flag(self):
+        orig = (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM,
+                scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK)
+        try:
+            scraper._SEAT_PROXY = None
+            self.assertIsNone(scraper._phase1_effective_trim_level())      # direct: no trim
+            scraper._SEAT_PROXY = {"server": "http://x"}; scraper.AMC_PHASE1_PROXY = True
+            scraper.AMC_PHASE1_TRIM = True; scraper.AMC_PHASE1_TRIM_LEVEL = "full"
+            scraper._PHASE1_FULL_TRIM_OK = None
+            self.assertEqual("full", scraper._phase1_effective_trim_level())
+            scraper._PHASE1_FULL_TRIM_OK = False
+            self.assertEqual("light", scraper._phase1_effective_trim_level())
+        finally:
+            (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM,
+             scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK) = orig
+
+    def test_adaptive_fallback_when_sections_need_scripts(self):
+        # full-trim read finds nothing, light-trim read finds sections -> the
+        # run switches to light and keeps the sections
+        ok = {"sections": [{"movie": "Runner", "showtime": "7:00pm", "showtime_id": "1"}]}
+        b = FakeBrowser([{"sections": None}, ok])
+        orig = (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK)
+        try:
+            scraper._SEAT_PROXY = {"server": "http://x"}; scraper.AMC_PHASE1_PROXY = True
+            scraper.AMC_PHASE1_TRIM_LEVEL = "full"; scraper._PHASE1_FULL_TRIM_OK = None
+            with redirect_stdout(io.StringIO()):
+                out = _run(scraper._collect_links_theatre(b, {"name": "AMC T", "slug": "amc-t"}, "2026-09-11", ["Runner"]))
+            self.assertEqual(["Runner"], list(out))
+            self.assertIs(False, scraper._PHASE1_FULL_TRIM_OK)
+            self.assertEqual(2, len(b.contexts))
+        finally:
+            (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL, scraper._PHASE1_FULL_TRIM_OK) = orig
+
+    def test_meter_summary_never_divides_by_zero(self):
+        scraper._egress_reset()
+        self.assertIn("0.0 MB", scraper._egress_summary("x"))
+        scraper._EGRESS.update(bytes=2 * 1048576, responses=10, documents=4)
+        self.assertIn("2.0 MB", scraper._egress_summary("x"))
+        self.assertIn("512 KB/page", scraper._egress_summary("x"))
+        scraper._egress_reset()
