@@ -2658,6 +2658,16 @@ async def fetch_amc_seat_map_http(showtime_id):
               f"{res.get('decoded_bytes', 0) // 1024}KB enc={res.get('encoding')} early={res['stopped_early']} "
               f"first_seat@{res.get('first_seat_input')} last_seat@{res.get('last_seat_input')} "
               f"markers={res.get('markers')} kind={res['kind']}", flush=True)
+        if _HTTP_STATE["http_ok"] < 3 and res["kind"] == "seats":
+            try:
+                diag = seat_fetch_http.diagnose_seat_payload(res["html"].encode("utf-8", "ignore"),
+                                                             res.get("first_seat_input", -1))
+                print(f"      🔬 flight-data before seats: {diag}", flush=True)
+                rsc = await asyncio.to_thread(seat_fetch_http.probe_rsc_endpoint, url,
+                                              _http_proxy_url(), _http_session())
+                print(f"      🔬 RSC endpoint: {rsc}", flush=True)
+            except Exception as e:
+                print(f"      🔬 diag failed: {type(e).__name__}: {str(e)[:120]}", flush=True)
     billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
     _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
     _HTTP_STATE["http_bytes"] += billed

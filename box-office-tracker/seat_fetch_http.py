@@ -205,3 +205,64 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
     res["last_seat_input"] = last_input_end
     res["markers"] = {mk.decode(): b.find(mk) for mk in STOP_MARKERS}
     return res
+
+
+# ── Diagnostics: where else do the seat states live? ─────────────────────────
+_PROBE_KEYS = (b'"isAvailable"', b'"available"', b'"status"', b'"seatType"', b'"seatNumber"',
+               b'"row"', b'"seats"', b'"seatingLayout"', b'Wheelchair', b'Recliner')
+
+
+def _snippet(b: bytes, pos: int, width: int = 240) -> str:
+    return b[max(0, pos - 40): pos + width].decode("utf-8", "ignore").replace("\n", " ")
+
+
+def diagnose_seat_payload(html_bytes: bytes, first_seat_input: int) -> dict:
+    """Counts/positions of JSON-ish seat keys in the flight data BEFORE the
+    seat markup, plus one snippet — to design a JSON-based reader."""
+    head = html_bytes[:first_seat_input] if first_seat_input > 0 else html_bytes
+    out = {"head_bytes": len(head), "keys": {}}
+    for k in _PROBE_KEYS:
+        n = head.count(k)
+        if n:
+            out["keys"][k.decode()] = {"count": n, "first": head.find(k)}
+    for k in (b'"isAvailable"', b'"status"', b'"seatNumber"', b'"seatType"'):
+        i = head.find(k)
+        if i != -1:
+            out["snippet"] = _snippet(head, i)
+            break
+    return out
+
+
+def probe_rsc_endpoint(url: str, proxy_url: str | None, session=None, timeout: float = 30.0) -> dict:
+    """Ask the same URL for its flight payload (Next.js app router honours the
+    RSC:1 header) and report size, content-type and seat-key counts."""
+    sess = session or make_session()
+    kwargs = {"stream": True, "timeout": timeout,
+              "headers": {"RSC": "1", "Accept": "text/x-component,*/*"}}
+    if proxy_url:
+        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
+    resp = sess.get(url, **kwargs)
+    raw = 0
+    out = bytearray()
+    try:
+        inflater = _Inflater(resp.headers.get("content-encoding", ""))
+        for chunk in resp.iter_content(chunk_size=CHUNK):
+            raw += len(chunk)
+            out += inflater.feed(chunk)
+            if raw >= MAX_RAW_BYTES:
+                break
+    finally:
+        try:
+            resp.close()
+        except Exception:
+            pass
+    b = bytes(out)
+    res = {"status": int(getattr(resp, "status_code", 0) or 0), "raw_bytes": raw, "decoded_bytes": len(b),
+           "content_type": str(resp.headers.get("content-type", "")), "keys": {}}
+    for k in _PROBE_KEYS:
+        n = b.count(k)
+        if n:
+            res["keys"][k.decode()] = n
+    i = next((b.find(k) for k in (b'"isAvailable"', b'"status"', b'"seatNumber"') if b.find(k) != -1), -1)
+    res["snippet"] = _snippet(b, i) if i != -1 else b[:240].decode("utf-8", "ignore")
+    return res
