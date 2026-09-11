@@ -45,11 +45,18 @@ def extract_tree(payload: bytes):
         if not m:
             continue
         body = m.group(2)
-        if body.startswith("[") and '"__PAGE__' in body or '"children"' in body[:400]:
+        if '"__PAGE__' in body:
             try:
-                return json.loads(body)
+                obj = json.loads(body)
             except Exception:
                 continue
+            # flight envelope {"f":[[tree, seed, head, ...]]} -> the router tree is f[0][0]
+            if isinstance(obj, dict) and "f" in obj:
+                try:
+                    return obj["f"][0][0]
+                except Exception:
+                    return None
+            return obj
     return None
 
 
@@ -60,16 +67,17 @@ for i, sid in enumerate(picks):
     cond = dict(BASE)
     if etag: cond["If-None-Match"] = etag
     if lm: cond["If-Modified-Since"] = lm
-    if etag or lm:
-        get(url, cond, f"COND {sid}")
-    else:
-        print(f"COND {sid}: no validators offered (etag={etag}, last-modified={lm})", flush=True)
     tree = extract_tree(b)
-    print(f"TREE {sid}: {'found' if tree else 'not found'} {str(tree)[:300] if tree else ''}", flush=True)
+    print(f"TREE {sid}: {'found' if tree else 'not found'} {json.dumps(tree)[:400] if tree else ''}", flush=True)
     if tree and i + 1 < len(picks):
         nxt = f"https://www.amctheatres.com/showtimes/{picks[i+1]}/seats"
-        hdrs = dict(BASE); hdrs["Next-Router-State-Tree"] = urllib.parse.quote(json.dumps(tree, separators=(",", ":")))
-        try:
-            get(nxt, hdrs, f"DIFF {picks[i+1]} (tree from {sid})")
-        except Exception as e:
-            print(f"DIFF: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
+        enc = urllib.parse.quote(json.dumps(tree, separators=(",", ":")))
+        for tag, extra in (("DIFF", {"Next-Router-State-Tree": enc}),
+                           ("DIFF+url", {"Next-Router-State-Tree": enc, "Next-Url": f"/showtimes/{sid}/seats"})):
+            hdrs = dict(BASE); hdrs.update(extra)
+            try:
+                _, body = get(nxt, hdrs, f"{tag} {picks[i+1]} (tree from {sid})")
+                if len(body) < 400:
+                    print(f"{tag} BODY: {body[:400]!r}", flush=True)
+            except Exception as e:
+                print(f"{tag}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
