@@ -273,3 +273,76 @@ def probe_rsc_endpoint(url: str, proxy_url: str | None, session=None, timeout: f
     fa = res["first_available"]
     res["seat_snippet"] = _snippet(b, fa, 500) if fa != -1 else ""
     return res
+
+
+# ── Data-endpoint (RSC flight payload) seat reader ───────────────────────────
+# GET the same URL with `RSC: 1` and Next.js returns the flight payload
+# (text/x-component, ~119 KB gzip vs ~190 KB for the page). Near its end:
+#   "seatingLayout":{"columns":14,"rows":9,"seats":[{"available":true,
+#     "column":1,"row":1,"name":"A14","type":"LoveSeatLeft","seatTier":"Regular",
+#     "shouldDisplay":true}, …]}
+# Cells that are not seats carry type "NotASeat" / shouldDisplay:false.
+_SEAT_OBJ_RE = re.compile(
+    rb'\{"available":(true|false),"column":\d+,"row":\d+,"name":"([^"]*)","type":"([^"]*)","seatTier":"([^"]*)","shouldDisplay":(true|false)\}')
+_NON_SEAT_TYPES = ("notaseat", "wheelchair", "companion", "aisle", "gap", "empty", "blank")
+
+
+def parse_rsc_seats(payload: bytes) -> dict | None:
+    """Seat counts from the flight payload with the SAME exclusions as the
+    markup rule (COUNT_SEATS_JS): non-seat cells, wheelchair and companion
+    cells are skipped; 'sold' = not available."""
+    start = payload.find(b'"seatingLayout"')
+    if start == -1:
+        return None
+    total = sold = 0
+    for m in _SEAT_OBJ_RE.finditer(payload, start):
+        avail, name, typ, _tier, display = m.groups()
+        t = typ.decode("utf-8", "ignore").lower()
+        if display == b"false" or not name or any(k in t for k in _NON_SEAT_TYPES):
+            continue
+        total += 1
+        if avail == b"false":
+            sold += 1
+    if total == 0:
+        return None
+    return {"total_seats": total, "seats_sold": sold, "seats_available": total - sold,
+            "occupancy_pct": round(sold / total * 1000) / 10}
+
+
+def fetch_rsc_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0, session=None) -> dict:
+    """GET the flight payload (RSC: 1) — ~119 KB vs ~190 KB for the page —
+    and read the seat list from it. Returns {'counts': dict|None, 'raw_bytes',
+    'status', 'kind', 'url'}; kind mirrors classify_page for block pages."""
+    sess = session or make_session()
+    kwargs = {"stream": True, "timeout": timeout,
+              "headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9"}}
+    if proxy_url:
+        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
+    resp = sess.get(url, **kwargs)
+    raw = 0
+    out = bytearray()
+    try:
+        inflater = _Inflater(resp.headers.get("content-encoding", ""))
+        for chunk in resp.iter_content(chunk_size=CHUNK):
+            if not chunk:
+                continue
+            raw += len(chunk)
+            out += inflater.feed(chunk)
+            if raw >= MAX_RAW_BYTES:
+                break
+    finally:
+        try:
+            resp.close()
+        except Exception:
+            pass
+    payload = bytes(out)
+    ctype = str(resp.headers.get("content-type", "")).lower()
+    counts = parse_rsc_seats(payload) if "x-component" in ctype else None
+    if counts:
+        kind = "seats"
+    elif "x-component" in ctype:
+        kind = "other"
+    else:
+        kind = classify_page(payload.decode("utf-8", "ignore"))   # HTML came back: block/challenge/other
+    return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+            "url": str(getattr(resp, "url", "") or url), "kind": kind}

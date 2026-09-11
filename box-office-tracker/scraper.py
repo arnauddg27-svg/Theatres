@@ -2639,12 +2639,74 @@ def _seat_counts_match(http_data, browser_data, tolerance=2):
     return 0 <= delta <= tolerance
 
 
+# Data endpoint first (RSC flight payload, ~119 KB) — the page itself is ~190 KB.
+# The first AMC_RSC_PARITY_CHECKS RSC results per leg are ALSO parsed from the
+# page markup and compared; a disagreement disables the RSC path for the leg
+# (the markup path and the browser stay). Data is never traded for bytes.
+AMC_SEAT_RSC = bool(_env_int("AMC_SEAT_RSC", 1))
+AMC_RSC_PARITY_CHECKS = _env_int("AMC_RSC_PARITY_CHECKS", 20, minimum=0)
+_RSC_STATE = {"ok": 0, "fallback": 0, "checked": 0, "mismatch": 0, "disabled": False, "bytes": 0}
+
+
+def _rsc_summary():
+    st = _RSC_STATE
+    loads = st["ok"] + st["fallback"]
+    per = st["bytes"] / 1024 / loads if loads else 0.0
+    return (f"🧬 rsc seat fetch: ok={st['ok']} fallback={st['fallback']} parity_checked={st['checked']} "
+            f"mismatch={st['mismatch']} disabled={st['disabled']} bytes={st['bytes'] / 1048576:.1f} MB (~{per:.0f} KB/page)")
+
+
+async def _fetch_rsc(showtime_id, url):
+    import seat_fetch_http
+    try:
+        res = await asyncio.to_thread(
+            seat_fetch_http.fetch_rsc_seat_page, url, _http_proxy_url(), session=_http_session())
+    except Exception as e:
+        if _is_proxy_error(str(e)):
+            return PROXY_BLOCK_SENTINEL
+        return None
+    billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
+    _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+    _RSC_STATE["bytes"] += billed
+    if _is_queue_url(res.get("url", "")):
+        return QUEUE_SENTINEL
+    if res["kind"] == "blocked":
+        _HTTP_STATE["http_blocked"] += 1
+        print(f"      🧱 Cloudflare block on seat data (rsc) — aborting theatre")
+        return CF_BLOCK_SENTINEL
+    return res["counts"]   # dict or None
+
+
 async def fetch_amc_seat_map_http(showtime_id):
-    """HTTP path: dict | CF_BLOCK_SENTINEL | None (None = let the browser try)."""
+    """HTTP path: dict | CF_BLOCK_SENTINEL | None (None = let the browser try).
+    Order: RSC data endpoint -> page markup (streamed) -> None."""
     import seat_fetch_http
     if not showtime_id:
         return None
     url = f"https://www.amctheatres.com/showtimes/{showtime_id}/seats"
+    if AMC_SEAT_RSC and not _RSC_STATE["disabled"]:
+        rsc = await _fetch_rsc(showtime_id, url)
+        if rsc is CF_BLOCK_SENTINEL or rsc is PROXY_BLOCK_SENTINEL or rsc is QUEUE_SENTINEL:
+            return rsc
+        if isinstance(rsc, dict) and rsc.get("total_seats"):
+            _RSC_STATE["ok"] += 1
+            if _RSC_STATE["checked"] < AMC_RSC_PARITY_CHECKS:
+                _RSC_STATE["checked"] += 1
+                page = await _fetch_page_counts(url)
+                if isinstance(page, dict) and page.get("total_seats") and not _seat_counts_match(rsc, page, tolerance=2):
+                    _RSC_STATE["mismatch"] += 1
+                    print(f"::warning::RSC seat data disagreed with the page markup on showtime {showtime_id} "
+                          f"(rsc {rsc} vs page {page}) — RSC path DISABLED for this leg; page result used", flush=True)
+                    _RSC_STATE["disabled"] = True
+                    return page
+            return rsc
+        _RSC_STATE["fallback"] += 1
+    return await _fetch_page_counts(url)
+
+
+async def _fetch_page_counts(url):
+    """Streamed page-markup path (the pre-RSC HTTP path)."""
+    import seat_fetch_http
     try:
         res = await asyncio.to_thread(
             seat_fetch_http.fetch_seat_page, url, _http_proxy_url(), session=_http_session())
@@ -2653,22 +2715,12 @@ async def fetch_amc_seat_map_http(showtime_id):
             return PROXY_BLOCK_SENTINEL
         print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
         return None
+    showtime_id = url.rsplit("/showtimes/", 1)[-1].split("/", 1)[0]
     if AMC_HTTP_DEBUG and _HTTP_STATE["http_ok"] < 12:
         print(f"      🔬 http page {showtime_id}: raw={res['raw_bytes'] // 1024}KB decoded="
               f"{res.get('decoded_bytes', 0) // 1024}KB enc={res.get('encoding')} early={res['stopped_early']} "
               f"first_seat@{res.get('first_seat_input')} last_seat@{res.get('last_seat_input')} "
               f"markers={res.get('markers')} kind={res['kind']}", flush=True)
-        if _HTTP_STATE["http_ok"] < 3 and res["kind"] == "seats":
-            try:
-                diag = seat_fetch_http.diagnose_seat_payload(res["html"].encode("utf-8", "ignore"),
-                                                             res.get("first_seat_input", -1))
-                print(f"      🔬 flight-data before seats: {diag}", flush=True)
-                rsc = await asyncio.to_thread(seat_fetch_http.probe_rsc_endpoint, url,
-                                              _http_proxy_url(), _http_session())
-                print(f"      🔬 RSC endpoint: {rsc}", flush=True)
-                print(f"      🔬 html parse: {seat_fetch_http.parse_seat_counts(res['html'])}", flush=True)
-            except Exception as e:
-                print(f"      🔬 diag failed: {type(e).__name__}: {str(e)[:120]}", flush=True)
     billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
     _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
     _HTTP_STATE["http_bytes"] += billed
@@ -6241,6 +6293,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     print(_egress_summary("seat lane"), flush=True)
     if _http_seat_fetch_enabled() or _HTTP_STATE["checked"] or _HTTP_STATE["disabled"]:
         print(_http_fetch_summary(), flush=True)
+        print(_rsc_summary(), flush=True)
     if skipped_rows:
         print(f"↺ Skipped {skipped_rows} duplicate seat row(s)")
     if snapshot_rows_skipped:

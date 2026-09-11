@@ -248,3 +248,77 @@ class RealClientApiPinTest(unittest.TestCase):
         resp.url = "https://queue.amctheatres.com/?c=amc"
         res = sfh.fetch_seat_page("https://www.amctheatres.com/showtimes/1/seats", None, session=FakeSession(resp))
         self.assertEqual("https://queue.amctheatres.com/?c=amc", res["url"])
+
+
+class RscSeatParserTest(unittest.TestCase):
+    PAYLOAD = (b'...,{"node":{"code":"descriptivevideo"}}]},"seatingLayout":{"columns":3,"rows":2,"seats":['
+               b'{"available":false,"column":1,"row":1,"name":"","type":"NotASeat","seatTier":"Regular","shouldDisplay":false},'
+               b'{"available":true,"column":2,"row":1,"name":"A2","type":"LoveSeatLeft","seatTier":"Regular","shouldDisplay":true},'
+               b'{"available":false,"column":3,"row":1,"name":"A1","type":"LoveSeatRight","seatTier":"Regular","shouldDisplay":true},'
+               b'{"available":true,"column":1,"row":2,"name":"B3","type":"Wheelchair","seatTier":"Regular","shouldDisplay":true},'
+               b'{"available":true,"column":2,"row":2,"name":"B2","type":"Companion","seatTier":"Regular","shouldDisplay":true},'
+               b'{"available":false,"column":3,"row":2,"name":"B1","type":"Recliner","seatTier":"Premium","shouldDisplay":true}]}}...')
+
+    def test_counts_with_markup_exclusions(self):
+        self.assertEqual({"total_seats": 3, "seats_sold": 2, "seats_available": 1, "occupancy_pct": 66.7},
+                         sfh.parse_rsc_seats(self.PAYLOAD))
+
+    def test_no_layout_is_none(self):
+        self.assertIsNone(sfh.parse_rsc_seats(b'{"foo":1}'))
+        self.assertIsNone(sfh.parse_rsc_seats(b'"seatingLayout":{"seats":[]}'))
+
+
+class RscFirstDispatchTest(unittest.TestCase):
+    def setUp(self):
+        self.orig_state = dict(scraper._RSC_STATE)
+        scraper._RSC_STATE.update(ok=0, fallback=0, checked=0, mismatch=0, disabled=False, bytes=0)
+        self.orig_http = dict(scraper._HTTP_STATE)
+        scraper._HTTP_STATE.update(http_blocked=0)
+        self.orig_fns = (sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC)
+        scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
+        scraper.AMC_SEAT_RSC = True
+
+    def tearDown(self):
+        scraper._RSC_STATE.update(self.orig_state); scraper._HTTP_STATE.update(self.orig_http)
+        sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC = self.orig_fns
+
+    def _run(self, coro):
+        import asyncio
+        return asyncio.run(coro)
+
+    def test_rsc_result_wins_and_is_shadow_checked_against_the_page(self):
+        counts = {"total_seats": 100, "seats_sold": 10, "seats_available": 90, "occupancy_pct": 10.0}
+        page_html = "".join(f'<input aria-label="Seat A{i}"{" disabled" if i <= 10 else ""}>' for i in range(1, 101)) + "</main>"
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": dict(counts), "raw_bytes": 100000, "status": 200, "url": url, "kind": "seats"}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": page_html, "raw_bytes": 180000, "status": 200, "url": url, "kind": "seats", "stopped_early": True}
+        scraper._HTTP_STATE["session"] = object()
+        with redirect_stdout(io.StringIO()):
+            out = self._run(scraper.fetch_amc_seat_map_http("1"))
+        self.assertEqual(counts, out)
+        self.assertEqual((1, 1, 0, False), (scraper._RSC_STATE["ok"], scraper._RSC_STATE["checked"], scraper._RSC_STATE["mismatch"], scraper._RSC_STATE["disabled"]))
+
+    def test_rsc_disagreement_disables_rsc_and_uses_the_page(self):
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": {"total_seats": 90, "seats_sold": 5, "seats_available": 85, "occupancy_pct": 5.6}, "raw_bytes": 1, "status": 200, "url": url, "kind": "seats"}
+        page_html = "".join(f'<input aria-label="Seat A{i}">' for i in range(1, 101))
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": page_html, "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
+        scraper._HTTP_STATE["session"] = object()
+        with redirect_stdout(io.StringIO()) as buf:
+            out = self._run(scraper.fetch_amc_seat_map_http("2"))
+        self.assertEqual(100, out["total_seats"])
+        self.assertTrue(scraper._RSC_STATE["disabled"]); self.assertIn("RSC path DISABLED", buf.getvalue())
+        # disabled -> page path only, no rsc call
+        sfh.fetch_rsc_seat_page = lambda *a, **k: (_ for _ in ()).throw(AssertionError("rsc must not be called"))
+        with redirect_stdout(io.StringIO()):
+            out2 = self._run(scraper.fetch_amc_seat_map_http("3"))
+        self.assertEqual(100, out2["total_seats"])
+
+    def test_rsc_none_falls_back_to_page_and_block_pages_are_sentinels(self):
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": None, "raw_bytes": 1, "status": 200, "url": url, "kind": "other"}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": '<input aria-label="Seat A1" disabled>', "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
+        scraper._HTTP_STATE["session"] = object()
+        with redirect_stdout(io.StringIO()):
+            out = self._run(scraper.fetch_amc_seat_map_http("4"))
+        self.assertEqual(1, out["total_seats"]); self.assertEqual(1, scraper._RSC_STATE["fallback"])
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": None, "raw_bytes": 1, "status": 403, "url": url, "kind": "blocked"}
+        with redirect_stdout(io.StringIO()):
+            self.assertIs(scraper.CF_BLOCK_SENTINEL, self._run(scraper.fetch_amc_seat_map_http("5")))
