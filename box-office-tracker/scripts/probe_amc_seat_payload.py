@@ -23,6 +23,20 @@ for sid in picks:
         print(f"RSC {sid}: " + json.dumps(rsc)[:3000], flush=True)
     except Exception as e:
         print(f"RSC {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
+    # Does the data endpoint honour a suffix Range? The seat list sits in the
+    # last ~35 KB of the ~400 KB payload; a 206 here would cut bytes ~10x.
+    try:
+        from curl_cffi import requests as cffi_requests
+        kw = {"headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Range": "bytes=-45000"}, "timeout": 30}
+        if proxy:
+            kw["proxies"] = {"http": proxy, "https": proxy}
+        r = sess.get(url, **kw)
+        body = r.content or b""
+        print(f"RANGE {sid}: status={r.status_code} content-range={r.headers.get('content-range')} "
+              f"accept-ranges={r.headers.get('accept-ranges')} enc={r.headers.get('content-encoding')} "
+              f"bytes={len(body)} has_layout={b'seatingLayout' in body}", flush=True)
+    except Exception as e:
+        print(f"RANGE {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
     try:
         page = sfh.fetch_seat_page(url, proxy, session=sess)
         print(f"HTML {sid}: raw={page['raw_bytes']} decoded={page.get('decoded_bytes')} kind={page['kind']} "
