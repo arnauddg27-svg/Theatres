@@ -521,9 +521,19 @@ jobs:
 
       - name: Probe chain sites
         working-directory: box-office-tracker
+        env:
+          # `test` input non-empty => run the AMC seat-payload probe (no lock
+          # needed; read-only) instead of Fandango discovery.
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          PROBE_N: ${{ github.event.inputs.test }}
         run: |
           set +e
           mkdir -p ../chain-probe
+          if [ -n "$PROBE_N" ]; then
+            pip install -q -r requirements.txt
+            python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log
+            exit 0
+          fi
           # Current probe-lane payload: Regal-pool expansion discovery
           # (~350-zip national grid + widened Edwards/UA brand detection).
           # Artifact-only; the expanded pool is reviewed and committed locally.
