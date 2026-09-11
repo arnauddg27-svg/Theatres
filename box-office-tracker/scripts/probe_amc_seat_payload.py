@@ -1,8 +1,8 @@
-"""Read-only probe (no AMC lock): fetch N seat pages through the residential
-proxy via the RSC data endpoint and the HTML path, print sizes + the
-seatingLayout schema. Used to design a JSON seat reader that reads a
-fraction of the page. Prints no credentials."""
-import json, os, re, sys
+"""Read-only probe (no AMC lock): page-variant repeatability through the proxy.
+Fetch the same seat page 3x on one warm session, then once on a fresh session,
+printing raw (billed) bytes, whether the flight-data scripts are present, and
+cache/vary headers. Prints no credentials or cookie values."""
+import os, re, sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -13,34 +13,38 @@ proxy = os.environ.get("AMC_SEAT_PROXY_URL", "").strip() or None
 links = (Path(__file__).resolve().parents[1] / "data" / "showtime-links.json").read_text()
 ids = re.findall(r'"showtime_id":\s*"(\d+)"', links)
 picks = ids[len(ids) // 3::max(1, len(ids) // (3 * N))][:N]
-sess = sfh.make_session()
+
+
+def one(sess, url, tag):
+    kw = {"stream": True, "timeout": 30,
+          "headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                      "Accept-Language": "en-US,en;q=0.9"}}
+    if proxy:
+        kw["proxies"] = {"http": proxy, "https": proxy}
+    r = sess.get(url, **kw)
+    raw = 0
+    out = bytearray()
+    inf = sfh._Inflater(r.headers.get("content-encoding", ""))
+    for ch in r.iter_content(chunk_size=16384):
+        raw += len(ch); out += inf.feed(ch)
+    r.close()
+    b = bytes(out)
+    hdr = {k: r.headers.get(k) for k in ("cf-cache-status", "vary", "x-nextjs-cache", "x-vercel-cache", "age", "content-type")}
+    cookies = sorted({c.split("=", 1)[0] for c in (r.headers.get_list("set-cookie") if hasattr(r.headers, "get_list") else [])})
+    print(f"{tag}: status={r.status_code} raw={raw} decoded={len(b)} next_f={b.count(b'self.__next_f.push')} "
+          f"seats={sfh.parse_seat_counts(b.decode('utf-8','ignore'))} first_seat@{sfh.last_seat_input_pos(b[:200000]) if False else b.find(b'aria-label=\"Seat') if b.find(b'aria-label=\"Seat')!=-1 else b.find(b'aria-label=\"Recliner')} "
+          f"hdr={hdr} set_cookie_names={cookies}", flush=True)
+
+
 for sid in picks:
     url = f"https://www.amctheatres.com/showtimes/{sid}/seats"
+    warm = sfh.make_session()
+    for i in range(3):
+        try:
+            one(warm, url, f"WARM{i+1} {sid}")
+        except Exception as e:
+            print(f"WARM{i+1} {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
     try:
-        rsc = sfh.probe_rsc_endpoint(url, proxy, session=sess)
-        for k in ("layout_snippet", "seat_snippet"):
-            rsc[k] = (rsc.get(k) or "")[:1200]
-        print(f"RSC {sid}: " + json.dumps(rsc)[:3000], flush=True)
+        one(sfh.make_session(), url, f"FRESH {sid}")
     except Exception as e:
-        print(f"RSC {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
-    # Does the data endpoint honour a suffix Range? The seat list sits in the
-    # last ~35 KB of the ~400 KB payload; a 206 here would cut bytes ~10x.
-    try:
-        from curl_cffi import requests as cffi_requests
-        kw = {"headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Range": "bytes=-45000"}, "timeout": 30}
-        if proxy:
-            kw["proxies"] = {"http": proxy, "https": proxy}
-        r = sess.get(url, **kw)
-        body = r.content or b""
-        print(f"RANGE {sid}: status={r.status_code} content-range={r.headers.get('content-range')} "
-              f"accept-ranges={r.headers.get('accept-ranges')} enc={r.headers.get('content-encoding')} "
-              f"bytes={len(body)} has_layout={b'seatingLayout' in body}", flush=True)
-    except Exception as e:
-        print(f"RANGE {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
-    try:
-        page = sfh.fetch_seat_page(url, proxy, session=sess)
-        print(f"HTML {sid}: raw={page['raw_bytes']} decoded={page.get('decoded_bytes')} kind={page['kind']} "
-              f"parse={sfh.parse_seat_counts(page['html'])} first_seat@{page.get('first_seat_input')} "
-              f"last_seat@{page.get('last_seat_input')} markers={page.get('markers')}", flush=True)
-    except Exception as e:
-        print(f"HTML {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
+        print(f"FRESH {sid}: ERROR {type(e).__name__}: {str(e)[:120]}", flush=True)
