@@ -2620,6 +2620,7 @@ def _http_proxy_url():
 
 AMC_HTTP_FALLBACK_BREAKER = _env_int("AMC_HTTP_FALLBACK_BREAKER", 30, minimum=5)
 AMC_HTTP_MIN_SUCCESS_RATIO = 0.2
+AMC_HTTP_DEBUG = bool(_env_int("AMC_HTTP_DEBUG", 1))   # first 12 http pages per leg print placement diagnostics
 AMC_BROWSER_FALLBACK_CAP = _env_int("AMC_BROWSER_FALLBACK_CAP", 200, minimum=10)
 # Per-fetch bytes the body counter cannot see: CONNECT + TLS handshake + request
 # and response headers on a fresh proxy tunnel (audit-13 estimate).
@@ -2652,6 +2653,11 @@ async def fetch_amc_seat_map_http(showtime_id):
             return PROXY_BLOCK_SENTINEL
         print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
         return None
+    if AMC_HTTP_DEBUG and _HTTP_STATE["http_ok"] < 12:
+        print(f"      🔬 http page {showtime_id}: raw={res['raw_bytes'] // 1024}KB decoded="
+              f"{res.get('decoded_bytes', 0) // 1024}KB enc={res.get('encoding')} early={res['stopped_early']} "
+              f"first_seat@{res.get('first_seat_input')} last_seat@{res.get('last_seat_input')} "
+              f"markers={res.get('markers')} kind={res['kind']}", flush=True)
     billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
     _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
     _HTTP_STATE["http_bytes"] += billed

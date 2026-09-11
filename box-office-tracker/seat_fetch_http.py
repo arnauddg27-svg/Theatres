@@ -187,6 +187,21 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
         except Exception:
             pass
     html = out.decode("utf-8", "ignore")
-    return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
-            "url": str(getattr(resp, "url", "") or url),
-            "kind": classify_page(html), "stopped_early": stopped}
+    res = {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+           "url": str(getattr(resp, "url", "") or url),
+           "kind": classify_page(html), "stopped_early": stopped,
+           "decoded_bytes": len(out), "encoding": getattr(inflater, "kind", "?") if 'inflater' in dir() else "?"}
+    # Diagnostics for placing the early stop: where the seat block sits and
+    # where each marker first appears in the decoded document.
+    b = bytes(out)
+    first_in = -1
+    m = SEAT_INPUT_RE_B.search(b)
+    while m:
+        raw_label = m.group(1) if m.group(1) is not None else (m.group(2) or b"")
+        if is_seat_label(unescape(raw_label.decode("utf-8", "ignore"))):
+            first_in = m.start(); break
+        m = SEAT_INPUT_RE_B.search(b, m.end())
+    res["first_seat_input"] = first_in
+    res["last_seat_input"] = last_input_end
+    res["markers"] = {mk.decode(): b.find(mk) for mk in STOP_MARKERS}
+    return res
