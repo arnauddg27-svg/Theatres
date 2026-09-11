@@ -2666,6 +2666,7 @@ async def fetch_amc_seat_map_http(showtime_id):
                 rsc = await asyncio.to_thread(seat_fetch_http.probe_rsc_endpoint, url,
                                               _http_proxy_url(), _http_session())
                 print(f"      🔬 RSC endpoint: {rsc}", flush=True)
+                print(f"      🔬 html parse: {seat_fetch_http.parse_seat_counts(res['html'])}", flush=True)
             except Exception as e:
                 print(f"      🔬 diag failed: {type(e).__name__}: {str(e)[:120]}", flush=True)
     billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES

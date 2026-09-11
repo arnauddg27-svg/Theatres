@@ -263,6 +263,13 @@ def probe_rsc_endpoint(url: str, proxy_url: str | None, session=None, timeout: f
         n = b.count(k)
         if n:
             res["keys"][k.decode()] = n
-    i = next((b.find(k) for k in (b'"isAvailable"', b'"status"', b'"seatNumber"') if b.find(k) != -1), -1)
-    res["snippet"] = _snippet(b, i) if i != -1 else b[:240].decode("utf-8", "ignore")
+    lay = b.find(b'"seatingLayout"')
+    res["layout_pos"] = lay
+    res["first_available"] = b.find(b'"available"')
+    res["last_available"] = b.rfind(b'"available"')
+    res["available_true"] = b.count(b'"available":true')
+    res["available_false"] = b.count(b'"available":false')
+    res["layout_snippet"] = _snippet(b, lay, 900) if lay != -1 else ""
+    fa = res["first_available"]
+    res["seat_snippet"] = _snippet(b, fa, 500) if fa != -1 else ""
     return res
