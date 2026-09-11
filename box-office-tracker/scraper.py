@@ -2645,29 +2645,68 @@ def _seat_counts_match(http_data, browser_data, tolerance=2):
 # (the markup path and the browser stay). Data is never traded for bytes.
 AMC_SEAT_RSC = bool(_env_int("AMC_SEAT_RSC", 1))
 AMC_RSC_PARITY_CHECKS = _env_int("AMC_RSC_PARITY_CHECKS", 20, minimum=0)
-_RSC_STATE = {"ok": 0, "fallback": 0, "checked": 0, "mismatch": 0, "disabled": False, "bytes": 0}
+_RSC_STATE = {"ok": 0, "fallback": 0, "checked": 0, "mismatch": 0, "disabled": False, "bytes": 0,
+              # segment diff (~9 KB): template tree + the last showtime id we fetched
+              "diff_ok": 0, "diff_fallback": 0, "diff_bytes": 0, "tree": None, "last_id": "1"}
+AMC_SEAT_RSC_DIFF = bool(_env_int("AMC_SEAT_RSC_DIFF", 1))
+DIFF_FETCH_OVERHEAD_BYTES = 1024   # reused proxy tunnel: headers only, no fresh handshake
 
 
 def _rsc_summary():
     st = _RSC_STATE
     loads = st["ok"] + st["fallback"]
     per = st["bytes"] / 1024 / loads if loads else 0.0
+    dper = st["diff_bytes"] / 1024 / st["diff_ok"] if st["diff_ok"] else 0.0
     return (f"🧬 rsc seat fetch: ok={st['ok']} fallback={st['fallback']} parity_checked={st['checked']} "
-            f"mismatch={st['mismatch']} disabled={st['disabled']} bytes={st['bytes'] / 1048576:.1f} MB (~{per:.0f} KB/page)")
+            f"mismatch={st['mismatch']} disabled={st['disabled']} bytes={st['bytes'] / 1048576:.1f} MB (~{per:.0f} KB/page) "
+            f"| segment-diff ok={st['diff_ok']} fallback={st['diff_fallback']} (~{dper:.0f} KB/page)")
 
 
 async def _fetch_rsc(showtime_id, url):
+    """Segment diff (~9 KB) first, full flight payload (~119 KB) second."""
     import seat_fetch_http
-    try:
-        res = await asyncio.to_thread(
-            seat_fetch_http.fetch_rsc_seat_page, url, _http_proxy_url(), session=_http_session())
-    except Exception as e:
-        if _is_proxy_error(str(e)):
-            return PROXY_BLOCK_SENTINEL
-        return None
-    billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
-    _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
-    _RSC_STATE["bytes"] += billed
+    res = None
+    if AMC_SEAT_RSC_DIFF:
+        tree = _RSC_STATE["tree"] or seat_fetch_http.ROUTER_TREE_TEMPLATE
+        other = _RSC_STATE["last_id"] if str(_RSC_STATE["last_id"]) != str(showtime_id) else "1"
+        header = seat_fetch_http.router_tree_header(tree, other)
+        try:
+            d = await asyncio.to_thread(
+                seat_fetch_http.fetch_rsc_seat_diff, url, _http_proxy_url(), header, session=_http_session())
+        except Exception as e:
+            if _is_proxy_error(str(e)):
+                return PROXY_BLOCK_SENTINEL
+            d = None
+        if d is not None:
+            billed = d["raw_bytes"] + DIFF_FETCH_OVERHEAD_BYTES
+            _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+            _RSC_STATE["bytes"] += billed
+            if d["kind"] == "seats":
+                _RSC_STATE["diff_ok"] += 1; _RSC_STATE["diff_bytes"] += billed
+                _RSC_STATE["last_id"] = str(showtime_id)
+                return d["counts"]
+            if d["kind"] == "blocked" or _is_queue_url(d.get("url", "")):
+                res = d                       # let the common handling below classify it
+            else:
+                _RSC_STATE["diff_fallback"] += 1
+    if res is None:
+        try:
+            res = await asyncio.to_thread(
+                seat_fetch_http.fetch_rsc_seat_page, url, _http_proxy_url(), session=_http_session())
+        except Exception as e:
+            if _is_proxy_error(str(e)):
+                return PROXY_BLOCK_SENTINEL
+            return None
+        billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
+        _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+        _RSC_STATE["bytes"] += billed
+        # a full payload teaches the leg AMC's current router tree (self-heal
+        # if the hardcoded template goes stale)
+        if res.get("counts") and res.get("payload") and _RSC_STATE["tree"] is None:
+            learned = seat_fetch_http.extract_router_tree(res["payload"])
+            if learned:
+                _RSC_STATE["tree"] = learned
+        _RSC_STATE["last_id"] = str(showtime_id)
     if _is_queue_url(res.get("url", "")):
         return QUEUE_SENTINEL
     if res["kind"] == "blocked":

@@ -322,3 +322,84 @@ class RscFirstDispatchTest(unittest.TestCase):
         sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": None, "raw_bytes": 1, "status": 403, "url": url, "kind": "blocked"}
         with redirect_stdout(io.StringIO()):
             self.assertIs(scraper.CF_BLOCK_SENTINEL, self._run(scraper.fetch_amc_seat_map_http("5")))
+
+
+class SegmentDiffTest(unittest.TestCase):
+    FLIGHT_ROW = (b'0:{"P":null,"b":"abc","p":"","c":["","showtimes","145887232","seats"],"i":false,"f":[[["",{"children":["(headless)",'
+                  b'{"children":["showtimes",{"children":[["showtimeId","145887232","d",null],{"children":["seats",{"children":["__PAGE__",{}]},'
+                  b'"$undefined","$undefined",4]},"$undefined","$undefined",8]},"$undefined","$undefined",12]},"$undefined","$undefined",12]},'
+                  b'"$undefined","$undefined",24],["x"],null,null]],"m":"$undefined","G":["$1",[]],"s":false,"S":true}\n1:"$Sreact.fragment"\n')
+
+    def test_sanitize_matches_what_the_browser_sends(self):
+        t = sfh.sanitize_router_tree(["", {"children": ["seats", {"children": ["__PAGE__", {}]}, "$undefined", "$undefined", 4]}, "$undefined", "$undefined", 24])
+        self.assertEqual(["", {"children": ["seats", {"children": ["__PAGE__", {}]}, None, None]}, None, None], t)
+
+    def test_extract_learns_the_template_from_a_full_payload(self):
+        tree = sfh.extract_router_tree(self.FLIGHT_ROW)
+        self.assertIsNotNone(tree)
+        s = __import__("json").dumps(tree, separators=(",", ":"))
+        self.assertIn('["showtimeId","__SHOWTIME__","d",null]', s)
+        self.assertNotIn("$undefined", s)
+        self.assertEqual(tree, sfh.ROUTER_TREE_TEMPLATE)          # today's live shape
+        self.assertIsNone(sfh.extract_router_tree(b'0:{"nope":1}\n'))
+
+    def test_header_names_another_showtime(self):
+        h = sfh.router_tree_header(sfh.ROUTER_TREE_TEMPLATE, "999")
+        from urllib.parse import unquote
+        self.assertIn('["showtimeId","999","d",null]', unquote(h))
+        self.assertNotIn("__SHOWTIME__", unquote(h))
+        self.assertNotIn(" ", h)
+
+
+class DiffFirstChainTest(unittest.TestCase):
+    def setUp(self):
+        self.orig_state = dict(scraper._RSC_STATE)
+        scraper._RSC_STATE.update(ok=0, fallback=0, checked=0, mismatch=0, disabled=False, bytes=0,
+                                  diff_ok=0, diff_fallback=0, diff_bytes=0, tree=None, last_id="1")
+        self.orig = (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY,
+                     scraper.AMC_SEAT_RSC, scraper.AMC_SEAT_RSC_DIFF, scraper.AMC_RSC_PARITY_CHECKS)
+        scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
+        scraper.AMC_SEAT_RSC = True; scraper.AMC_SEAT_RSC_DIFF = True; scraper.AMC_RSC_PARITY_CHECKS = 0
+        scraper._HTTP_STATE["session"] = object()
+
+    def tearDown(self):
+        scraper._RSC_STATE.update(self.orig_state)
+        (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY,
+         scraper.AMC_SEAT_RSC, scraper.AMC_SEAT_RSC_DIFF, scraper.AMC_RSC_PARITY_CHECKS) = self.orig
+
+    def _run(self, coro):
+        import asyncio
+        return asyncio.run(coro)
+
+    def test_diff_wins_and_rotates_the_other_showtime(self):
+        seen = []
+        def fake_diff(url, proxy, header, session=None, timeout=30):
+            from urllib.parse import unquote
+            seen.append(unquote(header))
+            return {"counts": {"total_seats": 50, "seats_sold": 5, "seats_available": 45, "occupancy_pct": 10.0},
+                    "raw_bytes": 8700, "status": 200, "url": url, "kind": "seats"}
+        sfh.fetch_rsc_seat_diff = fake_diff
+        sfh.fetch_rsc_seat_page = lambda *a, **k: (_ for _ in ()).throw(AssertionError("full payload must not be fetched"))
+        with redirect_stdout(io.StringIO()):
+            out1 = self._run(scraper.fetch_amc_seat_map_http("100"))
+            out2 = self._run(scraper.fetch_amc_seat_map_http("200"))
+        self.assertEqual(50, out1["total_seats"]); self.assertEqual(50, out2["total_seats"])
+        self.assertIn('"showtimeId","1"', seen[0])          # first: sentinel other id
+        self.assertIn('"showtimeId","100"', seen[1])        # then: the previous showtime
+        self.assertEqual(2, scraper._RSC_STATE["diff_ok"])
+        self.assertLess(scraper._RSC_STATE["diff_bytes"], 2 * 12000)
+
+    def test_diff_miss_falls_back_to_full_payload_and_learns_the_tree(self):
+        sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {"counts": None, "raw_bytes": 21, "status": 500, "url": url, "kind": "other"}
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": {"total_seats": 7, "seats_sold": 1, "seats_available": 6, "occupancy_pct": 14.3},
+                                                                                "raw_bytes": 119000, "status": 200, "url": url, "kind": "seats", "payload": SegmentDiffTest.FLIGHT_ROW}
+        with redirect_stdout(io.StringIO()):
+            out = self._run(scraper.fetch_amc_seat_map_http("300"))
+        self.assertEqual(7, out["total_seats"])
+        self.assertEqual(1, scraper._RSC_STATE["diff_fallback"])
+        self.assertEqual(sfh.ROUTER_TREE_TEMPLATE, scraper._RSC_STATE["tree"])   # learned from the payload
+
+    def test_diff_block_page_is_a_sentinel(self):
+        sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {"counts": None, "raw_bytes": 3000, "status": 403, "url": url, "kind": "blocked"}
+        with redirect_stdout(io.StringIO()):
+            self.assertIs(scraper.CF_BLOCK_SENTINEL, self._run(scraper.fetch_amc_seat_map_http("400")))

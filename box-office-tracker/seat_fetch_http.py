@@ -345,4 +345,89 @@ def fetch_rsc_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.
     else:
         kind = classify_page(payload.decode("utf-8", "ignore"))   # HTML came back: block/challenge/other
     return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
-            "url": str(getattr(resp, "url", "") or url), "kind": kind}
+            "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}
+
+
+# ── Segment diff: ask only for what changed (2026-09-11) ─────────────────────
+# Next.js's router sends its current tree (Next-Router-State-Tree) on client
+# navigations and the server replies with only the segments that differ. A seat
+# page's tree differs from another showtime's ONLY in the dynamic
+# [showtimeId] segment, so handing the server the tree of any OTHER showtime
+# yields just that segment: ~8.7 KB gzip with the full seatingLayout, versus
+# ~119 KB for the whole flight payload and ~190 KB for the page. The flight
+# encoding writes "$undefined" and trailing flags that a browser never sends
+# back (the server 500s on them), hence sanitize().
+ROUTER_TREE_TEMPLATE = ["", {"children": ["(headless)", {"children": ["showtimes", {"children": [
+    ["showtimeId", "__SHOWTIME__", "d", None],
+    {"children": ["seats", {"children": ["__PAGE__", {}]}, None, None]}, None, None]}, None, None]}, None, None]}, None, None]
+_TREE_ROW_RE = re.compile(r"^\d+:(\{.*\"__PAGE__\".*\})\s*$", re.M)
+
+
+def sanitize_router_tree(node):
+    if isinstance(node, list):
+        out = [sanitize_router_tree(x) for x in node]
+        if len(out) >= 2 and isinstance(out[1], dict):
+            out = out[:4]                      # [segment, parallelRoutes, url, refresh]
+        return out
+    if isinstance(node, dict):
+        return {k: sanitize_router_tree(v) for k, v in node.items()}
+    return None if node == "$undefined" else node
+
+
+def extract_router_tree(payload: bytes):
+    """The sanitised router tree from a FULL flight payload (row {"f":[[tree,…]]}),
+    with the showtime id replaced by the __SHOWTIME__ placeholder; None if the
+    shape is unrecognised. Lets a leg self-heal if AMC changes its routes."""
+    import json
+    txt = payload.decode("utf-8", "ignore")
+    for m in _TREE_ROW_RE.finditer(txt):
+        try:
+            obj = json.loads(m.group(1))
+            tree = sanitize_router_tree(obj["f"][0][0])
+        except Exception:
+            continue
+        s = json.dumps(tree, separators=(",", ":"))
+        s2 = re.sub(r'\["showtimeId","\d+"', '["showtimeId","__SHOWTIME__"', s)
+        if "__SHOWTIME__" in s2 and '"__PAGE__"' in s2:
+            return json.loads(s2)
+    return None
+
+
+def router_tree_header(template, other_showtime_id: str) -> str:
+    """URL-encoded tree for the header, naming a showtime OTHER than the one
+    requested (identical trees would diff to nothing)."""
+    import json
+    from urllib.parse import quote
+    s = json.dumps(template, separators=(",", ":")).replace("__SHOWTIME__", str(other_showtime_id))
+    return quote(s, safe="")
+
+
+def fetch_rsc_seat_diff(url: str, proxy_url: str | None, tree_header: str, *,
+                        timeout: float = 30.0, session=None) -> dict:
+    """Segment-diff request. Same result shape as fetch_rsc_seat_page. Uses a
+    non-streaming GET so the per-thread connection (and its proxy tunnel) is
+    reused across the tiny responses — the ~6 KB handshake would otherwise
+    dominate the ~9 KB body."""
+    sess = session or make_session()
+    kwargs = {"stream": False, "timeout": timeout,
+              "headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9",
+                          "Next-Router-State-Tree": tree_header}}
+    if proxy_url:
+        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
+    resp = sess.get(url, **kwargs)
+    body = resp.content or b""
+    raw = len(body)
+    try:
+        payload = _Inflater(resp.headers.get("content-encoding", "")).feed(body)
+    except Exception:
+        payload = body
+    ctype = str(resp.headers.get("content-type", "")).lower()
+    counts = parse_rsc_seats(payload) if "x-component" in ctype else None
+    if counts:
+        kind = "seats"
+    elif "x-component" in ctype or int(getattr(resp, "status_code", 0) or 0) >= 500:
+        kind = "other"
+    else:
+        kind = classify_page(payload.decode("utf-8", "ignore"))
+    return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+            "url": str(getattr(resp, "url", "") or url), "kind": kind, "reused_connection": True}
