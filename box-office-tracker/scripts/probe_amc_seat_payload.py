@@ -71,9 +71,25 @@ for i, sid in enumerate(picks):
     print(f"TREE {sid}: {'found' if tree else 'not found'} {json.dumps(tree)[:400] if tree else ''}", flush=True)
     if tree and i + 1 < len(picks):
         nxt = f"https://www.amctheatres.com/showtimes/{picks[i+1]}/seats"
-        enc = urllib.parse.quote(json.dumps(tree, separators=(",", ":")))
-        for tag, extra in (("DIFF", {"Next-Router-State-Tree": enc}),
-                           ("DIFF+url", {"Next-Router-State-Tree": enc, "Next-Url": f"/showtimes/{sid}/seats"})):
+        def sanitize(node, trim):
+            # flight encoding -> what the browser router holds: "$undefined" -> null,
+            # and (trim) nodes cut to [segment, parallelRoutes, url, refresh]
+            if isinstance(node, list):
+                out = [sanitize(x, trim) for x in node]
+                if trim and len(out) >= 2 and isinstance(out[1], dict):
+                    out = out[:4]
+                return out
+            if isinstance(node, dict):
+                return {k: sanitize(v, trim) for k, v in node.items()}
+            return None if node == "$undefined" else node
+        variants = {
+            "DIFF-null": sanitize(tree, False),
+            "DIFF-trim": sanitize(tree, True),
+        }
+        for tag, t in variants.items():
+            enc = urllib.parse.quote(json.dumps(t, separators=(",", ":")))
+            print(f"{tag} tree: {json.dumps(t, separators=(',', ':'))[:300]}", flush=True)
+            extra = {"Next-Router-State-Tree": enc}
             hdrs = dict(BASE); hdrs.update(extra)
             try:
                 _, body = get(nxt, hdrs, f"{tag} {picks[i+1]} (tree from {sid})")
