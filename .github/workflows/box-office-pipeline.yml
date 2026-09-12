@@ -533,10 +533,11 @@ jobs:
           mkdir -p ../chain-probe
           if [ -n "$PROBE_N" ]; then
             pip install -q -r requirements.txt
-            # cinemark_titles doubles as the probe selector on this job.
-            # PROBE_KIND, never a raw ${{ }} interpolation: this step holds the
-            # proxy credential in its env, and a dispatch value containing a
-            # quote would break out of the case word (audit-15).
+            # cinemark_titles doubles as the probe selector on this job, but it
+            # arrives via the PROBE_KIND env var above and is never interpolated
+            # into this script directly: the step holds the proxy credential in
+            # its env, and a dispatch value containing a quote would otherwise
+            # break out of the case word (audit-15).
             case "$PROBE_KIND" in
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
