@@ -58,39 +58,35 @@ def get(url, tag, headers=None, note=""):
 RSC_HDRS = {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9"}
 print(f"proxy={'ON' if proxy else 'off'} budget={MAX_BYTES/1048576:.0f} MB", flush=True)
 
-# 1. a theatre page -> its showtime links
-r, th = get("https://www.regmovies.com/theatres", "THEATRES")
-import collections
-hrefs = [m.decode("utf-8", "ignore") for m in re.findall(rb'href="(/[^"]{2,80})"', th or b"")]
-shapes = collections.Counter("/".join(re.sub(r"[0-9]+", "N", p).split("/")[:3]) for p in hrefs)
-print(f"THEATRES hrefs: {len(hrefs)} | top shapes: {shapes.most_common(8)}", flush=True)
-print(f"  samples: {hrefs[:8]}", flush=True)
-paths = sorted({p for p in hrefs if p.startswith("/theatres/") and p.count("/") >= 2})
-print(f"theatre paths: {len(paths)} e.g. {paths[:3]}", flush=True)
-detail = b""
-if paths:
+# The theatre list hydrates client-side, so discover routes from the sitemap.
+r, sm = get("https://www.regmovies.com/sitemap.xml", "SITEMAP")
+kids = [m.decode() for m in re.findall(rb"<loc>\s*([^<\s]+)\s*</loc>", sm or b"")][:12]
+print(f"sitemap children: {kids}", flush=True)
+theatre_url = None
+for kid in kids:
+    if not re.search(r"theat|cinema|location", kid, re.I):
+        continue
     time.sleep(1)
-    r, detail = get("https://www.regmovies.com" + paths[0], f"THEATRE {paths[0]}")
+    r, child = get(kid, f"SM {kid.rsplit('/', 1)[-1]}")
+    urls = [m.decode() for m in re.findall(rb"<loc>\s*([^<\s]+)\s*</loc>", child or b"")]
+    print(f"  {len(urls)} urls, e.g. {urls[:3]}", flush=True)
+    if urls:
+        theatre_url = urls[0]
+        break
 
-# 2. showtime / ticketing links on a theatre page
-dh = [m.decode("utf-8", "ignore") for m in re.findall(rb'href="([^"]{2,120})"', detail or b"")]
-dshapes = collections.Counter("/".join(re.sub(r"[0-9]+", "N", p).split("/")[:4]) for p in dh)
-print(f"THEATRE-PAGE hrefs: {len(dh)} | top shapes: {dshapes.most_common(8)}", flush=True)
-cands = sorted({p for p in dh if re.search(r"showtime|ticket|seat|session", p, re.I)})[:8]
-print(f"showtime-ish paths: {cands}", flush=True)
-sess_ids = sorted({m.decode() for m in re.findall(rb'"(?:sessionId|showtimeId|sessionID)"\s*:\s*"?([A-Za-z0-9\-]{4,})"?', detail or b"")})[:5]
-print(f"session ids in page: {sess_ids}", flush=True)
-for key in (b'"seats"', b'"seatingLayout"', b'"available"', b'seatMap', b'"SeatsAvailable"', b'"occupancy"'):
-    if detail and key in detail:
-        i = detail.find(key)
-        print(f"  theatre page has {key.decode()} @{i}: {detail[max(0,i-80):i+220].decode('utf-8','ignore')!r}", flush=True)
-
-# 3. does the site answer RSC on a deep page? (the AMC trick's precondition)
-if paths:
+if theatre_url:
     time.sleep(1)
-    r, rsc = get("https://www.regmovies.com" + paths[0], "RSC theatre", headers=RSC_HDRS,
-                 note=f"is_flight={bool(rsc_ct) if (rsc_ct := (r.headers.get('content-type') if r else '')) else False}")
-
-# 4. any obvious data API the page calls
-apis = sorted({m.decode() for m in re.findall(rb'"(/api/[a-z0-9\-/]+)"', (th or b"") + (detail or b""))})[:10]
-print(f"api paths seen: {apis}", flush=True)
+    r, detail = get(theatre_url, "THEATRE PAGE")
+    for key in (b'"seats"', b'"seatingLayout"', b'"available"', b'seatMap', b'"sessionId"',
+                b'"showtimes"', b'"performances"', b'"SeatsAvailable"'):
+        if detail and key in detail:
+            i2 = detail.find(key)
+            print(f"  has {key.decode()} @{i2}: {detail[max(0,i2-60):i2+200].decode('utf-8','ignore')!r}", flush=True)
+    hrefs = sorted({m.decode('utf-8','ignore') for m in re.findall(rb'href="([^"]{2,140})"', detail or b"")})
+    tick = [h for h in hrefs if re.search(r"ticket|seat|session|showtime|book", h, re.I)][:8]
+    print(f"  ticket-ish hrefs: {tick}", flush=True)
+    print(f"  all href shapes: {sorted({re.sub(r'[0-9]+','N',h)[:48] for h in hrefs})[:12]}", flush=True)
+    time.sleep(1)
+    r, rsc = get(theatre_url, "RSC theatre", headers=RSC_HDRS)
+    if rsc:
+        print(f"  rsc is_flight={rsc[:40]!r} has_seat_keys={any(k in rsc for k in (b'seatingLayout', b'"seats"', b'"available"'))}", flush=True)
