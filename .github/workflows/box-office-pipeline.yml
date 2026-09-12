@@ -1086,13 +1086,15 @@ jobs:
           # at the deadline; capped ad-hoc tests stay on the 35-min default.
           if [ -z "$CINEMARK_MAX_THEATRES" ]; then
             export CINEMARK_DEADLINE_SEC="${CINEMARK_DEADLINE_SEC:-5400}"
-            # 3 showtimes per film per theatre (was 1): the pre passes find
-            # ~180 matching showtimes per 102-theatre shard and were keeping
-            # ONE per film, dropping the rest. Runs finish in ~10 of their 90
-            # available minutes with zero blocks, so the headroom is real.
-            # Cinemark is a DIRECT lane (no proxy) — this costs no metered
-            # bandwidth. The tarpit breaker still bounds a bad night.
-            export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-3}"
+            # Cap stays 1: cinemark.com is CHALLENGE-bound, not policy-bound.
+            # Measured 2026-09-12 (run 34702… , cap 3): matched 462 picks but
+            # 305 came back incomplete (the "Performing security verification"
+            # interstitial fires under sustained load), the pass ran the full
+            # 90 minutes instead of ~10, and it reached only 86 of its 102
+            # theatres — trading theatre breadth, which the model needs, for a
+            # handful of extra rows. More Cinemark depth has to come from MORE
+            # SPACED PASSES, not deeper ones.
+            export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-1}"
           fi
           # -u + PIPESTATUS: output must survive kills and tee must not mask
           # the exit code (both lessons already paid for in the Fandango lane).

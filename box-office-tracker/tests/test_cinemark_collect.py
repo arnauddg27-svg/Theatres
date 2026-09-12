@@ -99,13 +99,14 @@ class PerFilmCapTest(unittest.TestCase):
 
 
 class PerTheatreCapWiringTest(unittest.TestCase):
-    def test_scheduled_pre_passes_capture_three_showtimes_per_film(self):
-        # 2026-09-12: cap 1 was dropping ~2/3 of the matched showtimes while
-        # runs used 10 of their 90 minutes. Direct lane, so no proxy bytes.
+    def test_scheduled_pre_passes_stay_at_one_showtime_per_film(self):
+        # Cap 3 was tried on 2026-09-12 and REVERTED: cinemark.com answers
+        # sustained load with its "security verification" interstitial —
+        # 305 of 462 picks incomplete, 90 minutes instead of 10, and only
+        # 86 of 102 theatres reached. Depth must come from spaced passes.
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         step = yml.split("- name: Cinemark collect", 1)[1].split("- name:", 1)[0]
-        self.assertIn('export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-3}"', step)
-        # ad-hoc capped tests must keep the module default
+        self.assertIn('export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-1}"', step)
         self.assertEqual(1, cc.CINEMARK_PER_THEATRE_CAP)
 
 
