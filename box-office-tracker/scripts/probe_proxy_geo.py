@@ -17,7 +17,11 @@ for i in range(N):
         kw["proxies"] = {"http": proxy, "https": proxy}
     try:
         r = sess.get("https://ipinfo.io/json", **kw)
-        d = r.json()
+        # make_session disables curl's content decoding (raw = billed bytes),
+        # so decode the body here rather than calling r.json().
+        body = sfh._Inflater(r.headers.get("content-encoding", "")).feed(r.content or b"")
+        import json as _json
+        d = _json.loads(body.decode("utf-8", "ignore") or "{}")
         cc = d.get("country", "?")
         seen[cc] += 1
         print(f"draw {i+1}: country={cc} region={d.get('region','?')}", flush=True)
