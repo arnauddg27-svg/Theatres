@@ -539,6 +539,7 @@ jobs:
             # its env, and a dispatch value containing a quote would otherwise
             # break out of the case word (audit-15).
             case "$PROBE_KIND" in
+              geo) python -u scripts/probe_proxy_geo.py 2>&1 | tee ../chain-probe/proxy-geo.log ;;
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
               *)     python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log ;;
