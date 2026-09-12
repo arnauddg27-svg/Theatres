@@ -75,6 +75,8 @@ def extract_tree(payload: bytes):
 for i, sid in enumerate(picks):
     url = f"https://www.amctheatres.com/showtimes/{sid}/seats"
     r, b = get(url, BASE, f"RSC {sid}", show_head=(i == 0))
+    if r is None:
+        break                      # budget spent — get() returns (None, b"")
     etag = r.headers.get("etag"); lm = r.headers.get("last-modified")
     cond = dict(BASE)
     if etag: cond["If-None-Match"] = etag

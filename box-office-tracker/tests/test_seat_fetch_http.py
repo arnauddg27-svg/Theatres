@@ -293,7 +293,7 @@ class RscFirstDispatchTest(unittest.TestCase):
         counts = {"total_seats": 100, "seats_sold": 10, "seats_available": 90, "occupancy_pct": 10.0}
         page_html = "".join(f'<input aria-label="Seat A{i}"{" disabled" if i <= 10 else ""}>' for i in range(1, 101)) + "</main>"
         sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": dict(counts), "raw_bytes": 100000, "status": 200, "url": url, "kind": "seats"}
-        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": page_html, "raw_bytes": 180000, "status": 200, "url": url, "kind": "seats", "stopped_early": True}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {"html": page_html, "raw_bytes": 180000, "status": 200, "url": url, "kind": "seats", "stopped_early": True}
         scraper._HTTP_STATE["session"] = object()
         with redirect_stdout(io.StringIO()):
             out = self._run(scraper.fetch_amc_seat_map_http("1"))
@@ -303,7 +303,7 @@ class RscFirstDispatchTest(unittest.TestCase):
     def test_rsc_disagreement_disables_rsc_and_uses_the_page(self):
         sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": {"total_seats": 90, "seats_sold": 5, "seats_available": 85, "occupancy_pct": 5.6}, "raw_bytes": 1, "status": 200, "url": url, "kind": "seats"}
         page_html = "".join(f'<input aria-label="Seat A{i}">' for i in range(1, 101))
-        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": page_html, "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {"html": page_html, "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
         scraper._HTTP_STATE["session"] = object()
         with redirect_stdout(io.StringIO()) as buf:
             out = self._run(scraper.fetch_amc_seat_map_http("2"))
@@ -324,7 +324,7 @@ class RscFirstDispatchTest(unittest.TestCase):
 
     def test_rsc_none_falls_back_to_page_and_block_pages_are_sentinels(self):
         sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {"counts": None, "raw_bytes": 1, "status": 200, "url": url, "kind": "other"}
-        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {"html": '<input aria-label="Seat A1" disabled>', "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {"html": '<input aria-label="Seat A1" disabled>', "raw_bytes": 1, "status": 200, "url": url, "kind": "seats", "stopped_early": False}
         scraper._HTTP_STATE["session"] = object()
         with redirect_stdout(io.StringIO()):
             out = self._run(scraper.fetch_amc_seat_map_http("4"))
@@ -501,13 +501,126 @@ class DiffGuardTest(unittest.TestCase):
             self._run(scraper.fetch_amc_seat_map_http("1"))
         self.assertEqual(1, scraper._RSC_STATE["diff_fallback"])   # was 0: looked like "never ran"
 
-    def test_block_during_the_rsc_parity_read_is_not_swallowed(self):
+    def test_block_on_the_shadow_parity_read_keeps_the_good_rsc_count(self):
+        # audit-15 made this sentinel propagate; audit-16 narrowed it: the RSC
+        # read had ALREADY succeeded, so the egress is demonstrably alive and
+        # returning the sentinel would discard a good row and (for a queue
+        # redirect) abandon the theatre. Keep the data, defer the parity check.
         scraper.AMC_RSC_PARITY_CHECKS = 5
         sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {
             "counts": {"total_seats": 100, "seats_sold": 3}, "raw_bytes": 9000, "status": 200,
             "url": url, "kind": "seats", "payload": b'"c":["","showtimes","7","seats"]'}
-        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {
             "html": "", "raw_bytes": 3000, "status": 403, "url": url, "kind": "blocked", "stopped_early": False}
-        with redirect_stdout(io.StringIO()):
+        with redirect_stdout(io.StringIO()) as buf:
             out = self._run(scraper.fetch_amc_seat_map_http("7"))
-        self.assertIs(scraper.CF_BLOCK_SENTINEL, out)   # was: the rsc counts, block dropped
+        self.assertEqual(100, out["total_seats"])
+        self.assertIn("parity deferred", buf.getvalue())
+        self.assertEqual(0, scraper._RSC_STATE["checked"])
+
+
+class LayoutBoundsTest(unittest.TestCase):
+    """audit-16: the window must survive real seat objects and never invert."""
+    @staticmethod
+    def seat(n, extra=b"", drop_display=False):
+        b = b'{"available":true,"column":%d,"row":1,"name":"A%d","type":"Recliner","seatTier":"R"' % (n, n)
+        return b + extra + (b'}' if drop_display else b',"shouldDisplay":true}')
+
+    def layout(self, seats):
+        return b'"seatingLayout":{"columns":2,"seats":[' + b",".join(seats) + b']}}'
+
+    def test_bracket_matching_survives_a_list_valued_seat_field(self):
+        # the window must not stop at the first ']' inside a seat object
+        payload = self.layout([self.seat(1), self.seat(2, extra=b',"tags":["x","y"]'), self.seat(3)])
+        lo, hi = sfh._layout_bounds(payload)
+        self.assertIn(b'"A3"', payload[lo:hi])          # the whole array is in the window
+        self.assertNotIn(b'"seatingLayout"', payload[lo:hi])
+
+    def test_never_returns_an_inverted_or_empty_window(self):
+        # a first layout with no usable array must not make bounds point into the second
+        weird = b'"seatingLayout":{"seats":null},"x":1,"seatingLayout":{"seats":[' + self.seat(9) + b']}'
+        self.assertIsNone(sfh.parse_rsc_seats(weird))
+        self.assertIsNone(sfh._layout_bounds(b'"seatingLayout":{"seats":[]}'))
+        self.assertIsNone(sfh._layout_bounds(b'"seatingLayout":{"seats":[{"available":true'))   # unterminated
+        self.assertIsNone(sfh._layout_bounds(b'no layout here'))
+
+    def test_completeness_catches_removed_fields_too(self):
+        self.assertEqual(3, sfh.parse_rsc_seats(self.layout([self.seat(i) for i in (1, 2, 3)]))["total_seats"])
+        missing = self.layout([self.seat(1), self.seat(2, drop_display=True), self.seat(3)])
+        self.assertIsNone(sfh.parse_rsc_seats(missing))     # was a silent count of 2
+        added = self.layout([self.seat(1), self.seat(2, extra=b',"zz":1'), self.seat(3)])
+        self.assertIsNone(sfh.parse_rsc_seats(added))
+
+
+class DiffBreakerAndParityTest(unittest.TestCase):
+    def setUp(self):
+        self.orig_state = dict(scraper._RSC_STATE); self.orig_http = dict(scraper._HTTP_STATE)
+        scraper._RSC_STATE.update(ok=0, fallback=0, checked=0, mismatch=0, disabled=False, bytes=0,
+                                  diff_ok=0, diff_fallback=0, diff_miss_streak=0, diff_bytes=0,
+                                  tree=None, last_id="1")
+        self.orig = (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page,
+                     scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC, scraper.AMC_RSC_PARITY_CHECKS,
+                     scraper.AMC_RSC_DIFF_MISS_BREAKER)
+        scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
+        scraper.AMC_SEAT_RSC = True; scraper.AMC_RSC_PARITY_CHECKS = 0
+        scraper._HTTP_STATE["session"] = object()
+
+    def tearDown(self):
+        scraper._RSC_STATE.update(self.orig_state); scraper._HTTP_STATE.update(self.orig_http)
+        (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page,
+         scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC, scraper.AMC_RSC_PARITY_CHECKS,
+         scraper.AMC_RSC_DIFF_MISS_BREAKER) = self.orig
+
+    def _run(self, coro):
+        import asyncio
+        return asyncio.run(coro)
+
+    def _diff(self, kind, sid_in_payload=True):
+        def f(url, proxy, header, session=None, timeout=30):
+            sid = url.rsplit("/showtimes/", 1)[-1].split("/", 1)[0]
+            return {"counts": {"total_seats": 50, "seats_sold": 5} if kind == "seats" else None,
+                    "raw_bytes": 9000, "status": 200, "url": url, "kind": kind,
+                    "payload": b'["showtimeId","' + (sid if sid_in_payload else "X").encode() + b'"'}
+        return f
+
+    def test_ordinary_no_seat_map_showtimes_do_not_kill_the_diff_path(self):
+        # 66 of these in a real leg; the cumulative breaker died at 25 (audit-16)
+        scraper.AMC_RSC_DIFF_MISS_BREAKER = 5
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {
+            "counts": None, "raw_bytes": 119000, "status": 200, "url": url, "kind": "other", "payload": b''}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {
+            "html": "", "raw_bytes": 1000, "status": 200, "url": url, "kind": "other", "stopped_early": False}
+        with redirect_stdout(io.StringIO()):
+            for i in range(4):                      # 4 misses in a row
+                sfh.fetch_rsc_seat_diff = self._diff("other")
+                self._run(scraper.fetch_amc_seat_map_http(str(i)))
+            self.assertEqual(4, scraper._RSC_STATE["diff_miss_streak"])
+            sfh.fetch_rsc_seat_diff = self._diff("seats")     # one success clears it
+            out = self._run(scraper.fetch_amc_seat_map_http("99"))
+        self.assertEqual(50, out["total_seats"])
+        self.assertEqual(0, scraper._RSC_STATE["diff_miss_streak"])
+        self.assertEqual(4, scraper._RSC_STATE["diff_fallback"])   # lifetime count still rises
+
+    def test_discarded_diff_bytes_are_still_billed(self):
+        sfh.fetch_rsc_seat_diff = self._diff("seats", sid_in_payload=False)
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {
+            "counts": {"total_seats": 7, "seats_sold": 1}, "raw_bytes": 119000, "status": 200,
+            "url": url, "kind": "seats", "payload": b''}
+        before = scraper._EGRESS["bytes"]
+        with redirect_stdout(io.StringIO()) as buf:
+            out = self._run(scraper.fetch_amc_seat_map_http("1"))
+        self.assertEqual(7, out["total_seats"])
+        self.assertGreaterEqual(scraper._EGRESS["bytes"] - before, 9000)   # the wasted diff is visible
+        self.assertIn("Payload head:", buf.getvalue())                      # diagnosable in one run
+
+    def test_a_wall_on_the_shadow_parity_read_keeps_the_seat_count(self):
+        scraper.AMC_RSC_PARITY_CHECKS = 5
+        sfh.fetch_rsc_seat_diff = self._diff("seats")
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30, diagnostics=False: {
+            "html": "", "raw_bytes": 3000, "status": 200, "url": "https://queue.amctheatres.com/?c=amc",
+            "kind": "other", "stopped_early": False}
+        with redirect_stdout(io.StringIO()):
+            out = self._run(scraper.fetch_amc_seat_map_http("5"))
+        # was: QUEUE_SENTINEL -> good row discarded AND the whole theatre abandoned
+        self.assertIsInstance(out, dict); self.assertEqual(50, out["total_seats"])
+        self.assertEqual(0, scraper._RSC_STATE["checked"])   # parity deferred, not spent

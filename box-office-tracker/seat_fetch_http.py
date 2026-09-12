@@ -233,28 +233,47 @@ _SEAT_OBJ_RE = re.compile(
 # cell whatever the field ORDER (a reordered object no longer starts with
 # {"available": and would otherwise slip past the check).
 _SEAT_OBJ_MARK = b'"shouldDisplay":'
+_SEAT_OBJ_OPEN = b'{"available":'
 # Whole-type matches, not substrings: "aisle" as a substring also excluded a
 # real "AisleRecliner" seat that the markup rule counts (audit-15).
 _NON_SEAT_TYPES = frozenset({"notaseat", "wheelchair", "companion", "aisle", "gap", "empty", "blank"})
 
 
 def _layout_bounds(payload: bytes) -> tuple[int, int] | None:
-    """Byte range of the FIRST seatingLayout's seat array. Bounded so a payload
-    carrying two layouts (e.g. a cached one alongside the requested showtime's)
-    can never be summed into a single count (audit-15)."""
+    """Byte range of the FIRST seatingLayout's seat array, found by matching
+    brackets rather than the first ']' — a single list-valued field on one seat
+    would otherwise truncate the window mid-array and make every read fail
+    (audit-16). Returns None when no usable array is present."""
     start = payload.find(b'"seatingLayout"')
     if start == -1:
         return None
-    arr = payload.find(b'"seats":[', start)
+    nxt = payload.find(b'"seatingLayout"', start + 1)
+    limit = nxt if nxt != -1 else len(payload)
+    arr = payload.find(b'"seats":[', start, limit)   # never reach into the NEXT layout
     if arr == -1:
         return None
-    end = payload.find(b"]", arr)
-    if end == -1:
-        end = len(payload)
-    nxt = payload.find(b'"seatingLayout"', start + 1)
-    if nxt != -1 and nxt < end:
-        end = nxt
-    return arr, end
+    lo = arr + len(b'"seats":[')
+    depth, i, in_str, esc = 1, lo, False, False
+    while i < limit and depth:
+        c = payload[i:i + 1]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == b"\\":
+                esc = True
+            elif c == b'"':
+                in_str = False
+        elif c == b'"':
+            in_str = True
+        elif c in (b"[", b"{"):
+            depth += 1 if c == b"[" else 0
+        elif c == b"]":
+            depth -= 1
+        i += 1
+    if depth:
+        return None                                   # unterminated array
+    hi = i - 1
+    return (lo, hi) if hi > lo else None
 
 
 def parse_rsc_seats(payload: bytes) -> dict | None:
@@ -271,9 +290,12 @@ def parse_rsc_seats(payload: bytes) -> dict | None:
     lo, hi = bounds
     window = payload[lo:hi]
     matches = list(_SEAT_OBJ_RE.finditer(window))
-    # Every seat cell in the window must have parsed. A partial match means the
-    # schema changed under us: refuse rather than report a short count.
-    if len(matches) != window.count(_SEAT_OBJ_MARK):
+    # Completeness, checked BOTH ways (audit-16): the number of seat cells is
+    # the max of the two independent markers, so drift that ADDS/REORDERS keys
+    # (mark present, regex misses) and drift that REMOVES a key (neither
+    # present) both fail the check instead of yielding a short count.
+    cells = max(window.count(_SEAT_OBJ_MARK), window.count(_SEAT_OBJ_OPEN))
+    if len(matches) != cells:
         return None
     total = sold = 0
     for m in matches:
