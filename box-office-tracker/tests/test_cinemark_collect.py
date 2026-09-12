@@ -98,6 +98,17 @@ class PerFilmCapTest(unittest.TestCase):
         self.assertEqual({"Aaa Film": 1, "Bbb Film": 2}, by_title)  # pre-cap counts
 
 
+class PerTheatreCapWiringTest(unittest.TestCase):
+    def test_scheduled_pre_passes_capture_three_showtimes_per_film(self):
+        # 2026-09-12: cap 1 was dropping ~2/3 of the matched showtimes while
+        # runs used 10 of their 90 minutes. Direct lane, so no proxy bytes.
+        yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        step = yml.split("- name: Cinemark collect", 1)[1].split("- name:", 1)[0]
+        self.assertIn('export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-3}"', step)
+        # ad-hoc capped tests must keep the module default
+        self.assertEqual(1, cc.CINEMARK_PER_THEATRE_CAP)
+
+
 class TarpitPolicyTest(unittest.TestCase):
     def test_tarpit_verdict_policy(self):
         # No tarpit -> ok; tarpit with almost nothing -> red (only a RED run
