@@ -60,7 +60,12 @@ print(f"proxy={'ON' if proxy else 'off'} budget={MAX_BYTES/1048576:.0f} MB", flu
 
 # 1. a theatre page -> its showtime links
 r, th = get("https://www.regmovies.com/theatres", "THEATRES")
-paths = sorted({m.decode() for m in re.findall(rb'"(/theatres/[a-z0-9\-]+/\d+)"', th or b"")})
+import collections
+hrefs = [m.decode("utf-8", "ignore") for m in re.findall(rb'href="(/[^"]{2,80})"', th or b"")]
+shapes = collections.Counter("/".join(re.sub(r"[0-9]+", "N", p).split("/")[:3]) for p in hrefs)
+print(f"THEATRES hrefs: {len(hrefs)} | top shapes: {shapes.most_common(8)}", flush=True)
+print(f"  samples: {hrefs[:8]}", flush=True)
+paths = sorted({p for p in hrefs if p.startswith("/theatres/") and p.count("/") >= 2})
 print(f"theatre paths: {len(paths)} e.g. {paths[:3]}", flush=True)
 detail = b""
 if paths:
@@ -68,7 +73,10 @@ if paths:
     r, detail = get("https://www.regmovies.com" + paths[0], f"THEATRE {paths[0]}")
 
 # 2. showtime / ticketing links on a theatre page
-cands = sorted({m.decode() for m in re.findall(rb'"(/[a-z0-9\-/]*(?:showtimes|tickets|seat)[a-z0-9\-/]*)"', detail or b"")})[:6]
+dh = [m.decode("utf-8", "ignore") for m in re.findall(rb'href="([^"]{2,120})"', detail or b"")]
+dshapes = collections.Counter("/".join(re.sub(r"[0-9]+", "N", p).split("/")[:4]) for p in dh)
+print(f"THEATRE-PAGE hrefs: {len(dh)} | top shapes: {dshapes.most_common(8)}", flush=True)
+cands = sorted({p for p in dh if re.search(r"showtime|ticket|seat|session", p, re.I)})[:8]
 print(f"showtime-ish paths: {cands}", flush=True)
 sess_ids = sorted({m.decode() for m in re.findall(rb'"(?:sessionId|showtimeId|sessionID)"\s*:\s*"?([A-Za-z0-9\-]{4,})"?', detail or b"")})[:5]
 print(f"session ids in page: {sess_ids}", flush=True)
