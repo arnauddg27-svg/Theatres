@@ -55,13 +55,34 @@ def get(url, tag, headers=None, note=""):
     return r, b
 
 
+RSC_HDRS = {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9"}
 print(f"proxy={'ON' if proxy else 'off'} budget={MAX_BYTES/1048576:.0f} MB", flush=True)
-r, home = get("https://www.regmovies.com/", "HOME")
-if home:
-    slugs = sorted(set(re.findall(rb"/theatres/([a-z0-9\-]+)/(\d+)", home)))[:3]
-    print(f"HOME theatre links: {[(s.decode(), i.decode()) for s, i in slugs][:3]}", flush=True)
-    apis = sorted(set(re.findall(rb'"(/api/[a-z0-9\-/]+)"', home)))[:8]
-    print(f"HOME api paths: {[a.decode() for a in apis]}", flush=True)
-for path, tag in (("/theatres", "THEATRES"), ("/movies", "MOVIES")):
+
+# 1. a theatre page -> its showtime links
+r, th = get("https://www.regmovies.com/theatres", "THEATRES")
+paths = sorted({m.decode() for m in re.findall(rb'"(/theatres/[a-z0-9\-]+/\d+)"', th or b"")})
+print(f"theatre paths: {len(paths)} e.g. {paths[:3]}", flush=True)
+detail = b""
+if paths:
     time.sleep(1)
-    get("https://www.regmovies.com" + path, tag)
+    r, detail = get("https://www.regmovies.com" + paths[0], f"THEATRE {paths[0]}")
+
+# 2. showtime / ticketing links on a theatre page
+cands = sorted({m.decode() for m in re.findall(rb'"(/[a-z0-9\-/]*(?:showtimes|tickets|seat)[a-z0-9\-/]*)"', detail or b"")})[:6]
+print(f"showtime-ish paths: {cands}", flush=True)
+sess_ids = sorted({m.decode() for m in re.findall(rb'"(?:sessionId|showtimeId|sessionID)"\s*:\s*"?([A-Za-z0-9\-]{4,})"?', detail or b"")})[:5]
+print(f"session ids in page: {sess_ids}", flush=True)
+for key in (b'"seats"', b'"seatingLayout"', b'"available"', b'seatMap', b'"SeatsAvailable"', b'"occupancy"'):
+    if detail and key in detail:
+        i = detail.find(key)
+        print(f"  theatre page has {key.decode()} @{i}: {detail[max(0,i-80):i+220].decode('utf-8','ignore')!r}", flush=True)
+
+# 3. does the site answer RSC on a deep page? (the AMC trick's precondition)
+if paths:
+    time.sleep(1)
+    r, rsc = get("https://www.regmovies.com" + paths[0], "RSC theatre", headers=RSC_HDRS,
+                 note=f"is_flight={bool(rsc_ct) if (rsc_ct := (r.headers.get('content-type') if r else '')) else False}")
+
+# 4. any obvious data API the page calls
+apis = sorted({m.decode() for m in re.findall(rb'"(/api/[a-z0-9\-/]+)"', (th or b"") + (detail or b""))})[:10]
+print(f"api paths seen: {apis}", flush=True)
