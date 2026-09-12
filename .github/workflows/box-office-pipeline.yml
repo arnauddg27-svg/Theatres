@@ -535,6 +535,7 @@ jobs:
             # cinemark_titles doubles as the probe selector on this job.
             case "${{ github.event.inputs.cinemark_titles }}" in
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
+              fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
               *)     python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log ;;
             esac
             exit 0
