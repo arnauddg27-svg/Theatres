@@ -60,19 +60,13 @@ print(f"proxy={'ON' if proxy else 'off'} budget={MAX_BYTES/1048576:.0f} MB", flu
 
 # The theatre list hydrates client-side, so discover routes from the sitemap.
 r, sm = get("https://www.regmovies.com/sitemap.xml", "SITEMAP")
-kids = [m.decode() for m in re.findall(rb"<loc>\s*([^<\s]+)\s*</loc>", sm or b"")][:12]
-print(f"sitemap children: {kids}", flush=True)
-theatre_url = None
-for kid in kids:
-    if not re.search(r"theat|cinema|location", kid, re.I):
-        continue
-    time.sleep(1)
-    r, child = get(kid, f"SM {kid.rsplit('/', 1)[-1]}")
-    urls = [m.decode() for m in re.findall(rb"<loc>\s*([^<\s]+)\s*</loc>", child or b"")]
-    print(f"  {len(urls)} urls, e.g. {urls[:3]}", flush=True)
-    if urls:
-        theatre_url = urls[0]
-        break
+import collections
+locs = [m.decode() for m in re.findall(rb"<loc>\s*([^<\s]+)\s*</loc>", sm or b"")]
+shapes = collections.Counter(re.sub(r"[0-9]+", "N", u.replace("https://www.regmovies.com", "")).rsplit("/", 1)[0] or "/" for u in locs)
+print(f"sitemap: {len(locs)} urls | top shapes: {shapes.most_common(10)}", flush=True)
+theatre_url = next((u for u in locs if "/theatres/" in u), None)
+movie_url = next((u for u in locs if "/movies/" in u), None)
+print(f"sample theatre={theatre_url}  sample movie={movie_url}", flush=True)
 
 if theatre_url:
     time.sleep(1)
