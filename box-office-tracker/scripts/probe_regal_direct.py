@@ -76,11 +76,17 @@ if theatre_url:
         if detail and key in detail:
             i2 = detail.find(key)
             print(f"  has {key.decode()} @{i2}: {detail[max(0,i2-60):i2+200].decode('utf-8','ignore')!r}", flush=True)
-    hrefs = sorted({m.decode('utf-8','ignore') for m in re.findall(rb'href="([^"]{2,140})"', detail or b"")})
-    tick = [h for h in hrefs if re.search(r"ticket|seat|session|showtime|book", h, re.I)][:8]
-    print(f"  ticket-ish hrefs: {tick}", flush=True)
-    print(f"  all href shapes: {sorted({re.sub(r'[0-9]+','N',h)[:48] for h in hrefs})[:12]}", flush=True)
-    time.sleep(1)
-    r, rsc = get(theatre_url, "RSC theatre", headers=RSC_HDRS)
-    if rsc:
-        print(f"  rsc is_flight={rsc[:40]!r} has_seat_keys={any(k in rsc for k in (b'seatingLayout', b'"seats"', b'"available"'))}", flush=True)
+    # What does one Performance object look like? Seat counts in it would mean
+    # ONE page load per theatre covers every film and showtime.
+    i3 = detail.find(b'"Performances"')
+    if i3 != -1:
+        print(f"  PERFORMANCE SAMPLE: {detail[i3:i3+1500].decode('utf-8','ignore')!r}", flush=True)
+    for key in (b"SeatsAvailable", b"SeatsRemaining", b"SeatsSold", b"SeatsTotal", b"Occupancy",
+                b"SeatsUnavailable", b"AvailableSeats", b"Capacity", b"SoldOut", b"IsSoldOut",
+                b"SeatCount", b"Sold"):
+        n = detail.count(key)
+        if n:
+            j = detail.find(key)
+            print(f"  seat key {key.decode()} x{n}: {detail[max(0,j-100):j+160].decode('utf-8','ignore')!r}", flush=True)
+    print(f"  counts: PerformanceId={detail.count(b'PerformanceId')} MasterMovieCode={detail.count(b'MasterMovieCode')} "
+          f"SessionId={detail.count(b'SessionId')} Performances={detail.count(b'Performances')}", flush=True)
