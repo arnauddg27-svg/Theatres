@@ -2,7 +2,7 @@
   "date": "2026-09-11",
   "weekend_of": "2026-09-11",
   "collected_local_date": "2026-09-11",
-  "collected_at": "2026-09-11T23:22:18.784951+00:00",
+  "collected_at": "2026-09-12T01:13:50.949711+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -30333,63 +30333,180 @@
                 "showtime_id": "146989088",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "146989266",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "146989267",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "146989371",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146988841",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146375405",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "146988842",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146989265",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200519+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:35pm",
-            "showtime_id": "145906205",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "146989018",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:55pm",
-            "showtime_id": "145906175",
+            "showtime": "11:00am",
+            "showtime_id": "145906166",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "145906204",
+            "showtime": "12:00pm",
+            "showtime_id": "146989026",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146989021",
+            "showtime": "1:00pm",
+            "showtime_id": "145906192",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:55pm",
+            "showtime_id": "145906168",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:05pm",
+            "showtime_id": "146989027",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145906198",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "145906164",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146989028",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145906197",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "145906165",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146989029",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "145906196",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:50pm",
+            "showtime_id": "146989045",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "10:25am",
+            "showtime_id": "146989250",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "144892560",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "144892559",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "144892549",
+            "showtime_id": "144892558",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "146989092",
+            "showtime_id": "146989088",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
-            "showtime": "9:40pm",
-            "showtime_id": "146988834",
+            "showtime": "11:15am",
+            "showtime_id": "146989266",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "2:50pm",
+            "showtime_id": "146989267",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "146989371",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146988841",
             "format": "4DX at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146988952",
+            "showtime": "6:30pm",
+            "showtime_id": "146375405",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146988842",
+            "format": "4DX at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146989265",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -30526,9 +30643,36 @@
                 "showtime_id": "146872735",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:55am",
+                "showtime_id": "146924104",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "146924124",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "146924108",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146362918",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146362908",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200532+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -30636,56 +30780,101 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146086556",
+            "showtime": "12:20pm",
+            "showtime_id": "146924095",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "146086533",
+            "showtime": "1:15pm",
+            "showtime_id": "146086552",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146086555",
+            "showtime": "3:25pm",
+            "showtime_id": "146924097",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "146086534",
+            "showtime": "4:30pm",
+            "showtime_id": "146086551",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146924102",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "146086550",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "146924096",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146086549",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "146872743",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:05pm",
+            "showtime_id": "146872744",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:40pm",
-            "showtime_id": "146872748",
+            "showtime_id": "146872745",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146872749",
+            "showtime_id": "146872734",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "146898724",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime_id": "146872735",
+            "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
+            "showtime": "11:55am",
+            "showtime_id": "146924104",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "146924124",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:25pm",
+            "showtime_id": "146924108",
+            "format": "SCREENX at AMC"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146362914",
+            "showtime_id": "146362918",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146362915",
+            "showtime_id": "146362908",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -30896,6 +31085,11 @@
                 "showtime": "10:00pm",
                 "showtime_id": "146820800",
                 "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147005651",
+                "format": "Korean Spoken with English Subtitles"
               }
             ]
           },
@@ -30987,9 +31181,31 @@
                 "showtime_id": "146973372",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:10am",
+                "showtime_id": "146973360",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "146973379",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146820792",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146820793",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200895+00:00",
+          "collected_at": "2026-09-12T01:13:50.926676+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -31099,6 +31315,11 @@
           {
             "showtime": "10:00pm",
             "showtime_id": "146820800",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147005651",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -31618,7 +31839,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201219+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -31688,64 +31909,34 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "146985830",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "145706413",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "145706412",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "145706429",
+            "showtime_id": "145706431",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146985722",
+            "showtime_id": "146985734",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145706430",
+            "showtime_id": "145706432",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "146985719",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "146786987",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "146786998",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "146786997",
+            "showtime_id": "146786993",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146786988",
+            "showtime_id": "146786996",
             "format": "Laser at AMC"
           }
         ]
@@ -32164,71 +32355,58 @@
                 "showtime_id": "145765299",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146879445",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146879448",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200269+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "146893679",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:15pm",
-            "showtime_id": "146267717",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "145765304",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:15pm",
-            "showtime_id": "146893676",
+            "showtime_id": "146879438",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145765303",
+            "showtime_id": "145765300",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146893677",
+            "showtime": "8:30pm",
+            "showtime_id": "146879439",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145765302",
+            "showtime": "10:00pm",
+            "showtime_id": "145765299",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "146893665",
+            "showtime": "6:15pm",
+            "showtime_id": "146879445",
             "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "146893719",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "146893685",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "146893686",
+            "showtime": "9:45pm",
+            "showtime_id": "146879448",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -33258,7 +33436,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200781+00:00",
+          "collected_at": "2026-09-12T01:13:50.926655+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -33339,7 +33517,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200688+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -33407,62 +33585,37 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "145886241",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:45pm",
-            "showtime_id": "146868324",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:45pm",
-            "showtime_id": "145886242",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146868325",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "145886243",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:00pm",
-            "showtime_id": "146868186",
+            "showtime_id": "145886221",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146868235",
+            "showtime": "6:30pm",
+            "showtime_id": "146868217",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145886244",
+            "showtime_id": "146395087",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146868287",
+            "showtime_id": "145886245",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "146868236",
+            "showtime": "9:45pm",
+            "showtime_id": "146868244",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145886233",
+            "showtime_id": "145886246",
             "format": "Laser at AMC"
           }
         ]
@@ -33671,9 +33824,26 @@
                 "showtime_id": "144931531",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "146930874",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146276334",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146276335",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200927+00:00",
+          "collected_at": "2026-09-12T01:13:50.926734+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -33803,9 +33973,21 @@
                 "showtime_id": "144931527",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146276332",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146276333",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200206+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-11": {
@@ -33850,51 +34032,91 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "145889738",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:50pm",
-            "showtime_id": "145889760",
+            "showtime": "12:00pm",
+            "showtime_id": "145889776",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145889740",
+            "showtime": "1:00pm",
+            "showtime_id": "145889755",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146061026",
+            "showtime": "1:30pm",
+            "showtime_id": "146930912",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "145889777",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145889754",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146930911",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145889774",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145889753",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "145889775",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145889752",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "144931520",
+            "showtime": "1:45pm",
+            "showtime_id": "144931530",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146931049",
+            "showtime": "4:30pm",
+            "showtime_id": "144931529",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "144931528",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "144931527",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
             "showtime": "6:15pm",
-            "showtime_id": "146276324",
+            "showtime_id": "146276332",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146276325",
+            "showtime_id": "146276333",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -34678,7 +34900,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-11T01:22:21.670095+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -34778,61 +35000,111 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146474910",
+            "showtime": "11:00am",
+            "showtime_id": "145889867",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:30am",
+            "showtime_id": "146974912",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "11:45am",
+            "showtime_id": "145889897",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "145889866",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "146974905",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "145889898",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "145889865",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146974909",
+            "showtime_id": "146974903",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145889874",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "145889908",
+            "showtime": "6:15pm",
+            "showtime_id": "145889899",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "8:30pm",
+            "showtime_id": "145889863",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "9:15pm",
-            "showtime_id": "146974910",
+            "showtime_id": "146974904",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145889875",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "9:30pm",
+            "showtime_id": "145889900",
+            "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "11:10am",
+            "showtime_id": "146974881",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "144956228",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "144956229",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "144956222",
+            "showtime_id": "144956230",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "144956223",
+            "showtime_id": "144956231",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
+            "showtime": "2:15pm",
+            "showtime_id": "146974960",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146275811",
+            "showtime_id": "146275815",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146275812",
+            "showtime_id": "146275816",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -34904,7 +35176,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200026+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -35037,29 +35309,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "145831225",
+            "showtime": "12:00pm",
+            "showtime_id": "145831254",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146949970",
+            "showtime": "1:25pm",
+            "showtime_id": "146949783",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "145831226",
+            "showtime": "3:05pm",
+            "showtime_id": "145831255",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:40pm",
+            "showtime_id": "146949953",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "145831256",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "146949954",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145831257",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "146949900",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:05pm",
+            "showtime_id": "146858549",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146858529",
+            "showtime_id": "146858547",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "146858548",
             "format": "Laser at AMC"
           }
         ]
@@ -35511,35 +35818,101 @@
                 "showtime_id": "146911063",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "146911041",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "146911055",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146911084",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201055+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "145857393",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "145857431",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "145857391",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "145857426",
+            "showtime_id": "145857428",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145857383",
+            "showtime_id": "145857392",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "145857427",
+            "showtime_id": "145857429",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145857384",
+            "showtime_id": "145857394",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146911039",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146911038",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146911063",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "146911041",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146911055",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146911084",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -35559,6 +35932,11 @@
               {
                 "showtime": "1:45pm",
                 "showtime_id": "146956816",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "147006864",
                 "format": "Laser at AMC"
               },
               {
@@ -35603,9 +35981,21 @@
                 "showtime_id": "146956755",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "146956780",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146956779",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201328+00:00",
+          "collected_at": "2026-09-12T01:13:50.926809+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -35748,46 +36138,60 @@
                 "showtime_id": "146956750",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "146956783",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201254+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "145771279",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "146956819",
+            "showtime": "5:30pm",
+            "showtime_id": "146956821",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145771280",
+            "showtime": "7:15pm",
+            "showtime_id": "145771281",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145771276",
+            "showtime": "8:45pm",
+            "showtime_id": "146956822",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146956898",
+            "showtime": "10:30pm",
+            "showtime_id": "145771282",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146956751",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "146956750",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146956785",
+            "showtime": "9:40pm",
+            "showtime_id": "146956783",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -35987,9 +36391,51 @@
                 "showtime_id": "145009426",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "146924428",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "11:45am",
+                "showtime_id": "146924269",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "12:20pm",
+                "showtime_id": "146924310",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "146924268",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "146924309",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146369491",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "146924307",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146924300",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201313+00:00",
+          "collected_at": "2026-09-12T01:13:50.926788+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -36087,57 +36533,101 @@
                 "showtime_id": "145009414",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146369490",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "146924311",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "146924299",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "146924264",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201299+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "145799054",
+            "showtime": "5:00pm",
+            "showtime_id": "146924416",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "145799011",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145799057",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146955994",
+            "showtime": "8:05pm",
+            "showtime_id": "146924417",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145799062",
+            "showtime": "9:40pm",
+            "showtime_id": "145799012",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "145799055",
+            "showtime": "10:40pm",
+            "showtime_id": "145799058",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "146955995",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "145799063",
-            "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "6:55pm",
-            "showtime_id": "145009404",
+            "showtime": "6:00pm",
+            "showtime_id": "145009412",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:40pm",
-            "showtime_id": "146956023",
+            "showtime": "8:35pm",
+            "showtime_id": "145009414",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146369490",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "146924311",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "146924299",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "146924264",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -36416,57 +36906,81 @@
                 "showtime_id": "144953894",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146367861",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146367862",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201277+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146126240",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "145772233",
+            "showtime": "5:00pm",
+            "showtime_id": "146953189",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146953193",
+            "showtime": "6:40pm",
+            "showtime_id": "145772249",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "145772209",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "145772246",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "145772234",
+            "showtime": "9:00pm",
+            "showtime_id": "146953294",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "145772247",
+            "showtime": "9:45pm",
+            "showtime_id": "145772248",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "145772208",
+            "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "144953909",
+            "showtime": "7:30pm",
+            "showtime_id": "144953893",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "144953910",
+            "showtime": "10:15pm",
+            "showtime_id": "144953894",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146367861",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146367862",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -36600,6 +37114,11 @@
               {
                 "showtime": "10:00pm",
                 "showtime_id": "146365864",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147004095",
                 "format": "Korean Spoken with English Subtitles"
               }
             ]
@@ -36842,9 +37361,41 @@
                 "showtime_id": "145043211",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "10:15am",
+                "showtime_id": "146986272",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "146986087",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "146986055",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146365870",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146986269",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146365866",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200170+00:00",
+          "collected_at": "2026-09-12T01:13:50.926727+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -36914,6 +37465,11 @@
           {
             "showtime": "10:00pm",
             "showtime_id": "146365864",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147004095",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -37719,9 +38275,31 @@
                 "showtime_id": "145044758",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "146830880",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "146830879",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146345592",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146345593",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200284+00:00",
+          "collected_at": "2026-09-12T01:13:50.926536+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -37995,7 +38573,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200049+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -38086,27 +38664,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146862239",
+            "showtime_id": "146862107",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145907559",
+            "showtime_id": "145907551",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146862240",
+            "showtime_id": "146862108",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "145907560",
+            "showtime_id": "145907552",
             "format": "Laser at AMC"
           }
         ]
@@ -38194,9 +38772,31 @@
                 "showtime_id": "145896143",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:25pm",
+                "showtime_id": "146968589",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "146968599",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146385401",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "146968610",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200901+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -38316,35 +38916,70 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145896152",
+            "showtime": "12:00pm",
+            "showtime_id": "145896129",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "145896146",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:05pm",
+            "showtime_id": "145896125",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:25pm",
+            "showtime_id": "145896145",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "145896124",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145896119",
+            "showtime_id": "145896144",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "145896123",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "145896153",
+            "showtime": "10:35pm",
+            "showtime_id": "145896143",
             "format": "Dolby Cinema at AMC"
           }
         ],
-        "Runner": [
+        "Hope": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "144949313",
-            "format": "Laser at AMC"
+            "showtime": "12:25pm",
+            "showtime_id": "146968589",
+            "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "144949314",
-            "format": "Laser at AMC"
+            "showtime": "3:35pm",
+            "showtime_id": "146968599",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146385401",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "146968610",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -38488,9 +39123,31 @@
                 "showtime_id": "146878595",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "146878482",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "146878483",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146577827",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "146878571",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201131+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -38645,40 +39302,122 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "145892563",
+            "showtime": "12:20pm",
+            "showtime_id": "146878692",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:50pm",
-            "showtime_id": "146878718",
+            "showtime": "1:10pm",
+            "showtime_id": "146878573",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "145892580",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "146878790",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "145892556",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146878709",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "145892581",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "5:35pm",
+            "showtime_id": "146878789",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "146589111",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146878710",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "145892587",
+            "showtime_id": "145892576",
             "format": "PRIME at AMC"
           },
           {
+            "showtime": "8:45pm",
+            "showtime_id": "146878788",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:10pm",
-            "showtime_id": "145892564",
+            "showtime_id": "145892558",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146878708",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146878955",
+            "showtime": "12:50pm",
+            "showtime_id": "146878594",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146878957",
+            "showtime": "3:35pm",
+            "showtime_id": "146878593",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:35pm",
+            "showtime_id": "146878693",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146878595",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146878482",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:35pm",
+            "showtime_id": "146878483",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146577827",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146878571",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -38738,9 +39477,21 @@
                 "showtime_id": "145903363",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146828178",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "146828179",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200362+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -38786,9 +39537,31 @@
                 "showtime_id": "145903387",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "146828195",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "146828194",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146828192",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "146828193",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200227+00:00",
+          "collected_at": "2026-09-12T01:13:50.926638+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -38846,28 +39619,40 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "146402637",
+            "showtime_id": "146848054",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "145903360",
+            "showtime_id": "145903362",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "146927328",
+            "showtime_id": "146927296",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "145903361",
+            "showtime_id": "145903363",
             "format": "Dine-In Delivery to Seat"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146828178",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "146828179",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -39436,9 +40221,26 @@
                 "showtime_id": "146814415",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "146945161",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "146945193",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146945194",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-09T23:54:41.266691+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-11": {
@@ -39488,40 +40290,87 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "145762464",
+            "showtime": "11:00am",
+            "showtime_id": "146945141",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145762217",
+            "showtime": "12:45pm",
+            "showtime_id": "145762246",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "145762468",
+            "showtime": "2:45pm",
+            "showtime_id": "145762450",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145762240",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "145762453",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "145762242",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "145762455",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145762220",
+            "showtime_id": "145762244",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146814404",
+            "showtime": "2:15pm",
+            "showtime_id": "146814417",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146814403",
+            "showtime": "4:50pm",
+            "showtime_id": "146814416",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "146814426",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146814415",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "146945161",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146945193",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146945194",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -39949,79 +40798,49 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200449+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "146891492",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:45pm",
-            "showtime_id": "145858519",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "146891491",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "145858518",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:15pm",
-            "showtime_id": "146891490",
+            "showtime_id": "146875205",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145858517",
+            "showtime_id": "145858505",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146891572",
+            "showtime_id": "146891554",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "145858531",
+            "showtime_id": "145858527",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146891479",
+            "showtime_id": "146875204",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "145068520",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "145068518",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "145068514",
+            "showtime_id": "145068529",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "145068516",
+            "showtime_id": "145068531",
             "format": "Laser at AMC"
           }
         ]
@@ -40485,7 +41304,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201140+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -40518,27 +41337,49 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:20pm",
-            "showtime_id": "146868361",
+            "showtime": "1:30pm",
+            "showtime_id": "145751611",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "145751624",
+            "showtime": "4:30pm",
+            "showtime_id": "145751610",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146868362",
+            "showtime": "6:15pm",
+            "showtime_id": "146906462",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145902125",
+            "showtime": "7:15pm",
+            "showtime_id": "146412160",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146906464",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "146412161",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "2:05pm",
+            "showtime_id": "146906535",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146906468",
             "format": "Laser at AMC"
           }
         ]
@@ -40598,7 +41439,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200291+00:00",
+          "collected_at": "2026-09-12T01:13:50.926660+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -40717,37 +41558,37 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201082+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146877808",
+            "showtime": "6:00pm",
+            "showtime_id": "146877831",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145887109",
+            "showtime": "7:00pm",
+            "showtime_id": "145887112",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146877809",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "145887110",
+            "showtime": "9:15pm",
+            "showtime_id": "146877829",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146877866",
+            "showtime_id": "145887113",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146877864",
             "format": "Laser at AMC"
           }
         ]
@@ -40937,9 +41778,21 @@
                 "showtime_id": "145053444",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "146944037",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146213743",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-09T23:54:41.266003+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -41051,116 +41904,111 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-09-12T01:13:50.926668+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145770545",
-            "format": "Laser at AMC"
+            "showtime_id": "145770552",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "145770575",
+            "showtime_id": "145770579",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "146924982",
+            "showtime_id": "146943989",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "146924946",
+            "showtime": "2:35pm",
+            "showtime_id": "146943921",
             "format": "XL at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "145770544",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "145770551",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "145770576",
+            "showtime_id": "145770580",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "146924981",
+            "showtime_id": "146943988",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "145770543",
+            "showtime_id": "145770550",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145770577",
+            "showtime_id": "145770581",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "146924983",
+            "showtime_id": "146943990",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146924947",
+            "showtime": "9:15pm",
+            "showtime_id": "146943922",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "145770542",
+            "showtime_id": "146943974",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "145770578",
+            "showtime_id": "146943975",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146925014",
+            "showtime": "1:00pm",
+            "showtime_id": "145053447",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145053443",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:35pm",
-            "showtime_id": "145053442",
+            "showtime": "3:45pm",
+            "showtime_id": "145053446",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "145053441",
+            "showtime": "6:25pm",
+            "showtime_id": "145053445",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "145053440",
+            "showtime": "9:00pm",
+            "showtime_id": "145053444",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "146925004",
+            "showtime_id": "146944037",
             "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146213758",
+            "showtime": "6:45pm",
+            "showtime_id": "146213743",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -41315,9 +42163,26 @@
                 "showtime_id": "144954434",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146270666",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147002006",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146270667",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201116+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -41448,72 +42313,96 @@
                 "showtime_id": "145774080",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "146916178",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "146916402",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "146270660",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146270661",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200754+00:00",
+          "collected_at": "2026-09-12T01:13:50.926571+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "5:15pm",
-            "showtime_id": "145774087",
+            "showtime_id": "146916069",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "146916086",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "146916296",
+            "showtime": "6:00pm",
+            "showtime_id": "146916293",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146916362",
+            "showtime_id": "145774071",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "145774088",
+            "showtime_id": "146916068",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146916087",
+            "showtime": "9:15pm",
+            "showtime_id": "146916294",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146916297",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "145774141",
+            "showtime": "10:15pm",
+            "showtime_id": "145774072",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "144954429",
+            "showtime": "7:15pm",
+            "showtime_id": "144954431",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "144954428",
+            "showtime": "10:00pm",
+            "showtime_id": "144954434",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146270666",
+            "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146916348",
-            "format": "Laser at AMC"
+            "showtime": "8:00pm",
+            "showtime_id": "147002006",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146270667",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -51798,6 +52687,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "6:50pm",
+                "showtime_id": "147002747",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "146110724",
                 "format": "Dolby Cinema at AMC"
@@ -51812,9 +52706,26 @@
                 "showtime_id": "146110725",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "146898250",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146819022",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "146819023",
+                "format": "PRIME at AMC"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200933+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -51865,46 +52776,78 @@
                 "showtime_id": "146110718",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:35am",
+                "showtime_id": "146819028",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "146819027",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146377194",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146377195",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-09T23:54:41.266455+00:00",
+          "collected_at": "2026-09-12T01:13:50.926507+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146110701",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "5:00pm",
+            "showtime_id": "146819035",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146836413",
-            "format": "XL at AMC"
+            "showtime": "6:50pm",
+            "showtime_id": "147002747",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146110724",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146110702",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "146819036",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146836415",
-            "format": "XL at AMC"
+            "showtime": "10:00pm",
+            "showtime_id": "146110725",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "Hope": [
           {
+            "showtime": "6:30pm",
+            "showtime_id": "146898250",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146898231",
+            "showtime_id": "146819022",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146898228",
+            "showtime_id": "146819023",
             "format": "PRIME at AMC"
           }
         ]
@@ -54180,9 +55123,21 @@
                 "showtime_id": "146948055",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146378277",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146378278",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201230+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -54232,45 +55187,57 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146111438",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:45pm",
-            "showtime_id": "146948178",
+            "showtime_id": "146111440",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146948249",
+            "showtime": "6:30pm",
+            "showtime_id": "146948253",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146111439",
+            "showtime": "7:20pm",
+            "showtime_id": "146948089",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146948250",
+            "showtime": "9:00pm",
+            "showtime_id": "146111441",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146948255",
             "format": "XL at AMC"
           }
         ],
         "Runner": [
           {
             "showtime": "7:20pm",
-            "showtime_id": "145043091",
+            "showtime_id": "145043093",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "146948016",
+            "showtime": "10:00pm",
+            "showtime_id": "146948055",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146378277",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146378278",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -54409,9 +55376,36 @@
                 "showtime_id": "144953189",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "146956998",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:40pm",
+                "showtime_id": "146956992",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "146956997",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146373089",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "146956996",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201159+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -54566,45 +55560,117 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "145896265",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "145896256",
+            "showtime": "11:30am",
+            "showtime_id": "145896246",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:40pm",
-            "showtime_id": "145896266",
+            "showtime": "1:00pm",
+            "showtime_id": "145896274",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145896257",
+            "showtime": "2:20pm",
+            "showtime_id": "145896249",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "145896273",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "145896248",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146957052",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145896272",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145896247",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146957053",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "145896271",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "145896235",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "144953195",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "144953173",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:30pm",
-            "showtime_id": "144953168",
+            "showtime_id": "144953174",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "144953169",
+            "showtime_id": "144953175",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146926625",
+            "showtime_id": "144953189",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146956998",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "2:40pm",
+            "showtime_id": "146956992",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146956997",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146373089",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146956996",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -54693,9 +55759,21 @@
                 "showtime_id": "145068661",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146351606",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146351607",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200463+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -54792,7 +55870,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-09-12T01:13:50.926543+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -54875,103 +55953,90 @@
                 "showtime_id": "145068665",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "146995320",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "146995522",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "146995358",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146351608",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146351609",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200398+00:00",
+          "collected_at": "2026-09-12T01:13:50.926616+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "145908479",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:40pm",
-            "showtime_id": "146995351",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "145870523",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "146995350",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "145870524",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "146995349",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "145870525",
+            "showtime": "5:15pm",
+            "showtime_id": "145870532",
             "format": "Open Caption (On-screen Subtitles)"
-          }
-        ],
-        "Runner": [
-          {
-            "showtime": "11:30am",
-            "showtime_id": "145068672",
-            "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145068671",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "145068670",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "146995426",
+            "showtime": "6:00pm",
+            "showtime_id": "146995353",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145068669",
+            "showtime_id": "146995444",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "145870529",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "146995352",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "145068662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145068661",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146995294",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "146995525",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "146995367",
-            "format": "SCREENX at AMC"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "146351598",
+            "showtime_id": "146351606",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146351599",
+            "showtime_id": "146351607",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -55101,9 +56166,21 @@
                 "showtime_id": "145045277",
                 "format": "undefined"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "146828793",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "146828792",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201317+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -55178,30 +56255,47 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:05pm",
-            "showtime_id": "146404161",
+            "showtime": "7:30pm",
+            "showtime_id": "145889132",
             "format": "undefined"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "145889152",
+            "showtime": "9:20pm",
+            "showtime_id": "145889158",
             "format": "undefined"
           }
         ],
         "Runner": [
           {
             "showtime": "6:50pm",
-            "showtime_id": "145045273",
+            "showtime_id": "145045276",
             "format": "undefined"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "146882921",
+            "showtime": "8:30pm",
+            "showtime_id": "146896343",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "145045277",
             "format": "undefined"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:35pm",
+            "showtime_id": "146828793",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146828792",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -55342,7 +56436,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-11T01:22:21.670183+00:00",
+          "collected_at": "2026-09-12T01:13:50.926802+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -56308,9 +57402,21 @@
                 "showtime_id": "145881298",
                 "format": "undefined"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146355978",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146355976",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201028+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -56384,13 +57490,18 @@
                 "format": "Korean Spoken with English Subtitles"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "147003986",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "146374597",
                 "format": "Korean Spoken with English Subtitles"
               }
             ]
           },
-          "collected_at": "2026-09-11T01:22:21.670023+00:00",
+          "collected_at": "2026-09-12T01:13:50.926713+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -56423,29 +57534,29 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145881282",
+            "showtime": "7:20pm",
+            "showtime_id": "145881280",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145881284",
+            "showtime": "9:50pm",
+            "showtime_id": "145881298",
             "format": "undefined"
           }
         ],
         "Hope": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146355977",
+            "showtime": "6:45pm",
+            "showtime_id": "146355978",
             "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146355969",
+            "showtime": "10:00pm",
+            "showtime_id": "146355976",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -56560,9 +57671,26 @@
                 "showtime_id": "145043120",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:35pm",
+                "showtime_id": "146964449",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "146964448",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:55pm",
+                "showtime_id": "146964446",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201295+00:00",
+          "collected_at": "2026-09-12T01:13:50.926796+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-11": {
@@ -56620,9 +57748,16 @@
                 "showtime_id": "145043112",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "146956437",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-09T23:54:41.266826+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -56749,7 +57884,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-09-12T01:13:50.926780+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -56802,126 +57937,66 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-12",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146030802",
+            "showtime": "5:20pm",
+            "showtime_id": "146956450",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:50pm",
-            "showtime_id": "146030837",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "1:20pm",
-            "showtime_id": "146956472",
+            "showtime": "6:00pm",
+            "showtime_id": "146030804",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:55pm",
-            "showtime_id": "146956454",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:35pm",
-            "showtime_id": "146956398",
+            "showtime": "6:35pm",
+            "showtime_id": "146956393",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "3:10pm",
-            "showtime_id": "146030801",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146030836",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:35pm",
-            "showtime_id": "146956471",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:10pm",
-            "showtime_id": "146956455",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:50pm",
-            "showtime_id": "146956397",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "146030800",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "146030835",
+            "showtime_id": "146030841",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:50pm",
-            "showtime_id": "146956470",
+            "showtime_id": "146956473",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:25pm",
-            "showtime_id": "146956453",
+            "showtime": "8:35pm",
+            "showtime_id": "146956452",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:05pm",
-            "showtime_id": "146956396",
-            "format": "XL at AMC"
+            "showtime": "9:15pm",
+            "showtime_id": "146030803",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "146030799",
-            "format": "Laser at AMC"
+            "showtime_id": "146956392",
+            "format": "XL at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "145043119",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "145043118",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "145043117",
+            "showtime_id": "145043113",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145043116",
+            "showtime_id": "145043112",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
-            "showtime": "12:35pm",
-            "showtime_id": "146956442",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "146956441",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
             "showtime": "8:00pm",
-            "showtime_id": "146956440",
+            "showtime_id": "146956437",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -85142,9 +86217,26 @@
                 "showtime_id": "146998046",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146377403",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "146977656",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "146847591",
+                "format": "SCREENX at AMC"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200163+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -85314,45 +86406,62 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145884578",
+            "showtime": "6:30pm",
+            "showtime_id": "145884607",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "145884552",
+            "showtime": "7:30pm",
+            "showtime_id": "145884574",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146977672",
+            "showtime": "8:15pm",
+            "showtime_id": "146977673",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "145884579",
+            "showtime": "9:40pm",
+            "showtime_id": "145884608",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "145884553",
+            "showtime": "10:40pm",
+            "showtime_id": "145884572",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "145052648",
+            "showtime_id": "145052652",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146977784",
+            "showtime": "10:00pm",
+            "showtime_id": "146998046",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146377403",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146977656",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146847591",
+            "format": "SCREENX at AMC"
           }
         ]
       }
@@ -85758,93 +86867,190 @@
                 "showtime_id": "146965693",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "146965749",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "146965884",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146965882",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146965740",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "146965883",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201128+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146966008",
+            "showtime": "11:30am",
+            "showtime_id": "146965861",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146965717",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "12:25pm",
+            "showtime_id": "145744476",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "145744243",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:05pm",
+            "showtime_id": "146966002",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146965860",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:35pm",
+            "showtime_id": "146965716",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "3:50pm",
+            "showtime_id": "145744475",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "145744242",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "146966001",
             "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "146965850",
+            "showtime": "6:25pm",
+            "showtime_id": "146965855",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145744454",
+            "showtime_id": "145744473",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "145744232",
+            "showtime_id": "145744240",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:40pm",
-            "showtime_id": "146966007",
+            "showtime": "8:55pm",
+            "showtime_id": "146966000",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146965849",
+            "showtime_id": "146965854",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146965946",
+            "showtime_id": "146965942",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:40pm",
-            "showtime_id": "145744455",
+            "showtime_id": "145744474",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "146966013",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "144918759",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "144918758",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "144918748",
+            "showtime_id": "144918756",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "146965675",
+            "showtime_id": "146965692",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "144918749",
+            "showtime": "10:10pm",
+            "showtime_id": "144918757",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146965683",
+            "showtime_id": "146965693",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146965749",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "146965884",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146230482",
+            "showtime_id": "146965882",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146965746",
+            "showtime_id": "146965740",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "146230483",
+            "showtime_id": "146965883",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -86009,9 +87215,36 @@
                 "showtime_id": "145040985",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "146984739",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "146984705",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146984704",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147006632",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146984939",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200987+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -86096,80 +87329,107 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "145887070",
+            "showtime_id": "145887073",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "146984821",
+            "showtime_id": "146984827",
             "format": "XL at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "145887052",
+            "showtime_id": "145887055",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "145887068",
+            "showtime": "3:20pm",
+            "showtime_id": "145887071",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "145887053",
+            "showtime_id": "145887042",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "145887069",
+            "showtime_id": "145887072",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145887054",
+            "showtime_id": "145887056",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146984805",
+            "showtime_id": "146984796",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146984823",
+            "showtime_id": "146984829",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "145887043",
+            "showtime_id": "145887057",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
             "showtime": "2:00pm",
-            "showtime_id": "145040995",
+            "showtime_id": "145040988",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "145040993",
+            "showtime_id": "145040986",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "145040990",
+            "showtime_id": "145040983",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145040991",
+            "showtime_id": "145040985",
             "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "146984739",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146984705",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146984704",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147006632",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146984939",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -86722,58 +87982,115 @@
                 "showtime_id": "144892439",
                 "format": "Open Caption (On-screen Subtitles)"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "146913898",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "146913897",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146914002",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201109+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:20pm",
-            "showtime_id": "145733550",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "145733511",
+            "showtime": "10:30am",
+            "showtime_id": "146587203",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145733551",
+            "showtime": "12:00pm",
+            "showtime_id": "146913969",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "145972376",
+            "showtime": "1:40pm",
+            "showtime_id": "145733520",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146913968",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "146587204",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146913964",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146587205",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146595058",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Runner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "144892424",
+            "showtime": "10:20am",
+            "showtime_id": "146257167",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "144892425",
+            "showtime": "1:40pm",
+            "showtime_id": "144892438",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "144892437",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "144892436",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "144892439",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Hope": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146675709",
+            "showtime": "11:30am",
+            "showtime_id": "146913898",
             "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146888633",
+            "showtime": "3:15pm",
+            "showtime_id": "146913897",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146914002",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -87257,9 +88574,21 @@
                 "showtime_id": "146931379",
                 "format": "undefined"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146356143",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146931224",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200341+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -87514,70 +88843,77 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "145851288",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:10pm",
-            "showtime_id": "145851355",
-            "format": "undefined"
-          },
-          {
             "showtime": "7:15pm",
-            "showtime_id": "145851271",
+            "showtime_id": "145851284",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "145851323",
+            "showtime_id": "145851338",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "146942527",
+            "showtime": "8:00pm",
+            "showtime_id": "145851302",
             "format": "undefined"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "146942550",
+            "showtime": "8:00pm",
+            "showtime_id": "145851352",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146931172",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146931376",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146942517",
+            "showtime_id": "146931066",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146942540",
+            "showtime_id": "146931244",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Runner": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "144955685",
+            "showtime_id": "144955688",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "144955717",
+            "showtime_id": "144955715",
             "format": "undefined"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "146942529",
+            "showtime": "10:30pm",
+            "showtime_id": "146931379",
             "format": "undefined"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146356143",
+            "format": "Korean Spoken with English Subtitles"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "146942552",
-            "format": "undefined"
+            "showtime": "9:15pm",
+            "showtime_id": "146931224",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -87962,8 +89298,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147004638",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147004614",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:45pm",
                 "showtime_id": "145719772",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147002043",
                 "format": "Laser at AMC"
               },
               {
@@ -88000,7 +89351,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-09T23:54:41.266405+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-13": {
@@ -88068,34 +89419,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-11",
+      "show_date": "2026-09-12",
       "movies": {
         "Practical Magic 2": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "145719771",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147004638",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147004614",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "145719772",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:10pm",
-            "showtime_id": "147000865",
+            "showtime_id": "147002043",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145719751",
+            "showtime_id": "145719773",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145719770",
+            "showtime_id": "145719774",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146778517",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146778518",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146778513",
+            "showtime_id": "146778507",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:05pm",
-            "showtime_id": "146778514",
+            "showtime_id": "146778508",
             "format": "Laser at AMC"
           }
         ]
@@ -88271,35 +89652,86 @@
                 "showtime_id": "146954273",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "146954274",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "146954272",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200418+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146203009",
+            "showtime": "12:45pm",
+            "showtime_id": "146203027",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146879458",
+            "showtime": "2:30pm",
+            "showtime_id": "146954311",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146203026",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "146954310",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146203024",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "146954288",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146879460",
+            "showtime_id": "146954309",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146203010",
+            "showtime": "9:45pm",
+            "showtime_id": "146203025",
             "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146954273",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146954274",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146954272",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -88767,47 +90199,131 @@
                 "showtime_id": "145050272",
                 "format": "undefined"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "146947132",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "146947071",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "146223180",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "146223219",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201147+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146947124",
+            "showtime": "11:45am",
+            "showtime_id": "146946799",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145882855",
+            "showtime": "1:00pm",
+            "showtime_id": "145882876",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146947123",
+            "showtime": "1:30pm",
+            "showtime_id": "146947081",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "145882856",
+            "showtime": "3:00pm",
+            "showtime_id": "146946914",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "145882875",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146947080",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146946922",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "145882873",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "145882874",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146946920",
             "format": "undefined"
           }
         ],
         "Runner": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "145050265",
+            "showtime": "1:30pm",
+            "showtime_id": "146946875",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146946873",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146697388",
+            "showtime": "7:00pm",
+            "showtime_id": "145050271",
             "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "145050272",
+            "format": "undefined"
+          }
+        ],
+        "Hope": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146947132",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146947071",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146223180",
+            "format": "Korean Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "146223219",
+            "format": "Korean Spoken with English Subtitles"
           }
         ]
       }
@@ -89653,7 +91169,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200484+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -89713,17 +91229,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-13",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "145897374",
+            "showtime": "12:45pm",
+            "showtime_id": "145897357",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "4:00pm",
+            "showtime_id": "145897356",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "145897354",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "10:20pm",
-            "showtime_id": "145897375",
+            "showtime_id": "145897355",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Runner": [
+          {
+            "showtime": "11:00am",
+            "showtime_id": "146780780",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "146780779",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146780778",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146780792",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146780793",
             "format": "Laser at AMC"
           }
         ]
@@ -89910,9 +91463,31 @@
                 "showtime_id": "146860446",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "146969210",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "146969209",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146386493",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146386494",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201273+00:00",
+          "collected_at": "2026-09-12T01:13:50.926759+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-11": {
@@ -89965,9 +91540,21 @@
                 "showtime_id": "146860451",
                 "format": "Laser at AMC"
               }
+            ],
+            "Hope": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "146386489",
+                "format": "Korean Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146386490",
+                "format": "Korean Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.201246+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -90082,71 +91669,66 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-10",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "145896830",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "146876117",
+            "showtime_id": "145896826",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "145896785",
+            "showtime": "6:45pm",
+            "showtime_id": "146882912",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "145896788",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146876104",
+            "showtime": "8:15pm",
+            "showtime_id": "146882899",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "145896831",
+            "showtime": "9:10pm",
+            "showtime_id": "145896827",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "145896786",
+            "showtime": "10:10pm",
+            "showtime_id": "145896787",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146876118",
+            "showtime": "10:30pm",
+            "showtime_id": "146882913",
             "format": "Laser at AMC"
           }
         ],
         "Runner": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146860457",
+            "showtime": "7:00pm",
+            "showtime_id": "146860461",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "146860458",
+            "showtime": "10:00pm",
+            "showtime_id": "146860451",
             "format": "Laser at AMC"
           }
         ],
         "Hope": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146386487",
-            "format": "Korean Spoken with English Subtitles"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146847092",
+            "showtime_id": "146386489",
             "format": "Korean Spoken with English Subtitles"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146386488",
+            "showtime_id": "146386490",
             "format": "Korean Spoken with English Subtitles"
           }
         ]
@@ -90608,7 +92190,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-10T17:56:47.200512+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-12": {
@@ -90704,7 +92286,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-09-12T01:13:50.926585+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-10": {
@@ -90737,47 +92319,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-13",
+      "show_date": "2026-09-11",
       "movies": {
         "Practical Magic 2": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146389554",
-            "format": "undefined"
-          },
-          {
-            "showtime": "1:15pm",
-            "showtime_id": "146901409",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "145905789",
-            "format": "undefined"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "146901410",
-            "format": "undefined"
-          },
-          {
             "showtime": "6:15pm",
-            "showtime_id": "146901386",
+            "showtime_id": "146901403",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "145905790",
+            "showtime_id": "146389549",
             "format": "undefined"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146901385",
+            "showtime_id": "146901404",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "145905791",
+            "showtime_id": "145905781",
             "format": "undefined"
           }
         ]
@@ -91059,9 +92621,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9913,
-    "fresh": 342,
-    "expected": 345,
+    "ratio": 0.9899,
+    "fresh": 196,
+    "expected": 198,
     "min_ratio": 0.9,
     "degraded": false
   }
