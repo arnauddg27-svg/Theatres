@@ -72,6 +72,16 @@ for u in urls[-2:]:
         av = m.group(1).decode("utf-8", "ignore").replace("&amp;", "&")
         print(f"  availability url: {av[:220]}", flush=True)
         time.sleep(1)
-        get(av if av.startswith("http") else "https://tickets.fandango.com" + av, "AVAILABILITY",
-            headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
+        full = av if av.startswith("http") else "https://tickets.fandango.com" + av
+        r2, ab = get(full, "AVAILABILITY",
+                     headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
+        print(f"  AVAIL BODY ({len(ab)} B): {ab[:1500].decode('utf-8','ignore')!r}", flush=True)
+        # and the seat-map variant of the same endpoint
+        for action in ("seatmap", "getseats", "seatpicker"):
+            time.sleep(1)
+            alt = re.sub(r"action=[a-z]+", "action=" + action, full)
+            r3, sb = get(alt, f"ACTION={action}",
+                         headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
+            if sb:
+                print(f"  {action} BODY ({len(sb)} B): {sb[:900].decode('utf-8','ignore')!r}", flush=True)
     time.sleep(1)
