@@ -76,12 +76,17 @@ for u in urls[-2:]:
         r2, ab = get(full, "AVAILABILITY",
                      headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
         print(f"  AVAIL BODY ({len(ab)} B): {ab[:1500].decode('utf-8','ignore')!r}", flush=True)
-        # and the seat-map variant of the same endpoint
-        for action in ("seatmap", "getseats", "seatpicker"):
-            time.sleep(1)
-            alt = re.sub(r"action=[a-z]+", "action=" + action, full)
-            r3, sb = get(alt, f"ACTION={action}",
-                         headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
-            if sb:
-                print(f"  {action} BODY ({len(sb)} B): {sb[:900].decode('utf-8','ignore')!r}", flush=True)
+        # the API names its own required parameters: tid, mid, sdate, t, quantity
+        time.sleep(1)
+        withq = full + "&quantity=1"
+        r3, sb = get(withq, "AVAIL+quantity",
+                     headers={"Accept": "application/json,text/plain,*/*", "X-Requested-With": "XMLHttpRequest"})
+        if sb:
+            print(f"  +quantity BODY ({len(sb)} B) head: {sb[:900].decode('utf-8','ignore')!r}", flush=True)
+            for key in (b'"seats"', b'"available"', b'"status"', b'"rows"', b'"seat_status"',
+                        b'"unavailable"', b'"sold"', b'"total"'):
+                n = sb.count(key)
+                if n:
+                    j = sb.find(key)
+                    print(f"    {key.decode()} x{n}: {sb[max(0,j-80):j+260].decode('utf-8','ignore')!r}", flush=True)
     time.sleep(1)
