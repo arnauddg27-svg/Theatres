@@ -90,3 +90,24 @@ if theatre_url:
             print(f"  seat key {key.decode()} x{n}: {detail[max(0,j-100):j+160].decode('utf-8','ignore')!r}", flush=True)
     print(f"  counts: PerformanceId={detail.count(b'PerformanceId')} MasterMovieCode={detail.count(b'MasterMovieCode')} "
           f"SessionId={detail.count(b'SessionId')} Performances={detail.count(b'Performances')}", flush=True)
+
+    # Where does ticketing live? (the page's buttons are JS-driven)
+    for key in (b"ticketing", b"checkout", b"vista", b"boxoffice", b"api/", b"seat",
+                b"NEXT_PUBLIC", b"baseUrl", b"apiUrl"):
+        idxs = [m.start() for m in re.finditer(re.escape(key), detail, re.I)][:2]
+        for j in idxs:
+            print(f"  [{key.decode()}] {detail[max(0,j-110):j+150].decode('utf-8','ignore')!r}", flush=True)
+
+    # Try likely seat endpoints for a real PerformanceId on this theatre.
+    m = re.search(rb'"PerformanceId":(\d+)', detail or b"")
+    tc = re.search(rb'"TheatreCode":"(\d+)"', detail or b"")
+    if m and tc:
+        pid, code = m.group(1).decode(), tc.group(1).decode()
+        print(f"  trying seat endpoints for performance {pid} at theatre {code}", flush=True)
+        for path in (f"/api/getSeatsAvailability?performanceId={pid}",
+                     f"/api/seats/{pid}",
+                     f"/ticketing/{code}/{pid}",
+                     f"/ticketing/seats?performanceId={pid}&theatreCode={code}",
+                     f"/api/performance/{pid}/seats"):
+            time.sleep(1)
+            get("https://www.regmovies.com" + path, f"TRY {path[:44]}")
