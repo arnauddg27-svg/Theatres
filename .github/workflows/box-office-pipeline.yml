@@ -526,6 +526,7 @@ jobs:
           # needed; read-only) instead of Fandango discovery.
           AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
           PROBE_N: ${{ github.event.inputs.test }}
+          PROBE_KIND: ${{ github.event.inputs.cinemark_titles }}
           PROBE_MAX_MB: '30'   # hard ceiling on probe traffic through the metered proxy
         run: |
           set +e
@@ -533,7 +534,10 @@ jobs:
           if [ -n "$PROBE_N" ]; then
             pip install -q -r requirements.txt
             # cinemark_titles doubles as the probe selector on this job.
-            case "${{ github.event.inputs.cinemark_titles }}" in
+            # PROBE_KIND, never a raw ${{ }} interpolation: this step holds the
+            # proxy credential in its env, and a dispatch value containing a
+            # quote would break out of the case word (audit-15).
+            case "$PROBE_KIND" in
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
               *)     python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log ;;

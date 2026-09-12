@@ -274,13 +274,16 @@ class RscFirstDispatchTest(unittest.TestCase):
         scraper._RSC_STATE.update(ok=0, fallback=0, checked=0, mismatch=0, disabled=False, bytes=0)
         self.orig_http = dict(scraper._HTTP_STATE)
         scraper._HTTP_STATE.update(http_blocked=0)
-        self.orig_fns = (sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC)
+        self.orig_fns = (sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC,
+                         scraper.AMC_SEAT_RSC_DIFF)
+        scraper.AMC_SEAT_RSC_DIFF = False   # this class tests the FULL-payload path
         scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
         scraper.AMC_SEAT_RSC = True
 
     def tearDown(self):
         scraper._RSC_STATE.update(self.orig_state); scraper._HTTP_STATE.update(self.orig_http)
-        sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC = self.orig_fns
+        (sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC,
+         scraper.AMC_SEAT_RSC_DIFF) = self.orig_fns
 
     def _run(self, coro):
         import asyncio
@@ -304,8 +307,15 @@ class RscFirstDispatchTest(unittest.TestCase):
         scraper._HTTP_STATE["session"] = object()
         with redirect_stdout(io.StringIO()) as buf:
             out = self._run(scraper.fetch_amc_seat_map_http("2"))
-        self.assertEqual(100, out["total_seats"])
-        self.assertTrue(scraper._RSC_STATE["disabled"]); self.assertIn("RSC path DISABLED", buf.getvalue())
+        # audit-15: the PAGE reader is the one that can truncate, so a
+        # disagreement takes the LARGER total and needs two strikes to disable.
+        self.assertEqual(100, out["total_seats"])          # page had more seats than rsc's 90
+        self.assertFalse(scraper._RSC_STATE["disabled"])
+        self.assertIn("strike 1/2", buf.getvalue())
+        with redirect_stdout(io.StringIO()) as buf2:
+            self._run(scraper.fetch_amc_seat_map_http("2b"))
+        self.assertTrue(scraper._RSC_STATE["disabled"])
+        self.assertIn("RSC path DISABLED", buf2.getvalue())
         # disabled -> page path only, no rsc call
         sfh.fetch_rsc_seat_page = lambda *a, **k: (_ for _ in ()).throw(AssertionError("rsc must not be called"))
         with redirect_stdout(io.StringIO()):
@@ -360,10 +370,12 @@ class DiffFirstChainTest(unittest.TestCase):
                      scraper.AMC_SEAT_RSC, scraper.AMC_SEAT_RSC_DIFF, scraper.AMC_RSC_PARITY_CHECKS)
         scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
         scraper.AMC_SEAT_RSC = True; scraper.AMC_SEAT_RSC_DIFF = True; scraper.AMC_RSC_PARITY_CHECKS = 0
+        self.orig_http_state = dict(scraper._HTTP_STATE)   # includes "session" — restored in tearDown
         scraper._HTTP_STATE["session"] = object()
 
     def tearDown(self):
         scraper._RSC_STATE.update(self.orig_state)
+        scraper._HTTP_STATE.update(self.orig_http_state)
         (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page, scraper._SEAT_PROXY,
          scraper.AMC_SEAT_RSC, scraper.AMC_SEAT_RSC_DIFF, scraper.AMC_RSC_PARITY_CHECKS) = self.orig
 
@@ -376,8 +388,10 @@ class DiffFirstChainTest(unittest.TestCase):
         def fake_diff(url, proxy, header, session=None, timeout=30):
             from urllib.parse import unquote
             seen.append(unquote(header))
+            sid = url.rsplit("/showtimes/", 1)[-1].split("/", 1)[0]
             return {"counts": {"total_seats": 50, "seats_sold": 5, "seats_available": 45, "occupancy_pct": 10.0},
-                    "raw_bytes": 8700, "status": 200, "url": url, "kind": "seats"}
+                    "raw_bytes": 8700, "status": 200, "url": url, "kind": "seats",
+                    "payload": b'"c":["","showtimes","' + sid.encode() + b'","seats"]'}
         sfh.fetch_rsc_seat_diff = fake_diff
         sfh.fetch_rsc_seat_page = lambda *a, **k: (_ for _ in ()).throw(AssertionError("full payload must not be fetched"))
         with redirect_stdout(io.StringIO()):
@@ -403,3 +417,97 @@ class DiffFirstChainTest(unittest.TestCase):
         sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {"counts": None, "raw_bytes": 3000, "status": 403, "url": url, "kind": "blocked"}
         with redirect_stdout(io.StringIO()):
             self.assertIs(scraper.CF_BLOCK_SENTINEL, self._run(scraper.fetch_amc_seat_map_http("400")))
+
+
+class RscParserSafetyTest(unittest.TestCase):
+    """audit-15: the RSC parser must refuse rather than under-count, must never
+    merge two auditoriums, and must agree with the markup rule on edge types."""
+    BASE = (b'"seatingLayout":{"columns":3,"rows":1,"seats":['
+            b'{"available":false,"column":1,"row":1,"name":"","type":"NotASeat","seatTier":"R","shouldDisplay":false},'
+            b'{"available":true,"column":2,"row":1,"name":"A2","type":"LoveSeatLeft","seatTier":"R","shouldDisplay":true},'
+            b'{"available":false,"column":3,"row":1,"name":"A1","type":"Recliner","seatTier":"P","shouldDisplay":true}]}}')
+
+    def test_one_extra_field_returns_none_not_a_short_count(self):
+        self.assertEqual(2, sfh.parse_rsc_seats(self.BASE)["total_seats"])
+        drifted = self.BASE.replace(b'"name":"A2"', b'"accessible":false,"name":"A2"')
+        self.assertIsNone(sfh.parse_rsc_seats(drifted))          # was: silently 1 seat
+        reordered = self.BASE.replace(b'"available":true,"column":2', b'"column":2,"available":true')
+        self.assertIsNone(sfh.parse_rsc_seats(reordered))
+
+    def test_two_layouts_are_never_summed(self):
+        two = self.BASE + (b'xx"seatingLayout":{"seats":[{"available":true,"column":1,"row":1,'
+                           b'"name":"Z1","type":"Recliner","seatTier":"R","shouldDisplay":true}]}')
+        self.assertEqual(2, sfh.parse_rsc_seats(two)["total_seats"])   # first layout only
+
+    def test_type_exclusions_are_whole_word(self):
+        # "AisleRecliner" is a real seat the markup rule counts; substring
+        # matching on "aisle" used to drop it
+        aisle = self.BASE.replace(b'"type":"Recliner"', b'"type":"AisleRecliner"')
+        self.assertEqual(2, sfh.parse_rsc_seats(aisle)["total_seats"])
+        for t in (b"Wheelchair", b"Companion", b"NotASeat"):
+            excluded = self.BASE.replace(b'"type":"Recliner"', b'"type":"' + t + b'"')
+            self.assertEqual(1, sfh.parse_rsc_seats(excluded)["total_seats"])
+
+    def test_identity_check(self):
+        self.assertTrue(sfh.payload_names_showtime(b'..."c":["","showtimes","145887232","seats"]...', "145887232"))
+        self.assertTrue(sfh.payload_names_showtime(b'...["showtimeId","145887232","d",null]...', 145887232))
+        self.assertFalse(sfh.payload_names_showtime(b'..."c":["","showtimes","999","seats"]...', "145887232"))
+        self.assertFalse(sfh.payload_names_showtime(b'', "1"))
+        self.assertFalse(sfh.payload_names_showtime(b'anything', ""))
+
+
+class DiffGuardTest(unittest.TestCase):
+    def setUp(self):
+        self.orig_state = dict(scraper._RSC_STATE); self.orig_http = dict(scraper._HTTP_STATE)
+        scraper._RSC_STATE.update(ok=0, fallback=0, checked=0, mismatch=0, disabled=False, bytes=0,
+                                  diff_ok=0, diff_fallback=0, diff_bytes=0, tree=None, last_id="1")
+        self.orig = (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page,
+                     scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC, scraper.AMC_RSC_PARITY_CHECKS)
+        scraper._SEAT_PROXY = {"server": "http://gw:1", "username": "u", "password": "p"}
+        scraper.AMC_SEAT_RSC = True; scraper.AMC_RSC_PARITY_CHECKS = 0
+        scraper._HTTP_STATE["session"] = object()
+
+    def tearDown(self):
+        scraper._RSC_STATE.update(self.orig_state); scraper._HTTP_STATE.update(self.orig_http)
+        (sfh.fetch_rsc_seat_diff, sfh.fetch_rsc_seat_page, sfh.fetch_seat_page,
+         scraper._SEAT_PROXY, scraper.AMC_SEAT_RSC, scraper.AMC_RSC_PARITY_CHECKS) = self.orig
+
+    def _run(self, coro):
+        import asyncio
+        return asyncio.run(coro)
+
+    def test_a_diff_that_does_not_name_the_showtime_is_discarded(self):
+        # the wrong-auditorium scenario: counts present, identity absent
+        sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {
+            "counts": {"total_seats": 999, "seats_sold": 1}, "raw_bytes": 9000, "status": 200,
+            "url": url, "kind": "seats", "payload": b'"c":["","showtimes","OTHER","seats"]'}
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {
+            "counts": {"total_seats": 120, "seats_sold": 4}, "raw_bytes": 119000, "status": 200,
+            "url": url, "kind": "seats", "payload": b''}
+        with redirect_stdout(io.StringIO()) as buf:
+            out = self._run(scraper.fetch_amc_seat_map_http("145887232"))
+        self.assertEqual(120, out["total_seats"])                 # the full payload's answer, not 999
+        self.assertIn("did not name it", buf.getvalue())
+        self.assertGreaterEqual(scraper._RSC_STATE["diff_fallback"], 1)
+
+    def test_diff_exceptions_are_counted_not_silent(self):
+        def boom(*a, **k):
+            raise RuntimeError("connection reset")
+        sfh.fetch_rsc_seat_diff = boom
+        sfh.fetch_rsc_seat_page = lambda url, proxy, session=None, timeout=30: {
+            "counts": {"total_seats": 10, "seats_sold": 1}, "raw_bytes": 119000, "status": 200,
+            "url": url, "kind": "seats", "payload": b''}
+        with redirect_stdout(io.StringIO()):
+            self._run(scraper.fetch_amc_seat_map_http("1"))
+        self.assertEqual(1, scraper._RSC_STATE["diff_fallback"])   # was 0: looked like "never ran"
+
+    def test_block_during_the_rsc_parity_read_is_not_swallowed(self):
+        scraper.AMC_RSC_PARITY_CHECKS = 5
+        sfh.fetch_rsc_seat_diff = lambda url, proxy, header, session=None, timeout=30: {
+            "counts": {"total_seats": 100, "seats_sold": 3}, "raw_bytes": 9000, "status": 200,
+            "url": url, "kind": "seats", "payload": b'"c":["","showtimes","7","seats"]'}
+        sfh.fetch_seat_page = lambda url, proxy, session=None, timeout=30: {
+            "html": "", "raw_bytes": 3000, "status": 403, "url": url, "kind": "blocked", "stopped_early": False}
+        with redirect_stdout(io.StringIO()):
+            out = self._run(scraper.fetch_amc_seat_map_http("7"))
+        self.assertIs(scraper.CF_BLOCK_SENTINEL, out)   # was: the rsc counts, block dropped

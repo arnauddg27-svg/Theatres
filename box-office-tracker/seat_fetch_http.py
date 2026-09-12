@@ -36,6 +36,9 @@ STOP_MARKERS = (b"self.__next_f.push", b"</main>", b"</body>", b'id="__NEXT_DATA
 # Hard ceiling regardless of markers (a full page is ~180 KB raw).
 MAX_RAW_BYTES = 2 * 1024 * 1024
 CHUNK = 16 * 1024
+# No zstd: HTTP_CONTENT_DECODING=0 hands us the raw body and _Inflater has no
+# zstd branch, so an undecodable body would burn the whole fallback chain.
+ACCEPT_ENCODING = "gzip, deflate, br"
 
 CF_BLOCK_TITLES = ("attention required", "access denied")
 CF_CHALLENGE_TITLES = ("just a moment",)
@@ -139,18 +142,21 @@ def make_session(impersonate: str = "chrome"):
     session is safe across asyncio.to_thread workers."""
     from curl_cffi import requests as cffi_requests
     from curl_cffi.const import CurlOpt
+    # No zstd: HTTP_CONTENT_DECODING=0 means curl hands us the raw body and
+    # _Inflater has no zstd branch — an undecodable body would burn the whole
+    # fallback chain silently (audit-15).
     return cffi_requests.Session(impersonate=impersonate,
                                  curl_options={CurlOpt.HTTP_CONTENT_DECODING: 0})
 
 
 def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
-                    impersonate: str = "chrome", session=None) -> dict:
+                    impersonate: str = "chrome", session=None, diagnostics: bool = False) -> dict:
     """Stream the seat page and stop early. Returns
     {'html': str, 'raw_bytes': int, 'status': int, 'kind': str, 'stopped_early': bool}.
     Never raises for HTTP-level trouble; network errors propagate to the caller.
     """
     sess = session or make_session(impersonate)
-    kwargs = {"stream": True, "timeout": timeout,
+    kwargs = {"stream": True, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
               "headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                           "Accept-Language": "en-US,en;q=0.9"}}
     if proxy_url:
@@ -187,6 +193,10 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
         except Exception:
             pass
     html = out.decode("utf-8", "ignore")
+    if not diagnostics:
+        return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+                "url": str(getattr(resp, "url", "") or url),
+                "kind": classify_page(html), "stopped_early": stopped}
     res = {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
            "url": str(getattr(resp, "url", "") or url),
            "kind": classify_page(html), "stopped_early": stopped,
@@ -207,98 +217,69 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
     return res
 
 
-# ── Diagnostics: where else do the seat states live? ─────────────────────────
-_PROBE_KEYS = (b'"isAvailable"', b'"available"', b'"status"', b'"seatType"', b'"seatNumber"',
-               b'"row"', b'"seats"', b'"seatingLayout"', b'Wheelchair', b'Recliner')
-
-
-def _snippet(b: bytes, pos: int, width: int = 240) -> str:
-    return b[max(0, pos - 40): pos + width].decode("utf-8", "ignore").replace("\n", " ")
-
-
-def diagnose_seat_payload(html_bytes: bytes, first_seat_input: int) -> dict:
-    """Counts/positions of JSON-ish seat keys in the flight data BEFORE the
-    seat markup, plus one snippet — to design a JSON-based reader."""
-    head = html_bytes[:first_seat_input] if first_seat_input > 0 else html_bytes
-    out = {"head_bytes": len(head), "keys": {}}
-    for k in _PROBE_KEYS:
-        n = head.count(k)
-        if n:
-            out["keys"][k.decode()] = {"count": n, "first": head.find(k)}
-    for k in (b'"isAvailable"', b'"status"', b'"seatNumber"', b'"seatType"'):
-        i = head.find(k)
-        if i != -1:
-            out["snippet"] = _snippet(head, i)
-            break
-    return out
-
-
-def probe_rsc_endpoint(url: str, proxy_url: str | None, session=None, timeout: float = 30.0) -> dict:
-    """Ask the same URL for its flight payload (Next.js app router honours the
-    RSC:1 header) and report size, content-type and seat-key counts."""
-    sess = session or make_session()
-    kwargs = {"stream": True, "timeout": timeout,
-              "headers": {"RSC": "1", "Accept": "text/x-component,*/*"}}
-    if proxy_url:
-        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
-    resp = sess.get(url, **kwargs)
-    raw = 0
-    out = bytearray()
-    try:
-        inflater = _Inflater(resp.headers.get("content-encoding", ""))
-        for chunk in resp.iter_content(chunk_size=CHUNK):
-            raw += len(chunk)
-            out += inflater.feed(chunk)
-            if raw >= MAX_RAW_BYTES:
-                break
-    finally:
-        try:
-            resp.close()
-        except Exception:
-            pass
-    b = bytes(out)
-    res = {"status": int(getattr(resp, "status_code", 0) or 0), "raw_bytes": raw, "decoded_bytes": len(b),
-           "content_type": str(resp.headers.get("content-type", "")), "keys": {}}
-    for k in _PROBE_KEYS:
-        n = b.count(k)
-        if n:
-            res["keys"][k.decode()] = n
-    lay = b.find(b'"seatingLayout"')
-    res["layout_pos"] = lay
-    res["first_available"] = b.find(b'"available"')
-    res["last_available"] = b.rfind(b'"available"')
-    res["available_true"] = b.count(b'"available":true')
-    res["available_false"] = b.count(b'"available":false')
-    res["layout_snippet"] = _snippet(b, lay, 900) if lay != -1 else ""
-    fa = res["first_available"]
-    res["seat_snippet"] = _snippet(b, fa, 500) if fa != -1 else ""
-    return res
-
 
 # ── Data-endpoint (RSC flight payload) seat reader ───────────────────────────
-# GET the same URL with `RSC: 1` and Next.js returns the flight payload
-# (text/x-component, ~119 KB gzip vs ~190 KB for the page). Near its end:
+# `RSC: 1` on the same URL returns the flight payload (text/x-component,
+# ~119 KB gzip vs ~190 KB for the page). Near its end:
 #   "seatingLayout":{"columns":14,"rows":9,"seats":[{"available":true,
 #     "column":1,"row":1,"name":"A14","type":"LoveSeatLeft","seatTier":"Regular",
 #     "shouldDisplay":true}, …]}
-# Cells that are not seats carry type "NotASeat" / shouldDisplay:false.
+# Field ORDER and set are pinned by this regex, so a seat object that gains or
+# loses one key stops matching — parse_rsc_seats turns that into None rather
+# than a short count (audit-15).
 _SEAT_OBJ_RE = re.compile(
     rb'\{"available":(true|false),"column":\d+,"row":\d+,"name":"([^"]*)","type":"([^"]*)","seatTier":"([^"]*)","shouldDisplay":(true|false)\}')
-_NON_SEAT_TYPES = ("notaseat", "wheelchair", "companion", "aisle", "gap", "empty", "blank")
+# Counting marker for the completeness check: present exactly once per seat
+# cell whatever the field ORDER (a reordered object no longer starts with
+# {"available": and would otherwise slip past the check).
+_SEAT_OBJ_MARK = b'"shouldDisplay":'
+# Whole-type matches, not substrings: "aisle" as a substring also excluded a
+# real "AisleRecliner" seat that the markup rule counts (audit-15).
+_NON_SEAT_TYPES = frozenset({"notaseat", "wheelchair", "companion", "aisle", "gap", "empty", "blank"})
+
+
+def _layout_bounds(payload: bytes) -> tuple[int, int] | None:
+    """Byte range of the FIRST seatingLayout's seat array. Bounded so a payload
+    carrying two layouts (e.g. a cached one alongside the requested showtime's)
+    can never be summed into a single count (audit-15)."""
+    start = payload.find(b'"seatingLayout"')
+    if start == -1:
+        return None
+    arr = payload.find(b'"seats":[', start)
+    if arr == -1:
+        return None
+    end = payload.find(b"]", arr)
+    if end == -1:
+        end = len(payload)
+    nxt = payload.find(b'"seatingLayout"', start + 1)
+    if nxt != -1 and nxt < end:
+        end = nxt
+    return arr, end
 
 
 def parse_rsc_seats(payload: bytes) -> dict | None:
     """Seat counts from the flight payload with the SAME exclusions as the
     markup rule (COUNT_SEATS_JS): non-seat cells, wheelchair and companion
-    cells are skipped; 'sold' = not available."""
-    start = payload.find(b'"seatingLayout"')
-    if start == -1:
+    cells are skipped; 'sold' = not available.
+
+    Returns None — never a partial count — when the payload's shape has
+    drifted, so the caller falls back to a reader that still understands it.
+    """
+    bounds = _layout_bounds(payload)
+    if bounds is None:
+        return None
+    lo, hi = bounds
+    window = payload[lo:hi]
+    matches = list(_SEAT_OBJ_RE.finditer(window))
+    # Every seat cell in the window must have parsed. A partial match means the
+    # schema changed under us: refuse rather than report a short count.
+    if len(matches) != window.count(_SEAT_OBJ_MARK):
         return None
     total = sold = 0
-    for m in _SEAT_OBJ_RE.finditer(payload, start):
+    for m in matches:
         avail, name, typ, _tier, display = m.groups()
         t = typ.decode("utf-8", "ignore").lower()
-        if display == b"false" or not name or any(k in t for k in _NON_SEAT_TYPES):
+        if display == b"false" or not name or t in _NON_SEAT_TYPES:
             continue
         total += 1
         if avail == b"false":
@@ -309,12 +290,23 @@ def parse_rsc_seats(payload: bytes) -> dict | None:
             "occupancy_pct": round(sold / total * 1000) / 10}
 
 
+def payload_names_showtime(payload: bytes, showtime_id) -> bool:
+    """True when the flight payload actually describes the showtime we asked
+    for. The envelope carries the canonical segments — "c":["","showtimes",
+    "<id>","seats"] — and the full payload also carries ["showtimeId","<id>".
+    A diff response is only trusted when this holds (audit-15)."""
+    sid = str(showtime_id or "").encode()
+    if not sid:
+        return False
+    return (b'"' + sid + b'","seats"') in payload or (b'"showtimeId","' + sid + b'"') in payload
+
+
 def fetch_rsc_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0, session=None) -> dict:
     """GET the flight payload (RSC: 1) — ~119 KB vs ~190 KB for the page —
     and read the seat list from it. Returns {'counts': dict|None, 'raw_bytes',
     'status', 'kind', 'url'}; kind mirrors classify_page for block pages."""
     sess = session or make_session()
-    kwargs = {"stream": True, "timeout": timeout,
+    kwargs = {"stream": True, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
               "headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9"}}
     if proxy_url:
         kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
@@ -409,13 +401,13 @@ def fetch_rsc_seat_diff(url: str, proxy_url: str | None, tree_header: str, *,
     reused across the tiny responses — the ~6 KB handshake would otherwise
     dominate the ~9 KB body."""
     sess = session or make_session()
-    kwargs = {"stream": False, "timeout": timeout,
+    kwargs = {"stream": False, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
               "headers": {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9",
                           "Next-Router-State-Tree": tree_header}}
     if proxy_url:
         kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
     resp = sess.get(url, **kwargs)
-    body = resp.content or b""
+    body = (resp.content or b"")[:MAX_RAW_BYTES]
     raw = len(body)
     try:
         payload = _Inflater(resp.headers.get("content-encoding", "")).feed(body)
@@ -430,4 +422,4 @@ def fetch_rsc_seat_diff(url: str, proxy_url: str | None, tree_header: str, *,
     else:
         kind = classify_page(payload.decode("utf-8", "ignore"))
     return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
-            "url": str(getattr(resp, "url", "") or url), "kind": kind, "reused_connection": True}
+            "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}

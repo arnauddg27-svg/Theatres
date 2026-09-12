@@ -9,7 +9,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import seat_fetch_http as sfh  # noqa: E402
 
-N = int(os.environ.get("PROBE_N", "2"))
+try:
+    N = max(1, min(20, int(os.environ.get("PROBE_N", "2") or 2)))
+except ValueError:
+    N = 2
+MAX_BYTES = int(float(os.environ.get("PROBE_MAX_MB", "30")) * 1024 * 1024)
+spent = 0
 proxy = os.environ.get("AMC_SEAT_PROXY_URL", "").strip() or None
 links = (Path(__file__).resolve().parents[1] / "data" / "showtime-links.json").read_text()
 ids = re.findall(r'"showtime_id":\s*"(\d+)"', links)
@@ -19,6 +24,10 @@ BASE = {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,
 
 
 def get(url, headers, tag, show_head=False):
+    global spent
+    if spent >= MAX_BYTES:
+        print(f"{tag}: SKIPPED — probe byte budget spent ({spent/1048576:.1f} MB)", flush=True)
+        return None, b""
     kw = {"stream": True, "timeout": 30, "headers": headers}
     if proxy:
         kw["proxies"] = {"http": proxy, "https": proxy}
@@ -27,7 +36,10 @@ def get(url, headers, tag, show_head=False):
     inf = sfh._Inflater(r.headers.get("content-encoding", ""))
     for ch in r.iter_content(chunk_size=16384):
         raw += len(ch); out += inf.feed(ch)
+        if raw > 2 * 1024 * 1024:
+            break
     r.close()
+    spent += raw
     b = bytes(out)
     hdr = {k: r.headers.get(k) for k in ("etag", "last-modified", "cache-control", "cf-cache-status", "age", "x-nextjs-postponed", "content-length")}
     print(f"{tag}: status={r.status_code} raw={raw} decoded={len(b)} layout={b.find(b'seatingLayout')} "

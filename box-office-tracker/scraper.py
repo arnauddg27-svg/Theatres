@@ -2645,9 +2645,12 @@ def _seat_counts_match(http_data, browser_data, tolerance=2):
 # (the markup path and the browser stay). Data is never traded for bytes.
 AMC_SEAT_RSC = bool(_env_int("AMC_SEAT_RSC", 1))
 AMC_RSC_PARITY_CHECKS = _env_int("AMC_RSC_PARITY_CHECKS", 20, minimum=0)
+AMC_RSC_PARITY_STRIKES = 2
+AMC_RSC_DIFF_MISS_BREAKER = _env_int("AMC_RSC_DIFF_MISS_BREAKER", 25, minimum=3)
 _RSC_STATE = {"ok": 0, "fallback": 0, "checked": 0, "mismatch": 0, "disabled": False, "bytes": 0,
               # segment diff (~9 KB): template tree + the last showtime id we fetched
-              "diff_ok": 0, "diff_fallback": 0, "diff_bytes": 0, "tree": None, "last_id": "1"}
+              "diff_ok": 0, "diff_fallback": 0, "diff_bytes": 0, "tree": None, "last_id": "1",
+              "shadowed_this_call": False}
 AMC_SEAT_RSC_DIFF = bool(_env_int("AMC_SEAT_RSC_DIFF", 1))
 DIFF_FETCH_OVERHEAD_BYTES = 1024   # reused proxy tunnel: headers only, no fresh handshake
 
@@ -2666,7 +2669,7 @@ async def _fetch_rsc(showtime_id, url):
     """Segment diff (~9 KB) first, full flight payload (~119 KB) second."""
     import seat_fetch_http
     res = None
-    if AMC_SEAT_RSC_DIFF:
+    if AMC_SEAT_RSC_DIFF and _RSC_STATE["diff_fallback"] < AMC_RSC_DIFF_MISS_BREAKER:
         tree = _RSC_STATE["tree"] or seat_fetch_http.ROUTER_TREE_TEMPLATE
         other = _RSC_STATE["last_id"] if str(_RSC_STATE["last_id"]) != str(showtime_id) else "1"
         header = seat_fetch_http.router_tree_header(tree, other)
@@ -2676,6 +2679,21 @@ async def _fetch_rsc(showtime_id, url):
         except Exception as e:
             if _is_proxy_error(str(e)):
                 return PROXY_BLOCK_SENTINEL
+            # Count it: an exception here used to leave BOTH diff counters at
+            # zero, so a diff path failing 100% of the time read in the summary
+            # as "never ran" (audit-15).
+            _RSC_STATE["diff_fallback"] += 1
+            if _RSC_STATE["diff_fallback"] == 1:
+                print(f"      ⚠️  segment diff failed ({type(e).__name__}) — full payload", flush=True)
+            d = None
+        if d is not None and d.get("counts") and not seat_fetch_http.payload_names_showtime(
+                d.get("payload") or b"", showtime_id):
+            # The response must describe the showtime we asked for. A diff that
+            # answers about the tree-supplied showtime would be another
+            # auditorium's seat map (audit-15).
+            print(f"::warning::segment diff for showtime {showtime_id} did not name it — discarding, "
+                  f"using the full payload", flush=True)
+            _RSC_STATE["diff_fallback"] += 1
             d = None
         if d is not None:
             billed = d["raw_bytes"] + DIFF_FETCH_OVERHEAD_BYTES
@@ -2702,9 +2720,15 @@ async def _fetch_rsc(showtime_id, url):
         _RSC_STATE["bytes"] += billed
         # a full payload teaches the leg AMC's current router tree (self-heal
         # if the hardcoded template goes stale)
-        if res.get("counts") and res.get("payload") and _RSC_STATE["tree"] is None:
+        if res.get("counts") and res.get("payload"):
             learned = seat_fetch_http.extract_router_tree(res["payload"])
-            if learned:
+            # Relearn whenever it CHANGED, not only the first time: a second
+            # route change in one leg would otherwise pin a stale tree and
+            # every remaining diff would miss (audit-15).
+            if learned and learned != _RSC_STATE["tree"]:
+                if _RSC_STATE["tree"] is not None:
+                    print("      ↷ AMC router tree changed — relearned from the full payload", flush=True)
+                    _RSC_STATE["diff_fallback"] = 0   # give the diff path a fresh run
                 _RSC_STATE["tree"] = learned
         _RSC_STATE["last_id"] = str(showtime_id)
     if _is_queue_url(res.get("url", "")):
@@ -2731,13 +2755,29 @@ async def fetch_amc_seat_map_http(showtime_id):
             _RSC_STATE["ok"] += 1
             if _RSC_STATE["checked"] < AMC_RSC_PARITY_CHECKS:
                 _RSC_STATE["checked"] += 1
+                _RSC_STATE["shadowed_this_call"] = True
                 page = await _fetch_page_counts(url)
+                # A block/queue/proxy signal raised DURING the parity read is a
+                # real signal about this theatre — it must reach the caller's
+                # streak logic, not be dropped because it carries no seat count
+                # (audit-15).
+                if page is CF_BLOCK_SENTINEL or page is QUEUE_SENTINEL or page is PROXY_BLOCK_SENTINEL:
+                    return page
                 if isinstance(page, dict) and page.get("total_seats") and not _seat_counts_match(rsc, page, tolerance=2):
                     _RSC_STATE["mismatch"] += 1
+                    # The page reader is the one that can TRUNCATE (early stop),
+                    # so a disagreement is not evidence against RSC on its own:
+                    # take the larger total, and require two strikes to disable
+                    # (a seat can sell or be released between the two reads).
+                    better = rsc if int(rsc["total_seats"]) >= int(page["total_seats"]) else page
+                    if _RSC_STATE["mismatch"] >= AMC_RSC_PARITY_STRIKES:
+                        _RSC_STATE["disabled"] = True
+                    state = ("RSC path DISABLED for this leg" if _RSC_STATE["disabled"]
+                             else f"strike {_RSC_STATE['mismatch']}/{AMC_RSC_PARITY_STRIKES}")
                     print(f"::warning::RSC seat data disagreed with the page markup on showtime {showtime_id} "
-                          f"(rsc {rsc} vs page {page}) — RSC path DISABLED for this leg; page result used", flush=True)
-                    _RSC_STATE["disabled"] = True
-                    return page
+                          f"(rsc {rsc} vs page {page}) — {state}; using the larger total "
+                          f"({better['total_seats']} seats)", flush=True)
+                    return better
             return rsc
         _RSC_STATE["fallback"] += 1
     return await _fetch_page_counts(url)
@@ -2783,6 +2823,7 @@ async def fetch_amc_seat_map(page, showtime_id):
     checks that switch HTTP off for the leg on the first disagreement."""
     if not _http_seat_fetch_enabled() or not showtime_id:
         return await fetch_amc_seat_map_pw(page, showtime_id)
+    _RSC_STATE["shadowed_this_call"] = False
     data = await fetch_amc_seat_map_http(showtime_id)
     if data is None:
         _HTTP_STATE["http_fallback"] += 1
@@ -2800,7 +2841,7 @@ async def fetch_amc_seat_map(page, showtime_id):
     if data is CF_BLOCK_SENTINEL or data is PROXY_BLOCK_SENTINEL or data is QUEUE_SENTINEL:
         return data
     _HTTP_STATE["http_ok"] += 1
-    if _HTTP_STATE["checked"] < AMC_HTTP_PARITY_CHECKS:
+    if _HTTP_STATE["checked"] < AMC_HTTP_PARITY_CHECKS and not _RSC_STATE.get("shadowed_this_call"):
         _HTTP_STATE["checked"] += 1
         browser_data = await fetch_amc_seat_map_pw(page, showtime_id)
         if isinstance(browser_data, dict) and browser_data.get("total_seats") \
