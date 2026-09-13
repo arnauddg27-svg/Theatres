@@ -116,6 +116,10 @@ class TrimTest(unittest.TestCase):
     def test_media_and_tracker_hosts_are_dropped(self):
         # measured: images.fandango.com is 3.0 MB of a 5.37 MB theatre page
         self.assertTrue(pe.should_block("image", "https://images.fandango.com/x.jpg"))
+        # ...but that same host also serves the app's JS; blocking it wholesale
+        # left the page with no showtimes at all
+        self.assertFalse(pe.should_block("script", "https://images.fandango.com/app.js"))
+        self.assertFalse(pe.should_block("xhr", "https://images.fandango.com/data"))
         for h in ("https://securepubads.g.doubleclick.net/gampad/ads",
                   "https://assets.adobedtm.com/x.js", "https://cdn.cookielaw.org/x.js",
                   "https://g2.gumgum.com/hbid/imp", "https://connect.facebook.net/en_US/fbevents.js"):

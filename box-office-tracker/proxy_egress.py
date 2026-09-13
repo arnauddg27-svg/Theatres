@@ -167,12 +167,17 @@ def should_block(resource_type: str, url: str = "") -> bool:
             host = (urlparse(url).netloc or "").lower()
         except Exception:
             host = ""
+    rt = (resource_type or "")
     if host:
-        if any(h == host or host.endswith("." + h) or h in host for h in MEDIA_HOSTS):
-            return True
+        # A media CDN may also serve the app's JavaScript — images.fandango.com
+        # carries both, and blocking it wholesale left the theatre page with no
+        # showtimes at all (measured 2026-09-13). So on media hosts, drop only
+        # the media.
+        if any(h == host or host.endswith("." + h) for h in MEDIA_HOSTS):
+            return rt in ("image", "media", "font")
         if any(h == host or host.endswith("." + h) for h in TRACKER_HOSTS):
             return True
-    return (resource_type or "") in TRIM_RESOURCE_TYPES
+    return rt in TRIM_RESOURCE_TYPES
 
 
 def trim_page(page, budget: "ByteBudget") -> None:
