@@ -28,17 +28,30 @@ with sync_playwright() as p:
             pass
     page.on("response", on_response)
 
-    page.goto(f"https://www.fandango.com/{th['slug']}/theater-page", wait_until="domcontentloaded", timeout=45000)
+    # A dated visit: an undated theatre page serves only today's REMAINING
+    # showtimes, and a started show renders no seat map at all — which is what
+    # made the previous two probes inconclusive.
+    import datetime as _dt
+    when = os.environ.get("PROBE_DATE") or (_dt.date.today() + _dt.timedelta(days=1)).isoformat()
+    print(f"visiting theatre page for {when}", flush=True)
+    page.goto(f"https://www.fandango.com/{th['slug']}/theater-page?date={when}",
+              wait_until="domcontentloaded", timeout=45000)
     page.wait_for_timeout(3000)
     entries = page.evaluate(SHOWTIME_ENTRIES_JS)
     print(f"showtime buttons: {len(entries)}", flush=True)
     if not entries:
         print("no showtimes — cannot trace", flush=True); raise SystemExit(0)
-    href = entries[len(entries) // 2]["href"]
+    # pick a showtime on the requested date (the page can still carry others)
+    dated = [e for e in entries if when.replace("-", "-") in (e.get("href") or "")] or entries
+    href = dated[len(dated) // 2]["href"]
     calls.clear()
     page.goto(href, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_timeout(4000)
     print(f"seat url: {page.url[:200]}", flush=True)
+    try:
+        page.wait_for_selector(".seat-map__seat", timeout=15000)
+    except Exception:
+        print("seat map never rendered", flush=True)
     try:
         seats = page.evaluate(SEAT_COUNT_JS)
         print(f"seats from DOM: {seats}", flush=True)
@@ -48,6 +61,7 @@ with sync_playwright() as p:
     # which response carried the seat states?
     print(f"--- {len(calls)} responses on the seat page ---", flush=True)
     for rt, status, url in calls:
-        if rt in ("xhr", "fetch") or "seatpicker" in url.lower() or "availab" in url.lower():
+        host_ok = any(d in url for d in ("fandango.com", "seatpicker", "availab"))
+        if host_ok and (rt in ("xhr", "fetch", "document") or "seatpicker" in url.lower()):
             print(f"  {rt:6s} {status} {url[:230]}", flush=True)
     browser.close()
