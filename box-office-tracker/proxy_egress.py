@@ -151,6 +151,10 @@ TRACKER_HOSTS = (
     "bing.com", "pinterest.com", "twitter.com", "tiktok.com", "snapchat.com",
     "amazon-adsystem.com", "casalemedia.com", "pubmatic.com", "openx.net",
     "sharethrough.com", "yieldmo.com", "teads.tv", "indexww.com", "vsnt.net",
+    # map widgets and a CDN seen on the seat page; none is read by the lanes.
+    # www.gstatic.com and www.google.com are NOT here: they can carry the
+    # reCAPTCHA the checkout flow may require.
+    "maps.googleapis.com", "maps.gstatic.com", "cdn-net.com",
 )
 # Fallback by TYPE for anything that slips through by host. Fonts and media
 # only: images are handled per host so a first-party bot check that watches

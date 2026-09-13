@@ -842,17 +842,14 @@ jobs:
           FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
-          # REGAL STAYS DIRECT (measured 2026-09-12, run 34730147947). Through
-          # the proxy a theatre cost 7.4 MB — 2.8 GB for one full-pool pass
-          # against a 1.6 GB/day budget — and the 60 MB ceiling stopped the run
-          # after 8 theatres, FEWER than the ~12 the free direct lane reaches
-          # under Fandango's own render ration. A browser render is simply too
-          # heavy to buy breadth with. The cheap path exists but is unfinished:
-          # the seat page is only 17 KB over plain HTTP and carries a
-          # seatPickerAvailabilityUrl whose JSON answers in 619 bytes, but it
-          # returns empty areas without the jump.aspx order context. Finish
-          # that and Regal becomes affordable; until then, direct.
-          # To retry: set the proxy secret and a ceiling here.
+          # RESIDENTIAL EGRESS, RETRY 2 (2026-09-13). Retry 1 cost 7.4 MB per
+          # theatre because the browser pulled 3 MB of posters and 2.4 MB of
+          # ad/analytics hosts per page. Host-based blocking (proxy_egress)
+          # removes those while leaving every request the site's own app makes.
+          # Metered with a hard ceiling; the render budget binds first.
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          FANDANGO_MAX_MB: '80'
+          FANDANGO_PROXY_RENDER_BUDGET: '55'
           # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
           # maps through Fandango (chainCode=AMC) while AMC's own seat route is
           # Cloudflare-blocked for datacenter egress. Keyed off the slot name

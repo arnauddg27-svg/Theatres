@@ -82,7 +82,7 @@ class LaunchWiringTest(unittest.TestCase):
                     os.environ[var] = old
                 importlib.reload(importlib.import_module(mod))
 
-    def test_both_rc_lanes_stay_direct_until_a_cheap_read_exists(self):
+    def test_cinemark_stays_direct_and_regal_is_metered(self):
         # Measured 2026-09-12: through the proxy a browser render costs
         # 6.3 MB/theatre (Cinemark, run 34729565675) and 7.4 MB/theatre (Regal,
         # run 34730147947) — 1.9-2.8 GB for ONE full-pool pass against a
@@ -92,9 +92,7 @@ class LaunchWiringTest(unittest.TestCase):
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         cin = yml.split("- name: Cinemark collect", 1)[1].split("run: |", 1)[0]
-        for block in (fan, cin):
-            self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", block)
-        self.assertNotIn("FANDANGO_MAX_MB: '", fan)
+        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", cin)   # cinemark direct
         self.assertNotIn("CINEMARK_MAX_MB: '", cin)
         self.assertNotIn("CINEMARK_PROXY_PER_THEATRE_CAP: '", cin)
 
@@ -130,6 +128,12 @@ class TrimTest(unittest.TestCase):
                   "https://www.cinemark.com/TicketSeatMap/", "https://www.regmovies.com/x"):
             for rt in ("document", "script", "stylesheet", "xhr", "fetch", "image"):
                 self.assertFalse(pe.should_block(rt, h), f"{rt} {h}")
+
+    def test_recaptcha_hosts_stay_allowed_but_map_widgets_do_not(self):
+        self.assertTrue(pe.should_block("script", "https://maps.googleapis.com/maps/api/js"))
+        # the checkout flow can require reCAPTCHA from these
+        self.assertFalse(pe.should_block("script", "https://www.gstatic.com/recaptcha/api.js"))
+        self.assertFalse(pe.should_block("script", "https://www.google.com/recaptcha/api.js"))
 
     def test_the_cloudflare_challenge_is_never_blocked(self):
         # 1.13 MB of a Cinemark page, but blocking it would fail the check
