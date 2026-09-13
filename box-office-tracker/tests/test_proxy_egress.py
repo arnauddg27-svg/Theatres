@@ -113,12 +113,26 @@ if __name__ == "__main__":
 
 
 class TrimTest(unittest.TestCase):
-    def test_only_decoration_is_dropped(self):
-        for rt in ("image", "media", "font"):
-            self.assertTrue(pe.should_block(rt), rt)
-        # both lanes build their seat maps client-side: scripts and styles stay
-        for rt in ("document", "script", "stylesheet", "xhr", "fetch", ""):
-            self.assertFalse(pe.should_block(rt), rt)
+    def test_media_and_tracker_hosts_are_dropped(self):
+        # measured: images.fandango.com is 3.0 MB of a 5.37 MB theatre page
+        self.assertTrue(pe.should_block("image", "https://images.fandango.com/x.jpg"))
+        for h in ("https://securepubads.g.doubleclick.net/gampad/ads",
+                  "https://assets.adobedtm.com/x.js", "https://cdn.cookielaw.org/x.js",
+                  "https://g2.gumgum.com/hbid/imp", "https://connect.facebook.net/en_US/fbevents.js"):
+            self.assertTrue(pe.should_block("script", h), h)
+
+    def test_the_sites_own_requests_always_pass(self):
+        for h in ("https://www.fandango.com/x", "https://tickets.fandango.com/seatpicker",
+                  "https://www.cinemark.com/TicketSeatMap/", "https://www.regmovies.com/x"):
+            for rt in ("document", "script", "stylesheet", "xhr", "fetch", "image"):
+                self.assertFalse(pe.should_block(rt, h), f"{rt} {h}")
+
+    def test_the_cloudflare_challenge_is_never_blocked(self):
+        # 1.13 MB of a Cinemark page, but blocking it would fail the check
+        self.assertFalse(pe.should_block("script", "https://challenges.cloudflare.com/turnstile/v0/api.js"))
+
+    def test_a_lookalike_host_is_not_matched_by_suffix(self):
+        self.assertFalse(pe.should_block("script", "https://notdoubleclick.net.example.com/x.js"))
 
     def test_trim_is_skipped_when_unmetered_and_never_raises(self):
         class Page:

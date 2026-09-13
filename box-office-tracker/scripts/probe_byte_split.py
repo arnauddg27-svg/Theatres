@@ -58,6 +58,22 @@ with sync_playwright() as p:
         {"headless": True, "args": ["--disable-blink-features=AutomationControlled"]}))
     ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
     page = ctx.new_page()
+    # PROBE_TRIM=1 applies the production blocklist so before/after is measured
+    # with the same script on the same pages.
+    if os.environ.get("PROBE_TRIM") == "1":
+        blocked = collections.Counter()
+        def _route(route):
+            try:
+                req = route.request
+                if proxy_egress.should_block(req.resource_type, req.url):
+                    blocked[urlparse(req.url).netloc] += 1
+                    route.abort()
+                else:
+                    route.continue_()
+            except Exception:
+                pass
+        page.route("**/*", _route)
+        print("TRIM ON", flush=True)
     by_host, by_type, n = measure(page, WHICH)
     if WHICH == "cinemark":
         first_party = ("cinemark.com",)

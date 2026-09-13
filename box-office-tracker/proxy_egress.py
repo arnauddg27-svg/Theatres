@@ -126,29 +126,66 @@ def egress_banner(label: str, budget: ByteBudget) -> str:
 
 
 # ── Request trimming ─────────────────────────────────────────────────────────
-# Measured 2026-09-12: a proxied Cinemark theatre cost 6.3 MB (481 KB per page
-# load) because the browser pulls every image, font and media file. Seat state
-# lives in the DOM these lanes already read, so those bytes buy nothing. Scripts
-# and stylesheets STAY: both sites build their seat maps client-side, unlike
-# AMC's server-rendered page.
-TRIM_RESOURCE_TYPES = frozenset({"image", "media", "font"})
+# Measured per HOST (2026-09-13, scripts/probe_byte_split.py), because the
+# earlier type-based trim (all images/fonts/media, first-party included)
+# tripped cinemark.com's bot check:
+#   Fandango theatre page 5.37 MB — images.fandango.com 3.0 MB, ad/analytics
+#   hosts 2.4 MB, and just 35 KB of actual www.fandango.com content.
+#   Fandango seat page 0.75 MB — of which tickets.fandango.com is 21 KB.
+# So blocking media + third-party trackers, while leaving every request the
+# site's own application makes, removes ~90% of the bytes and changes nothing
+# the lanes read.
+MEDIA_HOSTS = (
+    "images.fandango.com", "media.fandango.com",
+)
+# Ad, analytics, consent and bidder hosts seen in the traces. Cloudflare's
+# challenge host is deliberately ABSENT: blocking it would fail the check.
+TRACKER_HOSTS = (
+    "doubleclick.net", "googlesyndication.com", "google-analytics.com",
+    "googletagmanager.com", "adobedtm.com", "demdex.net", "omtrdc.net",
+    "cookielaw.org", "facebook.net", "rubiconproject.com", "gumgum.com",
+    "doubleverify.com", "id5-sync.com", "crwdcntrl.net", "adnxs.com",
+    "3lift.com", "kargo.com", "criteo.com", "rtbhouse.com", "kochava.com",
+    "sail-track.com", "mczbf.com", "jwplayer.com", "braintreegateway.com",
+    "scorecardresearch.com", "quantserve.com", "taboola.com", "outbrain.com",
+    "bing.com", "pinterest.com", "twitter.com", "tiktok.com", "snapchat.com",
+    "amazon-adsystem.com", "casalemedia.com", "pubmatic.com", "openx.net",
+    "sharethrough.com", "yieldmo.com", "teads.tv", "indexww.com", "vsnt.net",
+)
+# Fallback by TYPE for anything that slips through by host. Fonts and media
+# only: images are handled per host so a first-party bot check that watches
+# image loads still sees the site's own.
+TRIM_RESOURCE_TYPES = frozenset({"font", "media"})
 
 
-def should_block(resource_type: str) -> bool:
-    """Pure: is this sub-request pure decoration? (unit-tested)"""
+def should_block(resource_type: str, url: str = "") -> bool:
+    """Pure: is this sub-request pure decoration or third-party tracking?"""
+    host = ""
+    if url:
+        try:
+            from urllib.parse import urlparse
+            host = (urlparse(url).netloc or "").lower()
+        except Exception:
+            host = ""
+    if host:
+        if any(h == host or host.endswith("." + h) or h in host for h in MEDIA_HOSTS):
+            return True
+        if any(h == host or host.endswith("." + h) for h in TRACKER_HOSTS):
+            return True
     return (resource_type or "") in TRIM_RESOURCE_TYPES
 
 
 def trim_page(page, budget: "ByteBudget") -> None:
-    """Drop decorative sub-requests on a metered page. Best-effort; a routing
-    hiccup must never break scraping, and unmetered (direct) runs are left
-    exactly as they were."""
+    """Drop decorative and third-party sub-requests on a metered page.
+    Best-effort; a routing hiccup must never break scraping, and unmetered
+    (direct) runs are left exactly as they were."""
     if not budget.metered:
         return
     try:
         def _route(route):
             try:
-                if should_block(route.request.resource_type):
+                req = route.request
+                if should_block(req.resource_type, req.url):
                     route.abort()
                 else:
                     route.continue_()
