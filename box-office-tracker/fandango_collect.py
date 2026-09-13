@@ -42,6 +42,7 @@ from urllib.parse import urlparse, parse_qs, unquote
 
 # Proven primitives from the Phase A probe (chain filter, seat counting, block
 # sentinel, completeness gate). Re-validated end to end before this module.
+import proxy_egress
 from fandango_probe import (
     UA,
     CHROMIUM_ARGS,
@@ -495,6 +496,13 @@ def append_unique_fandango_rows(rows, csv_path=None):
 # Fandango CSV gains only REGL rows; predict's cross-chain rc side becomes
 # Regal-only (Regal already supplied the majority of rows, e.g. 487/782 on
 # weekend 2026-08-28, so CROSS_CHAIN_MIN_RC_ROWS stays satisfied).
+# Residential-proxy egress (2026-09-12). Fandango's ~30 renders/hour is a
+# PER-NETWORK budget, so rotating addresses lift it — at the price of metered
+# bytes, hence FANDANGO_MAX_MB (0 = unmetered, used when running direct).
+FANDANGO_MAX_MB = _env_int("FANDANGO_MAX_MB", 0)
+# Through the proxy the render budget is no longer a shared-network ration.
+FANDANGO_PROXY_RENDER_BUDGET = _env_int("FANDANGO_PROXY_RENDER_BUDGET", 0)
+
 FANDANGO_CHAINS = frozenset(
     c.strip().upper()
     for c in (os.environ.get("FANDANGO_CHAINS") or "REGL").split(",")
@@ -797,11 +805,14 @@ def _worker(slice_theatres, shared):
     # already flushed per-theatre stay safe on disk).
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=shared["headless"], args=CHROMIUM_ARGS)
+            browser = p.chromium.launch(**proxy_egress.launch_kwargs(
+                {"headless": shared["headless"], "args": CHROMIUM_ARGS}))
             ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
             page = ctx.new_page()
+            proxy_egress.attach_meter(ctx, page, shared["budget"])
             for th in slice_theatres:
                 if (shared["stop"].is_set() or shared["budget_done"].is_set()
+                        or shared["budget"].exhausted()
                         or time.monotonic() >= shared["deadline"]):
                     break
                 _wait_if_paused(shared)   # ride out a throttle pause before the next theatre
@@ -938,7 +949,13 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
           + (f" • dated theater-page visits: {page_dates}"
              if page_dates != [None] else ""))
 
+    budget = proxy_egress.ByteBudget(FANDANGO_MAX_MB, label="fandango lane")
+    if proxy_egress.proxy_settings() and FANDANGO_PROXY_RENDER_BUDGET:
+        # a rotating pool is not the shared ration the 30-render budget was for
+        globals()["FANDANGO_RENDER_BUDGET"] = FANDANGO_PROXY_RENDER_BUDGET
+    print(proxy_egress.egress_banner("fandango lane", budget), flush=True)
     shared = {
+        "budget": budget,
         "target_slugs": target_slugs, "window_dates": window_dates,
         "page_dates": page_dates,
         "order": FANDANGO_ORDER,
@@ -983,6 +1000,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
           f"deduped={totals['skipped']} incomplete_dropped={totals['incompletes']} "
           f"seat_fails={totals['seat_fails']} blocks={totals['blocks']} "
           f"throttle_pauses={totals['pauses']}")
+    print(proxy_egress.ByteBudget.summary(shared["budget"]), flush=True)
     print(f"  -> {FANDANGO_CSV}")
     return totals
 

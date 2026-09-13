@@ -63,6 +63,8 @@ BASE = "https://www.cinemark.com"
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
+import proxy_egress  # noqa: E402  (residential-proxy egress + byte budget)
+
 CINEMARK_FIELDS = FANDANGO_PRE_RESERVATION_FIELDS
 CINEMARK_DEDUPE_FIELDS = FANDANGO_PRE_RESERVATION_DEDUPE_FIELDS
 
@@ -82,6 +84,11 @@ CINEMARK_DEADLINE_SEC = _env_int("CINEMARK_DEADLINE_SEC", 2100)
 # the fallback lever is dropping to the BIGGER film only (by national
 # theatre count), not starving one film silently.
 CINEMARK_PER_THEATRE_CAP = _env_int("CINEMARK_PER_THEATRE_CAP", 1)
+# Residential-proxy egress (2026-09-12). The "security verification"
+# interstitial that forced cap=1 is per-ADDRESS, so a rotating pool lifts it —
+# at the price of metered bytes, hence CINEMARK_MAX_MB (0 = unmetered/direct).
+CINEMARK_MAX_MB = _env_int("CINEMARK_MAX_MB", 0)
+CINEMARK_PROXY_PER_THEATRE_CAP = _env_int("CINEMARK_PROXY_PER_THEATRE_CAP", 0)
 CINEMARK_MAX_THEATRES = _env_int("CINEMARK_MAX_THEATRES", 0)
 CINEMARK_NUM_SHARDS = _env_int("CINEMARK_NUM_SHARDS", 0)
 CINEMARK_SHARD = _env_int("CINEMARK_SHARD", 0)
@@ -529,13 +536,20 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     window_dates = (set(show_dates) if show_dates
                     else set(opening_weekend_show_dates(weekend_of)))
     deadline = time.monotonic() + CINEMARK_DEADLINE_SEC
+    budget = proxy_egress.ByteBudget(CINEMARK_MAX_MB, label="cinemark lane")
+    per_theatre_cap = CINEMARK_PER_THEATRE_CAP
+    if proxy_egress.proxy_settings() and CINEMARK_PROXY_PER_THEATRE_CAP:
+        # the interstitial that forced cap=1 is per-address; a rotating pool
+        # spreads the load, so depth is affordable again
+        per_theatre_cap = CINEMARK_PROXY_PER_THEATRE_CAP
+    print(proxy_egress.egress_banner("cinemark lane", budget), flush=True)
     totals = {"visited": 0, "matched": 0, "captured": 0, "written": 0,
               "skipped": 0, "blocks": 0, "incomplete": 0,
               "date_nav_ok": 0, "date_nav_empty": 0, "date_nav_failed": 0}
     rows = []
 
     print(f"Cinemark collect [{mode}] • weekend_of={weekend_of} • {len(pool)} theatres "
-          f"• cap={CINEMARK_PER_THEATRE_CAP}/theatre • deadline={CINEMARK_DEADLINE_SEC}s "
+          f"• cap={per_theatre_cap}/theatre • deadline={CINEMARK_DEADLINE_SEC}s "
           f"• titles={list(target_slugs.values())}", flush=True)
 
     # Post-show census, stage 1: revisit seat-map URLs stored by earlier PRE
@@ -597,12 +611,13 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
         rows.clear()
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=headless, args=["--disable-blink-features=AutomationControlled"])
+        browser = p.chromium.launch(**proxy_egress.launch_kwargs(
+            {"headless": headless, "args": ["--disable-blink-features=AutomationControlled"]}))
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1440, "height": 900})
         page = ctx.new_page()
+        proxy_egress.attach_meter(ctx, page, budget)
         for item in revisit:
-            if time.monotonic() > deadline:
+            if time.monotonic() > deadline or budget.exhausted():
                 break
             try:
                 page.goto(item["pick"]["href"], wait_until="domcontentloaded",
@@ -637,7 +652,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
         # runner IP take its shard.
         timeout_streak = 0
         for th in pool:
-            if time.monotonic() > deadline:
+            if time.monotonic() > deadline or budget.exhausted():
                 print("⏱  deadline reached; stopping cleanly", flush=True)
                 break
             if timeout_streak >= 8:
@@ -686,7 +701,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                            else sorted(d for d in window_dates
                                        if d not in covered and d > today_local))
                 for want in missing[:4]:
-                    if time.monotonic() > deadline:
+                    if time.monotonic() > deadline or budget.exhausted():
                         break
                     try:
                         how = page.evaluate(DATE_NAV_JS, want)
@@ -721,7 +736,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             timeout_streak = 0
             picks = select_showtimes(entries or [], target_slugs, window_dates,
                                      th.get("timezone", "America/Chicago"),
-                                     now_utc, CINEMARK_PER_THEATRE_CAP, mode=mode)
+                                     now_utc, per_theatre_cap, mode=mode)
             totals["matched"] += len(picks)
             if mode == "post" and not picks:
                 times = sorted((parse_seatmap_href(e.get("href", "")) or {})
@@ -730,7 +745,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                       f"listed showtimes, earliest {times[:4]} (page likely "
                       f"drops started shows)", flush=True)
             for pick in picks:
-                if time.monotonic() > deadline:
+                if time.monotonic() > deadline or budget.exhausted():
                     break
                 try:
                     # Navigate the ORIGINAL href — reconstructing it with
@@ -822,6 +837,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
 
     _flush()
     totals.setdefault("written", 0)
+    print(budget.summary(), flush=True)
     print(f"\n=== Cinemark collect summary ===\n"
           f"  visited={totals['visited']} matched={totals['matched']} "
           f"captured={totals['captured']} written={totals['written']} "

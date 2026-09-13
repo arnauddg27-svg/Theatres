@@ -836,6 +836,13 @@ jobs:
           FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
+          # RESIDENTIAL EGRESS (2026-09-12). Fandango's ~30 renders/hour is a
+          # per-NETWORK ration; rotating addresses lift it, so Regal can finally
+          # read its whole pool. Metered, so each run carries a hard ceiling —
+          # the render budget below binds first (~55 renders x ~250 KB = ~14 MB).
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          FANDANGO_MAX_MB: '60'
+          FANDANGO_PROXY_RENDER_BUDGET: '55'
           # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
           # maps through Fandango (chainCode=AMC) while AMC's own seat route is
           # Cloudflare-blocked for datacenter egress. Keyed off the slot name
@@ -1075,6 +1082,13 @@ jobs:
           CINEMARK_SHARD: ${{ github.event.inputs.cinemark_shard }}
           CINEMARK_NUM_SHARDS: ${{ github.event.inputs.cinemark_num_shards }}
           CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
+          # RESIDENTIAL EGRESS (2026-09-12). The "security verification"
+          # interstitial that forced cap=1 is per-ADDRESS (measured: cap 3 from
+          # one address gave 305 incomplete of 462). A rotating pool spreads the
+          # load, so depth is affordable again — metered, with a hard ceiling.
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          CINEMARK_MAX_MB: '150'
+          CINEMARK_PROXY_PER_THEATRE_CAP: '3'
           CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
           # Test runs (show_dates set) write a throwaway CSV, never canonical.
           CINEMARK_OUTPUT: ${{ github.event.inputs.cinemark_show_dates != '' && '../cinemark-logs/cinemark-test-capture.csv' || '' }}
