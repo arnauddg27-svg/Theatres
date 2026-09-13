@@ -25,12 +25,28 @@ for u in urls:
     title = re.search(r"<title[^>]*>(.*?)</title>", h, re.S)
     print(f"raw={res['raw_bytes']} html={len(h)} kind={res['kind']} "
           f"title={(title.group(1).strip()[:40] if title else '')!r} marks={marks}", flush=True)
+    # What does the page's own script have to work with? (session/order ids,
+    # tokens, other endpoints) — this is what the availability call is missing.
+    varz = re.findall(r"var\s+([A-Za-z_][\w]*)\s*=\s*'([^']{0,160})'", h)
+    interesting = [(k, v) for k, v in varz if v and not v.isdigit() and len(v) > 1]
+    print(f"   page vars ({len(varz)}): {interesting[:22]}", flush=True)
+    for key in ("Set-Cookie", "orderid", "order_id", "sessionid", "token", "csrf", "guid"):
+        i = h.lower().find(key.lower())
+        if i != -1:
+            print(f"      [{key}] {h[max(0,i-80):i+160]!r}", flush=True)
     m = re.search(r"seatPickerAvailabilityUrl\s*=\s*'([^']+)'", h)
     if not m:
         print("   no availability url", flush=True); continue
     from html import unescape
     avail_url = unescape(m.group(1))
     print(f"   availability url: {avail_url[:200]}", flush=True)
+    # cookies the seat page set on this session (names only)
+    try:
+        jar = getattr(sess, "cookies", None)
+        names = sorted({c.name for c in jar}) if jar is not None else []
+        print(f"   session cookies: {names[:14]}", flush=True)
+    except Exception as e:
+        print(f"   cookie read failed: {type(e).__name__}", flush=True)
     try:
         res2 = sfh.fetch_seat_page(avail_url, proxy, session=sess)
     except Exception as e:
