@@ -10,8 +10,18 @@ import seat_fetch_http as sfh  # noqa: E402
 proxy = os.environ.get("AMC_SEAT_PROXY_URL", "").strip() or None
 N = max(1, min(6, int(os.environ.get("PROBE_N", "3") or 3)))
 csv_path = Path(__file__).resolve().parents[1] / "data" / "fandango-pre-reservation-snapshots.csv"
-urls = [r["amc_seat_map_url"] for r in csv.DictReader(open(csv_path))
-        if r.get("chain") == "REGL" and r.get("amc_seat_map_url", "").startswith("http")][-N:]
+# FUTURE showtimes only: a started show legitimately returns an empty seat
+# list, which would look identical to "the handshake is missing".
+import datetime as _dt
+_today = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d")
+rows = [r for r in csv.DictReader(open(csv_path))
+        if r.get("chain") == "REGL" and r.get("amc_seat_map_url", "").startswith("http")]
+future = [r for r in rows if (r.get("show_date") or "") > _today]
+picked = (future or rows)[-N:]
+print(f"today={_today} rows={len(rows)} future={len(future)} using={'future' if future else 'ANY (no future rows)'}", flush=True)
+for r in picked[:1]:
+    print(f"  sample: show_date={r.get('show_date')} showtime={r.get('showtime')}", flush=True)
+urls = [r["amc_seat_map_url"] for r in picked]
 print(f"proxy={'ON' if proxy else 'off'} testing {len(urls)} stored Regal seat URLs", flush=True)
 sess = sfh.make_session()
 for u in urls:
