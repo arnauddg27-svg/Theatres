@@ -82,21 +82,30 @@ class LaunchWiringTest(unittest.TestCase):
                     os.environ[var] = old
                 importlib.reload(importlib.import_module(mod))
 
-    def test_regal_is_proxied_with_a_ceiling_and_cinemark_stays_direct(self):
-        # Cinemark measured 6.3 MB/theatre through the proxy (1.9 GB for one
-        # full pass) and trimming to cut that made the site block us, so it
-        # keeps its free direct egress (2026-09-12).
+    def test_both_rc_lanes_stay_direct_until_a_cheap_read_exists(self):
+        # Measured 2026-09-12: through the proxy a browser render costs
+        # 6.3 MB/theatre (Cinemark, run 34729565675) and 7.4 MB/theatre (Regal,
+        # run 34730147947) — 1.9-2.8 GB for ONE full-pool pass against a
+        # 1.6 GB/day budget, and trimming to cut it made Cinemark block us.
+        # The capability stays wired (proxy_egress) but neither lane assigns
+        # the secret; only a lightweight read would change that.
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         cin = yml.split("- name: Cinemark collect", 1)[1].split("run: |", 1)[0]
-        self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", fan)
-        self.assertIn("FANDANGO_MAX_MB: '60'", fan)
-        self.assertIn("FANDANGO_PROXY_RENDER_BUDGET: '55'", fan)
-        # direct: no secret ASSIGNED, no ceiling assigned (the comment naming
-        # them for a future retry is fine)
-        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", cin)
+        for block in (fan, cin):
+            self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", block)
+        self.assertNotIn("FANDANGO_MAX_MB: '", fan)
         self.assertNotIn("CINEMARK_MAX_MB: '", cin)
         self.assertNotIn("CINEMARK_PROXY_PER_THEATRE_CAP: '", cin)
+
+    def test_lanes_run_unmetered_and_unproxied_without_the_env(self):
+        # the safety property: no secret -> no meter, no ceiling, no behaviour
+        # change from the code that is now wired in
+        import importlib
+        for mod, var in (("fandango_collect", "FANDANGO_MAX_MB"), ("cinemark_collect", "CINEMARK_MAX_MB")):
+            m = importlib.reload(importlib.import_module(mod))
+            self.assertEqual(0, getattr(m, var))
+            self.assertFalse(pe.ByteBudget(getattr(m, var), "x").metered)
 
 
 if __name__ == "__main__":
