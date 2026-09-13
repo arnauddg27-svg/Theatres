@@ -25,8 +25,17 @@ for u in urls:
     title = re.search(r"<title[^>]*>(.*?)</title>", h, re.S)
     print(f"raw={res['raw_bytes']} html={len(h)} kind={res['kind']} "
           f"title={(title.group(1).strip()[:40] if title else '')!r} marks={marks}", flush=True)
-    for key in ("seatPickerAvailabilityUrl", "availableSeat"):
-        i = h.find(key)
-        if i != -1:
-            print(f"   [{key}] {h[max(0,i-120):i+200]!r}", flush=True)
-            break
+    m = re.search(r"seatPickerAvailabilityUrl\s*=\s*'([^']+)'", h)
+    if not m:
+        print("   no availability url", flush=True); continue
+    from html import unescape
+    avail_url = unescape(m.group(1))
+    print(f"   availability url: {avail_url[:200]}", flush=True)
+    try:
+        res2 = sfh.fetch_seat_page(avail_url, proxy, session=sess)
+    except Exception as e:
+        print(f"   AVAIL ERROR {type(e).__name__}: {str(e)[:110]}", flush=True); continue
+    body = res2["html"]
+    print(f"   AVAIL raw={res2['raw_bytes']} len={len(body)} head={body[:400]!r}", flush=True)
+    for k in ("available", "reserved", "seat", "Status", "rows"):
+        print(f"      {k!r} x{body.lower().count(k.lower())}", flush=True)
