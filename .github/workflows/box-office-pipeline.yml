@@ -850,8 +850,15 @@ jobs:
           #   full      2.3 MB/theatre  5 blocks  4/10 captured
           # The tracker hosts are both where the bytes are AND what Fandango
           # watches, so the cheap setting is the one that gets us blocked. Even
-          # at 6.2 MB a full pool pass is 2.4 GB against a 1.6 GB/day budget,
-          # and the lane loads ~16 pages per theatre (one per window date).
+          # at 6.2 MB a full pool pass is 2.4 GB against a 1.6 GB/day budget.
+          # LOAD-COUNT REDUCTION IS A DEAD END (measured 2026-09-13, run
+          # 34733406132, 10 theatres, meter on / trim off): of 59.9 MB,
+          # subresources were 58.8 MB and every main-frame navigation together
+          # was 0.1 MB. The "~16 page loads per theatre" this comment used to
+          # blame on dated theatre-page visits was 14 AD IFRAMES per theatre —
+          # page_visit_dates returns [None] Thu-Sun, so the lane already loads
+          # the theatre page once. Fewer loads would save ~1%; the bytes are
+          # all subresources, which is the lever already rejected above.
           # To retry: set the proxy secret, a ceiling, and PROXY_TRIM_LEVEL.
           # MEASUREMENT MODE: a slot named "... meter" turns the byte meter on
           # (direct egress, so it costs nothing) with trimming disabled, purely
@@ -1105,6 +1112,9 @@ jobs:
           # that to 2.6 MB made cinemark.com BLOCK us (0 -> 10 blocks, captures
           # 18 -> 7). Direct egress is free, already reaches ~85% of the pool,
           # and the only thing the proxy buys is depth. Not worth the bytes.
+          # Same dead end as the Regal lane (measured 2026-09-13, run
+          # 34733428481, 10 theatres, meter on / trim off): 131.5 MB of which
+          # 128.5 MB subresources; all 27 navigations together were 1.1 MB.
           # To retry: set AMC_SEAT_PROXY_URL + CINEMARK_MAX_MB here.
           # MEASUREMENT MODE — see the Fandango lane: a slot named "... meter"
           # meters a DIRECT run (free) with trimming off, to attribute bytes.
