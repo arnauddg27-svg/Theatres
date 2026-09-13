@@ -842,14 +842,17 @@ jobs:
           FANDANGO_SHARD: ${{ github.event.inputs.fandango_shard != '' && github.event.inputs.fandango_shard || '0' }}
           FANDANGO_NUM_SHARDS: ${{ github.event.inputs.fandango_num_shards != '' && github.event.inputs.fandango_num_shards || '0' }}
           FANDANGO_ORDER: ${{ github.event.inputs.fandango_order != '' && github.event.inputs.fandango_order || 'prime' }}
-          # RESIDENTIAL EGRESS, RETRY 2 (2026-09-13). Retry 1 cost 7.4 MB per
-          # theatre because the browser pulled 3 MB of posters and 2.4 MB of
-          # ad/analytics hosts per page. Host-based blocking (proxy_egress)
-          # removes those while leaving every request the site's own app makes.
-          # Metered with a hard ceiling; the render budget binds first.
-          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
-          FANDANGO_MAX_MB: '80'
-          FANDANGO_PROXY_RENDER_BUDGET: '55'
+          # REGAL STAYS DIRECT. Byte reduction measured 2026-09-13 on the
+          # real lane, 10 theatres each (runs 34730147947 / 34732063926 /
+          # 34732332932):
+          #   no trim   7.4 MB/theatre  0 blocks  8/10 captured
+          #   media     6.2 MB/theatre  0 blocks  9/10 captured
+          #   full      2.3 MB/theatre  5 blocks  4/10 captured
+          # The tracker hosts are both where the bytes are AND what Fandango
+          # watches, so the cheap setting is the one that gets us blocked. Even
+          # at 6.2 MB a full pool pass is 2.4 GB against a 1.6 GB/day budget,
+          # and the lane loads ~16 pages per theatre (one per window date).
+          # To retry: set the proxy secret, a ceiling, and PROXY_TRIM_LEVEL.
           # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
           # maps through Fandango (chainCode=AMC) while AMC's own seat route is
           # Cloudflare-blocked for datacenter egress. Keyed off the slot name

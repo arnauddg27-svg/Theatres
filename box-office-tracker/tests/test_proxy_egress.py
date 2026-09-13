@@ -82,7 +82,7 @@ class LaunchWiringTest(unittest.TestCase):
                     os.environ[var] = old
                 importlib.reload(importlib.import_module(mod))
 
-    def test_cinemark_stays_direct_and_regal_is_metered(self):
+    def test_both_rc_lanes_stay_direct(self):
         # Measured 2026-09-12: through the proxy a browser render costs
         # 6.3 MB/theatre (Cinemark, run 34729565675) and 7.4 MB/theatre (Regal,
         # run 34730147947) — 1.9-2.8 GB for ONE full-pool pass against a
@@ -92,7 +92,9 @@ class LaunchWiringTest(unittest.TestCase):
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         cin = yml.split("- name: Cinemark collect", 1)[1].split("run: |", 1)[0]
-        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", cin)   # cinemark direct
+        for block in (fan, cin):
+            self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", block)
+        self.assertNotIn("FANDANGO_MAX_MB: '", fan)
         self.assertNotIn("CINEMARK_MAX_MB: '", cin)
         self.assertNotIn("CINEMARK_PROXY_PER_THEATRE_CAP: '", cin)
 
