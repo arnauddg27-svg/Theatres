@@ -163,3 +163,44 @@ class TrimTest(unittest.TestCase):
             def route(self, *a, **k):
                 raise RuntimeError("nope")
         pe.trim_page(Boom(), pe.ByteBudget(50, "x"))  # swallowed
+
+
+class TrimLevelNone(unittest.TestCase):
+    """Measurement runs meter without changing what the lane loads."""
+
+    def test_none_blocks_nothing(self):
+        for rt in ("font", "media", "image", "script", "document"):
+            for url in ("https://images.fandango.com/a.jpg",
+                        "https://doubleclick.net/t.js",
+                        "https://www.fandango.com/x"):
+                self.assertFalse(
+                    pe.should_block(rt, url, level="none"),
+                    (rt, url))
+
+    def test_other_levels_unaffected(self):
+        self.assertTrue(pe.should_block("font", "https://x.example/f.woff",
+                                                  level="media"))
+
+
+class Breakdown(unittest.TestCase):
+    """The per-category tally is what turns 'N page loads' into a cause."""
+
+    def test_groups_and_orders_by_bytes(self):
+        b = pe.ByteBudget(10, label="t")
+        b.add(1048576, is_document=True, kind="nav: seat page")
+        b.add(3145728, kind="subresource")
+        b.add(0, kind="redirect hop")
+        out = b.breakdown()
+        self.assertIn("subresource=3.0MB x1", out)
+        self.assertIn("nav: seat page=1.0MB x1", out)
+        self.assertIn("redirect hop=0.0MB x1", out)
+        # heaviest first
+        self.assertLess(out.index("subresource"), out.index("nav: seat page"))
+
+    def test_empty_breakdown_is_blank(self):
+        self.assertEqual(pe.ByteBudget(10).breakdown(), "")
+
+    def test_kinds_do_not_disturb_the_ceiling(self):
+        b = pe.ByteBudget(1, label="t")
+        b.add(1048576, kind="subresource")
+        self.assertTrue(b.exhausted())

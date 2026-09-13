@@ -1002,6 +1002,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
           f"seat_fails={totals['seat_fails']} blocks={totals['blocks']} "
           f"throttle_pauses={totals['pauses']}")
     print(proxy_egress.ByteBudget.summary(shared["budget"]), flush=True)
+    print(shared["budget"].breakdown(), flush=True)
     print(f"  -> {FANDANGO_CSV}")
     return totals
 

@@ -853,6 +853,12 @@ jobs:
           # at 6.2 MB a full pool pass is 2.4 GB against a 1.6 GB/day budget,
           # and the lane loads ~16 pages per theatre (one per window date).
           # To retry: set the proxy secret, a ceiling, and PROXY_TRIM_LEVEL.
+          # MEASUREMENT MODE: a slot named "... meter" turns the byte meter on
+          # (direct egress, so it costs nothing) with trimming disabled, purely
+          # to print the per-category breakdown that says WHERE the page loads
+          # go. The ceiling is far above any real run, so it never stops one.
+          FANDANGO_MAX_MB: ${{ contains(github.event.inputs.schedule_slot, 'meter') && '4000' || '' }}
+          PROXY_TRIM_LEVEL: ${{ contains(github.event.inputs.schedule_slot, 'meter') && 'none' || '' }}
           # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
           # maps through Fandango (chainCode=AMC) while AMC's own seat route is
           # Cloudflare-blocked for datacenter egress. Keyed off the slot name
@@ -1100,6 +1106,10 @@ jobs:
           # 18 -> 7). Direct egress is free, already reaches ~85% of the pool,
           # and the only thing the proxy buys is depth. Not worth the bytes.
           # To retry: set AMC_SEAT_PROXY_URL + CINEMARK_MAX_MB here.
+          # MEASUREMENT MODE — see the Fandango lane: a slot named "... meter"
+          # meters a DIRECT run (free) with trimming off, to attribute bytes.
+          CINEMARK_MAX_MB: ${{ contains(github.event.inputs.schedule_slot, 'meter') && '4000' || '' }}
+          PROXY_TRIM_LEVEL: ${{ contains(github.event.inputs.schedule_slot, 'meter') && 'none' || '' }}
           CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
           # Test runs (show_dates set) write a throwaway CSV, never canonical.
           CINEMARK_OUTPUT: ${{ github.event.inputs.cinemark_show_dates != '' && '../cinemark-logs/cinemark-test-capture.csv' || '' }}

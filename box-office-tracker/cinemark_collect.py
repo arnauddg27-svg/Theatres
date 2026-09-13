@@ -839,6 +839,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     _flush()
     totals.setdefault("written", 0)
     print(budget.summary(), flush=True)
+    print(budget.breakdown(), flush=True)
     print(f"\n=== Cinemark collect summary ===\n"
           f"  visited={totals['visited']} matched={totals['matched']} "
           f"captured={totals['captured']} written={totals['written']} "

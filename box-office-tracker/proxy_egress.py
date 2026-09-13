@@ -62,6 +62,9 @@ class ByteBudget:
         self.bytes = 0
         self.responses = 0
         self.documents = 0
+        # bytes and counts per category, so "N page loads per theatre" can be
+        # attributed instead of guessed at
+        self.by_kind: dict[str, list[int]] = {}
         self._lock = threading.Lock()
         self._announced = False
 
@@ -69,12 +72,16 @@ class ByteBudget:
     def metered(self) -> bool:
         return self.limit > 0
 
-    def add(self, n: int, is_document: bool = False) -> None:
+    def add(self, n: int, is_document: bool = False, kind: str = "") -> None:
         with self._lock:
             self.bytes += int(n or 0)
             self.responses += 1
             if is_document:
                 self.documents += 1
+            if kind:
+                slot = self.by_kind.setdefault(kind, [0, 0])
+                slot[0] += int(n or 0)
+                slot[1] += 1
 
     def exhausted(self) -> bool:
         if not self.metered:
@@ -86,6 +93,11 @@ class ByteBudget:
                 print(f"::warning::{self.label} stopped early — spent its "
                       f"{self.limit / 1048576:.0f} MB data budget for this run", flush=True)
             return spent
+
+    def breakdown(self) -> str:
+        parts = sorted(self.by_kind.items(), key=lambda kv: -kv[1][0])
+        return "   by kind: " + ", ".join(
+            f"{k}={v[0] / 1048576:.1f}MB x{v[1]}" for k, v in parts) if parts else ""
 
     def summary(self) -> str:
         mb = self.bytes / 1048576
@@ -104,13 +116,54 @@ def attach_meter(context, page, budget: ByteBudget) -> None:
         cdp = context.new_cdp_session(page)
         cdp.send("Network.enable")
         types: dict[str, str] = {}
+        urls: dict[str, str] = {}
+        kinds: dict[str, str] = {}
+        main_frame = ""
+        try:
+            cdp.send("Page.enable")
+            tree = cdp.send("Page.getFrameTree") or {}
+            main_frame = ((tree.get("frameTree") or {}).get("frame") or {}).get("id", "")
+        except Exception:
+            main_frame = ""
+
+        def _classify(url: str, rtype: str, frame_id: str) -> str:
+            """Attribute a response so 'N page loads per theatre' can be read
+            as a cause, not a number. A Document in a SUB-frame is an ad or
+            widget iframe, not a navigation the lane asked for."""
+            if rtype != "Document":
+                return "subresource"
+            if main_frame and frame_id and frame_id != main_frame:
+                return "iframe document"
+            u = (url or "").lower()
+            if "theater-page" in u or "/theatres" in u:
+                return "nav: theatre page"
+            if "jump.aspx" in u or "checkout" in u:
+                return "nav: redirect hop"
+            if "seatselection" in u or "ticketseatmap" in u:
+                return "nav: seat page"
+            return "nav: other"
 
         def _sent(ev):
-            types[ev.get("requestId")] = ev.get("type", "")
+            rid = ev.get("requestId")
+            types[rid] = ev.get("type", "")
+            try:
+                url = (ev.get("request") or {}).get("url", "")
+            except Exception:
+                url = ""
+            urls[rid] = url
+            kind = _classify(url, types[rid], ev.get("frameId", ""))
+            # A redirect reuses the requestId and emits no loadingFinished of
+            # its own, so hops are counted here or not at all. Headers only,
+            # hence the byte cost is recorded as 0 rather than guessed.
+            if ev.get("redirectResponse") is not None:
+                budget.add(0, kind="redirect hop")
+            kinds[rid] = kind
 
         def _done(ev):
+            rid = ev.get("requestId")
             budget.add(ev.get("encodedDataLength", 0),
-                       is_document=types.get(ev.get("requestId")) == "Document")
+                       is_document=types.get(rid) == "Document",
+                       kind=kinds.get(rid, "subresource"))
 
         cdp.on("Network.requestWillBeSent", _sent)
         cdp.on("Network.loadingFinished", _done)
@@ -173,6 +226,10 @@ TRIM_LEVEL = (os.environ.get("PROXY_TRIM_LEVEL") or "media").strip().lower()
 def should_block(resource_type: str, url: str = "", level: str | None = None) -> bool:
     """Pure: is this sub-request pure decoration or third-party tracking?"""
     level = (level or TRIM_LEVEL)
+    # "none" = meter but change nothing, so a measurement run reports the
+    # lane's real byte profile instead of a trimmed one.
+    if level == "none":
+        return False
     host = ""
     if url:
         try:
