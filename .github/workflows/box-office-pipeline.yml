@@ -544,6 +544,7 @@ jobs:
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
               seatpage) python -u scripts/probe_fandango_seatpage.py 2>&1 | tee ../chain-probe/fandango-seatpage.log ;;
               trace) python -m playwright install chromium --with-deps >/dev/null 2>&1; python -u scripts/probe_fandango_trace.py 2>&1 | tee ../chain-probe/fandango-trace.log ;;
+              bytes-*) python -m playwright install chromium --with-deps >/dev/null 2>&1; PROBE_SITE="${PROBE_KIND#bytes-}" python -u scripts/probe_byte_split.py 2>&1 | tee ../chain-probe/byte-split.log ;;
               *)     python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log ;;
             esac
             exit 0
