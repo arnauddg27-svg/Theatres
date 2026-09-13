@@ -111,6 +111,9 @@ if __name__ == "__main__":
 
 
 class TrimTest(unittest.TestCase):
+    def test_default_level_is_the_conservative_one(self):
+        self.assertEqual("media", pe.TRIM_LEVEL)
+
     def test_media_and_tracker_hosts_are_dropped(self):
         # measured: images.fandango.com is 3.0 MB of a 5.37 MB theatre page
         self.assertTrue(pe.should_block("image", "https://images.fandango.com/x.jpg"))
@@ -121,7 +124,10 @@ class TrimTest(unittest.TestCase):
         for h in ("https://securepubads.g.doubleclick.net/gampad/ads",
                   "https://assets.adobedtm.com/x.js", "https://cdn.cookielaw.org/x.js",
                   "https://g2.gumgum.com/hbid/imp", "https://connect.facebook.net/en_US/fbevents.js"):
-            self.assertTrue(pe.should_block("script", h), h)
+            self.assertTrue(pe.should_block("script", h, level="full"), h)
+            # at the default level the site's own analytics still fire — some
+            # bot checks look for them (blocks went 0 -> 5 of 10 with "full")
+            self.assertFalse(pe.should_block("script", h, level="media"), h)
 
     def test_the_sites_own_requests_always_pass(self):
         for h in ("https://www.fandango.com/x", "https://tickets.fandango.com/seatpicker",
@@ -130,7 +136,7 @@ class TrimTest(unittest.TestCase):
                 self.assertFalse(pe.should_block(rt, h), f"{rt} {h}")
 
     def test_recaptcha_hosts_stay_allowed_but_map_widgets_do_not(self):
-        self.assertTrue(pe.should_block("script", "https://maps.googleapis.com/maps/api/js"))
+        self.assertTrue(pe.should_block("script", "https://maps.googleapis.com/maps/api/js", level="full"))
         # the checkout flow can require reCAPTCHA from these
         self.assertFalse(pe.should_block("script", "https://www.gstatic.com/recaptcha/api.js"))
         self.assertFalse(pe.should_block("script", "https://www.google.com/recaptcha/api.js"))

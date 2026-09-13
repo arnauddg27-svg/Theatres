@@ -162,8 +162,17 @@ TRACKER_HOSTS = (
 TRIM_RESOURCE_TYPES = frozenset({"font", "media"})
 
 
-def should_block(resource_type: str, url: str = "") -> bool:
+# How aggressive to be. "media" drops only heavy media (safe: the site's own
+# analytics still fire, which some bot checks look for); "full" also drops
+# third-party trackers. Measured 2026-09-13 on the Regal lane: full blocking
+# cut 7.4 -> 2.3 MB/theatre but blocks went 0 -> 5 of 10 theatres, so the
+# default is the conservative level until the culprit is isolated.
+TRIM_LEVEL = (os.environ.get("PROXY_TRIM_LEVEL") or "media").strip().lower()
+
+
+def should_block(resource_type: str, url: str = "", level: str | None = None) -> bool:
     """Pure: is this sub-request pure decoration or third-party tracking?"""
+    level = (level or TRIM_LEVEL)
     host = ""
     if url:
         try:
@@ -179,7 +188,7 @@ def should_block(resource_type: str, url: str = "") -> bool:
         # the media.
         if any(h == host or host.endswith("." + h) for h in MEDIA_HOSTS):
             return rt in ("image", "media", "font")
-        if any(h == host or host.endswith("." + h) for h in TRACKER_HOSTS):
+        if level == "full" and any(h == host or host.endswith("." + h) for h in TRACKER_HOSTS):
             return True
     return rt in TRIM_RESOURCE_TYPES
 
