@@ -7,6 +7,27 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import seat_fetch_http as sfh  # noqa: E402
 
+
+# Step 0: can we discover FUTURE showtimes over plain HTTP? The lane uses a
+# browser because the THEATRE page hydrates client-side, but the metro
+# movietimes page was server-rendered as of June — if it still is, discovery
+# is free and the stored-URL staleness problem disappears.
+def discover_jump_links(sess, proxy, zips=("10036", "90028")):
+    out = []
+    for z in zips:
+        try:
+            res = sfh.fetch_seat_page(f"https://www.fandango.com/{z}_movietimes", proxy, session=sess)
+        except Exception as e:
+            print(f"MOVIETIMES {z}: ERROR {type(e).__name__}", flush=True); continue
+        h = res["html"]
+        jumps = re.findall(r'href="([^"]*jump\.aspx[^"]*)"', h)
+        print(f"MOVIETIMES {z}: raw={res['raw_bytes']} html={len(h)} jump_links={len(jumps)} "
+              f"regal_slugs={len(set(re.findall(r'/(regal-[a-z0-9-]+)/theater-page', h)))}", flush=True)
+        if jumps:
+            print(f"   sample jump: {jumps[0][:200]}", flush=True)
+            out.extend(jumps)
+    return out
+
 proxy = os.environ.get("AMC_SEAT_PROXY_URL", "").strip() or None
 N = max(1, min(6, int(os.environ.get("PROBE_N", "3") or 3)))
 csv_path = Path(__file__).resolve().parents[1] / "data" / "fandango-pre-reservation-snapshots.csv"
@@ -24,6 +45,7 @@ for r in picked[:1]:
 urls = [r["amc_seat_map_url"] for r in picked]
 print(f"proxy={'ON' if proxy else 'off'} testing {len(urls)} stored Regal seat URLs", flush=True)
 sess = sfh.make_session()
+discover_jump_links(sess, proxy)
 for u in urls:
     try:
         res = sfh.fetch_seat_page(u, proxy, session=sess)
