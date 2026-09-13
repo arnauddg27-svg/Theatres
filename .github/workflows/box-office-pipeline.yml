@@ -542,6 +542,7 @@ jobs:
               geo) python -u scripts/probe_proxy_geo.py 2>&1 | tee ../chain-probe/proxy-geo.log ;;
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
+              seatpage) python -u scripts/probe_fandango_seatpage.py 2>&1 | tee ../chain-probe/fandango-seatpage.log ;;
               *)     python -u scripts/probe_amc_seat_payload.py 2>&1 | tee ../chain-probe/amc-seat-payload.log ;;
             esac
             exit 0
