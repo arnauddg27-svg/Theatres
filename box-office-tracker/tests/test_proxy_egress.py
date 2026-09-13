@@ -92,8 +92,11 @@ class LaunchWiringTest(unittest.TestCase):
         self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", fan)
         self.assertIn("FANDANGO_MAX_MB: '60'", fan)
         self.assertIn("FANDANGO_PROXY_RENDER_BUDGET: '55'", fan)
-        self.assertNotIn("AMC_SEAT_PROXY_URL", cin)      # direct: no secret, no meter
-        self.assertNotIn("CINEMARK_MAX_MB", cin)
+        # direct: no secret ASSIGNED, no ceiling assigned (the comment naming
+        # them for a future retry is fine)
+        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", cin)
+        self.assertNotIn("CINEMARK_MAX_MB: '", cin)
+        self.assertNotIn("CINEMARK_PROXY_PER_THEATRE_CAP: '", cin)
 
 
 if __name__ == "__main__":
