@@ -1082,13 +1082,14 @@ jobs:
           CINEMARK_SHARD: ${{ github.event.inputs.cinemark_shard }}
           CINEMARK_NUM_SHARDS: ${{ github.event.inputs.cinemark_num_shards }}
           CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
-          # RESIDENTIAL EGRESS (2026-09-12). The "security verification"
-          # interstitial that forced cap=1 is per-ADDRESS (measured: cap 3 from
-          # one address gave 305 incomplete of 462). A rotating pool spreads the
-          # load, so depth is affordable again — metered, with a hard ceiling.
-          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
-          CINEMARK_MAX_MB: '150'
-          CINEMARK_PROXY_PER_THEATRE_CAP: '3'
+          # CINEMARK STAYS DIRECT (measured 2026-09-12, runs 34729565675 /
+          # 34729964744). Through the proxy the interstitial rate did fall
+          # (66% -> 18% incomplete), but a theatre cost 6.3 MB untrimmed —
+          # 1.9 GB for one full-pool pass — and trimming images/fonts to cut
+          # that to 2.6 MB made cinemark.com BLOCK us (0 -> 10 blocks, captures
+          # 18 -> 7). Direct egress is free, already reaches ~85% of the pool,
+          # and the only thing the proxy buys is depth. Not worth the bytes.
+          # To retry: set AMC_SEAT_PROXY_URL + CINEMARK_MAX_MB here.
           CINEMARK_SHOW_DATES: ${{ github.event.inputs.cinemark_show_dates }}
           # Test runs (show_dates set) write a throwaway CSV, never canonical.
           CINEMARK_OUTPUT: ${{ github.event.inputs.cinemark_show_dates != '' && '../cinemark-logs/cinemark-test-capture.csv' || '' }}

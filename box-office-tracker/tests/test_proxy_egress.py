@@ -82,15 +82,18 @@ class LaunchWiringTest(unittest.TestCase):
                     os.environ[var] = old
                 importlib.reload(importlib.import_module(mod))
 
-    def test_workflow_gives_both_lanes_the_secret_and_a_ceiling(self):
+    def test_regal_is_proxied_with_a_ceiling_and_cinemark_stays_direct(self):
+        # Cinemark measured 6.3 MB/theatre through the proxy (1.9 GB for one
+        # full pass) and trimming to cut that made the site block us, so it
+        # keeps its free direct egress (2026-09-12).
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         cin = yml.split("- name: Cinemark collect", 1)[1].split("run: |", 1)[0]
-        for block, ceiling in ((fan, "FANDANGO_MAX_MB: '60'"), (cin, "CINEMARK_MAX_MB: '150'")):
-            self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", block)
-            self.assertIn(ceiling, block)
-        self.assertIn("CINEMARK_PROXY_PER_THEATRE_CAP: '3'", cin)
+        self.assertIn("AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}", fan)
+        self.assertIn("FANDANGO_MAX_MB: '60'", fan)
         self.assertIn("FANDANGO_PROXY_RENDER_BUDGET: '55'", fan)
+        self.assertNotIn("AMC_SEAT_PROXY_URL", cin)      # direct: no secret, no meter
+        self.assertNotIn("CINEMARK_MAX_MB", cin)
 
 
 if __name__ == "__main__":
