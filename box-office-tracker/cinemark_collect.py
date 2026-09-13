@@ -616,6 +616,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
         ctx = browser.new_context(user_agent=UA, viewport={"width": 1440, "height": 900})
         page = ctx.new_page()
         proxy_egress.attach_meter(ctx, page, budget)
+        proxy_egress.trim_page(page, budget)
         for item in revisit:
             if time.monotonic() > deadline or budget.exhausted():
                 break

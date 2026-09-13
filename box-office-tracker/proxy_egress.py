@@ -123,3 +123,37 @@ def egress_banner(label: str, budget: ByteBudget) -> str:
     return (f"🌐 {label} egress: proxy={'ON' if on else 'off'} "
             f"budget={budget.limit / 1048576:.0f} MB" if budget.metered
             else f"🌐 {label} egress: proxy={'ON' if on else 'off'} (unmetered)")
+
+
+# ── Request trimming ─────────────────────────────────────────────────────────
+# Measured 2026-09-12: a proxied Cinemark theatre cost 6.3 MB (481 KB per page
+# load) because the browser pulls every image, font and media file. Seat state
+# lives in the DOM these lanes already read, so those bytes buy nothing. Scripts
+# and stylesheets STAY: both sites build their seat maps client-side, unlike
+# AMC's server-rendered page.
+TRIM_RESOURCE_TYPES = frozenset({"image", "media", "font"})
+
+
+def should_block(resource_type: str) -> bool:
+    """Pure: is this sub-request pure decoration? (unit-tested)"""
+    return (resource_type or "") in TRIM_RESOURCE_TYPES
+
+
+def trim_page(page, budget: "ByteBudget") -> None:
+    """Drop decorative sub-requests on a metered page. Best-effort; a routing
+    hiccup must never break scraping, and unmetered (direct) runs are left
+    exactly as they were."""
+    if not budget.metered:
+        return
+    try:
+        def _route(route):
+            try:
+                if should_block(route.request.resource_type):
+                    route.abort()
+                else:
+                    route.continue_()
+            except Exception:
+                pass
+        page.route("**/*", _route)
+    except Exception:
+        pass

@@ -810,6 +810,7 @@ def _worker(slice_theatres, shared):
             ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
             page = ctx.new_page()
             proxy_egress.attach_meter(ctx, page, shared["budget"])
+            proxy_egress.trim_page(page, shared["budget"])
             for th in slice_theatres:
                 if (shared["stop"].is_set() or shared["budget_done"].is_set()
                         or shared["budget"].exhausted()

@@ -95,3 +95,26 @@ class LaunchWiringTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TrimTest(unittest.TestCase):
+    def test_only_decoration_is_dropped(self):
+        for rt in ("image", "media", "font"):
+            self.assertTrue(pe.should_block(rt), rt)
+        # both lanes build their seat maps client-side: scripts and styles stay
+        for rt in ("document", "script", "stylesheet", "xhr", "fetch", ""):
+            self.assertFalse(pe.should_block(rt), rt)
+
+    def test_trim_is_skipped_when_unmetered_and_never_raises(self):
+        class Page:
+            routed = False
+            def route(self, pattern, handler):
+                Page.routed = True
+        pe.trim_page(Page(), pe.ByteBudget(0, "direct"))
+        self.assertFalse(Page.routed)                 # direct runs unchanged
+        pe.trim_page(Page(), pe.ByteBudget(50, "metered"))
+        self.assertTrue(Page.routed)
+        class Boom:
+            def route(self, *a, **k):
+                raise RuntimeError("nope")
+        pe.trim_page(Boom(), pe.ByteBudget(50, "x"))  # swallowed
