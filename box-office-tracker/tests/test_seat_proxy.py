@@ -272,3 +272,123 @@ class RotatingProxyRetryPolicyTest(unittest.TestCase):
         issue = f"AMC T: {scraper.CF_BLOCK_ISSUE} {scraper.PROXY_IP_BLOCK_NOTE} (3 IPs tried) 7:00pm"
         self.assertEqual((0, None), scraper._next_block_streak(5, [{"x": 1}], [], [issue]))
         self.assertEqual((6, None), scraper._next_block_streak(5, [], [], [issue]))
+
+
+class EgressTimeoutBreakerTest(unittest.TestCase):
+    """2026-09-14: every AMC fetch through the proxy HUNG for hours. Timeouts
+    are not blocks, so the block breaker never fired and the legs ran their
+    whole deadline holding the AMC lock. A timeout streak ends such a leg."""
+
+    def test_timeout_errors_are_recognised(self):
+        class Timeout(Exception):
+            pass
+        is_t = scraper._is_timeout_error
+        self.assertTrue(is_t(Timeout("curl: (28)")))                     # curl_cffi class name
+        self.assertTrue(is_t(Exception("Page.goto: Timeout 30000ms exceeded.")))
+        self.assertTrue(is_t(Exception("net::ERR_TIMED_OUT at https://x")))
+        self.assertTrue(is_t(Exception("operation timed out")))
+        self.assertFalse(is_t(Exception("net::ERR_ABORTED; maybe frame was detached?")))
+        self.assertFalse(is_t(KeyError("occupancy_pct")))
+        self.assertFalse(is_t(None))
+
+    def test_streak_rule(self):
+        nxt = scraper._next_egress_timeout_streak
+        self.assertEqual((1, False), nxt(0, "timeout", limit=3))
+        self.assertEqual((3, True), nxt(2, "timeout", limit=3))       # trips at the limit
+        self.assertEqual((4, False), nxt(3, "timeout", limit=3))      # ...exactly once
+        self.assertEqual((0, False), nxt(7, "response", limit=3))     # anything back resets
+        self.assertEqual((2, False), nxt(2, "other", limit=3))        # proves nothing
+
+    def test_note_egress_trips_the_leg_and_a_leg_reset_clears_it(self):
+        scraper._egress_reset()
+        saved = scraper._SEAT_PROXY
+        scraper._SEAT_PROXY = None              # direct leg: nothing to fall back from
+        try:
+            for _ in range(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER - 1):
+                scraper._note_egress("timeout")
+            self.assertFalse(scraper._egress_dead())
+            scraper._note_egress("response")                           # one real answer
+            for _ in range(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER - 1):
+                scraper._note_egress("timeout")
+            self.assertFalse(scraper._egress_dead())                   # streak restarted
+            scraper._note_egress("timeout")
+            self.assertTrue(scraper._egress_dead())
+            scraper._note_egress("response")
+            self.assertTrue(scraper._egress_dead(), "a trip is sticky for the leg")
+            scraper._egress_reset()
+            self.assertFalse(scraper._egress_dead())
+        finally:
+            scraper._SEAT_PROXY = saved
+            scraper._egress_reset()
+
+    def test_healthy_leg_pattern_never_trips(self):
+        # Monday's healthy ET leg: 47 HTTP fallbacks spread over 1,833 fetches.
+        scraper._egress_reset()
+        try:
+            for i in range(1833):
+                scraper._note_egress("timeout" if i % 39 == 0 else "response")
+            self.assertFalse(scraper._egress_dead())
+        finally:
+            scraper._egress_reset()
+
+
+class ProxyDirectFallbackTest(unittest.TestCase):
+    """A hang through the proxy is the proxy's fault: switch to direct first."""
+
+    def setUp(self):
+        self.saved = (scraper._SEAT_PROXY, scraper.AMC_PROXY_DIRECT_FALLBACK,
+                      dict(scraper._HTTP_STATE), dict(scraper._EGRESS_TIMEOUTS))
+        scraper._egress_reset()
+        scraper._EGRESS_TIMEOUTS["fell_back"] = False
+
+    def tearDown(self):
+        scraper._SEAT_PROXY, scraper.AMC_PROXY_DIRECT_FALLBACK = self.saved[0], self.saved[1]
+        scraper._HTTP_STATE.clear(); scraper._HTTP_STATE.update(self.saved[2])
+        scraper._EGRESS_TIMEOUTS.clear(); scraper._EGRESS_TIMEOUTS.update(self.saved[3])
+
+    def _hang(self, n):
+        for _ in range(n):
+            scraper._note_egress("timeout")
+
+    def test_first_trip_switches_to_direct_second_trip_aborts(self):
+        scraper._SEAT_PROXY = {"server": "http://gw.example:823"}
+        scraper.AMC_PROXY_DIRECT_FALLBACK = True
+        scraper._HTTP_STATE.update(disabled=True, disabled_reason="breaker",
+                                   http_ok=0, http_fallback=30, session=object())
+        self._hang(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER)
+        self.assertIsNone(scraper._SEAT_PROXY)
+        self.assertIsNone(scraper._http_proxy_url())
+        self.assertFalse(scraper._egress_dead(), "a fallback is not an abort")
+        self.assertTrue(scraper._EGRESS_TIMEOUTS["relaunch"])
+        self.assertTrue(scraper._EGRESS_TIMEOUTS["fell_back"])
+        self.assertEqual(0, scraper._EGRESS_TIMEOUTS["streak"])
+        # the proxy-caused HTTP disable is lifted and its session dropped
+        self.assertFalse(scraper._HTTP_STATE["disabled"])
+        self.assertIsNone(scraper._HTTP_STATE["session"])
+        # direct hangs too -> now the leg aborts
+        self._hang(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER)
+        self.assertTrue(scraper._egress_dead())
+
+    def test_parity_disable_is_not_lifted(self):
+        scraper._SEAT_PROXY = {"server": "http://gw.example:823"}
+        scraper.AMC_PROXY_DIRECT_FALLBACK = True
+        scraper._HTTP_STATE.update(disabled=True, disabled_reason="parity")
+        self._hang(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER)
+        self.assertIsNone(scraper._SEAT_PROXY)
+        self.assertTrue(scraper._HTTP_STATE["disabled"], "a data disagreement is not the proxy's fault")
+
+    def test_fallback_can_be_switched_off(self):
+        scraper._SEAT_PROXY = {"server": "http://gw.example:823"}
+        scraper.AMC_PROXY_DIRECT_FALLBACK = False
+        self._hang(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER)
+        self.assertIsNotNone(scraper._SEAT_PROXY)
+        self.assertTrue(scraper._egress_dead())
+
+    def test_leg_reset_keeps_the_fallback_but_clears_the_relaunch(self):
+        scraper._SEAT_PROXY = {"server": "http://gw.example:823"}
+        scraper.AMC_PROXY_DIRECT_FALLBACK = True
+        self._hang(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER)
+        scraper._egress_reset()
+        self.assertIsNone(scraper._SEAT_PROXY)
+        self.assertTrue(scraper._EGRESS_TIMEOUTS["fell_back"])
+        self.assertFalse(scraper._EGRESS_TIMEOUTS["relaunch"])

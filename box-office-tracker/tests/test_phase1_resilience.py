@@ -124,6 +124,17 @@ class BlockStreakTest(unittest.TestCase):
         self.assertEqual(0, nxt(5, "ok", True))
         self.assertGreaterEqual(scraper.CF_BLOCK_ABORT_AFTER, 3)
 
+    def test_timeout_streak_rule(self):
+        # 2026-09-14: a Phase 1 pass of nothing but timeouts ran 190 min.
+        nxt = scraper.phase1_next_timeout_streak
+        self.assertEqual(1, nxt(0, "timeout", False))
+        self.assertEqual(2, nxt(1, "nav_error", False))
+        self.assertEqual(0, nxt(9, "blocked", False))     # a wall is a response
+        self.assertEqual(0, nxt(9, "challenge", False))
+        self.assertEqual(0, nxt(9, "empty", False))       # a rendered page resets
+        self.assertEqual(0, nxt(9, "ok", True))
+        self.assertGreaterEqual(scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER, 5)
+
 
 class RepairBudgetTest(unittest.TestCase):
     def test_one_total_budget_across_repair_passes(self):

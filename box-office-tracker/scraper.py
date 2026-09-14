@@ -723,6 +723,86 @@ _EGRESS = {"bytes": 0, "responses": 0, "documents": 0}
 
 def _egress_reset():
     _EGRESS.update(bytes=0, responses=0, documents=0)
+    # relaunch too: a leg's browser is launched before this reset, so it
+    # already reflects any earlier fallback to direct.
+    _EGRESS_TIMEOUTS.update(streak=0, tripped=False, relaunch=False)
+
+
+# DEAD-EGRESS TIMEOUT BREAKER (2026-09-14). The block breakers count Cloudflare
+# walls and proxy refusals, and deliberately ignore timeouts. On 2026-09-14 from
+# 07:29Z every AMC fetch through the proxy HUNG instead of failing: no block, no
+# refusal, just 30s timeouts. So nothing tripped. The CT and PT regular legs ran
+# their full ~2.5h deadline for 0 rows, and a Phase 1 pass ran 190 min, all while
+# holding the AMC lock, so every queued snapshot waited behind them. A streak of
+# consecutive NETWORK TIMEOUTS, reset by any response at all (seats, a wall, a
+# queue page), now ends such a leg in minutes. It fails red the same way a block
+# abort does, so the lock is released and the next slot retries.
+AMC_EGRESS_TIMEOUT_ABORT_AFTER = _env_int("AMC_EGRESS_TIMEOUT_ABORT_AFTER", 40, minimum=5)
+_EGRESS_TIMEOUTS = {"streak": 0, "tripped": False, "relaunch": False, "fell_back": False}
+# ...and when the leg was going THROUGH the proxy, a hang is the proxy's fault,
+# not AMC's. On 2026-09-14 the gateway timed out even on ipinfo.io, while AMC
+# answered direct from the same runner in ~1s with real seat maps (run
+# 34881159133). So the first trip switches the run to direct egress instead
+# of ending it. If direct is Cloudflare-walled, the block breakers stop the leg
+# as before; a second hang trip on direct aborts it.
+AMC_PROXY_DIRECT_FALLBACK = bool(_env_int("AMC_PROXY_DIRECT_FALLBACK", 1))
+_TIMEOUT_MARKERS = ("timeout", "timed out", "err_timed_out", "err_connection_timed_out")
+
+
+def _is_timeout_error(exc):
+    """Pure: did this fetch fail by HANGING (as opposed to a refusal/block)?"""
+    if exc is None:
+        return False
+    text = f"{type(exc).__name__} {exc}".lower()
+    return any(m in text for m in _TIMEOUT_MARKERS)
+
+
+def _next_egress_timeout_streak(streak, outcome, limit=None):
+    """Pure: (new_streak, tripped_now). outcome is 'timeout' (a fetch hung),
+    'response' (anything came back — data, a wall, a queue page) or 'other'
+    (a failure that proves nothing either way, left unchanged). tripped_now is
+    True exactly once, when the streak reaches the limit."""
+    limit = AMC_EGRESS_TIMEOUT_ABORT_AFTER if limit is None else limit
+    if outcome == "response":
+        return 0, False
+    if outcome != "timeout":
+        return streak, False
+    streak += 1
+    return streak, streak == limit
+
+
+def _fall_back_to_direct(streak):
+    """Switch this process off the residential proxy. Returns True if it did
+    (i.e. the proxy was on and fallback is allowed), False otherwise."""
+    global _SEAT_PROXY
+    if not _SEAT_PROXY or not AMC_PROXY_DIRECT_FALLBACK:
+        return False
+    _SEAT_PROXY = None
+    _HTTP_STATE["session"] = None          # its pooled connections point at the proxy
+    if _HTTP_STATE["disabled_reason"] == "breaker":
+        # that breaker fired on proxy timeouts, not on anything AMC did
+        _HTTP_STATE.update(disabled=False, disabled_reason="", http_ok=0, http_fallback=0)
+    _EGRESS_TIMEOUTS.update(streak=0, relaunch=True, fell_back=True)
+    print(f"::warning::{streak} consecutive AMC fetches timed out through the residential "
+          f"proxy — it is not responding. Switching this run to DIRECT egress (free); the "
+          f"Cloudflare breakers still stop the leg if direct is walled.", flush=True)
+    return True
+
+
+def _note_egress(outcome):
+    streak, tripped = _next_egress_timeout_streak(_EGRESS_TIMEOUTS["streak"], outcome)
+    _EGRESS_TIMEOUTS["streak"] = streak
+    if tripped and _fall_back_to_direct(streak):
+        return
+    if tripped and not _EGRESS_TIMEOUTS["tripped"]:
+        _EGRESS_TIMEOUTS["tripped"] = True
+        print(f"\n🧱 {streak} consecutive AMC fetches timed out — the egress is not "
+              f"responding; aborting the leg fast (coverage floor fails it red, lock "
+              f"released).", flush=True)
+
+
+def _egress_dead():
+    return _EGRESS_TIMEOUTS["tripped"]
 
 
 def _egress_summary(label):
@@ -2231,6 +2311,16 @@ def phase1_retry_candidates(theatres, outcome_by_key, theatre_key, aborted=False
     return retry
 
 
+def phase1_next_timeout_streak(streak, reason, has_links):
+    """Pure: consecutive listings that HUNG (timeout / navigation error). The
+    block streak deliberately ignores these; on 2026-09-14 a pass of nothing
+    but timeouts ran 190 min. Anything AMC actually rendered resets it, and
+    so does a wall: a wall is a response."""
+    if has_links or reason not in PHASE1_TRANSIENT_REASONS:
+        return 0
+    return streak + 1
+
+
 def phase1_next_block_streak(streak, reason, has_links):
     """Pure: consecutive blocked/challenged listings. Any rendered AMC page
     (links or an authoritative empty) resets it; transient errors leave it."""
@@ -2483,8 +2573,10 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
             if _SEAT_PROXY and _is_proxy_error(str(e)):
                 print(f"      🔌 proxy refused the connection: {str(e)[:80]} — aborting theatre")
                 return PROXY_BLOCK_SENTINEL
+            _note_egress("timeout" if _is_timeout_error(e) else "other")
             print(f"      ⚠️  Goto failed: {str(e)[:120]}")
             return None
+        _note_egress("response")
         final_url = page.url
         if _is_queue_url(final_url):
             print(f"      🚧 AMC queue redirect on seat map — aborting theatre")
@@ -2821,8 +2913,10 @@ async def _fetch_page_counts(url):
     except Exception as e:
         if _is_proxy_error(str(e)):
             return PROXY_BLOCK_SENTINEL
+        _note_egress("timeout" if _is_timeout_error(e) else "other")
         print(f"      ⚠️  HTTP seat fetch failed ({type(e).__name__}) — browser fallback")
         return None
+    _note_egress("response")
     showtime_id = url.rsplit("/showtimes/", 1)[-1].split("/", 1)[0]
     if AMC_HTTP_DEBUG and _HTTP_STATE["http_ok"] < 12:
         print(f"      🔬 http page {showtime_id}: raw={res['raw_bytes'] // 1024}KB decoded="
@@ -5172,7 +5266,9 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     # IP — stop visiting, let the coverage floor fail the run red quickly so
     # the lock is released and the scheduler retries on a fresh runner.
     p1_block_streak = 0
+    p1_timeout_streak = 0
     p1_aborted = False
+    p1_relaunch_lock = asyncio.Lock()
 
     def theatre_key(theatre):
         return (
@@ -5193,7 +5289,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
               f"abort-after={phase1_abort_threshold()} blocked listings", flush=True)
 
         async def bounded(theatre):
-            nonlocal p1_block_streak, p1_aborted
+            nonlocal p1_block_streak, p1_timeout_streak, p1_aborted, browser
             async with sem:
                 t_date = theatre.get("_date", today)
                 if p1_aborted:
@@ -5217,6 +5313,27 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                     p1_aborted = True
                     print(f"\n🧱 {p1_block_streak} consecutive listings blocked by Cloudflare — "
                           f"abandoning this Phase 1 pass (egress IP is dead; coverage floor "
+                          f"fails the run red, lock released).", flush=True)
+                p1_timeout_streak = phase1_next_timeout_streak(
+                    p1_timeout_streak, getattr(result, "reason", "empty"), bool(result))
+                if (p1_timeout_streak >= AMC_EGRESS_TIMEOUT_ABORT_AFTER and not p1_aborted
+                        and _phase1_proxy_on()):
+                    async with p1_relaunch_lock:
+                        if _phase1_proxy_on() and _fall_back_to_direct(p1_timeout_streak):
+                            p1_timeout_streak = 0
+                            _EGRESS_TIMEOUTS["relaunch"] = False   # handled right here
+                            try:
+                                browser = await p.chromium.launch(headless=True,
+                                                                  args=_CHROMIUM_ARGS)
+                                print("  🔁 listing browser relaunched on direct egress",
+                                      flush=True)
+                            except Exception as exc:
+                                print(f"  ❌ direct relaunch failed ({type(exc).__name__})",
+                                      flush=True)
+                if p1_timeout_streak >= AMC_EGRESS_TIMEOUT_ABORT_AFTER and not p1_aborted:
+                    p1_aborted = True
+                    print(f"\n🧱 {p1_timeout_streak} consecutive listings timed out — the egress "
+                          f"is not responding; abandoning this Phase 1 pass (coverage floor "
                           f"fails the run red, lock released).", flush=True)
                 return theatre["name"], theatre.get("_tz", ""), t_date, result
 
@@ -6227,10 +6344,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
         cf_block_streak = 0
         fallback_names = set()
+        relaunch_lock = asyncio.Lock()
 
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
-            nonlocal cf_block_streak
+            nonlocal cf_block_streak, browser
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
@@ -6242,9 +6360,22 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 # Checked INSIDE the semaphore: every coroutine of a 60-theatre
                 # chunk is created at streak 0 and parks here, so a pre-sem
                 # check could never fire (audit-8).
-                if cf_block_streak >= CF_BLOCK_ABORT_AFTER:
+                if cf_block_streak >= CF_BLOCK_ABORT_AFTER or _egress_dead():
                     all_issues.append(f"{name}: seat-map egress dead — leg aborted, skipped")
                     return
+                if _EGRESS_TIMEOUTS["relaunch"]:
+                    async with relaunch_lock:
+                        if _EGRESS_TIMEOUTS["relaunch"]:
+                            _EGRESS_TIMEOUTS["relaunch"] = False
+                            # The old (proxied) browser is left to the playwright
+                            # context: closing it would kill every tab still
+                            # mid-read and lose rows it has already captured.
+                            try:
+                                browser = await _launch_seat_browser(p)
+                                print("  🔁 seat browser relaunched on direct egress", flush=True)
+                            except Exception as exc:
+                                print(f"  ❌ direct relaunch failed ({type(exc).__name__}) — "
+                                      f"keeping the current browser", flush=True)
                 saved_entry = saved_links[name]
                 expected_show_date = phase2_theatre_expected_date(
                     theatre,
