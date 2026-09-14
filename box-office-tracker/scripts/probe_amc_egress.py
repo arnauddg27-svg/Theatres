@@ -64,4 +64,18 @@ for i, u in enumerate(seat_urls):
 draw("https://ipinfo.io/json", True, "proxy ipinfo  ")
 for i, u in enumerate(seat_urls[:2]):
     draw(u, False, f"direct seat   {i+1}")
+for i, u in enumerate(listing_urls[:2]):
+    draw(u, False, f"direct listing{i+1}")
+# A 200 is not proof of data (a challenge page can be a 200): classify direct
+# seat pages with the production reader and print its verdict and seat total.
+for i, u in enumerate(seat_urls[-4:]):
+    t0 = time.monotonic()
+    try:
+        res = sfh.fetch_seat_page(u, None, session=sess)
+        seats = sfh.parse_seat_counts(res["html"]) if res.get("kind") == "seats" else None
+        total = (seats or {}).get("total_seats")
+        print(f"direct parse  {i+1}: kind={res.get('kind')} total_seats={total} "
+              f"{time.monotonic()-t0:4.1f}s", flush=True)
+    except Exception as e:
+        print(f"direct parse  {i+1}: ERROR {type(e).__name__}", flush=True)
 print(f"TOTAL {spent/1048576:.2f} MB", flush=True)
