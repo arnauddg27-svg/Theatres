@@ -322,13 +322,43 @@ class EgressTimeoutBreakerTest(unittest.TestCase):
             scraper._egress_reset()
 
     def test_healthy_leg_pattern_never_trips(self):
-        # Monday's healthy ET leg: 47 HTTP fallbacks spread over 1,833 fetches.
+        # Shape of today's healthy PT leg (run 34860392248): thousands of RSC
+        # reads that answer, with hangs sprinkled in (and bursts of 3).
         scraper._egress_reset()
+        saved = scraper._SEAT_PROXY
+        scraper._SEAT_PROXY = None
         try:
-            for i in range(1833):
-                scraper._note_egress("timeout" if i % 39 == 0 else "response")
+            for i in range(2245):
+                if i % 50 == 0:
+                    for _ in range(3):
+                        scraper._note_egress("timeout")
+                scraper._note_egress("response")
             self.assertFalse(scraper._egress_dead())
         finally:
+            scraper._SEAT_PROXY = saved
+            scraper._egress_reset()
+
+    def test_rsc_reads_reset_the_streak(self):
+        # Regression (fix-audit): the RSC path serves ~99% of reads and did not
+        # count as a response, so scattered timeouts accumulated all leg long.
+        import asyncio
+        import seat_fetch_http as sfh
+        sid = "987654"
+        diff = {"raw_bytes": 900, "kind": "seats", "url": f"https://www.amctheatres.com/showtimes/{sid}/seats",
+                "payload": f'"{sid}","seats"'.encode(), "counts": {"total_seats": 96, "occupancy_pct": 10.0}}
+        saved = (sfh.fetch_rsc_seat_diff, scraper.AMC_SEAT_RSC_DIFF, dict(scraper._RSC_STATE))
+        scraper._egress_reset()
+        try:
+            sfh.fetch_rsc_seat_diff = lambda *a, **k: diff
+            scraper.AMC_SEAT_RSC_DIFF = True
+            scraper._RSC_STATE["diff_miss_streak"] = 0
+            scraper._EGRESS_TIMEOUTS["streak"] = scraper.AMC_EGRESS_TIMEOUT_ABORT_AFTER - 1
+            out = asyncio.run(scraper._fetch_rsc(sid, diff["url"]))
+            self.assertEqual(96, out["total_seats"])
+            self.assertEqual(0, scraper._EGRESS_TIMEOUTS["streak"])
+        finally:
+            sfh.fetch_rsc_seat_diff, scraper.AMC_SEAT_RSC_DIFF = saved[0], saved[1]
+            scraper._RSC_STATE.clear(); scraper._RSC_STATE.update(saved[2])
             scraper._egress_reset()
 
 

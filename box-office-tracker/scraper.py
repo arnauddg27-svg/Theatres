@@ -2249,7 +2249,7 @@ class Phase1Showtimes(list):
     'ok' (showtimes present), 'empty' (AMC page rendered, nothing listed for
     the tracked films/date — authoritative), 'blocked' (Cloudflare hard
     block), 'challenge' (Cloudflare JS challenge never cleared), 'queue'
-    (Queue-It redirect), 'nav_error', 'timeout', 'aborted' (pass abandoned
+    (Queue-It redirect), 'nav_error', 'nav_timeout', 'timeout', 'aborted' (pass abandoned
     after a block streak). Before 2026-09-09 every one of these printed
     "0 showtime(s)" and was retried wholesale — a full-weekend collect-links
     pass re-visited ~170 zero theatres per date and held the AMC lock for
@@ -2272,7 +2272,10 @@ def phase1_result(collected=None, reason="ok"):
     return out
 
 
-PHASE1_TRANSIENT_REASONS = frozenset({"nav_error", "timeout"})
+PHASE1_TRANSIENT_REASONS = frozenset({"nav_error", "nav_timeout", "timeout"})
+# The subset that means the egress HUNG. A plain nav_error also covers a
+# crashed browser (TargetClosedError), which says nothing about the proxy.
+PHASE1_HANG_REASONS = frozenset({"nav_timeout", "timeout"})
 PHASE1_BLOCK_REASONS = frozenset({"blocked", "challenge"})
 # Retry genuinely-empty listings only when they are the exception: a pass
 # where most theatres list nothing for the tracked films/date (pre-opening
@@ -2312,13 +2315,18 @@ def phase1_retry_candidates(theatres, outcome_by_key, theatre_key, aborted=False
 
 
 def phase1_next_timeout_streak(streak, reason, has_links):
-    """Pure: consecutive listings that HUNG (timeout / navigation error). The
-    block streak deliberately ignores these; on 2026-09-14 a pass of nothing
-    but timeouts ran 190 min. Anything AMC actually rendered resets it, and
-    so does a wall: a wall is a response."""
-    if has_links or reason not in PHASE1_TRANSIENT_REASONS:
+    """Pure: consecutive listings that HUNG (navigation timeout / theatre
+    timeout). The block streak deliberately ignores these; on 2026-09-14 a
+    pass of nothing but timeouts ran 190 min. Anything AMC rendered resets it,
+    and so does a wall, since a wall is a response. Any other navigation error
+    (a crashed browser) proves nothing about the egress and leaves it."""
+    if has_links:
         return 0
-    return streak + 1
+    if reason in PHASE1_HANG_REASONS:
+        return streak + 1
+    if reason in PHASE1_TRANSIENT_REASONS:
+        return streak
+    return 0
 
 
 def phase1_next_block_streak(streak, reason, has_links):
@@ -2394,7 +2402,7 @@ async def fetch_amc_showtimes_pw(page, theatre, date_str):
             await asyncio.sleep(2)
     except Exception as e:
         print(f"    ❌ Navigation failed: {e}")
-        return Phase1Showtimes(reason="nav_error")
+        return Phase1Showtimes(reason="nav_timeout" if _is_timeout_error(e) else "nav_error")
 
     showtimes = await page.evaluate(EXTRACT_SHOWTIMES_JS)
     print(f"    📋 {len(showtimes)} showtime(s)")
@@ -2785,6 +2793,12 @@ async def _fetch_rsc(showtime_id, url):
                 print(f"      ⚠️  segment diff failed ({type(e).__name__}) — full payload", flush=True)
             d = None
         if d is not None:
+            # Anything that came back proves the egress answers. Without this
+            # the streak was reset only by the 20 parity page reads and the odd
+            # browser load, so 40 timeouts scattered across a 2,000-read
+            # healthy leg would falsely trip it (fix-audit, run 34860392248:
+            # rsc ok=2245 vs 20 page reads).
+            _note_egress("response")
             # Bill FIRST: a discarded diff still cost its bytes, and hiding
             # them under-reports exactly the failure mode we watch for.
             billed = d["raw_bytes"] + DIFF_FETCH_OVERHEAD_BYTES
@@ -2821,7 +2835,8 @@ async def _fetch_rsc(showtime_id, url):
         except Exception as e:
             if _is_proxy_error(str(e)):
                 return PROXY_BLOCK_SENTINEL
-            return None
+            return None        # not counted here: the page path runs next and counts
+        _note_egress("response")
         billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
         _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
         _RSC_STATE["bytes"] += billed

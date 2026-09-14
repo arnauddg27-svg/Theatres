@@ -71,6 +71,9 @@ class ListingClassificationTest(unittest.TestCase):
     def test_navigation_error_and_queue(self):
         nav = self._fetch(FakePage(goto_raises=RuntimeError("net::ERR_CONNECTION_RESET")))
         self.assertEqual("nav_error", nav.reason)
+        hung = self._fetch(FakePage(goto_raises=RuntimeError("Page.goto: Timeout 30000ms exceeded.")))
+        self.assertEqual("nav_timeout", hung.reason)
+        self.assertIn("nav_timeout", scraper.PHASE1_TRANSIENT_REASONS)   # still retried like before
         queued = self._fetch(FakePage(url="https://queue.amctheatres.com/?c=amc"))
         self.assertEqual("queue", queued.reason)
 
@@ -128,7 +131,8 @@ class BlockStreakTest(unittest.TestCase):
         # 2026-09-14: a Phase 1 pass of nothing but timeouts ran 190 min.
         nxt = scraper.phase1_next_timeout_streak
         self.assertEqual(1, nxt(0, "timeout", False))
-        self.assertEqual(2, nxt(1, "nav_error", False))
+        self.assertEqual(2, nxt(1, "nav_timeout", False))
+        self.assertEqual(2, nxt(2, "nav_error", False))   # e.g. a crashed browser: proves nothing
         self.assertEqual(0, nxt(9, "blocked", False))     # a wall is a response
         self.assertEqual(0, nxt(9, "challenge", False))
         self.assertEqual(0, nxt(9, "empty", False))       # a rendered page resets
