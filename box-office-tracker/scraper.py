@@ -805,6 +805,38 @@ def _egress_dead():
     return _EGRESS_TIMEOUTS["tripped"]
 
 
+# DIRECT-FALLBACK POSTURE. The proxy posture (snapshot: 8 tabs, ~1000 theatres;
+# Phase 1: 6 tabs) exists because a rotating pool spreads load over many
+# addresses. After a fallback every request leaves from ONE runner IP, so the
+# run drops to the posture direct egress has always used (workflow: 3 tabs,
+# 120 theatres; Phase 1: 2 tabs) instead of hammering AMC from a single IP
+# until Cloudflare walls it (fix-audit follow-up, 2026-09-14).
+AMC_DIRECT_FALLBACK_TABS = _env_int("AMC_DIRECT_FALLBACK_TABS", 3, minimum=1)
+AMC_DIRECT_FALLBACK_PHASE1_TABS = _env_int("AMC_DIRECT_FALLBACK_PHASE1_TABS", 2, minimum=1)
+AMC_DIRECT_FALLBACK_THEATRE_CAP = _env_int("AMC_DIRECT_FALLBACK_THEATRE_CAP", 120, minimum=10)
+
+
+async def _maybe_gated(gate_on, gate, coro):
+    """Await coro, inside `gate` when gate_on. The coroutine is not started
+    until it passes the gate, so time spent waiting for a slot never counts
+    against a wait_for timeout wrapped inside it."""
+    if not gate_on:
+        return await coro
+    async with gate:
+        return await coro
+
+
+def _leg_top_names(ranked, leg_names, cap):
+    """Pure: the theatres this leg keeps under a reduced cap. `ranked` is the
+    snapshot ranking over the leg's own groups (already capped); only names in
+    this leg count. If the ranking shares nothing with the leg, keep the first
+    `cap` leg names alphabetically, so the leg still reads something."""
+    keep = {n for n in (ranked or ()) if n in leg_names}
+    if not keep:
+        keep = set(sorted(leg_names)[:cap])
+    return keep
+
+
 def _egress_summary(label):
     mb = _EGRESS["bytes"] / 1048576
     docs = _EGRESS["documents"] or 1
@@ -5284,6 +5316,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
     p1_timeout_streak = 0
     p1_aborted = False
     p1_relaunch_lock = asyncio.Lock()
+    p1_direct_gate = asyncio.Semaphore(AMC_DIRECT_FALLBACK_PHASE1_TABS)
 
     def theatre_key(theatre):
         return (
@@ -5311,11 +5344,13 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                     return (theatre["name"], theatre.get("_tz", ""), t_date,
                             phase1_result(reason="aborted"))
                 try:
-                    result = await asyncio.wait_for(
-                        _collect_links_theatre(browser, theatre, t_date, movie_titles),
-                        # proxy mode redraws walled listings on fresh contexts
-                        timeout=PHASE1_THEATRE_TIMEOUT_SEC * (2 if _phase1_proxy_on() else 1),
-                    )
+                    result = await _maybe_gated(
+                        _EGRESS_TIMEOUTS["fell_back"] and not _phase1_proxy_on(), p1_direct_gate,
+                        asyncio.wait_for(
+                            _collect_links_theatre(browser, theatre, t_date, movie_titles),
+                            # proxy mode redraws walled listings on fresh contexts
+                            timeout=PHASE1_THEATRE_TIMEOUT_SEC * (2 if _phase1_proxy_on() else 1),
+                        ))
                 except asyncio.TimeoutError:
                     print(f"  ⏱️  {theatre['name']}: Phase 1 timeout — skipping")
                     result = phase1_result(reason="timeout")
@@ -6360,6 +6395,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         cf_block_streak = 0
         fallback_names = set()
         relaunch_lock = asyncio.Lock()
+        direct_gate = asyncio.Semaphore(AMC_DIRECT_FALLBACK_TABS)
+        direct_names = set()
 
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
@@ -6407,6 +6444,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     )
                 )
                 theatre_saved = phase1_entry_movies(saved_entry, t_date)
+                if snapshots_only and _EGRESS_TIMEOUTS["fell_back"]:
+                    if not direct_names:
+                        leg_names = {t["name"] for t in all_theatres}
+                        ranked = select_snapshot_theatre_names(
+                            theatres_map, groups=groups_to_check,
+                            cap=AMC_DIRECT_FALLBACK_THEATRE_CAP) or set()
+                        direct_names.update(_leg_top_names(
+                            ranked, leg_names, AMC_DIRECT_FALLBACK_THEATRE_CAP))
+                        print(f"::warning::running direct after a proxy fallback — this leg "
+                              f"drops to {len(direct_names)} of its {len(leg_names)} theatres "
+                              f"at {AMC_DIRECT_FALLBACK_TABS} tabs", flush=True)
+                    if name not in direct_names:
+                        all_issues.append(f"{name}: direct-fallback theatre cap — skipped")
+                        return
                 if (snapshots_only and _SEAT_PROXY and _HTTP_STATE["disabled"]
                         and _HTTP_STATE["disabled_reason"] == "breaker"):
                     # HTTP path proven not to work here (breaker, not a parity
@@ -6419,9 +6470,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         ranked = select_snapshot_theatre_names(
                             theatres_map, groups=groups_to_check,
                             cap=AMC_BROWSER_FALLBACK_CAP) or set()
-                        fallback_names.update(n for n in ranked if n in leg_names)
-                        if not fallback_names:
-                            fallback_names.update(sorted(leg_names)[:AMC_BROWSER_FALLBACK_CAP])
+                        fallback_names.update(_leg_top_names(
+                            ranked, leg_names, AMC_BROWSER_FALLBACK_CAP))
                         print(f"::warning::HTTP seat fetch is off for this leg (breaker) — browser "
                               f"fallback limited to {len(fallback_names)} of this leg's "
                               f"{len(leg_names)} theatres", flush=True)
@@ -6430,7 +6480,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         return
                 sink = _new_theatre_sink()
                 try:
-                    outcome = await asyncio.wait_for(
+                    outcome = await _maybe_gated(_EGRESS_TIMEOUTS["fell_back"], direct_gate, asyncio.wait_for(
                         _scrape_theatre(
                             browser, theatre, t_date, movie_titles, market_urls,
                             weekend_of=weekend, run_id=run_id,
@@ -6440,7 +6490,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                             sink=sink,
                         ),
                         timeout=theatre_timeout_sec,
-                    )
+                    ))
                 except asyncio.TimeoutError:
                     outcome = _harvest_sink(sink, name, theatre_timeout_sec)
                     print(f"  ⏱️  {name}: timeout after {theatre_timeout_sec}s — keeping "

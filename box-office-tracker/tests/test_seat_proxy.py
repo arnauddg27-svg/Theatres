@@ -422,3 +422,54 @@ class ProxyDirectFallbackTest(unittest.TestCase):
         self.assertIsNone(scraper._SEAT_PROXY)
         self.assertTrue(scraper._EGRESS_TIMEOUTS["fell_back"])
         self.assertFalse(scraper._EGRESS_TIMEOUTS["relaunch"])
+
+
+class DirectFallbackPostureTest(unittest.TestCase):
+    """After a fallback every request leaves from one runner IP: drop to the
+    direct posture instead of keeping the proxy's 8 tabs / ~1000 theatres."""
+
+    def test_leg_top_names_keeps_only_this_legs_ranked_theatres(self):
+        leg = {"A", "B", "C", "D"}
+        self.assertEqual({"B", "D"}, scraper._leg_top_names(["B", "X", "D"], leg, 2))
+        # nothing ranked in this leg: first `cap` names alphabetically
+        self.assertEqual({"A", "B"}, scraper._leg_top_names(["X"], leg, 2))
+        self.assertEqual({"A", "B"}, scraper._leg_top_names(None, leg, 2))
+
+    def test_direct_posture_defaults_match_the_workflows_direct_posture(self):
+        self.assertEqual(3, scraper.AMC_DIRECT_FALLBACK_TABS)
+        self.assertEqual(scraper.MAX_CONCURRENT_TABS_PHASE1, scraper.AMC_DIRECT_FALLBACK_PHASE1_TABS)
+        self.assertEqual(120, scraper.AMC_DIRECT_FALLBACK_THEATRE_CAP)
+
+    def _peak(self, gate_on, workers=6, slots=2):
+        import asyncio
+
+        async def run():
+            gate = asyncio.Semaphore(slots)
+            live = {"now": 0, "peak": 0}
+
+            async def job():
+                live["now"] += 1
+                live["peak"] = max(live["peak"], live["now"])
+                await asyncio.sleep(0.01)
+                live["now"] -= 1
+                return 1
+
+            out = await asyncio.gather(*[scraper._maybe_gated(gate_on, gate, job())
+                                         for _ in range(workers)])
+            return sum(out), live["peak"]
+        return asyncio.run(run())
+
+    def test_gate_limits_concurrency_only_when_on(self):
+        self.assertEqual((6, 2), self._peak(True))
+        self.assertEqual((6, 6), self._peak(False))
+
+    def test_waiting_for_a_slot_does_not_eat_the_timeout(self):
+        import asyncio
+
+        async def run():
+            gate = asyncio.Semaphore(1)
+            await gate.acquire()                       # slot busy for 0.2s
+            asyncio.get_running_loop().call_later(0.2, gate.release)
+            return await scraper._maybe_gated(
+                True, gate, asyncio.wait_for(asyncio.sleep(0.05, result="done"), timeout=0.1))
+        self.assertEqual("done", asyncio.run(run()))
