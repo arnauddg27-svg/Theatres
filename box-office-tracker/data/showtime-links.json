@@ -1,8 +1,8 @@
 {
   "date": "2026-09-18",
   "weekend_of": "2026-09-18",
-  "collected_local_date": "2026-09-14",
-  "collected_at": "2026-09-15T01:25:04.073954+00:00",
+  "collected_local_date": "2026-09-15",
+  "collected_at": "2026-09-15T13:50:16.678380+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -3038,24 +3038,24 @@
           "movies": {
             "Resident Evil": [
               {
-                "showtime": "7:10pm",
-                "showtime_id": "146481450",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "9:45pm",
-                "showtime_id": "146481451",
-                "format": "PRIME at AMC"
-              },
-              {
                 "showtime": "5:35pm",
                 "showtime_id": "146481549",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:10pm",
+                "showtime_id": "146481450",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "8:10pm",
                 "showtime_id": "146481547",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146481451",
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "10:45pm",
@@ -3064,7 +3064,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801603+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -3212,24 +3212,24 @@
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "146481450",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "146481451",
-            "format": "PRIME at AMC"
-          },
-          {
             "showtime": "5:35pm",
             "showtime_id": "146481549",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:10pm",
+            "showtime_id": "146481450",
+            "format": "PRIME at AMC"
+          },
+          {
             "showtime": "8:10pm",
             "showtime_id": "146481547",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146481451",
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "10:45pm",
@@ -3567,24 +3567,24 @@
           "movies": {
             "Resident Evil": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "146504283",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "9:30pm",
-                "showtime_id": "146504284",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "6:00pm",
                 "showtime_id": "146504333",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "146504283",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "146504334",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "146504284",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "10:00pm",
@@ -3593,7 +3593,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801625+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -3726,24 +3726,24 @@
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146504283",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "146504284",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "146504333",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:00pm",
+            "showtime_id": "146504283",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "146504334",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146504284",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
@@ -4189,7 +4189,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801654+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -6969,7 +6969,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801756+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -8518,28 +8518,28 @@
           "movies": {
             "Resident Evil": [
               {
-                "showtime": "7:15pm",
-                "showtime_id": "146414806",
-                "format": "XL at AMC"
-              },
-              {
-                "showtime": "10:00pm",
-                "showtime_id": "146414805",
-                "format": "XL at AMC"
-              },
-              {
                 "showtime": "6:00pm",
                 "showtime_id": "146414827",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "146414806",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "8:45pm",
                 "showtime_id": "146414828",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146414805",
+                "format": "XL at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801835+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -8667,24 +8667,24 @@
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146414806",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146414805",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "146414827",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:15pm",
+            "showtime_id": "146414806",
+            "format": "XL at AMC"
+          },
+          {
             "showtime": "8:45pm",
             "showtime_id": "146414828",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146414805",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -11743,7 +11743,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.801957+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -18202,11 +18202,6 @@
           "movies": {
             "Resident Evil": [
               {
-                "showtime": "10:10pm",
-                "showtime_id": "146670442",
-                "format": "English Spoken with Spanish Subtitles"
-              },
-              {
                 "showtime": "6:30pm",
                 "showtime_id": "146670515",
                 "format": "Thrills & Chills"
@@ -18220,10 +18215,15 @@
                 "showtime": "9:10pm",
                 "showtime_id": "146670513",
                 "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "146670442",
+                "format": "English Spoken with Spanish Subtitles"
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802235+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -18356,11 +18356,6 @@
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146670442",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
             "showtime": "6:30pm",
             "showtime_id": "146670515",
             "format": "Thrills & Chills"
@@ -18374,6 +18369,11 @@
             "showtime": "9:10pm",
             "showtime_id": "146670513",
             "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146670442",
+            "format": "English Spoken with Spanish Subtitles"
           }
         ]
       }
@@ -19361,24 +19361,24 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
-                "showtime": "7:45pm",
-                "showtime_id": "146590329",
-                "format": "IMAX with Laser at AMC"
-              },
-              {
-                "showtime": "10:15pm",
-                "showtime_id": "146590330",
-                "format": "IMAX with Laser at AMC"
-              },
-              {
                 "showtime": "6:00pm",
                 "showtime_id": "146590280",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "146590329",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "146590279",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146590330",
+                "format": "IMAX with Laser at AMC"
               },
               {
                 "showtime": "11:00pm",
@@ -19387,7 +19387,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802275+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -19605,24 +19605,24 @@
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146590329",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "146590330",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
             "showtime_id": "146590280",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:45pm",
+            "showtime_id": "146590329",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
             "showtime_id": "146590279",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146590330",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:00pm",
@@ -20522,7 +20522,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802309+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -20829,8 +20829,18 @@
           "movies": {
             "Resident Evil": [
               {
+                "showtime": "5:45pm",
+                "showtime_id": "147046210",
+                "format": "Thrills & Chills"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "146404290",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147046209",
                 "format": "Thrills & Chills"
               },
               {
@@ -20840,7 +20850,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802322+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -20928,8 +20938,18 @@
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "5:45pm",
+            "showtime_id": "147046210",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "146404290",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147046209",
             "format": "Thrills & Chills"
           },
           {
@@ -22427,13 +22447,13 @@
           "movies": {
             "Resident Evil": [
               {
-                "showtime": "7:15pm",
-                "showtime_id": "146569106",
+                "showtime": "5:30pm",
+                "showtime_id": "146832094",
                 "format": "Thrills & Chills"
               },
               {
-                "showtime": "5:30pm",
-                "showtime_id": "146832094",
+                "showtime": "7:15pm",
+                "showtime_id": "146569106",
                 "format": "Thrills & Chills"
               },
               {
@@ -22443,7 +22463,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802385+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -22531,13 +22551,13 @@
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146569106",
+            "showtime": "5:30pm",
+            "showtime_id": "146832094",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146832094",
+            "showtime": "7:15pm",
+            "showtime_id": "146569106",
             "format": "Thrills & Chills"
           },
           {
@@ -23128,7 +23148,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802419+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -24373,7 +24393,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802471+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-20": {
@@ -29220,7 +29240,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802638+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -31353,7 +31373,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802725+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -31929,8 +31949,18 @@
                 "format": "Thrills & Chills"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147033070",
+                "format": "Thrills & Chills"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "146497014",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147033071",
                 "format": "Thrills & Chills"
               },
               {
@@ -31940,7 +31970,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802751+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-20": {
@@ -32028,8 +32058,18 @@
             "format": "Thrills & Chills"
           },
           {
+            "showtime": "7:00pm",
+            "showtime_id": "147033070",
+            "format": "Thrills & Chills"
+          },
+          {
             "showtime": "8:00pm",
             "showtime_id": "146497014",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147033071",
             "format": "Thrills & Chills"
           },
           {
@@ -38977,7 +39017,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.805415+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -39035,21 +39075,59 @@
           },
           "collected_at": "2026-09-14T20:27:25.805432+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-17": {
+          "movies": {
+            "Resident Evil": [
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "146415265",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146415242",
+                "format": "BigD at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "146928026",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146928023",
+                "format": "BigD at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-18",
+      "show_date": "2026-09-17",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146415254",
-            "format": "BigD"
+            "showtime": "5:45pm",
+            "showtime_id": "146415265",
+            "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146415255",
-            "format": "BigD"
+            "showtime": "7:00pm",
+            "showtime_id": "146415242",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146928026",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146928023",
+            "format": "BigD at AMC"
           }
         ]
       }
@@ -83272,10 +83350,10 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.8712,
-    "fresh": 230,
-    "expected": 264,
+    "ratio": 0.9722,
+    "fresh": 770,
+    "expected": 792,
     "min_ratio": 0.9,
-    "degraded": true
+    "degraded": false
   }
 }
