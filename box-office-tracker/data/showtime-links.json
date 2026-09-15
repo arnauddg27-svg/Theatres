@@ -2,7 +2,7 @@
   "date": "2026-09-18",
   "weekend_of": "2026-09-18",
   "collected_local_date": "2026-09-15",
-  "collected_at": "2026-09-15T18:52:46.032556+00:00",
+  "collected_at": "2026-09-15T19:25:23.633110+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -44494,42 +44494,37 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-18",
+      "show_date": "2026-09-17",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "5:20pm",
-            "showtime_id": "146579614",
+            "showtime": "5:30pm",
+            "showtime_id": "146579617",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "146579773",
-            "format": "Laser at AMC"
+            "showtime": "6:15pm",
+            "showtime_id": "147013311",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146579735",
+            "showtime": "7:30pm",
+            "showtime_id": "146579723",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:55pm",
-            "showtime_id": "146579613",
+            "showtime": "8:15pm",
+            "showtime_id": "146579618",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "146579772",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:35pm",
-            "showtime_id": "146579734",
+            "showtime": "10:15pm",
+            "showtime_id": "146579731",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146579612",
+            "showtime": "11:00pm",
+            "showtime_id": "146579619",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -55427,35 +55422,48 @@
           },
           "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-09-17": {
+          "movies": {
+            "Resident Evil": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147023087",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146847853",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147008246",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-18",
+      "show_date": "2026-09-17",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147057732",
+            "showtime": "6:30pm",
+            "showtime_id": "147023087",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146847854",
+            "showtime": "7:30pm",
+            "showtime_id": "146847853",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147057731",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "146847855",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147057730",
+            "showtime": "9:00pm",
+            "showtime_id": "147008246",
             "format": "Laser at AMC"
           }
         ]
@@ -84802,8 +84810,8 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.8939,
-    "fresh": 236,
+    "ratio": 0.8977,
+    "fresh": 237,
     "expected": 264,
     "min_ratio": 0.9,
     "degraded": true
