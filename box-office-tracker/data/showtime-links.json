@@ -2,7 +2,7 @@
   "date": "2026-09-18",
   "weekend_of": "2026-09-18",
   "collected_local_date": "2026-09-15",
-  "collected_at": "2026-09-15T19:25:23.633110+00:00",
+  "collected_at": "2026-09-15T19:45:39.025889+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -22701,7 +22701,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-14T20:27:25.802399+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -84810,10 +84810,10 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.8977,
-    "fresh": 237,
-    "expected": 264,
+    "ratio": 0.9722,
+    "fresh": 770,
+    "expected": 792,
     "min_ratio": 0.9,
-    "degraded": true
+    "degraded": false
   }
 }
