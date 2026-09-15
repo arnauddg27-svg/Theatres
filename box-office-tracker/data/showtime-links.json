@@ -2,7 +2,7 @@
   "date": "2026-09-18",
   "weekend_of": "2026-09-18",
   "collected_local_date": "2026-09-14",
-  "collected_at": "2026-09-15T01:12:25.107123+00:00",
+  "collected_at": "2026-09-15T01:25:04.073954+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -45509,22 +45509,17 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-17",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "146617821",
+            "showtime": "7:30pm",
+            "showtime_id": "146595315",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "146595318",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "146595319",
+            "showtime": "10:00pm",
+            "showtime_id": "146945983",
             "format": "Laser at AMC"
           }
         ]
@@ -83277,10 +83272,10 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9804,
-    "fresh": 451,
-    "expected": 460,
+    "ratio": 0.8712,
+    "fresh": 230,
+    "expected": 264,
     "min_ratio": 0.9,
-    "degraded": false
+    "degraded": true
   }
 }
