@@ -564,28 +564,6 @@ jobs:
             case "$PROBE_KIND" in
               geo) python -u scripts/probe_proxy_geo.py 2>&1 | tee ../chain-probe/proxy-geo.log ;;
               amc-egress) python -u scripts/probe_amc_egress.py 2>&1 | tee ../chain-probe/amc-egress.log ;;
-              netboth) # Plain curl vs our curl_cffi client, SAME runner, interleaved: is a stall
-                   # the gateway's or the client's? Timing/status only, no URL ever printed.
-                   { echo "runner egress: $(curl -s -m 10 https://ipinfo.io/ip || echo '?')";
-                     for i in 1 2 3; do
-                       curl -s -o /dev/null -m 20 -x "$AMC_SEAT_PROXY_URL" -w "round $i curl      : HTTP %{http_code} total=%{time_total}s\n" https://ipinfo.io/ip || echo "round $i curl      : no answer (curl exit $?)";
-                       python - <<'PY'
-import os, sys, time
-sys.path.insert(0, ".")
-import seat_fetch_http as sfh
-p = os.environ["AMC_SEAT_PROXY_URL"]
-for label, kw in (("curl_cffi chrome", {}), ("curl_cffi plain ", {"impersonate": None})):
-    t0 = time.monotonic()
-    try:
-        from curl_cffi import requests as cr
-        from curl_cffi.const import CurlOpt
-        sess = cr.Session(impersonate=kw.get("impersonate", "chrome"), curl_options={CurlOpt.HTTP_CONTENT_DECODING: 0}) if "impersonate" in kw else sfh.make_session()
-        r = sess.get("https://ipinfo.io/ip", proxies={"http": p, "https": p}, timeout=20)
-        print(f"        {label}: HTTP {r.status_code} total={time.monotonic()-t0:.2f}s", flush=True)
-    except Exception as e:
-        print(f"        {label}: {type(e).__name__} after {time.monotonic()-t0:.1f}s", flush=True)
-PY
-                     done; } 2>&1 | tee ../chain-probe/netboth.log ;;
               netauth) # Same as net, but AUTHENTICATED, per gateway IP. The credential is
                    # substituted into the -x argument by bash and never printed: output is
                    # -w status/timing only. Tests the hypothesis that one of the three
