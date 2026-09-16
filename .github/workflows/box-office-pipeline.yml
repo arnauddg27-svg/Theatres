@@ -564,6 +564,16 @@ jobs:
             case "$PROBE_KIND" in
               geo) python -u scripts/probe_proxy_geo.py 2>&1 | tee ../chain-probe/proxy-geo.log ;;
               amc-egress) python -u scripts/probe_amc_egress.py 2>&1 | tee ../chain-probe/amc-egress.log ;;
+              net) # Raw reachability of the proxy GATEWAY from this runner, no credential
+                   # involved (dummy login): a 407 proves the path is open, a connect
+                   # timeout proves it is not. 2026-09-16: Mac and a DigitalOcean VPS get
+                   # 407 in <40 ms while GitHub runners get nothing for 25 s.
+                   { echo "runner egress: $(curl -s -m 10 https://ipinfo.io/ip || echo '?')";
+                     for tgt in gw.dataimpulse.com:823 64.34.81.89:823 64.34.81.101:823 64.34.81.65:823 gw.dataimpulse.com:10000 gw.dataimpulse.com:10001 gw.dataimpulse.com:80 gw.dataimpulse.com:443; do
+                       curl -s -o /dev/null -m 12 -U bogus:bogus -x "http://$tgt" -w "$tgt: HTTP %{http_code} connect=%{time_connect}s total=%{time_total}s\n" https://www.amctheatres.com/robots.txt || echo "$tgt: no answer (curl exit $?)";
+                     done;
+                     echo "--- tcp only"; for ip in 64.34.81.89 64.34.81.101 64.34.81.65; do timeout 8 bash -c "exec 3<>/dev/tcp/$ip/823" 2>/dev/null && echo "$ip:823 tcp open" || echo "$ip:823 tcp NO connect"; done;
+                     echo "--- traceroute"; (command -v traceroute >/dev/null || sudo apt-get install -y -qq traceroute >/dev/null 2>&1); traceroute -T -p 823 -m 20 -w 2 64.34.81.89 2>&1 | tail -22; } 2>&1 | tee ../chain-probe/net.log ;;
               regal) python -u scripts/probe_regal_direct.py 2>&1 | tee ../chain-probe/regal-direct.log ;;
               fandango) python -u scripts/probe_fandango_http.py 2>&1 | tee ../chain-probe/fandango-http.log ;;
               seatpage) python -u scripts/probe_fandango_seatpage.py 2>&1 | tee ../chain-probe/fandango-seatpage.log ;;
