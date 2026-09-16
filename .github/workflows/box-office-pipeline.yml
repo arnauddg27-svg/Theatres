@@ -190,6 +190,17 @@ jobs:
           pip3 install -r requirements.txt
           python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
 
+      - name: Proxy preflight — fail fast on a runner that cannot reach the proxy
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        env:
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+        # BEFORE the lock: about half of the runners could not reach the proxy
+        # at all on 2026-09-15/16 (every request hung from the first), and such
+        # a leg held the AMC lock for 6-10 min to produce 0 rows. Seconds here,
+        # no lock, and the scheduler's retry lands on a fresh runner.
+        run: python scripts/proxy_preflight.py
+
       - name: Acquire AMC lock
         id: amc_lock
         if: steps.dedup.outputs.skip != 'true'
@@ -348,6 +359,7 @@ jobs:
             --tz "${{ matrix.tz }}" \
             --force "${{ github.event.inputs.force }}" \
             --snapshots-only "${{ github.event.inputs.snapshots_only }}" \
+            --schedule-slot "${{ github.event.inputs.schedule_slot }}" \
             --github-output "$GITHUB_OUTPUT"
 
       - name: Install dependencies
@@ -356,6 +368,17 @@ jobs:
         run: |
           pip install -r requirements.txt
           python -m playwright install chromium --with-deps
+
+      - name: Proxy preflight — fail fast on a runner that cannot reach the proxy
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        env:
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+        # BEFORE the lock: about half of the runners could not reach the proxy
+        # at all on 2026-09-15/16 (every request hung from the first), and such
+        # a leg held the AMC lock for 6-10 min to produce 0 rows. Seconds here,
+        # no lock, and the scheduler's retry lands on a fresh runner.
+        run: python scripts/proxy_preflight.py
 
       - name: Acquire AMC lock
         id: amc_lock

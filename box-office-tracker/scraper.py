@@ -978,7 +978,9 @@ def _next_block_streak(streak, results, snapshot_rows, issues):
     if streak == CF_BLOCK_ABORT_AFTER:
         why = ("the residential proxy is refusing connections" if proxy
                else ("the proxy pool keeps drawing Cloudflare-blocked IPs" if _SEAT_PROXY
-                     else "this egress IP is Cloudflare-blocked for seat maps"))
+                     else ("the proxy was unreachable from this runner and direct egress "
+                           "is Cloudflare-blocked" if _EGRESS_TIMEOUTS.get("fell_back")
+                           else "this egress IP is Cloudflare-blocked for seat maps")))
     return streak, why
 
 

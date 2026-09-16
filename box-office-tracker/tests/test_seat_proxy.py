@@ -473,3 +473,20 @@ class DirectFallbackPostureTest(unittest.TestCase):
             return await scraper._maybe_gated(
                 True, gate, asyncio.wait_for(asyncio.sleep(0.05, result="done"), timeout=0.1))
         self.assertEqual("done", asyncio.run(run()))
+
+
+class FallbackAbortBannerTest(unittest.TestCase):
+    def test_banner_names_the_real_cause_after_a_fallback(self):
+        saved = (scraper._SEAT_PROXY, dict(scraper._EGRESS_TIMEOUTS))
+        try:
+            scraper._SEAT_PROXY = None
+            cf = scraper._sentinel_issue(scraper.CF_BLOCK_SENTINEL, "T")
+            scraper._EGRESS_TIMEOUTS["fell_back"] = False
+            _, why = scraper._next_block_streak(scraper.CF_BLOCK_ABORT_AFTER - 1, [], [], [cf])
+            self.assertIn("this egress IP", why)
+            scraper._EGRESS_TIMEOUTS["fell_back"] = True
+            _, why = scraper._next_block_streak(scraper.CF_BLOCK_ABORT_AFTER - 1, [], [], [cf])
+            self.assertIn("unreachable from this runner", why)
+        finally:
+            scraper._SEAT_PROXY = saved[0]
+            scraper._EGRESS_TIMEOUTS.clear(); scraper._EGRESS_TIMEOUTS.update(saved[1])
