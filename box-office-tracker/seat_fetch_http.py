@@ -146,7 +146,17 @@ def make_session(impersonate: str = "chrome"):
     # _Inflater has no zstd branch — an undecodable body would burn the whole
     # fallback chain silently (audit-15).
     return cffi_requests.Session(impersonate=impersonate,
-                                 curl_options={CurlOpt.HTTP_CONTENT_DECODING: 0})
+                                 curl_options={CurlOpt.HTTP_CONTENT_DECODING: 0,
+                                               CurlOpt.SSL_EC_CURVES: TLS_CURVES})
+
+
+# Chrome's post-quantum key share (X25519MLKEM768) makes the TLS ClientHello
+# span two packets, and the residential proxy's tunnels from Azure East/Central
+# US never answer such a handshake (2026-09-16, runs 35100605194/35100558168:
+# the Chrome fingerprint timed out every time, the same fingerprint with these
+# curves passed in <1 s and still read a seat map past Cloudflare; older or
+# plain fingerprints got a 403). Everything else in the impersonation stays.
+TLS_CURVES = "X25519:P-256:P-384"
 
 
 def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
