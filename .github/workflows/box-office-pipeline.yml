@@ -199,10 +199,10 @@ jobs:
         # at all on 2026-09-15/16 (every request hung from the first), and such
         # a leg held the AMC lock for 6-10 min to produce 0 rows. Seconds here,
         # no lock, and the scheduler's retry lands on a fresh runner.
-        # --browser: Phase 1 is a browser lane, and Chromium's TLS handshake
-        # gets no answer through the proxy from some Azure regions (its
-        # post-quantum key share cannot be disabled in this build).
-        run: python scripts/proxy_preflight.py --browser
+        # Listings are read over HTTP since 2026-09-16 (AMC_PHASE1_HTTP); the
+        # browser is only the fallback, so its regional tunnel problem no
+        # longer gates the job (--browser would).
+        run: python scripts/proxy_preflight.py
 
       - name: Acquire AMC lock
         id: amc_lock

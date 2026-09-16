@@ -455,3 +455,168 @@ def fetch_rsc_seat_diff(url: str, proxy_url: str | None, tree_header: str, *,
         kind = classify_page(payload.decode("utf-8", "ignore"))
     return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}
+
+
+# ── Showtime LISTINGS over HTTP (2026-09-16) ─────────────────────────────────
+# The listing page is server-rendered, but React STREAMS it: a movie's
+# <section aria-label="Showtimes for …"> arrives with <template id="P:n">
+# placeholders, and the <ul> of formats/showtimes for it arrives later in a
+# <div hidden id="S:n"> chunk that a $RS("S:n","P:n") script splices into
+# place. The browser does that splice; here the parser does, so the same
+# section → li[aria-label$=" Showtimes"] → a[href=/showtimes/<id>] walk that
+# EXTRACT_SHOWTIMES_JS performs works on the raw HTML. Measured 2026-09-16
+# (run 35103676240): 213 KB raw for 31 movies / 130 showtimes, same page the
+# browser needs ~1.4 MB decoded plus its scripts for.
+from html.parser import HTMLParser as _HTMLParser
+
+_SHOWTIME_HREF = re.compile(r"/showtimes/(\d+)$")
+_TIME_RE = re.compile(r"(\d{1,2}:\d{2}\s*(?:am|pm))", re.I)
+_LISTING_MARK = 'aria-label="Showtimes for '
+
+
+class _Node:
+    __slots__ = ("tag", "attrs", "children", "text")
+
+    def __init__(self, tag, attrs):
+        self.tag = tag
+        self.attrs = dict(attrs)
+        self.children = []
+        self.text = []
+
+
+_VOID = frozenset({"img", "br", "hr", "input", "meta", "link", "source", "track", "wbr", "area", "base", "col", "embed", "param"})
+
+
+class _Tree(_HTMLParser):
+    """Minimal DOM: enough structure to walk sections, lists, links and text."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.root = _Node("#root", {})
+        self.stack = [self.root]
+        self.by_id = {}
+
+    def handle_starttag(self, tag, attrs):
+        node = _Node(tag, attrs)
+        self.stack[-1].children.append(node)
+        if node.attrs.get("id"):
+            self.by_id.setdefault(node.attrs["id"], node)
+        if tag not in _VOID:
+            self.stack.append(node)
+
+    def handle_startendtag(self, tag, attrs):
+        node = _Node(tag, attrs)
+        self.stack[-1].children.append(node)
+        if node.attrs.get("id"):
+            self.by_id.setdefault(node.attrs["id"], node)
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.stack) - 1, 0, -1):
+            if self.stack[i].tag == tag:
+                del self.stack[i:]
+                return
+
+    def handle_data(self, data):
+        if data:
+            self.stack[-1].children.append(data)
+
+
+def _walk(node, by_id, seen):
+    """Depth-first over a node's children, following streamed placeholders:
+    <template id="P:n"> stands for the content of <div hidden id="S:n">."""
+    for child in node.children:
+        if isinstance(child, str):
+            yield child
+            continue
+        if child.tag == "template":
+            tid = child.attrs.get("id", "")
+            if tid.startswith("P:"):
+                chunk = by_id.get("S:" + tid[2:])
+                if chunk is not None and id(chunk) not in seen:
+                    seen.add(id(chunk))
+                    yield from _walk(chunk, by_id, seen)
+            continue
+        yield child
+        yield from _walk(child, by_id, seen)
+
+
+def _text_of(node, by_id):
+    return "".join(x for x in _walk(node, by_id, set()) if isinstance(x, str))
+
+
+def parse_listing_showtimes(html: str) -> list:
+    """The listing's showtimes, in EXTRACT_SHOWTIMES_JS's shape:
+    [{movie, showtime, showtime_id, format, flags}, ...]. Empty when the page
+    lists nothing (or is not a listing page at all)."""
+    if _LISTING_MARK not in html:
+        return []
+    tree = _Tree()
+    tree.feed(html)
+    results = []
+    seen_ids = set()
+
+    def sections(node):
+        for x in _walk(node, tree.by_id, set()):
+            if not isinstance(x, str) and x.tag == "section" and \
+                    x.attrs.get("aria-label", "").startswith("Showtimes for "):
+                yield x
+
+    for section in sections(tree.root):
+        movie = section.attrs.get("aria-label", "")[len("Showtimes for "):]
+        for item in _walk(section, tree.by_id, set()):
+            if isinstance(item, str) or item.tag != "li":
+                continue
+            fmt_label = item.attrs.get("aria-label", "")
+            if not fmt_label.endswith(" Showtimes"):
+                continue
+            fmt = fmt_label[:-len(" Showtimes")]
+            for link in _walk(item, tree.by_id, set()):
+                if isinstance(link, str) or link.tag != "a":
+                    continue
+                m = _SHOWTIME_HREF.search(link.attrs.get("href", ""))
+                if not m or m.group(1) in seen_ids:
+                    continue
+                seen_ids.add(m.group(1))
+                text = _text_of(link, tree.by_id).strip()
+                tm = _TIME_RE.search(text)
+                showtime = tm.group(1) if tm else text.split("\n")[0].strip()
+                flags = ("Almost Full" if "Almost Full" in text else
+                         "Sold Out" if "Sold Out" in text else
+                         "Reserved" if "Reserved" in text else "")
+                results.append({"movie": movie, "showtime": showtime, "showtime_id": m.group(1),
+                                "format": fmt, "flags": flags})
+    return results
+
+
+def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0, session=None) -> dict:
+    """GET a showtime listing (whole page; the sections stream throughout).
+    Returns {'html', 'raw_bytes', 'status', 'kind', 'url'} where kind is
+    'listing' when the page carries showtime sections, else classify_page's
+    verdict (blocked / challenge / other). Network errors propagate."""
+    sess = session or make_session()
+    kwargs = {"stream": True, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
+              "headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                          "Accept-Language": "en-US,en;q=0.9"}}
+    if proxy_url:
+        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
+    resp = sess.get(url, **kwargs)
+    raw = 0
+    out = bytearray()
+    try:
+        inflater = _Inflater(resp.headers.get("content-encoding", ""))
+        for chunk in resp.iter_content(chunk_size=CHUNK):
+            if not chunk:
+                continue
+            raw += len(chunk)
+            out += inflater.feed(chunk)
+            if raw >= MAX_RAW_BYTES:
+                break
+    finally:
+        try:
+            resp.close()
+        except Exception:
+            pass
+    html = bytes(out).decode("utf-8", "ignore")
+    kind = "listing" if _LISTING_MARK in html else classify_page(html)
+    return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
+            "url": str(getattr(resp, "url", "") or url), "kind": kind}

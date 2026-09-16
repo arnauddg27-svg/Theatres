@@ -390,3 +390,94 @@ class InconclusiveRereadCapTest(unittest.TestCase):
         finally:
             (scraper._SEAT_PROXY, scraper.AMC_PHASE1_PROXY, scraper.AMC_PHASE1_TRIM_LEVEL,
              scraper._PHASE1_FULL_TRIM_OK, scraper._PHASE1_INCONCLUSIVE_REREADS, scraper.PHASE1_MAX_INCONCLUSIVE_REREADS) = orig
+
+
+class HttpListingPathTest(unittest.TestCase):
+    """Listings over HTTP settle most theatres without a browser; walls on
+    every draw, odd pages and network trouble hand over to the browser."""
+
+    def setUp(self):
+        import seat_fetch_http as sfh
+        self.sfh = sfh
+        self.saved = (sfh.fetch_listing_page, scraper._SEAT_PROXY, scraper.AMC_PHASE1_HTTP,
+                      scraper.AMC_PHASE1_PROXY, dict(scraper._EGRESS))
+        scraper._SEAT_PROXY = {"server": "http://gw.example:823"}
+        scraper.AMC_PHASE1_HTTP = True
+        scraper.AMC_PHASE1_PROXY = True
+        scraper._HTTP_STATE["session"] = object()
+        self.theatre = {"name": "AMC Test 12", "slug": "amc-test-12"}
+
+    def tearDown(self):
+        (self.sfh.fetch_listing_page, scraper._SEAT_PROXY, scraper.AMC_PHASE1_HTTP,
+         scraper.AMC_PHASE1_PROXY, eg) = self.saved
+        scraper._EGRESS.clear(); scraper._EGRESS.update(eg)
+        scraper._HTTP_STATE["session"] = None
+
+    def _fake(self, results):
+        calls = []
+        def fetch(url, proxy_url, session=None):
+            calls.append(url)
+            r = results[min(len(calls) - 1, len(results) - 1)]
+            if isinstance(r, Exception):
+                raise r
+            return r
+        self.sfh.fetch_listing_page = fetch
+        return calls
+
+    def _run(self, attempts=3):
+        import asyncio
+        return asyncio.run(scraper._fetch_listing_http(self.theatre, "2026-09-18", attempts=attempts))
+
+    def test_listing_settles_without_a_browser(self):
+        html = ('<section aria-label="Showtimes for Runner"><ul><li aria-label="Laser at AMC Showtimes">'
+                '<a href="/showtimes/55"><time>7:00pm</time></a></li></ul></section>')
+        calls = self._fake([{"html": html, "raw_bytes": 200000, "status": 200, "kind": "listing", "url": "u"}])
+        out = self._run()
+        self.assertEqual(["55"], [s["showtime_id"] for s in out])
+        self.assertEqual("ok", out.reason)
+        self.assertEqual(1, len(calls))
+        self.assertGreaterEqual(scraper._EGRESS["bytes"], 200000)
+
+    def test_empty_listing_is_authoritative(self):
+        self._fake([{"html": '<section aria-label="Showtimes for X"></section>', "raw_bytes": 9000,
+                     "status": 200, "kind": "listing", "url": "u"}])
+        out = self._run()
+        self.assertEqual([], list(out)); self.assertEqual("empty", out.reason)
+
+    def test_walls_retry_on_fresh_tunnels_then_hand_over(self):
+        wall = {"html": "", "raw_bytes": 2000, "status": 403, "kind": "blocked", "url": "u"}
+        calls = self._fake([wall, wall, wall])
+        self.assertIsNone(self._run(attempts=3))
+        self.assertEqual(3, len(calls))
+        good = {"html": '<section aria-label="Showtimes for Y"><li aria-label="Q Showtimes">'
+                        '<a href="/showtimes/7"><time>8:00pm</time></a></li></section>',
+                "raw_bytes": 1, "status": 200, "kind": "listing", "url": "u"}
+        calls = self._fake([wall, good])
+        out = self._run(attempts=3)
+        self.assertEqual(["7"], [s["showtime_id"] for s in out]); self.assertEqual(2, len(calls))
+
+    def test_queue_other_and_errors(self):
+        self._fake([{"html": "", "raw_bytes": 1, "status": 302, "kind": "other",
+                     "url": "https://queue.amctheatres.com/?c=amc"}])
+        self.assertEqual("queue", self._run().reason)
+        self._fake([{"html": "<html>maintenance</html>", "raw_bytes": 1, "status": 200, "kind": "other", "url": "u"}])
+        self.assertIsNone(self._run())
+        self._fake([TimeoutError("hung")])
+        self.assertIsNone(self._run(attempts=1))
+
+    def test_collect_links_theatre_skips_the_browser_when_http_settles(self):
+        import asyncio
+        html = ('<section aria-label="Showtimes for Runner"><ul><li aria-label="Laser at AMC Showtimes">'
+                '<a href="/showtimes/55"><time>7:00pm</time></a></li></ul></section>')
+        self._fake([{"html": html, "raw_bytes": 1, "status": 200, "kind": "listing", "url": "u"}])
+
+        class NoBrowser:
+            async def new_context(self, **kw):
+                raise AssertionError("browser must not be used when HTTP settled the listing")
+        out = asyncio.run(scraper._collect_links_theatre(NoBrowser(), self.theatre, "2026-09-18", ["Runner"]))
+        self.assertEqual(["55"], [s["showtime_id"] for s in out["Runner"]])
+        self.assertEqual("ok", out.reason)
+
+    def test_http_path_is_off_without_the_proxy(self):
+        scraper._SEAT_PROXY = None
+        self.assertFalse(scraper._phase1_http_on())

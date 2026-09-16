@@ -639,3 +639,50 @@ class TlsCurvesTest(unittest.TestCase):
         self.assertEqual(0, opts.get(CurlOpt.HTTP_CONTENT_DECODING))
         self.assertNotIn("MLKEM", sfh.TLS_CURVES.upper())
         self.assertNotIn("KYBER", sfh.TLS_CURVES.upper())
+
+
+STREAMED_LISTING = """<html><head><title>Showtimes | AMC</title></head><body>
+<section id="pm2" aria-label="Showtimes for Practical Magic 2"><header><h1><a href="/movies/pm2">Practical Magic 2</a></h1></header>
+<template id="P:a"></template></section>
+<section id="runner" aria-label="Showtimes for Runner"><template id="P:c"></template></section>
+<div hidden id="S:a"><ul><li aria-label="Laser at AMC Showtimes"><ul>
+<li><a id="1001" href="/showtimes/1001"><time dateTime="2026-09-18T22:00:00.000Z">6:00<!-- -->pm</time> Almost Full</a></li>
+<li><a id="1002" href="/showtimes/1002"><time>9:15<!-- -->pm</time></a></li>
+<li><template id="P:b"></template></li></ul></li></ul></div>
+<script>$RS("S:a","P:a")</script>
+<div hidden id="S:b"><a id="1003" href="/showtimes/1003"><time>11:30<!-- -->pm</time></a></div>
+<div hidden id="S:c"><ul><li aria-label="undefined Showtimes"><ul><li><a href="/showtimes/2001"><time>7:00<!-- -->pm</time> Reserved Seating</a></li>
+<li><a href="/showtimes/2001"><time>7:00<!-- -->pm</time></a></li></ul></li></ul>
+<a href="/showtimes/2001/seats">not a listing link</a></div>
+</body></html>"""
+
+
+class ListingParserTest(unittest.TestCase):
+    """Phase 1 over HTTP: the parser must splice React's streamed chunks
+    (<template id=P:n> <- <div hidden id=S:n>) and then walk exactly what
+    EXTRACT_SHOWTIMES_JS walks."""
+
+    def test_streamed_sections_are_spliced_and_walked(self):
+        rows = sfh.parse_listing_showtimes(STREAMED_LISTING)
+        by_id = {r["showtime_id"]: r for r in rows}
+        self.assertEqual({"1001", "1002", "1003", "2001"}, set(by_id))
+        self.assertEqual(("Practical Magic 2", "6:00pm", "Laser at AMC", "Almost Full"),
+                         (by_id["1001"]["movie"], by_id["1001"]["showtime"],
+                          by_id["1001"]["format"], by_id["1001"]["flags"]))
+        self.assertEqual("11:30pm", by_id["1003"]["showtime"])          # nested chunk
+        self.assertEqual(("Runner", "undefined", "Reserved"),
+                         (by_id["2001"]["movie"], by_id["2001"]["format"], by_id["2001"]["flags"]))
+        self.assertEqual(4, len(rows), "duplicate ids and /seats links are not showtimes")
+
+    def test_non_listing_pages_yield_nothing(self):
+        self.assertEqual([], sfh.parse_listing_showtimes("<html><title>Attention Required! | Cloudflare</title></html>"))
+        self.assertEqual([], sfh.parse_listing_showtimes(""))
+
+    def test_fetch_classifies_listing_vs_wall(self):
+        sess = FakeSession(FakeResp(STREAMED_LISTING.encode(), {}))
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/showtimes/all/2026-09-18/x/all", None, session=sess)
+        self.assertEqual("listing", res["kind"])
+        self.assertEqual(4, len(sfh.parse_listing_showtimes(res["html"])))
+        sess = FakeSession(FakeResp(b"<html><title>Attention Required! | Cloudflare</title><body>Sorry, you have been blocked</body></html>", {}))
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=sess)
+        self.assertEqual("blocked", res["kind"])

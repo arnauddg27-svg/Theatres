@@ -708,6 +708,19 @@ def _phase1_proxy_on():
     return bool(_SEAT_PROXY) and AMC_PHASE1_PROXY
 
 
+# LISTINGS OVER HTTP (2026-09-16). The listing page is server-rendered (React
+# streaming; seat_fetch_http.parse_listing_showtimes does the splice the
+# browser would), so Phase 1 reads it with the same curl_cffi client as the
+# seat lane: ~210 KB per theatre instead of a browser render, and no Chromium
+# TLS handshake — which the proxy's tunnels from Azure East/Central never
+# answer (netchrome probes). The browser stays as the fallback.
+AMC_PHASE1_HTTP = bool(_env_int("AMC_PHASE1_HTTP", 1))
+
+
+def _phase1_http_on():
+    return AMC_PHASE1_HTTP and _phase1_proxy_on()
+
+
 def _phase1_should_block_request(resource_type, trim=None):
     """Pure: Phase 1 sub-request trim (only ever active through the proxy)."""
     trim = (AMC_PHASE1_TRIM and _phase1_proxy_on()) if trim is None else trim
@@ -5038,12 +5051,81 @@ async def _scrape_theatre(browser, theatre, date_str, movie_titles, market_urls,
     return results, issues, csv_rows, pre_reservation_rows
 
 
+def _phase1_collect(showtimes, movie_titles, date_str):
+    """{movie_title: [{showtime, showtime_id, format}]} for the tracked films
+    inside the collection window — the same selection for both listing paths."""
+    collected = {}
+    for movie_title in movie_titles:
+        movie_lower = movie_title.lower().strip()
+        matching = [s for s in showtimes
+                    if movie_lower in s.get("movie", "").lower()
+                    or s.get("movie", "").lower() in movie_lower]
+        collection_window = filter_showtime_entries_for_collection_window(matching, date_str)
+        if collection_window:
+            collected[movie_title] = [
+                {"showtime": s.get("showtime"), "showtime_id": s.get("showtime_id"),
+                 "format": s.get("format", "Standard")}
+                for s in collection_window
+            ]
+    return collected
+
+
+async def _fetch_listing_http(theatre, date_str, attempts=None):
+    """Phase 1 listing over HTTP through the proxy. Returns Phase1Showtimes
+    when the question is settled (showtimes, an authoritative empty page, or
+    a queue redirect) and None when the browser should have a look (walls on
+    every draw, a non-listing page, network trouble). A Cloudflare 403 is a
+    bad exit-IP draw, so each retry is a fresh tunnel."""
+    import seat_fetch_http
+    url = f"https://www.amctheatres.com/showtimes/all/{date_str}/{theatre['slug']}/all"
+    attempts = (1 + AMC_PROXY_SHOWTIME_RETRIES) if attempts is None else attempts
+    print(f"  🎬 {theatre['name']}... (http)")
+    walls = 0
+    for i in range(1, attempts + 1):
+        try:
+            res = await asyncio.to_thread(seat_fetch_http.fetch_listing_page, url,
+                                          _http_proxy_url(), session=_http_session())
+        except Exception as e:
+            if _is_proxy_error(str(e)):
+                print(f"    🔌 proxy refused the listing tunnel — browser fallback")
+                return None
+            _note_egress("timeout" if _is_timeout_error(e) else "other")
+            print(f"    ⚠️  listing fetch failed ({type(e).__name__}) draw {i}/{attempts}")
+            continue
+        _note_egress("response")
+        billed = res["raw_bytes"] + HTTP_FETCH_OVERHEAD_BYTES
+        _EGRESS["bytes"] += billed; _EGRESS["responses"] += 1; _EGRESS["documents"] += 1
+        if _is_queue_url(res.get("url", "")):
+            print(f"    🚧 AMC queue redirect (http) — {theatre['name']} skipped")
+            return Phase1Showtimes(reason="queue")
+        kind = res["kind"]
+        if kind == "listing":
+            rows = seat_fetch_http.parse_listing_showtimes(res["html"])
+            print(f"    📋 {len(rows)} showtime(s) (http, {res['raw_bytes'] // 1024} KB)")
+            return Phase1Showtimes(rows, reason="empty")
+        if kind in ("blocked", "challenge"):
+            walls += 1
+            print(f"    🧱 Cloudflare {kind} on listing (http draw {i}/{attempts}) — {theatre['name']}")
+            continue
+        print(f"    ↷ listing (http) came back as '{kind}' — browser fallback")
+        return None
+    if walls:
+        print(f"    ↷ {walls} walled draw(s) over http — browser fallback")
+    return None
+
+
 async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     """
     Phase 1: Visit a theatre's showtime page and save target-window showtime IDs.
     No seat maps fetched — just links for later.
     Returns dict: {movie_title: [{showtime, showtime_id, format}, ...]}
     """
+    if _phase1_http_on():
+        settled = await _fetch_listing_http(theatre, date_str)
+        if settled is not None:
+            return phase1_result(_phase1_collect(settled, movie_titles, date_str),
+                                 getattr(settled, "reason", "empty"))
+
     async def _new_page(level=None):
         ctx = await browser.new_context(
             viewport={"width": 1280, "height": 800},
@@ -5120,21 +5202,7 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
             showtimes = await fetch_amc_showtimes_pw(page, theatre, date_str)
             reason = getattr(showtimes, "reason", "empty") if not showtimes else "empty"
             attempts += 1
-        for movie_title in movie_titles:
-            movie_lower = movie_title.lower().strip()
-            matching = [s for s in showtimes
-                        if movie_lower in s.get("movie", "").lower()
-                        or s.get("movie", "").lower() in movie_lower]
-            collection_window = filter_showtime_entries_for_collection_window(
-                matching,
-                date_str,
-            )
-            if collection_window:
-                collected[movie_title] = [
-                    {"showtime": s.get("showtime"), "showtime_id": s.get("showtime_id"),
-                     "format": s.get("format", "Standard")}
-                    for s in collection_window
-                ]
+        collected = _phase1_collect(showtimes, movie_titles, date_str)
     except Exception as e:
         print(f"  ⚠️  {theatre['name']}: {e}")
         reason = "nav_error"
@@ -5335,6 +5403,7 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         else:
             browser = await p.chromium.launch(headless=True, args=_CHROMIUM_ARGS)
         print(f"🌐 listing egress: proxy={'ON' if _phase1_proxy_on() else 'off'} "
+              f"http={'ON' if _phase1_http_on() else 'off'} "
               f"trim={_phase1_effective_trim_level() or 'off'} "
               f"abort-after={phase1_abort_threshold()} blocked listings", flush=True)
 
