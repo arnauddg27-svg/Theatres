@@ -34,6 +34,26 @@ def get(url, rsc):
     return r.status_code, str(r.headers.get("content-type", ""))[:40], raw, bytes(out)
 
 
+OUT = ROOT.parent / "chain-probe"
+OUT.mkdir(exist_ok=True)
+saved = 0
+for slug in slugs:
+    url = f"https://www.amctheatres.com/showtimes/all/{date}/{slug}/all"
+    # up to 3 tunnels per theatre: a Cloudflare 403 is a bad exit-IP draw
+    for attempt in range(1, 4):
+        try:
+            st, ct, raw, body = get(url, False)
+        except Exception as e:
+            print(f"{slug[:28]:28s} try {attempt}: ERROR {type(e).__name__}", flush=True); continue
+        kind = sfh.classify_page(body.decode("utf-8", "ignore"))
+        print(f"{slug[:28]:28s} try {attempt}: HTTP {st} raw={raw//1024}KB kind={kind} "
+              f"sections={body.count(b'Showtimes for')}", flush=True)
+        if kind == "other" and b"Showtimes for" in body:
+            if saved < 2:
+                (OUT / f"listing-{slug}.html").write_bytes(body); saved += 1
+            break
+print(f"saved {saved} listing page(s) to the artifact", flush=True)
+raise SystemExit(0)
 for slug in slugs:
     url = f"https://www.amctheatres.com/showtimes/all/{date}/{slug}/all"
     for rsc in (False, True):
