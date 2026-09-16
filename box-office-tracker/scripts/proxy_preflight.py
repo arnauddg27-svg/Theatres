@@ -29,6 +29,39 @@ def verdict(outcomes) -> bool:
     return any(o == "response" for o in outcomes)
 
 
+def browser_check(attempts: int = 2, timeout_ms: int = 20000) -> bool:
+    """Can Chromium load a page through the proxy from this runner? Chrome's
+    post-quantum key share cannot be switched off in this build, and the
+    proxy's tunnels from Azure East/Central never answer that handshake
+    (2026-09-16, netchrome probes), so a browser lane must not take the lock
+    on such a runner. Prints outcome classes only."""
+    import scraper
+    from playwright.sync_api import sync_playwright
+    proxy = scraper._SEAT_PROXY
+    if not proxy:
+        return True
+    with sync_playwright() as p:
+        for i in range(attempts):
+            t0 = time.monotonic()
+            b = None
+            try:
+                b = p.chromium.launch(headless=True, args=scraper._CHROMIUM_ARGS, proxy=proxy)
+                r = b.new_page().goto(URL, wait_until="domcontentloaded", timeout=timeout_ms)
+                print(f"browser preflight {i + 1}/{attempts}: status={r.status if r else '?'} "
+                      f"{time.monotonic() - t0:.1f}s", flush=True)
+                return True
+            except Exception as e:
+                print(f"browser preflight {i + 1}/{attempts}: {type(e).__name__} after "
+                      f"{time.monotonic() - t0:.1f}s", flush=True)
+            finally:
+                try:
+                    if b:
+                        b.close()
+                except Exception:
+                    pass
+    return False
+
+
 def main() -> int:
     proxy = (os.environ.get("AMC_SEAT_PROXY_URL") or "").strip()
     if not proxy:
@@ -50,12 +83,17 @@ def main() -> int:
             print(f"proxy preflight {i + 1}/{ATTEMPTS}: {type(e).__name__} after "
                   f"{time.monotonic() - t0:.1f}s", flush=True)
             outcomes.append("error")
-    if verdict(outcomes):
-        return 0
-    print(f"::error::residential proxy unreachable from this runner ({ATTEMPTS} attempts, "
-          f"no response) — failing before the AMC lock so the retry lands on a fresh runner",
-          flush=True)
-    return 1
+    if not verdict(outcomes):
+        print(f"::error::residential proxy unreachable from this runner ({ATTEMPTS} attempts, "
+              f"no response) — failing before the AMC lock so the retry lands on a fresh runner",
+              flush=True)
+        return 1
+    if "--browser" in sys.argv[1:] and not browser_check():
+        print("::error::Chromium cannot tunnel through the proxy from this runner (its TLS "
+              "handshake gets no answer here) — failing before the AMC lock so the retry "
+              "lands on a runner where it does", flush=True)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

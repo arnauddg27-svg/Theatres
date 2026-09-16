@@ -26,3 +26,23 @@ class PreflightVerdictTest(unittest.TestCase):
 
     def test_budget_is_seconds_not_minutes(self):
         self.assertLessEqual(pp.ATTEMPTS * pp.TIMEOUT_SEC, 60)
+
+
+class BrowserCheckTest(unittest.TestCase):
+    def test_no_proxy_means_nothing_to_check(self):
+        import scraper
+        saved = scraper._SEAT_PROXY
+        scraper._SEAT_PROXY = None
+        try:
+            self.assertTrue(pp.browser_check())
+        finally:
+            scraper._SEAT_PROXY = saved
+
+    def test_browser_flag_is_opt_in(self):
+        import os
+        saved = os.environ.pop("AMC_SEAT_PROXY_URL", None)
+        try:
+            self.assertEqual(0, pp.main())          # no proxy: exits before any check
+        finally:
+            if saved is not None:
+                os.environ["AMC_SEAT_PROXY_URL"] = saved
