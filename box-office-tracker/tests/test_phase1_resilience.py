@@ -478,6 +478,20 @@ class HttpListingPathTest(unittest.TestCase):
         self.assertEqual(["55"], [s["showtime_id"] for s in out["Runner"]])
         self.assertEqual("ok", out.reason)
 
+    def test_other_films_only_is_an_authoritative_empty(self):
+        import asyncio
+        html = ('<section aria-label="Showtimes for Some Other Film"><li aria-label="Laser at AMC Showtimes">'
+                '<a href="/showtimes/55"><time>7:00pm</time></a></li></section>')
+        self._fake([{"html": html, "raw_bytes": 1, "status": 200, "kind": "listing", "url": "u"}])
+
+        class NoBrowser:
+            async def new_context(self, **kw):
+                raise AssertionError("no browser")
+        out = asyncio.run(scraper._collect_links_theatre(NoBrowser(), self.theatre, "2026-09-18", ["Runner"]))
+        self.assertEqual({}, dict(out))
+        self.assertEqual("empty", out.reason)                      # resets the block streak, like the browser path
+        self.assertEqual(0, scraper.phase1_next_block_streak(4, out.reason, bool(out)))
+
     def test_http_path_is_off_without_the_proxy(self):
         scraper._SEAT_PROXY = None
         self.assertFalse(scraper._phase1_http_on())

@@ -686,3 +686,22 @@ class ListingParserTest(unittest.TestCase):
         sess = FakeSession(FakeResp(b"<html><title>Attention Required! | Cloudflare</title><body>Sorry, you have been blocked</body></html>", {}))
         res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=sess)
         self.assertEqual("blocked", res["kind"])
+
+
+class ListingEmptyDayTest(unittest.TestCase):
+    def test_rendered_page_with_no_films_is_a_listing_not_a_browser_trip(self):
+        page = "<html><head><title>Back</title></head><body><h1 class=\"x\">Showtimes</h1><p>Select a date</p></body></html>"
+        self.assertTrue(sfh.is_listing_page(page))
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=FakeSession(FakeResp(page.encode(), {})))
+        self.assertEqual("listing", res["kind"])
+        self.assertEqual([], sfh.parse_listing_showtimes(res["html"]))
+        # a wall never counts as a listing even if it mentioned the word
+        wall = "<html><title>Just a moment...</title><body><h1>Showtimes</h1>Verify you are human</body></html>"
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=FakeSession(FakeResp(wall.encode(), {})))
+        self.assertEqual("challenge", res["kind"])
+
+    def test_format_label_without_leading_space(self):
+        html = ('<section aria-label="Showtimes for Z"><li aria-label="Showtimes">'
+                '<a href="/showtimes/9"><time>1:00pm</time></a></li></section>')
+        rows = sfh.parse_listing_showtimes(html)
+        self.assertEqual([("9", "")], [(r["showtime_id"], r["format"]) for r in rows])

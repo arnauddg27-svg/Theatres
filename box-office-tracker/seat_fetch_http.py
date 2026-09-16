@@ -472,6 +472,13 @@ from html.parser import HTMLParser as _HTMLParser
 _SHOWTIME_HREF = re.compile(r"/showtimes/(\d+)$")
 _TIME_RE = re.compile(r"(\d{1,2}:\d{2}\s*(?:am|pm))", re.I)
 _LISTING_MARK = 'aria-label="Showtimes for '
+# The page header, present whether or not any film is listed that day, so a
+# rendered-but-empty listing is an authoritative empty and not a browser trip.
+_LISTING_HEADER = re.compile(r"<h1[^>]*>\s*Showtimes\s*</h1>")
+
+
+def is_listing_page(html: str) -> bool:
+    return _LISTING_MARK in html or bool(_LISTING_HEADER.search(html or ""))
 
 
 class _Node:
@@ -567,9 +574,9 @@ def parse_listing_showtimes(html: str) -> list:
             if isinstance(item, str) or item.tag != "li":
                 continue
             fmt_label = item.attrs.get("aria-label", "")
-            if not fmt_label.endswith(" Showtimes"):
+            if not fmt_label.endswith("Showtimes"):
                 continue
-            fmt = fmt_label[:-len(" Showtimes")]
+            fmt = fmt_label.replace(" Showtimes", "", 1) if " Showtimes" in fmt_label else fmt_label[:-len("Showtimes")]
             for link in _walk(item, tree.by_id, set()):
                 if isinstance(link, str) or link.tag != "a":
                     continue
@@ -617,6 +624,8 @@ def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0
         except Exception:
             pass
     html = bytes(out).decode("utf-8", "ignore")
-    kind = "listing" if _LISTING_MARK in html else classify_page(html)
+    kind = classify_page(html)
+    if kind == "other" and is_listing_page(html):
+        kind = "listing"
     return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind}

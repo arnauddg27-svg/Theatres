@@ -5123,8 +5123,10 @@ async def _collect_links_theatre(browser, theatre, date_str, movie_titles):
     if _phase1_http_on():
         settled = await _fetch_listing_http(theatre, date_str)
         if settled is not None:
-            return phase1_result(_phase1_collect(settled, movie_titles, date_str),
-                                 getattr(settled, "reason", "empty"))
+            # Same reason contract as the browser path: a rendered page whose
+            # showtimes are all for OTHER films is an authoritative "empty".
+            reason = "empty" if settled else getattr(settled, "reason", "empty")
+            return phase1_result(_phase1_collect(settled, movie_titles, date_str), reason)
 
     async def _new_page(level=None):
         ctx = await browser.new_context(
