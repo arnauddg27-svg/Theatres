@@ -14,14 +14,31 @@ if not proxy:
 print("runner egress ip:", subprocess.run(["curl", "-s", "-m", "8", "https://ipinfo.io/ip"],
                                           capture_output=True, text=True).stdout.strip() or "?", flush=True)
 BASE = list(scraper._CHROMIUM_ARGS)
+import json
+POLICY = json.dumps({"PostQuantumKeyAgreementEnabled": False})
+POLICY_DIRS = ["/etc/opt/chrome/policies/managed", "/etc/chromium/policies/managed",
+               "/etc/chromium-browser/policies/managed"]
+
+
+def set_policy(on):
+    for d in POLICY_DIRS:
+        if on:
+            subprocess.run(["sudo", "mkdir", "-p", d], check=False)
+            subprocess.run(["sudo", "bash", "-c", f"printf '%s' '{POLICY}' > {d}/no-pq.json"], check=False)
+        else:
+            subprocess.run(["sudo", "rm", "-f", f"{d}/no-pq.json"], check=False)
+
+
 VARIANTS = [
-    ("default flags              ", []),
-    ("--disable-features=UseMLKEM,PostQuantumKyber", ["--disable-features=UseMLKEM,PostQuantumKyber"]),
-    ("--disable-features=PostQuantumKeyAgreement  ", ["--disable-features=PostQuantumKeyAgreement"]),
+    ("default flags, no policy       ", [], False),
+    ("policy PostQuantumKeyAgreement=0", [], True),
+    ("policy + --disable-features    ", ["--disable-features=UseMLKEM,PostQuantumKyber"], True),
 ]
 with sync_playwright() as p:
+    print("chromium:", p.chromium.executable_path, flush=True)
     for rnd in (1, 2):
-        for tag, extra in VARIANTS:
+        for tag, extra, pol in VARIANTS:
+            set_policy(pol)
             t0 = time.monotonic()
             try:
                 b = p.chromium.launch(headless=True, args=BASE + extra, proxy=proxy)
