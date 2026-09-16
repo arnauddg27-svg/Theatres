@@ -564,6 +564,16 @@ jobs:
             case "$PROBE_KIND" in
               geo) python -u scripts/probe_proxy_geo.py 2>&1 | tee ../chain-probe/proxy-geo.log ;;
               amc-egress) python -u scripts/probe_amc_egress.py 2>&1 | tee ../chain-probe/amc-egress.log ;;
+              netauth) # Same as net, but AUTHENTICATED, per gateway IP. The credential is
+                   # substituted into the -x argument by bash and never printed: output is
+                   # -w status/timing only. Tests the hypothesis that one of the three
+                   # round-robin gateway IPs accepts logins but stalls every tunnel.
+                   { echo "runner egress: $(curl -s -m 10 https://ipinfo.io/ip || echo '?')";
+                     for ip in gw.dataimpulse.com 64.34.81.89 64.34.81.101 64.34.81.65; do
+                       for i in 1 2 3; do
+                         curl -s -o /dev/null -m 20 -x "${AMC_SEAT_PROXY_URL/gw.dataimpulse.com/$ip}" -w "$ip try $i: HTTP %{http_code} connect=%{time_connect}s total=%{time_total}s\n" https://ipinfo.io/ip || echo "$ip try $i: no answer (curl exit $?)";
+                       done;
+                     done; } 2>&1 | tee ../chain-probe/netauth.log ;;
               net) # Raw reachability of the proxy GATEWAY from this runner, no credential
                    # involved (dummy login): a 407 proves the path is open, a connect
                    # timeout proves it is not. 2026-09-16: Mac and a DigitalOcean VPS get
