@@ -39,6 +39,21 @@ with sync_playwright() as p:
     for rnd in (1, 2):
         for tag, extra, pol in VARIANTS:
             set_policy(pol)
+            # First DIRECT (no proxy): what does this variant's ClientHello offer?
+            # 4588 = X25519MLKEM768, 25497 = X25519Kyber768. Verifies the knob
+            # took effect instead of guessing from a timeout.
+            try:
+                b0 = p.chromium.launch(headless=True, args=BASE + extra)
+                pg0 = b0.new_page()
+                pg0.goto("https://tls.peet.ws/api/all", wait_until="domcontentloaded", timeout=20000)
+                body = pg0.evaluate("() => document.body.innerText")
+                d = json.loads(body)
+                exts = d.get("tls", {}).get("extensions", [])
+                groups = next((e.get("supported_groups") for e in exts if "supported_groups" in e), None)
+                print(f"   {tag} direct ClientHello groups: {groups} ja4={d.get('tls', {}).get('ja4')}", flush=True)
+                b0.close()
+            except Exception as e:
+                print(f"   {tag} direct fingerprint check failed: {type(e).__name__}", flush=True)
             t0 = time.monotonic()
             try:
                 b = p.chromium.launch(headless=True, args=BASE + extra, proxy=proxy)

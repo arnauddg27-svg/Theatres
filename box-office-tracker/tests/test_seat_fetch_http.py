@@ -624,3 +624,18 @@ class DiffBreakerAndParityTest(unittest.TestCase):
         # was: QUEUE_SENTINEL -> good row discarded AND the whole theatre abandoned
         self.assertIsInstance(out, dict); self.assertEqual(50, out["total_seats"])
         self.assertEqual(0, scraper._RSC_STATE["checked"])   # parity deferred, not spent
+
+
+class TlsCurvesTest(unittest.TestCase):
+    """The proxy's tunnels from Azure East/Central never answered Chrome's
+    two-packet ClientHello (post-quantum key share); the same fingerprint
+    with classical curves passes and still clears Cloudflare (2026-09-16)."""
+
+    def test_session_pins_classical_curves(self):
+        from curl_cffi.const import CurlOpt
+        sess = sfh.make_session()
+        opts = getattr(sess, "curl_options", None) or {}
+        self.assertEqual(sfh.TLS_CURVES, opts.get(CurlOpt.SSL_EC_CURVES))
+        self.assertEqual(0, opts.get(CurlOpt.HTTP_CONTENT_DECODING))
+        self.assertNotIn("MLKEM", sfh.TLS_CURVES.upper())
+        self.assertNotIn("KYBER", sfh.TLS_CURVES.upper())
