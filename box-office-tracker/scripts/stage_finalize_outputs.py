@@ -20,6 +20,7 @@ OUTPUT_FILES = [
     "box-office-tracker/data/reviews.csv",
     "box-office-tracker/data/social-signals.csv",
     "box-office-tracker/data/daily-actual-overrides.csv",
+    "box-office-tracker/data/prediction-log.csv",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"

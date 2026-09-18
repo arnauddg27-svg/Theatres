@@ -9334,6 +9334,76 @@ def print_prediction(pred, verbose=False):
                       f"${rev_k:,.0f}K  ({t.get('total_showings', 0)} shows)")
 
 
+PREDICTION_LOG_CSV = os.path.join(DATA_DIR, "prediction-log.csv")
+PREDICTION_LOG_FIELDS = [
+    "logged_at", "weekend_of", "movie", "headline_mid_m", "headline_low_m", "headline_high_m",
+    "source", "seat_only_m", "snapshot_mid_m", "amc_share_used", "poly_ev_m", "seat_days",
+    "coverage_ratio", "data_outage",
+]
+
+
+def prediction_log_row(pred, logged_at=None, weekend_of=None):
+    """Pure: one row of what the live run showed for a film. The calibration
+    history is a Tuesday REPLAY with degraded days excluded (Practical Magic 2:
+    headline $32.4M on Sunday night, replay $23.0M, actual $30.0M; Runner
+    $6.5M / $3.5M / $6.5M), so the record was not the number on screen. This
+    log is."""
+    mid, low, high = regression_prediction_values(pred)
+    details = pred.get("daily_details") or {}
+    shares = [d.get("amc_market_share_used") for d in details.values()
+              if isinstance(d, dict) and d.get("amc_market_share_used")]
+    poly = pred.get("poly_result") or {}
+    return {
+        "logged_at": (logged_at or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "weekend_of": weekend_of or pred.get("weekend_of") or "",
+        "movie": pred.get("movie") or "",
+        "headline_mid_m": round(float(mid or 0), 2),
+        "headline_low_m": round(float(low or 0), 2),
+        "headline_high_m": round(float(high or 0), 2),
+        "source": pred.get("regression_source") or "",
+        "seat_only_m": round(float(pred.get("seat_mid_m") or 0), 2),
+        "snapshot_mid_m": round(float(pred.get("snapshot_mid_m") or 0), 2) if pred.get("snapshot_mid_m") else "",
+        "amc_share_used": round(sum(shares) / len(shares), 4) if shares else "",
+        "poly_ev_m": round(float(poly.get("ev") or 0), 2) if poly else "",
+        "seat_days": "+".join(d for d in OPENING_WEEKEND_DAYS if d in details),
+        "coverage_ratio": round(float(pred.get("coverage_ratio") or 0), 3) if pred.get("coverage_ratio") is not None else "",
+        "data_outage": "1" if pred.get("data_outage") else "",
+    }
+
+
+def append_prediction_log(pred, path=None, weekend_of=None):
+    """Append the live headline to data/prediction-log.csv (best effort)."""
+    path = path or PREDICTION_LOG_CSV
+    try:
+        row = prediction_log_row(pred, weekend_of=weekend_of)
+        new = not os.path.exists(path)
+        with open(path, "a", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=PREDICTION_LOG_FIELDS)
+            if new:
+                w.writeheader()
+            w.writerow(row)
+        return True
+    except Exception as exc:  # never let bookkeeping break a forecast
+        print(f"  (prediction log not written: {type(exc).__name__})")
+        return False
+
+
+def history_entry_flag(entry):
+    """Pure: why a stored history row is NOT a fair grade of the live model.
+    Empty string when it is. The replay that records an actual excludes days
+    whose seat coverage fell below the floor, so an outage weekend grades a
+    crippled regression, not the forecast the operator saw."""
+    if entry.get("data_outage"):
+        return "data outage"
+    excluded = [d for d in (entry.get("calibration_excluded_days") or [])]
+    cov = entry.get("coverage_ratio")
+    if excluded:
+        return f"replay excluded {'/'.join(d[:3] for d in excluded)}"
+    if cov is not None and float(cov) < 0.60:
+        return f"coverage {float(cov):.0%}"
+    return ""
+
+
 def print_history(cal):
     """Print historical predictions vs actuals."""
     history = cal.get("history", [])
@@ -9344,8 +9414,9 @@ def print_history(cal):
     print(f"\n{'='*70}")
     print(f"  Prediction History")
     print(f"{'='*70}")
-    print(f"  {'Movie':<30} {'Predicted':>10} {'Actual':>10} {'Error':>8}")
-    print(f"  {'─'*30} {'─'*10} {'─'*10} {'─'*8}")
+    print(f"  {'Movie':<30} {'Predicted':>10} {'Actual':>10} {'Error':>8}  {'Grade note'}")
+    print(f"  {'─'*30} {'─'*10} {'─'*10} {'─'*8}  {'─'*22}")
+    clean, degraded = [], []
     for h in history:
         predicted = h.get("predicted_mid", 0)
         actual = h.get("actual_total", h.get("actual"))
@@ -9360,7 +9431,19 @@ def print_history(cal):
             err_str = f"{err:+.0%}"
         else:
             err_str = "—"
-        print(f"  {h['movie'][:30]:<30} {pred_str:>10} {actual_str:>10} {err_str:>8}")
+        flag = history_entry_flag(h)
+        if actual and predicted > 0:
+            (degraded if flag else clean).append((float(predicted) - float(actual)) / float(actual))
+        print(f"  {h['movie'][:30]:<30} {pred_str:>10} {actual_str:>10} {err_str:>8}  {('⚠ ' + flag) if flag else ''}")
+    if clean or degraded:
+        def _stats(e):
+            if not e:
+                return "n=0"
+            return (f"n={len(e)} MAE={sum(abs(x) for x in e) / len(e):.0%} "
+                    f"signed={sum(e) / len(e):+.0%}")
+        print(f"\n  Fair grades (full-coverage replays): {_stats(clean)}")
+        print(f"  Degraded replays (outage / excluded days, NOT the live headline): {_stats(degraded)}")
+        print(f"  Live headlines are logged in {os.path.relpath(PREDICTION_LOG_CSV, os.getcwd())} since 2026-09-18.")
 
     factors = cal.get("calibration_factors", {})
     print(f"\n  Calibration: scale={factors.get('overall_scale_factor', 1.0):.4f}, "
@@ -9678,6 +9761,8 @@ def main():
                             cross_chain_data=cross_chain_data)
         if pred:
             print_prediction(pred, verbose=verbose)
+            if not through_date:            # live runs only, never replays
+                append_prediction_log(pred, weekend_of=seat_data_weekend_of(seat_data[movie]))
 
     print(f"\n{'='*70}")
 
