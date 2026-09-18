@@ -9388,6 +9388,52 @@ def append_prediction_log(pred, path=None, weekend_of=None):
         return False
 
 
+def select_live_headline(rows, weekend_of):
+    """Pure: from prediction-log rows for one film, the headline to GRADE.
+    'final' is the last row logged before the weekend closed (Monday 12:00Z,
+    weekend_of + 3 days); 'thursday' is the last row that still had only
+    Thursday seat data, i.e. the Friday-morning call a market would trade on.
+    None when no row qualifies."""
+    try:
+        cutoff = (datetime.strptime(weekend_of, "%Y-%m-%d") + timedelta(days=3)).strftime("%Y-%m-%dT12:00:00Z")
+    except (TypeError, ValueError):
+        return None
+    ok = sorted((r for r in rows if (r.get("weekend_of") or "") == weekend_of
+                 and (r.get("logged_at") or "") < cutoff and _positive_float(r.get("headline_mid_m"))),
+                key=lambda r: r.get("logged_at") or "")
+    if not ok:
+        return None
+    last = ok[-1]
+    thu = [r for r in ok if (r.get("seat_days") or "") == "Thursday"]
+    out = {
+        "mid_m": float(last["headline_mid_m"]),
+        "low_m": _positive_float(last.get("headline_low_m")),
+        "high_m": _positive_float(last.get("headline_high_m")),
+        "logged_at": last.get("logged_at", ""),
+        "source": last.get("source", ""),
+        "seat_days": last.get("seat_days", ""),
+        "rows": len(ok),
+    }
+    if thu:
+        out["thursday_mid_m"] = float(thu[-1]["headline_mid_m"])
+        out["thursday_logged_at"] = thu[-1].get("logged_at", "")
+    return out
+
+
+def live_headline_for(movie, weekend_of, path=None):
+    """The live headline logged for a film/weekend, or None (no log yet)."""
+    path = path or PREDICTION_LOG_CSV
+    if not os.path.exists(path):
+        return None
+    key = _movie_lookup_key(movie or "")
+    try:
+        with open(path, newline="") as f:
+            rows = [r for r in csv.DictReader(f) if _movie_lookup_key(r.get("movie", "")) == key]
+    except Exception:
+        return None
+    return select_live_headline(rows, weekend_of)
+
+
 def history_entry_flag(entry):
     """Pure: why a stored history row is NOT a fair grade of the live model.
     Empty string when it is. The replay that records an actual excludes days
@@ -9418,7 +9464,8 @@ def print_history(cal):
     print(f"  {'─'*30} {'─'*10} {'─'*10} {'─'*8}  {'─'*22}")
     clean, degraded = [], []
     for h in history:
-        predicted = h.get("predicted_mid", 0)
+        live = h.get("live_headline") or {}
+        predicted = live.get("mid_m") or h.get("predicted_mid", 0)
         actual = h.get("actual_total", h.get("actual"))
         if actual is None:
             actual = h.get("actual")
@@ -9431,17 +9478,21 @@ def print_history(cal):
             err_str = f"{err:+.0%}"
         else:
             err_str = "—"
-        flag = history_entry_flag(h)
+        flag = "live headline" if live.get("mid_m") else history_entry_flag(h)
+        if live.get("mid_m"):
+            flag = "live headline"
+            err_str = f"{(float(predicted) - float(actual)) / float(actual):+.0%}" if actual else err_str
         if actual and predicted > 0:
-            (degraded if flag else clean).append((float(predicted) - float(actual)) / float(actual))
-        print(f"  {h['movie'][:30]:<30} {pred_str:>10} {actual_str:>10} {err_str:>8}  {('⚠ ' + flag) if flag else ''}")
+            (degraded if (flag and flag != "live headline") else clean).append((float(predicted) - float(actual)) / float(actual))
+        note = "" if not flag else (flag if flag == "live headline" else "⚠ " + flag)
+        print(f"  {h['movie'][:30]:<30} {pred_str:>10} {actual_str:>10} {err_str:>8}  {note}")
     if clean or degraded:
         def _stats(e):
             if not e:
                 return "n=0"
             return (f"n={len(e)} MAE={sum(abs(x) for x in e) / len(e):.0%} "
                     f"signed={sum(e) / len(e):+.0%}")
-        print(f"\n  Fair grades (full-coverage replays): {_stats(clean)}")
+        print(f"\n  Fair grades (live headline, or full-coverage replays): {_stats(clean)}")
         print(f"  Degraded replays (outage / excluded days, NOT the live headline): {_stats(degraded)}")
         print(f"  Live headlines are logged in {os.path.relpath(PREDICTION_LOG_CSV, os.getcwd())} since 2026-09-18.")
 

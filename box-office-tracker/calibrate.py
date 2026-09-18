@@ -550,6 +550,15 @@ def fetch_movie_daily_history(movie_title, friday_date):
 
 # ── Calibration Logic ───────────────────────────────────────────────────────
 
+def _live_headline(movie, weekend_of):
+    """What the live forecast showed for this film (prediction log), or None."""
+    try:
+        from predict import live_headline_for
+        return live_headline_for(movie, weekend_of)
+    except Exception:
+        return None
+
+
 def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   predicted_high, daily_actuals, daily_predictions,
                   n_theatres, n_days, daily_theatre_counts=None,
@@ -561,8 +570,16 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
                   social_signal=None, model_version=None,
                   actual_source=None, actual_status="final",
                   replace_existing=False, daily_sellout_fractions=None,
-                  exclude_from_day_weights=False, data_outage=False):
-    """Record daily predicted-vs-actual and update all calibration factors."""
+                  exclude_from_day_weights=False, data_outage=False,
+                  live_headline=None):
+    """Record daily predicted-vs-actual and update all calibration factors.
+
+    predicted_mid stays the REPLAY (the calibration ground truth for fits).
+    live_headline, when the prediction log has one, is what the live run
+    showed before the weekend closed — the number to GRADE. On outage
+    weekends the two differ a lot (2026-09-11: Practical Magic 2 shown
+    $32.4M, replay $23.0M, actual $30.0M), and grading the replay made the
+    model look worse than it was."""
     total_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
 
@@ -585,6 +602,11 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     }
     if model_version:
         entry["model_version"] = model_version
+    if live_headline and live_headline.get("mid_m"):
+        entry["live_headline"] = dict(live_headline)
+        if total_actual > 0:
+            entry["live_error_pct"] = round(
+                (float(live_headline["mid_m"]) - total_actual) / total_actual * 100, 1)
     if exclude_from_day_weights:
         entry["exclude_from_day_weights"] = True
     if data_outage:
@@ -834,6 +856,7 @@ def record_pending_calibrations(cal, prediction_cal, weekend_of, pending,
             actual_status=actual_status,
             replace_existing=True,
             data_outage=bool(pred.get("data_outage")),
+            live_headline=_live_headline(item["movie"], weekend_of),
         )
         entries.append(entry)
 
@@ -1034,6 +1057,10 @@ def auto_calibrate():
         error = entry["error_pct"]
         direction = "over" if error and error > 0 else "under"
         print(f"    Error: {abs(error):.1f}% ({direction}-predicted)")
+        if entry.get("live_error_pct") is not None:
+            lh = entry["live_headline"]
+            print(f"    Live headline: ${lh['mid_m']:.1f}M ({entry['live_error_pct']:+.1f}%), "
+                  f"logged {lh.get('logged_at', '')[:16]}Z; the replay above is the fit input")
 
         # Show day weight update. Per-day scale factors were replaced by the
         # regression block; record_result pops the old keys, so reading them
@@ -1297,6 +1324,7 @@ if __name__ == "__main__":
             actual_status=actual_status,
             replace_existing=True,
             data_outage=bool(pred.get("data_outage")),
+            live_headline=_live_headline(matched_movie, weekend_of),
         )
         outage_note = " [DATA OUTAGE - excluded from fits]" if pred.get("data_outage") else ""
         print(f"Recorded: {matched_movie} actual=${actual_val}M{outage_note}")

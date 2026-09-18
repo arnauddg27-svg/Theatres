@@ -66,3 +66,54 @@ class PredictionLogTest(unittest.TestCase):
         sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
         import stage_finalize_outputs as sfo
         self.assertIn("box-office-tracker/data/prediction-log.csv", sfo.OUTPUT_FILES)
+
+
+class LiveHeadlineGradeTest(unittest.TestCase):
+    ROWS = [
+        {"weekend_of": "2026-09-18", "movie": "Resident Evil", "logged_at": "2026-09-18T07:00:00Z", "headline_mid_m": "47.0", "headline_low_m": "34.8", "headline_high_m": "54.0", "seat_days": "Thursday", "source": "snapshot-daily-evidence"},
+        {"weekend_of": "2026-09-18", "movie": "Resident Evil", "logged_at": "2026-09-19T07:00:00Z", "headline_mid_m": "58.0", "headline_low_m": "50", "headline_high_m": "66", "seat_days": "Thursday+Friday", "source": "regression"},
+        {"weekend_of": "2026-09-18", "movie": "Resident Evil", "logged_at": "2026-09-20T23:10:00Z", "headline_mid_m": "63.0", "headline_low_m": "58", "headline_high_m": "68", "seat_days": "Thursday+Friday+Saturday", "source": "regression"},
+        {"weekend_of": "2026-09-18", "movie": "Resident Evil", "logged_at": "2026-09-21T12:30:00Z", "headline_mid_m": "99.0", "headline_low_m": "1", "headline_high_m": "2", "seat_days": "Thursday+Friday+Saturday+Sunday", "source": "post-weekend"},
+        {"weekend_of": "2026-09-11", "movie": "Resident Evil", "logged_at": "2026-09-13T12:30:00Z", "headline_mid_m": "5.0", "headline_low_m": "1", "headline_high_m": "2", "seat_days": "Thursday", "source": "x"},
+    ]
+
+    def test_final_is_last_before_monday_noon_and_thursday_stage_is_kept(self):
+        out = P.select_live_headline(self.ROWS, "2026-09-18")
+        self.assertEqual(63.0, out["mid_m"])                       # Monday 12:30Z row excluded
+        self.assertEqual("2026-09-20T23:10:00Z", out["logged_at"])
+        self.assertEqual(47.0, out["thursday_mid_m"])
+        self.assertEqual(3, out["rows"])
+        self.assertIsNone(P.select_live_headline(self.ROWS, "2026-10-02"))
+        self.assertIsNone(P.select_live_headline([], "2026-09-18"))
+
+    def test_lookup_reads_the_log_by_movie(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "log.csv")
+            with open(path, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=list(self.ROWS[0])); w.writeheader(); w.writerows(self.ROWS)
+            self.assertEqual(63.0, P.live_headline_for("resident evil", "2026-09-18", path=path)["mid_m"])
+            self.assertIsNone(P.live_headline_for("Other Film", "2026-09-18", path=path))
+            self.assertIsNone(P.live_headline_for("Resident Evil", "2026-09-18", path=os.path.join(td, "missing.csv")))
+
+    def test_record_result_stores_live_grade_beside_the_replay(self):
+        import calibrate as C
+        import json
+        cal = json.load(open(Path(__file__).resolve().parents[1] / "data" / "calibration.json"))
+        cal["history"] = []                                          # real shape, empty history
+        saved = C.CALIBRATION_JSON
+        with tempfile.TemporaryDirectory() as td:
+            C.CALIBRATION_JSON = os.path.join(td, "calibration.json")   # record_result saves to disk
+            try:
+                entry = C.record_result(cal, "Resident Evil", "2026-09-18", predicted_mid=23.0, predicted_low=12.0,
+                                        predicted_high=52.0, daily_actuals={"Friday": 25.0, "Saturday": 25.0, "Sunday": 15.0},
+                                        daily_predictions={"Friday": 8.0, "Saturday": 8.0, "Sunday": 7.0}, n_theatres=421, n_days=3,
+                                        live_headline={"mid_m": 63.0, "logged_at": "2026-09-20T23:10:00Z"})
+                self.assertEqual(23.0, entry["predicted_mid"])             # replay untouched: it is the fit input
+                self.assertEqual(63.0, entry["live_headline"]["mid_m"])
+                self.assertAlmostEqual(-3.1, entry["live_error_pct"], places=1)
+                e2 = C.record_result(cal, "X", "2026-09-18", predicted_mid=1, predicted_low=1, predicted_high=1,
+                                     daily_actuals={"Friday": 1.0}, daily_predictions={"Friday": 1.0}, n_theatres=1, n_days=1)
+                self.assertNotIn("live_headline", e2)
+                self.assertTrue(os.path.exists(C.CALIBRATION_JSON))
+            finally:
+                C.CALIBRATION_JSON = saved
