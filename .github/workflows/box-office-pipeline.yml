@@ -266,6 +266,21 @@ jobs:
           fi
           exit "$status"
 
+      - name: Sample ticket prices
+        # One tickets-route read per theatre × format per weekend (~10 KB each
+        # once the route tree is learned, 120 KB before): the model's dollars
+        # were seats × an ASSUMED price until 2026-09-19. Pairs already
+        # sampled for this weekend are skipped, so daily slots converge.
+        # Best effort: a failure here must never cost the link commit.
+        if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
+        continue-on-error: true
+        working-directory: box-office-tracker
+        env:
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          TICKET_PRICE_MAX_MB: '40'
+          TICKET_PRICE_MAX_SEC: '600'
+        run: python3 scripts/sample_ticket_prices.py 2>&1 | tee "../phase1-logs/ticket-prices-${{ github.event.inputs.tz_group }}.log"
+
       - name: Commit showtime links
         # Commit on failure too: the scraper saves the merged link cache
         # (atomically, marked degraded) BEFORE its coverage gate, so a red
@@ -284,6 +299,9 @@ jobs:
           # files (e.g. runner caches, locally-modified secrets).
           git add box-office-tracker/data/showtime-links.json
           git add box-office-tracker/data/theatre-counts.json
+          if [ -f "box-office-tracker/data/ticket-prices.csv" ]; then
+            git add box-office-tracker/data/ticket-prices.csv
+          fi
           if [ -f "box-office-tracker/data/polymarket-markets.csv" ]; then
             git add box-office-tracker/data/polymarket-markets.csv
           fi

@@ -184,6 +184,65 @@ FORMAT_TICKET_PRICES = {
     1: 13.00, 0: 13.00,   # Standard / Digital
 }
 
+# SAMPLED PRICES (2026-09-19). scripts/sample_ticket_prices.py records AMC's
+# real per-showtime prices (data/ticket-prices.csv). The model keeps using
+# the assumed table until a recalibration: every fit was made against those
+# assumptions, so switching the price level without refitting would move
+# every forecast. AMC_USE_SAMPLED_PRICES=1 turns the override on; meanwhile
+# the forecast prints the sampled-vs-assumed gap.
+TICKET_PRICES_CSV = os.path.join(DATA_DIR, "ticket-prices.csv")
+AMC_USE_SAMPLED_PRICES = (os.environ.get("AMC_USE_SAMPLED_PRICES") or "0").strip() == "1"
+_TICKET_PRICE_CACHE = {}
+
+
+def load_ticket_prices(weekend_of=None):
+    """{(theatre_name, auditorium_type): adult_price} for a weekend (latest sample
+    per pair). Empty when nothing was sampled."""
+    key = weekend_of or ""
+    if key in _TICKET_PRICE_CACHE:
+        return _TICKET_PRICE_CACHE[key]
+    out = {}
+    if os.path.exists(TICKET_PRICES_CSV):
+        with open(TICKET_PRICES_CSV, newline="") as f:
+            for r in csv.DictReader(f):
+                if weekend_of and r.get("weekend_of") != weekend_of:
+                    continue
+                try:
+                    price = float(r.get("adult_price") or 0)
+                except ValueError:
+                    continue
+                if price > 0:
+                    out[(r.get("theatre_name", ""), r.get("auditorium_type", ""))] = price
+    _TICKET_PRICE_CACHE[key] = out
+    return out
+
+
+def sampled_adult_price(row, prices):
+    """Sampled adult price for a seat/snapshot row's theatre and format, or None."""
+    if not prices:
+        return None
+    theatre = row.get("theatre_name", "")
+    fmt = row.get("auditorium_type") or row.get("format") or "Standard"
+    return prices.get((theatre, fmt)) or prices.get((theatre, "Standard"))
+
+
+def price_diagnostic(weekend_of):
+    """Sampled vs assumed adult price by format rank; None when nothing sampled."""
+    prices = load_ticket_prices(weekend_of)
+    if not prices:
+        return None
+    by_rank = {}
+    for (theatre, fmt), price in prices.items():
+        rank = infer_format_rank({"auditorium_type": fmt})
+        by_rank.setdefault(rank, []).append(price)
+    rows = []
+    for rank in sorted(by_rank):
+        vals = sorted(by_rank[rank]); med = vals[len(vals) // 2]
+        assumed = FORMAT_TICKET_PRICES.get(rank, FORMAT_TICKET_PRICES.get(0))
+        rows.append((rank, len(vals), med, assumed))
+    return {"pairs": len(prices), "theatres": len({t for t, _ in prices}), "by_rank": rows}
+
+
 # Partial-day sample → full-day revenue multipliers, *per day of week*.
 # Friday usually collects 5pm–11pm, so 1.7× extrapolates captured late-day
 # showings to a full day. If Friday or Sat/Sun rows prove a 10am–11pm style
@@ -2244,6 +2303,8 @@ def estimate_theatre_daily_revenue(row, cal):
         ticket_price = float(raw_price) if raw_price else None
     except (ValueError, TypeError):
         ticket_price = None
+    if ticket_price is None and AMC_USE_SAMPLED_PRICES:
+        ticket_price = sampled_adult_price(row, load_ticket_prices(row.get("weekend_of")))
     if ticket_price is None:
         ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(0))
 
@@ -9952,6 +10013,13 @@ def main():
             print_prediction(pred, verbose=verbose)
             if not through_date:            # live runs only, never replays
                 append_prediction_log(pred, weekend_of=seat_data_weekend_of(seat_data[movie]))
+
+    diag = price_diagnostic(replay_weekend) if movies_to_predict else None
+    if diag:
+        print(f"\n  Sampled AMC ticket prices ({diag['pairs']} theatre×format pairs, {diag['theatres']} theatres; "
+              f"model {'USES' if AMC_USE_SAMPLED_PRICES else 'still on assumed prices'}):")
+        for rank, n, med, assumed in diag["by_rank"]:
+            print(f"    format rank {rank}: n={n:4d} median adult ${med:5.2f} vs assumed ${assumed:5.2f} ({(med / assumed - 1) * 100:+.0f}%)")
 
     print(f"\n{'='*70}")
 

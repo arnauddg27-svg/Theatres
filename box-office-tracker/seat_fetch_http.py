@@ -629,3 +629,89 @@ def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0
         kind = "listing"
     return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind}
+
+
+# ── Ticket PRICES (2026-09-19) ───────────────────────────────────────────────
+# Every dollar in the model was seats × an assumed price (DEFAULT_TICKET_PRICE
+# / FORMAT_TICKET_PRICES) — the same price in Manhattan and rural Georgia. The
+# ticket-selection route one hop past the seat map carries the real per-
+# showtime prices in its flight payload:
+#   "prices":[{"sku":"TICKET-RS-<id>-ADULT","type":"Adult","price":13.19,
+#              "convenienceFee":2.69,...},{"type":"Child","price":10.79,...}]
+# (run 35447516584: ~120 KB full payload; the segment-diff trick that serves
+# the seat lane at ~10 KB applies here too once the route's tree is learned.)
+_PRICE_ITEM_RE = re.compile(rb'\{[^{}]*"type"\s*:\s*"([A-Za-z][A-Za-z /-]{0,30})"[^{}]*"price"\s*:\s*(\d+(?:\.\d+)?)[^{}]*\}')
+_FEE_RE = re.compile(rb'"convenienceFee"\s*:\s*(\d+(?:\.\d+)?)')
+_SKU_ID_RE = re.compile(rb'"sku"\s*:\s*"TICKET-[A-Z]+-(\d+)-')
+
+
+def parse_rsc_prices(payload: bytes) -> dict | None:
+    """{'adult','child','senior','fee','showtime_id','all': {type: price}} from a
+    tickets-route flight payload, or None when it carries no price block.
+    Type names are AMC's ('Adult', 'Child', 'Senior', sometimes 'Adult - IMAX'…);
+    the first Adult/Child/Senior seen wins, everything is kept in 'all'."""
+    if not payload:
+        return None
+    i = payload.find(b'"prices":[')
+    if i < 0:
+        return None
+    window = payload[i:i + 20000]
+    end = window.find(b"]", 0)
+    # the array may nest objects; scan a generous window and stop at the first
+    # closing bracket that follows a price item
+    items = _PRICE_ITEM_RE.findall(window)
+    if not items:
+        return None
+    out = {"adult": None, "child": None, "senior": None, "fee": None, "showtime_id": "", "all": {}}
+    for t, p in items:
+        name = t.decode("utf-8", "ignore").strip()
+        price = float(p)
+        out["all"].setdefault(name, price)
+        low = name.lower()
+        if low.startswith("adult") and out["adult"] is None:
+            out["adult"] = price
+        elif low.startswith("child") and out["child"] is None:
+            out["child"] = price
+        elif low.startswith("senior") and out["senior"] is None:
+            out["senior"] = price
+    m = _FEE_RE.search(window)
+    if m:
+        out["fee"] = float(m.group(1))
+    m = _SKU_ID_RE.search(window)
+    if m:
+        out["showtime_id"] = m.group(1).decode()
+    return out if out["adult"] is not None or out["all"] else None
+
+
+def tickets_url(showtime_id: str) -> str:
+    return f"https://www.amctheatres.com/showtimes/{showtime_id}/tickets"
+
+
+def fetch_rsc_tickets(url: str, proxy_url: str | None, *, tree_header: str | None = None,
+                      timeout: float = 30.0, session=None) -> dict:
+    """GET the tickets route's flight payload (full, or a segment diff when a
+    tree header is given). Returns {'prices': dict|None, 'raw_bytes', 'status',
+    'kind', 'url', 'payload'}; kind is 'prices' | 'blocked' | 'challenge' | 'other'."""
+    sess = session or make_session()
+    headers = {"RSC": "1", "Accept": "text/x-component,*/*", "Accept-Language": "en-US,en;q=0.9"}
+    if tree_header:
+        headers["Next-Router-State-Tree"] = tree_header
+    kwargs = {"stream": False, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING, "headers": headers}
+    if proxy_url:
+        kwargs["proxies"] = {"http": proxy_url, "https": proxy_url}
+    resp = sess.get(url, **kwargs)
+    body = (resp.content or b"")[:MAX_RAW_BYTES]
+    try:
+        payload = _Inflater(resp.headers.get("content-encoding", "")).feed(body)
+    except Exception:
+        payload = body
+    ctype = str(resp.headers.get("content-type", "")).lower()
+    prices = parse_rsc_prices(payload) if "x-component" in ctype else None
+    if prices:
+        kind = "prices"
+    elif "x-component" in ctype or int(getattr(resp, "status_code", 0) or 0) >= 500:
+        kind = "other"
+    else:
+        kind = classify_page(payload.decode("utf-8", "ignore"))
+    return {"prices": prices, "raw_bytes": len(body), "status": int(getattr(resp, "status_code", 0) or 0),
+            "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}
