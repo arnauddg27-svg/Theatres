@@ -188,11 +188,66 @@ FORMAT_TICKET_PRICES = {
 # real per-showtime prices (data/ticket-prices.csv). The model keeps using
 # the assumed table until a recalibration: every fit was made against those
 # assumptions, so switching the price level without refitting would move
-# every forecast. AMC_USE_SAMPLED_PRICES=1 turns the override on; meanwhile
-# the forecast prints the sampled-vs-assumed gap.
+# every forecast. Modes (AMC_SAMPLED_PRICE_MODE):
+#   relative (default) — a theatre's sampled price relative to the sampled
+#            MEDIAN of its format rank, times the assumed rank price. Level-
+#            neutral per format, so nothing the calibration fitted moves; what
+#            changes is WHERE the dollars sit (Manhattan vs rural Georgia), the
+#            information the assumed table never had. Unsampled theatres stay
+#            on the assumed price; the ratio is clipped to [0.6, 1.6].
+#   absolute — the sampled price itself. Only with a recalibration: the fitted
+#            AMC share (20.9%) absorbed the assumed level (2026-09-19 sample:
+#            assumed low by 14% standard to 54% PRIME), so flipping the level
+#            alone would inflate every forecast by that much.
+#   off      — assumed table only.
 TICKET_PRICES_CSV = os.path.join(DATA_DIR, "ticket-prices.csv")
-AMC_USE_SAMPLED_PRICES = (os.environ.get("AMC_USE_SAMPLED_PRICES") or "0").strip() == "1"
+AMC_SAMPLED_PRICE_MODE = (os.environ.get("AMC_SAMPLED_PRICE_MODE")
+                          or ("absolute" if (os.environ.get("AMC_USE_SAMPLED_PRICES") or "").strip() == "1" else "relative")
+                          ).strip().lower()
+AMC_USE_SAMPLED_PRICES = AMC_SAMPLED_PRICE_MODE in ("relative", "absolute")
+SAMPLED_PRICE_RATIO_CLIP = (0.6, 1.6)
 _TICKET_PRICE_CACHE = {}
+_RANK_MEDIAN_CACHE = {}
+
+
+def sampled_rank_medians(prices):
+    """{format_rank: median sampled adult price} over one weekend's samples."""
+    key = id(prices)
+    if key in _RANK_MEDIAN_CACHE:
+        return _RANK_MEDIAN_CACHE[key]
+    by = {}
+    for (theatre, fmt), price in (prices or {}).items():
+        by.setdefault(infer_format_rank({"auditorium_type": fmt}), []).append(price)
+    out = {r: sorted(v)[len(v) // 2] for r, v in by.items() if len(v) >= 5}
+    _RANK_MEDIAN_CACHE[key] = out
+    return out
+
+
+def relative_sampled_price(row, prices, assumed):
+    """Assumed rank price × (this theatre/format's sampled price ÷ the rank's
+    sampled median), clipped. None when the pair or its rank has no sample."""
+    sampled = sampled_adult_price(row, prices)
+    if not sampled:
+        return None
+    rank = infer_format_rank(row)
+    median = sampled_rank_medians(prices).get(rank)
+    if not median:
+        return None
+    lo, hi = SAMPLED_PRICE_RATIO_CLIP
+    return assumed * max(lo, min(hi, sampled / median))
+
+
+def price_for_row(row, format_rank, weekend_of):
+    """The adult price the model uses for a seat/snapshot row, by mode."""
+    assumed = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(0))
+    if AMC_SAMPLED_PRICE_MODE == "off":
+        return assumed
+    prices = load_ticket_prices(weekend_of)
+    if not prices:
+        return assumed
+    if AMC_SAMPLED_PRICE_MODE == "absolute":
+        return sampled_adult_price(row, prices) or assumed
+    return relative_sampled_price(row, prices, assumed) or assumed
 
 
 def load_ticket_prices(weekend_of=None):
@@ -2303,10 +2358,8 @@ def estimate_theatre_daily_revenue(row, cal):
         ticket_price = float(raw_price) if raw_price else None
     except (ValueError, TypeError):
         ticket_price = None
-    if ticket_price is None and AMC_USE_SAMPLED_PRICES:
-        ticket_price = sampled_adult_price(row, load_ticket_prices(row.get("weekend_of")))
     if ticket_price is None:
-        ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(0))
+        ticket_price = price_for_row(row, format_rank, row.get("weekend_of"))
 
     # Occupancy
     if has_seat_map and total_seats > 0:
@@ -2463,7 +2516,7 @@ def estimate_snapshot_showtime_revenue(row):
     minutes_until_showtime = _parse_numeric(row.get("minutes_until_showtime", 0), default=0)
     multiplier = snapshot_reservation_multiplier(minutes_until_showtime)
     projected_reserved = min(total_seats, reserved * multiplier)
-    ticket_price = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(1))
+    ticket_price = price_for_row(row, format_rank, row.get("weekend_of"))
     revenue = projected_reserved * ticket_price
     return {
         "revenue": revenue,
@@ -10017,7 +10070,7 @@ def main():
     diag = price_diagnostic(replay_weekend) if movies_to_predict else None
     if diag:
         print(f"\n  Sampled AMC ticket prices ({diag['pairs']} theatre×format pairs, {diag['theatres']} theatres; "
-              f"model {'USES' if AMC_USE_SAMPLED_PRICES else 'still on assumed prices'}):")
+              f"mode={AMC_SAMPLED_PRICE_MODE}):")
         for rank, n, med, assumed in diag["by_rank"]:
             print(f"    format rank {rank}: n={n:4d} median adult ${med:5.2f} vs assumed ${assumed:5.2f} ({(med / assumed - 1) * 100:+.0f}%)")
 

@@ -73,8 +73,25 @@ class ModelGateTest(unittest.TestCase):
             finally:
                 P.TICKET_PRICES_CSV = saved; P._TICKET_PRICE_CACHE.clear()
 
-    def test_model_stays_on_assumed_prices_until_switched(self):
-        self.assertFalse(P.AMC_USE_SAMPLED_PRICES)
+    def test_relative_mode_is_level_neutral_and_clipped(self):
+        prices = {("A", "Laser at AMC"): 20.0, ("B", "Laser at AMC"): 10.0, ("C", "Laser at AMC"): 16.0,
+                  ("D", "Laser at AMC"): 16.0, ("E", "Laser at AMC"): 16.0, ("F", "Laser at AMC"): 40.0}
+        P._RANK_MEDIAN_CACHE.clear()
+        med = P.sampled_rank_medians(prices)[2]
+        self.assertEqual(16.0, med)
+        assumed = P.FORMAT_TICKET_PRICES[2]
+        self.assertAlmostEqual(assumed * 20 / 16, P.relative_sampled_price({"theatre_name": "A", "auditorium_type": "Laser at AMC"}, prices, assumed))
+        self.assertAlmostEqual(assumed, P.relative_sampled_price({"theatre_name": "C", "auditorium_type": "Laser at AMC"}, prices, assumed))
+        self.assertAlmostEqual(assumed * 1.6, P.relative_sampled_price({"theatre_name": "F", "auditorium_type": "Laser at AMC"}, prices, assumed), msg="clipped")
+        self.assertIsNone(P.relative_sampled_price({"theatre_name": "Z", "auditorium_type": "Laser at AMC"}, prices, assumed))
+        # a rank with fewer than 5 samples has no median -> assumed price
+        few = {("A", "IMAX at AMC"): 30.0}
+        P._RANK_MEDIAN_CACHE.clear()
+        self.assertIsNone(P.relative_sampled_price({"theatre_name": "A", "auditorium_type": "IMAX at AMC"}, few, 18.0))
+
+    def test_default_mode_is_relative(self):
+        self.assertEqual("relative", P.AMC_SAMPLED_PRICE_MODE)
+        self.assertTrue(P.AMC_USE_SAMPLED_PRICES)
         row = {"theatre_name": "AMC A", "auditorium_type": "Laser at AMC", "total_seats": "100", "seats_sold": "50",
                "has_seat_map": "True", "day_of_week": "Friday", "weekend_of": "2026-09-18"}
         cal = P.load_calibration()
