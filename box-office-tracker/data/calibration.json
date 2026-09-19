@@ -65,9 +65,10 @@
       "predicted_high": 95.93,
       "actual_total": 76.75,
       "daily_actuals": {
-        "Friday": 32.9,
+        "Friday": 22.9,
         "Saturday": 25.11,
-        "Sunday": 18.74
+        "Sunday": 18.74,
+        "Thursday": 10.0
       },
       "daily_predictions": {
         "Thursday": 14.04,
@@ -122,7 +123,8 @@
       },
       "daily_early_sellout_fractions": {
         "Saturday": 0.0
-      }
+      },
+      "previews_split_source": "Variety 2026-05-01 https://variety.com/2026/film/box-office/box-office-devil-wears-prada-2-previews-1236734300/"
     },
     {
       "movie": "Mortal Kombat II",
@@ -276,7 +278,8 @@
         "Friday": 0.0014,
         "Saturday": 0.0011,
         "Sunday": 0.0048
-      }
+      },
+      "previews_folded_into_friday": true
     },
     {
       "movie": "Obsession",
@@ -428,7 +431,8 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "the-numbers.com",
+      "previews_folded_into_friday": true
     },
     {
       "movie": "The Mandalorian and Grogu",
@@ -439,9 +443,10 @@
       "predicted_high": 90.18,
       "actual_total": 81.0,
       "daily_actuals": {
-        "Friday": 33.0,
+        "Friday": 21.0,
         "Saturday": 25.5,
-        "Sunday": 22.5
+        "Sunday": 22.5,
+        "Thursday": 12.0
       },
       "daily_predictions": {
         "Thursday": 9.05,
@@ -505,7 +510,8 @@
         "Friday": 0.0012,
         "Saturday": 0.0009,
         "Sunday": 0.0
-      }
+      },
+      "previews_split_source": "Variety 2026-05-22 https://variety.com/2026/film/box-office/box-office-mandalorian-grogu-previews-1236756178/"
     },
     {
       "movie": "Passenger",
@@ -638,9 +644,10 @@
       "predicted_high": 5.45,
       "actual_total": 7.35,
       "daily_actuals": {
-        "Friday": 2.84,
+        "Friday": 2.09,
         "Saturday": 2.71,
-        "Sunday": 1.8
+        "Sunday": 1.8,
+        "Thursday": 0.75
       },
       "daily_predictions": {
         "Thursday": 0.18,
@@ -707,7 +714,8 @@
         "Friday": 0.0,
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "previews_split_source": "trade reports 2026-05-29 (Yahoo/ComingSoon: ~$750K previews)"
     },
     {
       "movie": "Scary Movie",
@@ -1392,7 +1400,8 @@
       "calibration_excluded_days": [
         "Thursday"
       ],
-      "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%."
+      "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%.",
+      "previews_folded_into_friday": true
     },
     {
       "movie": "Moana (2026)",
@@ -1525,9 +1534,10 @@
       "predicted_high": 147.5,
       "actual_total": 123.5,
       "daily_actuals": {
-        "Friday": 50.98,
+        "Friday": 33.38,
         "Saturday": 41.74,
-        "Sunday": 30.79
+        "Sunday": 30.79,
+        "Thursday": 17.6
       },
       "daily_predictions": {
         "Thursday": 19.78,
@@ -1601,7 +1611,8 @@
       "coverage_ratio": 0.887,
       "calibration_excluded_days": [
         "Sunday"
-      ]
+      ],
+      "previews_split_source": "Variety/THR 2026-07-17 https://variety.com/2026/film/box-office/box-office-the-odyssey-previews-1236812480/"
     },
     {
       "movie": "Spider-Man: Brand New Day",
@@ -1824,9 +1835,10 @@
       "predicted_high": 49.04,
       "actual_total": 21.01,
       "daily_actuals": {
-        "Friday": 7.93,
+        "Friday": 5.43,
         "Saturday": 7.38,
-        "Sunday": 5.7
+        "Sunday": 5.7,
+        "Thursday": 2.5
       },
       "daily_predictions": {
         "Thursday": 3.64,
@@ -1897,7 +1909,8 @@
         "Saturday": 0.967,
         "Sunday": 0.974
       },
-      "coverage_ratio": 0.967
+      "coverage_ratio": 0.967,
+      "previews_split_source": "Variety 2026-08-14 https://variety.com/2026/film/box-office/box-office-end-of-oak-street-previews-1236833323/"
     },
     {
       "movie": "PAW Patrol: The Dino Movie",
@@ -2119,7 +2132,8 @@
       },
       "error_pct": -27.4,
       "actual_status": "final",
-      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)"
+      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)",
+      "previews_folded_into_friday": true
     },
     {
       "movie": "The Dog Stars",
@@ -2130,9 +2144,10 @@
       "predicted_high": 32.3,
       "actual_total": 7.71,
       "daily_actuals": {
-        "Friday": 2.99,
+        "Friday": 2.14,
         "Saturday": 2.8,
-        "Sunday": 1.93
+        "Sunday": 1.93,
+        "Thursday": 0.85
       },
       "daily_predictions": {
         "Thursday": 2.55,
@@ -2200,7 +2215,8 @@
         "Saturday": 0.974,
         "Sunday": 0.972
       },
-      "coverage_ratio": 0.971
+      "coverage_ratio": 0.971,
+      "previews_split_source": "Deadline 2026-08-28 https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
     },
     {
       "movie": "Coyote vs. Acme",
@@ -2211,9 +2227,10 @@
       "predicted_high": 49.01,
       "actual_total": 15.91,
       "daily_actuals": {
-        "Friday": 5.3,
+        "Friday": 3.6,
         "Saturday": 5.81,
-        "Sunday": 4.8
+        "Sunday": 4.8,
+        "Thursday": 1.7
       },
       "daily_predictions": {
         "Friday": 4.62,
@@ -2279,7 +2296,8 @@
         "Saturday": 0.991,
         "Sunday": 0.988
       },
-      "coverage_ratio": 0.988
+      "coverage_ratio": 0.988,
+      "previews_split_source": "Deadline 2026-08-28 (incl. ~$446K prior-weekend sneaks) https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
     },
     {
       "movie": "Practical Magic 2",
@@ -2447,7 +2465,8 @@
       "calibration_excluded_days": [
         "Saturday",
         "Thursday"
-      ]
+      ],
+      "previews_folded_into_friday": true
     },
     {
       "movie": "Hope",
@@ -2959,26 +2978,26 @@
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 8,
-          "support": 3.049
+          "n": 7,
+          "support": 2.814
         },
         "Friday": {
           "n": 13,
           "support": 6.634
         },
         "Saturday": {
-          "n": 18,
-          "support": 9.539
+          "n": 16,
+          "support": 8.849
         },
         "Sunday": {
-          "n": 19,
-          "support": 9.207
+          "n": 17,
+          "support": 8.508
         }
       },
       "leads": {
         "same_day": {
-          "n": 55,
-          "support": 26.996
+          "n": 50,
+          "support": 25.372
         },
         "next_day": {
           "n": 3,

@@ -132,6 +132,14 @@ def _f(value):
         return None
 
 
+def folded_preview_days(entry) -> frozenset:
+    """Days whose actual is not what its name says. When The Numbers folded
+    unreported Thursday previews into Friday (previews_folded_into_friday),
+    Friday's gross is Fri+Thu and there is no Thursday: neither day may
+    train a per-day fit (2026-09-19; 5 of 34 films)."""
+    return frozenset(("Thursday", "Friday")) if (entry or {}).get("previews_folded_into_friday") else frozenset()
+
+
 def build_seat_rows(history):
     """Admissible per-day seat training rows (coverage >= COVERAGE_FLOOR)."""
     rows = []
@@ -139,7 +147,10 @@ def build_seat_rows(history):
         rdp = e.get("raw_daily_predictions") or e.get("daily_predictions") or {}
         da = e.get("daily_actuals") or {}
         cov = e.get("daily_coverage_ratios") or {}
+        folded = folded_preview_days(e)
         for day in OPENING_DAYS:
+            if day in folded:
+                continue
             seat = _f(rdp.get(day))
             actual = _f(da.get(day))
             c = _f(cov.get(day)) or 0.0
@@ -170,7 +181,10 @@ def build_snapshot_rows(history):
         sdp = e.get("snapshot_daily_predictions") or {}
         da = e.get("daily_actuals") or {}
         leads = e.get("snapshot_daily_lead_buckets") or {}
+        folded = folded_preview_days(e)
         for day in OPENING_DAYS:
+            if day in folded:
+                continue
             snap = _f(sdp.get(day))
             actual = _f(da.get(day))
             lead = leads.get(day)

@@ -37,6 +37,10 @@ def _as_float(value, default: float) -> float:
 def excluded_calibration_days(entry: dict) -> set[str]:
     """Days that should not train calibration from this historical record."""
     excluded = set(entry.get("calibration_excluded_days", []) or [])
+    if entry.get("previews_folded_into_friday"):
+        # Friday carries unreported Thursday previews: not a clean Friday,
+        # and Thursday is unknown (see seat_regression.folded_preview_days).
+        excluded.update(("Thursday", "Friday"))
     daily_coverage = entry.get("daily_coverage_ratios", {}) or {}
     for day, ratio in daily_coverage.items():
         if _as_float(ratio, 0.0) < MIN_DAILY_CALIBRATION_COVERAGE:

@@ -2355,9 +2355,12 @@ AMC_BRIDGE_MAX_SHOWINGS = 12
 def _bridge_discovered_showings(row):
     """discovered_showtimes=N from an amc-bridge row's note, else None."""
     note = row.get("notes") or ""
-    if "amc-bridge" not in note or "discovered_showtimes=" not in note:
+    kind = (row.get("row_kind") or "").strip()
+    if kind != "amc-bridge" and "amc-bridge" not in note:
         return None
-    raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
+    raw = (row.get("discovered_showtimes") or "").strip()
+    if not raw and "discovered_showtimes=" in note:
+        raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
     return int(raw) if raw.isdigit() else None
 
 
@@ -5169,7 +5172,7 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                 # drag the spc_rc median and inflate volume_ratio q. The
                 # census lane feeds the (future) Phase C denominator, not
                 # this signal.
-                if "post-show-census" in note:
+                if (row.get("row_kind") or "").strip() == "post-show-census" or "post-show-census" in note:
                     continue
                 # AMC-bridge rows (Fandango reading AMC seat maps while AMC's
                 # own route is blocked) are the AMC side, never the RC side.
@@ -5181,10 +5184,11 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                 movie = row.get("movie_title", "").strip()
                 rc.setdefault(movie, []).append(occ)
                 disc = None
-                if "discovered_showtimes=" in note:
+                raw = (row.get("discovered_showtimes") or "").strip()
+                if not raw and "discovered_showtimes=" in note:
                     raw = note.split("discovered_showtimes=")[1].split(";")[0].strip()
-                    if raw.isdigit():
-                        disc = int(raw)
+                if raw.isdigit():
+                    disc = int(raw)
                 rc_day.setdefault(movie, {}).setdefault(
                     row.get("show_date", ""), []).append((occ, disc))
                 lead = _parse_numeric(row.get("minutes_until_showtime"), default=None)

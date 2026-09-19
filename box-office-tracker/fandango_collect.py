@@ -71,7 +71,53 @@ FANDANGO_CSV = DATA_DIR / "fandango-pre-reservation-snapshots.csv"
 THEATRES_JSON = DATA_DIR / "theatres-fandango.json"
 
 # Schema = AMC pre-reservation schema + chain (superset; trivially mergeable).
-FANDANGO_PRE_RESERVATION_FIELDS = list(PRE_RESERVATION_FIELDS) + ["chain"]
+# Columns that used to live only inside free-text `notes` (parsed in eight
+# places, 2026-09-19 audit). notes keeps carrying them for old readers.
+STRUCTURED_NOTE_FIELDS = ["discovered_showtimes", "unavailable_seats", "row_kind"]
+FANDANGO_PRE_RESERVATION_FIELDS = list(PRE_RESERVATION_FIELDS) + ["chain"] + STRUCTURED_NOTE_FIELDS
+
+
+def note_fields(note):
+    """Pure: the structured values a legacy note encodes.
+    'amc-bridge; discovered_showtimes=3' -> {discovered_showtimes: '3', row_kind: 'amc-bridge'}"""
+    note = note or ""
+    out = {"discovered_showtimes": "", "unavailable_seats": "", "row_kind": ""}
+    for part in note.split(";"):
+        part = part.strip()
+        if part.startswith("discovered_showtimes="):
+            out["discovered_showtimes"] = part.split("=", 1)[1].strip()
+        elif part.startswith("unavailable="):
+            out["unavailable_seats"] = part.split("=", 1)[1].strip()
+    for kind in ("post-show-census", "amc-bridge", "cinemark-direct"):
+        if kind in note:
+            out["row_kind"] = kind
+            break
+    return out
+
+
+def migrate_header(csv_path, fields):
+    """Add missing columns to an existing CSV in place (blank for old rows).
+    Idempotent; a file already on the schema is left untouched."""
+    csv_path = Path(csv_path)
+    if not csv_path.exists() or csv_path.stat().st_size == 0:
+        return False
+    with open(csv_path, "r", newline="") as f:
+        reader = csv.DictReader(f)
+        have = list(reader.fieldnames or [])
+        if all(c in have for c in fields):
+            return False
+        rows = list(reader)
+    tmp = csv_path.with_suffix(".tmp")
+    with open(tmp, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        for r in rows:
+            filled = {k: r.get(k, "") for k in fields}
+            if any(k in STRUCTURED_NOTE_FIELDS and not filled.get(k) for k in fields):
+                filled.update({k: v for k, v in note_fields(r.get("notes", "")).items() if not filled.get(k)})
+            w.writerow(filled)
+    os.replace(tmp, csv_path)
+    return True
 # chain is in the dedupe key too: a Regal `mid` must never dedupe against a
 # Cinemark `mid` that happens to collide (and keeps AMC-merge safe in Phase C).
 FANDANGO_PRE_RESERVATION_DEDUPE_FIELDS = tuple(PRE_RESERVATION_DEDUPE_FIELDS) + ("chain",)
@@ -402,6 +448,7 @@ def build_fandango_row(theatre, movie_title, sdate, seat_url, params, seats,
         "amc_seat_map_url": seat_url,   # legacy-named column: holds the seat-map URL
         "notes": note,
         "chain": params.get("chain", theatre.get("chain", "")),
+        **note_fields(note),
     }
 
 
@@ -425,6 +472,8 @@ def ensure_fandango_header(csv_path=None):
     if not csv_path.exists() or csv_path.stat().st_size == 0:
         with open(csv_path, "w", newline="") as f:
             csv.DictWriter(f, fieldnames=FANDANGO_PRE_RESERVATION_FIELDS).writeheader()
+    else:
+        migrate_header(csv_path, FANDANGO_PRE_RESERVATION_FIELDS)
 
 
 def append_unique_fandango_rows(rows, csv_path=None):

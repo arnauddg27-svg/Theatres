@@ -54,6 +54,7 @@ from fandango_collect import (
     _slug_tokens,
     FANDANGO_PRE_RESERVATION_FIELDS,
     FANDANGO_PRE_RESERVATION_DEDUPE_FIELDS,
+    migrate_header,
 )
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -327,6 +328,9 @@ def build_row(theatre, pick, seats, weekend_of, run_id, check_time):
                  f"discovered_showtimes={pick['discovered']}; "
                  f"unavailable={seats.get('unavailable', '')}",
         "chain": "CNMK",
+        "discovered_showtimes": str(pick["discovered"]),
+        "unavailable_seats": str(seats.get("unavailable", "")),
+        "row_kind": "post-show-census" if pick.get("post_show") else "cinemark-direct",
     }
 
 
@@ -569,6 +573,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     # dead-pre-lane red one-shot — Friday's post capture
                     # would disarm it for the rest of the weekend.
                     if ((r.get("weekend_of") or "").strip() == weekend_of
+                            and (r.get("row_kind") or "") != "post-show-census"
                             and "post-show-census" not in (r.get("notes") or "")):
                         totals["weekend_rows_stored"] += 1
                     url = (r.get("amc_seat_map_url") or "").strip()
@@ -869,6 +874,8 @@ def append_rows(rows):
         seen.add(key)
         pending.append(row)
     is_new = not out_path.exists() or out_path.stat().st_size == 0
+    if not is_new:
+        migrate_header(out_path, CINEMARK_FIELDS)      # old files gain the structured columns
     with open(out_path, "a", newline="") as f:
         w = csv.DictWriter(f, fieldnames=CINEMARK_FIELDS)
         if is_new:

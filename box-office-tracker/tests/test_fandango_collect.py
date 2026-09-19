@@ -36,8 +36,11 @@ def _row(**over):
 
 class SchemaTests(unittest.TestCase):
     def test_schema_is_amc_superset_plus_chain(self):
-        self.assertEqual(fc.FANDANGO_PRE_RESERVATION_FIELDS[:-1], list(PRE_RESERVATION_FIELDS))
-        self.assertEqual(fc.FANDANGO_PRE_RESERVATION_FIELDS[-1], "chain")
+        n = len(PRE_RESERVATION_FIELDS)
+        self.assertEqual(fc.FANDANGO_PRE_RESERVATION_FIELDS[:n], list(PRE_RESERVATION_FIELDS))
+        self.assertEqual(fc.FANDANGO_PRE_RESERVATION_FIELDS[n], "chain")
+        # 2026-09-19: structured columns for what used to hide in notes
+        self.assertEqual(fc.FANDANGO_PRE_RESERVATION_FIELDS[n + 1:], fc.STRUCTURED_NOTE_FIELDS)
         self.assertEqual(
             fc.FANDANGO_PRE_RESERVATION_DEDUPE_FIELDS,
             tuple(PRE_RESERVATION_DEDUPE_FIELDS) + ("chain",),
