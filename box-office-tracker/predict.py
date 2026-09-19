@@ -4781,6 +4781,9 @@ def conformal_ratio_band(cal, movie, predicted_mid=None):
 # headlines already carry Friday seats.
 HORROR_GENRES = frozenset({"horror", "horror_comedy"})
 HORROR_SNAPSHOT_LIFT = 1.13
+# "thursday": lift only while Thursday is the sole seat day (default); "all":
+# also once Friday seats and the same-week calibration exist (experiment knob).
+HORROR_LIFT_STAGES = (os.environ.get("HORROR_LIFT_STAGES") or "thursday").strip().lower()
 
 
 def genre_snapshot_lift(movie_metadata):
@@ -8299,7 +8302,16 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # After the empirical step (which rebuilds the pre-sales totals from raw
     # basis fields) and before the headline is chosen: the genre lift is the
     # last word on the pre-sales layer.
-    apply_snapshot_lift(result, genre_snapshot_lift(movie_metadata))
+    # The lift was calibrated on the THURSDAY stage, where pre-sales are the
+    # only evidence. Once Friday seats exist the same-week calibration
+    # (x1.18 on 2026-09-19) already corrects the pre-sales read from this
+    # film's own seats; lifting on top double-counts (Resident Evil Saturday:
+    # $70M with, ~$64M without, market at $60-65M). Thursday-only stage only.
+    observed_days = set((result.get("daily_details") or {}).keys())
+    if HORROR_LIFT_STAGES == "all" or observed_days <= {"Thursday"}:
+        apply_snapshot_lift(result, genre_snapshot_lift(movie_metadata))
+    else:
+        apply_snapshot_lift(result, 1.0)
     apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)
