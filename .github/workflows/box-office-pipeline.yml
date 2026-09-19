@@ -278,7 +278,7 @@ jobs:
         env:
           AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
           TICKET_PRICE_MAX_MB: '40'
-          TICKET_PRICE_MAX_SEC: '600'
+          TICKET_PRICE_MAX_SEC: '300'   # holds the AMC lock; pairs persist, so slots converge anyway
         run: python3 scripts/sample_ticket_prices.py 2>&1 | tee "../phase1-logs/ticket-prices-${{ github.event.inputs.tz_group }}.log"
 
       - name: Commit showtime links
