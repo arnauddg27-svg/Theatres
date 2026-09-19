@@ -4652,6 +4652,48 @@ def conformal_ratio_band(cal, movie, predicted_mid=None):
     return ratios[k - 1], ratios[-k]
 
 
+# HORROR PRE-SALES LIFT (2026-09-19). Horror sells late: every tagged horror
+# film's Thursday-stage pre-sales call landed under the actual (Obsession
+# -27%, Backrooms -23%, Scary Movie -16%, Evil Dead Burn -9% at the old share
+# weight; Resident Evil's $46M call for a ~$65M weekend is the fifth). Ratio
+# actual/pre-sales under the shipped share weight (0.5): 1.38, 1.30, 1.19,
+# 0.91 -> mean 1.195, shrunk n/(n+2) toward 1 -> 1.13. Leave-one-out on the
+# four: MAE 18.8% -> 17.6% (thin; the shrink is what keeps it from hurting
+# Evil Dead Burn). Re-fit when Resident Evil's actual lands. Applies to the
+# pre-sales layer only, so the Thursday-stage headline; regression-stage
+# headlines already carry Friday seats.
+HORROR_GENRES = frozenset({"horror", "horror_comedy"})
+HORROR_SNAPSHOT_LIFT = 1.13
+
+
+def genre_snapshot_lift(movie_metadata):
+    """Pure: multiplier for the pre-sales layer given a film's metadata."""
+    genre = (getattr(movie_metadata, "genre", "") or "").strip().lower()
+    return HORROR_SNAPSHOT_LIFT if genre in HORROR_GENRES else 1.0
+
+
+def apply_snapshot_lift(snapshot_layer, lift):
+    """Scale a snapshot layer's totals and per-day mids in place; returns it.
+    A lift of 1.0 (or an empty layer) is a no-op. Works on the layer dict or
+    on the pred dict, which carry the same keys."""
+    if not snapshot_layer or not lift or abs(lift - 1.0) < 1e-9:
+        if isinstance(snapshot_layer, dict) and snapshot_layer.get("snapshot_mid_m") is not None:
+            snapshot_layer.setdefault("snapshot_genre_lift", 1.0)
+        return snapshot_layer
+    if snapshot_layer.get("snapshot_mid_m") is None:
+        snapshot_layer["snapshot_genre_lift"] = 1.0
+        return snapshot_layer
+    for k in ("snapshot_mid_m", "snapshot_low_m", "snapshot_high_m"):
+        if snapshot_layer.get(k) is not None:
+            snapshot_layer[k] = snapshot_layer[k] * lift
+    for details in (snapshot_layer.get("snapshot_daily_details") or {}).values():
+        for k in ("domestic_mid", "domestic_low", "domestic_high"):
+            if isinstance(details, dict) and details.get(k) is not None:
+                details[k] = details[k] * lift
+    snapshot_layer["snapshot_genre_lift"] = lift
+    return snapshot_layer
+
+
 # broad_family audiences buy at the door (walk-ups), which confounds Fandango's
 # advance-only reads — so this tag gates the cross-chain share off for family
 # films (see predict_movie). NOTE: a family snapshot walk-up BOOST was shipped
@@ -4930,7 +4972,64 @@ CINEMARK_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "cinemark-pre-reservation-snapsh
 # independent lines agree; the prior was a good guess, now measured.
 # Family evidence (PAW, n=1): K ~ 1.52 — higher, as walk-up theory predicts;
 # a family-specific K needs n>=3 before it can be considered.
-CROSS_CHAIN_WALKUP_K = 1.13
+CROSS_CHAIN_WALKUP_K = float(os.environ.get("CROSS_CHAIN_WALKUP_K") or 1.13)
+# WHICH AMC ROWS feed the cross-chain ratio (2026-09-19 audit, Resident Evil).
+#   "seat"     — the regular lane's seat rows: read AT showtime, so nearly
+#                final occupancy. The Regal/Cinemark side is always a
+#                PRE-SALE read hours or days out. For a late-selling film
+#                (horror) that mismatch made AMC look much fuller than the
+#                other chains on Thursday: share 28.8% at the Thursday stage,
+#                22.8% once Friday rows arrived, and the Thursday call was
+#                $46M for a ~$65M weekend.
+#   "snapshot" — the AMC pre-reservation snapshot rows, per show date, kept
+#                only when their lead time sits within CROSS_CHAIN_LEAD_WINDOW
+#                of the Regal/Cinemark median lead for that date: the same
+#                kind of read on both sides.
+# Default stays "seat" until the Thursday/Friday backtests say otherwise.
+CROSS_CHAIN_AMC_SIDE = (os.environ.get("CROSS_CHAIN_AMC_SIDE") or "seat").strip().lower()
+CROSS_CHAIN_LEAD_WINDOW = 2.5      # accept AMC leads in [L/2.5, L*2.5] around the RC median L
+CROSS_CHAIN_LEAD_MIN_ROWS = 30     # fewer matched AMC rows -> widen once, then skip the date
+
+
+def _lead_matched_amc_side(snapshot_by_date, rc_lead_by_date, window=None, min_rows=None):
+    """Pure: AMC pre-sale rows matched to the Regal/Cinemark reads' lead time.
+
+    snapshot_by_date: {show_date: [latest AMC snapshot row per showtime]}
+    rc_lead_by_date:  {show_date: [minutes_until_showtime of RC rows]}
+    Returns (amc_vals, amc_day) in the shape the seat-row loop builds, so the
+    share formulas downstream do not change. A date with no RC reads, or too
+    few AMC rows at a comparable lead even after widening once, contributes
+    nothing rather than a mismatched number."""
+    window = CROSS_CHAIN_LEAD_WINDOW if window is None else window
+    min_rows = CROSS_CHAIN_LEAD_MIN_ROWS if min_rows is None else min_rows
+    amc_vals, amc_day = [], {}
+    for show_date, rows in (snapshot_by_date or {}).items():
+        leads = [m for m in (rc_lead_by_date or {}).get(show_date, []) if m is not None and m > 0]
+        if not leads or not rows:
+            continue
+        L = statistics.median(leads)
+        picked = []
+        for w in (window, window * 2):
+            lo, hi = L / w, L * w
+            picked = []
+            for r in rows:
+                m = _parse_numeric(r.get("minutes_until_showtime"), default=None)
+                occ = _occ_pct(r)
+                if m is None or occ is None or not (lo <= m <= hi):
+                    continue
+                picked.append((r, occ))
+            if len(picked) >= min_rows:
+                break
+        if len(picked) < min_rows:
+            continue
+        d = amc_day.setdefault(show_date, {"occ": [], "slots": set(), "theatres": set()})
+        for r, occ in picked:
+            amc_vals.append(occ)
+            d["occ"].append(occ)
+            t = r.get("theatre_name", "")
+            d["slots"].add((t, r.get("showtime_id") or r.get("showtime", "")))
+            d["theatres"].add(t)
+    return amc_vals, amc_day
 # v2 (validated on the 5 films with cross-chain data + actuals, 2026-07-13,
 # scripts/validate_crosschain_v2.py):
 #   * wA is a FIXED capacity constant, not the drifting calibrated fleet share —
@@ -4951,7 +5050,17 @@ CROSS_CHAIN_WALKUP_K = 1.13
 #   * near-showtime-only RC occupancy was tested and REJECTED (worse on 3 of 4:
 #     composition effects — early-reserved prime shows vs same-day matinees).
 CROSS_CHAIN_CAPACITY_SHARE = 0.24
-CROSS_CHAIN_SHARE_WEIGHT = 0.9
+# 0.9 -> 0.5 (2026-09-19). At 0.9 the per-film share swung the Thursday call
+# hard on ONE matched day of evidence: Resident Evil read 28.9% Thursday
+# morning (fleet 20.9%) and 22.8% once Friday rows arrived; Thursday call $46M
+# for a ~$65M weekend. Backtests with the shrink halved (scripts/
+# thursday_only_backtest.py, friday_stage_backtest.py, 18/27 films):
+#   Thursday stage: pre-sales MAE 25.7% -> 21.8%, median 16.5% -> 15.2%
+#   Friday stage:   headline  MAE 25.5% -> 24.8%, median 16.8% -> 17.7%
+# Per film it is two-sided (Evil Dead Burn -9% -> +9%, The Odyssey +9% -> -3%,
+# The Dog Stars +142% -> +84%); the lever is right in direction and too
+# confident in size. Resident Evil's Thursday call at 0.5: $53.9M.
+CROSS_CHAIN_SHARE_WEIGHT = 0.5
 CROSS_CHAIN_SHARE_CLAMP_ABS = (0.10, 0.40)
 CROSS_CHAIN_MAX_AMC_OCC = 35.0     # saturation gate (supply-constrained films)
 CROSS_CHAIN_MIN_AMC_ROWS = 50
@@ -5034,7 +5143,7 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
     pre-multichain history)."""
     if weekend_of is None:
         weekend_of = _current_weekend_friday()
-    key = (weekend_of, through_date)
+    key = (weekend_of, through_date, CROSS_CHAIN_AMC_SIDE)
     if key in _CROSS_CHAIN_CACHE:
         return _CROSS_CHAIN_CACHE[key]
     rc_paths = [p for p in (FANDANGO_SNAPSHOTS_CSV, CINEMARK_SNAPSHOTS_CSV)
@@ -5044,6 +5153,7 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
         return {}
     rc = {}
     rc_day = {}     # movie -> show_date -> [(occ, discovered_spc or None)]
+    rc_lead = {}    # movie -> show_date -> [minutes_until_showtime]
     for rc_path in rc_paths:
         with open(rc_path, "r") as f:
             for row in csv.DictReader(f):
@@ -5077,17 +5187,33 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                         disc = int(raw)
                 rc_day.setdefault(movie, {}).setdefault(
                     row.get("show_date", ""), []).append((occ, disc))
+                lead = _parse_numeric(row.get("minutes_until_showtime"), default=None)
+                if lead is not None:
+                    rc_lead.setdefault(movie, {}).setdefault(
+                        row.get("show_date", ""), []).append(lead)
     if not rc:
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
     amc = {}
     amc_day = {}    # movie -> date -> {"occ": [..], "slots": set, "theatres": set}
+    if CROSS_CHAIN_AMC_SIDE == "snapshot":
+        snaps = load_pre_reservation_data(weekend_of=weekend_of, through_date=through_date)
+        for movie in rc:
+            by_date = movie_mapping_get(snaps, movie, None) or {}
+            latest = {}
+            for d, rows in by_date.items():
+                got = _latest_snapshot_showtime_rows(rows)
+                latest[d] = list(got.values()) if isinstance(got, dict) else list(got)
+            vals, days = _lead_matched_amc_side(latest, rc_lead.get(movie, {}))
+            if vals:
+                amc[movie] = vals
+                amc_day[movie] = days
     # Archive-aware: settled weekends rotate out of the live CSV, so reading
     # SEAT_CSV directly made a weekend's AMC side vanish the moment it was
     # archived — the cross-chain share then silently fell back to the fleet
     # prior on every historical replay (Evil Dead Burn 26.6 -> 42.6 the day
     # 2026-07-10 rotated, dragging the canonical backtest 18.1% -> 21.2%).
-    for reader in _seat_row_sources(weekend_of):
+    for reader in ([] if CROSS_CHAIN_AMC_SIDE == "snapshot" else _seat_row_sources(weekend_of)):
         for row in reader:
             if (row.get("weekend_of") or "").strip() != weekend_of:
                 continue
@@ -7917,6 +8043,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             snapshot_layer.get("snapshot_high_m")
             if snapshot_layer and snapshot_layer.get("snapshot_high_m") is not None else None
         ),
+        "snapshot_genre_lift": (
+            snapshot_layer.get("snapshot_genre_lift", 1.0)
+            if snapshot_layer else 1.0
+        ),
         "snapshot_model_weight": (
             snapshot_layer.get("snapshot_model_weight", 0.0)
             if snapshot_layer else 0.0
@@ -8048,6 +8178,10 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         }
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
+    # After the empirical step (which rebuilds the pre-sales totals from raw
+    # basis fields) and before the headline is chosen: the genre lift is the
+    # last word on the pre-sales layer.
+    apply_snapshot_lift(result, genre_snapshot_lift(movie_metadata))
     apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
     select_regression_prediction(result, cal)

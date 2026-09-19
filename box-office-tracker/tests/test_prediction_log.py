@@ -117,3 +117,29 @@ class LiveHeadlineGradeTest(unittest.TestCase):
                 self.assertTrue(os.path.exists(C.CALIBRATION_JSON))
             finally:
                 C.CALIBRATION_JSON = saved
+
+
+class HorrorSnapshotLiftTest(unittest.TestCase):
+    def test_lift_only_for_horror_tags(self):
+        from types import SimpleNamespace as NS
+        self.assertEqual(P.HORROR_SNAPSHOT_LIFT, P.genre_snapshot_lift(NS(genre="horror")))
+        self.assertEqual(P.HORROR_SNAPSHOT_LIFT, P.genre_snapshot_lift(NS(genre="Horror_Comedy")))
+        self.assertEqual(1.0, P.genre_snapshot_lift(NS(genre="animation")))
+        self.assertEqual(1.0, P.genre_snapshot_lift(NS(genre="")))
+        self.assertEqual(1.0, P.genre_snapshot_lift(None))
+        self.assertTrue(1.05 <= P.HORROR_SNAPSHOT_LIFT <= 1.25, "a lift outside this range needs new evidence")
+
+    def test_apply_scales_totals_and_days_once(self):
+        layer = {"snapshot_mid_m": 40.0, "snapshot_low_m": 36.0, "snapshot_high_m": 44.0,
+                 "snapshot_daily_details": {"Saturday": {"domestic_mid": 10e6, "domestic_low": 9e6, "domestic_high": 11e6, "coverage_ratio": 0.9}}}
+        out = P.apply_snapshot_lift(layer, 1.1)
+        self.assertAlmostEqual(44.0, out["snapshot_mid_m"]); self.assertAlmostEqual(39.6, out["snapshot_low_m"])
+        self.assertAlmostEqual(11e6, out["snapshot_daily_details"]["Saturday"]["domestic_mid"])
+        self.assertEqual(0.9, out["snapshot_daily_details"]["Saturday"]["coverage_ratio"])
+        self.assertEqual(1.1, out["snapshot_genre_lift"])
+        self.assertIsNone(P.apply_snapshot_lift(None, 1.1))
+        same = {"snapshot_mid_m": 5.0}
+        self.assertEqual(5.0, P.apply_snapshot_lift(same, 1.0)["snapshot_mid_m"])
+
+    def test_share_weight_is_the_shrunk_value(self):
+        self.assertEqual(0.5, P.CROSS_CHAIN_SHARE_WEIGHT)
