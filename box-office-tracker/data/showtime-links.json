@@ -2,7 +2,7 @@
   "date": "2026-09-18",
   "weekend_of": "2026-09-18",
   "collected_local_date": "2026-09-20",
-  "collected_at": "2026-09-20T23:11:29.610932+00:00",
+  "collected_at": "2026-09-21T01:12:13.162296+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -61384,7 +61384,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877499+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -61457,132 +61457,142 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "10:05am",
+            "showtime_id": "147086191",
+            "format": "XL at AMC"
+          },
+          {
             "showtime": "11:00am",
-            "showtime_id": "146460286",
+            "showtime_id": "146460291",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:15am",
-            "showtime_id": "147085995",
+            "showtime_id": "147085990",
             "format": "XL at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "146460304",
+            "showtime_id": "146460297",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:05pm",
-            "showtime_id": "146460449",
+            "showtime_id": "146460461",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147085974",
+            "showtime": "12:20pm",
+            "showtime_id": "147085972",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:55pm",
-            "showtime_id": "147086203",
+            "showtime_id": "147086199",
             "format": "XL at AMC"
           },
           {
             "showtime": "1:35pm",
-            "showtime_id": "146460285",
+            "showtime_id": "146460290",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:05pm",
-            "showtime_id": "147085986",
+            "showtime_id": "147085991",
             "format": "XL at AMC"
           },
           {
             "showtime": "2:20pm",
-            "showtime_id": "146460306",
+            "showtime_id": "146460301",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:55pm",
-            "showtime_id": "146460445",
+            "showtime_id": "146460455",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:10pm",
+            "showtime_id": "147085969",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147086201",
+            "showtime_id": "147086197",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:25pm",
-            "showtime_id": "146460284",
+            "showtime_id": "146460289",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:55pm",
-            "showtime_id": "147085988",
+            "showtime_id": "147085993",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:10pm",
-            "showtime_id": "146460307",
+            "showtime_id": "146460302",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "146460443",
+            "showtime_id": "146460453",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147085975",
+            "showtime": "6:00pm",
+            "showtime_id": "147085970",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:35pm",
-            "showtime_id": "147086200",
+            "showtime_id": "147086196",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146460282",
+            "showtime_id": "146460287",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147085987",
+            "showtime_id": "147085992",
             "format": "XL at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146460309",
+            "showtime_id": "146460305",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:35pm",
-            "showtime_id": "146460439",
+            "showtime_id": "146460447",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147085976",
+            "showtime": "8:50pm",
+            "showtime_id": "147085971",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "147086202",
+            "showtime_id": "147086198",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:05pm",
-            "showtime_id": "146460283",
+            "showtime_id": "146460288",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146460310",
+            "showtime_id": "146460303",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -61858,7 +61868,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.883872+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -61991,127 +62001,132 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "147139350",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "11:00am",
-            "showtime_id": "147139342",
+            "showtime_id": "147139346",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147139151",
+            "showtime_id": "147139153",
             "format": "4DX at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146606506",
+            "showtime_id": "146606505",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "146606471",
+            "showtime_id": "146606469",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147139195",
+            "showtime_id": "147139181",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "146606449",
+            "showtime_id": "146606447",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146606401",
+            "showtime_id": "146606405",
             "format": "4DX at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "146606489",
+            "showtime_id": "146606508",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "146606487",
+            "showtime_id": "146606468",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:35pm",
-            "showtime_id": "147139378",
+            "showtime_id": "147139385",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:05pm",
-            "showtime_id": "146606450",
+            "showtime_id": "146606352",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:35pm",
-            "showtime_id": "146606394",
+            "showtime_id": "146606402",
             "format": "4DX at AMC"
           },
           {
             "showtime": "5:05pm",
-            "showtime_id": "146606490",
+            "showtime_id": "146606509",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:35pm",
-            "showtime_id": "146606484",
+            "showtime_id": "146606465",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:10pm",
-            "showtime_id": "147139478",
+            "showtime_id": "147139465",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:40pm",
-            "showtime_id": "146606451",
+            "showtime_id": "146606353",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "146606399",
+            "showtime_id": "146606403",
             "format": "4DX at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "146606491",
+            "showtime_id": "146606510",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:10pm",
-            "showtime_id": "146606485",
+            "showtime_id": "146606466",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "147139477",
+            "showtime_id": "147139463",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146606452",
+            "showtime_id": "146606448",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146606400",
+            "showtime_id": "146606404",
             "format": "4DX at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146606488",
+            "showtime_id": "146606507",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "146606486",
+            "showtime_id": "146606467",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -62937,7 +62952,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877435+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -63043,57 +63058,57 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "146582789",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "12:00pm",
-            "showtime_id": "146582794",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "147084369",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "1:40pm",
-            "showtime_id": "147084111",
+            "showtime": "1:00pm",
+            "showtime_id": "147084114",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:40pm",
-            "showtime_id": "146582793",
+            "showtime": "2:10pm",
+            "showtime_id": "146582788",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "147084110",
+            "showtime": "3:40pm",
+            "showtime_id": "147084113",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146582792",
+            "showtime": "4:45pm",
+            "showtime_id": "146582787",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:40pm",
-            "showtime_id": "146582729",
+            "showtime": "6:10pm",
+            "showtime_id": "146582708",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "146582791",
+            "showtime": "7:20pm",
+            "showtime_id": "146582786",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "146582731",
+            "showtime": "8:45pm",
+            "showtime_id": "146582710",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147083938",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146582790",
+            "showtime_id": "146582785",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -63337,87 +63352,82 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877503+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "11:30am",
-            "showtime_id": "147172111",
+            "showtime_id": "147172109",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "146598501",
+            "showtime_id": "146598506",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147172115",
+            "showtime_id": "147172108",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "146598497",
+            "showtime_id": "146598502",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147172114",
+            "showtime_id": "147172107",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146598498",
+            "showtime_id": "146598503",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147172224",
+            "showtime_id": "147172222",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147172112",
+            "showtime_id": "147172110",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147233636",
+            "showtime": "7:30pm",
+            "showtime_id": "147233512",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146598499",
+            "showtime_id": "146598504",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "147172227",
+            "showtime_id": "147172223",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147172113",
+            "showtime_id": "147172106",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147233511",
+            "showtime_id": "147233513",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146598500",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147233468",
+            "showtime_id": "146598505",
             "format": "Laser at AMC"
           }
         ]
@@ -64807,7 +64817,12 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "10:20pm",
+                "showtime": "10:10pm",
+                "showtime_id": "147234784",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
                 "showtime_id": "147232617",
                 "format": "Laser at AMC"
               },
@@ -64902,7 +64917,12 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:20pm",
+            "showtime": "10:10pm",
+            "showtime_id": "147234784",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
             "showtime_id": "147232617",
             "format": "Laser at AMC"
           },
@@ -66745,7 +66765,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.883970+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -66803,92 +66823,102 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "147159844",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "11:25am",
+            "showtime_id": "147159821",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "12:00pm",
-            "showtime_id": "146852329",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "146852332",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "146852242",
+            "showtime_id": "146852246",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "146852378",
+            "showtime_id": "146852377",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146852276",
+            "showtime_id": "146852275",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "146852306",
+            "showtime_id": "146852334",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "146852243",
+            "showtime_id": "146852247",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "146852371",
+            "showtime_id": "146852374",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146852278",
+            "showtime_id": "146852260",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146852300",
+            "showtime_id": "146852335",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146852244",
+            "showtime_id": "146852248",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146852372",
+            "showtime_id": "146852375",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146852280",
+            "showtime_id": "146852262",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146852302",
+            "showtime_id": "146852315",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "146852245",
+            "showtime_id": "146852249",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146852373",
+            "showtime_id": "146852376",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146852282",
+            "showtime_id": "146852264",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "146852304",
+            "showtime_id": "146852317",
             "format": "Laser at AMC"
           }
         ]
@@ -67080,6 +67110,11 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
+                "showtime": "8:15pm",
+                "showtime_id": "147232378",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "147029878",
                 "format": "PRIME at AMC"
@@ -67088,6 +67123,11 @@
                 "showtime": "9:00pm",
                 "showtime_id": "147029862",
                 "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147234624",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "9:30pm",
@@ -67111,7 +67151,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-17T18:07:22.473411+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -67342,142 +67382,127 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147055572",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
             "showtime": "10:30am",
-            "showtime_id": "147029883",
+            "showtime_id": "147029876",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "11:00am",
-            "showtime_id": "147029871",
+            "showtime_id": "147029865",
             "format": "XL at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "146582434",
+            "showtime_id": "146582439",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "12:30pm",
-            "showtime_id": "146582309",
+            "showtime": "12:15pm",
+            "showtime_id": "146582314",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147029882",
+            "showtime_id": "147029875",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147029870",
+            "showtime_id": "147029864",
             "format": "XL at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146582433",
+            "showtime_id": "146582438",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "146582308",
+            "showtime": "2:45pm",
+            "showtime_id": "146582313",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "147029881",
+            "showtime_id": "147029874",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147029869",
+            "showtime_id": "147029863",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146582432",
+            "showtime_id": "146582437",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146582307",
+            "showtime": "5:15pm",
+            "showtime_id": "146582312",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147029884",
+            "showtime_id": "147029877",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147029872",
+            "showtime_id": "147029866",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146582430",
+            "showtime_id": "146582435",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147230710",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "146582305",
+            "showtime": "7:45pm",
+            "showtime_id": "146582310",
             "format": "IMAX with Laser at AMC"
           },
           {
+            "showtime": "8:15pm",
+            "showtime_id": "147232378",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:30pm",
-            "showtime_id": "147029879",
+            "showtime_id": "147029878",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147029867",
+            "showtime_id": "147029862",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147233697",
+            "showtime_id": "147234624",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146582431",
+            "showtime_id": "146582436",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147230711",
-            "format": "Laser at AMC"
+            "showtime": "9:50pm",
+            "showtime_id": "147055568",
+            "format": "XL at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147233698",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146582306",
+            "showtime_id": "146582311",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "147055578",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "11:00pm",
-            "showtime_id": "147029880",
+            "showtime_id": "147029873",
             "format": "PRIME at AMC"
           }
         ]
@@ -67793,7 +67818,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877390+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -67876,118 +67901,128 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:00am",
-            "showtime_id": "146614215",
+            "showtime_id": "146613790",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:45am",
-            "showtime_id": "146755651",
+            "showtime": "10:30am",
+            "showtime_id": "146755664",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "11:00am",
+            "showtime_id": "146755644",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "146595439",
+            "showtime_id": "146595444",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146755676",
-            "format": "XL at AMC"
+            "showtime": "12:15pm",
+            "showtime_id": "147093448",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "12:40pm",
-            "showtime_id": "146595544",
+            "showtime": "12:45pm",
+            "showtime_id": "146595539",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "146755647",
+            "showtime": "1:15pm",
+            "showtime_id": "146755673",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146755645",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "146595440",
+            "showtime_id": "146595445",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "146755675",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "3:20pm",
-            "showtime_id": "146595545",
+            "showtime_id": "146595540",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146755648",
+            "showtime": "4:00pm",
+            "showtime_id": "146755672",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146755646",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146595441",
+            "showtime_id": "146595446",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146755674",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "146595546",
+            "showtime_id": "146595541",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146755649",
+            "showtime": "6:15pm",
+            "showtime_id": "147093415",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146755670",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146755642",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146595442",
+            "showtime_id": "146595447",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146755677",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "146595547",
+            "showtime": "8:40pm",
+            "showtime_id": "146595542",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147093372",
+            "showtime": "9:00pm",
+            "showtime_id": "147093416",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146755650",
+            "showtime": "9:30pm",
+            "showtime_id": "146755671",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146755643",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146595443",
+            "showtime_id": "146595448",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "147231755",
+            "showtime": "10:55pm",
+            "showtime_id": "147226311",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "146755678",
-            "format": "XL at AMC"
           }
         ]
       }
@@ -68202,7 +68237,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877533+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -68265,78 +68300,78 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "11:40am",
-            "showtime_id": "147090776",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:20pm",
-            "showtime_id": "147091026",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "147090736",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:15pm",
-            "showtime_id": "146613574",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "147090917",
+            "showtime": "11:30am",
+            "showtime_id": "147090947",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147091052",
+            "showtime": "12:45pm",
+            "showtime_id": "147090774",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:55pm",
-            "showtime_id": "146613573",
+            "showtime": "1:15pm",
+            "showtime_id": "147090733",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:25pm",
-            "showtime_id": "147090920",
+            "showtime": "2:00pm",
+            "showtime_id": "146613577",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147090915",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147091055",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146613576",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147090914",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147091046",
+            "showtime_id": "147091053",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146613571",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "146613575",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147090918",
+            "showtime": "8:30pm",
+            "showtime_id": "147090916",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:05pm",
-            "showtime_id": "147091051",
+            "showtime_id": "147091054",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "146613572",
-            "format": "Laser at AMC"
+            "showtime": "10:00pm",
+            "showtime_id": "146613578",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147090919",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147090779",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -68975,7 +69010,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877341+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -69038,57 +69073,57 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147033646",
+            "showtime_id": "147033642",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146601934",
+            "showtime_id": "146601938",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147033608",
+            "showtime_id": "147033603",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146601936",
+            "showtime_id": "146601940",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147033607",
+            "showtime_id": "147033602",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146601935",
+            "showtime_id": "146601939",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147033580",
+            "showtime_id": "147033578",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147033606",
+            "showtime_id": "147033604",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146601937",
+            "showtime_id": "146601941",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147033583",
+            "showtime_id": "147033577",
             "format": "Laser at AMC"
           }
         ]
@@ -70195,107 +70230,107 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877431+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147083145",
+            "showtime_id": "147155914",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "11:15am",
-            "showtime_id": "146588288",
+            "showtime_id": "146588271",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146588239",
+            "showtime_id": "146588264",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:35pm",
-            "showtime_id": "147083144",
+            "showtime_id": "147155913",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "146588158",
+            "showtime_id": "146588200",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146588284",
+            "showtime_id": "146588289",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "146588247",
+            "showtime_id": "146588268",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:25pm",
-            "showtime_id": "147083143",
+            "showtime_id": "147155912",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "146588157",
+            "showtime_id": "146588199",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146588285",
+            "showtime_id": "146588290",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146588246",
+            "showtime_id": "146588267",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:10pm",
-            "showtime_id": "147083141",
+            "showtime_id": "147155910",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146588155",
+            "showtime_id": "146588198",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146588286",
+            "showtime_id": "146588291",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146588244",
+            "showtime_id": "146588265",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:50pm",
-            "showtime_id": "147083142",
+            "showtime_id": "147155911",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146588156",
+            "showtime_id": "146588201",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146588287",
+            "showtime_id": "146588292",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146588245",
+            "showtime_id": "146588266",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -70654,117 +70689,117 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877490+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "11:30am",
-            "showtime_id": "147013752",
+            "showtime_id": "147013753",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147164274",
+            "showtime": "12:15pm",
+            "showtime_id": "147164270",
             "format": "XL at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "146576961",
+            "showtime_id": "146576957",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:10pm",
-            "showtime_id": "147164210",
+            "showtime_id": "147164081",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "146576907",
+            "showtime_id": "146576927",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "146576974",
+            "showtime_id": "146576978",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147164273",
+            "showtime_id": "147164269",
             "format": "XL at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "146576962",
+            "showtime_id": "146576958",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:50pm",
-            "showtime_id": "147164209",
+            "showtime_id": "147164186",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "146576906",
+            "showtime_id": "146576926",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146576975",
+            "showtime_id": "146576979",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147164275",
+            "showtime_id": "147164271",
             "format": "XL at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146576963",
+            "showtime_id": "146576959",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:35pm",
-            "showtime_id": "147164211",
+            "showtime_id": "147164187",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146576905",
+            "showtime_id": "146576925",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146576976",
+            "showtime_id": "146576980",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147164276",
+            "showtime_id": "147164272",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146576964",
+            "showtime_id": "146576960",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:20pm",
-            "showtime_id": "147164212",
+            "showtime_id": "147164188",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146576904",
+            "showtime_id": "146576924",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146576977",
+            "showtime_id": "146576981",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -70816,13 +70851,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "147235094",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "147160520",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877458+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -70888,32 +70928,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "146617821",
+            "showtime": "2:00pm",
+            "showtime_id": "146617819",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "146595318",
+            "showtime": "4:30pm",
+            "showtime_id": "146595320",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146595321",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146595319",
+            "showtime": "7:30pm",
+            "showtime_id": "147235094",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147233485",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147160545",
+            "showtime": "9:30pm",
+            "showtime_id": "147160520",
             "format": "Laser at AMC"
           }
         ]
@@ -72286,7 +72326,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.884473+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -72339,57 +72379,57 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "147063120",
+            "showtime_id": "147063124",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147063299",
+            "showtime_id": "147063307",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147063297",
+            "showtime_id": "147063290",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147063298",
+            "showtime_id": "147063306",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146410298",
+            "showtime_id": "146410300",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146410333",
+            "showtime_id": "146410328",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "146410299",
+            "showtime_id": "146410301",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147063158",
+            "showtime": "9:15pm",
+            "showtime_id": "147063152",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146410332",
+            "showtime_id": "146410329",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147063197",
+            "showtime": "10:00pm",
+            "showtime_id": "147063190",
             "format": "Laser at AMC"
           }
         ]
@@ -73427,7 +73467,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877379+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -73505,72 +73545,62 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "12:40pm",
-            "showtime_id": "147025189",
-            "format": "Laser at AMC"
+            "showtime": "12:30pm",
+            "showtime_id": "146611220",
+            "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "146611224",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "1:15pm",
+            "showtime_id": "146611243",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "146611239",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "146611158",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "146611138",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147025253",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "146611225",
+            "showtime_id": "146611221",
             "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146611242",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146611238",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "146611167",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146611139",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146611226",
+            "showtime_id": "146611222",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146611237",
+            "showtime": "6:45pm",
+            "showtime_id": "146611241",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "146611141",
+            "showtime": "7:45pm",
+            "showtime_id": "146611159",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146611227",
+            "showtime": "8:45pm",
+            "showtime_id": "146611223",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146611236",
+            "showtime": "9:30pm",
+            "showtime_id": "146611240",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -75648,7 +75678,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877612+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -75779,82 +75809,87 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "11:30am",
-            "showtime_id": "146595264",
+            "showtime_id": "146595262",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146595241",
+            "showtime_id": "146595246",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "146595303",
+            "showtime_id": "146595306",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146595270",
+            "showtime_id": "146595265",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "146595240",
+            "showtime_id": "146595245",
             "format": "IMAX with Laser at AMC"
           },
           {
+            "showtime": "3:15pm",
+            "showtime_id": "147230910",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "146595294",
+            "showtime_id": "146595295",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146595271",
+            "showtime_id": "146595266",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146595239",
+            "showtime_id": "146595244",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146595288",
+            "showtime_id": "146595293",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146595272",
+            "showtime_id": "146595267",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146595237",
+            "showtime_id": "146595242",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146595302",
+            "showtime_id": "146595299",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147229654",
+            "showtime_id": "147229655",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146595269",
+            "showtime_id": "146595268",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146595238",
+            "showtime_id": "146595243",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -76495,7 +76530,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877596+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -76651,97 +76686,92 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "147084780",
+            "showtime": "11:20am",
+            "showtime_id": "147084781",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "11:40am",
-            "showtime_id": "147084965",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "12:15pm",
-            "showtime_id": "147084815",
+            "showtime": "12:20pm",
+            "showtime_id": "147084818",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147084960",
+            "showtime": "1:10pm",
+            "showtime_id": "147084959",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147084808",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "2:00pm",
-            "showtime_id": "146597200",
+            "showtime_id": "146597204",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "146597229",
+            "showtime_id": "146597215",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147084807",
-            "format": "XL at AMC"
+            "showtime": "3:45pm",
+            "showtime_id": "146597277",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146597199",
+            "showtime_id": "146597203",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147084967",
-            "format": "XL at AMC"
-          },
-          {
             "showtime": "5:45pm",
-            "showtime_id": "146597228",
+            "showtime_id": "146597214",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147084806",
+            "showtime": "6:30pm",
+            "showtime_id": "146597276",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147084798",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146597197",
+            "showtime_id": "146597201",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147084966",
+            "showtime_id": "147084970",
             "format": "XL at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "146597227",
+            "showtime_id": "146597213",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "9:15pm",
+            "showtime_id": "146597275",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "9:45pm",
-            "showtime_id": "147084805",
+            "showtime_id": "147084799",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146597198",
+            "showtime_id": "146597202",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:35pm",
-            "showtime_id": "147084969",
+            "showtime_id": "147084971",
             "format": "XL at AMC"
           }
         ]
@@ -76911,7 +76941,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:40pm",
+                "showtime": "7:45pm",
                 "showtime_id": "146464185",
                 "format": "Laser at AMC"
               },
@@ -76936,7 +76966,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
+                "showtime": "10:25pm",
                 "showtime_id": "146464186",
                 "format": "Laser at AMC"
               },
@@ -76952,7 +76982,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877579+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -77070,112 +77100,102 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:00am",
-            "showtime_id": "146464264",
+            "showtime_id": "146464248",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:45am",
-            "showtime_id": "147052779",
+            "showtime_id": "146464288",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:50am",
-            "showtime_id": "146464175",
+            "showtime": "12:15pm",
+            "showtime_id": "147074270",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:35pm",
-            "showtime_id": "146464263",
+            "showtime_id": "146464247",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:25pm",
-            "showtime_id": "147052782",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:25pm",
-            "showtime_id": "146464174",
+            "showtime_id": "146464291",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "146464262",
+            "showtime_id": "146464246",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147052786",
+            "showtime_id": "146464287",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146464173",
+            "showtime": "4:45pm",
+            "showtime_id": "147074231",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "146464261",
+            "showtime_id": "146464245",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147231607",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "147052788",
+            "showtime_id": "147074226",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147232204",
+            "showtime": "7:20pm",
+            "showtime_id": "147233899",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:35pm",
-            "showtime_id": "146464171",
+            "showtime": "7:45pm",
+            "showtime_id": "146464185",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "146464260",
+            "showtime_id": "146464244",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147231606",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "9:00pm",
-            "showtime_id": "147052792",
+            "showtime_id": "147074227",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147232205",
+            "showtime_id": "147233895",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "147233896",
+            "showtime": "10:00pm",
+            "showtime_id": "147233900",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146464172",
+            "showtime": "10:25pm",
+            "showtime_id": "146464186",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "147233897",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146464259",
+            "showtime_id": "146464243",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -77823,107 +77843,117 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877567+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "146614546",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "11:20am",
+            "showtime_id": "147112057",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "11:45am",
-            "showtime_id": "146614541",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "12:05pm",
-            "showtime_id": "147058637",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "12:30pm",
-            "showtime_id": "146614581",
+            "showtime_id": "146614585",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:25pm",
-            "showtime_id": "146614554",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:20pm",
-            "showtime_id": "146614540",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "147058636",
+            "showtime": "12:10pm",
+            "showtime_id": "147112049",
             "format": "XL at AMC"
           },
           {
-            "showtime": "3:10pm",
-            "showtime_id": "146614580",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:05pm",
-            "showtime_id": "146614553",
+            "showtime": "12:40pm",
+            "showtime_id": "146614550",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:55pm",
-            "showtime_id": "146614539",
+            "showtime": "1:35pm",
+            "showtime_id": "146614545",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:25pm",
-            "showtime_id": "147058635",
-            "format": "XL at AMC"
+            "showtime": "2:00pm",
+            "showtime_id": "147112056",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "5:50pm",
-            "showtime_id": "146614579",
+            "showtime": "2:25pm",
+            "showtime_id": "146614584",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147058689",
-            "format": "Laser at AMC"
+            "showtime": "2:50pm",
+            "showtime_id": "147112048",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146614552",
-            "format": "Laser at AMC"
+            "showtime": "3:20pm",
+            "showtime_id": "146614549",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:35pm",
-            "showtime_id": "146614538",
+            "showtime": "4:10pm",
+            "showtime_id": "146614544",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:05pm",
-            "showtime_id": "147058634",
-            "format": "XL at AMC"
+            "showtime": "4:40pm",
+            "showtime_id": "147112055",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146614578",
+            "showtime": "5:05pm",
+            "showtime_id": "146614583",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:55pm",
-            "showtime_id": "147058690",
+            "showtime": "5:30pm",
+            "showtime_id": "147112047",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146614548",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "146614551",
+            "showtime": "6:50pm",
+            "showtime_id": "146614543",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "147112054",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146614537",
+            "showtime": "7:45pm",
+            "showtime_id": "146614582",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "147112046",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "146614547",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146614542",
             "format": "IMAX at AMC"
           }
         ]
@@ -78232,97 +78262,92 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877601+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:00am",
-            "showtime_id": "146532264",
+            "showtime_id": "146532270",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:45am",
-            "showtime_id": "146532338",
+            "showtime_id": "146532333",
             "format": "XL at AMC"
           },
           {
             "showtime": "11:50am",
-            "showtime_id": "146532377",
-            "format": "Laser at AMC"
+            "showtime_id": "146532379",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:35pm",
-            "showtime_id": "146532265",
+            "showtime_id": "146532271",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "1:20pm",
-            "showtime_id": "146532339",
+            "showtime_id": "146532334",
             "format": "XL at AMC"
           },
           {
             "showtime": "2:25pm",
-            "showtime_id": "146532376",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "146532378",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "146532266",
+            "showtime_id": "146532272",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "146532340",
+            "showtime_id": "146532335",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146532388",
+            "showtime_id": "146532391",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "146532267",
+            "showtime_id": "146532273",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:35pm",
-            "showtime_id": "146532341",
+            "showtime_id": "146532336",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "146532389",
+            "showtime_id": "146532392",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "146532268",
+            "showtime_id": "146532274",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "146532342",
+            "showtime_id": "146532337",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "146532390",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "147229760",
+            "showtime_id": "146532393",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146532269",
+            "showtime_id": "146532275",
             "format": "PRIME at AMC"
           }
         ]
@@ -78445,7 +78470,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877404+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -78526,57 +78551,57 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "147095685",
+            "showtime": "12:00pm",
+            "showtime_id": "147199424",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147095683",
+            "showtime": "1:30pm",
+            "showtime_id": "147199413",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "146481629",
+            "showtime": "2:30pm",
+            "showtime_id": "146481630",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147095681",
+            "showtime": "4:00pm",
+            "showtime_id": "147199411",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146481616",
+            "showtime": "5:00pm",
+            "showtime_id": "146481619",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147095682",
+            "showtime": "6:30pm",
+            "showtime_id": "147199412",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146481614",
+            "showtime": "7:30pm",
+            "showtime_id": "146481617",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147095668",
+            "showtime": "8:30pm",
+            "showtime_id": "147199366",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147095684",
+            "showtime": "9:00pm",
+            "showtime_id": "147199414",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146481615",
+            "showtime": "10:00pm",
+            "showtime_id": "146481618",
             "format": "Laser at AMC"
           }
         ]
@@ -79350,7 +79375,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877417+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -79398,77 +79423,67 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "146603466",
+            "showtime": "12:45pm",
+            "showtime_id": "146603462",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147137127",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "146603437",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "146603517",
+            "showtime_id": "146603515",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "146603463",
+            "showtime": "2:00pm",
+            "showtime_id": "146603441",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146603459",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147137168",
+            "showtime": "4:00pm",
+            "showtime_id": "146603516",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146603438",
+            "showtime_id": "146603442",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146603518",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "146603464",
+            "showtime": "6:15pm",
+            "showtime_id": "146603460",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146603439",
+            "showtime_id": "146603443",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146603522",
+            "showtime_id": "146603544",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "146603465",
+            "showtime": "9:00pm",
+            "showtime_id": "146603461",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146603475",
+            "showtime_id": "146603476",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146603440",
+            "showtime_id": "146603444",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -79598,7 +79613,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877407+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -79852,122 +79867,122 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:15am",
-            "showtime_id": "146439647",
+            "showtime_id": "146439648",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00am",
-            "showtime_id": "146439422",
+            "showtime_id": "146439417",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147059726",
+            "showtime_id": "147059731",
             "format": "XL at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146439383",
+            "showtime_id": "146439388",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:50pm",
-            "showtime_id": "146439632",
-            "format": "Laser at AMC"
+            "showtime_id": "146439636",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "146439421",
+            "showtime_id": "146439416",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "147059725",
+            "showtime_id": "147059730",
             "format": "XL at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "146439384",
+            "showtime_id": "146439389",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "146439631",
+            "showtime_id": "146439635",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147059826",
+            "showtime_id": "147059831",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146439420",
+            "showtime_id": "146439415",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147059724",
+            "showtime_id": "147059729",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146439385",
+            "showtime_id": "146439390",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146439630",
+            "showtime_id": "146439634",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147059825",
+            "showtime_id": "147059830",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146439419",
+            "showtime_id": "146439414",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147059723",
+            "showtime_id": "147059728",
             "format": "XL at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146439386",
+            "showtime_id": "146439391",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146439629",
+            "showtime_id": "146439633",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147059832",
+            "showtime_id": "147059828",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146439418",
+            "showtime_id": "146439413",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147059727",
+            "showtime_id": "147059720",
             "format": "XL at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146439387",
+            "showtime_id": "146439392",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -80305,6 +80320,11 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147234613",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "146432863",
                 "format": "Laser at AMC"
@@ -80336,117 +80356,107 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877421+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:30am",
-            "showtime_id": "147008646",
+            "showtime_id": "147008647",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146432739",
+            "showtime_id": "146432734",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "147008650",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:35pm",
-            "showtime_id": "146432826",
-            "format": "Laser at AMC"
+            "showtime_id": "146432825",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "146432722",
+            "showtime_id": "146432727",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "146432740",
+            "showtime_id": "146432735",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "146432803",
+            "showtime_id": "146432861",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "146432723",
+            "showtime_id": "146432728",
             "format": "IMAX with Laser at AMC"
           },
           {
+            "showtime": "4:15pm",
+            "showtime_id": "147120309",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "146432741",
+            "showtime_id": "146432736",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146432804",
+            "showtime_id": "146432862",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146432724",
+            "showtime_id": "146432729",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147232233",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "146432742",
+            "showtime_id": "146432737",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "7:45pm",
+            "showtime_id": "147234613",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "146432805",
+            "showtime_id": "146432863",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "146432725",
+            "showtime_id": "146432730",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147232234",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147232251",
+            "showtime": "9:05pm",
+            "showtime_id": "147120296",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146432743",
+            "showtime_id": "146432738",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146432806",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "147085511",
+            "showtime_id": "146432864",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146432726",
+            "showtime_id": "146432731",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -81701,13 +81711,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "10:45pm",
+                "showtime_id": "147233935",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "11:00pm",
                 "showtime_id": "146472682",
                 "format": "IMAX at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.884325+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -81966,122 +81981,107 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "11:00am",
-            "showtime_id": "147091984",
+            "showtime_id": "147091983",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147091938",
+            "showtime_id": "147091937",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "146472680",
+            "showtime_id": "146472658",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "146472702",
+            "showtime_id": "146472777",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "146472631",
+            "showtime_id": "146472652",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "146472558",
+            "showtime_id": "146472562",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "146472673",
+            "showtime_id": "146472683",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "146472708",
+            "showtime_id": "146472776",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146472635",
+            "showtime_id": "146472628",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146472559",
+            "showtime_id": "146472563",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146472671",
+            "showtime_id": "146472681",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146472703",
+            "showtime_id": "146472775",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146472630",
+            "showtime_id": "146472627",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146472560",
+            "showtime_id": "146472564",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146472676",
+            "showtime_id": "146472661",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146472704",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147232887",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147232886",
+            "showtime_id": "146472701",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146472629",
+            "showtime_id": "146472626",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147226754",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:30pm",
-            "showtime_id": "146472561",
+            "showtime_id": "146472565",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147232885",
+            "showtime_id": "147233935",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146472672",
+            "showtime_id": "146472682",
             "format": "IMAX at AMC"
           }
         ]
@@ -82607,6 +82607,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "9:05pm",
+                "showtime_id": "147234701",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:15pm",
                 "showtime_id": "147129042",
                 "format": "Laser at AMC"
@@ -82623,7 +82628,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.884329+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -82744,103 +82749,98 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "146603648",
+            "showtime_id": "146603657",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "146908869",
+            "showtime_id": "146908870",
             "format": "XL at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147129045",
+            "showtime_id": "147129040",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "146603683",
+            "showtime_id": "146603679",
             "format": "XL at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "146603647",
+            "showtime_id": "146603652",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "146908863",
+            "showtime_id": "146908866",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "147129044",
+            "showtime_id": "147129043",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "146603680",
+            "showtime_id": "146603676",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "146603646",
+            "showtime_id": "146603651",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146908864",
+            "showtime_id": "146908867",
             "format": "XL at AMC"
           },
           {
             "showtime": "6:40pm",
-            "showtime_id": "147129046",
+            "showtime_id": "147129041",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146603681",
+            "showtime_id": "146603677",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147232231",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "8:00pm",
-            "showtime_id": "146603645",
+            "showtime_id": "146603650",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "146908865",
+            "showtime_id": "146908868",
             "format": "XL at AMC"
           },
           {
+            "showtime": "9:05pm",
+            "showtime_id": "147234701",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:15pm",
-            "showtime_id": "147129047",
+            "showtime_id": "147129042",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146603682",
+            "showtime_id": "146603678",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146603644",
+            "showtime_id": "146603649",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147232230",
-            "format": "Laser at AMC"
           }
         ]
       }
@@ -83265,13 +83265,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:50pm",
+                "showtime_id": "147234533",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "146508165",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147233503",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.884426+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -83357,77 +83367,62 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "10:20am",
-            "showtime_id": "147229277",
+            "showtime_id": "147058514",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30am",
-            "showtime_id": "147058470",
+            "showtime": "11:30am",
+            "showtime_id": "146508161",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146508156",
+            "showtime": "1:00pm",
+            "showtime_id": "147058517",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:25pm",
-            "showtime_id": "147058525",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:40pm",
-            "showtime_id": "146508157",
+            "showtime": "2:00pm",
+            "showtime_id": "146508162",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "147058468",
+            "showtime": "3:35pm",
+            "showtime_id": "147058516",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147230944",
+            "showtime": "4:40pm",
+            "showtime_id": "146508163",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "146508158",
+            "showtime": "6:15pm",
+            "showtime_id": "147058515",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147058466",
+            "showtime": "7:20pm",
+            "showtime_id": "146508164",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146508159",
+            "showtime": "7:50pm",
+            "showtime_id": "147234533",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "147058467",
+            "showtime": "9:00pm",
+            "showtime_id": "146508165",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147230945",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147233607",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "146508160",
+            "showtime": "10:20pm",
+            "showtime_id": "147233503",
             "format": "Laser at AMC"
           }
         ]
@@ -83558,7 +83553,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877451+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -83586,48 +83581,43 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147057726",
+            "showtime": "12:30pm",
+            "showtime_id": "147057745",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "146847867",
+            "showtime": "1:00pm",
+            "showtime_id": "146847860",
             "format": "XL at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147057736",
+            "showtime": "4:00pm",
+            "showtime_id": "146847859",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147057728",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146847866",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147057735",
+            "showtime": "6:30pm",
+            "showtime_id": "147057741",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146847864",
+            "showtime_id": "146847858",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147057734",
+            "showtime": "9:00pm",
+            "showtime_id": "146847878",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "146847865",
-            "format": "XL at AMC"
           }
         ]
       }
@@ -83734,7 +83724,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877400+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -83815,52 +83805,47 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147070960",
+            "showtime_id": "147071164",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146474576",
+            "showtime_id": "146474578",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:25pm",
-            "showtime_id": "147070961",
+            "showtime": "3:00pm",
+            "showtime_id": "147070965",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146474575",
+            "showtime_id": "146474577",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147070966",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146474644",
+            "showtime_id": "146474656",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147071108",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:05pm",
-            "showtime_id": "147233742",
+            "showtime_id": "147070967",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146474645",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147233440",
+            "showtime_id": "146474657",
             "format": "Laser at AMC"
           }
         ]
@@ -84482,7 +84467,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877438+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -84558,52 +84543,52 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147078548",
+            "showtime_id": "147078552",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "146478464",
+            "showtime_id": "146478468",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147078547",
+            "showtime": "4:15pm",
+            "showtime_id": "147078551",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146478463",
+            "showtime_id": "146478467",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147078546",
+            "showtime_id": "147078550",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146478462",
+            "showtime_id": "146478466",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147078545",
+            "showtime_id": "147078549",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147078524",
+            "showtime_id": "147078553",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146478461",
+            "showtime_id": "146478465",
             "format": "Laser at AMC"
           }
         ]
@@ -86154,7 +86139,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-19T01:22:21.884589+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -86323,73 +86308,68 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "147085844",
+            "showtime_id": "147085832",
             "format": "XL at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "146597377",
+            "showtime_id": "146597393",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:35pm",
-            "showtime_id": "146597338",
+            "showtime_id": "146597346",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:05pm",
-            "showtime_id": "147085843",
+            "showtime_id": "147085847",
             "format": "XL at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "146597383",
+            "showtime_id": "146597380",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:10pm",
-            "showtime_id": "146597339",
+            "showtime_id": "146597347",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "147085842",
+            "showtime_id": "147085846",
             "format": "XL at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146597382",
+            "showtime_id": "146597379",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146597340",
+            "showtime_id": "146597348",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "147085840",
+            "showtime_id": "147085845",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146597381",
+            "showtime_id": "146597378",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146597341",
+            "showtime_id": "146597349",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147085841",
-            "format": "XL at AMC"
           }
         ]
       }
@@ -87106,7 +87086,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877590+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -87225,52 +87205,47 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "146815812",
+            "showtime_id": "146815813",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147231294",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "147070635",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "146618810",
+            "showtime_id": "146618811",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147231293",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "146618814",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "147070656",
+            "showtime_id": "146618815",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146618835",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147070655",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "147179799",
+            "showtime_id": "146618837",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146618836",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147215026",
+            "showtime_id": "146618838",
             "format": "Laser at AMC"
           }
         ]
@@ -87348,7 +87323,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877606+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-17": {
@@ -87409,37 +87384,32 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
             "showtime": "11:30am",
-            "showtime_id": "147062045",
+            "showtime_id": "147062044",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "146802833",
+            "showtime_id": "146802825",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146802832",
+            "showtime_id": "146802824",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146802831",
+            "showtime_id": "146802823",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146802834",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "147062090",
+            "showtime_id": "146802826",
             "format": "Thrills & Chills"
           }
         ]
@@ -123960,7 +123930,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877338+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-18": {
@@ -123993,42 +123963,42 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147133710",
+            "showtime": "1:30pm",
+            "showtime_id": "146589882",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147143654",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "146589884",
+            "showtime": "4:00pm",
+            "showtime_id": "146589881",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "146589883",
+            "showtime": "6:30pm",
+            "showtime_id": "147143664",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147133728",
+            "showtime": "7:30pm",
+            "showtime_id": "146589868",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146589866",
+            "showtime": "9:00pm",
+            "showtime_id": "147143665",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147133727",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146589867",
+            "showtime": "10:00pm",
+            "showtime_id": "146589869",
             "format": "Thrills & Chills"
           }
         ]
@@ -130887,7 +130857,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-20T01:13:44.877465+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-19": {
@@ -130973,47 +130943,47 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-19",
+      "show_date": "2026-09-20",
       "movies": {
         "Resident Evil": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "146459002",
+            "showtime": "12:45pm",
+            "showtime_id": "147041200",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "146458978",
+            "showtime_id": "147041184",
             "format": "GXL"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "146459003",
+            "showtime": "3:30pm",
+            "showtime_id": "147041201",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146458979",
+            "showtime_id": "147041183",
             "format": "GXL"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146459004",
+            "showtime": "6:15pm",
+            "showtime_id": "147041202",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146458980",
+            "showtime_id": "147041182",
             "format": "GXL"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146459005",
+            "showtime": "8:45pm",
+            "showtime_id": "147041199",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146458981",
+            "showtime_id": "147041185",
             "format": "GXL"
           }
         ]
@@ -131322,9 +131292,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9913,
-    "fresh": 114,
-    "expected": 115,
+    "ratio": 1.0,
+    "fresh": 66,
+    "expected": 66,
     "min_ratio": 0.9,
     "degraded": false
   }
