@@ -2,7 +2,7 @@
   "date": "2026-09-25",
   "weekend_of": "2026-09-25",
   "collected_local_date": "2026-09-22",
-  "collected_at": "2026-09-22T13:53:39.498592+00:00",
+  "collected_at": "2026-09-22T16:25:34.957444+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -61507,6 +61507,11 @@
           "movies": {
             "Primetime": [
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147263139",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:40pm",
                 "showtime_id": "146409329",
                 "format": "Laser at AMC"
@@ -61514,6 +61519,11 @@
               {
                 "showtime": "8:30pm",
                 "showtime_id": "147221453",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147263140",
                 "format": "Laser at AMC"
               },
               {
@@ -61540,7 +61550,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-21T21:47:18.883320+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -61690,55 +61700,50 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-24",
+      "show_date": "2026-09-25",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147221457",
+            "showtime": "7:00pm",
+            "showtime_id": "147263139",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "146409316",
+            "showtime": "7:40pm",
+            "showtime_id": "146409329",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147002989",
+            "showtime": "8:30pm",
+            "showtime_id": "147221453",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147232906",
+            "showtime": "9:45pm",
+            "showtime_id": "147263140",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146409317",
+            "showtime": "10:30pm",
+            "showtime_id": "146409330",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146799143",
+            "showtime": "5:20pm",
+            "showtime_id": "146799246",
             "format": "RealD 3D"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146799244",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146590629",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "146799245",
+            "showtime": "7:45pm",
+            "showtime_id": "146799237",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146799144",
+            "format": "RealD 3D"
           }
         ]
       }
@@ -97651,9 +97656,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9886,
-    "fresh": 783,
-    "expected": 792,
+    "ratio": 0.9739,
+    "fresh": 448,
+    "expected": 460,
     "min_ratio": 0.9,
     "degraded": false
   }
