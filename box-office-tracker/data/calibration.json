@@ -2552,45 +2552,120 @@
         "Sunday",
         "Thursday"
       ]
+    },
+    {
+      "movie": "Resident Evil",
+      "weekend_of": "2026-09-18",
+      "date": "2026-09-22",
+      "predicted_mid": 62.05,
+      "predicted_low": 45.92,
+      "predicted_high": 71.35,
+      "actual_total": 60.15,
+      "daily_actuals": {
+        "Thursday": 8.8,
+        "Friday": 17.43,
+        "Saturday": 20.02,
+        "Sunday": 13.91
+      },
+      "daily_predictions": {
+        "Thursday": 9.77,
+        "Friday": 17.23,
+        "Saturday": 19.25,
+        "Sunday": 13.59
+      },
+      "error_pct": 3.1,
+      "n_theatres": 423,
+      "n_days": 4,
+      "model_version": "seat-regression-v27-volume-divergence-cap",
+      "live_headline": {
+        "mid_m": 63.96,
+        "low_m": 47.33,
+        "high_m": 73.55,
+        "logged_at": "2026-09-21T08:59:41Z",
+        "source": "seat-snapshot-regression",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 15,
+        "thursday_mid_m": 49.57,
+        "thursday_logged_at": "2026-09-19T04:54:15Z"
+      },
+      "live_error_pct": 6.3,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "raw_daily_predictions": {
+        "Thursday": 9.01,
+        "Friday": 17.24,
+        "Saturday": 18.53,
+        "Sunday": 13.39
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0021,
+        "Friday": 0.0048,
+        "Saturday": 0.0036,
+        "Sunday": 0.0017
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 10.02,
+        "Friday": 13.34,
+        "Saturday": 18.15,
+        "Sunday": 12.91
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.965,
+        "Friday": 0.988,
+        "Saturday": 0.993,
+        "Sunday": 0.995
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.0,
+        "adjustment_pct": 0.0,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.0,
+        "buzz_source": "neutral",
+        "signal_quality": 0.4193,
+        "reach": 429.73,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 421,
+        "Friday": 422,
+        "Saturday": 422,
+        "Sunday": 422
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.991,
+        "Friday": 0.993,
+        "Saturday": 0.993,
+        "Sunday": 0.993
+      },
+      "coverage_ratio": 0.992
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2092,
+    "amc_market_share": 0.2125,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.0996,
-      "Friday": 0.3212,
-      "Saturday": 0.3295,
-      "Sunday": 0.2497
+      "Thursday": 0.1279,
+      "Friday": 0.2934,
+      "Saturday": 0.3296,
+      "Sunday": 0.2491
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "Toy Story 5",
-        "weekend_of": "2026-06-19",
-        "abs_error_pct": 8.9,
-        "n_theatres": 425,
-        "n_days": 4,
-        "coverage_ratio": 0.993,
-        "daily_coverage_ratios": {
-          "Thursday": 1.0,
-          "Friday": 0.998,
-          "Saturday": 0.986,
-          "Sunday": 0.988
-        },
-        "daily_errors": {
-          "Thursday": 0.8,
-          "Friday": 35.9,
-          "Saturday": 3.2,
-          "Sunday": 9.6
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Supergirl",
         "weekend_of": "2026-06-26",
@@ -2732,9 +2807,10 @@
           "Sunday": 0.571
         },
         "daily_errors": {
-          "Friday": 40.9,
+          "Friday": 9.8,
           "Saturday": 7.6,
-          "Sunday": 8.8
+          "Sunday": 8.8,
+          "Thursday": 12.4
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -2807,9 +2883,10 @@
           "Sunday": 0.974
         },
         "daily_errors": {
-          "Friday": 32.0,
+          "Friday": 0.7,
           "Saturday": 8.0,
-          "Sunday": 2.8
+          "Sunday": 2.8,
+          "Thursday": 45.6
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -2886,9 +2963,10 @@
           "Sunday": 0.972
         },
         "daily_errors": {
-          "Friday": 23.7,
+          "Friday": 72.9,
           "Saturday": 59.3,
-          "Sunday": 70.5
+          "Sunday": 70.5,
+          "Thursday": 200.0
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -2906,7 +2984,7 @@
           "Sunday": 0.988
         },
         "daily_errors": {
-          "Friday": 12.8,
+          "Friday": 28.3,
           "Saturday": 29.8,
           "Sunday": 40.4
         },
@@ -2927,7 +3005,7 @@
           "Sunday": 0.251
         },
         "daily_errors": {
-          "Thursday": 13.3,
+          "Thursday": 13.4,
           "Friday": 19.2,
           "Saturday": 61.6,
           "Sunday": 29.1
@@ -2965,39 +3043,61 @@
           "Sunday": 0.057
         },
         "daily_errors": {
-          "Thursday": 47.9,
-          "Friday": 65.2,
-          "Sunday": 34.5
+          "Thursday": 47.5,
+          "Friday": 64.3,
+          "Sunday": 35.1
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Resident Evil",
+        "weekend_of": "2026-09-18",
+        "abs_error_pct": 3.1,
+        "n_theatres": 423,
+        "n_days": 4,
+        "coverage_ratio": 0.992,
+        "daily_coverage_ratios": {
+          "Thursday": 0.991,
+          "Friday": 0.993,
+          "Saturday": 0.993,
+          "Sunday": 0.993
+        },
+        "daily_errors": {
+          "Thursday": 11.0,
+          "Friday": 1.1,
+          "Saturday": 3.8,
+          "Sunday": 2.3
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-09-15",
+    "last_updated": "2026-09-22",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 7,
-          "support": 2.814
+          "n": 10,
+          "support": 4.9545
         },
         "Friday": {
-          "n": 13,
-          "support": 6.634
+          "n": 14,
+          "support": 7.622
         },
         "Saturday": {
-          "n": 16,
-          "support": 8.849
+          "n": 18,
+          "support": 10.313
         },
         "Sunday": {
-          "n": 17,
-          "support": 8.508
+          "n": 19,
+          "support": 9.974
         }
       },
       "leads": {
         "same_day": {
-          "n": 50,
-          "support": 25.372
+          "n": 58,
+          "support": 31.4305
         },
         "next_day": {
           "n": 3,
@@ -3017,10 +3117,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.14975662076813648,
-        "Friday": 0.30554319009946046,
-        "Saturday": 0.3087432544893232,
-        "Sunday": 0.23595693464307974
+        "Thursday": 0.14634917980801623,
+        "Friday": 0.2898808629588573,
+        "Saturday": 0.31994214490967926,
+        "Sunday": 0.24382781232344733
       },
       "trained_on": [
         "Michael",
@@ -3051,14 +3151,15 @@
         "Mutiny",
         "The Dog Stars",
         "Coyote vs. Acme",
-        "Practical Magic 2"
+        "Practical Magic 2",
+        "Resident Evil"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.23754451284343212,
-        "resid_scale": 0.3602185423968547
+        "log_ratio_mean": 0.17431860093158497,
+        "resid_scale": 0.32690263210923687
       },
       "identity": {
-        "seat_sd": 0.43149136013197076
+        "seat_sd": 0.3704757826237664
       },
       "seat": {
         "features": [
@@ -3071,12 +3172,12 @@
           "sellout_frac"
         ],
         "coef": [
-          0.2954929513472751,
-          0.8867325069906714,
-          0.16302502345987738,
-          0.23646285141243506,
-          0.02832554897929092,
-          0.7456032823899684,
+          0.252269059577582,
+          0.911879438702463,
+          0.06529261020709966,
+          0.11789078876546734,
+          0.023751633591562855,
+          0.7284388826781886,
           0.0
         ],
         "prior": [
@@ -3089,7 +3190,7 @@
           0.0
         ],
         "lambda": 0.1,
-        "daily_resid_sd": 0.33854654294383524
+        "daily_resid_sd": 0.32803152423938975
       },
       "snapshot": {
         "features": [
@@ -3103,12 +3204,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.7255491794762363,
-          0.6437125306641287,
-          0.16333687056476395,
-          0.40967304913876856,
-          0.12019569162067147,
-          0.03128733325358605,
+          0.704543707128821,
+          0.6543850081789018,
+          0.07420518583548684,
+          0.28970178371018807,
+          0.13225350128208205,
+          -0.033609335342278966,
           0.0,
           0.0
         ],
@@ -3123,17 +3224,17 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.5665728089345984
+        "daily_resid_sd": 0.5510219695217246
       },
       "weekend": {
-        "log_half_width": 0.47,
-        "resid_mean": 0.16547151640887048,
-        "df": 26,
-        "loo_hit_rate": 0.9259,
+        "log_half_width": 0.4587,
+        "resid_mean": 0.14320381241536428,
+        "df": 27,
+        "loo_hit_rate": 0.9286,
         "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
-        "loo_mae_pct": 23.0,
-        "loo_median_ae_pct": 16.53,
-        "n_movies": 27
+        "loo_mae_pct": 21.13,
+        "loo_median_ae_pct": 16.34,
+        "n_movies": 28
       },
       "loo_detail": [
         {
@@ -3143,6 +3244,12 @@
           "observed_share": 1.0
         },
         {
+          "movie": "The Devil Wears Prada 2",
+          "pred_m": 73.05,
+          "actual_m": 76.75,
+          "observed_share": 0.391
+        },
+        {
           "movie": "Mortal Kombat II",
           "pred_m": 46.02,
           "actual_m": 38.5,
@@ -3150,15 +3257,15 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 24.29,
+          "pred_m": 24.2,
           "actual_m": 15.09,
-          "observed_share": 0.85
+          "observed_share": 0.853
         },
         {
           "movie": "Obsession",
-          "pred_m": 14.72,
+          "pred_m": 14.97,
           "actual_m": 17.2,
-          "observed_share": 0.691
+          "observed_share": 0.68
         },
         {
           "movie": "The Mandalorian and Grogu",
@@ -3174,9 +3281,9 @@
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 5.22,
+          "pred_m": 5.21,
           "actual_m": 7.35,
-          "observed_share": 0.85
+          "observed_share": 0.852
         },
         {
           "movie": "Scary Movie",
@@ -3198,9 +3305,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 39.94,
+          "pred_m": 38.54,
           "actual_m": 44.53,
-          "observed_share": 0.544
+          "observed_share": 0.564
         },
         {
           "movie": "Toy Story 5",
@@ -3228,33 +3335,33 @@
         },
         {
           "movie": "Young Washington",
-          "pred_m": 12.7,
+          "pred_m": 12.65,
           "actual_m": 19.37,
-          "observed_share": 0.85
+          "observed_share": 0.853
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 30.61,
+          "pred_m": 30.94,
           "actual_m": 43.0,
-          "observed_share": 0.765
+          "observed_share": 0.757
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 18.56,
+          "pred_m": 18.76,
           "actual_m": 13.7,
-          "observed_share": 0.763
+          "observed_share": 0.755
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 121.42,
+          "pred_m": 122.54,
           "actual_m": 123.5,
-          "observed_share": 0.763
+          "observed_share": 0.756
         },
         {
           "movie": "One Night Only",
-          "pred_m": 3.52,
+          "pred_m": 3.51,
           "actual_m": 5.51,
-          "observed_share": 0.854
+          "observed_share": 0.857
         },
         {
           "movie": "The End of Oak Street",
@@ -3270,15 +3377,9 @@
         },
         {
           "movie": "Insidious: Out of the Further",
-          "pred_m": 21.28,
+          "pred_m": 21.43,
           "actual_m": 25.11,
-          "observed_share": 0.613
-        },
-        {
-          "movie": "Mutiny",
-          "pred_m": 4.25,
-          "actual_m": 7.71,
-          "observed_share": 0.614
+          "observed_share": 0.608
         },
         {
           "movie": "The Dog Stars",
@@ -3288,21 +3389,27 @@
         },
         {
           "movie": "Coyote vs. Acme",
-          "pred_m": 19.16,
+          "pred_m": 19.1,
           "actual_m": 15.91,
-          "observed_share": 0.85
+          "observed_share": 0.852
         },
         {
           "movie": "Practical Magic 2",
-          "pred_m": 25.38,
+          "pred_m": 26.52,
           "actual_m": 30.0,
-          "observed_share": 0.456
+          "observed_share": 0.436
+        },
+        {
+          "movie": "Resident Evil",
+          "pred_m": 58.17,
+          "actual_m": 60.15,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 23.0,
-        "global_ratio": 23.77,
-        "regression": 23.73
+        "identity": 21.13,
+        "global_ratio": 21.96,
+        "regression": 21.82
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
