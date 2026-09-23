@@ -705,3 +705,60 @@ class ListingEmptyDayTest(unittest.TestCase):
                 '<a href="/showtimes/9"><time>1:00pm</time></a></li></section>')
         rows = sfh.parse_listing_showtimes(html)
         self.assertEqual([("9", "")], [(r["showtime_id"], r["format"]) for r in rows])
+
+
+class DropTunnelOnWallTest(unittest.TestCase):
+    """A Cloudflare wall is tied to the exit IP that curl keeps cached on the
+    thread's handle; the fetchers must discard that handle so the thread's next
+    request opens a fresh proxy tunnel (2026-09-23: block share rose 21%→48%
+    across one leg as blocked IPs accumulated in the worker pool)."""
+
+    def setUp(self):
+        sfh.DROPPED["tunnels"] = 0
+
+    def test_real_session_gets_a_fresh_handle_after_drop(self):
+        sess = sfh.make_session()
+        first = sess.curl                      # materialise this thread's handle
+        self.assertTrue(sfh.drop_thread_connection(sess))
+        self.assertIsNot(first, sess.curl)     # next request = new handle = new tunnel
+        self.assertEqual(1, sfh.DROPPED["tunnels"])
+        sess.close()
+
+    def test_fake_session_without_thread_local_is_left_alone(self):
+        self.assertFalse(sfh.drop_thread_connection(FakeSession(FakeResp(b""))))
+        self.assertEqual(0, sfh.DROPPED["tunnels"])
+
+    def _run_with_hook(self, fn, body, **kw):
+        calls = []
+        orig = sfh.drop_thread_connection
+        sfh.drop_thread_connection = lambda s: calls.append(s) or True
+        try:
+            resp = FakeResp(body, encoding=None)
+            resp.content = body                # the tickets fetch reads the whole body
+            sess = FakeSession(resp)
+            res = fn("https://www.amctheatres.com/showtimes/1/seats", None, session=sess, **kw)
+        finally:
+            sfh.drop_thread_connection = orig
+        return res, calls, sess
+
+    def test_walls_drop_the_tunnel_on_every_http_fetcher(self):
+        blocked = b"<html><head><title>Attention Required! | Cloudflare</title></head><body>x</body></html>"
+        challenge = b"<html><head><title>Just a moment...</title></head><body>x</body></html>"
+        for body in (blocked, challenge):
+            for fn, kw in ((sfh.fetch_seat_page, {}), (sfh.fetch_rsc_seat_page, {}),
+                           (sfh.fetch_listing_page, {}), (sfh.fetch_rsc_tickets, {}),
+                           (sfh.fetch_rsc_seat_diff, {"tree_header": "%5B%22%22%5D"})):
+                res, calls, sess = self._run_with_hook(fn, body, **kw)
+                self.assertIn(res["kind"], sfh.WALL_KINDS, fn.__name__)
+                self.assertEqual([sess], calls, f"{fn.__name__} must drop the tunnel on {res['kind']}")
+
+    def test_clean_pages_keep_the_tunnel(self):
+        seats = b"<html><head><title>Seats</title></head><body>" + \
+                b"".join(b"<input aria-label='Seat A%d' aria-disabled='false'>" % i for i in range(1, 6)) + \
+                b"</body></html>"
+        res, calls, _ = self._run_with_hook(sfh.fetch_seat_page, seats)
+        self.assertNotIn(res["kind"], sfh.WALL_KINDS)
+        self.assertEqual([], calls)
+        other = b"<html><head><title>AMC Theatres</title></head><body>nothing here</body></html>"
+        res, calls, _ = self._run_with_hook(sfh.fetch_listing_page, other)
+        self.assertEqual([], calls)

@@ -159,6 +159,46 @@ def make_session(impersonate: str = "chrome"):
 TLS_CURVES = "X25519:P-256:P-384"
 
 
+# A Cloudflare wall is tied to the EXIT IP. curl keeps the proxy tunnel (and so
+# the exit IP) cached on the thread's easy handle, so once a worker thread draws
+# a blocked IP every later request on that thread is blocked too — the retry
+# "on a fresh IP" mostly is not, and bad IPs accumulate in the pool: the ET leg
+# of 2026-09-23 03:10Z went from 21% to 48% blocked over its course and ran
+# 172 min. Dropping the thread's handle on a wall forces a new CONNECT (new
+# exit IP) for that thread's next request, at the cost of one handshake.
+WALL_KINDS = ("blocked", "challenge")
+DROPPED = {"tunnels": 0}
+
+
+def drop_thread_connection(session) -> bool:
+    """Discard THIS thread's curl handle (and its open proxy tunnel) so the
+    thread's next request opens a fresh tunnel. curl_cffi keeps one handle per
+    thread under `session._local.curl`; a session without that attribute (a
+    test fake, or a session built with use_thread_local_curl=False) is left
+    alone. Returns True when a handle was dropped."""
+    local = getattr(session, "_local", None)
+    curl = getattr(local, "curl", None) if local is not None else None
+    if curl is None:
+        return False
+    try:
+        curl.close()
+    except Exception:
+        pass
+    try:
+        local.curl = None
+    except Exception:
+        return False
+    DROPPED["tunnels"] += 1
+    return True
+
+
+def _drop_on_wall(session, kind: str) -> str:
+    """Classification hook: a wall drops the tunnel; the kind passes through."""
+    if kind in WALL_KINDS:
+        drop_thread_connection(session)
+    return kind
+
+
 def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
                     impersonate: str = "chrome", session=None, diagnostics: bool = False) -> dict:
     """Stream the seat page and stop early. Returns
@@ -203,13 +243,14 @@ def fetch_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.0,
         except Exception:
             pass
     html = out.decode("utf-8", "ignore")
+    kind = _drop_on_wall(sess, classify_page(html))
     if not diagnostics:
         return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
                 "url": str(getattr(resp, "url", "") or url),
-                "kind": classify_page(html), "stopped_early": stopped}
+                "kind": kind, "stopped_early": stopped}
     res = {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
            "url": str(getattr(resp, "url", "") or url),
-           "kind": classify_page(html), "stopped_early": stopped,
+           "kind": kind, "stopped_early": stopped,
            "decoded_bytes": len(out), "encoding": getattr(inflater, "kind", "?") if 'inflater' in dir() else "?"}
     # Diagnostics for placing the early stop: where the seat block sits and
     # where each marker first appears in the decoded document.
@@ -367,7 +408,7 @@ def fetch_rsc_seat_page(url: str, proxy_url: str | None, *, timeout: float = 30.
     elif "x-component" in ctype:
         kind = "other"
     else:
-        kind = classify_page(payload.decode("utf-8", "ignore"))   # HTML came back: block/challenge/other
+        kind = _drop_on_wall(sess, classify_page(payload.decode("utf-8", "ignore")))   # HTML came back: block/challenge/other
     return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}
 
@@ -452,7 +493,7 @@ def fetch_rsc_seat_diff(url: str, proxy_url: str | None, tree_header: str, *,
     elif "x-component" in ctype or int(getattr(resp, "status_code", 0) or 0) >= 500:
         kind = "other"
     else:
-        kind = classify_page(payload.decode("utf-8", "ignore"))
+        kind = _drop_on_wall(sess, classify_page(payload.decode("utf-8", "ignore")))
     return {"counts": counts, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}
 
@@ -624,7 +665,7 @@ def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0
         except Exception:
             pass
     html = bytes(out).decode("utf-8", "ignore")
-    kind = classify_page(html)
+    kind = _drop_on_wall(sess, classify_page(html))
     if kind == "other" and is_listing_page(html):
         kind = "listing"
     return {"html": html, "raw_bytes": raw, "status": int(getattr(resp, "status_code", 0) or 0),
@@ -712,6 +753,6 @@ def fetch_rsc_tickets(url: str, proxy_url: str | None, *, tree_header: str | Non
     elif "x-component" in ctype or int(getattr(resp, "status_code", 0) or 0) >= 500:
         kind = "other"
     else:
-        kind = classify_page(payload.decode("utf-8", "ignore"))
+        kind = _drop_on_wall(sess, classify_page(payload.decode("utf-8", "ignore")))
     return {"prices": prices, "raw_bytes": len(body), "status": int(getattr(resp, "status_code", 0) or 0),
             "url": str(getattr(resp, "url", "") or url), "kind": kind, "payload": payload}

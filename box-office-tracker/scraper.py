@@ -3063,7 +3063,15 @@ def _http_fetch_summary():
     return (f"🧵 http seat fetch: ok={st['http_ok']} fallback={st['http_fallback']} "
             f"blocked={st['http_blocked']} parity_checked={st['checked']} "
             f"mismatch={st['mismatch']} disabled={st['disabled']} "
+            f"dropped_tunnels={_dropped_tunnels()} "
             f"http_bytes={st['http_bytes'] / 1048576:.1f} MB (~{per:.0f} KB/http page)")
+
+
+def _dropped_tunnels():
+    """Proxy tunnels discarded after a Cloudflare wall this leg (0 = the
+    module never loaded, i.e. the browser-only path)."""
+    mod = sys.modules.get("seat_fetch_http")
+    return mod.DROPPED["tunnels"] if mod is not None else 0
 
 
 COUNT_SEATS_JS = r'''() => {
