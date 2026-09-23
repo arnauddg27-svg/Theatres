@@ -23,9 +23,14 @@ Usage:
 """
 
 import glob
+import theatre_weights
+from forecast_windows import window_profile
 import gzip
 import json, csv, os, sys, re, statistics
 import seat_regression
+from actuals_quality import independent_daily_actuals, independent_daily_override
+from forecast_evaluation import select_forecast_checkpoints, utc_timestamp
+from stage_forecasting import daily_evidence_candidate, forecast_stage
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from math import exp, log, sqrt
@@ -80,7 +85,7 @@ MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
 MAX_LOCAL_THURSDAY_SHARE_WEIGHT = 0.50
-MODEL_VERSION = "seat-regression-v27-volume-divergence-cap"
+MODEL_VERSION = "seat-regression-v31-evidence-integrity"
 # Feed snapshot per-day estimates into the production weekend assembly so the
 # forecast runs the shape the LOO/bake-off/conformal band are fitted on
 # (apply_regression_snapshot_weekend). OFF after adversarial testing
@@ -1787,6 +1792,8 @@ def load_daily_actual_overrides(weekend_of=None, through_date=None):
 
     selected = {}
     for idx, row in enumerate(rows):
+        if not independent_daily_override(row):
+            continue
         row_weekend = row.get("weekend_of", "")
         if row_weekend and row_weekend != weekend_of:
             continue
@@ -3621,6 +3628,7 @@ def _recompute_weekend_from_daily_detail_m(daily_details, cal):
         day: _detail_mid_m(details)
         for day, details in (daily_details or {}).items()
         if day in OPENING_WEEKEND_DAYS and _detail_mid_m(details) > 0
+        and not details.get("excluded_from_weekend")
     }
     if not values:
         return None
@@ -3878,13 +3886,12 @@ def _empirical_history_prediction(entry, cal):
 
 
 def _history_daily_actuals(entry):
-    actuals = {}
-    for day, value in (entry.get("daily_actuals", {}) or {}).items():
-        day_name = normalize_opening_day_name(day)
-        gross_m = _positive_float(value)
-        if day_name in OPENING_WEEKEND_DAYS and gross_m and gross_m > 0:
-            actuals[day_name] = gross_m
-    return actuals
+    normalized = dict(entry)
+    normalized["daily_actuals"] = {
+        normalize_opening_day_name(day): value
+        for day, value in (entry.get("daily_actuals") or {}).items()
+    }
+    return independent_daily_actuals(normalized)
 
 
 def _empirical_example_from_details(movie, weekend_of, day, details, actual_m,
@@ -4038,7 +4045,7 @@ def apply_empirical_seat_regression(pred, examples, cal):
     adjusted_days = {}
     factor_by_day = {}
     for day, details in daily_details.items():
-        if details.get("actual_override"):
+        if details.get("actual_override") or details.get("excluded_from_weekend"):
             continue
         predicted_m = _detail_mid_m(details)
         if predicted_m <= 0:
@@ -4742,7 +4749,7 @@ CONFORMAL_BUCKET_MARGIN = 1.3
 CONFORMAL_MIN_HALF_WIDTH = 0.15
 
 
-def conformal_ratio_band(cal, movie, predicted_mid=None):
+def conformal_ratio_band(cal, movie, predicted_mid=None, weekend_of=None):
     """(r_lo, r_hi) empirical band of actual/predicted from history (LOO by movie).
 
     predicted_mid selects the reference class: >= $40M films are judged against
@@ -4754,6 +4761,8 @@ def conformal_ratio_band(cal, movie, predicted_mid=None):
         if e.get("actual_total") and e.get("predicted_mid")
         and e["predicted_mid"] > 0
         and _movie_lookup_key(e.get("movie", "")) != key
+        and (not weekend_of or (e.get("weekend_of") and e["weekend_of"] < weekend_of
+                                and e.get("date") and e["date"] < weekend_of))
     ]
     ratios = sorted(r for _, r in entries)
     if len(ratios) < CONFORMAL_MIN_HISTORY:
@@ -4763,10 +4772,11 @@ def conformal_ratio_band(cal, movie, predicted_mid=None):
         if len(big) >= CONFORMAL_BUCKET_MIN_N:
             r_lo = 1.0 - (1.0 - big[0]) * CONFORMAL_BUCKET_MARGIN
             r_hi = 1.0 + (big[-1] - 1.0) * CONFORMAL_BUCKET_MARGIN
-            return (min(r_lo, 1.0 - CONFORMAL_MIN_HALF_WIDTH),
+            return (max(0.0, min(r_lo, 1.0 - CONFORMAL_MIN_HALF_WIDTH)),
                     max(r_hi, 1.0 + CONFORMAL_MIN_HALF_WIDTH))
     k = min(CONFORMAL_TRIM, max(1, len(ratios) // 8))
-    return ratios[k - 1], ratios[-k]
+    return (max(0.0, min(ratios[k - 1], 1.0 - CONFORMAL_MIN_HALF_WIDTH)),
+            max(ratios[-k], 1.0 + CONFORMAL_MIN_HALF_WIDTH))
 
 
 # HORROR PRE-SALES LIFT (2026-09-19). Horror sells late: every tagged horror
@@ -4925,8 +4935,8 @@ def complete_snapshot_covers_missing_days(pred):
     return weight > 0 or support >= 0.20
 
 
-def select_regression_prediction(pred, cal=None):
-    """Attach the model-driven regression forecast.
+def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
+    """Attach the forecast for the available opening-weekend evidence.
 
     Polymarket and published trade estimates remain context only. Calibration,
     strategy, and reporting use the actual-predictive regression line. Historical
@@ -4934,20 +4944,11 @@ def select_regression_prediction(pred, cal=None):
     to observed seat demand plus snapshot, theatre-footprint, residual, and
     social layers.
     """
-    # The production forecast comes from the seat-regression calibration block
-    # (days_to_weekend -> seat_regression.predict_weekend), passed through with NO
-    # stacked multiplicative adjustments (snapshot blend, component-disagreement
-    # buffer, historical-residual regression, social factor).
-    #
-    # EXCEPTION — Thursday-only window: when Thursday is the only seat day, the
-    # seat-only weekend is a day-SHAPE EXTRAPOLATION (Thursday actual × the
-    # average historical Fri/Sat/Sun split), which structurally over-predicts
-    # frontloaded openings (tentpoles/superhero capture a big share on Thu/Fri).
-    # If snapshots already cover every missing Fri/Sat/Sun day, that film-specific
-    # daily reservation evidence (snapshot_mid_m = Thursday seat + Fri/Sat/Sun
-    # snapshot) beats the average-shape extrapolation — make it the headline.
-    # Only fires for partial-week LIVE forecasts; complete-data historical
-    # predictions have no missing weekend days, so calibration is unchanged.
+    # First compute the previous headline for fallback and prospective comparison.
+    # Below, the stage model can use supported daily reservations directly,
+    # including a partial reservation sample whose missing days were already
+    # extrapolated by build_snapshot_future_layer. Complete weekends retain
+    # their existing calibration. No component-disagreement multiplier is applied.
     active_tier = (cal or {}).get("calibration_factors", {}).get("regression", {}).get("active_tier")
     uses_comps = False
     if complete_snapshot_covers_missing_days(pred):
@@ -4992,10 +4993,37 @@ def select_regression_prediction(pred, cal=None):
         basis += (f"; {src} {score:g} ×{review_factor:.3f}" if score
                   else f"; reviews ×{review_factor:.3f}")
 
+    # Use film-specific future-day evidence once it is sufficiently supported.
+    # This includes partial reservation coverage: the snapshot layer already
+    # extrapolates missing days. Reapplying a generic Friday multiplier on top
+    # discards that film's observed booking pattern. Preserve the old interval
+    # as a floor because component disagreement is additional uncertainty.
+    pred["forecast_stage"] = forecast_stage(pred)
+    pred["stage_baseline_mid_m"] = mid
+    evidence = daily_evidence_candidate(pred) if apply_stage_model else None
+    pred["stage_daily_evidence_applied"] = bool(evidence)
+    if evidence:
+        baseline_band = conformal_ratio_band(
+            cal, pred.get("movie", ""), predicted_mid=mid, weekend_of=pred.get("weekend_of"))
+        if baseline_band and mid and mid > 0:
+            low = min(low, mid * baseline_band[0])
+            high = max(high, mid * baseline_band[1])
+        mid = evidence["mid_m"] * review_factor
+        low = min(low, evidence["low_m"] * review_factor, mid)
+        high = max(high, evidence["high_m"] * review_factor, mid)
+        source = "stage-daily-evidence"
+        basis = (f"{evidence['stage']}: observed days + supported reservation days"
+                 f" (coverage {evidence['coverage']:.0%}, support {evidence['support']:.0%})")
+        if review_factor != 1.0:
+            basis += f"; reviews ×{review_factor:.3f}"
+        if fa is not None:
+            pred["friday_anchor_blend_weight"] = 0.0
+
     # Conformal floor: the band must be at least as wide as the model's own
     # historical error distribution implies (audit: stated bands covered only
     # 44% of actuals). Widens only — the midpoint is untouched.
-    band = conformal_ratio_band(cal, pred.get("movie", ""), predicted_mid=mid) if mid and mid > 0 else None
+    band = conformal_ratio_band(cal, pred.get("movie", ""), predicted_mid=mid,
+                                weekend_of=pred.get("weekend_of")) if mid and mid > 0 else None
     if band:
         r_lo, r_hi = band
         c_low, c_high = mid * r_lo, mid * r_hi
@@ -5004,6 +5032,33 @@ def select_regression_prediction(pred, cal=None):
             high = max(high, c_high)
             pred["conformal_band"] = (round(r_lo, 3), round(r_hi, 3))
             basis += f"; conformal band ×[{r_lo:.2f},{r_hi:.2f}]"
+
+    if (pred["forecast_stage"] == "presales" and complete_snapshot_covers_missing_days(pred)
+            and mid and mid > 0):
+        # Four future-day rows are still zero observed days. The completed-day
+        # confidence band is not valid here; retain a conservative provisional
+        # range until genuinely prospective presale errors support calibration.
+        low, high = min(low, mid * 0.5), max(high, mid * 2.5)
+        source = "presale-only"
+        basis = "Provisional pre-release forecast; limited validation; " + basis
+        pred["forecast_provisional"] = True
+
+    reported = {d: _detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
+                if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
+    reported_total = sum(reported.values())
+    if set(OPENING_WEEKEND_DAYS).issubset(reported):
+        # Once every day is reported there is no remaining weekend to forecast.
+        # Regression, reviews and uncertainty floors cannot change that outcome.
+        mid = low = high = reported_total
+        source = "reported-actuals"
+        basis = "All four opening days reported; total counts previews once"
+        pred["forecast_provisional"] = any(
+            v.get("actual_override_status") == "provisional"
+            for v in (pred.get("daily_details") or {}).values())
+    elif reported_total > 0:
+        # The unreported remainder cannot have negative revenue.
+        mid, low = max(mid, reported_total), max(low, reported_total)
+        high = max(high, mid)
 
     pred["regression_mid_m"] = mid
     pred["regression_low_m"] = low
@@ -5038,7 +5093,7 @@ def calibrated_amc_market_share(cal):
     return max(DYNAMIC_AMC_SHARE_MIN_SHARE, min(DYNAMIC_AMC_SHARE_MAX_SHARE, share))
 
 
-def amc_market_share_override_for(target_metadata):
+def amc_market_share_override_for(target_metadata, evidence_time=None):
     """Operator-set per-film AMC revenue share, if any (else None).
 
     AMC's share of a film is idiosyncratic (an ultra-wide family tentpole like
@@ -5051,6 +5106,15 @@ def amc_market_share_override_for(target_metadata):
     """
     if target_metadata is None:
         return None
+    known_date = getattr(target_metadata, "amc_market_share_override_as_of", "")
+    if known_date:
+        try:
+            # A date-only adjustment becomes usable after that entire UTC day.
+            available = datetime.strptime(known_date, "%Y-%m-%d").replace(tzinfo=timezone.utc) + timedelta(days=1)
+        except (TypeError, ValueError):
+            return None
+        if evidence_time is None or evidence_time < available:
+            return None
     try:
         val = float(getattr(target_metadata, "amc_market_share_override", 0) or 0)
     except (TypeError, ValueError):
@@ -5661,6 +5725,32 @@ def days_to_weekend(daily_estimates, cal, daily_coverage_ratios=None,
     return mid, low, high, per_day
 
 
+def apply_calibrated_day_detail(details, calibrated):
+    """Keep a calibrated day's range on the same scale as its midpoint.
+
+    Reported actuals are observations, so a fitted calibration cannot change
+    them. Estimated days retain the original range as well as its scaled range.
+    """
+    raw_mid = details["domestic_mid"]
+    raw_low = details["domestic_low"]
+    raw_high = details["domestic_high"]
+    reported_m = _positive_float(details.get("actual_override_m"))
+    mid = ((reported_m * 1_000_000 if reported_m else raw_mid)
+           if details.get("actual_override") else calibrated.get("mid", raw_mid))
+    if details.get("actual_override"):
+        details.pop("excluded_from_weekend", None)
+        details.pop("excluded_reason", None)
+    scale = mid / raw_mid if raw_mid > 0 else 1.0
+    details.update(raw_domestic_mid=raw_mid, raw_domestic_low=raw_low,
+                   raw_domestic_high=raw_high, day_scale=scale,
+                   domestic_mid=mid,
+                   domestic_low=(mid if details.get("actual_override")
+                                 else max(0.0, min(raw_low, raw_low * scale, mid))),
+                   domestic_high=(mid if details.get("actual_override")
+                                  else max(raw_high, raw_high * scale, mid)))
+    return details
+
+
 def _snapshot_day_name(date_str, rows):
     csv_day = rows[0].get("day_of_week", "") if rows else ""
     if csv_day:
@@ -6028,6 +6118,9 @@ def measured_snapshot_sample_expansion(regular_seat_data, snapshot_data):
     return statistics.median(factors), len(subset)
 
 
+THEATRE_WEIGHTING_APPLY = False  # research: improved subset estimates, not final forecasts
+
+
 def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
                           expected_timezone_counts=None,
                           theatre_timezone_map=None,
@@ -6075,6 +6168,11 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         expected_timezone_counts=expected_timezone_counts,
         theatre_timezone_map=theatre_timezone_map,
     )
+    theatre_profile = None
+    if THEATRE_WEIGHTING_APPLY and not (sample_norm_override and sample_norm_override[0]):
+        theatre_profile = theatre_weights.expansion(
+            captured_by_theatre, theatre_timezone_map or {}, expected_amc_theatres,
+            date_str, os.path.join(DATA_DIR, "theatre-revenue-profiles.json"))
     if sample_norm_override and sample_norm_override[0]:
         # Same-film measured subset->fleet factor (see
         # measured_snapshot_sample_expansion), composed with a completeness
@@ -6085,6 +6183,10 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
             if n_amc_theatres and subset_size else 1.0
         )
         sample_norm_factor = measured_factor * completeness
+        amc_total = sampled_amc_total * sample_norm_factor
+    elif theatre_profile:
+        factor, _support = theatre_profile
+        sample_norm_factor = 1.0 + (factor - 1.0) * tz_profile["coverage_factor"]
         amc_total = sampled_amc_total * sample_norm_factor
     else:
         amc_total, sample_norm_factor = normalize_amc_sample(
@@ -6148,6 +6250,9 @@ def estimate_snapshot_day(rows, date_str, cal, expected_amc_theatres,
         "amc_total": amc_total,
         "sampled_amc_total": sampled_amc_total,
         "sample_normalization_factor": sample_norm_factor,
+        "sample_normalization_source": ("same_film" if sample_norm_override and sample_norm_override[0]
+                                        else "historical_theatre_weights" if theatre_profile else "theatre_count"),
+        "theatre_profile_training_films": theatre_profile[1] if theatre_profile else 0,
         "raw_domestic_mid": domestic_mid,
         "raw_domestic_low": domestic_low,
         "raw_domestic_high": domestic_high,
@@ -7243,6 +7348,8 @@ def record_actual(cal, movie, predicted_mid, predicted_low, predicted_high,
         cal["calibration_factors"]["regression"] = (
             seat_regression.fit_regression_calibration(history)
         )
+        cal["calibration_factors"]["day_weights"] = dict(
+            cal["calibration_factors"]["regression"]["day_shares"])
         for _dead in ("day_scale_factors", "overall_scale_factor",
                       "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):
             cal["calibration_factors"].pop(_dead, None)
@@ -7491,18 +7598,18 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   social_data=None, daily_actual_overrides=None,
                   showtime_link_profiles=None,
                   apply_empirical_regression=True, reviews_data=None,
-                  cross_chain_data=None):
+                  cross_chain_data=None, apply_stage_model=True):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
     # the opening weekend only, so prediction totals must stay Thu-Sun.
-    all_dates = sorted(seat_data.keys())
+    all_dates = sorted(set(seat_data) | set(snapshot_data or {}))
     if not all_dates:
         return None
     opening_dates = []
     ignored_dates = {}
     for date_str in all_dates:
-        rows = seat_data[date_str]
+        rows = seat_data.get(date_str) or (snapshot_data or {}).get(date_str, [])
         csv_day = rows[0].get("day_of_week", "") if rows else ""
         day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
         if day_name in OPENING_WEEKEND_DAYS:
@@ -7515,7 +7622,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
 
     if daily_actual_overrides is None:
         daily_actual_overrides = load_daily_actual_overrides(
-            weekend_of=seat_data_weekend_of(seat_data)
+            weekend_of=seat_data_weekend_of(seat_data or snapshot_data)
         )
 
     model_cohorts = active_model_cohorts()
@@ -7585,7 +7692,12 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # AMC-occupancy saturation gate; the old showings/cinema gate wrongly
     # blocked correctly-read films — Jackass ran 2.6 showings/cinema on Friday
     # and Evil Dead Burn 3.7, both read accurately by the formula.)
-    share_override_resolved = amc_market_share_override_for(movie_metadata)
+    evidence_times = [stamp for data, field in ((seat_data, "check_time"),
+                                               (snapshot_data or {}, "snapshot_time"))
+                      for rows in data.values() for row in rows
+                      if (stamp := utc_timestamp(row.get(field))) is not None]
+    share_override_resolved = amc_market_share_override_for(
+        movie_metadata, max(evidence_times, default=None))
     cross_chain_share_value = None
     cross_chain_volume_value = None
     _is_family = (getattr(movie_metadata, "audience_type", "") or "") == FAMILY_WALKUP_AUDIENCE
@@ -7629,7 +7741,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     dynamic_amc_share_anchors = []
     dynamic_amc_share_anchor = None
     for date_str in opening_dates:
-        rows = seat_data[date_str]
+        rows = seat_data.get(date_str, [])
         # Use day_of_week from CSV if available, else compute from date
         csv_day = rows[0].get("day_of_week", "") if rows else ""
         day_name = csv_day if csv_day else datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
@@ -7963,7 +8075,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             details["actual_override"] = False
         daily_details[day_name] = details
 
-    weekend_of = seat_data_weekend_of(seat_data)
+    weekend_of = seat_data_weekend_of(seat_data or snapshot_data)
     date_by_day = opening_weekend_dates_by_day(weekend_of)
     for day_name in OPENING_WEEKEND_DAYS:
         if day_name in daily_details:
@@ -7980,7 +8092,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         daily_estimates[day_name] = actual_detail["domestic_mid"]
         daily_details[day_name] = actual_detail
 
-    if not daily_estimates:
+    if not daily_estimates and not snapshot_data:
         return None
 
     apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=cal)
@@ -8038,19 +8150,18 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         details = daily_details.get(day_name)
         if not details:
             continue
-        raw_mid = details["domestic_mid"]
-        raw_low = details["domestic_low"]
-        raw_high = details["domestic_high"]
-        # The regression-block per_day only carries a calibrated "mid"; per-day
-        # scaling is no longer applied (scale defaults to 1.0).
-        day_scale = calibrated.get("scale", 1.0)
-        details["raw_domestic_mid"] = raw_mid
-        details["raw_domestic_low"] = raw_low
-        details["raw_domestic_high"] = raw_high
-        details["day_scale"] = day_scale
-        details["domestic_mid"] = calibrated.get("mid", raw_mid)
-        details["domestic_low"] = raw_low * day_scale
-        details["domestic_high"] = raw_high * day_scale
+        apply_calibrated_day_detail(details, calibrated)
+
+    # Rejected observations remain available for diagnostics, but cannot be
+    # reintroduced by snapshot anchors, empirical recalibration or stage logic.
+    excluded_daily_details = {d: v for d, v in daily_details.items()
+                              if v.get("excluded_from_weekend") and not v.get("actual_override")}
+    daily_details = {d: v for d, v in daily_details.items() if d not in excluded_daily_details}
+    n_days = len(daily_details)
+    daily_estimates = {d: v["domestic_mid"] for d, v in daily_details.items()}
+    daily_coverage_ratios = {d: v for d, v in daily_coverage_ratios.items() if d in daily_details}
+    coverage_ratio = _coverage_average(daily_coverage_ratios)
+    weighted_coverage_ratio = weighted_weekend_coverage_ratio(daily_coverage_ratios, cal)
 
     # Convert to millions for display
     seat_mid_m = seat_mid / 1_000_000
@@ -8069,11 +8180,22 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             date_str: seat_data[date_str]
             for date_str in opening_dates
             if date_str in seat_data
+            and datetime.strptime(date_str, "%Y-%m-%d").strftime("%A") not in excluded_daily_details
         },
         amc_share_anchor=dynamic_amc_share_anchor,
         amc_share_anchors=dynamic_amc_share_anchors,
         amc_share_override=share_override_resolved,
     )
+    # A presale-only forecast needs direct coverage of all four days. Do not
+    # turn a sparse or uncalibrated sample into a zero-dollar headline.
+    if not daily_details and (
+        not snapshot_layer
+        or not set(OPENING_WEEKEND_DAYS).issubset(snapshot_layer.get("snapshot_days") or [])
+        or (snapshot_layer.get("snapshot_model_coverage_ratio") or 0) < 0.50
+        or (snapshot_layer.get("snapshot_calibration_support_factor") or 0) < 0.20
+        or len({e.get("movie") for e in seat_regression.fitting_history((cal or {}).get("history", []))}) < 8
+    ):
+        return None
     data_profile = missing_data_profile(
         daily_details,
         cal,
@@ -8100,7 +8222,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # Thursday and Friday should count as 1, not 2).
     all_theatre_names: set[str] = set()
     for date_str in opening_dates:
-        rows = seat_data[date_str]
+        rows = seat_data.get(date_str) or (snapshot_data or {}).get(date_str, [])
         for row in rows:
             t_name = row.get("theatre_name", "")
             if t_name:
@@ -8135,6 +8257,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         "w_seat": w_seat,
         "w_poly": w_poly,
         "daily_details": daily_details,
+        "excluded_daily_details": excluded_daily_details,
         "daily_estimates": {
             day: details["domestic_mid"]
             for day, details in daily_details.items()
@@ -8314,7 +8437,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         apply_snapshot_lift(result, 1.0)
     apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
-    select_regression_prediction(result, cal)
+    result["weekend_of"] = weekend_of
+    select_regression_prediction(result, cal, apply_stage_model=apply_stage_model)
     # ANNOTATION ONLY. The production forecast deliberately applies no
     # component-disagreement buffer (see select_regression_prediction's
     # docstring), but the profile itself was designed as an operator warning
@@ -8330,6 +8454,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         result["snapshot_effective_model_weight"] = round(
             weight * (profile.get("snapshot_weight_multiplier") or 1.0), 4)
     result["data_outage"] = detect_data_outage(result)
+    result.update(window_profile(movie, weekend_of, poly_data))
     return result
 
 
@@ -8760,7 +8885,7 @@ def learned_preview_seat_residual(cal, day_name, exclude_movie="",
         entry_movie = entry.get("movie", "")
         if _movie_matches(exclude_movie, entry_movie):
             continue
-        daily_actuals = entry.get("daily_actuals") or {}
+        daily_actuals = independent_daily_actuals(entry)
         daily_predictions = entry.get("daily_predictions") or {}
         raw_daily_predictions = entry.get("raw_daily_predictions") or {}
         actual = _positive_float(daily_actuals.get(day_name))
@@ -9007,6 +9132,8 @@ def print_prediction(pred, verbose=False):
     movie = pred["movie"]
     print(f"\n  {movie.upper()}")
     print(f"  {'─' * len(movie)}")
+    if pred.get("excluded_daily_details"):
+        print("  Unusable seat days omitted: " + ", ".join(pred["excluded_daily_details"]))
     if pred.get("metadata_missing"):
         # Configuration warning first: a missing metadata row silently disables
         # the broad_family cross-chain gate (PAW Patrol recorded -36% this way),
@@ -9509,6 +9636,8 @@ def print_prediction(pred, verbose=False):
         label = source.replace("-", " ")
         basis_str = f", basis {basis}" if basis else ""
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
+    if pred.get("market_window_warning"):
+        print(f"    Date window: {pred['market_window_warning']}")
     if pred.get("data_outage"):
         cov = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
         quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
@@ -9550,7 +9679,7 @@ def print_prediction(pred, verbose=False):
               f"(raw x{pred['historical_residual_raw_factor']:.3f}, "
               f"strength {pred['historical_residual_strength']:.0%}, "
               f"n={pred['historical_residual_n']}{suppression_note})")
-    if poly:
+    if poly and pred.get("market_window_compatible") is not False:
         diff = regression_mid - poly["ev"]
         direction = "higher" if diff > 0 else "lower"
         print(f"    vs Polymarket: {'+' if diff > 0 else ''}{diff:,.1f}M {direction}")
@@ -9603,6 +9732,8 @@ PREDICTION_LOG_FIELDS = [
     "logged_at", "weekend_of", "movie", "headline_mid_m", "headline_low_m", "headline_high_m",
     "source", "seat_only_m", "snapshot_mid_m", "amc_share_used", "poly_ev_m", "seat_days",
     "coverage_ratio", "data_outage",
+    "model_version", "forecast_stage", "baseline_mid_m",
+    "model_gross_window", "market_window_compatible",
 ]
 
 
@@ -9632,6 +9763,12 @@ def prediction_log_row(pred, logged_at=None, weekend_of=None):
         "seat_days": "+".join(d for d in OPENING_WEEKEND_DAYS if d in details),
         "coverage_ratio": round(float(pred.get("coverage_ratio") or 0), 3) if pred.get("coverage_ratio") is not None else "",
         "data_outage": "1" if pred.get("data_outage") else "",
+        "model_version": pred.get("model_version") or "",
+        "forecast_stage": pred.get("forecast_stage") or forecast_stage(pred),
+        "baseline_mid_m": (round(float(pred["stage_baseline_mid_m"]), 2)
+                           if pred.get("stage_baseline_mid_m") is not None else ""),
+        "model_gross_window": pred.get("model_gross_window") or "Thursday-Sunday",
+        "market_window_compatible": "0" if pred.get("market_window_compatible") is False else "1",
     }
 
 
@@ -9640,9 +9777,35 @@ def append_prediction_log(pred, path=None, weekend_of=None):
     path = path or PREDICTION_LOG_CSV
     try:
         row = prediction_log_row(pred, weekend_of=weekend_of)
-        new = not os.path.exists(path)
+        new = not os.path.exists(path) or os.path.getsize(path) == 0
+        fields = list(PREDICTION_LOG_FIELDS)
+        if not new:
+            with open(path, newline="") as f:
+                reader = csv.DictReader(f)
+                old_fields = reader.fieldnames or []
+                missing = [name for name in fields if name not in old_fields]
+                fields = old_fields + missing
+                if missing:
+                    # Add columns atomically, preserving every old value and
+                    # any user-added columns. Never append wider rows below an
+                    # old header: their comparison forecasts would be lost.
+                    import tempfile
+                    temp_path = None
+                    try:
+                        with tempfile.NamedTemporaryFile("w", newline="", delete=False,
+                                                         dir=os.path.dirname(os.path.abspath(path))) as tmp:
+                            temp_path = tmp.name
+                            writer = csv.DictWriter(tmp, fieldnames=fields)
+                            writer.writeheader()
+                            for existing in reader:
+                                writer.writerow(existing)
+                        os.replace(temp_path, path)
+                        temp_path = None
+                    finally:
+                        if temp_path and os.path.exists(temp_path):
+                            os.unlink(temp_path)
         with open(path, "a", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=PREDICTION_LOG_FIELDS)
+            w = csv.DictWriter(f, fieldnames=fields)
             if new:
                 w.writeheader()
             w.writerow(row)
@@ -9662,9 +9825,12 @@ def select_live_headline(rows, weekend_of):
         cutoff = (datetime.strptime(weekend_of, "%Y-%m-%d") + timedelta(days=3)).strftime("%Y-%m-%dT12:00:00Z")
     except (TypeError, ValueError):
         return None
+    cutoff_stamp = utc_timestamp(cutoff)
     ok = sorted((r for r in rows if (r.get("weekend_of") or "") == weekend_of
-                 and (r.get("logged_at") or "") < cutoff and _positive_float(r.get("headline_mid_m"))),
-                key=lambda r: r.get("logged_at") or "")
+                 and utc_timestamp(r.get("logged_at")) is not None
+                 and utc_timestamp(r["logged_at"]) < cutoff_stamp
+                 and _positive_float(r.get("headline_mid_m"))),
+                key=lambda r: utc_timestamp(r["logged_at"]))
     if not ok:
         return None
     last = ok[-1]
@@ -9677,6 +9843,7 @@ def select_live_headline(rows, weekend_of):
         "source": last.get("source", ""),
         "seat_days": last.get("seat_days", ""),
         "rows": len(ok),
+        "checkpoints": select_forecast_checkpoints(ok, weekend_of),
     }
     if thu:
         out["thursday_mid_m"] = float(thu[-1]["headline_mid_m"])
@@ -9792,6 +9959,15 @@ Options:
 
 
 # ── CLI ──────────────────────────────────────────────────────────────────────
+
+def prediction_movie_names(seat_data, snapshot_data):
+    """Include snapshot-only films, retaining seat titles for matching aliases."""
+    names = list(seat_data)
+    for movie in snapshot_data:
+        if movie_mapping_get({name: True for name in names}, movie) is None:
+            names.append(movie)
+    return sorted(names)
+
 
 def main():
     args = sys.argv[1:]
@@ -9992,11 +10168,13 @@ def main():
     # voided the whole per-film cross-chain share on the live forecast path —
     # the same failure as the archive-blind loader, one level up. Pin every
     # side-input to the weekend the seat rows actually came from.
-    if replay_weekend is None and seat_data:
-        replay_weekend = max(
-            (seat_data_weekend_of(rows) for rows in seat_data.values()),
-            default=None,
-        )
+    if replay_weekend is None:
+        current_snapshots = load_pre_reservation_data(through_date=through_date)
+        seat_weekends = [seat_data_weekend_of(rows) for rows in seat_data.values()]
+        snapshot_weekends = [seat_data_weekend_of(rows) for rows in current_snapshots.values()]
+        replay_weekend = max(seat_weekends + snapshot_weekends, default=None)
+        if replay_weekend and replay_weekend not in seat_weekends:
+            seat_data = filter_seat_data_through(load_seat_data(weekend_of=replay_weekend), through_date)
     poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
     snapshot_data = load_pre_reservation_data(
         weekend_of=replay_weekend,
@@ -10024,8 +10202,8 @@ def main():
     theatre_counts = load_theatre_counts()
     metadata = load_movie_metadata()
 
-    if not seat_data:
-        print("No seat data found. Run: python3 scraper.py --collect-links, then python3 scraper.py")
+    if not seat_data and not snapshot_data:
+        print("No seat or reservation data found. Run: python3 scraper.py --collect-links, then python3 scraper.py")
         return
 
     # Filter to a specific movie if requested
@@ -10037,7 +10215,7 @@ def main():
             return
         movie_filter = args[idx + 1].lower()
     movies_to_predict = [
-        movie for movie in sorted(seat_data.keys())
+        movie for movie in prediction_movie_names(seat_data, snapshot_data)
         if not movie_filter or movie_filter in movie.lower()
     ]
 
@@ -10065,7 +10243,7 @@ def main():
 
     for movie in movies_to_predict:
         nat_count = national_theatre_count_for_movie(movie, theatre_counts, metadata=metadata)
-        pred = predict_movie(movie, seat_data[movie],
+        pred = predict_movie(movie, movie_mapping_get(seat_data, movie, {}),
                             movie_mapping_get(poly_data, movie, []), cal, verbose=verbose,
                             national_theatre_count=nat_count,
                             snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
@@ -10077,7 +10255,9 @@ def main():
         if pred:
             print_prediction(pred, verbose=verbose)
             if not through_date:            # live runs only, never replays
-                append_prediction_log(pred, weekend_of=seat_data_weekend_of(seat_data[movie]))
+                append_prediction_log(pred, weekend_of=pred.get("weekend_of") or replay_weekend)
+        else:
+            print(f"\n  {movie.upper()}: no forecast — insufficient usable seat or reservation evidence.")
 
     diag = price_diagnostic(replay_weekend) if movies_to_predict else None
     if diag:

@@ -112,6 +112,7 @@ class TargetMetadata:
     # small sample (e.g. an ultra-wide family tentpole that under-indexes at
     # AMC), an operator can pin the share here. Applies to THAT film only.
     amc_market_share_override: float = 0.0
+    amc_market_share_override_as_of: str = ""
 
 
 @dataclass(frozen=True)
@@ -212,11 +213,18 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
     if not path.exists():
         return {}
     metadata = {}
+    merged_rows = {}
     with path.open(newline="") as f:
         for row in csv.DictReader(f):
             movie = (row.get("movie") or "").strip()
             if not movie:
                 continue
+            # Incomplete appended rows must not erase existing verified fields.
+            # A later nonblank value still acts as an explicit update.
+            key = movie.casefold()
+            merged_rows.setdefault(key, {}).update({k: v for k, v in row.items()
+                                                   if v is not None and str(v).strip()})
+            row = merged_rows[key]
             item = TargetMetadata(
                 movie=movie,
                 weekend_of=(row.get("weekend_of") or "").strip(),
@@ -236,6 +244,7 @@ def load_movie_metadata(path: Path | str = DEFAULT_METADATA_CSV) -> dict[str, Ta
                 release_scale=_clean(row.get("release_scale")),
                 avg_showings_per_cinema=_float(row, "avg_showings_per_cinema"),
                 amc_market_share_override=_float(row, "amc_market_share_override"),
+                amc_market_share_override_as_of=(row.get("amc_market_share_override_as_of") or "").strip(),
             )
             metadata[movie.lower()] = item
     return metadata

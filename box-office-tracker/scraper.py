@@ -1602,6 +1602,7 @@ def _event_to_box_office_market(event):
         total_volume += vol
         bracket_markets.append({
             "market_question": m.get("question", ""),
+            "description": m.get("description", "") or event.get("description", ""),
             "outcome_prices": m.get("outcomePrices", ""),
             "volume": vol,
             "market_id": str(m.get("id", "")),
@@ -2121,7 +2122,9 @@ def save_polymarket_data(markets, weekend_of=None):
                 writer.writerow([
                     today, m["movie_title"], m["market_url"],
                     bkt["market_question"], bkt["outcome_prices"],
-                    bkt["volume"], bkt["market_id"], note,
+                    bkt["volume"], bkt["market_id"],
+                    "; ".join(value for value in (note, "settlement_rules=" + bkt["description"]
+                                                 if bkt.get("description") else "") if value),
                 ])
                 new_count += 1
 

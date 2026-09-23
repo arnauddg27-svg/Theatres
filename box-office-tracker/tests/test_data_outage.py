@@ -180,7 +180,7 @@ class DisagreementAnnotationTests(unittest.TestCase):
         import predict as P
         import inspect
         src = inspect.getsource(P.predict_movie)
-        i = src.index("select_regression_prediction(result, cal)")
+        i = src.index("select_regression_prediction(result, cal")
         after = src[i:]
         self.assertIn("model_component_disagreement_profile(result)", after)
         self.assertIn("not applied", after)

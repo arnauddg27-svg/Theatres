@@ -10,6 +10,7 @@ stored scale factor.
 from __future__ import annotations
 
 import seat_regression
+from actuals_quality import independent_daily_actuals, unusable_actual_days
 
 MIN_SCALE_FACTOR = 0.5
 MAX_SCALE_FACTOR = 2.0
@@ -37,6 +38,7 @@ def _as_float(value, default: float) -> float:
 def excluded_calibration_days(entry: dict) -> set[str]:
     """Days that should not train calibration from this historical record."""
     excluded = set(entry.get("calibration_excluded_days", []) or [])
+    excluded.update(unusable_actual_days(entry))
     if entry.get("previews_folded_into_friday"):
         # Friday carries unreported Thursday previews: not a clean Friday,
         # and Thursday is unknown (see seat_regression.folded_preview_days).
@@ -68,50 +70,19 @@ def _total_actual_for_entry(entry: dict) -> float:
 
 
 def snapshot_calibration_actual_for_day(entry: dict, day: str) -> tuple[float, float]:
-    """Actual gross and confidence multiplier for snapshot-day calibration.
+    """Only independent actuals may train a daily snapshot conversion.
 
-    Prefer direct day actuals. If a row has only a weekend total plus some
-    known reported days, allocate the remaining total across missing
-    snapshot-covered days by the snapshot's own raw day proportions. This
-    lets total-only weekend actuals teach the future snapshot layer without
-    writing fabricated public daily grosses into history.
+    A reported weekend remainder can grade the weekend but cannot teach daily
+    shape by allocating it using the same snapshots being calibrated.
     """
-    daily_actuals = opening_day_actuals(entry.get("daily_actuals", {}) or {})
+    if seat_regression.is_data_outage_entry(entry) or entry.get("exclude_from_calibration"):
+        return 0.0, 0.0
+    daily_actuals = independent_daily_actuals(entry)
     direct = _as_float(daily_actuals.get(day), 0.0)
     if direct > 0:
         return direct, 1.0
 
-    total_actual = _total_actual_for_entry(entry)
-    if total_actual <= 0:
-        return 0.0, 0.0
-
-    known_total = sum(daily_actuals.values())
-    remaining_actual = total_actual - known_total
-    if remaining_actual <= 0:
-        return 0.0, 0.0
-
-    snapshot_predictions = entry.get("snapshot_daily_predictions", {}) or {}
-    if day not in snapshot_predictions:
-        return 0.0, 0.0
-
-    missing_days = [
-        candidate
-        for candidate in OPENING_WEEKEND_DAYS
-        if candidate not in daily_actuals
-        and _as_float(snapshot_predictions.get(candidate), 0.0) > 0
-    ]
-    predicted_remaining = sum(
-        _as_float(snapshot_predictions.get(candidate), 0.0)
-        for candidate in missing_days
-    )
-    predicted_day = _as_float(snapshot_predictions.get(day), 0.0)
-    if predicted_remaining <= 0 or predicted_day <= 0:
-        return 0.0, 0.0
-
-    inferred_actual = remaining_actual * (predicted_day / predicted_remaining)
-    if inferred_actual <= 0:
-        return 0.0, 0.0
-    return inferred_actual, SNAPSHOT_INFERRED_DAILY_ACTUAL_WEIGHT
+    return 0.0, 0.0
 
 
 def coverage_score(n_theatres: int | float = 0,
@@ -474,6 +445,10 @@ def sanitize_calibration(cal: dict,
     # Regression calibration block (replaces EMA day/scale factors). Selects the
     # best-cross-validated tier (identity / global_ratio / regression) from history.
     factors["regression"] = seat_regression.fit_regression_calibration(history)
+    if history:
+        # Refresh both consumers from the same admissible labels. Otherwise
+        # snapshot priors keep using old, contaminated persisted day weights.
+        factors["day_weights"] = dict(factors["regression"]["day_shares"])
     # Drop superseded EMA factor blocks (one-time migration).
     for _dead in ("day_scale_factors", "overall_scale_factor",
                   "snapshot_to_day_scale_factors", "snapshot_to_lead_scale_factors"):

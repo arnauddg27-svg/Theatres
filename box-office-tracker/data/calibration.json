@@ -7,12 +7,12 @@
       "predicted_mid": 93.37,
       "predicted_low": 89.64,
       "predicted_high": 98.04,
-      "actual_total": 97.0,
+      "actual_total": 97.206874,
       "daily_actuals": {
         "Thursday": 12.6,
-        "Friday": 26.69,
-        "Saturday": 32.46,
-        "Sunday": 25.45
+        "Friday": 26.690343999999996,
+        "Saturday": 32.463413,
+        "Sunday": 25.453117
       },
       "daily_predictions": {
         "Thursday": 12.14,
@@ -26,7 +26,7 @@
         "Saturday": 17.84,
         "Sunday": 27.55
       },
-      "error_pct": -3.7,
+      "error_pct": -3.95,
       "n_theatres": 378,
       "n_days": 4,
       "model_cohort_key": "core",
@@ -54,7 +54,69 @@
         "Saturday": 0.0347,
         "Sunday": 0.0197
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Michael-(2026)",
+      "actual_source": "https://www.the-numbers.com/movie/Michael-(2026)",
+      "actual_status": "reported",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Michael",
+          "weekend_of": "2026-04-24",
+          "date": "2026-04-27",
+          "predicted_mid": 93.37,
+          "predicted_low": 89.64,
+          "predicted_high": 98.04,
+          "actual_total": 97.0,
+          "daily_actuals": {
+            "Thursday": 12.6,
+            "Friday": 26.69,
+            "Saturday": 32.46,
+            "Sunday": 25.45
+          },
+          "daily_predictions": {
+            "Thursday": 12.14,
+            "Friday": 39.19,
+            "Saturday": 18.71,
+            "Sunday": 23.41
+          },
+          "raw_daily_predictions": {
+            "Thursday": 10.63,
+            "Friday": 37.35,
+            "Saturday": 17.84,
+            "Sunday": 27.55
+          },
+          "error_pct": -3.7,
+          "n_theatres": 378,
+          "n_days": 4,
+          "model_cohort_key": "core",
+          "reference_amc_theatres": 376,
+          "daily_theatre_counts": {
+            "Thursday": 375,
+            "Friday": 261,
+            "Saturday": 260,
+            "Sunday": 376
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.997,
+            "Friday": 0.694,
+            "Saturday": 0.691,
+            "Sunday": 1.0
+          },
+          "coverage_ratio": 0.846,
+          "calibration_excluded_days": [
+            "Friday",
+            "Saturday"
+          ],
+          "daily_sellout_fractions": {
+            "Thursday": 0.0009,
+            "Friday": 0.0788,
+            "Saturday": 0.0347,
+            "Sunday": 0.0197
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "The Devil Wears Prada 2",
@@ -63,12 +125,12 @@
       "predicted_mid": 95.93,
       "predicted_low": 95.93,
       "predicted_high": 95.93,
-      "actual_total": 76.75,
+      "actual_total": 76.747075,
       "daily_actuals": {
-        "Friday": 22.9,
-        "Saturday": 25.11,
-        "Sunday": 18.74,
-        "Thursday": 10.0
+        "Thursday": 10.0,
+        "Friday": 22.900084,
+        "Saturday": 25.10554,
+        "Sunday": 18.741451
       },
       "daily_predictions": {
         "Thursday": 14.04,
@@ -76,13 +138,13 @@
         "Saturday": 30.73,
         "Sunday": 14.89
       },
-      "error_pct": 25.0,
+      "error_pct": 24.99,
       "n_theatres": 431,
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Devil-Wears-Prada-2-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 13.07,
         "Friday": 36.27,
@@ -124,7 +186,82 @@
       "daily_early_sellout_fractions": {
         "Saturday": 0.0
       },
-      "previews_split_source": "Variety 2026-05-01 https://variety.com/2026/film/box-office/box-office-devil-wears-prada-2-previews-1236734300/"
+      "previews_split_source": "Variety 2026-05-01 https://variety.com/2026/film/box-office/box-office-devil-wears-prada-2-previews-1236734300/",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Devil-Wears-Prada-2-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Devil Wears Prada 2",
+          "weekend_of": "2026-05-01",
+          "date": "2026-05-05",
+          "predicted_mid": 95.93,
+          "predicted_low": 95.93,
+          "predicted_high": 95.93,
+          "actual_total": 76.75,
+          "daily_actuals": {
+            "Friday": 22.9,
+            "Saturday": 25.11,
+            "Sunday": 18.74,
+            "Thursday": 10.0
+          },
+          "daily_predictions": {
+            "Thursday": 14.04,
+            "Friday": 36.27,
+            "Saturday": 30.73,
+            "Sunday": 14.89
+          },
+          "error_pct": 25.0,
+          "n_theatres": 431,
+          "n_days": 4,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 13.07,
+            "Friday": 36.27,
+            "Saturday": 30.73,
+            "Sunday": 15.47
+          },
+          "daily_theatre_counts": {
+            "Thursday": 425,
+            "Friday": 287,
+            "Saturday": 261,
+            "Sunday": 430
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 0.457,
+            "Saturday": 0.415,
+            "Sunday": 1.0
+          },
+          "coverage_ratio": 0.718,
+          "calibration_excluded_days": [
+            "Friday",
+            "Saturday"
+          ],
+          "snapshot_daily_predictions": {
+            "Saturday": 3.0
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.034
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day"
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0282,
+            "Friday": 0.0589,
+            "Saturday": 0.0382,
+            "Sunday": 0.0104
+          },
+          "daily_early_sellout_fractions": {
+            "Saturday": 0.0
+          },
+          "previews_split_source": "Variety 2026-05-01 https://variety.com/2026/film/box-office/box-office-devil-wears-prada-2-previews-1236734300/"
+        }
+      }
     },
     {
       "movie": "Mortal Kombat II",
@@ -133,12 +270,12 @@
       "predicted_mid": 46.4,
       "predicted_low": 46.39,
       "predicted_high": 46.43,
-      "actual_total": 38.5,
+      "actual_total": 38.501177,
       "daily_actuals": {
         "Thursday": 5.2,
-        "Friday": 11.6,
-        "Saturday": 13.3,
-        "Sunday": 8.4
+        "Friday": 11.601022,
+        "Saturday": 13.298057,
+        "Sunday": 8.402098
       },
       "daily_predictions": {
         "Thursday": 4.88,
@@ -146,13 +283,13 @@
         "Saturday": 15.14,
         "Sunday": 8.54
       },
-      "error_pct": 20.5,
+      "error_pct": 20.52,
       "n_theatres": 431,
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Mortal-Kombat-II-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 4.55,
         "Friday": 18.29,
@@ -202,7 +339,89 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Mortal-Kombat-II-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Mortal Kombat II",
+          "weekend_of": "2026-05-08",
+          "date": "2026-05-12",
+          "predicted_mid": 46.4,
+          "predicted_low": 46.39,
+          "predicted_high": 46.43,
+          "actual_total": 38.5,
+          "daily_actuals": {
+            "Thursday": 5.2,
+            "Friday": 11.6,
+            "Saturday": 13.3,
+            "Sunday": 8.4
+          },
+          "daily_predictions": {
+            "Thursday": 4.88,
+            "Friday": 18.29,
+            "Saturday": 15.14,
+            "Sunday": 8.54
+          },
+          "error_pct": 20.5,
+          "n_theatres": 431,
+          "n_days": 4,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 4.55,
+            "Friday": 18.29,
+            "Saturday": 15.14,
+            "Sunday": 8.04
+          },
+          "daily_theatre_counts": {
+            "Thursday": 415,
+            "Friday": 429,
+            "Saturday": 428,
+            "Sunday": 430
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.976,
+            "Friday": 1.0,
+            "Saturday": 1.0,
+            "Sunday": 1.0
+          },
+          "coverage_ratio": 0.994,
+          "snapshot_daily_predictions": {
+            "Thursday": 2.47,
+            "Friday": 4.67,
+            "Saturday": 4.3,
+            "Sunday": 2.27
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.202,
+            "Friday": 0.667,
+            "Saturday": 1.0,
+            "Sunday": 1.0
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0101,
+            "Saturday": 0.0132,
+            "Sunday": 0.0022
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "The Sheep Detectives",
@@ -211,11 +430,12 @@
       "predicted_mid": 21.14,
       "predicted_low": 20.17,
       "predicted_high": 22.14,
-      "actual_total": 15.09,
+      "actual_total": 15.087796,
       "daily_actuals": {
-        "Friday": 4.01,
-        "Saturday": 5.19,
-        "Sunday": 5.89
+        "Thursday": 1.03,
+        "Friday": 2.9804179999999993,
+        "Saturday": 5.187014,
+        "Sunday": 5.890364
       },
       "daily_predictions": {
         "Thursday": 0.45,
@@ -223,13 +443,13 @@
         "Saturday": 7.78,
         "Sunday": 6.12
       },
-      "error_pct": 40.1,
+      "error_pct": 40.11,
       "n_theatres": 417,
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Sheep-Detectives-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.42,
         "Friday": 7.1,
@@ -279,7 +499,89 @@
         "Saturday": 0.0011,
         "Sunday": 0.0048
       },
-      "previews_folded_into_friday": true
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Sheep-Detectives-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Sheep Detectives",
+          "weekend_of": "2026-05-08",
+          "date": "2026-05-12",
+          "predicted_mid": 21.14,
+          "predicted_low": 20.17,
+          "predicted_high": 22.14,
+          "actual_total": 15.09,
+          "daily_actuals": {
+            "Friday": 4.01,
+            "Saturday": 5.19,
+            "Sunday": 5.89
+          },
+          "daily_predictions": {
+            "Thursday": 0.45,
+            "Friday": 7.1,
+            "Saturday": 7.78,
+            "Sunday": 6.12
+          },
+          "error_pct": 40.1,
+          "n_theatres": 417,
+          "n_days": 4,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.42,
+            "Friday": 7.1,
+            "Saturday": 7.78,
+            "Sunday": 5.76
+          },
+          "daily_theatre_counts": {
+            "Thursday": 289,
+            "Friday": 415,
+            "Saturday": 414,
+            "Sunday": 415
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.557,
+            "Friday": 0.976,
+            "Saturday": 0.974,
+            "Sunday": 0.976
+          },
+          "coverage_ratio": 0.871,
+          "calibration_excluded_days": [
+            "Thursday"
+          ],
+          "snapshot_daily_predictions": {
+            "Friday": 0.84,
+            "Saturday": 1.08,
+            "Sunday": 0.8
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Friday": 0.646,
+            "Saturday": 0.974,
+            "Sunday": 0.974
+          },
+          "snapshot_daily_lead_buckets": {
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0114,
+            "Saturday": 0.0325,
+            "Sunday": 0.0112
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0014,
+            "Saturday": 0.0011,
+            "Sunday": 0.0048
+          },
+          "previews_folded_into_friday": true
+        }
+      },
+      "exclude_from_day_weights": true
     },
     {
       "movie": "Obsession",
@@ -288,12 +590,12 @@
       "predicted_mid": 16.21,
       "predicted_low": 14.38,
       "predicted_high": 18.91,
-      "actual_total": 17.2,
+      "actual_total": 17.196855,
       "daily_actuals": {
         "Thursday": 2.6,
-        "Friday": 4.38,
-        "Saturday": 5.42,
-        "Sunday": 4.8
+        "Friday": 4.377084999999999,
+        "Saturday": 5.41691,
+        "Sunday": 4.80286
       },
       "daily_predictions": {
         "Thursday": 1.73,
@@ -301,14 +603,14 @@
         "Saturday": 4.61,
         "Sunday": 3.99
       },
-      "error_pct": -5.7,
+      "error_pct": -5.74,
       "n_theatres": 416,
       "n_days": 4,
       "model_version": "seat-regression-v20-multi-anchor-snapshot",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Obsession-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 1.57,
         "Friday": 4.78,
@@ -361,7 +663,93 @@
         "Saturday": 0.0027,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Obsession-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Obsession",
+          "weekend_of": "2026-05-15",
+          "date": "2026-05-19",
+          "predicted_mid": 16.21,
+          "predicted_low": 14.38,
+          "predicted_high": 18.91,
+          "actual_total": 17.2,
+          "daily_actuals": {
+            "Thursday": 2.6,
+            "Friday": 4.38,
+            "Saturday": 5.42,
+            "Sunday": 4.8
+          },
+          "daily_predictions": {
+            "Thursday": 1.73,
+            "Friday": 3.55,
+            "Saturday": 4.61,
+            "Sunday": 3.99
+          },
+          "error_pct": -5.7,
+          "n_theatres": 416,
+          "n_days": 4,
+          "model_version": "seat-regression-v20-multi-anchor-snapshot",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 1.57,
+            "Friday": 4.78,
+            "Saturday": 5.48,
+            "Sunday": 3.83
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 2.89,
+            "Friday": 4.86,
+            "Saturday": 5.1,
+            "Sunday": 4.07
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.085,
+            "Friday": 0.235,
+            "Saturday": 0.238,
+            "Sunday": 0.238
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 410,
+            "Friday": 287,
+            "Saturday": 416,
+            "Sunday": 416
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 1.0,
+            "Saturday": 0.44,
+            "Sunday": 0.979
+          },
+          "coverage_ratio": 0.855,
+          "calibration_excluded_days": [
+            "Saturday"
+          ],
+          "daily_sellout_fractions": {
+            "Thursday": 0.002,
+            "Friday": 0.019,
+            "Saturday": 0.0219,
+            "Sunday": 0.0115
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0089,
+            "Friday": 0.0057,
+            "Saturday": 0.0027,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "In the Grey",
@@ -370,25 +758,25 @@
       "predicted_mid": 2.74,
       "predicted_low": 1.85,
       "predicted_high": 4.18,
-      "actual_total": 2.93,
+      "actual_total": 2.926879,
       "daily_actuals": {
-        "Friday": 1.17,
-        "Saturday": 1.03,
-        "Sunday": 0.72
+        "Friday": 1.171749,
+        "Saturday": 1.033787,
+        "Sunday": 0.721343
       },
       "daily_predictions": {
         "Friday": 0.61,
         "Saturday": 0.68,
         "Sunday": 0.84
       },
-      "error_pct": -6.5,
+      "error_pct": -6.38,
       "n_theatres": 363,
       "n_days": 3,
       "model_version": "seat-regression-v20-multi-anchor-snapshot",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/In-the-Grey-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Friday": 0.82,
         "Saturday": 0.81,
@@ -431,8 +819,83 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com",
-      "previews_folded_into_friday": true
+      "daily_actuals_source": "https://www.the-numbers.com/movie/In-the-Grey-(2026)",
+      "previews_folded_into_friday": true,
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "In the Grey",
+          "weekend_of": "2026-05-15",
+          "date": "2026-05-19",
+          "predicted_mid": 2.74,
+          "predicted_low": 1.85,
+          "predicted_high": 4.18,
+          "actual_total": 2.93,
+          "daily_actuals": {
+            "Friday": 1.17,
+            "Saturday": 1.03,
+            "Sunday": 0.72
+          },
+          "daily_predictions": {
+            "Friday": 0.61,
+            "Saturday": 0.68,
+            "Sunday": 0.84
+          },
+          "error_pct": -6.5,
+          "n_theatres": 363,
+          "n_days": 3,
+          "model_version": "seat-regression-v20-multi-anchor-snapshot",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Friday": 0.82,
+            "Saturday": 0.81,
+            "Sunday": 0.81
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 1.27,
+            "Sunday": 1.0
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.238,
+            "Sunday": 0.238
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Friday": 244,
+            "Saturday": 363,
+            "Sunday": 360
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.388,
+            "Saturday": 0.384,
+            "Sunday": 0.582
+          },
+          "coverage_ratio": 0.451,
+          "calibration_excluded_days": [
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "daily_sellout_fractions": {
+            "Friday": 0.0,
+            "Saturday": 0.0013,
+            "Sunday": 0.0
+          },
+          "daily_early_sellout_fractions": {
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com",
+          "previews_folded_into_friday": true
+        }
+      }
     },
     {
       "movie": "The Mandalorian and Grogu",
@@ -520,24 +983,24 @@
       "predicted_mid": 4.27,
       "predicted_low": 3.9,
       "predicted_high": 4.73,
-      "actual_total": 8.7,
+      "actual_total": 8.746797,
       "daily_actuals": {
         "Thursday": 1.1,
-        "Friday": 2.42,
-        "Saturday": 2.76,
-        "Sunday": 2.46
+        "Friday": 2.422058,
+        "Saturday": 2.761776,
+        "Sunday": 2.462963
       },
       "daily_predictions": {
         "Sunday": 1.15
       },
-      "error_pct": -50.9,
+      "error_pct": -51.18,
       "n_theatres": 77,
       "n_days": 1,
       "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Passenger-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Sunday": 0.95
       },
@@ -554,7 +1017,54 @@
       "daily_sellout_fractions": {
         "Sunday": 0.0025
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Passenger-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Passenger",
+          "weekend_of": "2026-05-22",
+          "date": "2026-05-26",
+          "predicted_mid": 4.27,
+          "predicted_low": 3.9,
+          "predicted_high": 4.73,
+          "actual_total": 8.7,
+          "daily_actuals": {
+            "Thursday": 1.1,
+            "Friday": 2.42,
+            "Saturday": 2.76,
+            "Sunday": 2.46
+          },
+          "daily_predictions": {
+            "Sunday": 1.15
+          },
+          "error_pct": -50.9,
+          "n_theatres": 77,
+          "n_days": 1,
+          "model_version": "seat-regression-v24-same-week-partial-day-seat-scale",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Sunday": 0.95
+          },
+          "daily_theatre_counts": {
+            "Sunday": 77
+          },
+          "daily_coverage_ratios": {
+            "Sunday": 0.033
+          },
+          "coverage_ratio": 0.033,
+          "calibration_excluded_days": [
+            "Sunday"
+          ],
+          "daily_sellout_fractions": {
+            "Sunday": 0.0025
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Backrooms",
@@ -563,12 +1073,12 @@
       "predicted_mid": 86.08,
       "predicted_low": 56.24,
       "predicted_high": 131.75,
-      "actual_total": 81.4,
+      "actual_total": 81.402424,
       "daily_actuals": {
         "Thursday": 10.4,
-        "Friday": 28.01,
-        "Saturday": 24.74,
-        "Sunday": 18.25
+        "Friday": 28.012634,
+        "Saturday": 24.737736,
+        "Sunday": 18.252054
       },
       "daily_predictions": {
         "Thursday": 6.75,
@@ -576,14 +1086,14 @@
         "Saturday": 15.74,
         "Sunday": 13.95
       },
-      "error_pct": 5.7,
+      "error_pct": 5.75,
       "n_theatres": 425,
       "n_days": 4,
       "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers (via main auto-calibrate)",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Backrooms-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 6.75,
         "Friday": 16.72,
@@ -633,7 +1143,90 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Backrooms-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Backrooms",
+          "weekend_of": "2026-05-29",
+          "date": "2026-06-10",
+          "predicted_mid": 86.08,
+          "predicted_low": 56.24,
+          "predicted_high": 131.75,
+          "actual_total": 81.4,
+          "daily_actuals": {
+            "Thursday": 10.4,
+            "Friday": 28.01,
+            "Saturday": 24.74,
+            "Sunday": 18.25
+          },
+          "daily_predictions": {
+            "Thursday": 6.75,
+            "Friday": 16.72,
+            "Saturday": 15.74,
+            "Sunday": 13.95
+          },
+          "error_pct": 5.7,
+          "n_theatres": 425,
+          "n_days": 4,
+          "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers (via main auto-calibrate)",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 6.75,
+            "Friday": 16.72,
+            "Saturday": 15.74,
+            "Sunday": 13.95
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 6.03,
+            "Friday": 13.0,
+            "Saturday": 26.18,
+            "Sunday": 19.41
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.008,
+            "Friday": 0.059,
+            "Saturday": 0.235,
+            "Sunday": 0.235
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 423,
+            "Friday": 421,
+            "Saturday": 382,
+            "Sunday": 424
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 1.0,
+            "Saturday": 1.0,
+            "Sunday": 1.0
+          },
+          "coverage_ratio": 1.0,
+          "daily_sellout_fractions": {
+            "Thursday": 0.0098,
+            "Friday": 0.1524,
+            "Saturday": 0.0402,
+            "Sunday": 0.0176
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0046,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "The Breadwinner",
@@ -642,12 +1235,12 @@
       "predicted_mid": 5.0,
       "predicted_low": 4.45,
       "predicted_high": 5.45,
-      "actual_total": 7.35,
+      "actual_total": 7.353073,
       "daily_actuals": {
-        "Friday": 2.09,
-        "Saturday": 2.71,
-        "Sunday": 1.8,
-        "Thursday": 0.75
+        "Thursday": 0.75,
+        "Friday": 2.094534,
+        "Saturday": 2.710841,
+        "Sunday": 1.797698
       },
       "daily_predictions": {
         "Thursday": 0.18,
@@ -661,8 +1254,8 @@
       "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers (via main auto-calibrate)",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Breadwinner-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.18,
         "Friday": 1.16,
@@ -715,7 +1308,94 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "previews_split_source": "trade reports 2026-05-29 (Yahoo/ComingSoon: ~$750K previews)"
+      "previews_split_source": "trade reports 2026-05-29 (Yahoo/ComingSoon: ~$750K previews)",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Breadwinner-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Breadwinner",
+          "weekend_of": "2026-05-29",
+          "date": "2026-06-10",
+          "predicted_mid": 5.0,
+          "predicted_low": 4.45,
+          "predicted_high": 5.45,
+          "actual_total": 7.35,
+          "daily_actuals": {
+            "Friday": 2.09,
+            "Saturday": 2.71,
+            "Sunday": 1.8,
+            "Thursday": 0.75
+          },
+          "daily_predictions": {
+            "Thursday": 0.18,
+            "Friday": 1.07,
+            "Saturday": 2.2,
+            "Sunday": 1.55
+          },
+          "error_pct": -32.0,
+          "n_theatres": 402,
+          "n_days": 4,
+          "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers (via main auto-calibrate)",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.18,
+            "Friday": 1.16,
+            "Saturday": 1.94,
+            "Sunday": 1.34
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 0.18,
+            "Friday": 0.5,
+            "Saturday": 1.66,
+            "Sunday": 1.28
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.008,
+            "Friday": 0.059,
+            "Saturday": 0.235,
+            "Sunday": 0.235
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 74,
+            "Friday": 396,
+            "Saturday": 365,
+            "Sunday": 401
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.031,
+            "Friday": 0.932,
+            "Saturday": 0.859,
+            "Sunday": 0.944
+          },
+          "coverage_ratio": 0.692,
+          "calibration_excluded_days": [
+            "Thursday"
+          ],
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0106,
+            "Saturday": 0.0113,
+            "Sunday": 0.0031
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "previews_split_source": "trade reports 2026-05-29 (Yahoo/ComingSoon: ~$750K previews)"
+        }
+      }
     },
     {
       "movie": "Scary Movie",
@@ -724,12 +1404,12 @@
       "predicted_mid": 51.12,
       "predicted_low": 41.51,
       "predicted_high": 51.12,
-      "actual_total": 54.34,
+      "actual_total": 54.336626,
       "daily_actuals": {
         "Thursday": 7.7,
-        "Friday": 17.12,
-        "Saturday": 17.61,
-        "Sunday": 11.91
+        "Friday": 17.115543000000002,
+        "Saturday": 17.611398,
+        "Sunday": 11.909685
       },
       "daily_predictions": {
         "Thursday": 9.79,
@@ -737,14 +1417,14 @@
         "Saturday": 15.44,
         "Sunday": 11.84
       },
-      "error_pct": -5.9,
+      "error_pct": -5.92,
       "n_theatres": 424,
       "n_days": 4,
       "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers (via main auto-calibrate)",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Scary-Movie-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 7.03,
         "Friday": 12.03,
@@ -794,7 +1474,90 @@
         "Saturday": 0.0,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Scary-Movie-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Scary Movie",
+          "weekend_of": "2026-06-05",
+          "date": "2026-06-10",
+          "predicted_mid": 51.12,
+          "predicted_low": 41.51,
+          "predicted_high": 51.12,
+          "actual_total": 54.34,
+          "daily_actuals": {
+            "Thursday": 7.7,
+            "Friday": 17.12,
+            "Saturday": 17.61,
+            "Sunday": 11.91
+          },
+          "daily_predictions": {
+            "Thursday": 9.79,
+            "Friday": 14.05,
+            "Saturday": 15.44,
+            "Sunday": 11.84
+          },
+          "error_pct": -5.9,
+          "n_theatres": 424,
+          "n_days": 4,
+          "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers (via main auto-calibrate)",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 7.03,
+            "Friday": 12.03,
+            "Saturday": 11.79,
+            "Sunday": 8.94
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 11.99,
+            "Friday": 14.93,
+            "Saturday": 15.66,
+            "Sunday": 11.07
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.235,
+            "Friday": 0.061,
+            "Saturday": 0.219,
+            "Sunday": 0.228
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 419,
+            "Friday": 423,
+            "Saturday": 423,
+            "Sunday": 420
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.986,
+            "Friday": 0.995,
+            "Saturday": 0.995,
+            "Sunday": 0.988
+          },
+          "coverage_ratio": 0.991,
+          "daily_sellout_fractions": {
+            "Thursday": 0.0092,
+            "Friday": 0.0707,
+            "Saturday": 0.0333,
+            "Sunday": 0.0092
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0483,
+            "Friday": 0.0,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Masters of the Universe",
@@ -803,12 +1566,12 @@
       "predicted_mid": 22.44,
       "predicted_low": 17.31,
       "predicted_high": 22.44,
-      "actual_total": 29.44,
+      "actual_total": 29.439929,
       "daily_actuals": {
         "Thursday": 4.4,
-        "Friday": 7.3,
-        "Saturday": 10.01,
-        "Sunday": 7.73
+        "Friday": 7.300174,
+        "Saturday": 10.011912,
+        "Sunday": 7.727843
       },
       "daily_predictions": {
         "Thursday": 2.9,
@@ -816,14 +1579,14 @@
         "Saturday": 8.25,
         "Sunday": 6.83
       },
-      "error_pct": -23.8,
+      "error_pct": -23.78,
       "n_theatres": 361,
       "n_days": 4,
       "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers (via main auto-calibrate)",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Masters-of-the-Universe-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 2.0,
         "Friday": 3.8,
@@ -877,7 +1640,94 @@
         "Saturday": 0.001,
         "Sunday": 0.0
       },
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Masters-of-the-Universe-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Masters of the Universe",
+          "weekend_of": "2026-06-05",
+          "date": "2026-06-10",
+          "predicted_mid": 22.44,
+          "predicted_low": 17.31,
+          "predicted_high": 22.44,
+          "actual_total": 29.44,
+          "daily_actuals": {
+            "Thursday": 4.4,
+            "Friday": 7.3,
+            "Saturday": 10.01,
+            "Sunday": 7.73
+          },
+          "daily_predictions": {
+            "Thursday": 2.9,
+            "Friday": 4.47,
+            "Saturday": 8.25,
+            "Sunday": 6.83
+          },
+          "error_pct": -23.8,
+          "n_theatres": 361,
+          "n_days": 4,
+          "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers (via main auto-calibrate)",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 2.0,
+            "Friday": 3.8,
+            "Saturday": 6.22,
+            "Sunday": 5.07
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 3.85,
+            "Friday": 4.88,
+            "Saturday": 12.52,
+            "Sunday": 10.91
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.235,
+            "Friday": 0.059,
+            "Saturday": 0.219,
+            "Sunday": 0.228
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 354,
+            "Friday": 361,
+            "Saturday": 338,
+            "Sunday": 337
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.833,
+            "Friday": 0.849,
+            "Saturday": 0.652,
+            "Sunday": 0.65
+          },
+          "coverage_ratio": 0.746,
+          "calibration_excluded_days": [
+            "Saturday",
+            "Sunday"
+          ],
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.007,
+            "Saturday": 0.0076,
+            "Sunday": 0.003
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0,
+            "Saturday": 0.001,
+            "Sunday": 0.0
+          },
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "The Amazing Digital Circus: The Last Act",
@@ -886,12 +1736,12 @@
       "predicted_mid": 15.47,
       "predicted_low": 11.49,
       "predicted_high": 15.47,
-      "actual_total": 20.24,
+      "actual_total": 20.272968,
       "daily_actuals": {
-        "Thursday": 7.88,
-        "Friday": 4.33,
-        "Saturday": 4.7,
-        "Sunday": 3.33
+        "Thursday": 7.880784,
+        "Friday": 4.326674,
+        "Saturday": 4.710815,
+        "Sunday": 3.354695
       },
       "daily_predictions": {
         "Thursday": 6.21,
@@ -899,14 +1749,14 @@
         "Saturday": 3.97,
         "Sunday": 2.6
       },
-      "error_pct": -23.6,
+      "error_pct": -23.69,
       "n_theatres": 343,
       "n_days": 4,
       "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers (via main auto-calibrate)",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Amazing-Digital-Circus-The-The-Last-Act-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 4.52,
         "Friday": 2.29,
@@ -961,7 +1811,99 @@
         "Friday": 0.0,
         "Saturday": 0.0,
         "Sunday": 0.0
-      }
+      },
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Amazing-Digital-Circus-The-The-Last-Act-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Amazing Digital Circus: The Last Act",
+          "weekend_of": "2026-06-05",
+          "date": "2026-06-10",
+          "predicted_mid": 15.47,
+          "predicted_low": 11.49,
+          "predicted_high": 15.47,
+          "actual_total": 20.24,
+          "daily_actuals": {
+            "Thursday": 7.88,
+            "Friday": 4.33,
+            "Saturday": 4.7,
+            "Sunday": 3.33
+          },
+          "daily_predictions": {
+            "Thursday": 6.21,
+            "Friday": 2.69,
+            "Saturday": 3.97,
+            "Sunday": 2.6
+          },
+          "error_pct": -23.6,
+          "n_theatres": 343,
+          "n_days": 4,
+          "model_version": "seat-regression-v25-snapshot-actual-residual-transfer",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers (via main auto-calibrate)",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 4.52,
+            "Friday": 2.29,
+            "Saturday": 3.02,
+            "Sunday": 1.96
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 8.45,
+            "Friday": 3.44,
+            "Saturday": 6.85,
+            "Sunday": 4.18
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.235,
+            "Friday": 0.059,
+            "Saturday": 0.219,
+            "Sunday": 0.228
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 335,
+            "Friday": 336,
+            "Saturday": 321,
+            "Sunday": 319
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.788,
+            "Friday": 0.791,
+            "Saturday": 0.619,
+            "Sunday": 0.615
+          },
+          "coverage_ratio": 0.703,
+          "calibration_excluded_days": [
+            "Friday",
+            "Saturday",
+            "Sunday",
+            "Thursday"
+          ],
+          "daily_sellout_fractions": {
+            "Thursday": 0.0289,
+            "Friday": 0.0062,
+            "Saturday": 0.0041,
+            "Sunday": 0.0025
+          },
+          "daily_early_sellout_fractions": {
+            "Thursday": 0.0104,
+            "Friday": 0.0,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          }
+        }
+      },
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue."
     },
     {
       "movie": "Disclosure Day",
@@ -970,26 +1912,26 @@
       "predicted_mid": 40.12,
       "predicted_low": 31.64,
       "predicted_high": 40.12,
-      "actual_total": 44.53,
+      "actual_total": 44.530925,
       "daily_actuals": {
         "Thursday": 6.5,
-        "Friday": 12.66,
-        "Saturday": 13.89,
-        "Sunday": 11.49
+        "Friday": 12.65914,
+        "Saturday": 13.88616,
+        "Sunday": 11.485625
       },
       "daily_predictions": {
         "Friday": 7.75,
         "Saturday": 15.08,
         "Sunday": 13.08
       },
-      "error_pct": -9.9,
+      "error_pct": -9.91,
       "n_theatres": 424,
       "n_days": 3,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Disclosure-Day-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Friday": 7.75,
         "Saturday": 11.61,
@@ -1026,7 +1968,76 @@
       "calibration_excluded_days": [
         "Friday"
       ],
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Disclosure-Day-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Disclosure Day",
+          "weekend_of": "2026-06-12",
+          "date": "2026-06-16",
+          "predicted_mid": 40.12,
+          "predicted_low": 31.64,
+          "predicted_high": 40.12,
+          "actual_total": 44.53,
+          "daily_actuals": {
+            "Thursday": 6.5,
+            "Friday": 12.66,
+            "Saturday": 13.89,
+            "Sunday": 11.49
+          },
+          "daily_predictions": {
+            "Friday": 7.75,
+            "Saturday": 15.08,
+            "Sunday": 13.08
+          },
+          "error_pct": -9.9,
+          "n_theatres": 424,
+          "n_days": 3,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Friday": 7.75,
+            "Saturday": 11.61,
+            "Sunday": 10.11
+          },
+          "daily_sellout_fractions": {
+            "Friday": 0.0043,
+            "Saturday": 0.001,
+            "Sunday": 0.001
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 19.75,
+            "Sunday": 16.3
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Friday": 214,
+            "Saturday": 422,
+            "Sunday": 423
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.25,
+            "Saturday": 0.993,
+            "Sunday": 0.995
+          },
+          "coverage_ratio": 0.746,
+          "calibration_excluded_days": [
+            "Friday"
+          ],
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Toy Story 5",
@@ -1035,12 +2046,12 @@
       "predicted_mid": 145.69,
       "predicted_low": 122.49,
       "predicted_high": 167.58,
-      "actual_total": 160.0,
+      "actual_total": 159.677837,
       "daily_actuals": {
         "Thursday": 17.5,
-        "Friday": 53.61,
-        "Saturday": 47.76,
-        "Sunday": 40.81
+        "Friday": 53.609759,
+        "Saturday": 47.755375,
+        "Sunday": 40.812703
       },
       "daily_predictions": {
         "Thursday": 17.36,
@@ -1048,12 +2059,12 @@
         "Saturday": 49.27,
         "Sunday": 44.72
       },
-      "error_pct": -8.9,
+      "error_pct": -8.76,
       "n_theatres": 425,
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "user report ~160M all-in incl previews; Fri/Sat/Sun split derived from captured seat proportions",
+      "actual_source": "https://www.the-numbers.com/movie/Toy-Story-5-(2026)",
       "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 14.15,
@@ -1098,7 +2109,83 @@
         "Sunday": 0.988
       },
       "coverage_ratio": 0.993,
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Toy-Story-5-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Toy Story 5",
+          "weekend_of": "2026-06-19",
+          "date": "2026-06-22",
+          "predicted_mid": 145.69,
+          "predicted_low": 122.49,
+          "predicted_high": 167.58,
+          "actual_total": 160.0,
+          "daily_actuals": {
+            "Thursday": 17.5,
+            "Friday": 53.61,
+            "Saturday": 47.76,
+            "Sunday": 40.81
+          },
+          "daily_predictions": {
+            "Thursday": 17.36,
+            "Friday": 34.34,
+            "Saturday": 49.27,
+            "Sunday": 44.72
+          },
+          "error_pct": -8.9,
+          "n_theatres": 425,
+          "n_days": 4,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "user report ~160M all-in incl previews; Fri/Sat/Sun split derived from captured seat proportions",
+          "actual_status": "reported",
+          "raw_daily_predictions": {
+            "Thursday": 14.15,
+            "Friday": 31.13,
+            "Saturday": 44.59,
+            "Sunday": 40.35
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0021,
+            "Friday": 0.0381,
+            "Saturday": 0.0114,
+            "Sunday": 0.0094
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 20.67,
+            "Friday": 27.28,
+            "Saturday": 49.22,
+            "Sunday": 46.17
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.445,
+            "Friday": 0.468,
+            "Saturday": 0.461,
+            "Sunday": 0.468
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 425,
+            "Friday": 424,
+            "Saturday": 419,
+            "Sunday": 420
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 1.0,
+            "Friday": 0.998,
+            "Saturday": 0.986,
+            "Sunday": 0.988
+          },
+          "coverage_ratio": 0.993,
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Supergirl",
@@ -1107,12 +2194,12 @@
       "predicted_mid": 39.54,
       "predicted_low": 28.02,
       "predicted_high": 41.52,
-      "actual_total": 37.1,
+      "actual_total": 37.102018,
       "daily_actuals": {
         "Thursday": 7.8,
-        "Friday": 10.6,
-        "Saturday": 10.8,
-        "Sunday": 7.9
+        "Friday": 10.601264,
+        "Saturday": 10.800342,
+        "Sunday": 7.900412
       },
       "daily_predictions": {
         "Thursday": 7.49,
@@ -1120,14 +2207,14 @@
         "Saturday": 12.35,
         "Sunday": 10.02
       },
-      "error_pct": 6.6,
+      "error_pct": 6.57,
       "n_theatres": 425,
       "n_days": 4,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 5.66,
         "Friday": 8.28,
@@ -1181,7 +2268,94 @@
         "Sunday": 0.995
       },
       "coverage_ratio": 0.969,
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Supergirl-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Supergirl",
+          "weekend_of": "2026-06-26",
+          "date": "2026-06-30",
+          "predicted_mid": 39.54,
+          "predicted_low": 28.02,
+          "predicted_high": 41.52,
+          "actual_total": 37.1,
+          "daily_actuals": {
+            "Thursday": 7.8,
+            "Friday": 10.6,
+            "Saturday": 10.8,
+            "Sunday": 7.9
+          },
+          "daily_predictions": {
+            "Thursday": 7.49,
+            "Friday": 9.72,
+            "Saturday": 12.35,
+            "Sunday": 10.02
+          },
+          "error_pct": 6.6,
+          "n_theatres": 425,
+          "n_days": 4,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 5.66,
+            "Friday": 8.28,
+            "Saturday": 9.91,
+            "Sunday": 8.04
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0004,
+            "Saturday": 0.0002,
+            "Sunday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Friday": 10.58,
+            "Saturday": 15.9,
+            "Sunday": 11.4
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Friday": 0.471,
+            "Saturday": 0.468,
+            "Sunday": 0.468
+          },
+          "snapshot_daily_lead_buckets": {
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.00903,
+            "adjustment_pct": 0.9,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.4252,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.4249,
+            "reach": 466.27,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 412,
+            "Friday": 408,
+            "Saturday": 405,
+            "Sunday": 423
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.969,
+            "Friday": 0.96,
+            "Saturday": 0.953,
+            "Sunday": 0.995
+          },
+          "coverage_ratio": 0.969,
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Jackass: Best and Last",
@@ -1190,12 +2364,12 @@
       "predicted_mid": 11.55,
       "predicted_low": 7.05,
       "predicted_high": 12.13,
-      "actual_total": 8.46,
+      "actual_total": 8.464977,
       "daily_actuals": {
         "Thursday": 1.2,
-        "Friday": 2.6,
-        "Saturday": 2.64,
-        "Sunday": 2.02
+        "Friday": 2.602697,
+        "Saturday": 2.641064,
+        "Sunday": 2.021216
       },
       "daily_predictions": {
         "Thursday": 1.95,
@@ -1203,14 +2377,14 @@
         "Saturday": 3.26,
         "Sunday": 2.73
       },
-      "error_pct": 36.5,
+      "error_pct": 36.44,
       "n_theatres": 414,
       "n_days": 4,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Jackass-Best-and-Last-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 1.26,
         "Friday": 2.31,
@@ -1264,7 +2438,94 @@
         "Sunday": 0.969
       },
       "coverage_ratio": 0.942,
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Jackass-Best-and-Last-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Jackass: Best and Last",
+          "weekend_of": "2026-06-26",
+          "date": "2026-06-30",
+          "predicted_mid": 11.55,
+          "predicted_low": 7.05,
+          "predicted_high": 12.13,
+          "actual_total": 8.46,
+          "daily_actuals": {
+            "Thursday": 1.2,
+            "Friday": 2.6,
+            "Saturday": 2.64,
+            "Sunday": 2.02
+          },
+          "daily_predictions": {
+            "Thursday": 1.95,
+            "Friday": 3.04,
+            "Saturday": 3.26,
+            "Sunday": 2.73
+          },
+          "error_pct": 36.5,
+          "n_theatres": 414,
+          "n_days": 4,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 1.26,
+            "Friday": 2.31,
+            "Saturday": 2.41,
+            "Sunday": 2.01
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0018,
+            "Friday": 0.0029,
+            "Saturday": 0.001,
+            "Sunday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Friday": 2.09,
+            "Saturday": 2.37,
+            "Sunday": 2.03
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Friday": 0.471,
+            "Saturday": 0.468,
+            "Sunday": 0.466
+          },
+          "snapshot_daily_lead_buckets": {
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 0.98635,
+            "adjustment_pct": -1.37,
+            "sentiment_score": 0.0,
+            "buzz_score": -1.0,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.2731,
+            "reach": 50.97,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 398,
+            "Friday": 396,
+            "Saturday": 395,
+            "Sunday": 412
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.936,
+            "Friday": 0.932,
+            "Saturday": 0.929,
+            "Sunday": 0.969
+          },
+          "coverage_ratio": 0.942,
+          "daily_actuals_source": "the-numbers.com"
+        }
+      }
     },
     {
       "movie": "Minions & Monsters",
@@ -1273,12 +2534,12 @@
       "predicted_mid": 33.19,
       "predicted_low": 29.2,
       "predicted_high": 38.45,
-      "actual_total": 47.21,
+      "actual_total": 47.81379,
       "daily_actuals": {
-        "Thursday": 10.81,
-        "Friday": 16.51,
-        "Saturday": 9.47,
-        "Sunday": 10.42
+        "Thursday": 10.810285,
+        "Friday": 16.506115,
+        "Saturday": 9.49182,
+        "Sunday": 11.00557
       },
       "daily_predictions": {
         "Thursday": 5.76,
@@ -1286,14 +2547,14 @@
         "Saturday": 9.26,
         "Sunday": 10.93
       },
-      "error_pct": -29.7,
+      "error_pct": -30.58,
       "n_theatres": 425,
       "n_days": 4,
       "exclude_from_day_weights": true,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "the-numbers.com",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Minions-and-Monsters-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 5.31,
         "Friday": 7.33,
@@ -1332,7 +2593,82 @@
       },
       "coverage_ratio": 0.982,
       "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b.",
-      "daily_actuals_source": "the-numbers.com"
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Minions-and-Monsters-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Minions & Monsters",
+          "weekend_of": "2026-07-03",
+          "date": "2026-07-06",
+          "predicted_mid": 33.19,
+          "predicted_low": 29.2,
+          "predicted_high": 38.45,
+          "actual_total": 47.21,
+          "daily_actuals": {
+            "Thursday": 10.81,
+            "Friday": 16.51,
+            "Saturday": 9.47,
+            "Sunday": 10.42
+          },
+          "daily_predictions": {
+            "Thursday": 5.76,
+            "Friday": 7.16,
+            "Saturday": 9.26,
+            "Sunday": 10.93
+          },
+          "error_pct": -29.7,
+          "n_theatres": 425,
+          "n_days": 4,
+          "exclude_from_day_weights": true,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "the-numbers.com",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 5.31,
+            "Friday": 7.33,
+            "Saturday": 8.87,
+            "Sunday": 10.55
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 4.65,
+            "Friday": 4.4,
+            "Saturday": 9.07,
+            "Sunday": 9.25
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.473,
+            "Friday": 0.468,
+            "Saturday": 0.461,
+            "Sunday": 0.454
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 424,
+            "Friday": 424,
+            "Saturday": 410,
+            "Sunday": 412
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.998,
+            "Friday": 0.998,
+            "Saturday": 0.965,
+            "Sunday": 0.969
+          },
+          "coverage_ratio": 0.982,
+          "notes": "Wed 2026-07-01 opener into July-4th weekend; reported 3-day (Fri-Sun) $36.4M, 5-day $61.4M; recorded Thu-Sun to match model span. July-4th Sat crater ($9.47M, -43%) -> excluded from day-weight fit. Live pre-revert model over-read ~$62M (Thursday anchor over-scale); reverted commit 89ed09b.",
+          "daily_actuals_source": "the-numbers.com"
+        }
+      },
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue."
     },
     {
       "movie": "Young Washington",
@@ -1341,11 +2677,11 @@
       "predicted_mid": 8.33,
       "predicted_low": 7.48,
       "predicted_high": 9.41,
-      "actual_total": 19.37,
+      "actual_total": 19.372216,
       "daily_actuals": {
-        "Friday": 7.6,
-        "Saturday": 7.67,
-        "Sunday": 4.1
+        "Friday": 7.597688,
+        "Saturday": 7.672967,
+        "Sunday": 4.101561
       },
       "daily_predictions": {
         "Thursday": 0.3,
@@ -1358,8 +2694,8 @@
       "n_days": 4,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "the-numbers.com",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Young-Washington-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.3,
         "Friday": 2.11,
@@ -1401,7 +2737,81 @@
         "Thursday"
       ],
       "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%.",
-      "previews_folded_into_friday": true
+      "previews_folded_into_friday": true,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Young-Washington-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Young Washington",
+          "weekend_of": "2026-07-03",
+          "date": "2026-07-08",
+          "predicted_mid": 8.33,
+          "predicted_low": 7.48,
+          "predicted_high": 9.41,
+          "actual_total": 19.37,
+          "daily_actuals": {
+            "Friday": 7.6,
+            "Saturday": 7.67,
+            "Sunday": 4.1
+          },
+          "daily_predictions": {
+            "Thursday": 0.3,
+            "Friday": 2.04,
+            "Saturday": 5.62,
+            "Sunday": 3.01
+          },
+          "error_pct": -57.0,
+          "n_theatres": 400,
+          "n_days": 4,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "the-numbers.com",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.3,
+            "Friday": 2.11,
+            "Saturday": 5.63,
+            "Sunday": 3.05
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 0.95,
+            "Friday": 1.51,
+            "Saturday": 7.45,
+            "Sunday": 3.16
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.473,
+            "Friday": 0.468,
+            "Saturday": 0.459,
+            "Sunday": 0.452
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 65,
+            "Friday": 369,
+            "Saturday": 386,
+            "Sunday": 387
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.028,
+            "Friday": 0.868,
+            "Saturday": 0.908,
+            "Sunday": 0.911
+          },
+          "coverage_ratio": 0.679,
+          "calibration_excluded_days": [
+            "Thursday"
+          ],
+          "notes": "2,725-theatre Friday opener; AMC under-programmed opening day (2.4 showings/cinema Fri, tripled to 6.1 Sat) so the AMC panel read a supply-constrained signal; cross-chain share made it worse (occupancy high BECAUSE showings were scarce). Model -61%, worst miss on record. Sat held +1% on July 4 (adult audience) while Minions crashed -43%.",
+          "previews_folded_into_friday": true
+        }
+      }
     },
     {
       "movie": "Moana (2026)",
@@ -1410,25 +2820,25 @@
       "predicted_mid": 36.87,
       "predicted_low": 27.01,
       "predicted_high": 75.13,
-      "actual_total": 43.0,
+      "actual_total": 43.142824,
       "daily_actuals": {
         "Thursday": 4.5,
-        "Friday": 13.5,
-        "Saturday": 13.5,
-        "Sunday": 11.5
+        "Friday": 14.010043,
+        "Saturday": 13.440087,
+        "Sunday": 11.192694
       },
       "daily_predictions": {
         "Thursday": 4.22,
         "Friday": 10.17,
         "Saturday": 12.6
       },
-      "error_pct": -14.2,
+      "error_pct": -14.54,
       "n_theatres": 424,
       "n_days": 3,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "the-numbers.com + user report",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Moana-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 3.23,
         "Friday": 8.46,
@@ -1462,7 +2872,73 @@
         "Friday": 0.995,
         "Saturday": 0.991
       },
-      "coverage_ratio": 0.992
+      "coverage_ratio": 0.992,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Moana-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Moana (2026)",
+          "weekend_of": "2026-07-10",
+          "date": "2026-07-13",
+          "predicted_mid": 36.87,
+          "predicted_low": 27.01,
+          "predicted_high": 75.13,
+          "actual_total": 43.0,
+          "daily_actuals": {
+            "Thursday": 4.5,
+            "Friday": 13.5,
+            "Saturday": 13.5,
+            "Sunday": 11.5
+          },
+          "daily_predictions": {
+            "Thursday": 4.22,
+            "Friday": 10.17,
+            "Saturday": 12.6
+          },
+          "error_pct": -14.2,
+          "n_theatres": 424,
+          "n_days": 3,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "the-numbers.com + user report",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 3.23,
+            "Friday": 8.46,
+            "Saturday": 11.73
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 4.84,
+            "Friday": 7.41,
+            "Saturday": 13.87,
+            "Sunday": 11.35
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.475,
+            "Friday": 0.471,
+            "Saturday": 0.464,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 421,
+            "Friday": 423,
+            "Saturday": 421
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.991,
+            "Friday": 0.995,
+            "Saturday": 0.991
+          },
+          "coverage_ratio": 0.992
+        }
+      }
     },
     {
       "movie": "Evil Dead Burn",
@@ -1471,25 +2947,25 @@
       "predicted_mid": 24.75,
       "predicted_low": 17.01,
       "predicted_high": 50.42,
-      "actual_total": 13.7,
+      "actual_total": 13.701012,
       "daily_actuals": {
         "Thursday": 2.3,
-        "Friday": 4.4,
-        "Saturday": 4.0,
-        "Sunday": 3.0
+        "Friday": 4.3002020000000005,
+        "Saturday": 3.950674,
+        "Sunday": 3.150136
       },
       "daily_predictions": {
         "Thursday": 4.6,
         "Friday": 7.05,
         "Saturday": 5.33
       },
-      "error_pct": 80.6,
+      "error_pct": 80.64,
       "n_theatres": 417,
       "n_days": 3,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "the-numbers.com + user report",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Evil-Dead-Burn-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 3.65,
         "Friday": 5.75,
@@ -1523,7 +2999,73 @@
         "Friday": 0.979,
         "Saturday": 0.974
       },
-      "coverage_ratio": 0.976
+      "coverage_ratio": 0.976,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Evil-Dead-Burn-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Evil Dead Burn",
+          "weekend_of": "2026-07-10",
+          "date": "2026-07-13",
+          "predicted_mid": 24.75,
+          "predicted_low": 17.01,
+          "predicted_high": 50.42,
+          "actual_total": 13.7,
+          "daily_actuals": {
+            "Thursday": 2.3,
+            "Friday": 4.4,
+            "Saturday": 4.0,
+            "Sunday": 3.0
+          },
+          "daily_predictions": {
+            "Thursday": 4.6,
+            "Friday": 7.05,
+            "Saturday": 5.33
+          },
+          "error_pct": 80.6,
+          "n_theatres": 417,
+          "n_days": 3,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "the-numbers.com + user report",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 3.65,
+            "Friday": 5.75,
+            "Saturday": 4.77
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 5.56,
+            "Friday": 5.8,
+            "Saturday": 5.6,
+            "Sunday": 3.66
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.475,
+            "Friday": 0.468,
+            "Saturday": 0.464,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "daily_theatre_counts": {
+            "Thursday": 415,
+            "Friday": 416,
+            "Saturday": 414
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.976,
+            "Friday": 0.979,
+            "Saturday": 0.974
+          },
+          "coverage_ratio": 0.976
+        }
+      }
     },
     {
       "movie": "The Odyssey",
@@ -1532,12 +3074,12 @@
       "predicted_mid": 124.86,
       "predicted_low": 92.41,
       "predicted_high": 147.5,
-      "actual_total": 123.5,
+      "actual_total": 123.5029,
       "daily_actuals": {
-        "Friday": 33.38,
-        "Saturday": 41.74,
-        "Sunday": 30.79,
-        "Thursday": 17.6
+        "Thursday": 17.6,
+        "Friday": 33.377435,
+        "Saturday": 41.735485,
+        "Sunday": 30.78998
       },
       "daily_predictions": {
         "Thursday": 19.78,
@@ -1551,8 +3093,8 @@
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Odyssey-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 18.66,
         "Friday": 29.68,
@@ -1612,7 +3154,101 @@
       "calibration_excluded_days": [
         "Sunday"
       ],
-      "previews_split_source": "Variety/THR 2026-07-17 https://variety.com/2026/film/box-office/box-office-the-odyssey-previews-1236812480/"
+      "previews_split_source": "Variety/THR 2026-07-17 https://variety.com/2026/film/box-office/box-office-the-odyssey-previews-1236812480/",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Odyssey-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Odyssey",
+          "weekend_of": "2026-07-17",
+          "date": "2026-07-21",
+          "predicted_mid": 124.86,
+          "predicted_low": 92.41,
+          "predicted_high": 147.5,
+          "actual_total": 123.5,
+          "daily_actuals": {
+            "Friday": 33.38,
+            "Saturday": 41.74,
+            "Sunday": 30.79,
+            "Thursday": 17.6
+          },
+          "daily_predictions": {
+            "Thursday": 19.78,
+            "Friday": 30.12,
+            "Saturday": 44.92,
+            "Sunday": 33.5
+          },
+          "error_pct": 1.1,
+          "n_theatres": 424,
+          "n_days": 4,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 18.66,
+            "Friday": 29.68,
+            "Saturday": 44.34,
+            "Sunday": 33.5
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0114,
+            "Friday": 0.0542,
+            "Saturday": 0.0623,
+            "Sunday": 0.0184
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 18.5,
+            "Friday": 21.88,
+            "Saturday": 45.37,
+            "Sunday": 38.4
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.471,
+            "Friday": 0.471,
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.0,
+            "adjustment_pct": 0.0,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.0,
+            "buzz_source": "neutral",
+            "signal_quality": 0.5047,
+            "reach": 1482.02,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 421,
+            "Friday": 422,
+            "Saturday": 422,
+            "Sunday": 296
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.991,
+            "Friday": 0.993,
+            "Saturday": 0.993,
+            "Sunday": 0.571
+          },
+          "coverage_ratio": 0.887,
+          "calibration_excluded_days": [
+            "Sunday"
+          ],
+          "previews_split_source": "Variety/THR 2026-07-17 https://variety.com/2026/film/box-office/box-office-the-odyssey-previews-1236812480/"
+        }
+      }
     },
     {
       "movie": "Spider-Man: Brand New Day",
@@ -1621,24 +3257,24 @@
       "predicted_mid": 99.34,
       "predicted_low": 69.54,
       "predicted_high": 139.08,
-      "actual_total": 360.09,
+      "actual_total": 360.091572,
       "daily_actuals": {
         "Thursday": 72.0,
-        "Friday": 97.84,
-        "Saturday": 101.53,
-        "Sunday": 88.72
+        "Friday": 97.843039,
+        "Saturday": 101.52564,
+        "Sunday": 88.722893
       },
       "daily_predictions": {
         "Friday": 32.03
       },
-      "error_pct": -72.4,
+      "error_pct": -72.41,
       "n_theatres": 81,
       "n_days": 1,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Spider-Man-Brand-New-Day-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Friday": 32.03
       },
@@ -1681,7 +3317,81 @@
         "Friday"
       ],
       "data_outage": true,
-      "data_outage_reason": "AMC Queue-It wall 2026-07-29..08-02: 81/425 theatres, 1% weighted seat coverage, 5% snapshot weight"
+      "data_outage_reason": "AMC Queue-It wall 2026-07-29..08-02: 81/425 theatres, 1% weighted seat coverage, 5% snapshot weight",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Spider-Man-Brand-New-Day-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Spider-Man: Brand New Day",
+          "weekend_of": "2026-07-31",
+          "date": "2026-08-04",
+          "predicted_mid": 99.34,
+          "predicted_low": 69.54,
+          "predicted_high": 139.08,
+          "actual_total": 360.09,
+          "daily_actuals": {
+            "Thursday": 72.0,
+            "Friday": 97.84,
+            "Saturday": 101.53,
+            "Sunday": 88.72
+          },
+          "daily_predictions": {
+            "Friday": 32.03
+          },
+          "error_pct": -72.4,
+          "n_theatres": 81,
+          "n_days": 1,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Friday": 32.03
+          },
+          "daily_sellout_fractions": {
+            "Friday": 0.2487
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 18.22,
+            "Sunday": 14.74
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.017,
+            "Sunday": 0.016
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "next_day",
+            "Sunday": "multi_day"
+          },
+          "social_signal": {
+            "factor": 1.0,
+            "adjustment_pct": 0.0,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.0,
+            "buzz_source": "neutral",
+            "signal_quality": 0.5351,
+            "reach": 2300.75,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Friday": 81
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.034
+          },
+          "coverage_ratio": 0.034,
+          "calibration_excluded_days": [
+            "Friday"
+          ],
+          "data_outage": true,
+          "data_outage_reason": "AMC Queue-It wall 2026-07-29..08-02: 81/425 theatres, 1% weighted seat coverage, 5% snapshot weight"
+        }
+      }
     },
     {
       "movie": "One Night Only",
@@ -1690,26 +3400,26 @@
       "predicted_mid": 3.66,
       "predicted_low": 2.61,
       "predicted_high": 7.45,
-      "actual_total": 5.51,
+      "actual_total": 5.508045,
       "daily_actuals": {
         "Thursday": 1.35,
-        "Friday": 1.43,
-        "Saturday": 1.57,
-        "Sunday": 1.16
+        "Friday": 1.431775,
+        "Saturday": 1.567875,
+        "Sunday": 1.158395
       },
       "daily_predictions": {
         "Friday": 1.08,
         "Saturday": 1.22,
         "Sunday": 0.96
       },
-      "error_pct": -33.6,
+      "error_pct": -33.55,
       "n_theatres": 414,
       "n_days": 3,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/One-Night-Only-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Friday": 1.0,
         "Saturday": 1.11,
@@ -1755,7 +3465,86 @@
         "Saturday": 0.972,
         "Sunday": 0.967
       },
-      "coverage_ratio": 0.969
+      "coverage_ratio": 0.969,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/One-Night-Only-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "One Night Only",
+          "weekend_of": "2026-08-07",
+          "date": "2026-08-11",
+          "predicted_mid": 3.66,
+          "predicted_low": 2.61,
+          "predicted_high": 7.45,
+          "actual_total": 5.51,
+          "daily_actuals": {
+            "Thursday": 1.35,
+            "Friday": 1.43,
+            "Saturday": 1.57,
+            "Sunday": 1.16
+          },
+          "daily_predictions": {
+            "Friday": 1.08,
+            "Saturday": 1.22,
+            "Sunday": 0.96
+          },
+          "error_pct": -33.6,
+          "n_theatres": 414,
+          "n_days": 3,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Friday": 1.0,
+            "Saturday": 1.11,
+            "Sunday": 0.9
+          },
+          "daily_sellout_fractions": {
+            "Friday": 0.006,
+            "Saturday": 0.0014,
+            "Sunday": 0.0005
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 1.25,
+            "Sunday": 0.95
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.471,
+            "Sunday": 0.482
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day",
+            "Sunday": "next_day"
+          },
+          "social_signal": {
+            "factor": 1.00623,
+            "adjustment_pct": 0.62,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.3731,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3341,
+            "reach": 124.58,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Friday": 411,
+            "Saturday": 413,
+            "Sunday": 411
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.967,
+            "Saturday": 0.972,
+            "Sunday": 0.967
+          },
+          "coverage_ratio": 0.969
+        }
+      }
     },
     {
       "movie": "Super Troopers 3",
@@ -1764,25 +3553,25 @@
       "predicted_mid": 1.77,
       "predicted_low": 1.27,
       "predicted_high": 3.61,
-      "actual_total": 4.0,
+      "actual_total": 4.002283,
       "daily_actuals": {
         "Thursday": 0.35,
-        "Friday": 1.39,
-        "Saturday": 1.36,
-        "Sunday": 0.9
+        "Friday": 1.386475,
+        "Saturday": 1.36224,
+        "Sunday": 0.903568
       },
       "daily_predictions": {
         "Saturday": 0.49,
         "Sunday": 0.52
       },
-      "error_pct": -55.7,
+      "error_pct": -55.78,
       "n_theatres": 392,
       "n_days": 2,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Super-Troopers-3-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Saturday": 0.49,
         "Sunday": 0.48
@@ -1824,7 +3613,81 @@
       "coverage_ratio": 0.666,
       "calibration_excluded_days": [
         "Saturday"
-      ]
+      ],
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Super-Troopers-3-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Super Troopers 3",
+          "weekend_of": "2026-08-07",
+          "date": "2026-08-11",
+          "predicted_mid": 1.77,
+          "predicted_low": 1.27,
+          "predicted_high": 3.61,
+          "actual_total": 4.0,
+          "daily_actuals": {
+            "Thursday": 0.35,
+            "Friday": 1.39,
+            "Saturday": 1.36,
+            "Sunday": 0.9
+          },
+          "daily_predictions": {
+            "Saturday": 0.49,
+            "Sunday": 0.52
+          },
+          "error_pct": -55.7,
+          "n_theatres": 392,
+          "n_days": 2,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Saturday": 0.49,
+            "Sunday": 0.48
+          },
+          "daily_sellout_fractions": {
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Sunday": 0.37
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Sunday": 0.48
+          },
+          "snapshot_daily_lead_buckets": {
+            "Sunday": "next_day"
+          },
+          "social_signal": {
+            "factor": 0.99092,
+            "adjustment_pct": -0.91,
+            "sentiment_score": 0.0,
+            "buzz_score": -0.8161,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.2224,
+            "reach": 23.96,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Saturday": 389,
+            "Sunday": 391
+          },
+          "daily_coverage_ratios": {
+            "Saturday": 0.412,
+            "Sunday": 0.92
+          },
+          "coverage_ratio": 0.666,
+          "calibration_excluded_days": [
+            "Saturday"
+          ]
+        }
+      }
     },
     {
       "movie": "The End of Oak Street",
@@ -1833,12 +3696,12 @@
       "predicted_mid": 21.7,
       "predicted_low": 15.49,
       "predicted_high": 49.04,
-      "actual_total": 21.01,
+      "actual_total": 21.010488,
       "daily_actuals": {
-        "Friday": 5.43,
-        "Saturday": 7.38,
-        "Sunday": 5.7,
-        "Thursday": 2.5
+        "Thursday": 2.5,
+        "Friday": 5.429394,
+        "Saturday": 7.377756,
+        "Sunday": 5.703338
       },
       "daily_predictions": {
         "Thursday": 3.64,
@@ -1846,14 +3709,14 @@
         "Saturday": 6.79,
         "Sunday": 5.54
       },
-      "error_pct": 3.3,
+      "error_pct": 3.28,
       "n_theatres": 414,
       "n_days": 4,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/End-of-Oak-Street-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 2.87,
         "Friday": 4.25,
@@ -1910,7 +3773,98 @@
         "Sunday": 0.974
       },
       "coverage_ratio": 0.967,
-      "previews_split_source": "Variety 2026-08-14 https://variety.com/2026/film/box-office/box-office-end-of-oak-street-previews-1236833323/"
+      "previews_split_source": "Variety 2026-08-14 https://variety.com/2026/film/box-office/box-office-end-of-oak-street-previews-1236833323/",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/End-of-Oak-Street-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The End of Oak Street",
+          "weekend_of": "2026-08-14",
+          "date": "2026-08-18",
+          "predicted_mid": 21.7,
+          "predicted_low": 15.49,
+          "predicted_high": 49.04,
+          "actual_total": 21.01,
+          "daily_actuals": {
+            "Friday": 5.43,
+            "Saturday": 7.38,
+            "Sunday": 5.7,
+            "Thursday": 2.5
+          },
+          "daily_predictions": {
+            "Thursday": 3.64,
+            "Friday": 5.39,
+            "Saturday": 6.79,
+            "Sunday": 5.54
+          },
+          "error_pct": 3.3,
+          "n_theatres": 414,
+          "n_days": 4,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 2.87,
+            "Friday": 4.25,
+            "Saturday": 6.13,
+            "Sunday": 4.98
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0075,
+            "Saturday": 0.0099,
+            "Sunday": 0.0056
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 3.64,
+            "Friday": 3.5,
+            "Saturday": 5.83,
+            "Sunday": 4.63
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.473,
+            "Friday": 0.473,
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.0087,
+            "adjustment_pct": 0.87,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.435,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3998,
+            "reach": 324.02,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 408,
+            "Friday": 411,
+            "Saturday": 411,
+            "Sunday": 414
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.96,
+            "Friday": 0.967,
+            "Saturday": 0.967,
+            "Sunday": 0.974
+          },
+          "coverage_ratio": 0.967,
+          "previews_split_source": "Variety 2026-08-14 https://variety.com/2026/film/box-office/box-office-end-of-oak-street-previews-1236833323/"
+        }
+      }
     },
     {
       "movie": "PAW Patrol: The Dino Movie",
@@ -1919,12 +3873,12 @@
       "predicted_mid": 12.9,
       "predicted_low": 9.21,
       "predicted_high": 29.15,
-      "actual_total": 20.25,
+      "actual_total": 20.254688,
       "daily_actuals": {
         "Thursday": 1.9,
-        "Friday": 5.42,
-        "Saturday": 7.28,
-        "Sunday": 5.66
+        "Friday": 5.421518000000001,
+        "Saturday": 7.275134,
+        "Sunday": 5.658036
       },
       "daily_predictions": {
         "Thursday": 0.65,
@@ -1932,14 +3886,14 @@
         "Saturday": 6.83,
         "Sunday": 5.65
       },
-      "error_pct": -36.3,
+      "error_pct": -36.31,
       "n_theatres": 417,
       "n_days": 4,
       "model_version": "seat-regression-v26-reported-actual-guardrails",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Paw-Patrol-The-Dino-Movie-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.46,
         "Friday": 2.52,
@@ -1995,7 +3949,97 @@
         "Saturday": 0.972,
         "Sunday": 0.981
       },
-      "coverage_ratio": 0.974
+      "coverage_ratio": 0.974,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Paw-Patrol-The-Dino-Movie-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "PAW Patrol: The Dino Movie",
+          "weekend_of": "2026-08-14",
+          "date": "2026-08-18",
+          "predicted_mid": 12.9,
+          "predicted_low": 9.21,
+          "predicted_high": 29.15,
+          "actual_total": 20.25,
+          "daily_actuals": {
+            "Thursday": 1.9,
+            "Friday": 5.42,
+            "Saturday": 7.28,
+            "Sunday": 5.66
+          },
+          "daily_predictions": {
+            "Thursday": 0.65,
+            "Friday": 3.27,
+            "Saturday": 6.83,
+            "Sunday": 5.65
+          },
+          "error_pct": -36.3,
+          "n_theatres": 417,
+          "n_days": 4,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.46,
+            "Friday": 2.52,
+            "Saturday": 6.19,
+            "Sunday": 5.11
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0142,
+            "Saturday": 0.0197,
+            "Sunday": 0.0109
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 0.37,
+            "Friday": 1.49,
+            "Saturday": 5.75,
+            "Sunday": 4.64
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.473,
+            "Friday": 0.473,
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 0.98807,
+            "adjustment_pct": -1.19,
+            "sentiment_score": 0.0,
+            "buzz_score": -1.0,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.2386,
+            "reach": 30.56,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 411,
+            "Friday": 414,
+            "Saturday": 413,
+            "Sunday": 417
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.967,
+            "Friday": 0.974,
+            "Saturday": 0.972,
+            "Sunday": 0.981
+          },
+          "coverage_ratio": 0.974
+        }
+      }
     },
     {
       "movie": "Insidious: Out of the Further",
@@ -2005,8 +4049,8 @@
       "predicted_high": 54.6,
       "seat_raw_estimate": 3.6,
       "polymarket_ev": 16.8,
-      "actual": 25.11,
-      "actual_total": 25.11,
+      "actual": 25.10602,
+      "actual_total": 25.10602,
       "n_theatres": 419,
       "days_collected": 2,
       "n_days": 2,
@@ -2058,13 +4102,87 @@
       "coverage_ratio": 0.979,
       "daily_actuals": {
         "Thursday": 3.0,
-        "Friday": 7.68,
-        "Saturday": 8.67,
-        "Sunday": 5.76
+        "Friday": 7.6758880000000005,
+        "Saturday": 8.674923,
+        "Sunday": 5.755209
       },
-      "error_pct": -3.6,
-      "actual_status": "final",
-      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)"
+      "error_pct": -3.61,
+      "actual_status": "reported",
+      "actual_source": "https://www.the-numbers.com/movie/Insidious-Out-of-the-Further-(2026)",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Insidious-Out-of-the-Further-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Insidious: Out of the Further",
+          "date": "2026-08-25",
+          "predicted_mid": 24.2,
+          "predicted_low": 16.9,
+          "predicted_high": 54.6,
+          "seat_raw_estimate": 3.6,
+          "polymarket_ev": 16.8,
+          "actual": 25.11,
+          "actual_total": 25.11,
+          "n_theatres": 419,
+          "days_collected": 2,
+          "n_days": 2,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "weekend_of": "2026-08-21",
+          "reference_amc_theatres": 425,
+          "daily_predictions": {
+            "Friday": 8.19,
+            "Saturday": 7.43
+          },
+          "raw_daily_predictions": {
+            "Friday": 6.41,
+            "Saturday": 6.63
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 4.5,
+            "Sunday": 4.06
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.896,
+            "Sunday": 0.48
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.00135,
+            "adjustment_pct": 0.13,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.0865,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3119,
+            "reach": 90.1,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Friday": 413,
+            "Saturday": 419
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.972,
+            "Saturday": 0.986
+          },
+          "coverage_ratio": 0.979,
+          "daily_actuals": {
+            "Thursday": 3.0,
+            "Friday": 7.68,
+            "Saturday": 8.67,
+            "Sunday": 5.76
+          },
+          "error_pct": -3.6,
+          "actual_status": "final",
+          "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)"
+        }
+      }
     },
     {
       "movie": "Mutiny",
@@ -2074,8 +4192,8 @@
       "predicted_high": 12.7,
       "seat_raw_estimate": 1.1,
       "polymarket_ev": 10.3,
-      "actual": 7.71,
-      "actual_total": 7.71,
+      "actual": 7.709519,
+      "actual_total": 7.709519,
       "n_theatres": 406,
       "days_collected": 2,
       "n_days": 2,
@@ -2126,14 +4244,88 @@
       },
       "coverage_ratio": 0.948,
       "daily_actuals": {
-        "Friday": 2.88,
-        "Saturday": 2.79,
-        "Sunday": 2.04
+        "Thursday": 0.7,
+        "Friday": 2.176595,
+        "Saturday": 2.791208,
+        "Sunday": 2.041716
       },
-      "error_pct": -27.4,
-      "actual_status": "final",
-      "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)",
-      "previews_folded_into_friday": true
+      "error_pct": -27.36,
+      "actual_status": "reported",
+      "actual_source": "https://www.the-numbers.com/movie/Mutiny-(2026-United-Kingdom)",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Mutiny-(2026-United-Kingdom)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Mutiny",
+          "date": "2026-08-25",
+          "predicted_mid": 5.6,
+          "predicted_low": 3.4,
+          "predicted_high": 12.7,
+          "seat_raw_estimate": 1.1,
+          "polymarket_ev": 10.3,
+          "actual": 7.71,
+          "actual_total": 7.71,
+          "n_theatres": 406,
+          "days_collected": 2,
+          "n_days": 2,
+          "model_version": "seat-regression-v26-reported-actual-guardrails",
+          "model_cohort_key": "core,expansion",
+          "weekend_of": "2026-08-21",
+          "reference_amc_theatres": 425,
+          "daily_predictions": {
+            "Friday": 1.56,
+            "Saturday": 2.11
+          },
+          "raw_daily_predictions": {
+            "Friday": 1.0,
+            "Saturday": 1.61
+          },
+          "snapshot_daily_predictions": {
+            "Saturday": 1.21,
+            "Sunday": 1.38
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Saturday": 0.889,
+            "Sunday": 0.468
+          },
+          "snapshot_daily_lead_buckets": {
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 0.99855,
+            "adjustment_pct": -0.14,
+            "sentiment_score": 0.0,
+            "buzz_score": -0.0983,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.2944,
+            "reach": 69.74,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Friday": 400,
+            "Saturday": 406
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.941,
+            "Saturday": 0.955
+          },
+          "coverage_ratio": 0.948,
+          "daily_actuals": {
+            "Friday": 2.88,
+            "Saturday": 2.79,
+            "Sunday": 2.04
+          },
+          "error_pct": -27.4,
+          "actual_status": "final",
+          "actual_source": "The Numbers backfill 2026-08-31 (pending-shape entries from e7e6b82 lacked daily_actuals; audit fix)",
+          "previews_folded_into_friday": true
+        }
+      }
     },
     {
       "movie": "The Dog Stars",
@@ -2142,12 +4334,12 @@
       "predicted_mid": 14.29,
       "predicted_low": 8.57,
       "predicted_high": 32.3,
-      "actual_total": 7.71,
+      "actual_total": 7.709729,
       "daily_actuals": {
-        "Friday": 2.14,
-        "Saturday": 2.8,
-        "Sunday": 1.93,
-        "Thursday": 0.85
+        "Thursday": 0.85,
+        "Friday": 2.136729,
+        "Saturday": 2.796186,
+        "Sunday": 1.926814
       },
       "daily_predictions": {
         "Thursday": 2.55,
@@ -2155,14 +4347,14 @@
         "Saturday": 4.46,
         "Sunday": 3.29
       },
-      "error_pct": 85.4,
+      "error_pct": 85.35,
       "n_theatres": 414,
       "n_days": 4,
       "model_version": "seat-regression-v27-volume-divergence-cap",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Dog-Stars-The-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 1.72,
         "Friday": 2.61,
@@ -2216,7 +4408,95 @@
         "Sunday": 0.972
       },
       "coverage_ratio": 0.971,
-      "previews_split_source": "Deadline 2026-08-28 https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
+      "previews_split_source": "Deadline 2026-08-28 https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Dog-Stars-The-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "The Dog Stars",
+          "weekend_of": "2026-08-28",
+          "date": "2026-09-01",
+          "predicted_mid": 14.29,
+          "predicted_low": 8.57,
+          "predicted_high": 32.3,
+          "actual_total": 7.71,
+          "daily_actuals": {
+            "Friday": 2.14,
+            "Saturday": 2.8,
+            "Sunday": 1.93,
+            "Thursday": 0.85
+          },
+          "daily_predictions": {
+            "Thursday": 2.55,
+            "Friday": 3.7,
+            "Saturday": 4.46,
+            "Sunday": 3.29
+          },
+          "error_pct": 85.4,
+          "n_theatres": 414,
+          "n_days": 4,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 1.72,
+            "Friday": 2.61,
+            "Saturday": 3.7,
+            "Sunday": 2.75
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0,
+            "Saturday": 0.0,
+            "Sunday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Friday": 2.4,
+            "Saturday": 3.56,
+            "Sunday": 2.69
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Friday": 0.468,
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.00031,
+            "adjustment_pct": 0.03,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.017,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3642,
+            "reach": 193.21,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 411,
+            "Friday": 413,
+            "Saturday": 414,
+            "Sunday": 413
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.967,
+            "Friday": 0.972,
+            "Saturday": 0.974,
+            "Sunday": 0.972
+          },
+          "coverage_ratio": 0.971,
+          "previews_split_source": "Deadline 2026-08-28 https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
+        }
+      }
     },
     {
       "movie": "Coyote vs. Acme",
@@ -2225,12 +4505,12 @@
       "predicted_mid": 21.69,
       "predicted_low": 15.48,
       "predicted_high": 49.01,
-      "actual_total": 15.91,
+      "actual_total": 15.914007,
       "daily_actuals": {
-        "Friday": 3.6,
-        "Saturday": 5.81,
-        "Sunday": 4.8,
-        "Thursday": 1.7
+        "Thursday": 1.7,
+        "Friday": 3.6021099999999997,
+        "Saturday": 5.809511,
+        "Sunday": 4.802386
       },
       "daily_predictions": {
         "Friday": 4.62,
@@ -2243,8 +4523,8 @@
       "model_version": "seat-regression-v27-volume-divergence-cap",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Coyote-v-Acme-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Friday": 3.39,
         "Saturday": 6.72,
@@ -2297,7 +4577,93 @@
         "Sunday": 0.988
       },
       "coverage_ratio": 0.988,
-      "previews_split_source": "Deadline 2026-08-28 (incl. ~$446K prior-weekend sneaks) https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
+      "previews_split_source": "Deadline 2026-08-28 (incl. ~$446K prior-weekend sneaks) https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Coyote-v-Acme-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Coyote vs. Acme",
+          "weekend_of": "2026-08-28",
+          "date": "2026-09-01",
+          "predicted_mid": 21.69,
+          "predicted_low": 15.48,
+          "predicted_high": 49.01,
+          "actual_total": 15.91,
+          "daily_actuals": {
+            "Friday": 3.6,
+            "Saturday": 5.81,
+            "Sunday": 4.8,
+            "Thursday": 1.7
+          },
+          "daily_predictions": {
+            "Friday": 4.62,
+            "Saturday": 7.54,
+            "Sunday": 6.74
+          },
+          "error_pct": 36.3,
+          "n_theatres": 421,
+          "n_days": 3,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Friday": 3.39,
+            "Saturday": 6.72,
+            "Sunday": 6.17
+          },
+          "daily_sellout_fractions": {
+            "Friday": 0.0061,
+            "Saturday": 0.0138,
+            "Sunday": 0.0083
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 2.25,
+            "Friday": 2.53,
+            "Saturday": 7.09,
+            "Sunday": 6.64
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.468,
+            "Friday": 0.471,
+            "Saturday": 0.471,
+            "Sunday": 0.471
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "next_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 0.99969,
+            "adjustment_pct": -0.03,
+            "sentiment_score": 0.0,
+            "buzz_score": -0.0174,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3609,
+            "reach": 184.23,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Friday": 418,
+            "Saturday": 421,
+            "Sunday": 420
+          },
+          "daily_coverage_ratios": {
+            "Friday": 0.984,
+            "Saturday": 0.991,
+            "Sunday": 0.988
+          },
+          "coverage_ratio": 0.988,
+          "previews_split_source": "Deadline 2026-08-28 (incl. ~$446K prior-weekend sneaks) https://www.worldofreel.com/blog/2026/8/28/box-office-coyote-vs-acme-eyes-17m-opening-after-17m-thursday-the-dog-stars-bombs-with-850k"
+        }
+      }
     },
     {
       "movie": "Practical Magic 2",
@@ -2306,12 +4672,12 @@
       "predicted_mid": 23.01,
       "predicted_low": 12.74,
       "predicted_high": 52.0,
-      "actual_total": 30.0,
+      "actual_total": 30.002526,
       "daily_actuals": {
         "Thursday": 4.7,
-        "Friday": 8.4,
-        "Saturday": 9.85,
-        "Sunday": 7.05
+        "Friday": 8.400872,
+        "Saturday": 9.851265,
+        "Sunday": 7.050389
       },
       "daily_predictions": {
         "Thursday": 5.33,
@@ -2319,14 +4685,14 @@
         "Saturday": 3.78,
         "Sunday": 5.0
       },
-      "error_pct": -23.3,
+      "error_pct": -23.31,
       "n_theatres": 423,
       "n_days": 4,
       "model_version": "seat-regression-v27-volume-divergence-cap",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Practical-Magic-2-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 4.92,
         "Friday": 6.65,
@@ -2386,7 +4752,101 @@
       "calibration_excluded_days": [
         "Saturday",
         "Sunday"
-      ]
+      ],
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Practical-Magic-2-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Practical Magic 2",
+          "weekend_of": "2026-09-11",
+          "date": "2026-09-15",
+          "predicted_mid": 23.01,
+          "predicted_low": 12.74,
+          "predicted_high": 52.0,
+          "actual_total": 30.0,
+          "daily_actuals": {
+            "Thursday": 4.7,
+            "Friday": 8.4,
+            "Saturday": 9.85,
+            "Sunday": 7.05
+          },
+          "daily_predictions": {
+            "Thursday": 5.33,
+            "Friday": 6.79,
+            "Saturday": 3.78,
+            "Sunday": 5.0
+          },
+          "error_pct": -23.3,
+          "n_theatres": 423,
+          "n_days": 4,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 4.92,
+            "Friday": 6.65,
+            "Saturday": 3.78,
+            "Sunday": 5.0
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0027,
+            "Friday": 0.0036,
+            "Saturday": 0.0,
+            "Sunday": 0.0013
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 1.02,
+            "Friday": 6.52,
+            "Saturday": 10.5,
+            "Sunday": 8.08
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.028,
+            "Friday": 0.993,
+            "Saturday": 0.993,
+            "Sunday": 0.993
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.00331,
+            "adjustment_pct": 0.33,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.1906,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.347,
+            "reach": 150.37,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 421,
+            "Friday": 422,
+            "Saturday": 126,
+            "Sunday": 215
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.991,
+            "Friday": 0.993,
+            "Saturday": 0.096,
+            "Sunday": 0.251
+          },
+          "coverage_ratio": 0.583,
+          "calibration_excluded_days": [
+            "Saturday",
+            "Sunday"
+          ]
+        }
+      }
     },
     {
       "movie": "Runner",
@@ -2395,25 +4855,25 @@
       "predicted_mid": 3.53,
       "predicted_low": 1.95,
       "predicted_high": 7.97,
-      "actual_total": 6.46,
+      "actual_total": 6.46229,
       "daily_actuals": {
-        "Friday": 2.58,
-        "Saturday": 2.32,
-        "Sunday": 1.56
+        "Friday": 2.578621,
+        "Saturday": 2.323154,
+        "Sunday": 1.560515
       },
       "daily_predictions": {
         "Thursday": 0.62,
         "Saturday": 0.87
       },
-      "error_pct": -45.4,
+      "error_pct": -45.38,
       "n_theatres": 179,
       "n_days": 2,
       "model_version": "seat-regression-v27-volume-divergence-cap",
       "data_outage": true,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Runner-(2026-Dir-Scott-Waugh)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.62,
         "Saturday": 0.87
@@ -2466,7 +4926,92 @@
         "Saturday",
         "Thursday"
       ],
-      "previews_folded_into_friday": true
+      "previews_folded_into_friday": true,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Runner-(2026-Dir-Scott-Waugh)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Runner",
+          "weekend_of": "2026-09-11",
+          "date": "2026-09-15",
+          "predicted_mid": 3.53,
+          "predicted_low": 1.95,
+          "predicted_high": 7.97,
+          "actual_total": 6.46,
+          "daily_actuals": {
+            "Friday": 2.58,
+            "Saturday": 2.32,
+            "Sunday": 1.56
+          },
+          "daily_predictions": {
+            "Thursday": 0.62,
+            "Saturday": 0.87
+          },
+          "error_pct": -45.4,
+          "n_theatres": 179,
+          "n_days": 2,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "data_outage": true,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.62,
+            "Saturday": 0.87
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Saturday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 0.17,
+            "Friday": 0.8,
+            "Saturday": 1.71,
+            "Sunday": 1.44
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.019,
+            "Friday": 0.005,
+            "Saturday": 0.017,
+            "Sunday": 0.012
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 0.99734,
+            "adjustment_pct": -0.27,
+            "sentiment_score": 0.0,
+            "buzz_score": -0.1702,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3127,
+            "reach": 91.19,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 127,
+            "Saturday": 67
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.299,
+            "Saturday": 0.051
+          },
+          "coverage_ratio": 0.175,
+          "calibration_excluded_days": [
+            "Saturday",
+            "Thursday"
+          ],
+          "previews_folded_into_friday": true
+        }
+      }
     },
     {
       "movie": "Hope",
@@ -2475,26 +5020,26 @@
       "predicted_mid": 4.02,
       "predicted_low": 2.23,
       "predicted_high": 9.09,
-      "actual_total": 3.82,
+      "actual_total": 3.823318,
       "daily_actuals": {
-        "Thursday": 0.59,
-        "Friday": 0.98,
-        "Saturday": 1.32,
-        "Sunday": 0.94
+        "Thursday": 0.594982,
+        "Friday": 0.97577,
+        "Saturday": 1.31729,
+        "Sunday": 0.935276
       },
       "daily_predictions": {
         "Thursday": 0.31,
         "Friday": 1.61,
         "Sunday": 0.61
       },
-      "error_pct": 5.2,
+      "error_pct": 5.14,
       "n_theatres": 179,
       "n_days": 3,
       "model_version": "seat-regression-v27-volume-divergence-cap",
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Hope-(2026-South-Korea)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 0.31,
         "Friday": 1.61,
@@ -2551,7 +5096,100 @@
         "Friday",
         "Sunday",
         "Thursday"
-      ]
+      ],
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Hope-(2026-South-Korea)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Hope",
+          "weekend_of": "2026-09-11",
+          "date": "2026-09-15",
+          "predicted_mid": 4.02,
+          "predicted_low": 2.23,
+          "predicted_high": 9.09,
+          "actual_total": 3.82,
+          "daily_actuals": {
+            "Thursday": 0.59,
+            "Friday": 0.98,
+            "Saturday": 1.32,
+            "Sunday": 0.94
+          },
+          "daily_predictions": {
+            "Thursday": 0.31,
+            "Friday": 1.61,
+            "Sunday": 0.61
+          },
+          "error_pct": 5.2,
+          "n_theatres": 179,
+          "n_days": 3,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 0.31,
+            "Friday": 1.61,
+            "Sunday": 0.61
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0,
+            "Friday": 0.0,
+            "Sunday": 0.0
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 0.01,
+            "Friday": 0.29,
+            "Saturday": 0.32,
+            "Sunday": 0.91
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.001,
+            "Friday": 0.035,
+            "Saturday": 0.045,
+            "Sunday": 0.016
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.0,
+            "adjustment_pct": 0.0,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.0,
+            "buzz_source": "relative-volume",
+            "signal_quality": 0.3289,
+            "reach": 115.45,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 16,
+            "Friday": 137,
+            "Sunday": 49
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.007,
+            "Friday": 0.322,
+            "Sunday": 0.057
+          },
+          "coverage_ratio": 0.129,
+          "calibration_excluded_days": [
+            "Friday",
+            "Sunday",
+            "Thursday"
+          ]
+        }
+      },
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue."
     },
     {
       "movie": "Resident Evil",
@@ -2560,12 +5198,12 @@
       "predicted_mid": 62.05,
       "predicted_low": 45.92,
       "predicted_high": 71.35,
-      "actual_total": 60.15,
+      "actual_total": 60.152878,
       "daily_actuals": {
         "Thursday": 8.8,
-        "Friday": 17.43,
-        "Saturday": 20.02,
-        "Sunday": 13.91
+        "Friday": 17.427502,
+        "Saturday": 20.015762,
+        "Sunday": 13.909614
       },
       "daily_predictions": {
         "Thursday": 9.77,
@@ -2573,7 +5211,7 @@
         "Saturday": 19.25,
         "Sunday": 13.59
       },
-      "error_pct": 3.1,
+      "error_pct": 3.15,
       "n_theatres": 423,
       "n_days": 4,
       "model_version": "seat-regression-v27-volume-divergence-cap",
@@ -2591,8 +5229,8 @@
       "live_error_pct": 6.3,
       "model_cohort_key": "core,expansion",
       "reference_amc_theatres": 425,
-      "actual_source": "The Numbers auto-calibrate",
-      "actual_status": "final",
+      "actual_source": "https://www.the-numbers.com/movie/Resident-Evil-(2026)",
+      "actual_status": "reported",
       "raw_daily_predictions": {
         "Thursday": 9.01,
         "Friday": 17.24,
@@ -2648,7 +5286,109 @@
         "Saturday": 0.993,
         "Sunday": 0.993
       },
-      "coverage_ratio": 0.992
+      "coverage_ratio": 0.992,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Resident-Evil-(2026)",
+      "actuals_verified_at": "2026-09-23",
+      "actuals_revision": {
+        "as_of_date": "2026-09-23",
+        "previous": {
+          "movie": "Resident Evil",
+          "weekend_of": "2026-09-18",
+          "date": "2026-09-22",
+          "predicted_mid": 62.05,
+          "predicted_low": 45.92,
+          "predicted_high": 71.35,
+          "actual_total": 60.15,
+          "daily_actuals": {
+            "Thursday": 8.8,
+            "Friday": 17.43,
+            "Saturday": 20.02,
+            "Sunday": 13.91
+          },
+          "daily_predictions": {
+            "Thursday": 9.77,
+            "Friday": 17.23,
+            "Saturday": 19.25,
+            "Sunday": 13.59
+          },
+          "error_pct": 3.1,
+          "n_theatres": 423,
+          "n_days": 4,
+          "model_version": "seat-regression-v27-volume-divergence-cap",
+          "live_headline": {
+            "mid_m": 63.96,
+            "low_m": 47.33,
+            "high_m": 73.55,
+            "logged_at": "2026-09-21T08:59:41Z",
+            "source": "seat-snapshot-regression",
+            "seat_days": "Thursday+Friday+Saturday+Sunday",
+            "rows": 15,
+            "thursday_mid_m": 49.57,
+            "thursday_logged_at": "2026-09-19T04:54:15Z"
+          },
+          "live_error_pct": 6.3,
+          "model_cohort_key": "core,expansion",
+          "reference_amc_theatres": 425,
+          "actual_source": "The Numbers auto-calibrate",
+          "actual_status": "final",
+          "raw_daily_predictions": {
+            "Thursday": 9.01,
+            "Friday": 17.24,
+            "Saturday": 18.53,
+            "Sunday": 13.39
+          },
+          "daily_sellout_fractions": {
+            "Thursday": 0.0021,
+            "Friday": 0.0048,
+            "Saturday": 0.0036,
+            "Sunday": 0.0017
+          },
+          "snapshot_daily_predictions": {
+            "Thursday": 10.02,
+            "Friday": 13.34,
+            "Saturday": 18.15,
+            "Sunday": 12.91
+          },
+          "snapshot_daily_coverage_ratios": {
+            "Thursday": 0.965,
+            "Friday": 0.988,
+            "Saturday": 0.993,
+            "Sunday": 0.995
+          },
+          "snapshot_daily_lead_buckets": {
+            "Thursday": "same_day",
+            "Friday": "same_day",
+            "Saturday": "same_day",
+            "Sunday": "same_day"
+          },
+          "social_signal": {
+            "factor": 1.0,
+            "adjustment_pct": 0.0,
+            "sentiment_score": 0.0,
+            "buzz_score": 0.0,
+            "buzz_source": "neutral",
+            "signal_quality": 0.4193,
+            "reach": 429.73,
+            "rows": 1,
+            "platforms": [
+              "wikipedia"
+            ]
+          },
+          "daily_theatre_counts": {
+            "Thursday": 421,
+            "Friday": 422,
+            "Saturday": 422,
+            "Sunday": 422
+          },
+          "daily_coverage_ratios": {
+            "Thursday": 0.991,
+            "Friday": 0.993,
+            "Saturday": 0.993,
+            "Sunday": 0.993
+          },
+          "coverage_ratio": 0.992
+        }
+      }
     }
   ],
   "calibration_factors": {
