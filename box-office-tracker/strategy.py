@@ -294,6 +294,10 @@ def analyze_distribution(movie: str, prediction: dict,
     the full picture of where we agree and disagree with the market.
     """
     mid, low, high = model_prediction_values(prediction)
+    from forecast_windows import window_profile
+    window = window_profile(movie, prediction.get("weekend_of", ""), event_markets)
+    if prediction.get("market_window_compatible") is False or not window["market_window_compatible"]:
+        return DistributionComparison(movie=movie, our_mean=mid, our_std=0.0, confidence=0.0)
 
     # NOTE: do NOT re-apply overall_scale_factor here.
     # predict_movie() already applies it inside days_to_weekend(), so

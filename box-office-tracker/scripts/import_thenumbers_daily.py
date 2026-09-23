@@ -25,6 +25,8 @@ from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import predict as P  # noqa: E402
+import calibrate as C
+from actuals_quality import revise_reported_daily_actuals
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
 DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
@@ -121,11 +123,10 @@ def main():
     updated = 0
     for e in cal["history"]:
         movie, w = e["movie"], e["weekend_of"]
-        daily = fetch_daily_table(movie, int(w[:4]))
+        od = C.fetch_movie_daily_history(movie, w)
         time.sleep(0.4)
-        od = daily and opening_days(daily, w)
         if not od or len(od) < 3:
-            print(f"  {movie[:30]:30} {w}  MISS ({'no table' if not daily else 'few days'})")
+            print(f"  {movie[:30]:30} {w}  MISS (no complete daily table)")
             continue
         # A holiday crater (e.g. July 4th) inverts the weekend: Saturday, normally
         # the biggest day, falls BELOW Sunday. Normal frontloading (Sat<Fri but
@@ -134,13 +135,13 @@ def main():
         print(f"  {movie[:30]:30} {w}  {od}  sum=${sum(od.values()):.1f}M"
               f"{'  [Sat<Fri -> day-weight-excluded]' if anomalous else ''}")
         if not args.dry_run:
-            e["daily_actuals"] = od
-            e["daily_actuals_source"] = "the-numbers.com"
+            revise_reported_daily_actuals(e, od, getattr(od, "source_url", "") or "the-numbers.com per-movie daily table",
+                                         datetime.now().date().isoformat())
             if anomalous:
                 e["exclude_from_day_weights"] = True
             updated += 1
     if not args.dry_run:
-        json.dump(cal, open(cal_path, "w"), indent=2)
+        P.save_calibration(cal)
         print(f"\nupdated {updated} films with real daily grosses -> {cal_path}")
 
 

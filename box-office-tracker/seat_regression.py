@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from math import ceil, exp, isfinite, log
 from statistics import median
+from actuals_quality import independent_daily_actuals
 
 OPENING_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 COVERAGE_FLOOR = 0.60          # per-day admissibility for seat rows
@@ -36,7 +37,8 @@ def is_data_outage_entry(entry) -> bool:
 
 def fitting_history(history):
     """History rows admissible for calibration fitting (outages removed)."""
-    return [h for h in (history or []) if not is_data_outage_entry(h)]
+    return [h for h in (history or []) if not is_data_outage_entry(h)
+            and not h.get("exclude_from_calibration")]
 
 
 def t_quantile_95(df: int) -> float:
@@ -145,7 +147,7 @@ def build_seat_rows(history):
     rows = []
     for e in history or []:
         rdp = e.get("raw_daily_predictions") or e.get("daily_predictions") or {}
-        da = e.get("daily_actuals") or {}
+        da = independent_daily_actuals(e)
         cov = e.get("daily_coverage_ratios") or {}
         folded = folded_preview_days(e)
         for day in OPENING_DAYS:
@@ -179,7 +181,7 @@ def build_snapshot_rows(history):
     rows = []
     for e in history or []:
         sdp = e.get("snapshot_daily_predictions") or {}
-        da = e.get("daily_actuals") or {}
+        da = independent_daily_actuals(e)
         leads = e.get("snapshot_daily_lead_buckets") or {}
         folded = folded_preview_days(e)
         for day in OPENING_DAYS:
@@ -257,7 +259,8 @@ def fit_seat(rows, l2):
     """Fit the seat regression; returns coef list or None."""
     if not rows:
         return None
-    X = [seat_features(r["log_seat"], r["day"], r["coverage"]) for r in rows]
+    X = [seat_features(r["log_seat"], r["day"], r["coverage"],
+                       r.get("sellout", 0.0)) for r in rows]
     y = [r["log_actual"] for r in rows]
     w = [r["weight"] for r in rows]
     return weighted_ridge(X, y, w, SEAT_PRIOR, SEAT_PENALIZE, l2)
@@ -380,12 +383,21 @@ def inflate_variance(base_var, coverage):
 
 
 def learn_day_shares(history):
-    """Average per-movie normalized daily-actual shares -> Thu/Fri/Sat/Sun weights."""
+    """Learn normal weekend shape only from complete, independent day splits.
+
+    Partial splits cannot be renormalized into a full weekend. Folded previews,
+    estimated labels and explicitly excluded holiday patterns must not teach
+    Thursday/Friday proportions to ordinary openings.
+    """
     acc = {d: 0.0 for d in OPENING_DAYS}
     cnt = {d: 0 for d in OPENING_DAYS}
     for e in history or []:
-        da = e.get("daily_actuals") or {}
+        if e.get("exclude_from_day_weights") or is_data_outage_entry(e):
+            continue
+        da = independent_daily_actuals(e)
         vals = {d: _f(da.get(d)) for d in OPENING_DAYS if _f(da.get(d)) and _f(da.get(d)) > 0}
+        if len(vals) != len(OPENING_DAYS):
+            continue
         total = sum(vals.values())
         if total <= 0:
             continue
@@ -395,7 +407,6 @@ def learn_day_shares(history):
     shares = {d: (acc[d] / cnt[d] if cnt[d] else 0.0) for d in OPENING_DAYS}
     tot = sum(shares.values())
     if tot <= 0:
-        # uniform fallback
         return {d: 0.25 for d in OPENING_DAYS}
     return {d: shares[d] / tot for d in OPENING_DAYS}
 
@@ -651,7 +662,7 @@ _MAD_TO_SIGMA = 1.4826          # MAD -> Gaussian-equivalent SD
 
 
 def _resid_stats(loo):
-    """Robust, *honestly* cross-validated weekend residual stats for a tier.
+    """Robust weekend residual statistics from cross-validation folds.
 
     Two things are computed:
 
@@ -660,20 +671,18 @@ def _resid_stats(loo):
          one anomalous movie can't drag the correction applied to every forecast).
        - log_half_width: a conformal 90% half-width calibrated on the *nested*
          leave-one-out misses |resid_i - median(residuals without i)|, i.e. how
-         far each movie lands from a center built without it. This is a genuine
-         out-of-sample calibration, not the tautological "cover all residuals
-         about their own center". Floored by a robust t*(1.4826*MAD) width and a
-         small absolute floor.
+         far each movie lands from a center built without it. The finite-sample
+         quantile uses ceil(0.9 * (n + 1)), capped at the available maximum.
+         Floored by a robust t*(1.4826*MAD) width and a small absolute floor.
 
     2. Honest performance metrics (reported): MAE / median-AE use a *leave-one-out
        recenter* (each movie scored with the center of the OTHER movies), so the
        reported error is not optimistically deflated by an in-sample recenter.
 
-    Note on coverage: at n < 10 the conformal quantile ceil(0.9n)=n forces the
-    half-width to cover the worst nested miss, so `loo_hit_rate` is ~1.0 by
-    construction and is NOT independent evidence of calibration — coverage cannot
-    be empirically validated until ~10 cross-validation movies exist. The honest,
-    informative number at this sample size is `loo_mae_pct` (nested).
+    `loo_hit_rate` measures these same calibration residuals, so it is not an
+    independent coverage test at any sample size. Validate the selected model
+    and its interval on later weekends; small samples do not establish 90%
+    coverage, and these dependent folds carry no split-conformal guarantee.
     """
     n = len(loo)
     resids = [r[4] for r in loo]
@@ -693,8 +702,8 @@ def _resid_stats(loo):
     dev = sorted(abs(r - center) for r in resids)
     mad = median(dev)
     t = t_quantile_95(df)
-    k = min(n, max(1, ceil(ROBUST_TARGET_COVERAGE * n)))
-    conformal_half = sorted(nested_miss)[k - 1]          # OUT-OF-SAMPLE calibration
+    k = min(n, max(1, ceil(ROBUST_TARGET_COVERAGE * (n + 1))))
+    conformal_half = sorted(nested_miss)[k - 1]          # cross-validation residuals
     parametric_half = t * (_MAD_TO_SIGMA * mad)          # robust parametric floor
     half = max(conformal_half, parametric_half, 0.05)
     honest_hits = sum(1 for mss in nested_miss if mss <= half)
@@ -704,7 +713,7 @@ def _resid_stats(loo):
         "resid_mean": center,
         "df": df,
         "loo_hit_rate": round(honest_hits / n, 4),       # conformal; ~1.0 at n<10
-        "loo_hit_rate_basis": "conformal (>=target by construction; not validated at n<10)",
+        "loo_hit_rate_basis": "calibration-set coverage; validate on later weekends",
         "loo_mae_pct": round(100.0 * sum(ae) / n, 2),    # nested LOO recenter — honest
         "loo_median_ae_pct": round(100.0 * median(ae), 2),
         "n_movies": n,

@@ -127,10 +127,11 @@ class PredictBridgeFillInTest(unittest.TestCase):
             with open(native, "w", newline="") as f:
                 w = csv.DictWriter(f, fieldnames=fields); w.writeheader()
                 w.writerows([_snap("F", "2026-09-11", "AMC Empire 25", "", 22)])
-            orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV)
+            orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.PRE_RESERVATION_ARCHIVE_DIR)
             try:
                 P.FANDANGO_SNAPSHOTS_CSV = str(fan)
                 P.PRE_RESERVATION_CSV = str(native)
+                P.PRE_RESERVATION_ARCHIVE_DIR = td            # loader is archive-aware: keep the fixture sealed
                 data = P.load_pre_reservation_data(weekend_of="2026-09-11")
                 rows = data["F"]["2026-09-11"]
                 by_theatre = {r["theatre_name"]: r["occupancy_pct"] for r in rows}
@@ -141,7 +142,7 @@ class PredictBridgeFillInTest(unittest.TestCase):
                 data = P.load_pre_reservation_data(weekend_of="2026-09-11", through_date="2026-09-09")
                 self.assertEqual({}, data)
             finally:
-                P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV = orig
+                P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.PRE_RESERVATION_ARCHIVE_DIR = orig
 
     def test_cross_chain_never_counts_bridge_rows_as_rc(self):
         with tempfile.TemporaryDirectory() as td:
@@ -235,9 +236,10 @@ class WatchdogLaneAttributionTest(unittest.TestCase):
                 w.writerows([_snap("F", "2026-09-11", "AMC Empire 25", "AMC", 20, snap="2026-09-11T15:00:00+00:00"),
                              _snap("F", "2026-09-11", "Regal Atlas Park", "REGL", 40, snap="2026-09-11T15:00:00+00:00")])
             orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
-                    cc.FANDANGO_CSV, cc.CINEMARK_CSV)
+                    cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR)
             try:
                 P.FANDANGO_SNAPSHOTS_CSV = str(fan)
+                P.PRE_RESERVATION_ARCHIVE_DIR = td            # loader is archive-aware: keep the fixture sealed
                 P.PRE_RESERVATION_CSV = str(Path(td) / "none-native.csv")
                 P.SEAT_CSV = str(Path(td) / "none-seat.csv")
                 cc.FANDANGO_CSV = str(fan)
@@ -248,7 +250,7 @@ class WatchdogLaneAttributionTest(unittest.TestCase):
                 self.assertEqual(1, sum(counts["amc_snapshot"].values()))   # the bridge row, via predict
             finally:
                 (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
-                 cc.FANDANGO_CSV, cc.CINEMARK_CSV) = orig
+                 cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR) = orig
 
 
 class BridgeTopTheatreRegimeTest(unittest.TestCase):

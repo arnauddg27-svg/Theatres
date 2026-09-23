@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import contextlib
 import io
 import json
@@ -124,6 +125,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertLess(sparse_low, full_low)
         self.assertGreater(sparse_high, full_high)
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_weekend_daypart_gap_reduces_effective_coverage(self):
         cal = {
             "history": [],
@@ -251,6 +254,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, no_scheduled_matinees, places=6)
         self.assertLess(scheduled_matinees_missing, 0.50)
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_snapshot_schedule_profile_can_restore_rolled_off_early_showtimes(self):
         cal = {
             "history": [],
@@ -395,6 +400,8 @@ class PredictionNormalizationTest(unittest.TestCase):
             layer["snapshot_daily_details"]["Saturday"]["supports_partial_regular_day"]
         )
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_prediction_normalizes_sampled_amc_total_to_reference_theatre_count(self):
         cal = {
             "history": [],
@@ -432,10 +439,10 @@ class PredictionNormalizationTest(unittest.TestCase):
         # 1000 sampled AMC -> 2000 normalized to the 4-theatre reference ->
         # 8000 domestic ($0.008M) at the 0.25 AMC market share.
         self.assertAlmostEqual(0.008, thursday["domestic_mid"] / 1_000_000, places=6)
-        # The new regression calibration drops days below the 0.60 coverage
-        # admissibility floor, so a 50%-covered Thursday yields no weekend
-        # forecast at all (rather than the old per-day passthrough).
-        self.assertEqual(0.0, pred["seat_mid_m"])
+        # Restore the production admission floor: an unusable sole observation
+        # must abstain, rather than leaking a zero-dollar headline downstream.
+        with patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.60):
+            self.assertIsNone(predict_movie("Sample Movie", {"2026-05-07": rows}, [], cal))
 
     def test_national_theatre_count_is_footprint_drag_for_sub_wide_release(self):
         factor = national_release_footprint_factor(2615)
@@ -1179,6 +1186,8 @@ class PredictionNormalizationTest(unittest.TestCase):
 
         self.assertLess(predict.missing_data_prior_weight(pred), 0.45)
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_prediction_penalizes_missing_full_timezone_bucket(self):
         cal = {
             "history": [],
@@ -1216,6 +1225,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
         self.assertLess(friday["effective_coverage_ratio"], friday["coverage_ratio"])
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_prediction_reports_weighted_missing_data_profile(self):
         cal = {
             "history": [],
@@ -1381,6 +1392,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         )
         self.assertAlmostEqual(1.7, adjusted)
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_showtime_window_marker_without_daytime_rows_does_not_count_full_day(self):
         cal = {
             "history": [],
@@ -1450,6 +1463,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(1.0, saturday["full_day_window_coverage_ratio"])
         self.assertAlmostEqual(1.0, saturday["evening_to_daily"])
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],
@@ -1647,6 +1662,8 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(0.70, layer["snapshot_same_week_support_floor"], places=6)
         self.assertGreaterEqual(layer["snapshot_model_weight"], 0.12)
 
+    # Isolate normalization on tiny synthetic samples; admission is tested separately.
+    @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
     def test_snapshot_layer_never_overrides_actual_seat_count_day(self):
         cal = {
             "history": [],
@@ -1979,7 +1996,7 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(9.5, daily_actuals["WeekendRemainder"])
         self.assertNotIn("Saturday", daily_actuals)
 
-    def test_snapshot_calibration_infers_missing_days_from_weekend_remainder(self):
+    def test_snapshot_calibration_does_not_turn_weekend_remainder_into_daily_labels(self):
         entry = {
             "actual_total": 16.1,
             "daily_actuals": {
@@ -2008,11 +2025,11 @@ class PredictionNormalizationTest(unittest.TestCase):
         scales = recalibrate_snapshot_day_scale_factors([entry], alpha=1.0)
         support = snapshot_calibration_support([entry])
 
-        self.assertAlmostEqual(5.7, saturday_actual)
-        self.assertAlmostEqual(0.5, saturday_weight)
-        self.assertLess(scales["Saturday"], 1.0)
-        self.assertEqual(1, support["days"]["Saturday"]["n"])
-        self.assertAlmostEqual(0.4, support["days"]["Saturday"]["support"])
+        self.assertEqual(0.0, saturday_actual)
+        self.assertEqual(0.0, saturday_weight)
+        self.assertEqual(1.0, scales["Saturday"])
+        self.assertEqual(0, support["days"]["Saturday"]["n"])
+        self.assertEqual(0.0, support["days"]["Saturday"]["support"])
 
     def test_snapshot_calibration_uses_raw_unscaled_snapshot_mid(self):
         snapshot_predictions, snapshot_coverage, snapshot_leads = (
@@ -3525,11 +3542,11 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertAlmostEqual(2.0, friday["same_week_actual_seat_scale_factor"], places=6)
         self.assertEqual("Thursday", friday["same_week_actual_seat_scale_anchor_day"])
         self.assertAlmostEqual(1700 / 0.25, friday["pre_same_week_actual_scale_domestic_mid"])
-        # Per-day scaling is now 1.0 (no day_scale_factors layer), so the
-        # inherited x2.0 seat scale lands the raw Friday mid at
+        # The range now follows the calibrated midpoint. The inherited
+        # x2.0 seat scale lands the raw Friday mid at
         # (1700 / 0.25) * 2.0 = 13600; the same-week per-seat anchor then nudges
         # the published mid to 14000.
-        self.assertAlmostEqual(1.0, friday["day_scale"], places=6)
+        self.assertAlmostEqual(14000 / 13600, friday["day_scale"], places=6)
         self.assertAlmostEqual((1700 / 0.25) * 2.0, friday["raw_domestic_mid"], places=6)
         self.assertAlmostEqual(14000.0, friday["domestic_mid"], places=6)
 

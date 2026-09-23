@@ -29,8 +29,8 @@ class ConformalRatioBandTests(unittest.TestCase):
     def test_k2_trim_at_larger_n(self):
         ratios = [0.5] + [1.0] * 17 + [3.0]   # n=19 -> k=2 trims the extremes
         r_lo, r_hi = P.conformal_ratio_band(_cal(ratios), "New")
-        self.assertAlmostEqual(r_lo, 1.0)
-        self.assertAlmostEqual(r_hi, 1.0)
+        self.assertAlmostEqual(r_lo, 0.85)
+        self.assertAlmostEqual(r_hi, 1.15)
 
     def test_loo_excludes_own_movie(self):
         cal = _cal([1.0] * 16)

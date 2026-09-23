@@ -27,6 +27,7 @@ try:
 except ModuleNotFoundError:
     requests = None
 import seat_regression
+from forecast_evaluation import grade_forecast_checkpoints
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
@@ -392,7 +393,7 @@ def fetch_daily_chart(date_str):
     rows = re.findall(r'<tr[^>]*>(.*?)</tr>', table.group(1), re.DOTALL)
     for row in rows:
         cells = re.findall(r'<td[^>]*>(.*?)</td>', row, re.DOTALL)
-        clean = [re.sub(r'<[^>]+>', '', c).strip() for c in cells]
+        clean = [html.unescape(re.sub(r'<[^>]+>', '', c)).strip() for c in cells]
         if len(clean) >= 4:
             movie = clean[2]
             gross_str = clean[3].replace('$', '').replace(',', '')
@@ -452,7 +453,49 @@ def fetch_opening_weekend_daily(movie_title, friday_date):
         if best_gross is not None:
             daily[day_name] = best_gross
 
-    return daily if daily else None
+    if daily:
+        from actuals_quality import ReportedDailyGrosses
+        return ReportedDailyGrosses(daily, non_preview_thursday=bool(daily.get("Thursday")))
+    return None
+
+
+def numbers_movie_urls(movie_title, friday_date):
+    """Resolve canonical chart links before trying conventional title slugs.
+
+    Country/director suffixes and leading articles make guessed URLs unreliable.
+    Only an unambiguous title match from the requested day's chart is accepted.
+    """
+    def title_key(value):
+        words = re.sub(r'[^a-z0-9 ]', ' ', html.unescape(value).lower()).split()
+        return tuple(w for w in words if w not in {"the", "a", "an", "and"})
+
+    candidates = []
+    if requests is not None:
+        try:
+            chart = requests.get(
+                "https://www.the-numbers.com/box-office-chart/daily/" + friday_date.replace("-", "/"),
+                headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"}, timeout=30)
+            if chart.status_code == 200:
+                matches = set()
+                for href, label in re.findall(r'<a[^>]+href=[\"\']([^\"\']+)[\"\'][^>]*>(.*?)</a>', chart.text, re.DOTALL):
+                    if not href.startswith("/movie/"):
+                        continue
+                    title = re.sub(r'<[^>]+>', '', label)
+                    if title_key(title) == title_key(movie_title):
+                        matches.add("https://www.the-numbers.com" + href.split("#")[0])
+                if len(matches) == 1:
+                    candidates.extend(matches)
+        except Exception:
+            pass
+    slug_title = re.sub(r'\s*\((?:19|20)\d{2}\)\s*$', '', movie_title).replace('&', 'and')
+    slug = re.sub(r'\s+', '-', re.sub(r'[^a-zA-Z0-9\s-]', '', slug_title).strip())
+    article = re.match(r'^(The|A|An)-(.+)$', slug)
+    slugs = ([article[2] + '-' + article[1]] if article else []) + [slug]
+    year = int(friday_date[:4])
+    for item in slugs:
+        candidates.extend(f"https://www.the-numbers.com/movie/{item}{suffix}"
+                          for suffix in (f"-({year})", f"-({year - 1})", ""))
+    return list(dict.fromkeys(candidates))
 
 
 def fetch_movie_daily_history(movie_title, friday_date):
@@ -469,15 +512,7 @@ def fetch_movie_daily_history(movie_title, friday_date):
         return None
 
     friday = datetime.strptime(friday_date, "%Y-%m-%d")
-    year = friday.year
-
-    # Try common URL patterns with year suffix to disambiguate remakes
-    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', movie_title).strip().replace(' ', '-')
-    candidates = [
-        f"https://www.the-numbers.com/movie/{slug}-({year})",
-        f"https://www.the-numbers.com/movie/{slug}-({year - 1})",
-        f"https://www.the-numbers.com/movie/{slug}",
-    ]
+    candidates = numbers_movie_urls(movie_title, friday_date)
 
     for url in candidates:
         try:
@@ -543,7 +578,11 @@ def fetch_movie_daily_history(movie_title, friday_date):
             and daily.get("Friday", 0) > daily.get("Thursday", 0)
         ):
             daily["Friday"] = max(0.0, daily["Friday"] - daily["Thursday"])
-        return daily if daily else None
+        if daily:
+            from actuals_quality import ReportedDailyGrosses
+            return ReportedDailyGrosses(daily, source_url=url,
+                                       non_preview_thursday=bool(daily.get("Thursday"))
+                                       and str(thursday_rank).strip().upper() != "P")
 
     return None
 
@@ -604,6 +643,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         entry["model_version"] = model_version
     if live_headline and live_headline.get("mid_m"):
         entry["live_headline"] = dict(live_headline)
+        entry["live_headline"]["checkpoints"] = grade_forecast_checkpoints(
+            live_headline.get("checkpoints"), total_actual)
         if total_actual > 0:
             entry["live_error_pct"] = round(
                 (float(live_headline["mid_m"]) - total_actual) / total_actual * 100, 1)
@@ -627,6 +668,15 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         entry["actual_source"] = actual_source
     if actual_status:
         entry["actual_status"] = actual_status
+    if daily_actuals.get("Friday") and not daily_actuals.get("Thursday"):
+        # A missing preview row is unknown, never evidence of zero previews.
+        entry["previews_folded_into_friday"] = True
+    if getattr(daily_actuals, "source_url", ""):
+        entry["daily_actuals_source"] = daily_actuals.source_url
+    if getattr(daily_actuals, "non_preview_thursday", False):
+        entry["non_preview_thursday"] = True
+        entry["exclude_from_calibration"] = True
+        entry["calibration_exclusion_reason"] = "Regular Thursday for a non-Friday opener; not preview revenue."
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
@@ -712,33 +762,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         seat_regression.fitting_history(cal["history"])
     )
 
-    # 2. Update day weights from actual daily proportions
-    #    Average the actual day splits across all movies with daily data
-    all_day_weights = []
-    for h in seat_regression.fitting_history(cal["history"]):
-        # Skip weekends with anomalous day shapes (e.g. a July-4th Saturday
-        # crater) — they would corrupt the normal Thu/Fri/Sat/Sun weights.
-        if h.get("exclude_from_day_weights"):
-            continue
-        da = h.get("daily_actuals", {})
-        opening_da = {
-            day: _positive_float(da.get(day))
-            for day in OPENING_WEEKEND_DAYS
-            if _positive_float(da.get(day)) is not None
-        }
-        total = sum(opening_da.values())
-        if total > 0 and len(opening_da) >= 3:
-            all_day_weights.append({d: g / total for d, g in opening_da.items()})
-
-    if all_day_weights:
-        new_weights = {}
-        for day in ["Thursday", "Friday", "Saturday", "Sunday"]:
-            vals = [w.get(day, 0) for w in all_day_weights]
-            new_weights[day] = round(statistics.mean(vals), 4) if vals else 0
-        # Normalize to sum to 1.0
-        total_w = sum(new_weights.values())
-        if total_w > 0:
-            factors["day_weights"] = {d: round(v / total_w, 4) for d, v in new_weights.items()}
+    # Use the same independently reported, complete day splits as the model.
+    factors["day_weights"] = seat_regression.learn_day_shares(cal["history"])
 
     # 3. Update per-day accuracy (predicted vs actual for each day)
     day_errors = {}

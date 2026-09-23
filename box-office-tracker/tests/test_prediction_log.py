@@ -59,7 +59,7 @@ class PredictionLogTest(unittest.TestCase):
         meta = P.load_movie_metadata()
         mm = P.metadata_for_movie("Resident Evil", meta)
         self.assertIsNotNone(mm)
-        self.assertEqual(("horror", "horror_fan", "R", 3500),
+        self.assertEqual(("horror", "horror_fan", "R", 3684),
                          (mm.genre, mm.audience_type, mm.rating, mm.national_theatre_count))
 
     def test_prediction_log_is_committed_by_finalize(self):

@@ -481,13 +481,18 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
         poly_data = predict.load_polymarket_data(weekend_of=current_weekend)
         snapshot_data = predict.load_pre_reservation_data(weekend_of=current_weekend)
         social_data = predict.load_social_signal_data(weekend_of=current_weekend)
+        reviews_data = predict.load_reviews_data(weekend_of=current_weekend)
+        cross_chain_data = predict.load_cross_chain_occupancy(weekend_of=current_weekend)
+        daily_actual_overrides = predict.load_daily_actual_overrides(weekend_of=current_weekend)
+        showtime_link_profiles = predict.load_showtime_link_daypart_profiles(weekend_of=current_weekend)
         theatre_counts = predict.load_theatre_counts()
         metadata = predict.load_movie_metadata()
     except Exception as exc:
         return {"_error": {"message": str(exc)}}
 
     predictions = {}
-    for movie, movie_seat_data in seat_data.items():
+    for movie in predict.prediction_movie_names(seat_data, snapshot_data):
+        movie_seat_data = predict.movie_mapping_get(seat_data, movie, {})
         try:
             nat_count = predict.national_theatre_count_for_movie(
                 movie,
@@ -497,13 +502,18 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
             pred = predict.predict_movie(
                 movie,
                 movie_seat_data,
-                poly_data.get(movie, []),
+                predict.movie_mapping_get(poly_data, movie, []),
                 cal,
                 national_theatre_count=nat_count,
-                snapshot_data=snapshot_data.get(movie, {}),
+                snapshot_data=predict.movie_mapping_get(snapshot_data, movie, {}),
                 social_data=social_data,
+                reviews_data=reviews_data,
+                cross_chain_data=cross_chain_data,
+                daily_actual_overrides=daily_actual_overrides,
+                showtime_link_profiles=predict.movie_mapping_get(showtime_link_profiles, movie, {}),
             )
             if not pred:
+                predictions[movie] = {"error": "Insufficient usable seat or reservation evidence"}
                 continue
             mid, low, high = predict.regression_prediction_values(pred)
             predictions[movie] = {
@@ -511,6 +521,10 @@ def build_prediction_map(current_weekend: str, data_dir: Path) -> dict[str, dict
                 "low_m": round(low, 1),
                 "high_m": round(high, 1),
                 "source": pred.get("regression_source", ""),
+                "forecast_stage": pred.get("forecast_stage", ""),
+                "provisional": bool(pred.get("forecast_provisional")),
+                "window_warning": pred.get("market_window_warning", ""),
+                "excluded_days": list(pred.get("excluded_daily_details") or {}),
                 "basis": pred.get("regression_basis", ""),
                 "uses_polymarket": bool(pred.get("regression_uses_polymarket")),
                 "seat_only_m": round(pred.get("seat_mid_m", 0), 1),
@@ -1074,9 +1088,9 @@ HTML_PAGE = r"""<!doctype html>
             <div class="small">Weekend ${esc(movie.weekend_of)} ${marketUrl ? `| <a href="${esc(marketUrl)}" target="_blank" rel="noreferrer">market</a>` : ""}</div>
           </div>
           <div class="cell">
-            <div class="label">Model estimate</div>
+            <div class="label">${p && p.provisional ? "Provisional estimate" : "Model estimate"}</div>
             <div class="metric">${estimate}</div>
-            <div class="small">${range}<br>${p && !p.error ? esc(p.source) : ""}${snapshotLine}</div>
+            <div class="small">${range}<br>${p && !p.error ? esc(p.source) : p && p.error ? esc(p.error) : ""}${snapshotLine}${p && p.window_warning ? `<br>${esc(p.window_warning)}` : ""}${p && p.excluded_days && p.excluded_days.length ? `<br>Unusable seat days omitted: ${esc(p.excluded_days.join(", "))}` : ""}</div>
           </div>
           <div class="cell">
             <div class="label">Seat data</div>
