@@ -4919,6 +4919,16 @@ def snapshot_data_thursday_share(snapshot_data, weekend_of):
     return by[thu] / total
 
 
+def _family_gate_share(layer, snapshot_data=None, weekend_of=None):
+    share = snapshot_data_thursday_share(snapshot_data, weekend_of)
+    return snapshot_thursday_share(layer) if share is None else share
+
+
+# "thursday" (default): family lift only at the Thursday stage, like horror;
+# "all": also once Friday seats exist (experiment knob for the Friday gate).
+FAMILY_LIFT_STAGES = (os.environ.get("FAMILY_LIFT_STAGES") or "thursday").strip().lower()
+
+
 def snapshot_lift(movie_metadata, layer, snapshot_data=None, weekend_of=None):
     """Combined pre-sales lift: genre (horror) x family walk-up. The family
     gate reads Thursday's share of reserved seats from the raw snapshot rows,
@@ -8525,10 +8535,11 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # film's own seats; lifting on top double-counts (Resident Evil Saturday:
     # $70M with, ~$64M without, market at $60-65M). Thursday-only stage only.
     observed_days = set((result.get("daily_details") or {}).keys())
-    if HORROR_LIFT_STAGES == "all" or observed_days <= {"Thursday"}:
-        apply_snapshot_lift(result, snapshot_lift(movie_metadata, result, snapshot_data, weekend_of))
-    else:
-        apply_snapshot_lift(result, 1.0)
+    thursday_stage = observed_days <= {"Thursday"}
+    horror = genre_snapshot_lift(movie_metadata) if (HORROR_LIFT_STAGES == "all" or thursday_stage) else 1.0
+    family = (family_snapshot_lift(movie_metadata, _family_gate_share(result, snapshot_data, weekend_of))
+              if (FAMILY_LIFT_STAGES == "all" or thursday_stage) else 1.0)
+    apply_snapshot_lift(result, horror * family)
     apply_regression_snapshot_weekend(result, cal)
     attach_comp_model_prediction(result, cal)
     result["weekend_of"] = weekend_of
