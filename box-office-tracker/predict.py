@@ -4837,13 +4837,96 @@ def apply_snapshot_lift(snapshot_layer, lift):
 
 # broad_family audiences buy at the door (walk-ups), which confounds Fandango's
 # advance-only reads — so this tag gates the cross-chain share off for family
-# films (see predict_movie). NOTE: a family snapshot walk-up BOOST was shipped
-# 2026-07-04 (commit 3445c28) then REVERTED 2026-07-06 — its first real test
-# (Minions & Monsters) was holiday-confounded and inconclusive, and the isolation
-# (scripts/isolate_minions_overread.py) showed the boost was inert on the full
-# weekend anyway (the over-read was entirely the Thursday reported-actual anchor).
-# Do not re-add without unconfounded family data.
+# films (see predict_movie). A family snapshot walk-up BOOST (1.25) was shipped
+# 2026-07-04 (commit 3445c28) then REVERTED 2026-07-06: its only test (Minions &
+# Monsters) was holiday-confounded and the boost had no clean family data behind
+# it. The lift below (2026-09-24) is fit on three unconfounded family films.
 FAMILY_WALKUP_AUDIENCE = "broad_family"
+
+# Family walk-up lift, Thursday stage only (like the horror lift). The three
+# broad_family films with a clean Thursday-stage replay were all under-read:
+# actual/call PAW Patrol 1.17, The Breadwinner 2.16, Moana 1.26 — geometric
+# mean 1.47, shrunk n/(n+2) in log space -> 1.26. The one family film that was
+# OVER-read (The Amazing Digital Circus, +17%) pre-sold like a fan film: 46% of
+# its reservations were for preview night, against 5-21% for the three
+# under-read titles, so the lift is gated on Thursday's share of pre-sales
+# (< 30%). Leave-one-out on the 18-film Thursday backtest: 17.5% -> 15.7% MAE;
+# only the gated films move (PAW -15% -> +9%, Moana -21% -> 0%, Breadwinner
+# -54% -> -49%). Re-fit as family films accrue; n=3 is thin.
+FAMILY_SNAPSHOT_LIFT = 1.26
+FAMILY_LIFT_MAX_THURSDAY_SHARE = 0.30
+
+
+def snapshot_thursday_share(layer):
+    """Pure: Thursday's share of the raw pre-sales dollars in a snapshot layer
+    (or pred dict); None when there is no Thursday day or no total."""
+    details = (layer or {}).get("snapshot_daily_details") or {}
+    vals = {}
+    for day, d in details.items():
+        if isinstance(d, dict):
+            v = d.get("raw_domestic_mid", d.get("domestic_mid"))
+            if v:
+                vals[day] = float(v)
+    total = sum(vals.values())
+    if not total or "Thursday" not in vals:
+        return None
+    return vals["Thursday"] / total
+
+
+def family_snapshot_lift(movie_metadata, thursday_share):
+    """Pure: FAMILY_SNAPSHOT_LIFT for a broad_family film whose pre-sales are
+    NOT preview-heavy (Thursday share below the gate), else 1.0. An unknown
+    share (no Thursday row yet) gets no lift."""
+    aud = (getattr(movie_metadata, "audience_type", "") or "").strip().lower()
+    if aud != FAMILY_WALKUP_AUDIENCE:
+        return 1.0
+    if thursday_share is None or thursday_share >= FAMILY_LIFT_MAX_THURSDAY_SHARE:
+        return 1.0
+    return FAMILY_SNAPSHOT_LIFT
+
+
+def snapshot_data_thursday_share(snapshot_data, weekend_of):
+    """Pure: Thursday's share of RESERVED SEATS across the weekend's show dates
+    in the raw snapshot rows (latest snapshot per theatre+showtime). Read from
+    the data, not the pre-sales layer: once Thursday's seats are observed the
+    layer drops Thursday, and the gate must not flip with the stage."""
+    if not snapshot_data or not weekend_of:
+        return None
+    try:
+        thu = (datetime.strptime(str(weekend_of), "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
+    except ValueError:
+        return None
+    by = {}
+    for day, rows in snapshot_data.items():
+        latest = {}
+        for r in rows or []:
+            if not isinstance(r, dict):
+                continue
+            key = (r.get("theatre_name"), r.get("showtime_id") or r.get("showtime"))
+            st = r.get("snapshot_time", "") or ""
+            if key not in latest or st > latest[key][0]:
+                latest[key] = (st, r)
+        total_day = 0
+        for _, r in latest.values():
+            try:
+                total_day += int(float(r.get("reserved_seats") or 0))
+            except (TypeError, ValueError):
+                pass
+        by[day] = total_day
+    total = sum(by.values())
+    if not total or thu not in by:
+        return None
+    return by[thu] / total
+
+
+def snapshot_lift(movie_metadata, layer, snapshot_data=None, weekend_of=None):
+    """Combined pre-sales lift: genre (horror) x family walk-up. The family
+    gate reads Thursday's share of reserved seats from the raw snapshot rows,
+    falling back to the layer's day values when no rows are given."""
+    share = snapshot_data_thursday_share(snapshot_data, weekend_of)
+    if share is None:
+        share = snapshot_thursday_share(layer)
+    return genre_snapshot_lift(movie_metadata) * family_snapshot_lift(movie_metadata, share)
 
 
 def _friday_weekend_multipliers():
@@ -8434,8 +8517,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if apply_empirical_regression:
         attach_empirical_seat_snapshot_regression(result, cal)
     # After the empirical step (which rebuilds the pre-sales totals from raw
-    # basis fields) and before the headline is chosen: the genre lift is the
-    # last word on the pre-sales layer.
+    # basis fields) and before the headline is chosen: the genre and family
+    # lifts are the last word on the pre-sales layer.
     # The lift was calibrated on the THURSDAY stage, where pre-sales are the
     # only evidence. Once Friday seats exist the same-week calibration
     # (x1.18 on 2026-09-19) already corrects the pre-sales read from this
@@ -8443,7 +8526,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     # $70M with, ~$64M without, market at $60-65M). Thursday-only stage only.
     observed_days = set((result.get("daily_details") or {}).keys())
     if HORROR_LIFT_STAGES == "all" or observed_days <= {"Thursday"}:
-        apply_snapshot_lift(result, genre_snapshot_lift(movie_metadata))
+        apply_snapshot_lift(result, snapshot_lift(movie_metadata, result, snapshot_data, weekend_of))
     else:
         apply_snapshot_lift(result, 1.0)
     apply_regression_snapshot_weekend(result, cal)

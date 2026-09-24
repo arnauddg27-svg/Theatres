@@ -143,3 +143,51 @@ class HorrorSnapshotLiftTest(unittest.TestCase):
 
     def test_share_weight_is_the_shrunk_value(self):
         self.assertEqual(0.5, P.CROSS_CHAIN_SHARE_WEIGHT)
+
+
+class FamilySnapshotLiftTest(unittest.TestCase):
+    def _layer(self, thu, fri, sat, sun):
+        return {"snapshot_mid_m": 10.0, "snapshot_daily_details": {
+            d: {"raw_domestic_mid": v * 1e6, "domestic_mid": v * 1.2e6}
+            for d, v in zip(("Thursday", "Friday", "Saturday", "Sunday"), (thu, fri, sat, sun))}}
+
+    def test_thursday_share_uses_the_raw_day_values(self):
+        self.assertAlmostEqual(0.25, P.snapshot_thursday_share(self._layer(1, 1, 1, 1)))
+        self.assertIsNone(P.snapshot_thursday_share({"snapshot_daily_details": {"Friday": {"domestic_mid": 1e6}}}))
+        self.assertIsNone(P.snapshot_thursday_share(None))
+
+    def test_lift_only_for_walkup_family_films(self):
+        from types import SimpleNamespace as NS
+        fam, fan = NS(audience_type="broad_family", genre="animation"), NS(audience_type="fan_driven", genre="action")
+        self.assertEqual(P.FAMILY_SNAPSHOT_LIFT, P.family_snapshot_lift(fam, 0.05))     # PAW Patrol
+        self.assertEqual(P.FAMILY_SNAPSHOT_LIFT, P.family_snapshot_lift(fam, 0.21))     # Moana
+        self.assertEqual(1.0, P.family_snapshot_lift(fam, 0.46))                        # Digital Circus: preview-heavy
+        self.assertEqual(1.0, P.family_snapshot_lift(fam, None))                        # no Thursday row yet
+        self.assertEqual(1.0, P.family_snapshot_lift(fan, 0.05))
+        self.assertEqual(1.0, P.family_snapshot_lift(None, 0.05))
+        self.assertTrue(1.1 <= P.FAMILY_SNAPSHOT_LIFT <= 1.5, "a lift outside this range needs new evidence")
+
+    def test_combined_lift_multiplies_genre_and_family(self):
+        from types import SimpleNamespace as NS
+        fam = NS(audience_type="broad_family", genre="animation")
+        self.assertEqual(P.FAMILY_SNAPSHOT_LIFT, P.snapshot_lift(fam, self._layer(1, 2, 4, 3)))   # Thu 10%
+        self.assertEqual(1.0, P.snapshot_lift(fam, self._layer(5, 2, 2, 1)))                       # Thu 50%
+        horror = NS(audience_type="horror_fan", genre="horror")
+        self.assertEqual(P.HORROR_SNAPSHOT_LIFT, P.snapshot_lift(horror, self._layer(1, 1, 1, 1)))
+
+    def test_thursday_share_from_raw_rows_takes_the_latest_snapshot_per_showtime(self):
+        rows = lambda day, sid, *reserved: [{"theatre_name": "T", "showtime_id": sid, "show_date": day,
+                                             "snapshot_time": f"2026-08-1{i}T03", "reserved_seats": str(r)}
+                                            for i, r in enumerate(reserved)]
+        data = {"2026-08-13": rows("2026-08-13", "a", 5, 10),          # Thursday: latest = 10
+                "2026-08-14": rows("2026-08-14", "b", 30, 40),         # latest = 40
+                "2026-08-15": rows("2026-08-15", "c", 50)}
+        self.assertAlmostEqual(0.10, P.snapshot_data_thursday_share(data, "2026-08-14"))
+        self.assertIsNone(P.snapshot_data_thursday_share({"2026-08-15": rows("2026-08-15", "c", 5)}, "2026-08-14"))
+        self.assertIsNone(P.snapshot_data_thursday_share({}, "2026-08-14"))
+        # the gate holds once Thursday has left the pre-sales layer (Thursday-stage replays)
+        from types import SimpleNamespace as NS
+        fam = NS(audience_type="broad_family", genre="animation")
+        layer_without_thu = {"snapshot_daily_details": {"Friday": {"raw_domestic_mid": 1e6}}}
+        self.assertEqual(P.FAMILY_SNAPSHOT_LIFT, P.snapshot_lift(fam, layer_without_thu, data, "2026-08-14"))
+        self.assertEqual(1.0, P.snapshot_lift(fam, layer_without_thu))          # no rows, no Thursday: no lift
