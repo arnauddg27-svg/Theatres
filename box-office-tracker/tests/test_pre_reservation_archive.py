@@ -61,10 +61,13 @@ class ArchiveLoaderTests(unittest.TestCase):
         self.assertEqual(len(new["New Film"]["2026-07-10"]), 3)
 
     def test_live_and_archive_rows_merge_for_same_weekend(self):
-        # mid-rotation state: some of a weekend archived, remainder still live
-        _write_csv(P.PRE_RESERVATION_CSV, _rows("2026-06-19", "Old Film", 2))
-        _write_gz(P._pre_reservation_archive_path("2026-06-19"),
-                  _rows("2026-06-19", "Old Film", 5))
+        # mid-rotation state: some of a weekend archived, remainder still live.
+        # Distinct rows add up; an exact copy present in both files (a row
+        # re-appended by a late artifact merge after rotation) counts once.
+        live = _rows("2026-06-19", "Old Film", 7)[5:]          # reserved_seats 5, 6
+        archived = _rows("2026-06-19", "Old Film", 5)          # reserved_seats 0..4
+        _write_csv(P.PRE_RESERVATION_CSV, live + archived[:1])  # + one duplicate of the archive
+        _write_gz(P._pre_reservation_archive_path("2026-06-19"), archived)
         data = P.load_pre_reservation_data(weekend_of="2026-06-19")
         self.assertEqual(len(data["Old Film"]["2026-06-19"]), 7)
 

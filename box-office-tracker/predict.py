@@ -1509,9 +1509,9 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
                 continue
             if has_weekend_col and row.get("weekend_of", "") != weekend_of:
                 continue
-            row_key = (row.get("snapshot_time", ""), show_date, row.get("theatre_name", ""),
-                       movie, row.get("showtime_id", "") or row.get("showtime", ""),
-                       row.get("snapshot_bucket", ""))
+            # exact copies only: a rotated or re-merged row is byte-identical,
+            # while two real snapshots always differ in some field
+            row_key = tuple(sorted(row.items()))
             if row_key in seen_rows:
                 continue
             seen_rows.add(row_key)
