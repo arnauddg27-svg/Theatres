@@ -461,6 +461,41 @@ def parse_github_time(value: str) -> dt.datetime:
     return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
+RUN_LIST_PAGE_SIZE = 100
+RUN_LIST_MAX_PAGES = 5
+
+
+def list_recent_dispatch_runs(*, client, workflow: str, since: dt.datetime) -> list[dict]:
+    """workflow_dispatch runs of `workflow`, newest first, back to `since`.
+
+    NO `event=` filter on the request. GitHub serves filtered run listings
+    (event, status, created, ...) from a search index, and on 2026-09-23/24
+    that listing intermittently dropped runs older than ~1.5-2.5 h while newer
+    ones were present: the watchdog then saw no run for a slot that had
+    already SUCCEEDED and re-dispatched it every tick until it left the
+    lookback (collect-links PT 17Z ran 5x on 09-23; fandango near 16Z 3x on
+    09-24). The duplicates landed in the same concurrency group, cancelled
+    each other's pending runs, the cancellations read as failures and were
+    retried, and four Fandango runs dispatched in one tick got the runner
+    throttled (core 10Z: 0 rows). The unfiltered listing is served from the
+    primary store; filter the event here and page until older than `since`.
+    """
+    out: list[dict] = []
+    for page in range(1, RUN_LIST_MAX_PAGES + 1):
+        batch = client.request_json(
+            "GET",
+            f"/repos/{client.repo}/actions/workflows/{workflow}/runs"
+            f"?per_page={RUN_LIST_PAGE_SIZE}&page={page}",
+        ).get("workflow_runs", []) or []
+        out.extend(r for r in batch if r.get("event", "workflow_dispatch") == "workflow_dispatch")
+        if len(batch) < RUN_LIST_PAGE_SIZE:
+            break
+        oldest = min((parse_github_time(r["created_at"]) for r in batch if r.get("created_at")), default=None)
+        if oldest is None or oldest < since:
+            break
+    return out
+
+
 def recent_pipeline_run_exists(
     *,
     client: GitHubClient,
@@ -469,12 +504,9 @@ def recent_pipeline_run_exists(
     scheduled_at: dt.datetime,
     now: dt.datetime,
 ) -> bool:
-    runs = client.request_json(
-        "GET",
-        f"/repos/{client.repo}/actions/workflows/{workflow}/runs?event=workflow_dispatch&per_page=100",
-    ).get("workflow_runs", [])
     lower_bound = scheduled_at - dt.timedelta(minutes=5)
     upper_bound = now + dt.timedelta(minutes=5)
+    runs = list_recent_dispatch_runs(client=client, workflow=workflow, since=lower_bound)
     failed: list[dict] = []
     for run in runs:
         if run.get("display_title") not in titles:
@@ -520,6 +552,9 @@ def recent_pipeline_run_exists(
             f"{run.get('html_url')} created at {run['created_at']}"
         )
         return True
+    oldest = min((r.get("created_at", "") for r in runs), default="none")
+    print(f"No servicing run for {titles[0]} since {lower_bound.isoformat()} "
+          f"(scanned {len(runs)} dispatch runs back to {oldest}; {len(failed)} failed)")
     return False
 
 

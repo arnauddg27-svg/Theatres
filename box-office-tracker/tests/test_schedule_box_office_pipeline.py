@@ -322,6 +322,54 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             "html_url": "https://example.test/run",
             "status": "in_progress", "conclusion": None}))
 
+    def test_run_listing_is_unfiltered_and_pages_back_to_the_slot(self):
+        """The event-filtered listing is search-backed and dropped older runs on
+        2026-09-24, so a SUCCEEDED slot was re-dispatched every tick. The query
+        must not filter server-side, and must page until it passes the slot."""
+        paths = []
+        newer = [{"display_title": f"other {i}", "event": "workflow_dispatch",
+                  "created_at": "2026-05-24T03:50:00Z", "status": "completed",
+                  "conclusion": "success"} for i in range(schedule.RUN_LIST_PAGE_SIZE)]
+        slot_run = {"display_title": "box office scrape snapshot", "event": "workflow_dispatch",
+                    "created_at": "2026-05-24T02:35:00Z", "html_url": "https://example.test/ok",
+                    "status": "completed", "conclusion": "success"}
+        pages = {1: newer, 2: [slot_run]}
+
+        class FakeClient:
+            repo = "owner/repo"
+
+            def request_json(self, method, path, body=None):
+                paths.append(path)
+                page = int(path.rsplit("page=", 1)[1])
+                return {"workflow_runs": pages.get(page, [])}
+
+        exists = schedule.recent_pipeline_run_exists(
+            client=FakeClient(), workflow="box-office-pipeline.yml",
+            titles=("box office scheduled snapshot 02:30Z", "box office scrape snapshot"),
+            scheduled_at=schedule.parse_utc("2026-05-24T02:30:00Z"),
+            now=schedule.parse_utc("2026-05-24T04:00:00Z"))
+        self.assertTrue(exists)
+        self.assertEqual(2, len(paths))
+        self.assertTrue(all("event=" not in p for p in paths), paths)
+
+    def test_run_listing_ignores_non_dispatch_events_and_stops_paging(self):
+        calls = []
+        push_run = {"display_title": "box office scrape snapshot", "event": "push",
+                    "created_at": "2026-05-24T02:35:00Z", "status": "completed", "conclusion": "success"}
+
+        class FakeClient:
+            repo = "owner/repo"
+
+            def request_json(self, method, path, body=None):
+                calls.append(path)
+                return {"workflow_runs": [push_run]}
+
+        runs = schedule.list_recent_dispatch_runs(
+            client=FakeClient(), workflow="box-office-pipeline.yml",
+            since=schedule.parse_utc("2026-05-24T02:25:00Z"))
+        self.assertEqual([], runs)
+        self.assertEqual(1, len(calls))          # short page -> no second request
+
     def test_scheduled_dispatch_sends_slot_metadata(self):
         class FakeClient:
             repo = "owner/repo"
