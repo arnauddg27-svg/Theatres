@@ -724,20 +724,16 @@ jobs:
           # which is exactly what bricked the snapshot lane on 2026-07-12. This
           # net runs on ubuntu-latest, so the cliff cannot come back while the
           # VPS is down. Well below the limit it is a no-op.
-          limit=$((60 * 1024 * 1024))
-          need=0
+          # 2026-09-24: two kept weekends were 98.5 MiB by themselves and four
+          # finalize pushes were rejected (rows recovered from artifacts). The
+          # script now takes a hard cap: it drops older kept weekends first and,
+          # if one weekend is still over, archives that weekend's PLAYED show
+          # dates. The loader reads live + archive, so no row is lost. Runs
+          # every finalize; a no-op well under the cap.
           for f in data/seat-counts.csv data/pre-reservation-snapshots.csv; do
-            [ -f "$f" ] || continue
-            size=$(wc -c < "$f")
-            echo "$f: $((size / 1024 / 1024))MB"
-            [ "$size" -gt "$limit" ] && need=1
+            [ -f "$f" ] && echo "$f: $(( $(wc -c < "$f") / 1024 / 1024 ))MB"
           done
-          if [ "$need" = "1" ]; then
-            echo "::warning::A canonical CSV passed 60MB — rotating settled weekends here because the weekly VPS rotation has not kept up."
-            python3 scripts/rotate_pre_reservation_snapshots.py
-          else
-            echo "Both canonical CSVs are comfortably under the limit; no rotation needed."
-          fi
+          python3 scripts/rotate_pre_reservation_snapshots.py --max-mb 60
 
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard

@@ -1495,6 +1495,11 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
     cohort_sets = load_theatre_cohort_sets()
     model_cohorts = active_model_cohorts()
     native_keys = set()   # (movie, show_date, theatre) the AMC lane itself read
+    # One weekend can now live in BOTH sources (played show dates are rotated
+    # to the archive mid-weekend by the size cap), and a late artifact merge
+    # can re-append an archived row to the live file; the same snapshot must
+    # never count twice.
+    seen_rows = set()
     for reader in _pre_reservation_row_sources(weekend_of):
         has_weekend_col = "weekend_of" in (reader.fieldnames or [])
         for row in reader:
@@ -1504,6 +1509,12 @@ def load_pre_reservation_data(weekend_of=None, through_date=None):
                 continue
             if has_weekend_col and row.get("weekend_of", "") != weekend_of:
                 continue
+            row_key = (row.get("snapshot_time", ""), show_date, row.get("theatre_name", ""),
+                       movie, row.get("showtime_id", "") or row.get("showtime", ""),
+                       row.get("snapshot_bucket", ""))
+            if row_key in seen_rows:
+                continue
+            seen_rows.add(row_key)
             snapshot_date = (row.get("snapshot_time", "") or "")[:10]
             if through_date:
                 if not snapshot_date or snapshot_date > through_date:
