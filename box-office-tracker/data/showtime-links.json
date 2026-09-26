@@ -2,7 +2,7 @@
   "date": "2026-09-25",
   "weekend_of": "2026-09-25",
   "collected_local_date": "2026-09-26",
-  "collected_at": "2026-09-26T21:09:04.698059+00:00",
+  "collected_at": "2026-09-26T23:08:03.758396+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -81765,6 +81765,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:00pm",
+                "showtime_id": "147396577",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147352026",
                 "format": "Laser at AMC"
@@ -81780,8 +81785,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:00pm",
+                "showtime_id": "147396578",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "146573751",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147396579",
                 "format": "Laser at AMC"
               },
               {
@@ -81850,106 +81865,131 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276581+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147352032",
+            "showtime": "11:00am",
+            "showtime_id": "147352028",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147387138",
+            "showtime": "12:00pm",
+            "showtime_id": "146573754",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147352027",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146573753",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147396577",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147352026",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146573752",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146573745",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147387140",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "147375814",
+            "showtime_id": "147352167",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147352031",
+            "showtime_id": "147396578",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:55pm",
-            "showtime_id": "147393099",
+            "showtime": "9:00pm",
+            "showtime_id": "146573751",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147396579",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146573746",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147390907",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147352030",
+            "showtime_id": "147352166",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146742120",
+            "showtime": "12:30pm",
+            "showtime_id": "146742115",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147352144",
+            "showtime": "1:30pm",
+            "showtime_id": "147352141",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146742117",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147352142",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146742116",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "147352139",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146742070",
+            "showtime_id": "146742069",
             "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147352124",
-            "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146573672",
+            "showtime": "1:00pm",
+            "showtime_id": "146573681",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146573670",
+            "showtime": "4:00pm",
+            "showtime_id": "146573680",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147390908",
+            "showtime": "7:00pm",
+            "showtime_id": "146573679",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "146573671",
+            "showtime": "10:00pm",
+            "showtime_id": "146573678",
             "format": "Laser at AMC"
           }
         ]
@@ -82458,6 +82498,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147397425",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:30pm",
                 "showtime_id": "146580160",
                 "format": "Laser at AMC"
@@ -82502,13 +82547,23 @@
               {
                 "showtime": "9:45pm",
                 "showtime_id": "146686618",
-                "format": "RealD 3D"
+                "format": "Laser at AMC"
               }
             ],
             "Heart of the Beast": [
               {
+                "showtime": "11:25am",
+                "showtime_id": "147397421",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "1:15pm",
                 "showtime_id": "146595815",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:05pm",
+                "showtime_id": "147397422",
                 "format": "Laser at AMC"
               },
               {
@@ -82528,71 +82583,111 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277377+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146580157",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146580158",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146580147",
+            "showtime_id": "146580159",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147391444",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147390952",
+            "showtime_id": "147397425",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146580149",
+            "showtime_id": "146580160",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "147335425",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147275549",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146686661",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147275550",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146686673",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "5:30pm",
-            "showtime_id": "147264189",
+            "showtime_id": "147275551",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "146686639",
+            "showtime_id": "146686672",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147390953",
+            "showtime": "9:45pm",
+            "showtime_id": "146686618",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "146686616",
-            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146595809",
+            "showtime": "11:25am",
+            "showtime_id": "147397421",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147394369",
+            "showtime": "1:15pm",
+            "showtime_id": "146595815",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:05pm",
+            "showtime_id": "147397422",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146595816",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146595817",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146595810",
+            "showtime_id": "146595818",
             "format": "Laser at AMC"
           }
         ]
@@ -82902,56 +82997,106 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276684+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146615790",
+            "showtime": "11:20am",
+            "showtime_id": "147332216",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146615789",
+            "showtime": "2:15pm",
+            "showtime_id": "146615778",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "146615777",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146615788",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147332059",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147332182",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "146767654",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "147332186",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146767662",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147332183",
+            "format": "undefined"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146767666",
+            "showtime_id": "146767660",
             "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147332071",
+            "showtime_id": "147332061",
             "format": "undefined"
           },
           {
-            "showtime": "8:55pm",
-            "showtime_id": "146767667",
+            "showtime": "9:00pm",
+            "showtime_id": "146767661",
             "format": "RealD 3D"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147332069",
-            "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147332033",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "146615712",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "146615711",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146615714",
+            "showtime_id": "146615710",
             "format": "undefined"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "146615723",
+            "showtime_id": "146615709",
             "format": "undefined"
           }
         ]
@@ -84992,7 +85137,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "6:35pm",
+                "showtime": "6:45pm",
                 "showtime_id": "147252212",
                 "format": "Laser at AMC"
               },
@@ -85002,8 +85147,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:45pm",
+                "showtime_id": "147393025",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147393028",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "146542336",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147393029",
                 "format": "Laser at AMC"
               }
             ],
@@ -85061,18 +85221,18 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "6:30pm",
+                "showtime": "6:45pm",
                 "showtime_id": "146542297",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:15pm",
+                "showtime": "9:25pm",
                 "showtime_id": "146542298",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-24T16:19:30.254921+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -85189,121 +85349,116 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-09-26T23:08:03.727626+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-27",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147393188",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "1:45pm",
-            "showtime_id": "146542348",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "147393191",
+            "showtime_id": "146542340",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146542346",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "146542338",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147252209",
+            "showtime_id": "147252212",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146542342",
+            "showtime_id": "146542334",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147393190",
+            "showtime": "8:45pm",
+            "showtime_id": "147393025",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147393189",
+            "showtime_id": "147393028",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146542344",
+            "showtime_id": "146542336",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147393029",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "147233555",
+            "showtime_id": "147233558",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "146759573",
+            "showtime_id": "146759581",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "146759584",
+            "showtime_id": "146759580",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147233573",
+            "showtime_id": "147233574",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:35pm",
-            "showtime_id": "146759582",
+            "showtime": "6:45pm",
+            "showtime_id": "146759590",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "146759583",
+            "showtime": "9:30pm",
+            "showtime_id": "146759579",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "147233580",
+            "showtime_id": "147233581",
             "format": "XL at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "146542474",
+            "showtime": "1:15pm",
+            "showtime_id": "146542477",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147233554",
+            "showtime_id": "147233557",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "146542472",
+            "showtime": "4:00pm",
+            "showtime_id": "146542475",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146542300",
+            "showtime_id": "146542297",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "146542301",
+            "showtime_id": "146542298",
             "format": "Laser at AMC"
           }
         ]
@@ -85544,7 +85699,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277533+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -85666,66 +85821,126 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147323439",
+            "showtime": "11:10am",
+            "showtime_id": "147323480",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146416983",
+            "showtime": "12:25pm",
+            "showtime_id": "146416841",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "146416890",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146416824",
+            "showtime": "6:20pm",
+            "showtime_id": "146416967",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:25pm",
+            "showtime_id": "146416981",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "146416825",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "147323443",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "5:20pm",
-            "showtime_id": "147008365",
+            "showtime": "11:15am",
+            "showtime_id": "147323389",
             "format": "RealD 3D"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146828580",
+            "showtime": "12:00pm",
+            "showtime_id": "146828537",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146828581",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:20pm",
-            "showtime_id": "146828558",
+            "showtime": "2:15pm",
+            "showtime_id": "147008366",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146828560",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147323500",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147008367",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146828577",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:40pm",
+            "showtime_id": "147323390",
             "format": "RealD 3D"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146828559",
+            "showtime_id": "146828556",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147323497",
+            "showtime": "10:00pm",
+            "showtime_id": "147323499",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146416819",
+            "showtime": "1:00pm",
+            "showtime_id": "146416852",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146416790",
+            "showtime": "3:00pm",
+            "showtime_id": "147323465",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146416820",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "147323485",
+            "showtime": "9:50pm",
+            "showtime_id": "146416789",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147323481",
             "format": "Laser at AMC"
           }
         ]
@@ -85990,51 +86205,86 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276555+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146578428",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:55pm",
+            "showtime_id": "146578415",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "147328196",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146578410",
+            "showtime_id": "146578413",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147328185",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:05pm",
-            "showtime_id": "146578411",
+            "showtime": "10:15pm",
+            "showtime_id": "146578414",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146756029",
+            "showtime": "1:30pm",
+            "showtime_id": "146756034",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "146756033",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146756092",
-            "format": "RealD 3D"
-          }
-        ],
-        "Heart of the Beast": [
-          {
             "showtime": "7:45pm",
-            "showtime_id": "146594841",
+            "showtime_id": "146756052",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146594842",
+            "showtime_id": "146756053",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Heart of the Beast": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "147266089",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "146594847",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146594846",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "146594844",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "146594845",
             "format": "Laser at AMC"
           }
         ]
@@ -88036,7 +88286,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276457+00:00",
+          "collected_at": "2026-09-26T23:08:03.727431+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -88055,6 +88305,11 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "146512631",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147398855",
                 "format": "AMC Artisan Films"
               },
               {
@@ -88118,7 +88373,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276470+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -88175,51 +88430,86 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146512627",
+            "showtime": "1:30pm",
+            "showtime_id": "146512618",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147391452",
+            "showtime": "4:30pm",
+            "showtime_id": "146512616",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146512631",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147398855",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146512572",
+            "showtime_id": "146512544",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147391453",
+            "showtime": "10:45pm",
+            "showtime_id": "147347429",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146696718",
+            "showtime": "1:00pm",
+            "showtime_id": "146696712",
             "format": "undefined"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "147347433",
+            "showtime": "3:30pm",
+            "showtime_id": "147347413",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146696715",
             "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147347377",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147347448",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146512561",
+            "showtime": "1:15pm",
+            "showtime_id": "147347343",
             "format": "undefined"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147347458",
+            "showtime": "3:15pm",
+            "showtime_id": "147347471",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146512563",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147347342",
             "format": "undefined"
           }
         ]
@@ -88539,7 +88829,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:00pm",
+                "showtime": "10:15pm",
                 "showtime_id": "146575036",
                 "format": "Laser at AMC"
               }
@@ -88603,6 +88893,11 @@
             ],
             "Heart of the Beast": [
               {
+                "showtime": "11:00am",
+                "showtime_id": "147397896",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "1:30pm",
                 "showtime_id": "146575155",
                 "format": "Laser at AMC"
@@ -88624,76 +88919,136 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276842+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:20pm",
-            "showtime_id": "147318420",
+            "showtime": "12:00pm",
+            "showtime_id": "147318419",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147061937",
+            "showtime": "1:30pm",
+            "showtime_id": "146575033",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:50pm",
+            "showtime_id": "147318418",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "146575034",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147318417",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "146575027",
+            "showtime_id": "146575035",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147393017",
+            "showtime": "8:05pm",
+            "showtime_id": "147318504",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147318421",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146575028",
+            "showtime": "10:15pm",
+            "showtime_id": "146575036",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "147318487",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "146803927",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "146617378",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "146803992",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146803937",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147318405",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
             "showtime": "5:15pm",
-            "showtime_id": "146803999",
+            "showtime_id": "146803993",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147318507",
             "format": "RealD 3D"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146803944",
+            "showtime_id": "146803938",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "146804000",
+            "showtime_id": "146803994",
             "format": "RealD 3D"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146803945",
+            "showtime_id": "146803939",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147397896",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "146575155",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146617379",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146575149",
+            "showtime_id": "146575157",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146575150",
+            "showtime_id": "146575158",
             "format": "Laser at AMC"
           }
         ]
@@ -90099,52 +90454,92 @@
                 "format": "undefined"
               },
               {
+                "showtime": "9:10pm",
+                "showtime_id": "147395934",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:20pm",
                 "showtime_id": "147344140",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276974+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146399811",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146399784",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146399783",
+            "showtime_id": "146399785",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147344238",
+            "showtime_id": "147344233",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146711369",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:55pm",
+            "showtime_id": "147344253",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146711368",
+            "showtime_id": "146711370",
             "format": "undefined"
           },
           {
             "showtime": "9:35pm",
-            "showtime_id": "147344250",
+            "showtime_id": "147344252",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "146563085",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "147344129",
+            "format": "undefined"
+          },
+          {
             "showtime": "6:50pm",
-            "showtime_id": "147239561",
+            "showtime_id": "146563086",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "147395934",
             "format": "undefined"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "147344138",
+            "showtime_id": "147344140",
             "format": "undefined"
           }
         ]
@@ -90377,51 +90772,76 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276922+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146608204",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146608207",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146608243",
+            "showtime_id": "146608237",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146608235",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147393001",
+            "showtime_id": "146608236",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "12:40pm",
+            "showtime_id": "146608265",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146608256",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:40pm",
-            "showtime_id": "146608244",
+            "showtime_id": "146608250",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146608252",
+            "showtime_id": "146608251",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146608164",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146608165",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146608174",
+            "showtime_id": "146608181",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146608172",
+            "showtime_id": "147245645",
             "format": "Laser at AMC"
           }
         ]
@@ -90600,9 +91020,21 @@
                 "showtime_id": "146657518",
                 "format": "RealD 3D"
               }
+            ],
+            "Heart of the Beast": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146440663",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146440664",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-09-22T19:14:02.830893+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -90654,46 +91086,61 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146440614",
+            "showtime": "12:00pm",
+            "showtime_id": "147317223",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147317121",
+            "showtime": "4:00pm",
+            "showtime_id": "146440617",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146440618",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146440616",
+            "showtime_id": "146440619",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146657311",
+            "showtime": "2:00pm",
+            "showtime_id": "146657336",
             "format": "RealD 3D"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146657296",
+            "showtime": "4:45pm",
+            "showtime_id": "146657301",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146657519",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146657518",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "146440660",
+            "showtime_id": "146440663",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146440659",
+            "showtime_id": "146440664",
             "format": "Laser at AMC"
           }
         ]
@@ -91651,46 +92098,76 @@
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.718580+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146593370",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146593369",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146593363",
+            "showtime_id": "146593367",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146593364",
+            "showtime_id": "146593368",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146822151",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146822150",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146822111",
+            "showtime_id": "146822149",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146822153",
+            "showtime_id": "146822158",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:45pm",
+            "showtime_id": "146593327",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146593325",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "7:40pm",
-            "showtime_id": "146593458",
+            "showtime_id": "146593460",
             "format": "undefined"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146593317",
+            "showtime_id": "146593323",
             "format": "undefined"
           }
         ]
@@ -93102,61 +93579,121 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277412+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "147347559",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "146577245",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "146577244",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146577238",
+            "showtime_id": "146577242",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:25pm",
-            "showtime_id": "146577239",
+            "showtime_id": "146577243",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "12:45pm",
+            "showtime_id": "146809102",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147347530",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "146809126",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "147347575",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "147347531",
+            "format": "undefined"
+          },
+          {
             "showtime": "5:20pm",
-            "showtime_id": "146809131",
+            "showtime_id": "146809127",
             "format": "undefined"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146809196",
+            "showtime_id": "146809197",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147347580",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146840453",
+            "showtime_id": "146840454",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147306051",
+            "showtime_id": "147347532",
             "format": "undefined"
           },
           {
+            "showtime": "9:05pm",
+            "showtime_id": "147347516",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "9:15pm",
-            "showtime_id": "146809200",
+            "showtime_id": "146809198",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146577272",
+            "showtime": "12:15pm",
+            "showtime_id": "147347549",
             "format": "undefined"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "146577273",
+            "showtime": "3:35pm",
+            "showtime_id": "147221699",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "146577276",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "146577277",
             "format": "undefined"
           }
         ]
@@ -94027,7 +94564,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276968+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -94144,51 +94681,96 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "12:15pm",
+            "showtime_id": "147162661",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147162540",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "147162662",
+            "showtime_id": "146614323",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147359578",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147162663",
+            "showtime_id": "147162660",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147162340",
+            "showtime": "11:00am",
+            "showtime_id": "147359501",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147162334",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147359502",
+            "showtime": "2:00pm",
+            "showtime_id": "147359499",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146840270",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147162337",
+            "showtime": "7:45pm",
+            "showtime_id": "147162335",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147162336",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147359484",
+            "showtime_id": "147359500",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "147359542",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147162431",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147359540",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146614297",
+            "showtime_id": "146614300",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147359543",
+            "showtime_id": "147359541",
             "format": "Laser at AMC"
           }
         ]
@@ -94453,6 +95035,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147399160",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "147256941",
                 "format": "AMC Artisan Films"
@@ -94503,111 +95090,86 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276290+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-27",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147256874",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "146584263",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147256939",
+            "showtime": "3:30pm",
+            "showtime_id": "147256943",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146584199",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "146584248",
+            "showtime_id": "146584270",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147256842",
+            "showtime": "6:30pm",
+            "showtime_id": "147256942",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146584271",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147399160",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147256941",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146584249",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147256841",
+            "showtime_id": "146584272",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "12:10pm",
-            "showtime_id": "147256725",
+            "showtime": "4:00pm",
+            "showtime_id": "146800204",
             "format": "undefined"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "146800192",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146800195",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "146800196",
+            "showtime_id": "146800193",
             "format": "RealD 3D"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146800197",
+            "showtime_id": "146800194",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "146584236",
-            "format": "undefined"
-          },
-          {
-            "showtime": "1:15pm",
-            "showtime_id": "147394250",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "147256727",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "146584221",
+            "showtime_id": "146584218",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:50pm",
-            "showtime_id": "146584220",
+            "showtime": "5:00pm",
+            "showtime_id": "147256714",
             "format": "undefined"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "146584222",
+            "showtime": "6:35pm",
+            "showtime_id": "146584217",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "146584219",
             "format": "undefined"
           }
         ]
@@ -97362,7 +97924,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277471+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -97521,56 +98083,96 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "11:15am",
+            "showtime_id": "147242071",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146503832",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147242060",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146503830",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "147242102",
+            "showtime_id": "147242093",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146503821",
+            "showtime_id": "146503829",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146503823",
+            "showtime_id": "146503831",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146708987",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "146708985",
+            "showtime": "11:00am",
+            "showtime_id": "147242069",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "146708986",
+            "showtime": "2:10pm",
+            "showtime_id": "146709006",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146709005",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "146709009",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146709004",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "11:40am",
+            "showtime_id": "147242088",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "146503863",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "5:15pm",
-            "showtime_id": "146503854",
+            "showtime_id": "146503862",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146503852",
+            "showtime_id": "146503860",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "146503853",
+            "showtime": "10:45pm",
+            "showtime_id": "146503861",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -98324,46 +98926,76 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276228+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "147275619",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "146472251",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:10pm",
-            "showtime_id": "146472250",
+            "showtime_id": "146472252",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146472263",
+            "showtime_id": "146472264",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "146811796",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146811795",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146811798",
+            "showtime_id": "146811797",
             "format": "undefined"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "146811845",
+            "showtime_id": "146811844",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146472289",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146472290",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146472287",
+            "showtime_id": "146472291",
             "format": "undefined"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146472288",
+            "showtime_id": "146472292",
             "format": "undefined"
           }
         ]
@@ -98418,6 +99050,11 @@
         "2026-09-27": {
           "movies": {
             "Primetime": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147395913",
+                "format": "Dine-In Delivery to Seat"
+              },
               {
                 "showtime": "12:30pm",
                 "showtime_id": "146404624",
@@ -98509,7 +99146,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277338+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -98668,46 +99305,101 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "11:30am",
+            "showtime_id": "147395913",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "146404624",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146404622",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146404615",
+            "showtime_id": "146404623",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147374767",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146404617",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147374933",
+            "showtime_id": "146404625",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "11:45am",
+            "showtime_id": "147244451",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "146621676",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147244458",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146621687",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "146621664",
+            "showtime_id": "146621677",
             "format": "RealD 3D"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146621665",
+            "showtime_id": "146621678",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146404716",
+            "showtime": "10:45am",
+            "showtime_id": "147244471",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146404717",
+            "showtime": "1:30pm",
+            "showtime_id": "146404722",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147244452",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146404723",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146404724",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147244496",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -100251,7 +100943,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277079+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -100338,41 +101030,81 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "10:45am",
+            "showtime_id": "147266594",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147004709",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:25pm",
+            "showtime_id": "147004708",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "147004698",
+            "showtime_id": "147004718",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147004699",
+            "showtime_id": "147004707",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146623867",
+            "showtime": "10:50am",
+            "showtime_id": "147266605",
             "format": "undefined"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "147266629",
+            "showtime": "12:30pm",
+            "showtime_id": "146623893",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:10pm",
+            "showtime_id": "146623892",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146623891",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147266622",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:50pm",
-            "showtime_id": "146541931",
+            "showtime": "1:20pm",
+            "showtime_id": "146541941",
             "format": "undefined"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "146541934",
+            "showtime": "3:50pm",
+            "showtime_id": "147266577",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "146541939",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146541942",
             "format": "undefined"
           }
         ]
@@ -100717,51 +101449,121 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276406+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "11:10am",
+            "showtime_id": "146595604",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146595587",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "146595580",
+            "showtime_id": "146595588",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147303948",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146595581",
+            "showtime_id": "146595589",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147303947",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:55pm",
-            "showtime_id": "146595582",
+            "showtime_id": "146595590",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146828991",
+            "showtime": "10:30am",
+            "showtime_id": "146829030",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "146829033",
+            "showtime": "12:15pm",
+            "showtime_id": "147303945",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "146829031",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146829032",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147303996",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146829024",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147303979",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146829044",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147303952",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146595551",
+            "showtime": "11:00am",
+            "showtime_id": "146595564",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147259992",
+            "showtime": "1:45pm",
+            "showtime_id": "146595562",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147303944",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146595560",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "147303995",
             "format": "Laser at AMC"
           }
         ]
@@ -102072,7 +102874,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276302+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -102206,51 +103008,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:50pm",
+            "showtime_id": "146569299",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146569298",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146569294",
+            "showtime_id": "146569297",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146569293",
+            "showtime_id": "146569296",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146789865",
+            "showtime": "12:30pm",
+            "showtime_id": "146789809",
             "format": "undefined"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "146789866",
+            "showtime": "3:20pm",
+            "showtime_id": "146789815",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146789862",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147352461",
-            "format": "RealD 3D"
+            "showtime_id": "146789863",
+            "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146569353",
+            "showtime": "1:30pm",
+            "showtime_id": "146569340",
             "format": "undefined"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146569352",
+            "showtime": "4:15pm",
+            "showtime_id": "146569347",
             "format": "undefined"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146569351",
+            "showtime": "7:00pm",
+            "showtime_id": "146569346",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146569345",
             "format": "undefined"
           }
         ]
@@ -102356,7 +103178,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277382+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -102475,41 +103297,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147005066",
+            "showtime": "1:15pm",
+            "showtime_id": "147005079",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147341998",
+            "showtime": "4:15pm",
+            "showtime_id": "147005078",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147005076",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147005077",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146658692",
+            "showtime": "12:30pm",
+            "showtime_id": "146658591",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146658592",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146658690",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146658693",
-            "format": "undefined"
+            "showtime_id": "146658593",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146589218",
+            "showtime": "1:30pm",
+            "showtime_id": "146589226",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147342064",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146589223",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146589217",
+            "showtime_id": "147342063",
             "format": "undefined"
           }
         ]
@@ -102969,7 +103821,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277039+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -103103,46 +103955,81 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146481180",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146481179",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146481172",
+            "showtime_id": "146481178",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146481153",
+            "showtime_id": "146481155",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146662076",
+            "showtime": "12:45pm",
+            "showtime_id": "146662063",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146662077",
+            "showtime": "2:00pm",
+            "showtime_id": "146661984",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146662064",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146662065",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "146662066",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146481123",
+            "showtime": "1:30pm",
+            "showtime_id": "146481129",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146481124",
+            "showtime": "3:00pm",
+            "showtime_id": "147280617",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147280647",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146481114",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146481125",
+            "showtime": "9:45pm",
+            "showtime_id": "146481131",
             "format": "undefined"
           }
         ]
@@ -103253,7 +104140,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-24T16:19:30.254337+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -103382,46 +104269,76 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "12:25pm",
+            "showtime_id": "146418140",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "146418139",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "6:10pm",
-            "showtime_id": "146418146",
+            "showtime_id": "146418150",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146418145",
+            "showtime_id": "146418149",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "12:25pm",
+            "showtime_id": "146721358",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "146721357",
+            "format": "undefined"
+          },
+          {
             "showtime": "6:10pm",
-            "showtime_id": "146721362",
+            "showtime_id": "146721356",
             "format": "RealD 3D"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146721375",
+            "showtime_id": "146721374",
             "format": "undefined"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "147260802",
+            "showtime_id": "147260800",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146417953",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146417954",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "146417963",
+            "showtime_id": "146417955",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146417952",
+            "showtime_id": "146417956",
             "format": "undefined"
           }
         ]
@@ -104125,8 +105042,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:20pm",
+                "showtime_id": "147398599",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147398598",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:35pm",
                 "showtime_id": "146402826",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147398600",
                 "format": "Laser at AMC"
               },
               {
@@ -104199,6 +105131,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "3:30pm",
+                "showtime_id": "147399066",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:35pm",
                 "showtime_id": "147347815",
                 "format": "Dolby Cinema at AMC"
@@ -104206,6 +105143,11 @@
               {
                 "showtime": "7:10pm",
                 "showtime_id": "146402982",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:40pm",
+                "showtime_id": "147399067",
                 "format": "Laser at AMC"
               },
               {
@@ -104220,86 +105162,161 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276568+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "11:50am",
+            "showtime_id": "147347659",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:50pm",
+            "showtime_id": "147347856",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:35pm",
+            "showtime_id": "146402829",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:35pm",
+            "showtime_id": "147347687",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147347855",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "146402828",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:20pm",
+            "showtime_id": "147398599",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "147347884",
+            "showtime_id": "147398598",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "146402818",
+            "showtime_id": "146402826",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147391602",
+            "showtime": "9:30pm",
+            "showtime_id": "147398600",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147347863",
+            "showtime": "10:00pm",
+            "showtime_id": "147347739",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146402819",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "147391603",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147347982",
+            "showtime_id": "146402827",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "5:55pm",
-            "showtime_id": "146621410",
+            "showtime": "11:00am",
+            "showtime_id": "147347814",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:30am",
+            "showtime_id": "146621407",
             "format": "RealD 3D"
           },
           {
+            "showtime": "1:50pm",
+            "showtime_id": "147347816",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:25pm",
+            "showtime_id": "146621400",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147347774",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "146621401",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146621455",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146621459",
+            "showtime_id": "147347877",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146621411",
+            "showtime": "8:00pm",
+            "showtime_id": "147347586",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147348067",
+            "showtime": "9:25pm",
+            "showtime_id": "146621456",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "12:45pm",
+            "showtime_id": "146402994",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147399066",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "147347815",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "7:10pm",
-            "showtime_id": "146402978",
+            "showtime_id": "146402982",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "146402979",
+            "showtime": "8:40pm",
+            "showtime_id": "147399067",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:55pm",
-            "showtime_id": "147347744",
+            "showtime": "9:55pm",
+            "showtime_id": "146402983",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147347942",
             "format": "Laser at AMC"
           }
         ]
@@ -106727,66 +107744,111 @@
               }
             ]
           },
-          "collected_at": "2026-09-24T16:19:30.254490+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147003828",
+            "showtime": "11:30am",
+            "showtime_id": "147239174",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147377982",
+            "showtime": "2:15pm",
+            "showtime_id": "147003825",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147239178",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147003824",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147239177",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147003809",
+            "showtime_id": "147003822",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147392119",
+            "showtime": "7:45pm",
+            "showtime_id": "147239176",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147003810",
+            "showtime_id": "147003823",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147239175",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146829295",
+            "showtime": "10:30am",
+            "showtime_id": "147239202",
             "format": "undefined"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "146829294",
+            "showtime": "1:15pm",
+            "showtime_id": "146829287",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146829278",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146829289",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146829288",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146540858",
+            "showtime": "11:00am",
+            "showtime_id": "147239215",
             "format": "undefined"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147392120",
+            "showtime": "1:45pm",
+            "showtime_id": "146540869",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146540868",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146540866",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146540859",
+            "showtime_id": "146540867",
             "format": "undefined"
           }
         ]
@@ -107395,56 +108457,111 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276750+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "147249458",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:50pm",
+            "showtime_id": "146401775",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:50pm",
+            "showtime_id": "147249457",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:40pm",
+            "showtime_id": "146401774",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "147249456",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146401764",
+            "showtime_id": "146401772",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147249455",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:20pm",
-            "showtime_id": "146401765",
+            "showtime_id": "146401773",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "12:35pm",
+            "showtime_id": "146607529",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:25pm",
+            "showtime_id": "147004843",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "3:25pm",
+            "showtime_id": "146607528",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "5:15pm",
-            "showtime_id": "147004845",
+            "showtime_id": "147004841",
             "format": "XL at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "146607518",
+            "showtime_id": "146607526",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:05pm",
-            "showtime_id": "146607519",
+            "showtime_id": "146607527",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146401761",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146401760",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146401745",
+            "showtime_id": "146401759",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147004846",
+            "showtime_id": "147004842",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146401741",
+            "showtime_id": "146401757",
             "format": "Laser at AMC"
           }
         ]
@@ -108218,6 +109335,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "10:30pm",
+                "showtime_id": "147397195",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "11:00pm",
                 "showtime_id": "147326595",
                 "format": "AMC Artisan Films"
@@ -108277,13 +109399,13 @@
                 "format": "undefined"
               },
               {
-                "showtime": "10:30pm",
+                "showtime": "10:00pm",
                 "showtime_id": "146588613",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276587+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -108482,81 +109604,121 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147326670",
+            "showtime": "11:45am",
+            "showtime_id": "147326606",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147391300",
+            "showtime": "1:15pm",
+            "showtime_id": "147391303",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146574097",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146574096",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147391302",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146574090",
+            "showtime_id": "146574094",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147226296",
+            "showtime": "8:15pm",
+            "showtime_id": "147326600",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147391301",
+            "showtime_id": "147391299",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146574091",
+            "showtime_id": "146574095",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147390670",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "147326599",
+            "showtime": "10:30pm",
+            "showtime_id": "147397195",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147392437",
+            "showtime_id": "147326595",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146772953",
-            "format": "undefined"
+            "showtime": "11:15am",
+            "showtime_id": "147326609",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146772954",
+            "showtime": "1:15pm",
+            "showtime_id": "147205726",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146772957",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146772948",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146772947",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146588610",
+            "showtime": "11:15am",
+            "showtime_id": "147326629",
             "format": "undefined"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "146588615",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147205725",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146588614",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146588608",
+            "showtime_id": "146588612",
             "format": "undefined"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "146588609",
+            "showtime": "10:00pm",
+            "showtime_id": "146588613",
             "format": "undefined"
           }
         ]
@@ -109070,46 +110232,76 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277622+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:15pm",
+            "showtime_id": "146520753",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146520725",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "146520724",
+            "showtime_id": "146520726",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146520751",
+            "showtime_id": "146520752",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146768207",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146768210",
+            "format": "undefined"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146768208",
+            "showtime_id": "146768211",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146768209",
+            "showtime": "9:15pm",
+            "showtime_id": "146768212",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146520712",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146520708",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146520703",
+            "showtime_id": "146520706",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146520704",
+            "showtime_id": "146520707",
             "format": "undefined"
           }
         ]
@@ -110577,7 +111769,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276930+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -110634,51 +111826,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147116710",
+            "showtime": "1:15pm",
+            "showtime_id": "147116677",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147394140",
+            "showtime": "4:00pm",
+            "showtime_id": "147116676",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147116706",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147116711",
+            "showtime_id": "147116707",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "2:15pm",
+            "showtime_id": "146748409",
+            "format": "undefined"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "146748416",
+            "showtime_id": "146748410",
             "format": "RealD 3D"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "146748373",
+            "showtime_id": "146748353",
             "format": "undefined"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "146748268",
+            "showtime_id": "146748275",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146519347",
+            "showtime": "1:30pm",
+            "showtime_id": "146519343",
             "format": "undefined"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "146519342",
+            "showtime": "4:15pm",
+            "showtime_id": "146519352",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146519351",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "146519344",
             "format": "undefined"
           }
         ]
@@ -111110,107 +112322,162 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147389707",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "146467277",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.718248+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147235930",
+            "showtime": "10:00am",
+            "showtime_id": "147284386",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147389706",
+            "showtime": "11:00am",
+            "showtime_id": "146467367",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "147284390",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146467366",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147284388",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146467365",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147235931",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147284379",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147382321",
+            "showtime_id": "147284389",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146467358",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147382325",
+            "showtime_id": "146467363",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147232217",
+            "showtime_id": "147232218",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147284444",
+            "showtime_id": "147284441",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147284377",
+            "showtime_id": "147284387",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146467359",
+            "showtime_id": "146467364",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147284449",
+            "showtime_id": "147284447",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147382322",
+            "showtime": "10:00am",
+            "showtime_id": "147006927",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:00am",
+            "showtime_id": "146749249",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146688340",
+            "showtime": "1:00pm",
+            "showtime_id": "146749266",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146749246",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "146688294",
+            "showtime": "3:30pm",
+            "showtime_id": "146749208",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146749372",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146749207",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "10:15am",
+            "showtime_id": "146467389",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146467390",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147006934",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "146467272",
+            "showtime_id": "146467276",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147382324",
+            "showtime_id": "147389707",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146467273",
+            "showtime_id": "146467277",
             "format": "Laser at AMC"
           }
         ]
@@ -111435,6 +112702,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "4:30pm",
+                "showtime_id": "147399326",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "146553516",
                 "format": "AMC Artisan Films"
@@ -111495,56 +112767,96 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276639+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146553515",
+            "showtime": "12:00pm",
+            "showtime_id": "147279877",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147392866",
+            "showtime": "1:15pm",
+            "showtime_id": "147333701",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "147279920",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146553510",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147399326",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146553516",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146553498",
+            "showtime_id": "146553500",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "147279886",
+            "showtime": "10:45pm",
+            "showtime_id": "147279890",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146818299",
+            "showtime": "12:45pm",
+            "showtime_id": "147279891",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146818323",
             "format": "RealD 3D"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146818310",
+            "showtime": "7:15pm",
+            "showtime_id": "146818313",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146818306",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146541054",
+            "showtime": "1:00pm",
+            "showtime_id": "147279900",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146541077",
+            "showtime": "3:45pm",
+            "showtime_id": "146541057",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146541058",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "146541074",
             "format": "undefined"
           }
         ]
@@ -112709,7 +114021,7 @@
                 "format": "RealD 3D"
               },
               {
-                "showtime": "6:40pm",
+                "showtime": "8:00pm",
                 "showtime_id": "146623153",
                 "format": "undefined"
               },
@@ -112741,7 +114053,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "6:45pm",
                 "showtime_id": "146405102",
                 "format": "undefined"
               },
@@ -112752,7 +114064,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277053+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -112916,51 +114228,111 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:15pm",
+            "showtime_id": "147313876",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:55pm",
+            "showtime_id": "146405151",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147313892",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "146405139",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146405135",
+            "showtime_id": "146405138",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147313878",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "146405137",
+            "showtime_id": "146405140",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "147267401",
+            "showtime_id": "147313890",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:50pm",
-            "showtime_id": "146623160",
+            "showtime": "1:15pm",
+            "showtime_id": "147313848",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:25pm",
+            "showtime_id": "146623143",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147313849",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:25pm",
-            "showtime_id": "146623152",
+            "showtime": "4:05pm",
+            "showtime_id": "146623154",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146623153",
             "format": "undefined"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "147267405",
-            "format": "undefined"
+            "showtime": "9:25pm",
+            "showtime_id": "146623155",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147313861",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146405099",
+            "showtime": "12:15pm",
+            "showtime_id": "147313942",
             "format": "undefined"
           },
           {
-            "showtime": "10:55pm",
-            "showtime_id": "147267385",
+            "showtime": "2:20pm",
+            "showtime_id": "146405115",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:25pm",
+            "showtime_id": "147313803",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146405102",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "147313874",
             "format": "undefined"
           }
         ]
@@ -113128,7 +114500,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277323+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -113205,41 +114577,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "146568041",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146568038",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:50pm",
-            "showtime_id": "146568031",
+            "showtime_id": "146568039",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "146568032",
+            "showtime_id": "146568040",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:20pm",
+            "showtime_id": "146626758",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "146626759",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146626703",
+            "showtime_id": "146626742",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "146626752",
+            "showtime": "9:20pm",
+            "showtime_id": "146626743",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146568127",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146568128",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "7:20pm",
-            "showtime_id": "146568137",
+            "showtime_id": "146568129",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146568138",
+            "showtime_id": "146568130",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -114581,66 +115983,111 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276949+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "146804105",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "146804103",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:05pm",
-            "showtime_id": "146804116",
+            "showtime_id": "146804102",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:05pm",
-            "showtime_id": "146804109",
+            "showtime_id": "146804104",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147286243",
+            "showtime": "12:25pm",
+            "showtime_id": "147286249",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146804133",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:05pm",
+            "showtime_id": "147286127",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "147286246",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146804151",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147286247",
             "format": "Spanish Language Dubbed with No Subtitles"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146804132",
+            "showtime_id": "146804152",
             "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147286124",
+            "showtime_id": "147286126",
             "format": "undefined"
           },
           {
-            "showtime": "9:05pm",
-            "showtime_id": "147286244",
+            "showtime": "9:10pm",
+            "showtime_id": "147286248",
             "format": "RealD 3D"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146804130",
+            "showtime_id": "146804150",
             "format": "undefined"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147286125",
+            "showtime_id": "147286128",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "146603799",
+            "showtime": "1:45pm",
+            "showtime_id": "146603809",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "146603807",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "146603806",
             "format": "undefined"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146603801",
+            "showtime_id": "146603808",
             "format": "undefined"
           }
         ]
@@ -114898,7 +116345,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277435+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -115025,71 +116472,121 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "146424483",
+            "showtime": "11:00am",
+            "showtime_id": "147356989",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147357010",
+            "showtime": "12:45pm",
+            "showtime_id": "147357001",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147393611",
+            "showtime": "2:00pm",
+            "showtime_id": "146424427",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147356977",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146424485",
+            "showtime": "4:45pm",
+            "showtime_id": "146424498",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147356951",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146424501",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146424616",
+            "showtime_id": "146424611",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147393609",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147356955",
+            "showtime": "10:30pm",
+            "showtime_id": "147356990",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "147356936",
+            "format": "PRIME 3D"
+          },
+          {
+            "showtime": "11:00am",
+            "showtime_id": "147357059",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "146625480",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146625500",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146625504",
-            "format": "RealD 3D"
+            "showtime_id": "146625494",
+            "format": "undefined"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146625548",
-            "format": "undefined"
+            "showtime_id": "146625546",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "146613604",
+            "showtime": "10:00am",
+            "showtime_id": "147357003",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146613605",
+            "showtime": "12:30pm",
+            "showtime_id": "147356880",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146613626",
+            "showtime": "2:00pm",
+            "showtime_id": "146613609",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147008028",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146613611",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146613624",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147357088",
             "format": "undefined"
           }
         ]
@@ -115280,7 +116777,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276708+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -115402,66 +116899,126 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147351059",
+            "showtime": "11:30am",
+            "showtime_id": "147351233",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "146466664",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "2:30pm",
+            "showtime_id": "147351234",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146466646",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147351235",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "146466644",
+            "showtime_id": "146466647",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147220910",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "147351060",
+            "showtime_id": "147393612",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "8:15pm",
+            "showtime_id": "147351231",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "9:00pm",
-            "showtime_id": "146466645",
+            "showtime_id": "146466648",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147351238",
-            "format": "AMC Artisan Films"
+            "showtime_id": "147351195",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147351057",
-            "format": "Laser at AMC"
+            "showtime_id": "147351232",
+            "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146631433",
+            "showtime": "11:15am",
+            "showtime_id": "147351056",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146631434",
+            "showtime": "2:00pm",
+            "showtime_id": "146631425",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147351067",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146631426",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146631427",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146631428",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146466621",
+            "showtime": "11:15am",
+            "showtime_id": "147351177",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "146466622",
+            "showtime": "1:00pm",
+            "showtime_id": "147351069",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146466637",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147351176",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146466623",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146466624",
             "format": "Laser at AMC"
           }
         ]
@@ -117464,51 +119021,86 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276510+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:05pm",
+            "showtime_id": "147268930",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146563701",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146563694",
+            "showtime_id": "146563700",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "146563696",
+            "showtime_id": "147268811",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146774575",
+            "showtime": "12:00pm",
+            "showtime_id": "147268917",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "147268840",
             "format": "undefined"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "146774560",
+            "showtime": "2:45pm",
+            "showtime_id": "146774559",
             "format": "RealD 3D"
           },
           {
+            "showtime": "3:45pm",
+            "showtime_id": "146774584",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146774583",
+            "format": "undefined"
+          },
+          {
             "showtime": "9:45pm",
-            "showtime_id": "147268836",
+            "showtime_id": "147268835",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:45pm",
+            "showtime_id": "147268821",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146563715",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146563708",
+            "showtime_id": "146563714",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146563710",
+            "showtime_id": "147268816",
             "format": "undefined"
           }
         ]
@@ -117676,7 +119268,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276916+00:00",
+          "collected_at": "2026-09-26T23:08:03.727450+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -117753,46 +119345,81 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277406+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "146416731",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147305942",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:05pm",
+            "showtime_id": "146416722",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146416728",
+            "showtime_id": "146416732",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146416729",
+            "showtime_id": "146416733",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:05pm",
+            "showtime_id": "146635275",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146635239",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146635244",
+            "showtime_id": "146635247",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146635245",
+            "showtime_id": "146635238",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:45pm",
+            "showtime_id": "146842319",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146842318",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146842325",
+            "showtime_id": "146842329",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146842324",
+            "showtime_id": "146842328",
             "format": "Laser at AMC"
           }
         ]
@@ -118653,7 +120280,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276889+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -118730,41 +120357,76 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "146562959",
+            "showtime": "12:20pm",
+            "showtime_id": "146562968",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146562960",
+            "showtime": "3:15pm",
+            "showtime_id": "146562964",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "146562962",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "146562963",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146770343",
+            "showtime": "1:20pm",
+            "showtime_id": "146770342",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146770341",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146770337",
+            "showtime": "6:45pm",
+            "showtime_id": "146770340",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "147355469",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "146770339",
+            "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "146604390",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146604389",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "146604385",
+            "showtime_id": "146604388",
             "format": "undefined"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "146604384",
+            "showtime_id": "146604387",
             "format": "undefined"
           }
         ]
@@ -119234,7 +120896,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.719093+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -119393,56 +121055,91 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146557042",
+            "showtime": "2:15pm",
+            "showtime_id": "146775389",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146557091",
+            "showtime": "3:30pm",
+            "showtime_id": "146775381",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146557098",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146557040",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146557099",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146557043",
+            "showtime_id": "146557041",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146557092",
+            "showtime_id": "146557100",
             "format": "AMC Artisan Films"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146775438",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146775447",
+            "showtime": "12:15pm",
+            "showtime_id": "147270529",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146775448",
+            "showtime": "1:45pm",
+            "showtime_id": "146775437",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146775436",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146775434",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146775435",
             "format": "undefined"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146557241",
+            "showtime": "1:30pm",
+            "showtime_id": "146557258",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146557243",
+            "showtime": "4:15pm",
+            "showtime_id": "146557256",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146557253",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146557255",
             "format": "undefined"
           }
         ]
@@ -120243,7 +121940,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277719+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -120300,51 +121997,86 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147276717",
+            "showtime": "1:30pm",
+            "showtime_id": "146404437",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147276709",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146404436",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146404426",
+            "showtime_id": "146404435",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147276719",
+            "showtime": "8:00pm",
+            "showtime_id": "147276710",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147276651",
+            "showtime_id": "147276649",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "146826120",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146826119",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147276640",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146826106",
+            "showtime_id": "146826110",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147276734",
+            "showtime_id": "147276732",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "1:45pm",
+            "showtime_id": "146404376",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146404375",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146404368",
+            "showtime_id": "146404374",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147276632",
+            "showtime_id": "147276630",
             "format": "Laser at AMC"
           }
         ]
@@ -120664,51 +122396,96 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146410430",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147269356",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146410429",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146410466",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146410434",
+            "showtime_id": "146410437",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147269337",
+            "showtime_id": "146410465",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147269354",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146410433",
+            "showtime_id": "146410436",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146626098",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146626097",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "146626105",
+            "showtime_id": "146626108",
             "format": "RealD 3D"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146626104",
+            "showtime_id": "146626107",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "147269229",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146376209",
+            "format": "XL at AMC"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "147269141",
+            "showtime_id": "147269138",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147269196",
+            "showtime_id": "147228898",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147269207",
+            "showtime_id": "147269206",
             "format": "XL at AMC"
           }
         ]
@@ -120896,7 +122673,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.719135+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -120943,41 +122720,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "146578638",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146578635",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "146578633",
+            "showtime_id": "146578636",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146578634",
+            "showtime_id": "146578637",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146790370",
+            "showtime": "12:45pm",
+            "showtime_id": "146790363",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146790372",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146790371",
+            "showtime": "6:15pm",
+            "showtime_id": "146790362",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146790373",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "146578658",
+            "showtime": "12:45pm",
+            "showtime_id": "146578664",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "146578659",
+            "showtime": "3:30pm",
+            "showtime_id": "146578663",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146578661",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146578662",
             "format": "Laser at AMC"
           }
         ]
@@ -121108,7 +122915,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277675+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -121215,41 +123022,86 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "147312156",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "146529495",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146529494",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "146529484",
+            "showtime_id": "146529492",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146529485",
+            "showtime_id": "146529493",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147312049",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "146795451",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146795450",
+            "format": "RealD 3D"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146795465",
+            "showtime_id": "146795461",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146795464",
+            "showtime_id": "146795460",
             "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "10:15am",
+            "showtime_id": "147312046",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146529304",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "146529303",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:30pm",
-            "showtime_id": "146529293",
+            "showtime_id": "146529301",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "146529294",
+            "showtime_id": "146529302",
             "format": "Laser at AMC"
           }
         ]
@@ -122138,7 +123990,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.719096+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -122312,66 +124164,101 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "12:10pm",
+            "showtime_id": "147322667",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146402334",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147322694",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146402333",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "147322704",
+            "showtime_id": "147322696",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146402323",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147391569",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "147386872",
+            "showtime_id": "146402331",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "147322703",
+            "showtime_id": "147322695",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146402324",
+            "showtime_id": "146402332",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "147322617",
+            "showtime_id": "147322611",
             "format": "Laser at AMC"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "146628983",
+            "showtime": "12:30pm",
+            "showtime_id": "146628978",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "146628979",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146628984",
+            "showtime": "4:05pm",
+            "showtime_id": "147322742",
+            "format": "Spanish Language Dubbed with No Subtitles"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "146628980",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146628981",
+            "format": "RealD 3D"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "146402280",
+            "showtime": "1:45pm",
+            "showtime_id": "146402290",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146402289",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146402288",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:10pm",
-            "showtime_id": "146402283",
+            "showtime_id": "146402291",
             "format": "Laser at AMC"
           }
         ]
@@ -122881,7 +124768,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-22T22:21:52.718305+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-25": {
@@ -122975,41 +124862,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Primetime": [
           {
+            "showtime": "1:30pm",
+            "showtime_id": "146576728",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146576725",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146576719",
+            "showtime_id": "146576726",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146576720",
+            "showtime_id": "146576727",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Forgotten Island": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146818292",
+            "showtime": "1:00pm",
+            "showtime_id": "146818282",
             "format": "RealD 3D"
           },
           {
+            "showtime": "3:45pm",
+            "showtime_id": "146818289",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146818288",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "10:00pm",
-            "showtime_id": "146818261",
+            "showtime_id": "146818256",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Heart of the Beast": [
           {
+            "showtime": "12:45pm",
+            "showtime_id": "146576751",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146576748",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "146576742",
+            "showtime_id": "146576749",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146576743",
+            "showtime_id": "146576750",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -157285,13 +159202,18 @@
           "movies": {
             "Forgotten Island": [
               {
+                "showtime": "1:00pm",
+                "showtime_id": "146835907",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:45pm",
                 "showtime_id": "146835927",
                 "format": "RealD 3D"
               },
               {
-                "showtime": "1:00pm",
-                "showtime_id": "146835907",
+                "showtime": "6:00pm",
+                "showtime_id": "147275765",
                 "format": "Laser at AMC"
               },
               {
@@ -157300,57 +159222,101 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:30pm",
+                "showtime_id": "147299008",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "146835955",
                 "format": "Laser at AMC"
               }
+            ],
+            "Primetime": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147275743",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147275741",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Heart of the Beast": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147275796",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147275793",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-09-21T19:21:38.078923+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Forgotten Island": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146835908",
+            "showtime": "1:00pm",
+            "showtime_id": "146835907",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147299007",
+            "showtime": "3:45pm",
+            "showtime_id": "146835927",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147275765",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146835910",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147299008",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146835909",
+            "showtime_id": "146835955",
             "format": "Laser at AMC"
           }
         ],
         "Primetime": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "147275746",
+            "showtime_id": "147275743",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147275745",
+            "showtime": "10:00pm",
+            "showtime_id": "147275741",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
             "showtime": "6:45pm",
-            "showtime_id": "146607746",
+            "showtime_id": "147275796",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146607745",
+            "showtime_id": "147275793",
             "format": "Laser at AMC"
           }
         ]
@@ -157477,7 +159443,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276375+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-26": {
@@ -157542,29 +159508,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-27",
       "movies": {
         "Forgotten Island": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146752518",
+            "showtime": "12:15pm",
+            "showtime_id": "147290533",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146752475",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146752519",
+            "showtime": "7:00pm",
+            "showtime_id": "146752512",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146752513",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147290506",
             "format": "undefined"
           }
         ],
         "Primetime": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147290497",
+            "showtime": "12:00pm",
+            "showtime_id": "147290524",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "147290498",
+            "showtime": "2:45pm",
+            "showtime_id": "147290519",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147290518",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147290507",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147290494",
             "format": "AMC Artisan Films"
           }
         ]
@@ -157804,51 +159800,76 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.277744+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
-        "Forgotten Island": [
+        "Primetime": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146842981",
+            "showtime": "1:30pm",
+            "showtime_id": "147330655",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146842982",
+            "showtime": "4:15pm",
+            "showtime_id": "147330654",
             "format": "Laser at AMC"
-          }
-        ],
-        "Primetime": [
+          },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147330656",
+            "showtime_id": "147330653",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147330625",
+            "showtime_id": "147330622",
             "format": "Laser at AMC"
           }
         ],
         "Heart of the Beast": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146608897",
+            "showtime": "2:30pm",
+            "showtime_id": "146608902",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "147330690",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146608895",
+            "showtime_id": "147330693",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "146608896",
+            "showtime_id": "147330697",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Forgotten Island": [
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "147330601",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147330624",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147330620",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147330602",
             "format": "Laser at AMC"
           }
         ]
@@ -158690,7 +160711,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-25T23:07:35.276594+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-09-27": {
@@ -158764,17 +160785,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-09-25",
+      "show_date": "2026-09-26",
       "movies": {
         "Primetime": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "147287452",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147287449",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "147287430",
+            "showtime_id": "147287438",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147287431",
+            "showtime_id": "147287439",
             "format": "Laser at AMC"
           }
         ]
@@ -158961,9 +160992,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9899,
-    "fresh": 392,
-    "expected": 396,
+    "ratio": 0.9913,
+    "fresh": 228,
+    "expected": 230,
     "min_ratio": 0.9,
     "degraded": false
   }
