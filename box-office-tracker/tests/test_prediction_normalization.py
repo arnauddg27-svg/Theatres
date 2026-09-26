@@ -3354,56 +3354,39 @@ class PredictionNormalizationTest(unittest.TestCase):
         cal = {
             "calibration_factors": {
                 "amc_market_share": 0.25,
-                "day_weights": {"Thursday": 1.0},
-                "day_scale_factors": {"Thursday": 1.0},
+                "day_weights": {"Thursday": 0.25, "Friday": 0.75},
+                "day_scale_factors": {"Thursday": 1.0, "Friday": 1.0},
                 "reference_amc_theatres": 2,
             }
         }
-        seat_data = {
+        thursday_only = {
             "2026-05-14": [
                 self._row("AMC One", date="2026-05-14", day="Thursday"),
                 self._row("AMC Two", date="2026-05-14", day="Thursday"),
             ]
         }
+        with_friday = dict(thursday_only)
+        with_friday["2026-05-15"] = [
+            self._row("AMC One", date="2026-05-15", day="Friday"),
+            self._row("AMC Two", date="2026-05-15", day="Friday"),
+        ]
+        reported = {"Sample Movie": {"Thursday": {
+            "gross_m": 2.6, "source": "manual", "status": "reported", "as_of_date": "2026-05-15"}}}
 
-        seat_only = predict_movie(
-            "Sample Movie",
-            seat_data,
-            [],
-            cal,
-            daily_actual_overrides={},
-        )
-        overridden = predict_movie(
-            "Sample Movie",
-            seat_data,
-            [],
-            cal,
-            daily_actual_overrides={
-                "Sample Movie": {
-                    "Thursday": {
-                        "gross_m": 2.6,
-                        "source": "manual",
-                        "status": "reported",
-                        "as_of_date": "2026-05-15",
-                    }
-                }
-            },
-        )
+        # Thursday stage: a reported preview is HELD BACK until Friday seats
+        # exist (backtest 2026-09-26: using it at this stage raised MAE
+        # 19.1% -> 21.5% by carrying the preview scale onto Fri-Sun).
+        seat_only = predict_movie("Sample Movie", thursday_only, [], cal, daily_actual_overrides={})
+        held = predict_movie("Sample Movie", thursday_only, [], cal, daily_actual_overrides=reported)
+        self.assertAlmostEqual(seat_only["seat_mid_m"], held["seat_mid_m"], places=6)
+        self.assertFalse(held["daily_details"]["Thursday"].get("actual_override"))
 
-        # The reported actual replaces the seat-implied Thursday day directly:
-        # the per-day domestic mid is exactly the $2.6M reported gross.
+        # Friday seats observed: the reported gross replaces the seat-implied
+        # Thursday day directly.
+        overridden = predict_movie("Sample Movie", with_friday, [], cal, daily_actual_overrides=reported)
         self.assertAlmostEqual(2_600_000, overridden["daily_details"]["Thursday"]["domestic_mid"])
         self.assertTrue(overridden["daily_details"]["Thursday"]["actual_override"])
-        # That override then anchors the weekend forecast: the single observed
-        # Thursday ($2.6M) is extrapolated to the full weekend via the 0.25
-        # Thursday day-share (2.6 / 0.25 = 10.4), well above the tiny
-        # seat-only weekend the same sample would otherwise produce.
-        self.assertGreater(overridden["seat_mid_m"], seat_only["seat_mid_m"])
-        self.assertAlmostEqual(10.4, overridden["seat_mid_m"], places=6)
-        self.assertGreater(
-            overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"],
-            0,
-        )
+        self.assertGreater(overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"], 0)
         daily_predictions, raw_daily_predictions, _, _ = (
             predict.daily_calibration_fields_from_prediction(overridden)
         )
@@ -3411,11 +3394,6 @@ class PredictionNormalizationTest(unittest.TestCase):
             daily_predictions["Thursday"],
             overridden["daily_details"]["Thursday"]["actual_override_m"],
             places=3,
-        )
-        self.assertAlmostEqual(
-            overridden["daily_details"]["Thursday"]["seat_implied_domestic_mid"] / 1_000_000,
-            raw_daily_predictions["Thursday"],
-            places=6,
         )
 
     def test_daily_actual_override_keeps_calibrated_share_and_records_seat_scale(self):

@@ -735,6 +735,18 @@ jobs:
           done
           python3 scripts/rotate_pre_reservation_snapshots.py --max-mb 60
 
+      - name: Auto-fetch reported daily actuals (every finalize, all four days)
+        # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
+        # every day), so a newly published number alone forces a fresh
+        # prediction + commit. Records Thursday previews and opening Friday
+        # (previews split out) as well as Saturday/Sunday — nothing is left to
+        # a manual step. When the model USES each day is decided in
+        # predict.stage_gated_overrides (Thu/Fri wait for Friday seats; backtest
+        # 2026-09-26). urllib only; best effort, a fetch miss never fails finalize.
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python3 scripts/fetch_daily_actuals.py
+
       - name: Finalize guard — skip if latest scrape already has derived artifacts
         id: finalize_guard
         run: |
@@ -743,6 +755,7 @@ jobs:
             box-office-tracker/data/seat-counts.csv \
             box-office-tracker/data/pre-reservation-snapshots.csv \
             box-office-tracker/data/polymarket-markets.csv \
+            box-office-tracker/data/daily-actual-overrides.csv \
             box-office-tracker/data/calibration.json \
             box-office-tracker/data/calibration-freezes \
             box-office-tracker/data/run-logs)"
@@ -784,21 +797,6 @@ jobs:
         working-directory: box-office-tracker
         continue-on-error: true
         run: python scripts/import_reviews.py
-
-      - name: Auto-fetch reported daily actuals
-        # Same-week anchor input: The Numbers publishes each day's grosses the
-        # next morning. A reported SATURDAY actual lets the already-built
-        # same-week share/scale anchors correct the AMC-to-national divisor
-        # for the Sunday forecast (tested on 2026-08-28: both films improved).
-        # Friday numbers are deliberately NOT emitted — previews fold into
-        # them mid-weekend and Friday's share is the weekend's low outlier;
-        # both films got WORSE with a Friday anchor (see
-        # scripts/fetch_daily_actuals.py SAFE_ANCHOR_DAYS). Best effort — a
-        # fetch miss leaves the anchors unset, never fails finalize.
-        if: steps.finalize_guard.outputs.needs_finalize == 'true'
-        working-directory: box-office-tracker
-        continue-on-error: true
-        run: python scripts/fetch_daily_actuals.py
 
       - name: Auto-fetch Wikipedia anticipation (diagnostic)
         # Word-of-mouth DIAGNOSTIC only: release-week Wikipedia pageviews are a

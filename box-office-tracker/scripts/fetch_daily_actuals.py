@@ -28,6 +28,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 OVERRIDES_CSV = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -46,16 +47,14 @@ MIN_GROSS_M, MAX_GROSS_M = 0.05, 500.0
 UPSERT_TOLERANCE = 0.02
 
 DAY_OFFSETS = {"Thursday": -1, "Friday": 0, "Saturday": 1, "Sunday": 2}
-# Only Saturday/Sunday are emitted as anchors. Tested on the 2026-08-28 ground
-# truth: a Saturday anchor improved the Sunday-morning forecast for BOTH films
-# (Coyote +42%->+34%, Dog Stars +78%->+65%), while a Friday anchor made both
-# WORSE (+46%->+88%, +75%->+97%) for two reasons that auto-fetch cannot fix:
-# The Numbers folds Thursday previews into Friday's gross mid-weekend (false
-# "model reads low" signal), and Friday's implied AMC share is systematically
-# the weekend's low outlier, so transferring it to Sat/Sun amplifies the share
-# error. Thursday/Friday anchors stay with the manual process, which knows how
-# to split previews from separately-reported numbers.
-SAFE_ANCHOR_DAYS = ("Saturday", "Sunday")
+# Every opening day is recorded (2026-09-26: Thursday/Friday were left to a
+# manual step that never ran, and the Heart of the Beast share error went
+# uncorrected all weekend). Grosses come from The Numbers' daily table with
+# Thursday previews SPLIT OUT of opening Friday (import_thenumbers_daily.
+# opening_days); a Friday is only emitted once its Thursday row is known, so a
+# folded Friday can never be recorded. WHEN the model uses each day is decided
+# in predict.stage_gated_overrides (Thu/Fri wait for Friday seats), not here.
+SAFE_ANCHOR_DAYS = ("Thursday", "Friday", "Saturday", "Sunday")
 
 
 def completed_days(weekend_of, now_utc):
@@ -111,6 +110,20 @@ def merge_override_rows(existing_rows, weekend_of, movie, day_gross, as_of_date)
     return new_rows
 
 
+def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
+    """{day: gross_m} for the opening Thu-Sun, previews split out of Friday.
+    Friday is dropped unless Thursday is known (otherwise it may still carry
+    the previews)."""
+    import import_thenumbers_daily as N
+    fetch_table = fetch_table or N.fetch_daily_table
+    year = int(str(weekend_of)[:4])
+    daily = fetch_table(movie, year) or {}
+    days = N.opening_days(daily, weekend_of) if daily else {}
+    if "Friday" in days and "Thursday" not in days:
+        days.pop("Friday")
+    return {d: g for d, g in days.items() if MIN_GROSS_M <= g <= MAX_GROSS_M}
+
+
 def main():
     import calibrate
     from predict import load_seat_data
@@ -136,7 +149,7 @@ def main():
     appended = []
     for movie in movies:
         try:
-            fetched = calibrate.fetch_opening_weekend_daily(movie, weekend_of) or {}
+            fetched = fetch_split_opening_days(movie, weekend_of)
         except Exception as e:
             print(f"  ⚠️  fetch failed for {movie}: {e}")
             continue

@@ -7666,6 +7666,31 @@ def opening_weekend_dates_by_day(weekend_of):
     }
 
 
+# Reported Thursday previews / opening Friday are held back until Friday's own
+# AMC seats are observed. Backtest 2026-09-26 (freeze replays, reported numbers
+# from The Numbers with previews split out of Friday):
+#   Friday morning, seats through Thursday + previews: MAE 19.1% -> 21.5%
+#     (recent films 15.7% -> 21.9%) — the preview/AMC-Thursday scale is carried
+#     onto Fri-Sun and over-reads fan-driven, preview-heavy films;
+#   seats through Friday + previews: recent films 17.1% -> 12.9%;
+#   seats through Friday + previews + Friday: recent 15.9% -> 11.8% (12/16).
+# The old "Friday anchor hurts" result (2026-08-28, n=2) used Friday grosses
+# with previews still folded in.
+REPORTED_EARLY_DAYS = ("Thursday", "Friday")
+
+
+def stage_gated_overrides(movie, overrides, observed_days):
+    """Pure: drop this film's reported Thursday/Friday grosses until Friday
+    seats are observed; every other film and day passes through untouched."""
+    if not overrides or "Friday" in (observed_days or set()):
+        return overrides
+    out = dict(overrides)
+    for key in list(out):
+        if _movie_lookup_key(key) == _movie_lookup_key(movie):
+            out[key] = {d: v for d, v in (out[key] or {}).items() if d not in REPORTED_EARLY_DAYS}
+    return out
+
+
 def reported_actual_daily_detail(movie, day_name, cal, daily_actual_overrides,
                                  date_str=None):
     """Build a daily-details row for a reported actual without seat rows."""
@@ -7728,6 +7753,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         daily_actual_overrides = load_daily_actual_overrides(
             weekend_of=seat_data_weekend_of(seat_data or snapshot_data)
         )
+    daily_actual_overrides = stage_gated_overrides(
+        movie, daily_actual_overrides,
+        {datetime.strptime(d, "%Y-%m-%d").strftime("%A") for d in opening_dates})
 
     model_cohorts = active_model_cohorts()
     model_cohort_key = normalize_model_cohort_key(model_cohorts)

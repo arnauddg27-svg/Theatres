@@ -132,6 +132,7 @@ class PredictBridgeFillInTest(unittest.TestCase):
                 P.FANDANGO_SNAPSHOTS_CSV = str(fan)
                 P.PRE_RESERVATION_CSV = str(native)
                 P.PRE_RESERVATION_ARCHIVE_DIR = td            # loader is archive-aware: keep the fixture sealed
+                P.SEAT_ARCHIVE_DIR = td                       # so is the seat loader (09-11 rotated 2026-09-26)
                 data = P.load_pre_reservation_data(weekend_of="2026-09-11")
                 rows = data["F"]["2026-09-11"]
                 by_theatre = {r["theatre_name"]: r["occupancy_pct"] for r in rows}
@@ -236,10 +237,11 @@ class WatchdogLaneAttributionTest(unittest.TestCase):
                 w.writerows([_snap("F", "2026-09-11", "AMC Empire 25", "AMC", 20, snap="2026-09-11T15:00:00+00:00"),
                              _snap("F", "2026-09-11", "Regal Atlas Park", "REGL", 40, snap="2026-09-11T15:00:00+00:00")])
             orig = (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
-                    cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR)
+                    cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR, P.SEAT_ARCHIVE_DIR)
             try:
                 P.FANDANGO_SNAPSHOTS_CSV = str(fan)
                 P.PRE_RESERVATION_ARCHIVE_DIR = td            # loader is archive-aware: keep the fixture sealed
+                P.SEAT_ARCHIVE_DIR = td                       # so is the seat loader (09-11 rotated 2026-09-26)
                 P.PRE_RESERVATION_CSV = str(Path(td) / "none-native.csv")
                 P.SEAT_CSV = str(Path(td) / "none-seat.csv")
                 cc.FANDANGO_CSV = str(fan)
@@ -250,7 +252,7 @@ class WatchdogLaneAttributionTest(unittest.TestCase):
                 self.assertEqual(1, sum(counts["amc_snapshot"].values()))   # the bridge row, via predict
             finally:
                 (P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.SEAT_CSV,
-                 cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR) = orig
+                 cc.FANDANGO_CSV, cc.CINEMARK_CSV, P.PRE_RESERVATION_ARCHIVE_DIR, P.SEAT_ARCHIVE_DIR) = orig
 
 
 class BridgeTopTheatreRegimeTest(unittest.TestCase):

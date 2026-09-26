@@ -80,9 +80,39 @@ if __name__ == "__main__":
 
 
 class SafeAnchorDaysTest(unittest.TestCase):
-    def test_only_saturday_sunday_are_anchor_safe(self):
-        # Friday anchors tested HARMFUL on 2026-08-28 (previews folded into
-        # Friday's reported gross + Friday share is the weekend's low outlier):
-        # Coyote +46%->+88%, Dog Stars +75%->+97%. Saturday anchors improved
-        # both films. Do not widen this without re-running that comparison.
-        self.assertEqual(("Saturday", "Sunday"), mod.SAFE_ANCHOR_DAYS)
+    def test_every_opening_day_is_recorded(self):
+        # 2026-09-26: Thu/Fri were manual-only and never entered. The old
+        # "Friday anchor hurts" result used Friday grosses with previews folded
+        # in; with previews split out, Thu+Fri at the Friday-seats stage cut
+        # recent-film MAE 15.9% -> 11.8%. Usage timing lives in the model
+        # (predict.stage_gated_overrides), not in this list.
+        self.assertEqual(("Thursday", "Friday", "Saturday", "Sunday"), mod.SAFE_ANCHOR_DAYS)
+
+    def test_previews_are_split_out_of_friday(self):
+        from datetime import date
+        table = {date(2026, 9, 24): ("P", 2.0), date(2026, 9, 25): ("1", 7.45)}
+        days = mod.fetch_split_opening_days("Heart of the Beast", "2026-09-25", fetch_table=lambda t, y: table)
+        self.assertEqual({"Thursday": 2.0, "Friday": 5.45}, days)
+
+    def test_friday_without_its_thursday_row_is_not_recorded(self):
+        from datetime import date
+        table = {date(2026, 9, 25): ("1", 7.45)}      # previews possibly still folded in
+        self.assertEqual({}, mod.fetch_split_opening_days("X", "2026-09-25", fetch_table=lambda t, y: table))
+
+
+class StageGatedOverridesTest(unittest.TestCase):
+    def test_thursday_friday_wait_for_friday_seats(self):
+        import predict as P
+        ov = {"Heart of the Beast": {"Thursday": {"gross_m": 2.0}, "Friday": {"gross_m": 5.45}, "Saturday": {"gross_m": 7.0}},
+              "Primetime": {"Thursday": {"gross_m": 2.7}}}
+        early = P.stage_gated_overrides("Heart of the Beast", ov, {"Thursday"})
+        self.assertEqual({"Saturday"}, set(early["Heart of the Beast"]))
+        self.assertEqual({"Thursday"}, set(early["Primetime"]))          # other films untouched
+        self.assertEqual({"Thursday", "Friday", "Saturday"}, set(ov["Heart of the Beast"]))   # input not mutated
+        later = P.stage_gated_overrides("Heart of the Beast", ov, {"Thursday", "Friday"})
+        self.assertIs(ov, later)
+        self.assertEqual({}, P.stage_gated_overrides("X", {}, {"Thursday"}))
+
+
+if __name__ == "__main__":
+    unittest.main()
