@@ -175,5 +175,38 @@ class PostModeAnchorTest(unittest.TestCase):
         self.assertTrue(all(p["post_show"] for p in picks))
 
 
+class RedesignedLinkFormatTest(unittest.TestCase):
+    """cinemark.com redesign (2026-09-23): lower-case query keys plus
+    cinemarkMovieId/linkedShowtimeId. The exact-case parser matched zero
+    showtimes for three days while every run exited green."""
+
+    def test_new_and_old_formats_parse(self):
+        new = ("/TicketSeatMap/?cinemarkMovieId=110292&linkedShowtimeId=645184"
+               "&showtime=2026-09-28T10%3A35%3A00&showtimeId=645188&theaterId=207")
+        self.assertEqual({"theater_id": "207", "showtime_id": "645188", "sdate": "2026-09-28 10:35"},
+                         cc.parse_seatmap_href(new))
+        old = "/TicketSeatMap/?TheaterId=207&ShowtimeId=645720&CinemarkMovieId=107537&Showtime=2026-08-31T14:05:00"
+        self.assertEqual("645720", cc.parse_seatmap_href(old)["showtime_id"])
+        self.assertIsNone(cc.parse_seatmap_href("/movies/primetime?showDate=2026-09-28"))
+
+    def test_new_format_picks_through_select_showtimes(self):
+        from datetime import datetime, timezone
+        entries = [{"href": "/TicketSeatMap/?cinemarkMovieId=1&showtime=2026-09-28T19%3A00%3A00&showtimeId=9&theaterId=7",
+                    "movie_href": "/movies/primetime?showDate=2026-09-28"}]
+        picks = cc.select_showtimes(entries, {"primetime": "Primetime"}, {"2026-09-28"}, "America/Chicago",
+                                    datetime(2026, 9, 27, 12, 0, tzinfo=timezone.utc), 1)
+        self.assertEqual(1, len(picks))
+        self.assertEqual("Primetime", picks[0]["title"])
+
+
+class HarvestVerdictTest(unittest.TestCase):
+    def test_zero_matches_over_a_real_walk_is_red(self):
+        self.assertEqual("red", cc.harvest_verdict({"visited": 102, "matched": 0}, "pre"))
+        self.assertEqual("ok", cc.harvest_verdict({"visited": 102, "matched": 40}, "pre"))
+        self.assertEqual("ok", cc.harvest_verdict({"visited": 5, "matched": 0}, "pre"))       # tiny test run
+        self.assertEqual("ok", cc.harvest_verdict({"visited": 102, "matched": 0}, "post"))    # post revisits don't match
+        self.assertEqual("ok", cc.harvest_verdict({"visited": 60, "matched": 0, "tarpit_stop": 1}, "pre"))  # tarpit policy owns it
+
+
 if __name__ == "__main__":
     unittest.main()

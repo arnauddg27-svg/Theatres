@@ -138,12 +138,16 @@ THEATRE_URL_RE = re.compile(r"/theatres/([a-z]{2})-([a-z0-9\-]+)/([a-z0-9\-]+)/?
 def parse_seatmap_href(href):
     """'/TicketSeatMap/?TheaterId=207&ShowtimeId=645731&...&Showtime=2026-08-31T22:50:00'
     -> {'theater_id': '207', 'showtime_id': '645731', 'sdate': '2026-08-31 22:50'} or None."""
-    if not href or "TicketSeatMap" not in href:
+    if not href or "TicketSeatMap".lower() not in href.lower():
         return None
-    q = parse_qs(urlparse(href).query)
-    theater_id = (q.get("TheaterId") or [None])[0]
-    showtime_id = (q.get("ShowtimeId") or [None])[0]
-    raw = (q.get("Showtime") or [None])[0]
+    # Keys are matched case-insensitively: the 2026-09-23 site redesign moved
+    # from TheaterId/ShowtimeId/Showtime to theaterId/showtimeId/showtime (plus
+    # cinemarkMovieId/linkedShowtimeId), and the exact-case lookup silently
+    # matched ZERO showtimes on every pre pass for three days.
+    q = {k.lower(): v for k, v in parse_qs(urlparse(href).query).items()}
+    theater_id = (q.get("theaterid") or [None])[0]
+    showtime_id = (q.get("showtimeid") or [None])[0]
+    raw = (q.get("showtime") or [None])[0]
     if not (theater_id and showtime_id and raw):
         return None
     try:
@@ -709,10 +713,25 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                 for want in missing[:4]:
                     if time.monotonic() > deadline or budget.exhausted():
                         break
+                    # The redesigned site (2026-09-23) honours ?showDate=:
+                    # load the dated page directly; the click-the-carousel
+                    # path stays as the fallback for the old layout.
+                    how = None
                     try:
-                        how = page.evaluate(DATE_NAV_JS, want)
+                        page.goto(f"{BASE}/theatres/{th['slug']}?showDate={want}",
+                                  wait_until="domcontentloaded", timeout=30000)
+                        page.wait_for_timeout(2500)
+                        if any((parse_seatmap_href(e.get("href", "")) or {})
+                               .get("sdate", "")[:10] == want
+                               for e in harvest_entries(page)):
+                            how = "url:showDate"
                     except Exception:
                         how = None
+                    if not how:
+                        try:
+                            how = page.evaluate(DATE_NAV_JS, want)
+                        except Exception:
+                            how = None
                     if not how:
                         totals["date_nav_failed"] += 1
                         if not totals.get("_date_census_dumped"):
@@ -961,6 +980,22 @@ def tarpit_verdict(totals):
     return "red" if totals.get("captured", 0) < 20 else "warn"
 
 
+def harvest_verdict(totals, mode="pre", min_visited=20):
+    """'red' when a pre pass walked the pool and matched NOTHING (pure).
+
+    2026-09-23..26: cinemark.com changed its seat-link format; every pre pass
+    visited ~100 theatres, matched 0 showtimes, wrote 0 rows and exited GREEN
+    for three days, so the scheduler never retried and nobody noticed. With
+    tracked titles on sale, zero matches across a real walk is a layout or
+    matcher break, never a quiet day."""
+    if mode != "pre" or not totals:
+        return "ok"
+    if totals.get("visited", 0) >= min_visited and totals.get("matched", 0) == 0 \
+            and not totals.get("tarpit_stop"):
+        return "red"
+    return "ok"
+
+
 def main():
     ap = argparse.ArgumentParser(description="Cinemark direct pre-reservation collector")
     ap.add_argument("--selftest", action="store_true")
@@ -1017,6 +1052,11 @@ def main():
         print("::warning::cinemark tarpit stopped the pool walk early — "
               f"captured={totals.get('captured', 0)} before the wall; the "
               "shard tail is lost until the next pass.")
+    if harvest_verdict(totals, mode) == "red":
+        print(f"❌ Pre pass visited {totals.get('visited', 0)} theatres and matched "
+              "ZERO tracked showtimes — the site layout or link format changed "
+              "(2026-09-23 precedent). Failing loudly.")
+        return 1
     if totals and totals.get("written", 0) == 0 and totals.get("matched", 0) > 0:
         print("❌ Showtimes matched but zero rows written — failing loudly.")
         return 1
