@@ -143,7 +143,7 @@ concurrency:
   # the retries added for the queue-wall incident were most likely to vanish
   # under exactly the degraded conditions they exist for (audit finding). The
   # AMC lock, not the concurrency group, is the execution serializer.
-  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || 'regular') }}
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || (github.event.inputs.phase == 'scrape-cinemark' && format('cinemark-{0}', github.event.inputs.schedule_slot || github.run_id) || 'regular')) }}
   cancel-in-progress: false
 
 jobs:
@@ -1208,6 +1208,13 @@ jobs:
             # theatres — trading theatre breadth, which the model needs, for a
             # handful of extra rows. More Cinemark depth has to come from MORE
             # SPACED PASSES, not deeper ones.
+            # 2026-09-26: 6-way slices run in PARALLEL (own concurrency queue,
+            # own runner/IP). Half the theatres per runner at cap 2 = the same
+            # seat loads per runner as the measured-safe 102-theatre cap-1
+            # pass, and twice the showtimes per film per theatre.
+            if [ "${CINEMARK_NUM_SHARDS:-0}" -ge 6 ]; then
+              export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-2}"
+            fi
             export CINEMARK_PER_THEATRE_CAP="${CINEMARK_PER_THEATRE_CAP:-1}"
           fi
           # -u + PIPESTATUS: output must survive kills and tee must not mask
@@ -1228,14 +1235,34 @@ jobs:
             echo "No Cinemark data to commit."
             exit 0
           fi
-          git commit -m "data: box office cinemark direct lane"
-          for i in 1 2 3; do
-            git rebase --abort 2>/dev/null || true
-            git pull --rebase --autostash origin main && git push && break
-            echo "Push attempt $i failed, retrying..."
-            [ "$i" = "3" ] && exit 1
-            sleep 15
+          # Parallel slices append to the same CSV: a rebase conflicts on the
+          # file's last line and drops the loser's rows. Save ours, reset to
+          # the latest main and re-apply by exact-row union (idempotent).
+          csv=box-office-tracker/data/cinemark-pre-reservation-snapshots.csv
+          cp "$csv" /tmp/cinemark-ours.csv
+          [ -f box-office-tracker/data/theatres-cinemark.json ] && cp box-office-tracker/data/theatres-cinemark.json /tmp/theatres-cinemark.json
+          git reset -q --soft HEAD 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            [ -f /tmp/theatres-cinemark.json ] && cp /tmp/theatres-cinemark.json box-office-tracker/data/theatres-cinemark.json
+            if [ -f "$csv" ]; then
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/cinemark-ours.csv "$csv")
+            else
+              cp /tmp/cinemark-ours.csv "$csv"; added=all
+            fi
+            echo "Cinemark rows added on top of main: $added"
+            git add "$csv" box-office-tracker/data/theatres-cinemark.json 2>/dev/null || true
+            if git diff --staged --quiet; then
+              echo "Nothing new relative to main."
+              exit 0
+            fi
+            git commit -q -m "data: box office cinemark direct lane"
+            git push -q origin HEAD:main && exit 0
+            echo "Push attempt $i lost a race, re-applying on the new main..."
+            sleep $((i * 7))
           done
+          exit 1
 
       - name: Upload log
         if: always()

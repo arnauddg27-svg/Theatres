@@ -54,22 +54,22 @@ class CinemarkCollectTest(unittest.TestCase):
         sys.modules[spec.name] = mod
         spec.loader.exec_module(mod)
         cin = [s for s in mod.SLOTS if s.inputs.get("phase") == "scrape-cinemark"]
-        self.assertEqual(4, len(cin))
+        n = mod.CINEMARK_PRE_SLICES
+        self.assertEqual(3 * n + 1, len(cin))
         pre = [s for s in cin if s.inputs.get("cinemark_mode") != "post"]
         post = [s for s in cin if s.inputs.get("cinemark_mode") == "post"]
-        self.assertEqual(3, len(pre))
+        self.assertEqual(3 * n, len(pre))
         self.assertEqual(1, len(post))
         for s in pre:
             self.assertEqual(frozenset(range(7)), s.cron_days, s.name)
         self.assertEqual(frozenset({0, 1, 5, 6}), post[0].cron_days)
-        # Pre slots SHARD the pool (tarpit after ~150 pages, run 33549713848):
-        # three third-pool passes = every theatre once daily with headroom
-        # for per-film (2 loads/theatre) picks. Post census stays unsharded —
-        # its revisit stage runs first.
-        self.assertEqual({("0", "3"), ("1", "3"), ("2", "3")},
-                         {(s.inputs["cinemark_shard"],
-                           s.inputs["cinemark_num_shards"]) for s in pre})
-        self.assertEqual({9, 14, 19}, {s.hour for s in pre})
+        # 2026-09-26: every slice at every daily time = each theatre read 3x
+        # a day; slices run in parallel (own concurrency queue per slot).
+        for h in (9, 14, 19):
+            at = [s for s in pre if s.hour == h]
+            self.assertEqual({(str(i), str(n)) for i in range(n)},
+                             {(s.inputs["cinemark_shard"], s.inputs["cinemark_num_shards"]) for s in at})
+        self.assertEqual(len(pre), len({s.name for s in pre}))       # distinct slot names = distinct queues
         self.assertNotIn("cinemark_shard", post[0].inputs)
 
 

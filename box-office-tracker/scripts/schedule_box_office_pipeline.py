@@ -101,6 +101,9 @@ def pipeline_inputs(
     }
 
 
+CINEMARK_PRE_SLICES = 6
+
+
 def cinemark_slot_inputs(mode: str = "", shard: int | None = None,
                          num_shards: int | None = None) -> dict[str, str]:
     """Inputs for a Cinemark direct-lane slot (mode '' = pre, 'post' = census).
@@ -348,19 +351,17 @@ SLOTS: tuple[Slot, ...] = (
     #   Thu-Sun evenings locally): revisits seat-map URLs stored by the pre
     #   passes for shows that have since started (the page drops started
     #   shows, so day-of finals must come from stored links — AMC pattern).
-    Slot("cinemark pre 09:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 2, 3, 4, 5, 6}), 9, 20,
-         cinemark_slot_inputs(shard=0, num_shards=3)),
-    # 3-way since 2026-09-04: per-film picks doubled seat loads per theatre,
-    # so 153-theatre shards (~153 + up to 306 loads) sat right at the
-    # ~200-250-load tarpit wall. 102-theatre shards keep every theatre read
-    # once daily with real headroom; the 14:20Z slot fills the midday gap.
-    Slot("cinemark pre 14:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 2, 3, 4, 5, 6}), 14, 20,
-         cinemark_slot_inputs(shard=1, num_shards=3)),
-    Slot("cinemark pre 19:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 2, 3, 4, 5, 6}), 19, 20,
-         cinemark_slot_inputs(shard=2, num_shards=3)),
+    # 2026-09-26 (user: more Regal/Cinemark showtimes, more parallel runs):
+    # 6 slices x 3 daily times = every theatre read 3x a day (was once), 2
+    # showtimes per film per theatre (was 1). Slices run on parallel runners
+    # (own concurrency queue each); per-runner load equals the old 102-theatre
+    # cap-1 pass. Staggered 3 min apart so starts do not stampede the site.
+    *[
+        Slot(f"cinemark pre {h:02d}:20Z s{s}", "box office scrape-cinemark ALL",
+             frozenset({0, 1, 2, 3, 4, 5, 6}), h, 20 + 3 * s,
+             cinemark_slot_inputs(shard=s, num_shards=CINEMARK_PRE_SLICES))
+        for h in (9, 14, 19) for s in range(CINEMARK_PRE_SLICES)
+    ],
     Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),
     Slot(
