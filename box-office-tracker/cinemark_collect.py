@@ -236,8 +236,11 @@ def theatre_from_url(url):
 # (round-5 audit: a 1439 ceiling re-captured rows whenever day N ran ~70
 # min late and day N+1 on time).
 # Showings re-read per (theatre, film, show date) by the post-show census,
-# spread across the day (first, last, evenly between).
-CINEMARK_POST_PER_FILM = _env_int("CINEMARK_POST_PER_FILM", 3)
+# spread across the day (first, last, evenly between). 3 -> 6 on 2026-09-27
+# once proxy reads lifted the 70-maps-per-address cap (pre slices captured
+# ~98% of picks at ~7 MB each) and seat maps proved readable 12.6+ h after
+# showtime, so the nightly pass reaches the day's matinees.
+CINEMARK_POST_PER_FILM = _env_int("CINEMARK_POST_PER_FILM", 6)
 _CINEMARK_WINDOW_RAW = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
 CINEMARK_POST_SHOW_WINDOW_MIN = min(_CINEMARK_WINDOW_RAW, 1350)
 if _CINEMARK_WINDOW_RAW > 1350:
