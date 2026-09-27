@@ -1045,6 +1045,10 @@ jobs:
           # loudly instead of reporting success over lost data.
           fandango_csv=box-office-tracker/data/fandango-pre-reservation-snapshots.csv
           if [ -f "$fandango_csv" ]; then
+            # Lane-owned rotation (2026-09-27): settled weekends -> gzip archives
+            # (predict's cross-chain + bridge readers glob data/fandango-archive).
+            python3 box-office-tracker/scripts/rotate_lane_csv.py "$fandango_csv" --archive-dir box-office-tracker/data/fandango-archive
+            [ -d box-office-tracker/data/fandango-archive ] && git add box-office-tracker/data/fandango-archive
             git add "$fandango_csv"
           fi
           if git diff --staged --quiet; then
@@ -1214,11 +1218,15 @@ jobs:
             git fetch -q origin main
             git reset -q --hard origin/main
             if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/alamo-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind)
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/alamo-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/alamo-archive)
             else
               cp /tmp/alamo-ours.csv "$csv"; added=all
             fi
             echo "Alamo rows added on top of main: $added"
+            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
+            # archives so the CSV never nears GitHub's 100 MB push limit.
+            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/alamo-archive
+            [ -d box-office-tracker/data/alamo-archive ] && git add box-office-tracker/data/alamo-archive
             git add "$csv"
             if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
             git commit -q -m "data: box office alamo lane"
@@ -1266,11 +1274,15 @@ jobs:
             git fetch -q origin main
             git reset -q --hard origin/main
             if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/harkins-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind)
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/harkins-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/harkins-archive)
             else
               cp /tmp/harkins-ours.csv "$csv"; added=all
             fi
             echo "Harkins rows added on top of main: $added"
+            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
+            # archives so the CSV never nears GitHub's 100 MB push limit.
+            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/harkins-archive
+            [ -d box-office-tracker/data/harkins-archive ] && git add box-office-tracker/data/harkins-archive
             git add "$csv"
             if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
             git commit -q -m "data: box office harkins lane"
@@ -1317,11 +1329,15 @@ jobs:
             git fetch -q origin main
             git reset -q --hard origin/main
             if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/webedia-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind)
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/webedia-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/webedia-archive)
             else
               cp /tmp/webedia-ours.csv "$csv"; added=all
             fi
             echo "Webedia rows added on top of main: $added"
+            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
+            # archives so the CSV never nears GitHub's 100 MB push limit.
+            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/webedia-archive
+            [ -d box-office-tracker/data/webedia-archive ] && git add box-office-tracker/data/webedia-archive
             git add "$csv"
             if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
             git commit -q -m "data: box office webedia lane"
@@ -1448,19 +1464,29 @@ jobs:
             git reset -q --hard origin/main
             [ -f /tmp/theatres-cinemark.json ] && cp /tmp/theatres-cinemark.json box-office-tracker/data/theatres-cinemark.json
             if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/cinemark-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind)
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/cinemark-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/cinemark-archive)
             else
               cp /tmp/cinemark-ours.csv "$csv"; added=all
             fi
             echo "Cinemark rows added on top of main: $added"
             if [ -f /tmp/cinemark-links-ours.csv ]; then
               if [ -f "$links" ]; then
-                python3 box-office-tracker/scripts/union_csv_rows.py /tmp/cinemark-links-ours.csv "$links" --key href >/dev/null
+                python3 box-office-tracker/scripts/union_csv_rows.py /tmp/cinemark-links-ours.csv "$links" --key href --archived-dir box-office-tracker/data/cinemark-links-archive >/dev/null
               else
                 cp /tmp/cinemark-links-ours.csv "$links"
               fi
               git add "$links"
             fi
+            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
+            # archives (the every-showing census adds ~3 MB/night).
+            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/cinemark-archive
+            if [ -f "$links" ]; then
+              python3 box-office-tracker/scripts/rotate_lane_csv.py "$links" --archive-dir box-office-tracker/data/cinemark-links-archive
+              git add "$links"
+            fi
+            for d in box-office-tracker/data/cinemark-archive box-office-tracker/data/cinemark-links-archive; do
+              [ -d "$d" ] && git add "$d"
+            done
             git add "$csv" box-office-tracker/data/theatres-cinemark.json 2>/dev/null || true
             if git diff --staged --quiet; then
               echo "Nothing new relative to main."

@@ -5438,8 +5438,15 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
     key = (weekend_of, through_date, CROSS_CHAIN_AMC_SIDE)
     if key in _CROSS_CHAIN_CACHE:
         return _CROSS_CHAIN_CACHE[key]
-    rc_paths = [p for p in (FANDANGO_SNAPSHOTS_CSV, CINEMARK_SNAPSHOTS_CSV)
-                if os.path.exists(p)]
+    # Archive-aware (2026-09-27): lane CSVs now rotate settled weekends into
+    # data/<lane>-archive/<stem>-<weekend>.csv.gz (scripts/rotate_lane_csv.py);
+    # a bare open() of the live file would silently lose every rotated weekend
+    # from historical replays/backtests.
+    rc_paths = []
+    for p, adir in ((FANDANGO_SNAPSHOTS_CSV, "fandango-archive"), (CINEMARK_SNAPSHOTS_CSV, "cinemark-archive")):
+        stem = os.path.splitext(os.path.basename(p))[0]
+        ap = os.path.join(DATA_DIR, adir, f"{stem}-{weekend_of}.csv.gz")
+        rc_paths += [x for x in (ap, p) if os.path.exists(x)]
     if not rc_paths:
         _CROSS_CHAIN_CACHE[key] = {}
         return {}
@@ -5447,7 +5454,8 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
     rc_day = {}     # movie -> show_date -> [(occ, discovered_spc or None)]
     rc_lead = {}    # movie -> show_date -> [minutes_until_showtime]
     for rc_path in rc_paths:
-        with open(rc_path, "r") as f:
+        opener = gzip.open if rc_path.endswith(".gz") else open
+        with opener(rc_path, "rt", newline="") as f:
             for row in csv.DictReader(f):
                 if (row.get("weekend_of") or "").strip() != weekend_of:
                     continue

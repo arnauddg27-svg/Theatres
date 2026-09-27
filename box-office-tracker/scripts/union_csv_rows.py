@@ -13,12 +13,30 @@ so a retry after a lost push race never duplicates.
 the same showing in the same snapshot bucket write rows that differ only in
 snapshot_time/run_id (three catch-up Alamo post passes at 02:10Z on
 2026-09-27 wrote the same 57 showings three times).
+
+--archived-dir DIR refuses rows whose weekend_of has already been rotated into
+DIR (any *-<weekend>.csv.gz): a runner whose checkout predates a lane rotation
+(scripts/rotate_lane_csv.py) must not re-import the archived weekend.
 """
 import csv
 import sys
 
 
-def union_rows(ours_path, target_path, key=None):
+def archived_weekends(archive_dir):
+    """Pure-ish: {weekend} with an archive file in archive_dir."""
+    import os
+    import re
+    if not archive_dir or not os.path.isdir(archive_dir):
+        return set()
+    out = set()
+    for fn in os.listdir(archive_dir):
+        m = re.search(r"-(\d{4}-\d{2}-\d{2})\.csv\.gz$", fn)
+        if m:
+            out.add(m.group(1))
+    return out
+
+
+def union_rows(ours_path, target_path, key=None, archived=None):
     with open(target_path, newline="") as f:
         reader = csv.DictReader(f)
         fields = list(reader.fieldnames or [])
@@ -30,6 +48,8 @@ def union_rows(ours_path, target_path, key=None):
         fields_out = fields + extra
         new = []
         for r in ours:
+            if archived and (r.get("weekend_of") or "").strip() in archived:
+                continue
             k_ = tuple((k, (r.get(k) or "")) for k in keyf)
             if k_ in have:
                 continue
@@ -54,4 +74,7 @@ if __name__ == "__main__":
     key = None
     if "--key" in sys.argv:
         key = [k for k in sys.argv[sys.argv.index("--key") + 1].split(",") if k]
-    print(union_rows(sys.argv[1], sys.argv[2], key=key))
+    archived = None
+    if "--archived-dir" in sys.argv:
+        archived = archived_weekends(sys.argv[sys.argv.index("--archived-dir") + 1])
+    print(union_rows(sys.argv[1], sys.argv[2], key=key, archived=archived))
