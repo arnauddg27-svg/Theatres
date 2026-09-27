@@ -937,6 +937,10 @@ jobs:
           #   no trim   7.4 MB/theatre  0 blocks  8/10 captured
           #   media     6.2 MB/theatre  0 blocks  9/10 captured
           #   full      2.3 MB/theatre  5 blocks  4/10 captured
+          # CORRECTION 2026-09-27 (run 36338001448, full trim + exit rotation,
+          # 20 theatres): 9.4 MB/theatre, 0 blocks, 4/36 seat maps populated.
+          # "2.3 MB" was blocked theatres loading little — per-page bytes are
+          # ~440-520 KB at every trim level. Tracker blocking saves nothing.
           # The tracker hosts are both where the bytes are AND what Fandango
           # watches, so the cheap setting is the one that gets us blocked. Even
           # at 6.2 MB a full pool pass is 2.4 GB against a 1.6 GB/day budget.
