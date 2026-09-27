@@ -419,8 +419,14 @@ SLOTS: tuple[Slot, ...] = (
              frozenset({0, 1, 4, 5, 6}), h, 55, harkins_slot_inputs("post"))
         for h in (*range(18, 24), *range(0, 7))
     ],
-    Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
-         frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),
+    # Post-show census in 6 parallel slices (2026-09-27): up to 3 showings per
+    # theatre-film-day from the stored link set, ~6x the old single pass.
+    *[
+        Slot(f"cinemark post 06:20Z s{s}", "box office scrape-cinemark ALL",
+             frozenset({0, 1, 5, 6}), 6, 20 + 3 * s,
+             cinemark_slot_inputs("post", shard=s, num_shards=CINEMARK_PRE_SLICES))
+        for s in range(CINEMARK_PRE_SLICES)
+    ],
     Slot(
         "regular scrape 07Z",
         "box office scrape regular",

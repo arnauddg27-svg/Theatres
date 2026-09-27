@@ -59,6 +59,13 @@ from fandango_collect import (
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 CINEMARK_CSV = DATA_DIR / "cinemark-pre-reservation-snapshots.csv"
+# Every tracked showtime link seen by a pre pass (2026-09-27). The post-show
+# census used to revisit only the 1-2 showings per film a pre pass happened to
+# LOAD; the page lists them all, so they are stored for free and the census
+# picks from the full set.
+CINEMARK_LINKS_CSV = DATA_DIR / "cinemark-showtime-links.csv"
+LINK_FIELDS = ["weekend_of", "theatre_name", "theatre_city", "timezone", "movie_title",
+               "sdate", "show_date", "href", "seen_at"]
 THEATRES_JSON = DATA_DIR / "theatres-cinemark.json"
 BASE = "https://www.cinemark.com"
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -227,6 +234,9 @@ def theatre_from_url(url):
 # today's. Ceiling 1350 = 1440 minus ~90 min of worst realistic skew
 # (round-5 audit: a 1439 ceiling re-captured rows whenever day N ran ~70
 # min late and day N+1 on time).
+# Showings re-read per (theatre, film, show date) by the post-show census,
+# spread across the day (first, last, evenly between).
+CINEMARK_POST_PER_FILM = _env_int("CINEMARK_POST_PER_FILM", 3)
 _CINEMARK_WINDOW_RAW = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
 CINEMARK_POST_SHOW_WINDOW_MIN = min(_CINEMARK_WINDOW_RAW, 1350)
 if _CINEMARK_WINDOW_RAW > 1350:
@@ -495,6 +505,96 @@ def discover(page):
 
 # ── Collection ───────────────────────────────────────────────────────────────
 
+def spread_pick(items, k):
+    """Pure: up to k items spread evenly across a time-sorted list."""
+    items = list(items)
+    if k <= 0 or len(items) <= k:
+        return items
+    if k == 1:
+        return [items[len(items) // 2]]
+    idx = sorted({round(i * (len(items) - 1) / (k - 1)) for i in range(k)})
+    return [items[i] for i in idx]
+
+
+def link_rows(theatre, entries, target_slugs, window_dates, weekend_of, now_utc):
+    """Pure: every tracked, upcoming showing on a theatre page -> link rows."""
+    picks = select_showtimes(entries or [], target_slugs, window_dates,
+                             theatre.get("timezone", "America/Chicago"), now_utc, 0, mode="pre")
+    return [{"weekend_of": weekend_of, "theatre_name": theatre.get("name", ""),
+             "theatre_city": theatre.get("city", ""), "timezone": theatre.get("timezone", ""),
+             "movie_title": pk["title"], "sdate": pk["sdate"], "show_date": pk["show_date"],
+             "href": pk["href"] if str(pk["href"]).startswith("http") else BASE + pk["href"],
+             "seen_at": now_utc.isoformat()} for pk in picks if pk.get("href")]
+
+
+def append_links(rows, path=None):
+    """Append link rows not already stored (dedupe on href). Returns count."""
+    if not rows:
+        return 0
+    path = Path(path or CINEMARK_LINKS_CSV)
+    have = set()
+    if path.exists():
+        with open(path, newline="") as f:
+            have = {r.get("href", "") for r in csv.DictReader(f)}
+    new = [r for r in rows if r["href"] not in have]
+    seen, out = set(), []
+    for r in new:
+        if r["href"] in seen:
+            continue
+        seen.add(r["href"]); out.append(r)
+    if not out:
+        return 0
+    write_header = not path.exists() or path.stat().st_size == 0
+    with open(path, "a", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=LINK_FIELDS, extrasaction="ignore")
+        if write_header:
+            w.writeheader()
+        w.writerows(out)
+    return len(out)
+
+
+def post_candidates(sources, weekend_of, titles, now_utc, pool_names=None,
+                    per_film=None, window_min=None):
+    """Pure-ish: stored rows/links -> revisit list for the post-show census.
+
+    sources: iterable of dicts with theatre_name/theatre_city/timezone/
+    movie_title and either (sdate, href) [links] or (showtime_id,
+    amc_seat_map_url) [stored rows]. Keeps shows that started 0..window
+    minutes ago, at most per_film per (theatre, film, show date), spread
+    across the day; restricted to pool_names when sharded."""
+    from fandango_collect import showtime_timing
+    per_film = CINEMARK_POST_PER_FILM if per_film is None else per_film
+    window_min = CINEMARK_POST_SHOW_WINDOW_MIN if window_min is None else window_min
+    groups, seen = {}, set()
+    for r in sources:
+        if (r.get("weekend_of") or "").strip() != weekend_of:
+            continue
+        if r.get("row_kind") == "post-show-census" or "post-show-census" in (r.get("notes") or ""):
+            continue
+        url = (r.get("href") or r.get("amc_seat_map_url") or "").strip()
+        sdate = (r.get("sdate") or r.get("showtime_id") or "").strip()
+        title = (r.get("movie_title") or "").strip()
+        name = r.get("theatre_name", "")
+        if not url or not sdate or url in seen or title not in titles:
+            continue
+        if pool_names is not None and name not in pool_names:
+            continue
+        tz = (r.get("timezone") or "America/Chicago").strip()
+        m_after, m_until, show_date, dow = showtime_timing(sdate, tz, now_utc)
+        if m_after is None or not (0 <= m_after <= window_min):
+            continue
+        seen.add(url)
+        groups.setdefault((name, title, show_date), []).append({
+            "theatre": {"name": name, "city": r.get("theatre_city", ""), "timezone": tz},
+            "pick": {"title": title, "sdate": sdate, "show_date": show_date, "day_of_week": dow,
+                     "minutes_until": m_until, "post_show": True, "discovered": 1,
+                     "theater_id": "", "showtime_id": "", "href": url}})
+    out = []
+    for key in sorted(groups):
+        out += spread_pick(sorted(groups[key], key=lambda x: x["pick"]["sdate"]), per_film)
+    return out
+
+
 def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             mode="pre"):
     from playwright.sync_api import sync_playwright
@@ -553,7 +653,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     print(proxy_egress.egress_banner("cinemark lane", budget), flush=True)
     totals = {"visited": 0, "matched": 0, "captured": 0, "written": 0,
               "skipped": 0, "blocks": 0, "incomplete": 0,
-              "date_nav_ok": 0, "date_nav_empty": 0, "date_nav_failed": 0}
+              "date_nav_ok": 0, "date_nav_empty": 0, "date_nav_failed": 0,
+              "links_stored": 0}
     rows = []
 
     print(f"Cinemark collect [{mode}] • weekend_of={weekend_of} • {len(pool)} theatres "
@@ -569,8 +670,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     if mode == "post":
         src_path = Path(os.environ.get("CINEMARK_POST_SOURCE") or CINEMARK_CSV)
         totals["weekend_rows_stored"] = 0
+        sources = []
         if src_path.exists():
-            seen_urls = set()
             with open(src_path, newline="") as f:
                 for r in csv.DictReader(f):
                     # PRE rows only: counting census rows would make the
@@ -580,31 +681,13 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                             and (r.get("row_kind") or "") != "post-show-census"
                             and "post-show-census" not in (r.get("notes") or "")):
                         totals["weekend_rows_stored"] += 1
-                    url = (r.get("amc_seat_map_url") or "").strip()
-                    sdate = (r.get("showtime_id") or "").strip()
-                    tz = (r.get("timezone") or "America/Chicago").strip()
-                    title = (r.get("movie_title") or "").strip()
-                    if not url or not sdate or url in seen_urls:
-                        continue
-                    if title not in target_slugs.values():
-                        continue
-                    from fandango_collect import showtime_timing
-                    m_after, m_until, show_date, dow = showtime_timing(
-                        sdate, tz, now_utc)
-                    if m_after is None or not (0 <= m_after <= CINEMARK_POST_SHOW_WINDOW_MIN):
-                        continue
-                    seen_urls.add(url)
-                    revisit.append({
-                        "theatre": {"name": r.get("theatre_name", ""),
-                                    "city": r.get("theatre_city", ""),
-                                    "timezone": tz},
-                        "pick": {"title": title, "sdate": sdate,
-                                 "show_date": show_date, "day_of_week": dow,
-                                 "minutes_until": m_until, "post_show": True,
-                                 "discovered": 1,
-                                 "theater_id": "", "showtime_id": "",
-                                 "href": url},
-                    })
+                    sources.append(r)
+        if CINEMARK_LINKS_CSV.exists():
+            with open(CINEMARK_LINKS_CSV, newline="") as f:
+                sources += list(csv.DictReader(f))
+        pool_names = {t.get("name", "") for t in pool} if CINEMARK_NUM_SHARDS > 1 else None
+        revisit = post_candidates(sources, weekend_of, set(target_slugs.values()), now_utc,
+                                  pool_names=pool_names)
         print(f"  post-show revisit candidates from stored rows: {len(revisit)}",
               flush=True)
         totals["revisit_candidates"] = len(revisit)
@@ -763,6 +846,12 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                                      th.get("timezone", "America/Chicago"),
                                      now_utc, per_theatre_cap, mode=mode)
             totals["matched"] += len(picks)
+            if mode == "pre" and not os.environ.get("CINEMARK_OUTPUT"):
+                try:
+                    totals["links_stored"] += append_links(
+                        link_rows(th, entries, target_slugs, window_dates, weekend_of, now_utc))
+                except Exception as e:
+                    print(f"  link store failed: {type(e).__name__}", flush=True)
             if mode == "post" and not picks:
                 times = sorted((parse_seatmap_href(e.get("href", "")) or {})
                                .get("sdate", "")[11:] for e in (entries or []))[:8]

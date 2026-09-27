@@ -55,14 +55,15 @@ class CinemarkCollectTest(unittest.TestCase):
         spec.loader.exec_module(mod)
         cin = [s for s in mod.SLOTS if s.inputs.get("phase") == "scrape-cinemark"]
         n = mod.CINEMARK_PRE_SLICES
-        self.assertEqual(3 * n + 1, len(cin))
+        self.assertEqual(4 * n, len(cin))
         pre = [s for s in cin if s.inputs.get("cinemark_mode") != "post"]
         post = [s for s in cin if s.inputs.get("cinemark_mode") == "post"]
         self.assertEqual(3 * n, len(pre))
-        self.assertEqual(1, len(post))
+        self.assertEqual(n, len(post))
         for s in pre:
             self.assertEqual(frozenset(range(7)), s.cron_days, s.name)
-        self.assertEqual(frozenset({0, 1, 5, 6}), post[0].cron_days)
+        for s in post:
+            self.assertEqual(frozenset({0, 1, 5, 6}), s.cron_days, s.name)
         # 2026-09-26: every slice at every daily time = each theatre read 3x
         # a day; slices run in parallel (own concurrency queue per slot).
         for h in (9, 14, 19):
@@ -70,7 +71,9 @@ class CinemarkCollectTest(unittest.TestCase):
             self.assertEqual({(str(i), str(n)) for i in range(n)},
                              {(s.inputs["cinemark_shard"], s.inputs["cinemark_num_shards"]) for s in at})
         self.assertEqual(len(pre), len({s.name for s in pre}))       # distinct slot names = distinct queues
-        self.assertNotIn("cinemark_shard", post[0].inputs)
+        # post census: same 6 slices, in parallel (2026-09-27)
+        self.assertEqual({(str(i), str(n)) for i in range(n)},
+                         {(s.inputs["cinemark_shard"], s.inputs["cinemark_num_shards"]) for s in post})
 
 
 class PerFilmCapTest(unittest.TestCase):
@@ -206,6 +209,40 @@ class HarvestVerdictTest(unittest.TestCase):
         self.assertEqual("ok", cc.harvest_verdict({"visited": 5, "matched": 0}, "pre"))       # tiny test run
         self.assertEqual("ok", cc.harvest_verdict({"visited": 102, "matched": 0}, "post"))    # post revisits don't match
         self.assertEqual("ok", cc.harvest_verdict({"visited": 60, "matched": 0, "tarpit_stop": 1}, "pre"))  # tarpit policy owns it
+
+
+class PostCensusDepthTest(unittest.TestCase):
+    """2026-09-27: the post-show census re-read only the 1-2 showings per film a
+    pre pass loaded; every listed link is now stored and the census re-reads up
+    to CINEMARK_POST_PER_FILM showings per theatre-film-day, spread out."""
+
+    def test_spread_pick(self):
+        self.assertEqual([1, 3, 5], cc.spread_pick([1, 2, 3, 4, 5], 3))
+        self.assertEqual([1, 2], cc.spread_pick([1, 2], 3))
+        self.assertEqual([3], cc.spread_pick([1, 2, 3, 4, 5], 1))
+
+    def test_post_candidates_from_links_spread_and_sharded(self):
+        from datetime import datetime, timezone
+        links = [{"weekend_of": "2026-09-25", "theatre_name": t, "theatre_city": "X", "timezone": "America/Chicago",
+                  "movie_title": "Primetime", "sdate": f"2026-09-26 {h}:00", "href": f"https://c/{t}/{h}"}
+                 for t in ("A", "B") for h in (12, 14, 16, 18, 20)]
+        now = datetime(2026, 9, 27, 3, 30, tzinfo=timezone.utc)          # 22:30 CT, all five started
+        got = cc.post_candidates(links, "2026-09-25", {"Primetime"}, now, per_film=3, window_min=1080)
+        self.assertEqual(6, len(got))                                        # 3 per theatre
+        self.assertEqual(["12:00", "16:00", "20:00"], [g["pick"]["sdate"][11:] for g in got if g["theatre"]["name"] == "A"])
+        shard = cc.post_candidates(links, "2026-09-25", {"Primetime"}, now, pool_names={"B"}, per_film=3, window_min=1080)
+        self.assertEqual({"B"}, {g["theatre"]["name"] for g in shard})
+        self.assertEqual([], cc.post_candidates(links, "2026-09-25", {"Other"}, now))
+
+    def test_append_links_dedupes_on_href(self):
+        import tempfile, os
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "l.csv")
+            row = {"weekend_of": "w", "theatre_name": "A", "theatre_city": "", "timezone": "", "movie_title": "P",
+                   "sdate": "s", "show_date": "d", "href": "h1", "seen_at": "t"}
+            self.assertEqual(1, cc.append_links([row, dict(row)], path))
+            self.assertEqual(0, cc.append_links([row], path))
+            self.assertEqual(1, cc.append_links([dict(row, href="h2")], path))
 
 
 if __name__ == "__main__":
