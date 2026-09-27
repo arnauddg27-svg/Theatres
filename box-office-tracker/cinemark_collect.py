@@ -312,12 +312,24 @@ class HttpSeatReader:
         """One read through the proxy on a fresh tunnel (= fresh exit address)."""
         import seat_fetch_http
         if self.proxy_session is None:
-            self.proxy_session = seat_fetch_http.make_session()      # TLS curves pinned for Azure egress
+            # NOT seat_fetch_http.make_session(): that one disables content
+            # decoding (the AMC lane meters raw wire bytes and inflates by
+            # hand), so every proxied map came back as 37 KB of undecoded gzip
+            # with "no seats" (verify run 36314604906: proxy ok 0/185). Keep
+            # its TLS curve pin (Azure->proxy tunnels hang on Chrome's
+            # post-quantum key share) and let curl decode.
+            from curl_cffi import requests as cr
+            from curl_cffi.const import CurlOpt
+            self.proxy_session = cr.Session(impersonate="chrome",
+                                            curl_options={CurlOpt.SSL_EC_CURVES: seat_fetch_http.TLS_CURVES})
         try:
             r = self.proxy_session.get(url, timeout=30, proxies={"http": self.proxy_url, "https": self.proxy_url})
         finally:
             seat_fetch_http.drop_thread_connection(self.proxy_session)
-        self.proxy_bytes += len(r.content or b"") + PROXY_OVERHEAD_BYTES
+        # decoded length overstates the wire bytes ~9x; bill the compressed
+        # size when the server says it, else a conservative 1/8 of decoded
+        wire = int(r.headers.get("content-length") or 0) or len(r.content or b"") // 8
+        self.proxy_bytes += wire + PROXY_OVERHEAD_BYTES
         self.stats["proxy_mb"] = round(self.proxy_bytes / 1048576, 1)
         return r
 
@@ -369,6 +381,8 @@ class HttpSeatReader:
             # traffic. Back off and retry over HTTP instead of piling a browser
             # load on top. First few samples are logged for diagnosis.
             self.stats["http_empty"] += 1
+            if use_proxy:
+                return None          # fresh address per read — waiting does not help
             if self.stats["http_empty"] <= 3:
                 import re as _re
                 t = _re.search(r"<title>([^<]*)", r.text or "")
