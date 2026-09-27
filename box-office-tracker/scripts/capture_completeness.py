@@ -75,12 +75,12 @@ def lane_counts(weekend_of):
     import gzip
     rc_lanes = {
         "fandango": ([FANDANGO_CSV] if os.path.exists(FANDANGO_CSV) else []) +
-        sorted(glob.glob(os.path.join(P.DATA_DIR, "fandango-archive", "*.csv.gz"))),
+        sorted(glob.glob(os.path.join(os.path.dirname(FANDANGO_CSV), "fandango-archive", "*.csv.gz"))),
         # Cinemark DIRECT lane (2026-08-31): green-but-empty is the exact
         # failure class this monitor exists for, and this lane now carries
         # all CNMK coverage.
         "cinemark": ([CINEMARK_CSV] if os.path.exists(CINEMARK_CSV) else []) +
-        sorted(glob.glob(os.path.join(P.DATA_DIR, "cinemark-archive", "*.csv.gz"))),
+        sorted(glob.glob(os.path.join(os.path.dirname(CINEMARK_CSV), "cinemark-archive", "*.csv.gz"))),
     }
     for lane, sources in rc_lanes.items():
         for src in sources:

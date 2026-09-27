@@ -1559,7 +1559,9 @@ def _amc_bridge_sources():
     """Live Fandango CSV plus any rotated archives (archive-aware, like the
     other canonical readers)."""
     paths = [FANDANGO_SNAPSHOTS_CSV] if os.path.exists(FANDANGO_SNAPSHOTS_CSV) else []
-    paths += sorted(glob.glob(os.path.join(DATA_DIR, "fandango-archive", "*.csv.gz")))
+    # archive dir beside the CSV (not DATA_DIR): a test or tool that points
+    # FANDANGO_SNAPSHOTS_CSV elsewhere must not pick up the real archives.
+    paths += sorted(glob.glob(os.path.join(os.path.dirname(FANDANGO_SNAPSHOTS_CSV), "fandango-archive", "*.csv.gz")))
     for path in paths:
         opener = gzip.open if path.endswith(".gz") else open
         with opener(path, "rt", newline="") as f:
