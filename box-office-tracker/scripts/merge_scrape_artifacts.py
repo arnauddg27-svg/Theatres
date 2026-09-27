@@ -381,16 +381,42 @@ def _is_future_pre_reservation_row(row: dict[str, str]) -> bool:
 ARCHIVED_WEEKEND_DROPS: dict[str, int] = {}
 
 
-def _archived_weekend_filter(data_dir: Path, subdir: str, prefix: str):
-    """Refuse rows whose weekend has been rotated into an archive."""
+def _archived_dates(path: Path, date_field: str) -> set[str] | None:
+    """Show dates present in an archive; None when it cannot be read."""
+    import gzip
+    try:
+        with gzip.open(path, "rt", newline="", errors="replace") as f:
+            return {str(r.get(date_field, "") or "").strip() for r in csv.DictReader(f)} - {""}
+    except Exception:
+        return None
+
+
+def _archived_weekend_filter(data_dir: Path, subdir: str, prefix: str, date_field: str = "show_date"):
+    """Refuse rows whose (weekend, show date) has been rotated into an archive.
+
+    2026-09-27: this used to refuse EVERY row of a weekend with an archive file.
+    Since the 60 MiB size cap (2026-09-24) archives PLAYED show dates of the
+    LIVE weekend mid-weekend, that silently dropped all AMC snapshots for the
+    rest of the weekend (582,111 rows in one finalize, weekend 2026-09-25,
+    every run green). Now a row is refused only when its date is already in
+    the archive — a settled weekend's archive holds all its dates, so the
+    100MB re-import protection is unchanged. Undated rows and unreadable
+    archives stay refused (conservative)."""
     archive_dir = data_dir / subdir
+    cache: dict[str, set[str] | None] = {}
 
     def _filter(row: dict[str, str]) -> bool:
         weekend = str(row.get("weekend_of", "") or "").strip()
-        if weekend and (archive_dir / f"{prefix}-{weekend}.csv.gz").exists():
-            key = f"{prefix}:{weekend}"
-            ARCHIVED_WEEKEND_DROPS[key] = ARCHIVED_WEEKEND_DROPS.get(key, 0) + 1
-            return False
+        path = archive_dir / f"{prefix}-{weekend}.csv.gz"
+        if weekend and path.exists():
+            if weekend not in cache:
+                cache[weekend] = _archived_dates(path, date_field)
+            dates = cache[weekend]
+            day = str(row.get(date_field, "") or "").strip()
+            if not dates or not day or day in dates:
+                key = f"{prefix}:{weekend}"
+                ARCHIVED_WEEKEND_DROPS[key] = ARCHIVED_WEEKEND_DROPS.get(key, 0) + 1
+                return False
         return True
 
     return _filter
@@ -415,7 +441,7 @@ def _seat_row_filter(data_dir: Path):
     """Refuse seat rows for archived weekends (same stale-artifact trap as
     pre-reservation: legs upload their full local CSV, so pre-rotation
     artifacts would re-import every settled weekend)."""
-    return _archived_weekend_filter(data_dir, "seat-archive", "seat-counts")
+    return _archived_weekend_filter(data_dir, "seat-archive", "seat-counts", date_field="date")
 
 
 def _pre_reservation_row_filter(data_dir: Path):

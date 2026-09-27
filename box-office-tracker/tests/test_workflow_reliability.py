@@ -559,11 +559,14 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("not the old blind cron", cron)
         self.assertIn("dispatches a slot after the primary scheduler missed it", cron)
         self.assertIn("WATCHDOG=/opt/box-office-tracker/box-office-tracker/scripts/schedule_box_office_pipeline.py", cron)
-        self.assertIn("10,40 * * * *", cron)
-        self.assertIn(":10/:40 offset avoids racing GitHub's primary scheduler", cron)
+        # 2026-09-27: GitHub's */30 cron fired only every 3-5 h, so the watchdog
+        # is the real dispatcher — every 5 min with a 5-min grace (was :10/:40
+        # with 30 min, i.e. slots ran ~45 min late). Dedup on existing runs
+        # still prevents double dispatch.
+        self.assertIn("*/5 * * * *", cron)
         self.assertIn("--mode watchdog", cron)
         self.assertIn("--lookback-minutes 240", cron)
-        self.assertIn("--fallback-grace-minutes 30", cron)
+        self.assertIn("--fallback-grace-minutes 5", cron)
         self.assertIn("--token-env GH_TOKEN", cron)
         self.assertIn("git -C \"$REPO_DIR\" pull --ff-only origin main", cron)
         self.assertIn("Tuesday full-weekend mode targets the upcoming", cron)

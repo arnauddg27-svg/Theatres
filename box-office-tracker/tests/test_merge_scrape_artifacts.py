@@ -465,3 +465,23 @@ class ArchivedWeekendDropReportingTests(unittest.TestCase):
         with contextlib.redirect_stdout(buf):
             M.report_archived_weekend_drops()
         self.assertEqual("", buf.getvalue())
+
+
+class PartialArchiveGuardTest(unittest.TestCase):
+    """2026-09-27: the size cap archives PLAYED show dates of the live weekend;
+    the guard must keep accepting the weekend's unplayed dates."""
+
+    def test_only_archived_show_dates_are_refused(self):
+        import gzip
+        from scripts import merge_scrape_artifacts as M
+        with tempfile.TemporaryDirectory() as d:
+            data_dir = Path(d)
+            (data_dir / "pre-reservation-archive").mkdir()
+            with gzip.open(data_dir / "pre-reservation-archive"
+                           / "pre-reservation-snapshots-2026-09-25.csv.gz", "wt") as f:
+                f.write("weekend_of,show_date\n2026-09-25,2026-09-24\n")
+            f = M._pre_reservation_row_filter(data_dir)
+            row = {"weekend_of": "2026-09-25", "minutes_until_showtime": "60"}
+            self.assertFalse(f({**row, "show_date": "2026-09-24"}))   # archived (played) date
+            self.assertTrue(f({**row, "show_date": "2026-09-27"}))    # live date of the same weekend
+            self.assertFalse(f(row))                                  # undated -> conservative refuse
