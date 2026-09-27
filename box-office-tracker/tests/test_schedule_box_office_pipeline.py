@@ -30,11 +30,11 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         )
 
         # The late-night slots inside this lookback window: the AMC snapshot
-        # at 02:30Z, the Alamo walk-in census at 02:50Z (UTC Sunday = a
+        # at 02:30Z, the Alamo walk-in loop at 02:40Z (UTC Sunday = a
         # Saturday show night) and the Fandango lane at 03:00Z (sorted by
         # scheduled_at).
         self.assertEqual(
-            ["snapshot 02:30Z", "alamo post 02:50Z", "harkins post 02:55Z", "snapshot fandango 03Z"],
+            ["snapshot 02:30Z", "alamo post loop 02:40Z", "harkins post 02:55Z", "snapshot fandango 03Z"],
             [slot.name for _, slot in due],
         )
 

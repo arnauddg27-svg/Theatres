@@ -403,11 +403,17 @@ SLOTS: tuple[Slot, ...] = (
              frozenset({0, 1, 2, 3, 4, 5, 6}), h, 40, alamo_slot_inputs())
         for h in (0, 12, 16, 20)
     ],
-    *[
-        Slot(f"alamo post {h:02d}:50Z", "box office scrape-alamo ALL",
-             frozenset({0, 1, 4, 5, 6}), h, 50, alamo_slot_inputs("post"))
-        for h in (*range(18, 24), *range(0, 7))
-    ],
+    # Walk-in census as long-running LOOP jobs (2026-09-27): Alamo's seat data
+    # 404s ~30-50 min after showtime, so each loop re-reads showings that
+    # started in the last 30 min every 15 min. Three loops cover weekend
+    # matinees (15:10Z, Sat/Sun) and every show evening (20:50Z Thu-Sun,
+    # 02:40Z Fri-Mon early hours).
+    Slot("alamo post loop 15:10Z", "box office scrape-alamo ALL",
+         frozenset({6, 0}), 15, 10, alamo_slot_inputs("post")),
+    Slot("alamo post loop 20:50Z", "box office scrape-alamo ALL",
+         frozenset({4, 5, 6, 0}), 20, 50, alamo_slot_inputs("post")),
+    Slot("alamo post loop 02:40Z", "box office scrape-alamo ALL",
+         frozenset({5, 6, 0, 1}), 2, 40, alamo_slot_inputs("post")),
     # Harkins API lane (2026-09-27): same cadence as Alamo, offset 10 min.
     *[
         Slot(f"harkins pre {h:02d}:50Z", "box office scrape-harkins ALL",

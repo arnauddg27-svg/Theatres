@@ -37,7 +37,13 @@ API = "https://drafthouse.com/s/mother"
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
                     "(KHTML, like Gecko) Chrome/126.0 Safari/537.36",
       "Accept": "application/json"}
-ALAMO_POST_WINDOW_MIN = int(os.environ.get("ALAMO_POST_WINDOW_MIN", "90"))
+# Alamo's seat endpoint 404s ~30-50 min after showtime (measured 2026-09-27:
+# ok at 21 min, 404 from 51 min on), so the walk-in read must land in the
+# first half hour: a 30-min window, polled every ALAMO_LOOP_EVERY_MIN by a
+# long-running loop job (ALAMO_LOOP_MIN > 0) instead of hourly one-shots.
+ALAMO_POST_WINDOW_MIN = int(os.environ.get("ALAMO_POST_WINDOW_MIN", "30"))
+ALAMO_LOOP_MIN = int(os.environ.get("ALAMO_LOOP_MIN", "0") or 0)
+ALAMO_LOOP_EVERY_MIN = int(os.environ.get("ALAMO_LOOP_EVERY_MIN", "15") or 15)
 ALAMO_SLEEP_SEC = float(os.environ.get("ALAMO_SLEEP_SEC", "0.25"))
 ALAMO_MAX_SESSIONS = int(os.environ.get("ALAMO_MAX_SESSIONS", "0") or 0)
 
@@ -210,6 +216,16 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
 
 def main():
     mode = "post" if os.environ.get("ALAMO_MODE") == "post" else "pre"
+    if mode == "post" and ALAMO_LOOP_MIN > 0:
+        end = time.monotonic() + ALAMO_LOOP_MIN * 60
+        total = Counter()
+        while True:
+            total.update(collect(mode=mode))
+            if time.monotonic() + ALAMO_LOOP_EVERY_MIN * 60 > end:
+                break
+            time.sleep(ALAMO_LOOP_EVERY_MIN * 60)
+        print("=== Alamo post loop total === " + " ".join(f"{k}={v}" for k, v in sorted(total.items())), flush=True)
+        return 0
     t = collect(mode=mode)
     if mode == "pre" and t.get("markets", 0) >= 5 and t.get("matched", 0) == 0 and t.get("market_errors", 0) == 0:
         print("::warning::Alamo pre pass matched no tracked showings (titles not playing, or a slug mismatch)")

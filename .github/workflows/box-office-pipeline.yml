@@ -1170,7 +1170,7 @@ jobs:
     # at-showtime read that includes walk-ins.
     if: github.event.inputs.phase == 'scrape-alamo'
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: ${{ contains(github.event.inputs.schedule_slot, 'loop') && 360 || 40 }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -1186,9 +1186,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Alamo collect
         working-directory: box-office-tracker
-        timeout-minutes: 30
+        timeout-minutes: ${{ contains(github.event.inputs.schedule_slot, 'loop') && 345 || 30 }}
         env:
           ALAMO_MODE: ${{ github.event.inputs.cinemark_mode }}
+          # loop slots poll every 15 min for 5.5 h, ending before the step timeout
+          ALAMO_LOOP_MIN: ${{ contains(github.event.inputs.schedule_slot, 'loop') && '330' || '0' }}
         run: python -u alamo_collect.py
       - name: Commit Alamo data
         if: always()
