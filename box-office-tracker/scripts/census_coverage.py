@@ -55,7 +55,8 @@ def counted(weekend_of):
             day = date_day.get(r.get("show_date"))
             if not day or r.get("row_kind") != "post-show-census" or r.get("weekend_of") != weekend_of:
                 continue
-            k = (chain, r["showtime_id"], r["movie_title"], day)
+            # Cinemark's showtime_id is "date time" — not unique across theatres.
+            k = (chain, r.get("theatre_name"), r["showtime_id"], r["movie_title"], day)
             if k not in latest or r["snapshot_time"] > latest[k][0]:
                 latest[k] = (r["snapshot_time"], int(float(r.get("reserved_seats") or 0)))
     # Regal via Fandango: Fandango cannot see a show once it starts, so the
@@ -80,7 +81,7 @@ def counted(weekend_of):
                 near[k] = (r["snapshot_time"], sold)
         for (_th, _sid, movie, day), (_t, sold) in near.items():
             seats[(movie, day)]["REGL"] += sold
-    for (chain, _sid, movie, day), (_t, sold) in latest.items():
+    for (chain, _th, _sid, movie, day), (_t, sold) in latest.items():
         seats[(movie, day)][chain] += sold
     return seats
 
