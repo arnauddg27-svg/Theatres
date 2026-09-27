@@ -408,6 +408,66 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
     return wanted
 
 
+# Share of the render-order slots given to demand-ranked theatres (the rest are
+# a random sample). 0 restores the old all-random order.
+FANDANGO_PRIORITY_SHARE = float(os.environ.get("FANDANGO_PRIORITY_SHARE", "0.5"))
+
+
+def regal_demand_scores(csv_path=None):
+    """{theatre_name: mean reserved seats per read} from stored Regal rows."""
+    csv_path = csv_path or FANDANGO_CSV
+    sums, counts = {}, {}
+    try:
+        with open(csv_path, newline="") as f:
+            for r in csv.DictReader(f):
+                if (r.get("chain") or "").upper() != "REGL":
+                    continue
+                try:
+                    v = float(r.get("reserved_seats") or 0)
+                except ValueError:
+                    continue
+                n = r.get("theatre_name", "")
+                sums[n] = sums.get(n, 0.0) + v
+                counts[n] = counts.get(n, 0) + 1
+    except OSError:
+        return {}
+    return {n: sums[n] / counts[n] for n in sums if counts[n] >= 3}
+
+
+def priority_order(theatres, share, scores, rng=None):
+    """Pure: interleave demand-ranked and random theatres.
+
+    Every theatre appears once. Slots are filled so that about `share` of each
+    prefix is demand-ranked (highest score first) and the rest random; each
+    theatre is tagged `_pick_mode` = 'priority' | 'random' so rows can say
+    which sample they belong to."""
+    rng = rng or random
+    pool = list(theatres)
+    rng.shuffle(pool)
+    if share <= 0 or not scores:
+        return [dict(t, _pick_mode="random") for t in pool]
+    ranked = sorted([t for t in pool if t.get("name") in scores],
+                    key=lambda t: -scores[t["name"]])
+    used, out, pri_i, rnd_i = set(), [], 0, 0
+    while len(out) < len(pool):
+        want_priority = (sum(1 for t in out if t["_pick_mode"] == "priority") < share * (len(out) + 1))
+        pick = None
+        if want_priority:
+            while pri_i < len(ranked) and id(ranked[pri_i]) in used:
+                pri_i += 1
+            if pri_i < len(ranked):
+                pick, mode = ranked[pri_i], "priority"
+        if pick is None:
+            while rnd_i < len(pool) and id(pool[rnd_i]) in used:
+                rnd_i += 1
+            if rnd_i >= len(pool):
+                break
+            pick, mode = pool[rnd_i], "random"
+        used.add(id(pick))
+        out.append(dict(pick, _pick_mode=mode))
+    return out
+
+
 def build_fandango_row(theatre, movie_title, sdate, seat_url, params, seats,
                        weekend_of, run_id, check_time, minutes_until, show_date,
                        day_of_week, note=""):
@@ -831,7 +891,7 @@ def _capture_theatre(page, th, shared):
                                    seats.get("containerFits")):
             stats["incompletes"] += 1
             continue
-        note = f"discovered_showtimes={w.get('discovered', '')}"
+        note = f"discovered_showtimes={w.get('discovered', '')}; sample={th.get('_pick_mode', 'random')}"
         if params.get("chain") == AMC_BRIDGE_CHAIN:
             note = f"{AMC_BRIDGE_NOTE}; {note}"
         rows.append(build_fandango_row(
@@ -979,11 +1039,15 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     deadline_sec = deadline_sec if deadline_sec is not None else FANDANGO_DEADLINE_SEC
     max_theatres = max_theatres if max_theatres is not None else FANDANGO_MAX_THEATRES
 
-    # Shuffle so a deadline-bounded (partial) run still samples the pool broadly,
-    # and coverage rotates across nights rather than always starting in the same
-    # cities.
-    theatres = list(theatres)
-    random.shuffle(theatres)
+    # Order = the render budget's spending order (the budget, ~30 renders, runs
+    # out long before the pool). 2026-09-27: Regal's own seat API is behind a
+    # Turnstile challenge (off limits), so Regal volume can only grow by
+    # spending Fandango renders better. The busiest 30% of Regal theatres
+    # average 31 seats sold per read vs 7.8 for the bottom half, so the order
+    # now ALTERNATES a random theatre (unbiased sample, the only rows the
+    # model's cross-chain share uses) with a demand-ranked one (census volume).
+    theatres = priority_order(list(theatres), FANDANGO_PRIORITY_SHARE,
+                              regal_demand_scores())
     if max_theatres and max_theatres > 0:
         theatres = theatres[:max_theatres]
 

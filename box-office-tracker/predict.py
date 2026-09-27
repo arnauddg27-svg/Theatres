@@ -5467,6 +5467,10 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                 # own route is blocked) are the AMC side, never the RC side.
                 if (row.get("chain") or "").strip().upper() == "AMC":
                     continue
+                # Demand-ranked Regal reads (2026-09-27) are census volume, not a
+                # representative sample: the occupancy RATIO keeps random reads.
+                if "sample=priority" in note:
+                    continue
                 occ = _occ_pct(row)
                 if occ is None:
                     continue
