@@ -255,6 +255,9 @@ if _CINEMARK_WINDOW_RAW > 1350:
 # browser stays for the theatre listings (built client-side).
 CINEMARK_SEAT_FETCH = (os.environ.get("CINEMARK_SEAT_FETCH") or "http").strip().lower()
 CINEMARK_HTTP_PACE_SEC = float(os.environ.get("CINEMARK_HTTP_PACE_SEC", "5"))
+# A browser load after a failed HTTP read doubles the traffic that triggered
+# the failure; off by default in http mode (set 1 to restore).
+CINEMARK_BROWSER_FALLBACK = os.environ.get("CINEMARK_BROWSER_FALLBACK", "0") == "1"
 _SEAT_BTN_RE = re.compile(r'<button[^>]*?available="(True|False)"[^>]*?class="[^"]*seatBlock', re.I)
 _TITLE_RE = re.compile(r'class="[^"]*seats-tickets-title[^"]*"[^>]*>\s*([^<]+?)\s*<', re.I)
 
@@ -299,8 +302,22 @@ class HttpSeatReader:
                 self.next_at = time.monotonic() + 30 + self.pace      # let the bucket refill
                 continue
             seats = parse_seat_html(r.text)
-            self.stats["http_ok" if seats["total"] else "http_empty"] += 1
-            return seats
+            if seats["total"]:
+                self.stats["http_ok"] += 1
+                return seats
+            # Empty page: in production (run 36293422503) 171 of 249 reads came
+            # back empty while stored links read 25/25 from a quiet address —
+            # consistent with a soft throttle from the run's own browser
+            # traffic. Back off and retry over HTTP instead of piling a browser
+            # load on top. First few samples are logged for diagnosis.
+            self.stats["http_empty"] += 1
+            if self.stats["http_empty"] <= 3:
+                import re as _re
+                t = _re.search(r"<title>([^<]*)", r.text or "")
+                print(f"    http empty sample: status={r.status_code} bytes={len(r.content)} "
+                      f"title={(t.group(1).strip()[:50] if t else '')!r} "
+                      f"wrong={'Something went wrong' in (r.text or '')}", flush=True)
+            self.next_at = time.monotonic() + 20 + self.pace
         return None
 
 
@@ -774,6 +791,10 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             if time.monotonic() > deadline or budget.exhausted():
                 break
             seats = http_reader.read(item["pick"]["href"]) if http_reader else None
+            if http_reader and not CINEMARK_BROWSER_FALLBACK and (
+                    not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS):
+                totals["incomplete"] += 1
+                continue
             if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                 try:
                     page.goto(item["pick"]["href"], wait_until="domcontentloaded",
@@ -927,6 +948,9 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                 seats = http_reader.read(pick["href"]) if http_reader else None
                 if seats and int(seats.get("total") or 0) >= CINEMARK_MIN_SEATS:
                     pass      # HTTP read the map; skip the browser load
+                elif http_reader and not CINEMARK_BROWSER_FALLBACK:
+                    totals["incomplete"] += 1
+                    continue
                 else:
                     try:
                         # Navigate the ORIGINAL href — reconstructing it with
