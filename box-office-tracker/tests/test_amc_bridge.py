@@ -333,3 +333,24 @@ class BridgeRowsEnterTheModelCorrectlyTest(unittest.TestCase):
                 self.assertNotIn("OldFilm", data)
             finally:
                 P.FANDANGO_SNAPSHOTS_CSV, P.PRE_RESERVATION_CSV, P.DATA_DIR = orig
+
+
+class BridgeSpillTest(unittest.TestCase):
+    """2026-09-27: bridge slots read only AMC theatres the native lane has not
+    covered and spill the rest of their render budget onto Regal."""
+
+    def test_bridge_uncovered(self):
+        import fandango_collect as fc
+        ths = [{"chain": "AMC", "name": "AMC A"}, {"chain": "AMC", "name": "AMC B"},
+               {"chain": "REGL", "name": "Regal C"}]
+        keys = {("Film", "2026-09-26", "AMC A"), ("Film", "2026-09-27", "AMC A"),
+                ("Film", "2026-09-26", "AMC B")}
+        got = fc.bridge_uncovered(ths, keys, ["Film"], ["2026-09-26", "2026-09-27"])
+        self.assertEqual(["AMC B"], [t["name"] for t in got])          # A fully covered, Regal dropped
+        # native lane dark -> every AMC theatre is read, exactly as before
+        self.assertEqual(["AMC A", "AMC B"],
+                         [t["name"] for t in fc.bridge_uncovered(ths, set(), ["Film"], ["2026-09-26"])])
+
+    def test_spill_default_on(self):
+        import fandango_collect as fc
+        self.assertEqual(1, fc.FANDANGO_BRIDGE_SPILL)

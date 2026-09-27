@@ -671,6 +671,53 @@ def restrict_to_amc_top(theatres, top_names):
             or t.get("name") in top_names]
 
 
+# 2026-09-27: with the native AMC lane healthy, 70-99% of bridge reads (Tue-
+# Sun, weekend 09-25, archive-aware) were theatre-film-dates the native lane
+# had ALREADY read, and predict's fill-in rule discards those rows — ~700
+# wasted renders/week against ~1,600 Regal reads. A bridge slot now reads only
+# the AMC theatres the native lane has not covered and SPILLS the rest of its
+# render budget onto Regal. If the native lane goes dark again, nothing is
+# covered and the bridge reads AMC exactly as before. 0 = old behaviour.
+FANDANGO_BRIDGE_SPILL = _env_int("FANDANGO_BRIDGE_SPILL", 1)
+
+
+def native_amc_keys(weekend_of):
+    """{(movie, show_date, theatre)} the native AMC snapshot lane has read
+    (live CSV + this weekend's archive — archive-aware like predict)."""
+    import predict
+    keys = set()
+    for reader in predict._pre_reservation_row_sources(weekend_of):
+        for r in reader:
+            if (r.get("weekend_of") or "") == weekend_of:
+                keys.add((r.get("movie_title", ""), r.get("show_date", ""), r.get("theatre_name", "")))
+    return keys
+
+
+def bridge_uncovered(theatres, native_keys, titles, show_dates):
+    """Pure: AMC entries with at least one tracked (title, show date) the
+    native lane has NOT read. Non-AMC entries are dropped (the caller adds the
+    Regal spill separately)."""
+    out = []
+    for t in theatres:
+        if (t.get("chain") or "").upper() != AMC_BRIDGE_CHAIN:
+            continue
+        name = t.get("name", "")
+        if any((title, d, name) not in native_keys for title in titles for d in show_dates):
+            out.append(t)
+    return out
+
+
+def load_chain_theatres(chain, zips=None):
+    """theatres-fandango.json entries of one chain, ignoring FANDANGO_CHAINS."""
+    if not THEATRES_JSON.exists():
+        return []
+    with open(THEATRES_JSON) as f:
+        data = json.load(f)
+    return [th for th in data.get("theatres", [])
+            if th.get("chain", "").upper() == chain
+            and (not zips or str(th.get("zip", "")) in {str(z) for z in zips})]
+
+
 def load_fandango_theatres(zips=None):
     """Load this lane's chain-filtered theatres from theatres-fandango.json."""
     if not THEATRES_JSON.exists():
@@ -977,6 +1024,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
 
     show_dates overrides the opening-weekend window (used for ad-hoc test runs
     that capture an arbitrary date, e.g. validating GitHub seat capture today)."""
+    global FANDANGO_CHAINS   # an AMC bridge run may spill onto Regal (below)
     # Mon-Wed anchor FORWARD to the upcoming Friday (early-lead pre-opening
     # reads, mirroring the AMC snapshot lane); Thu-Sun this is
     # opening_weekend_friday. Runner-local time is UTC on GitHub-hosted jobs,
@@ -1034,6 +1082,23 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         theatres = shard_theatres(theatres, shard, num_shards)
         print(f"  shard {shard % num_shards}/{num_shards}: {len(theatres)} theatres of the pool")
 
+    head = []     # read first, in this order (uncovered AMC bridge theatres)
+    if (AMC_BRIDGE_CHAIN in FANDANGO_CHAINS and FANDANGO_BRIDGE_SPILL
+            and not show_dates):
+        try:
+            covered = native_amc_keys(weekend_of)
+        except Exception as exc:  # pragma: no cover - defensive
+            print(f"  ⚠️  native AMC keys unavailable ({type(exc).__name__}); bridge reads AMC only")
+            covered = None
+        if covered is not None:
+            upcoming = sorted(d for d in window_dates if d >= datetime.now().strftime("%Y-%m-%d"))
+            head = bridge_uncovered(theatres, covered, titles, upcoming)
+            spill = load_chain_theatres("REGL", zips)
+            print(f"  AMC bridge: {len(head)}/{len(theatres)} AMC theatres still unread by the "
+                  f"native lane; spilling the rest of the render budget onto {len(spill)} Regal theatres")
+            FANDANGO_CHAINS = frozenset(FANDANGO_CHAINS | {"REGL"})
+            theatres = spill
+
     per_theatre_cap = per_theatre_cap if per_theatre_cap is not None else FANDANGO_PER_THEATRE_CAP
     concurrency = concurrency if concurrency is not None else FANDANGO_CONCURRENCY
     deadline_sec = deadline_sec if deadline_sec is not None else FANDANGO_DEADLINE_SEC
@@ -1046,8 +1111,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     # average 31 seats sold per read vs 7.8 for the bottom half, so the order
     # now ALTERNATES a random theatre (unbiased sample, the only rows the
     # model's cross-chain share uses) with a demand-ranked one (census volume).
-    theatres = priority_order(list(theatres), FANDANGO_PRIORITY_SHARE,
-                              regal_demand_scores())
+    theatres = [dict(t, _pick_mode="bridge") for t in head] + priority_order(
+        list(theatres), FANDANGO_PRIORITY_SHARE, regal_demand_scores())
     if max_theatres and max_theatres > 0:
         theatres = theatres[:max_theatres]
 
