@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       tz_group:
-        description: 'Timezone group (ET, CT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to ET/CT/PT (MT intentionally omitted).'
+        description: 'Timezone group (ET, CT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to ET/CT/MT/PT.'
         required: false
         default: 'ALL'
       phase:
@@ -373,7 +373,7 @@ jobs:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
       max-parallel: 1
       matrix:
-        tz: [ET, CT, PT]   # MT intentionally omitted — too few theatres to be worth the Phase 1 schedule
+        tz: [ET, CT, MT, PT]   # MT added 2026-09-26 (18 AMC theatres never collected; Arizona rides the leg matching its clock)
 
     steps:
       - name: Checkout repo

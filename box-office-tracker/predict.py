@@ -80,7 +80,11 @@ DEFAULT_AMC_MARKET_SHARE = 0.25
 CORE_COHORT = "core"
 EXPANSION_COHORT = "expansion"
 DEFAULT_MODEL_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
-KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT}
+# Mountain-time theatres are collected from 2026-09-26 but are NOT a default
+# model cohort until a backtest shows the panel change is neutral. Known, so
+# model_allows_theatre excludes them instead of passing them as unknown names.
+MOUNTAIN_COHORT = "mountain"
+KNOWN_THEATRE_COHORTS = {CORE_COHORT, EXPANSION_COHORT, MOUNTAIN_COHORT}
 MODEL_TIMEZONE_GROUPS = ("ET", "CT", "PT")
 URL_SHOWTIME_IDENTITY_VALUES = {"url", "seat-map", "seat_map", "amc_url", "amc-url"}
 LOCAL_THURSDAY_SHARE_PRIOR_SAMPLES = 8.0
@@ -1324,7 +1328,7 @@ def _add_theatre_timezone_reference(name_to_tz, tz_counts, path, default_cohort,
 
 def load_theatre_cohort_sets():
     """Return {cohort: theatre_names} from core + expansion config files."""
-    cohort_sets = {CORE_COHORT: set(), EXPANSION_COHORT: set()}
+    cohort_sets = {CORE_COHORT: set(), EXPANSION_COHORT: set(), MOUNTAIN_COHORT: set()}
     _add_theatre_cohorts(cohort_sets, THEATRES_JSON, CORE_COHORT)
     _add_theatre_cohorts(cohort_sets, THEATRES_EXPANSION_JSON, EXPANSION_COHORT)
     cohort_sets[EXPANSION_COHORT] -= cohort_sets[CORE_COHORT]

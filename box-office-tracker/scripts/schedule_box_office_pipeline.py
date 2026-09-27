@@ -205,6 +205,14 @@ SLOTS: tuple[Slot, ...] = (
         pipeline_inputs("collect-links", "CT"),
     ),
     Slot(
+        "collect-links MT 16Z",
+        "box office collect-links MT",
+        frozenset({1, 2, 3, 4}),
+        16,
+        0,
+        pipeline_inputs("collect-links", "MT"),
+    ),
+    Slot(
         "collect-links PT 17Z",
         "box office collect-links PT",
         frozenset({1, 2, 3, 4}),
@@ -227,6 +235,14 @@ SLOTS: tuple[Slot, ...] = (
         21,
         0,
         pipeline_inputs("collect-links", "CT"),
+    ),
+    Slot(
+        "collect-links MT 22Z",
+        "box office collect-links MT",
+        frozenset({1, 2, 3}),
+        22,
+        0,
+        pipeline_inputs("collect-links", "MT"),
     ),
     Slot(
         "collect-links PT 23Z",

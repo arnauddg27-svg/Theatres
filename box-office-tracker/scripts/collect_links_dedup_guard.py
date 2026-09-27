@@ -29,6 +29,7 @@ MOVIE_METADATA_PATH = "box-office-tracker/data/movie-metadata.csv"
 TZ_TO_ZONE = {
     "ET": "America/New_York",
     "CT": "America/Chicago",
+    "MT": "America/Denver",
     "PT": "America/Los_Angeles",
 }
 WEEKEND_FULL_DAY_START_HOUR = 10
@@ -442,8 +443,18 @@ def _expected_theatre_names(repo_root: Path, tz: str) -> list[str]:
     except (OSError, json.JSONDecodeError) as exc:
         print(f"Could not read {THEATRES_ALL_PATH}: {exc}; skipping theatre ratio check")
         return []
-    theatres = payload.get(tz) if isinstance(payload, dict) else None
-    if not isinstance(theatres, list):
+    if not isinstance(payload, dict):
+        return []
+    # Leg membership follows tz_groups.effective_group (Arizona moves between
+    # MT and PT with daylight saving), so read every group and keep the
+    # theatres collected in THIS leg.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import tz_groups
+    theatres = [t for group, items in payload.items()
+                if not group.startswith("_") and isinstance(items, list)
+                for t in items
+                if isinstance(t, dict) and tz_groups.effective_group(t, group) == tz]
+    if not theatres:
         return []
     names: list[str] = []
     seen_names: set[str] = set()

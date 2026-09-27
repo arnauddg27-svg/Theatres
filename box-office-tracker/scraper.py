@@ -49,7 +49,11 @@ MOVIE_METADATA_CSV = DATA_DIR / "movie-metadata.csv"  # Hand-maintained audience
 
 CORE_COHORT = "core"
 EXPANSION_COHORT = "expansion"
-DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT)
+# Mountain-time theatres (2026-09-26): collected, but kept out of the model's
+# cohorts until a backtest shows adding them is neutral (predict.py knows the
+# cohort, so they are excluded rather than treated as unknown theatres).
+MOUNTAIN_COHORT = "mountain"
+DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT, MOUNTAIN_COHORT)
 KNOWN_THEATRE_COHORTS = set(DEFAULT_COLLECTION_COHORTS)
 REQUIRED_PHASE1_COHORTS = (CORE_COHORT,)
 
@@ -136,7 +140,9 @@ def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohort
         # expansion theatre shadow a core theatre with the same display name.
         if copied["name"] in existing_names:
             continue
-        target[group].append(copied)
+        import tz_groups
+        leg = tz_groups.effective_group(copied, group)
+        target.setdefault(leg, []).append(copied)
         existing_names.add(copied["name"])
 
 
@@ -408,7 +414,7 @@ def select_snapshot_theatre_names(theatres_map, groups=None, cap=None, signal_sc
     cap = SNAPSHOT_TOP_THEATRE_CAP if cap is None else cap
     if cap <= 0:
         return set()
-    groups = list(groups or [g for g in ("ET", "CT", "PT") if g in theatres_map])
+    groups = list(groups or [g for g in ("ET", "CT", "MT", "PT") if g in theatres_map])
     movie_titles = list(movie_titles or [])
     require_links = saved_links is not None and requested_date_sets is not None and movie_titles
     theatres_by_group = {}
@@ -535,7 +541,7 @@ def snapshot_global_selection_inputs(theatres_map):
     timezone groups so a single leg cannot expand the cap to 100 theatres by
     itself.
     """
-    groups = [group for group in ("ET", "CT", "PT") if group in (theatres_map or {})]
+    groups = [group for group in ("ET", "CT", "MT", "PT") if group in (theatres_map or {})]
     return groups, phase2_collection_dates_by_group(groups, snapshots_only=True)
 
 
