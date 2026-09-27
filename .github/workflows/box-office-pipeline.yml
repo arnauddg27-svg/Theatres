@@ -1302,6 +1302,10 @@ jobs:
           CINEMARK_SHARD: ${{ github.event.inputs.cinemark_shard }}
           CINEMARK_NUM_SHARDS: ${{ github.event.inputs.cinemark_num_shards }}
           CINEMARK_TITLES: ${{ github.event.inputs.cinemark_titles }}
+          # HTTP seat reads switch to the residential proxy after Cinemark's
+          # 70-maps-per-address cap (fresh exit per read, CINEMARK_PROXY_MAX_MB
+          # per run). NOT AMC_SEAT_PROXY_URL: the browser lane would pick that up.
+          CINEMARK_HTTP_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
           # CINEMARK STAYS DIRECT (measured 2026-09-12, runs 34729565675 /
           # 34729964744). Through the proxy the interstitial rate did fall
           # (66% -> 18% incomplete), but a theatre cost 6.3 MB untrimmed —

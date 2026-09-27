@@ -298,3 +298,49 @@ class GoneMapsTest(unittest.TestCase):
         rows = [{"weekend_of": "w", "theatre_name": "A", "timezone": "America/Chicago", "movie_title": "P",
                  "sdate": "2026-09-26 19:00", "href": "https://www.cinemark.com/TicketSeatMap/?TheaterId=1&ShowtimeId=2"}]
         self.assertEqual([], cc.post_candidates(rows, "w", {"P"}, datetime(2026, 9, 27, 2, tzinfo=timezone.utc)))
+
+
+class PerAddressCapTest(unittest.TestCase):
+    HTML = HttpSeatReadTest.HTML
+
+    def _reader(self, proxy_url="http://proxy.invalid", mb=1.0):
+        class R:
+            def __init__(self, code, text): self.status_code, self.text, self.content = code, text, text.encode()
+        class Direct:
+            def get(self, url, timeout=30): return R(404, "Something went wrong")
+        reader = cc.HttpSeatReader(pace_sec=0, session=Direct(), proxy_url=proxy_url, proxy_max_mb=mb)
+        reader._proxy_get = lambda url: (setattr(reader, "proxy_bytes", reader.proxy_bytes + 50000)
+                                         or R(200, PerAddressCapTest.HTML))
+        return reader
+
+    def test_switches_to_proxy_after_a_404_streak(self):
+        import time as _t
+        orig = _t.sleep; _t.sleep = lambda s: None
+        try:
+            r = self._reader()
+            self.assertIsNone(r.read("/a"))
+            self.assertIsNone(r.read("/b"))
+            seats = r.read("/c")                 # third 404 -> switch, same map re-read through the proxy
+            self.assertEqual(3, seats["total"])
+            self.assertTrue(r.via_proxy)
+            self.assertEqual(3, r.read("/d")["total"])
+            self.assertEqual(2, r.stats["proxy_ok"])
+        finally:
+            _t.sleep = orig
+
+    def test_no_proxy_or_spent_budget_means_no_switch(self):
+        import time as _t
+        orig = _t.sleep; _t.sleep = lambda s: None
+        try:
+            r = self._reader(proxy_url="")
+            for h in "abcd":
+                self.assertIsNone(r.read("/" + h))
+            self.assertFalse(r.via_proxy)
+            r2 = self._reader(mb=0.08)               # room for ~1 read
+            for h in "abc":
+                r2.read("/" + h)
+            self.assertEqual(3, r2.read("/d")["total"] if r2.proxy_available() else 3)
+            r2.proxy_bytes = r2.proxy_budget
+            self.assertIsNone(r2.read("/e"))         # budget spent -> stop, never go direct-unbounded
+        finally:
+            _t.sleep = orig

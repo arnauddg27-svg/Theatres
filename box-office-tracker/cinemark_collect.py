@@ -270,14 +270,37 @@ def parse_seat_html(html):
             "census": None, "title": unescape(m.group(1)) if m else ""}
 
 
-class HttpSeatReader:
-    """Paced plain-HTTP seat reader with a back-off on Cinemark's throttle."""
+# Cinemark serves exactly 70 seat maps per address, then answers every map
+# with a 20-byte 404 (probe run 36313870231: 70 ok, then 40/40 404). So a
+# runner spends its free 70 directly, and after a run of 404s switches to the
+# residential proxy with a FRESH exit address per read (~46 KB/read incl.
+# tunnel overhead), capped at CINEMARK_PROXY_MAX_MB per run. The proxy URL
+# comes from CINEMARK_HTTP_PROXY_URL (the workflow maps the AMC proxy secret
+# onto it) and is never printed. It is deliberately NOT AMC_SEAT_PROXY_URL:
+# the browser lane reads that one, and browser pages through the proxy cost
+# 6.3 MB/theatre (rejected 2026-09-12).
+CINEMARK_PROXY_MAX_MB = float(os.environ.get("CINEMARK_PROXY_MAX_MB", "40"))
+CINEMARK_PROXY_PACE_SEC = float(os.environ.get("CINEMARK_PROXY_PACE_SEC", "1"))
+CINEMARK_CAP_404_STREAK = 3
+PROXY_OVERHEAD_BYTES = 6 * 1024
 
-    def __init__(self, pace_sec=None, session=None):
+
+class HttpSeatReader:
+    """Paced plain-HTTP seat reader: direct until the per-address cap, then the
+    residential proxy (fresh exit per read) within a byte budget."""
+
+    def __init__(self, pace_sec=None, session=None, proxy_url=None, proxy_max_mb=None):
         self.pace = CINEMARK_HTTP_PACE_SEC if pace_sec is None else pace_sec
         self.session = session
+        self.proxy_url = proxy_url if proxy_url is not None else (os.environ.get("CINEMARK_HTTP_PROXY_URL") or "")
+        self.proxy_budget = (CINEMARK_PROXY_MAX_MB if proxy_max_mb is None else proxy_max_mb) * 1024 * 1024
+        self.proxy_bytes = 0
+        self.via_proxy = False
+        self.streak_404 = 0
+        self.proxy_session = None
         self.next_at = 0.0
-        self.stats = {"http_ok": 0, "http_empty": 0, "http_throttled": 0, "http_error": 0}
+        self.stats = {"http_ok": 0, "http_empty": 0, "http_throttled": 0, "http_error": 0,
+                      "http_gone": 0, "proxy_ok": 0, "proxy_mb": 0.0}
 
     def _sess(self):
         if self.session is None:
@@ -285,23 +308,50 @@ class HttpSeatReader:
             self.session = cr.Session(impersonate="chrome")
         return self.session
 
+    def _proxy_get(self, url):
+        """One read through the proxy on a fresh tunnel (= fresh exit address)."""
+        import seat_fetch_http
+        if self.proxy_session is None:
+            self.proxy_session = seat_fetch_http.make_session()      # TLS curves pinned for Azure egress
+        try:
+            r = self.proxy_session.get(url, timeout=30, proxies={"http": self.proxy_url, "https": self.proxy_url})
+        finally:
+            seat_fetch_http.drop_thread_connection(self.proxy_session)
+        self.proxy_bytes += len(r.content or b"") + PROXY_OVERHEAD_BYTES
+        self.stats["proxy_mb"] = round(self.proxy_bytes / 1048576, 1)
+        return r
+
+    def proxy_available(self):
+        return bool(self.proxy_url) and self.proxy_bytes < self.proxy_budget
+
     def read(self, href):
         url = href if href.startswith("http") else BASE + href
         for attempt in range(2):
+            use_proxy = self.via_proxy and self.proxy_available()
+            if self.via_proxy and not use_proxy:
+                return None          # direct cap reached and the proxy budget is spent
             wait = self.next_at - time.monotonic()
             if wait > 0:
                 time.sleep(wait)
-            self.next_at = time.monotonic() + self.pace
+            self.next_at = time.monotonic() + (CINEMARK_PROXY_PACE_SEC if use_proxy else self.pace)
             try:
-                r = self._sess().get(url, timeout=30)
+                r = self._proxy_get(url) if use_proxy else self._sess().get(url, timeout=30)
             except Exception:
                 self.stats["http_error"] += 1
                 return None
             if r.status_code == 404:
-                # Definitive: the map is gone (pre-redesign URL formats return
-                # a 20-byte 404). No back-off — 91 of these cost post slice s0
-                # (09-27) ~38 min of waits and its deadline.
-                self.stats["http_gone"] = self.stats.get("http_gone", 0) + 1
+                # Direct: a run of 404s means this address hit Cinemark's
+                # 70-map cap -> switch to the proxy and re-read this map there.
+                # Through the proxy (fresh address) a 404 means the map is gone.
+                self.stats["http_gone"] += 1
+                if not use_proxy:
+                    self.streak_404 += 1
+                    if self.streak_404 >= CINEMARK_CAP_404_STREAK and self.proxy_available():
+                        self.via_proxy = True
+                        print(f"    direct address hit Cinemark's per-address cap after "
+                              f"{self.stats['http_ok']} maps — switching to the residential proxy "
+                              f"(budget {self.proxy_budget / 1048576:.0f} MB)", flush=True)
+                        continue
                 return None
             if r.status_code == 429 or "Just a moment" in r.text[:3000]:
                 self.stats["http_throttled"] += 1
@@ -309,7 +359,9 @@ class HttpSeatReader:
                 continue
             seats = parse_seat_html(r.text)
             if seats["total"]:
-                self.stats["http_ok"] += 1
+                self.stats["proxy_ok" if use_proxy else "http_ok"] += 1
+                if not use_proxy:
+                    self.streak_404 = 0
                 return seats
             # Empty page: in production (run 36293422503) 171 of 249 reads came
             # back empty while stored links read 25/25 from a quiet address —
@@ -1064,7 +1116,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
           f"date_nav ok/empty/failed={totals['date_nav_ok']}/"
           f"{totals['date_nav_empty']}/{totals['date_nav_failed']} "
           f"http ok/empty/throttled/error={totals.get('http_ok', 0)}/{totals.get('http_empty', 0)}/"
-          f"{totals.get('http_throttled', 0)}/{totals.get('http_error', 0)} links={totals.get('links_stored', 0)}\n"
+          f"{totals.get('http_throttled', 0)}/{totals.get('http_error', 0)} gone={totals.get('http_gone', 0)} "
+          f"proxy ok={totals.get('proxy_ok', 0)} proxy_mb={totals.get('proxy_mb', 0)} links={totals.get('links_stored', 0)}\n"
           f"  -> {CINEMARK_CSV}", flush=True)
     return totals
 
