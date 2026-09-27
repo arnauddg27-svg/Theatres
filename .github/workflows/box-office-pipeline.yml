@@ -281,6 +281,22 @@ jobs:
           TICKET_PRICE_MAX_SEC: '300'   # holds the AMC lock; pairs persist, so slots converge anyway
         run: python3 scripts/sample_ticket_prices.py 2>&1 | tee "../phase1-logs/ticket-prices-${{ github.event.inputs.tz_group }}.log"
 
+      - name: Re-probe AMC CLASSIC reserved seating (Mondays, ET)
+        # Most AMC CLASSIC theatres are general admission (no seat map); the
+        # reserved-seating ones are collected. Weekly re-probe keeps the list
+        # current without a manual step (~49 theatres x 2-3 small reads).
+        if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true' && github.event.inputs.tz_group == 'ET'
+        continue-on-error: true
+        working-directory: box-office-tracker
+        env:
+          AMC_SEAT_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+        run: |
+          if [ "$(date -u +%u)" = "1" ]; then
+            timeout 600 python3 scripts/probe_amc_classic.py
+          else
+            echo "AMC CLASSIC re-probe runs on Mondays."
+          fi
+
       - name: Commit showtime links
         # Commit on failure too: the scraper saves the merged link cache
         # (atomically, marked degraded) BEFORE its coverage gate, so a red
@@ -299,6 +315,7 @@ jobs:
           # files (e.g. runner caches, locally-modified secrets).
           git add box-office-tracker/data/showtime-links.json
           git add box-office-tracker/data/theatre-counts.json
+          git add box-office-tracker/data/amc-classic-reserved.json
           if [ -f "box-office-tracker/data/ticket-prices.csv" ]; then
             git add box-office-tracker/data/ticket-prices.csv
           fi

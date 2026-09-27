@@ -98,7 +98,12 @@ def _is_excluded_movie(row: dict[str, str]) -> bool:
 
 def _is_classic_theatre(row: dict[str, str]) -> bool:
     theatre = (row.get("theatre_name") or "").strip().upper()
-    return any(theatre.startswith(prefix) for prefix in EXCLUDED_THEATRE_PREFIXES)
+    if not any(theatre.startswith(prefix) for prefix in EXCLUDED_THEATRE_PREFIXES):
+        return False
+    # reserved-seating AMC CLASSIC theatres are real, countable data
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import amc_classic
+    return theatre not in amc_classic.reserved_names()
 
 
 def _matches_subset(row: dict[str, str], expected: dict[str, str]) -> bool:

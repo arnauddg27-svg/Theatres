@@ -109,9 +109,11 @@ def _copy_theatre(theatre, cohort):
 
 
 def is_amc_classic_theatre(theatre):
-    name = str(theatre.get("name") or "").strip().lower()
-    slug = str(theatre.get("slug") or "").strip().lower()
-    return name.startswith("amc classic ") or slug.startswith("amc-classic-")
+    """True for an AMC CLASSIC theatre to EXCLUDE: general admission (no seat
+    map). Reserved-seating CLASSIC theatres (data/amc-classic-reserved.json)
+    are collected like any other."""
+    import amc_classic
+    return amc_classic.excluded(theatre.get("name"), theatre.get("slug"))
 
 
 def _merge_theatre_group(target, group, theatres, default_cohort, allowed_cohorts):

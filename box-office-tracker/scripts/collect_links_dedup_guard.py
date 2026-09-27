@@ -9,6 +9,7 @@ partial link data.
 
 from __future__ import annotations
 
+import sys
 import argparse
 import csv
 import json
@@ -426,7 +427,9 @@ def _min_fresh_link_ratio() -> float:
 
 
 def _is_amc_classic_theatre(name: str) -> bool:
-    return "AMC CLASSIC" in name.upper()
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import amc_classic
+    return amc_classic.excluded(name)
 
 
 def _expected_theatre_names(repo_root: Path, tz: str) -> list[str]:
