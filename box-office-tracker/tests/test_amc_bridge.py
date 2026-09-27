@@ -354,3 +354,13 @@ class BridgeSpillTest(unittest.TestCase):
     def test_spill_default_on(self):
         import fandango_collect as fc
         self.assertEqual(1, fc.FANDANGO_BRIDGE_SPILL)
+
+
+class SeatWaitConfigTest(unittest.TestCase):
+    def test_defaults_and_near_slot_override_wired(self):
+        import fandango_collect as fc
+        from pathlib import Path
+        self.assertEqual((8000, 10000), (fc.FANDANGO_SEAT_WAIT_MS, fc.FANDANGO_SEAT_RETRY_WAIT_MS))
+        yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
+        self.assertIn("FANDANGO_SEAT_WAIT_MS: ${{ contains(github.event.inputs.schedule_slot, 'near') && '25000' || '' }}", fan)

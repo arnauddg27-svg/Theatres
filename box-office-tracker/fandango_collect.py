@@ -688,6 +688,15 @@ def restrict_to_amc_top(theatres, top_names):
 # render budget onto Regal. If the native lane goes dark again, nothing is
 # covered and the bridge reads AMC exactly as before. 0 = old behaviour.
 FANDANGO_BRIDGE_SPILL = _env_int("FANDANGO_BRIDGE_SPILL", 1)
+# Seat-map hydration waits (ms). Experiment 2026-09-27: weekend EVENING "near"
+# slots lose ~half their renders to map-never-populated timeouts (Sat 20-23Z:
+# 29/16/11/25 of 30; Sun: 13/14/20/15) while afternoon slots capture ~25/30,
+# reads 4 min before showtime succeed, and the 23Z fails began 30 s into a run
+# after 55 idle minutes — not a clean hourly-throttle signature. The workflow
+# gives "near" slots a longer wait (A/B against the other slots' 8 s); if their
+# yield rises, it was peak-hour slowness, not the throttle. Read on Thu 10-01.
+FANDANGO_SEAT_WAIT_MS = _env_int("FANDANGO_SEAT_WAIT_MS", 8000)
+FANDANGO_SEAT_RETRY_WAIT_MS = _env_int("FANDANGO_SEAT_RETRY_WAIT_MS", 10000)
 # Through the proxy, drop the browser context (= its pooled proxy connection,
 # i.e. the exit address) after a wall. Direct runs are unaffected.
 FANDANGO_ROTATE_ON_WALL = _env_int("FANDANGO_ROTATE_ON_WALL", 1)
@@ -928,11 +937,11 @@ def _capture_theatre(page, th, shared):
                     return rows, stats
                 continue
             try:
-                page.wait_for_selector(".seat-map__seat", timeout=8000)
+                page.wait_for_selector(".seat-map__seat", timeout=FANDANGO_SEAT_WAIT_MS)
             except Exception:
                 # one reload-retry — the seat map occasionally hydrates slowly
                 page.reload(wait_until="domcontentloaded", timeout=45000)
-                page.wait_for_selector(".seat-map__seat", timeout=10000)
+                page.wait_for_selector(".seat-map__seat", timeout=FANDANGO_SEAT_RETRY_WAIT_MS)
             seats = page.evaluate(SEAT_COUNT_JS)
         except Exception as exc:
             # seat page loaded but the map never populated ("Loading… 0 seats") —
