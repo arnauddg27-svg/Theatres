@@ -134,6 +134,11 @@ def alamo_slot_inputs(mode: str = "") -> dict[str, str]:
     return inputs
 
 
+def webedia_slot_inputs() -> dict[str, str]:
+    """Inputs for the Webedia occupancy lane (one mode: pre + post in a pass)."""
+    return pipeline_inputs("scrape-webedia", "ALL", "false", "true", "true")
+
+
 def harkins_slot_inputs(mode: str = "") -> dict[str, str]:
     """Inputs for a Harkins API lane slot (mode via the cinemark_mode input)."""
     inputs = pipeline_inputs("scrape-harkins", "ALL", "false", "true", "true")
@@ -427,6 +432,16 @@ SLOTS: tuple[Slot, ...] = (
         Slot(f"harkins post {h:02d}:55Z", "box office scrape-harkins ALL",
              frozenset({0, 1, 4, 5, 6}), h, 55, harkins_slot_inputs("post"))
         for h in (*range(18, 24), *range(0, 7))
+    ],
+    # Webedia occupancy lane (2026-09-27): one cheap pass (~140 requests)
+    # reads every tracked showing's occupancy %; started showings are the
+    # post-show census. Daytime passes for pre-show velocity, then late passes
+    # so each time zone's last shows are read after they start and before the
+    # 03:00-local business-day rollover drops them (ET 07Z, PT 10Z).
+    *[
+        Slot(f"webedia {h:02d}:15Z", "box office scrape-webedia ALL",
+             frozenset({0, 1, 2, 3, 4, 5, 6}), h, 15, webedia_slot_inputs())
+        for h in (14, 18, 21, 0, 2, 4, 6, 8)
     ],
     # Post-show census in 12 parallel slices (2026-09-27): EVERY stored
     # showing of the day, each slice ~1/12 of the pool on its own runner.

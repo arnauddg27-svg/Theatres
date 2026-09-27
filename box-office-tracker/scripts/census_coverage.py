@@ -22,6 +22,7 @@ LANES = {"CNMK": "cinemark-pre-reservation-snapshots.csv", "ALMO": "alamo-pre-re
          "HARK": "harkins-pre-reservation-snapshots.csv"}
 DAYS = {"Thursday": -1, "Friday": 0, "Saturday": 1, "Sunday": 2}
 REGAL_NEAR_MIN = float(os.environ.get("CENSUS_REGAL_NEAR_MIN", "60"))
+WEBEDIA_EST_SEATS = float(os.environ.get("WEBEDIA_EST_SEATS", "120"))
 
 
 def reported(weekend_of):
@@ -83,6 +84,25 @@ def counted(weekend_of):
             seats[(movie, day)]["REGL"] += sold
     for (chain, _th, _sid, movie, day), (_t, sold) in latest.items():
         seats[(movie, day)][chain] += sold
+    # Webedia chains (Landmark, Showcase, MJR, Flix, Epic, Marquee) publish
+    # only occupancy %; seats = latest post-start rate x an ASSUMED auditorium
+    # size (WEBEDIA_EST_SEATS, default 120 — between Cinemark's 126 and
+    # Alamo's 92 medians). Reported as WEBD(est).
+    wpath = os.path.join(DATA, "webedia-pre-reservation-snapshots.csv")
+    if os.path.exists(wpath):
+        wlatest = {}
+        for r in csv.DictReader(open(wpath, errors="replace")):
+            day = date_day.get(r.get("show_date"))
+            if not day or r.get("row_kind") != "post-show-census" or r.get("weekend_of") != weekend_of:
+                continue
+            k = (r.get("showtime_id"), r["movie_title"], day)
+            if k not in wlatest or r["snapshot_time"] > wlatest[k][0]:
+                try:
+                    wlatest[k] = (r["snapshot_time"], float(r.get("occupancy_pct") or 0))
+                except ValueError:
+                    continue
+        for (_sid, movie, day), (_t, pct) in wlatest.items():
+            seats[(movie, day)]["WEBD"] += round(pct / 100.0 * WEBEDIA_EST_SEATS)
     return seats
 
 
@@ -96,7 +116,7 @@ def main():
         by = cnt.get((movie, day), {})
         total = sum(by.values())
         rows.append({"weekend_of": weekend_of, "movie": movie, "day": day, "national_seats_est": round(national),
-                     **{f"{c}_seats": by.get(c, 0) for c in ("AMC", "CNMK", "ALMO", "HARK", "REGL")},
+                     **{f"{c}_seats": by.get(c, 0) for c in ("AMC", "CNMK", "ALMO", "HARK", "REGL", "WEBD")},
                      "counted_seats": total, "counted_pct": round(total * 100 / national, 1) if national else 0})
     if not rows:
         print(f"census coverage: no reported days yet for {weekend_of}")
@@ -104,7 +124,7 @@ def main():
     print(f"Census coverage {weekend_of} (avg ticket ${AVG_TICKET:.2f}):")
     for r in rows:
         print(f"  {r['movie'][:20]:20s} {r['day']:9s} national~{r['national_seats_est']:>9,} counted {r['counted_seats']:>8,} "
-              f"({r['counted_pct']:4.1f}%)  AMC {r['AMC_seats']:,} CNMK {r['CNMK_seats']:,} ALMO {r['ALMO_seats']:,} HARK {r['HARK_seats']:,} REGL(near) {r['REGL_seats']:,}")
+              f"({r['counted_pct']:4.1f}%)  AMC {r['AMC_seats']:,} CNMK {r['CNMK_seats']:,} ALMO {r['ALMO_seats']:,} HARK {r['HARK_seats']:,} REGL(near) {r['REGL_seats']:,} WEBD(est) {r['WEBD_seats']:,}")
     out = os.path.join(DATA, "census-coverage.csv")
     keep = []
     if os.path.exists(out):
