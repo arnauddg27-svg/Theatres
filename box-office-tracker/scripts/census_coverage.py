@@ -21,6 +21,7 @@ AVG_TICKET = float(os.environ.get("CENSUS_AVG_TICKET", "13.0"))
 LANES = {"CNMK": "cinemark-pre-reservation-snapshots.csv", "ALMO": "alamo-pre-reservation-snapshots.csv",
          "HARK": "harkins-pre-reservation-snapshots.csv"}
 DAYS = {"Thursday": -1, "Friday": 0, "Saturday": 1, "Sunday": 2}
+REGAL_NEAR_MIN = float(os.environ.get("CENSUS_REGAL_NEAR_MIN", "60"))
 
 
 def reported(weekend_of):
@@ -57,6 +58,28 @@ def counted(weekend_of):
             k = (chain, r["showtime_id"], r["movie_title"], day)
             if k not in latest or r["snapshot_time"] > latest[k][0]:
                 latest[k] = (r["snapshot_time"], int(float(r.get("reserved_seats") or 0)))
+    # Regal via Fandango: Fandango cannot see a show once it starts, so the
+    # latest read taken within REGAL_NEAR_MIN of showtime is the count — a
+    # lower bound (misses last-hour buyers and walk-ins), reported as REGL.
+    fpath = os.path.join(DATA, "fandango-pre-reservation-snapshots.csv")
+    if os.path.exists(fpath):
+        near = {}
+        for r in csv.DictReader(open(fpath, errors="replace")):
+            day = date_day.get(r.get("show_date"))
+            if not day or (r.get("chain") or "").upper() != "REGL" or r.get("weekend_of") != weekend_of:
+                continue
+            try:
+                mins = float(r.get("minutes_until_showtime") or 1e9)
+                sold = int(float(r.get("reserved_seats") or 0))
+            except ValueError:
+                continue
+            if mins > REGAL_NEAR_MIN:
+                continue
+            k = (r.get("theatre_name"), r.get("showtime_id"), r["movie_title"], day)
+            if k not in near or r["snapshot_time"] > near[k][0]:
+                near[k] = (r["snapshot_time"], sold)
+        for (_th, _sid, movie, day), (_t, sold) in near.items():
+            seats[(movie, day)]["REGL"] += sold
     for (chain, _sid, movie, day), (_t, sold) in latest.items():
         seats[(movie, day)][chain] += sold
     return seats
@@ -72,7 +95,7 @@ def main():
         by = cnt.get((movie, day), {})
         total = sum(by.values())
         rows.append({"weekend_of": weekend_of, "movie": movie, "day": day, "national_seats_est": round(national),
-                     **{f"{c}_seats": by.get(c, 0) for c in ("AMC", "CNMK", "ALMO", "HARK")},
+                     **{f"{c}_seats": by.get(c, 0) for c in ("AMC", "CNMK", "ALMO", "HARK", "REGL")},
                      "counted_seats": total, "counted_pct": round(total * 100 / national, 1) if national else 0})
     if not rows:
         print(f"census coverage: no reported days yet for {weekend_of}")
@@ -80,7 +103,7 @@ def main():
     print(f"Census coverage {weekend_of} (avg ticket ${AVG_TICKET:.2f}):")
     for r in rows:
         print(f"  {r['movie'][:20]:20s} {r['day']:9s} national~{r['national_seats_est']:>9,} counted {r['counted_seats']:>8,} "
-              f"({r['counted_pct']:4.1f}%)  AMC {r['AMC_seats']:,} CNMK {r['CNMK_seats']:,} ALMO {r['ALMO_seats']:,} HARK {r['HARK_seats']:,}")
+              f"({r['counted_pct']:4.1f}%)  AMC {r['AMC_seats']:,} CNMK {r['CNMK_seats']:,} ALMO {r['ALMO_seats']:,} HARK {r['HARK_seats']:,} REGL(near) {r['REGL_seats']:,}")
     out = os.path.join(DATA, "census-coverage.csv")
     keep = []
     if os.path.exists(out):
