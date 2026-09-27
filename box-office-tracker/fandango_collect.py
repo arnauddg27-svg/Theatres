@@ -414,23 +414,32 @@ FANDANGO_PRIORITY_SHARE = float(os.environ.get("FANDANGO_PRIORITY_SHARE", "0.5")
 
 
 def regal_demand_scores(csv_path=None):
-    """{theatre_name: mean reserved seats per read} from stored Regal rows."""
-    csv_path = csv_path or FANDANGO_CSV
+    """{theatre_name: mean reserved seats per read} from stored Regal rows —
+    live CSV plus the rotated per-weekend archives (data/fandango-archive,
+    2026-09-27), so the demand ranking keeps its history after rotation."""
+    import glob
+    import gzip
+    csv_path = Path(csv_path or FANDANGO_CSV)
+    paths = sorted(glob.glob(str(csv_path.parent / "fandango-archive" / "*.csv.gz")))
+    if csv_path.exists():
+        paths.append(str(csv_path))
     sums, counts = {}, {}
-    try:
-        with open(csv_path, newline="") as f:
-            for r in csv.DictReader(f):
-                if (r.get("chain") or "").upper() != "REGL":
-                    continue
-                try:
-                    v = float(r.get("reserved_seats") or 0)
-                except ValueError:
-                    continue
-                n = r.get("theatre_name", "")
-                sums[n] = sums.get(n, 0.0) + v
-                counts[n] = counts.get(n, 0) + 1
-    except OSError:
-        return {}
+    for path in paths:
+        opener = gzip.open if path.endswith(".gz") else open
+        try:
+            with opener(path, "rt", newline="") as f:
+                for r in csv.DictReader(f):
+                    if (r.get("chain") or "").upper() != "REGL":
+                        continue
+                    try:
+                        v = float(r.get("reserved_seats") or 0)
+                    except ValueError:
+                        continue
+                    n = r.get("theatre_name", "")
+                    sums[n] = sums.get(n, 0.0) + v
+                    counts[n] = counts.get(n, 0) + 1
+        except OSError:
+            continue
     return {n: sums[n] / counts[n] for n in sums if counts[n] >= 3}
 
 

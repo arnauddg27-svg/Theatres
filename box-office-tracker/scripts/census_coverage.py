@@ -25,6 +25,23 @@ REGAL_NEAR_MIN = float(os.environ.get("CENSUS_REGAL_NEAR_MIN", "60"))
 WEBEDIA_EST_SEATS = float(os.environ.get("WEBEDIA_EST_SEATS", "120"))
 
 
+def _lane_rows(fn, weekend_of):
+    """Rows of a lane CSV for one weekend: the live file plus that weekend's
+    rotated archive data/<lane>-archive/<stem>-<weekend>.csv.gz (2026-09-27)."""
+    import gzip
+    stem = fn[:-4]
+    lane = stem.split("-")[0]
+    paths = [os.path.join(DATA, f"{lane}-archive", f"{stem}-{weekend_of}.csv.gz"), os.path.join(DATA, fn)]
+    for path in paths:
+        if not os.path.exists(path):
+            continue
+        opener = gzip.open if path.endswith(".gz") else open
+        with opener(path, "rt", errors="replace", newline="") as f:
+            for r in csv.DictReader(f):
+                if r.get("weekend_of") == weekend_of:
+                    yield r
+
+
 def reported(weekend_of):
     out = {}
     path = os.path.join(DATA, "daily-actual-overrides.csv")
@@ -49,10 +66,7 @@ def counted(weekend_of):
         except (KeyError, ValueError):
             pass
     for chain, fn in LANES.items():
-        path = os.path.join(DATA, fn)
-        if not os.path.exists(path):
-            continue
-        for r in csv.DictReader(open(path, errors="replace")):
+        for r in _lane_rows(fn, weekend_of):
             day = date_day.get(r.get("show_date"))
             if not day or r.get("row_kind") != "post-show-census" or r.get("weekend_of") != weekend_of:
                 continue
@@ -63,10 +77,9 @@ def counted(weekend_of):
     # Regal via Fandango: Fandango cannot see a show once it starts, so the
     # latest read taken within REGAL_NEAR_MIN of showtime is the count — a
     # lower bound (misses last-hour buyers and walk-ins), reported as REGL.
-    fpath = os.path.join(DATA, "fandango-pre-reservation-snapshots.csv")
-    if os.path.exists(fpath):
+    if True:
         near = {}
-        for r in csv.DictReader(open(fpath, errors="replace")):
+        for r in _lane_rows("fandango-pre-reservation-snapshots.csv", weekend_of):
             day = date_day.get(r.get("show_date"))
             if not day or (r.get("chain") or "").upper() != "REGL" or r.get("weekend_of") != weekend_of:
                 continue
@@ -88,10 +101,9 @@ def counted(weekend_of):
     # only occupancy %; seats = latest post-start rate x an ASSUMED auditorium
     # size (WEBEDIA_EST_SEATS, default 120 — between Cinemark's 126 and
     # Alamo's 92 medians). Reported as WEBD(est).
-    wpath = os.path.join(DATA, "webedia-pre-reservation-snapshots.csv")
-    if os.path.exists(wpath):
+    if True:
         wlatest = {}
-        for r in csv.DictReader(open(wpath, errors="replace")):
+        for r in _lane_rows("webedia-pre-reservation-snapshots.csv", weekend_of):
             day = date_day.get(r.get("show_date"))
             if not day or r.get("row_kind") != "post-show-census" or r.get("weekend_of") != weekend_of:
                 continue
