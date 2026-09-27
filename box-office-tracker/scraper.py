@@ -55,7 +55,9 @@ EXPANSION_COHORT = "expansion"
 MOUNTAIN_COHORT = "mountain"
 DEFAULT_COLLECTION_COHORTS = (CORE_COHORT, EXPANSION_COHORT, MOUNTAIN_COHORT)
 KNOWN_THEATRE_COHORTS = set(DEFAULT_COLLECTION_COHORTS)
-REQUIRED_PHASE1_COHORTS = (CORE_COHORT,)
+# Mountain is required too: the MT leg has no core theatres, so a core-only
+# gate read "0/0 fresh" and failed every MT link run (2026-09-27, run 36284103129).
+REQUIRED_PHASE1_COHORTS = (CORE_COHORT, MOUNTAIN_COHORT)
 
 
 def _env_bool(name, default=False):
