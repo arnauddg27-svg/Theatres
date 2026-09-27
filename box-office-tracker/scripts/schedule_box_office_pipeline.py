@@ -122,6 +122,15 @@ def cinemark_slot_inputs(mode: str = "", shard: int | None = None,
     return inputs
 
 
+def alamo_slot_inputs(mode: str = "") -> dict[str, str]:
+    """Inputs for an Alamo API lane slot (mode '' = pre, 'post' = census).
+    Reuses the cinemark_mode input to carry the mode."""
+    inputs = pipeline_inputs("scrape-alamo", "ALL", "false", "true", "true")
+    if mode:
+        inputs["cinemark_mode"] = mode
+    return inputs
+
+
 def fandango_slot_inputs(shard: int, num_shards: int,
                          order: str | None = None) -> dict[str, str]:
     """Inputs for one Fandango shard slot — phase + which 1/N slice of the pool."""
@@ -377,6 +386,19 @@ SLOTS: tuple[Slot, ...] = (
              frozenset({0, 1, 2, 3, 4, 5, 6}), h, 20 + 3 * s,
              cinemark_slot_inputs(shard=s, num_shards=CINEMARK_PRE_SLICES))
         for h in (9, 14, 19) for s in range(CINEMARK_PRE_SLICES)
+    ],
+    # Alamo Drafthouse API lane (2026-09-27): full pre census 4x daily; post
+    # (walk-in) census hourly through show evenings (UTC Thu-Mon), each run
+    # revisiting showings that started 0-90 min earlier.
+    *[
+        Slot(f"alamo pre {h:02d}:40Z", "box office scrape-alamo ALL",
+             frozenset({0, 1, 2, 3, 4, 5, 6}), h, 40, alamo_slot_inputs())
+        for h in (0, 12, 16, 20)
+    ],
+    *[
+        Slot(f"alamo post {h:02d}:50Z", "box office scrape-alamo ALL",
+             frozenset({0, 1, 4, 5, 6}), h, 50, alamo_slot_inputs("post"))
+        for h in (*range(18, 24), *range(0, 7))
     ],
     Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",
          frozenset({0, 1, 5, 6}), 6, 20, cinemark_slot_inputs("post")),

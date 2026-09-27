@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), probe-chains (read-only feasibility probe), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), probe-chains (read-only feasibility probe), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -143,7 +143,7 @@ concurrency:
   # the retries added for the queue-wall incident were most likely to vanish
   # under exactly the degraded conditions they exist for (audit finding). The
   # AMC lock, not the concurrency group, is the execution serializer.
-  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || (github.event.inputs.phase == 'scrape-cinemark' && format('cinemark-{0}', github.event.inputs.schedule_slot || github.run_id) || 'regular')) }}
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || ((github.event.inputs.phase == 'scrape-cinemark' || github.event.inputs.phase == 'scrape-alamo') && format('{0}-{1}', github.event.inputs.phase, github.event.inputs.schedule_slot || github.run_id) || 'regular')) }}
   cancel-in-progress: false
 
 jobs:
@@ -1153,6 +1153,60 @@ jobs:
   # would suppress the slot).
   # Writes ONLY its own isolated CSV.
   # ──────────────────────────────────────────────────────────────────────────
+  scrape-alamo:
+    # Alamo Drafthouse (2026-09-27): open JSON API, full census of every
+    # tracked showing at all 39 cinemas (~600 seat maps, ~6 min, no proxy,
+    # no browser). pre = every upcoming showing; post (ALAMO_MODE=post) =
+    # showings that started 0-90 min ago, from stored session ids — the
+    # at-showtime read that includes walk-ins.
+    if: github.event.inputs.phase == 'scrape-alamo'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: pip install -r requirements.txt
+      - name: Alamo collect
+        working-directory: box-office-tracker
+        timeout-minutes: 30
+        env:
+          ALAMO_MODE: ${{ github.event.inputs.cinemark_mode }}
+        run: python -u alamo_collect.py
+      - name: Commit Alamo data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          csv=box-office-tracker/data/alamo-pre-reservation-snapshots.csv
+          [ -f "$csv" ] || { echo "No Alamo data."; exit 0; }
+          cp "$csv" /tmp/alamo-ours.csv
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            if [ -f "$csv" ]; then
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/alamo-ours.csv "$csv")
+            else
+              cp /tmp/alamo-ours.csv "$csv"; added=all
+            fi
+            echo "Alamo rows added on top of main: $added"
+            git add "$csv"
+            if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
+            git commit -q -m "data: box office alamo lane"
+            git push -q origin HEAD:main && exit 0
+            echo "Push attempt $i lost a race, re-applying on the new main..."
+            sleep $((i * 7))
+          done
+          exit 1
+
   scrape-cinemark:
     if: github.event.inputs.phase == 'scrape-cinemark'
     runs-on: ubuntu-latest

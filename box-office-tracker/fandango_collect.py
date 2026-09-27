@@ -502,7 +502,9 @@ def append_unique_fandango_rows(rows, csv_path=None):
 
     pending, seen, skipped = [], set(existing_keys), 0
     for row in rows:
-        normalized = {fld: str(row.get(fld, "") or "")
+        # None -> "", but a numeric 0 stays "0" (`or ""` blanked zero-sold
+        # showings written as ints — caught on the Alamo lane 2026-09-27).
+        normalized = {fld: ("" if row.get(fld) is None else str(row.get(fld)))
                       for fld in FANDANGO_PRE_RESERVATION_FIELDS}
         if not normalized.get("delta_reserved_since_previous"):
             cur_bucket = str(normalized.get("snapshot_bucket", "") or "")
