@@ -297,6 +297,12 @@ class HttpSeatReader:
             except Exception:
                 self.stats["http_error"] += 1
                 return None
+            if r.status_code == 404:
+                # Definitive: the map is gone (pre-redesign URL formats return
+                # a 20-byte 404). No back-off — 91 of these cost post slice s0
+                # (09-27) ~38 min of waits and its deadline.
+                self.stats["http_gone"] = self.stats.get("http_gone", 0) + 1
+                return None
             if r.status_code == 429 or "Just a moment" in r.text[:3000]:
                 self.stats["http_throttled"] += 1
                 self.next_at = time.monotonic() + 30 + self.pace      # let the bucket refill
@@ -649,6 +655,8 @@ def post_candidates(sources, weekend_of, titles, now_utc, pool_names=None,
         if r.get("row_kind") == "post-show-census" or "post-show-census" in (r.get("notes") or ""):
             continue
         url = (r.get("href") or r.get("amc_seat_map_url") or "").strip()
+        if "TheaterId=" in url:
+            continue    # pre-2026-09-23 URL format: 404 since the redesign
         sdate = (r.get("sdate") or r.get("showtime_id") or "").strip()
         title = (r.get("movie_title") or "").strip()
         name = r.get("theatre_name", "")

@@ -279,3 +279,22 @@ class HttpSeatReadTest(unittest.TestCase):
         self.assertEqual(3, seats["total"])
         self.assertEqual(1, reader.stats["http_throttled"])
         self.assertEqual(1, reader.stats["http_ok"])
+
+
+class GoneMapsTest(unittest.TestCase):
+    def test_404_returns_immediately_and_old_urls_are_skipped(self):
+        class R:
+            status_code, text = 404, "Something went wrong"
+        class S:
+            calls = 0
+            def get(self, url, timeout=30):
+                S.calls += 1
+                return R()
+        reader = cc.HttpSeatReader(pace_sec=0, session=S())
+        self.assertIsNone(reader.read("/TicketSeatMap/?x=1"))
+        self.assertEqual(1, S.calls)                     # no retry, no back-off
+        self.assertEqual(1, reader.stats["http_gone"])
+        from datetime import datetime, timezone
+        rows = [{"weekend_of": "w", "theatre_name": "A", "timezone": "America/Chicago", "movie_title": "P",
+                 "sdate": "2026-09-26 19:00", "href": "https://www.cinemark.com/TicketSeatMap/?TheaterId=1&ShowtimeId=2"}]
+        self.assertEqual([], cc.post_candidates(rows, "w", {"P"}, datetime(2026, 9, 27, 2, tzinfo=timezone.utc)))
