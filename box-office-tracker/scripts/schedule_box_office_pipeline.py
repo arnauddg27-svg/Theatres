@@ -131,6 +131,14 @@ def alamo_slot_inputs(mode: str = "") -> dict[str, str]:
     return inputs
 
 
+def harkins_slot_inputs(mode: str = "") -> dict[str, str]:
+    """Inputs for a Harkins API lane slot (mode via the cinemark_mode input)."""
+    inputs = pipeline_inputs("scrape-harkins", "ALL", "false", "true", "true")
+    if mode:
+        inputs["cinemark_mode"] = mode
+    return inputs
+
+
 def fandango_slot_inputs(shard: int, num_shards: int,
                          order: str | None = None) -> dict[str, str]:
     """Inputs for one Fandango shard slot — phase + which 1/N slice of the pool."""
@@ -398,6 +406,17 @@ SLOTS: tuple[Slot, ...] = (
     *[
         Slot(f"alamo post {h:02d}:50Z", "box office scrape-alamo ALL",
              frozenset({0, 1, 4, 5, 6}), h, 50, alamo_slot_inputs("post"))
+        for h in (*range(18, 24), *range(0, 7))
+    ],
+    # Harkins API lane (2026-09-27): same cadence as Alamo, offset 10 min.
+    *[
+        Slot(f"harkins pre {h:02d}:50Z", "box office scrape-harkins ALL",
+             frozenset({0, 1, 2, 3, 4, 5, 6}), h, 50, harkins_slot_inputs())
+        for h in (0, 12, 16, 20)
+    ],
+    *[
+        Slot(f"harkins post {h:02d}:55Z", "box office scrape-harkins ALL",
+             frozenset({0, 1, 4, 5, 6}), h, 55, harkins_slot_inputs("post"))
         for h in (*range(18, 24), *range(0, 7))
     ],
     Slot("cinemark post 06:20Z", "box office scrape-cinemark ALL",

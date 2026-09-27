@@ -34,7 +34,7 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         # Saturday show night) and the Fandango lane at 03:00Z (sorted by
         # scheduled_at).
         self.assertEqual(
-            ["snapshot 02:30Z", "alamo post 02:50Z", "snapshot fandango 03Z"],
+            ["snapshot 02:30Z", "alamo post 02:50Z", "harkins post 02:55Z", "snapshot fandango 03Z"],
             [slot.name for _, slot in due],
         )
 

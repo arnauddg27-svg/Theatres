@@ -1,0 +1,48 @@
+import sys
+import unittest
+from datetime import datetime, timezone
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import harkins_collect as H  # noqa: E402
+
+DAY = {"movies": [
+    {"movieId": 16093, "performances": [
+        {"showtimeUtc": "9/27/2026 2:35:00 AM", "showtime": "September 26, 2026 7:35 PM",
+         "url": "https://harkins.com/ticketing/theatre/16/movie/HO00016093/session/573969/date/2026-09-26 19:35"},
+        {"showtimeUtc": "9/26/2026 6:15:00 PM", "showtime": "September 26, 2026 11:15 AM",
+         "url": "https://harkins.com/ticketing/theatre/16/movie/HO00016093/session/576394/date/2026-09-26 11:15"}]},
+    {"movieId": 16074, "performances": [
+        {"showtimeUtc": "9/27/2026 2:00:00 AM", "showtime": "September 26, 2026 7:00 PM",
+         "url": "https://harkins.com/ticketing/theatre/16/movie/HO00016074/session/1/date/2026-09-26 19:00"}]},
+]}
+TITLES = {16093: "Heart of the Beast", 16074: "Some Other Film"}
+TARGET = {"heart-of-the-beast": "Heart of the Beast"}
+
+
+class HarkinsLaneTest(unittest.TestCase):
+    def test_sold_is_capacity_minus_open(self):
+        self.assertEqual({"total": 119, "sold": 32, "available": 87, "broken": 0, "price_cents": None},
+                         H.seat_counts({"numberOfSeats": 119, "openSeats": 87}))
+
+    def test_day_schedule_format_is_normalized(self):
+        p = H.normalize_performance(DAY["movies"][0]["performances"][0])
+        self.assertEqual(("573969", "2026-09-26", "2026-09-27T02:35:00Z", "2026-09-26T19:35:00"),
+                         (p["sessionId"], p["businessDate"], p["showtimeUTCDate"], p["showtimeDate"]))
+
+    def test_pre_and_post_windows(self):
+        now = datetime(2026, 9, 27, 2, 0, tzinfo=timezone.utc)
+        pre = H.pick_performances(DAY, TITLES, TARGET, now, "pre")
+        self.assertEqual(["573969"], [p["sessionId"] for p, _ in pre])            # 11:15 started, other film untracked
+        post = H.pick_performances(DAY, TITLES, TARGET, datetime(2026, 9, 27, 3, 0, tzinfo=timezone.utc), "post")
+        self.assertEqual(["573969"], [p["sessionId"] for p, _ in post])           # 25 min after start
+
+    def test_theatre_time_zones(self):
+        self.assertEqual("America/Phoenix", H.theatre_tz({"state": "AZ", "timeZone": {"id": "US Mountain Standard Time"}}))
+        self.assertEqual("America/Los_Angeles", H.theatre_tz({"state": "CA", "timeZone": {"id": "Pacific Standard Time"}}))
+        self.assertEqual("America/Chicago", H.theatre_tz({"state": "OK", "timeZone": {"id": "Central Standard Time"}}))
+        self.assertEqual("America/Denver", H.theatre_tz({"state": "CO", "timeZone": {"id": "Mountain Standard Time"}}))
+
+
+if __name__ == "__main__":
+    unittest.main()

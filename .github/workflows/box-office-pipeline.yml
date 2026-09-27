@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), probe-chains (read-only feasibility probe), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), scrape-harkins (Harkins API lane), probe-chains (read-only feasibility probe), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -143,7 +143,7 @@ concurrency:
   # the retries added for the queue-wall incident were most likely to vanish
   # under exactly the degraded conditions they exist for (audit finding). The
   # AMC lock, not the concurrency group, is the execution serializer.
-  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || ((github.event.inputs.phase == 'scrape-cinemark' || github.event.inputs.phase == 'scrape-alamo') && format('{0}-{1}', github.event.inputs.phase, github.event.inputs.schedule_slot || github.run_id) || 'regular')) }}
+  group: box-office-pipeline-${{ github.event.inputs.phase }}-${{ github.event.inputs.phase == 'collect-links' && github.event.inputs.tz_group || (github.event.inputs.phase == 'scrape' && github.event.inputs.snapshots_only == 'true' && format('snapshot-{0}', github.event.inputs.schedule_slot || 'adhoc') || ((github.event.inputs.phase == 'scrape-cinemark' || github.event.inputs.phase == 'scrape-alamo' || github.event.inputs.phase == 'scrape-harkins') && format('{0}-{1}', github.event.inputs.phase, github.event.inputs.schedule_slot || github.run_id) || 'regular')) }}
   cancel-in-progress: false
 
 jobs:
@@ -1201,6 +1201,58 @@ jobs:
             git add "$csv"
             if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
             git commit -q -m "data: box office alamo lane"
+            git push -q origin HEAD:main && exit 0
+            echo "Push attempt $i lost a race, re-applying on the new main..."
+            sleep $((i * 7))
+          done
+          exit 1
+
+  scrape-harkins:
+    # Harkins (2026-09-27): open JSON services, full census of every tracked
+    # showing at 32 theatres (677 showings in 14 min on the first test).
+    # Same pre/post design as Alamo; sold = capacity - open seats.
+    if: github.event.inputs.phase == 'scrape-harkins'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: pip install -r requirements.txt
+      - name: Harkins collect
+        working-directory: box-office-tracker
+        timeout-minutes: 45
+        env:
+          HARKINS_MODE: ${{ github.event.inputs.cinemark_mode }}
+        run: python -u harkins_collect.py
+      - name: Commit Harkins data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          csv=box-office-tracker/data/harkins-pre-reservation-snapshots.csv
+          [ -f "$csv" ] || { echo "No Harkins data."; exit 0; }
+          cp "$csv" /tmp/harkins-ours.csv
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            if [ -f "$csv" ]; then
+              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/harkins-ours.csv "$csv")
+            else
+              cp /tmp/harkins-ours.csv "$csv"; added=all
+            fi
+            echo "Harkins rows added on top of main: $added"
+            git add "$csv"
+            if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
+            git commit -q -m "data: box office harkins lane"
             git push -q origin HEAD:main && exit 0
             echo "Push attempt $i lost a race, re-applying on the new main..."
             sleep $((i * 7))
