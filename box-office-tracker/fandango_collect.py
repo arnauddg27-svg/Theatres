@@ -679,6 +679,9 @@ def restrict_to_amc_top(theatres, top_names):
 # render budget onto Regal. If the native lane goes dark again, nothing is
 # covered and the bridge reads AMC exactly as before. 0 = old behaviour.
 FANDANGO_BRIDGE_SPILL = _env_int("FANDANGO_BRIDGE_SPILL", 1)
+# Through the proxy, drop the browser context (= its pooled proxy connection,
+# i.e. the exit address) after a wall. Direct runs are unaffected.
+FANDANGO_ROTATE_ON_WALL = _env_int("FANDANGO_ROTATE_ON_WALL", 1)
 
 
 def native_amc_keys(weekend_of):
@@ -909,6 +912,11 @@ def _capture_theatre(page, th, shared):
                 # no trace in the log.
                 print(f"  {slug}: routing miss — not a wanted seat page "
                       f"(chain={params['chain'] or '?'}) {page.url[:90]}")
+                if "region-error" in page.url:
+                    # non-US proxy exit: every later page on this exit fails
+                    # the same way — end the theatre so the worker rotates.
+                    stats["blocks"] += 1
+                    return rows, stats
                 continue
             try:
                 page.wait_for_selector(".seat-map__seat", timeout=8000)
@@ -965,10 +973,14 @@ def _worker(slice_theatres, shared):
         with sync_playwright() as p:
             browser = p.chromium.launch(**proxy_egress.launch_kwargs(
                 {"headless": shared["headless"], "args": CHROMIUM_ARGS}))
-            ctx = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
-            page = ctx.new_page()
-            proxy_egress.attach_meter(ctx, page, shared["budget"])
-            proxy_egress.trim_page(page, shared["budget"])
+            def _fresh_page():
+                c = browser.new_context(user_agent=UA, viewport={"width": 1280, "height": 1600})
+                pg = c.new_page()
+                proxy_egress.attach_meter(c, pg, shared["budget"])
+                proxy_egress.trim_page(pg, shared["budget"])
+                return c, pg
+
+            ctx, page = _fresh_page()
             for th in slice_theatres:
                 if (shared["stop"].is_set() or shared["budget_done"].is_set()
                         or shared["budget"].exhausted()
@@ -983,6 +995,20 @@ def _worker(slice_theatres, shared):
                 rows, stats = _capture_theatre(page, th, shared)
                 for k in stats:
                     agg[k] += stats[k]
+                if stats.get("blocks") and FANDANGO_ROTATE_ON_WALL and proxy_egress.proxy_settings():
+                    # 2026-09-27: through a rotating residential proxy a wall
+                    # (Akamai Access Denied / region-error) belongs to the EXIT
+                    # address, and one context keeps its pooled connection —
+                    # the 2026-09-13 full-trim test lost 5 consecutive theatres
+                    # of one worker this way (same bug as AMC's sticky blocked
+                    # IPs, 2026-09-23). A new context opens a new connection,
+                    # i.e. a new exit.
+                    try:
+                        ctx.close()
+                    except Exception:
+                        pass
+                    ctx, page = _fresh_page()
+                    agg["rotations"] = agg.get("rotations", 0) + 1
                 # Flush per theatre (under a lock — the file is the shared writer)
                 # so a deadline/crash keeps earlier theatres' rows durable.
                 if rows:
@@ -1159,7 +1185,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     # Round-robin slices so each worker's slice is geographically mixed.
     slices = [theatres[i::concurrency] for i in range(concurrency)]
     totals = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0,
-              "seat_fails": 0, "written": 0, "skipped": 0, "captured": 0, "visited": 0}
+              "seat_fails": 0, "written": 0, "skipped": 0, "captured": 0, "visited": 0, "rotations": 0}
     if concurrency == 1:
         aggs = [_worker(slices[0], shared)]
     else:
@@ -1180,7 +1206,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     print(f"  captured={totals['captured']} written={totals['written']} "
           f"deduped={totals['skipped']} incomplete_dropped={totals['incompletes']} "
           f"seat_fails={totals['seat_fails']} blocks={totals['blocks']} "
-          f"throttle_pauses={totals['pauses']}")
+          f"throttle_pauses={totals['pauses']} rotations={totals['rotations']}")
     print(proxy_egress.ByteBudget.summary(shared["budget"]), flush=True)
     print(shared["budget"].breakdown(), flush=True)
     print(f"  -> {FANDANGO_CSV}")

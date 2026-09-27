@@ -953,8 +953,14 @@ jobs:
           # (direct egress, so it costs nothing) with trimming disabled, purely
           # to print the per-category breakdown that says WHERE the page loads
           # go. The ceiling is far above any real run, so it never stops one.
-          FANDANGO_MAX_MB: ${{ contains(github.event.inputs.schedule_slot, 'meter') && '4000' || '' }}
-          PROXY_TRIM_LEVEL: ${{ contains(github.event.inputs.schedule_slot, 'meter') && 'none' || '' }}
+          FANDANGO_MAX_MB: ${{ contains(github.event.inputs.schedule_slot, 'meter') && '4000' || (contains(github.event.inputs.schedule_slot, 'regal proxy') && '150' || '') }}
+          PROXY_TRIM_LEVEL: ${{ contains(github.event.inputs.schedule_slot, 'meter') && 'none' || (contains(github.event.inputs.schedule_slot, 'trim full') && 'full' || '') }}
+          # REGAL PROXY RE-TEST (2026-09-27): a slot named "regal proxy …" runs
+          # the lane through the residential proxy (150 MB ceiling), "… trim
+          # full" also drops tracker hosts. Re-tests the 09-13 verdict now that
+          # a wall rotates the exit (FANDANGO_ROTATE_ON_WALL) — the 09-13 full-
+          # trim blocks were 5 consecutive theatres of ONE worker.
+          AMC_SEAT_PROXY_URL: ${{ contains(github.event.inputs.schedule_slot, 'regal proxy') && secrets.AMC_SEAT_PROXY_URL || '' }}
           # AMC BRIDGE (2026-09-08): slots named "amc bridge …" read AMC seat
           # maps through Fandango (chainCode=AMC) while AMC's own seat route is
           # Cloudflare-blocked for datacenter egress. Keyed off the slot name

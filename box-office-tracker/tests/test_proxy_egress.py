@@ -92,8 +92,17 @@ class LaunchWiringTest(unittest.TestCase):
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         cin = yml.split("- name: Cinemark collect", 1)[1].split("run: |", 1)[0]
-        for block in (fan, cin):
-            self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", block)
+        # 2026-09-27: the Fandango step may carry the secret ONLY behind an ad-hoc
+        # "regal proxy" slot name (re-test of the trim verdict); no scheduled
+        # slot has that name, so production stays direct.
+        gated = "AMC_SEAT_PROXY_URL: ${{ contains(github.event.inputs.schedule_slot, 'regal proxy') && secrets.AMC_SEAT_PROXY_URL || '' }}"
+        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", fan.replace(gated, ""))
+        self.assertNotIn("AMC_SEAT_PROXY_URL: ${{", cin)
+        import importlib.util, sys as _sys
+        sp = Path(__file__).resolve().parents[1] / "scripts" / "schedule_box_office_pipeline.py"
+        spec = importlib.util.spec_from_file_location("sched_proxy_test", sp)
+        mod = importlib.util.module_from_spec(spec); _sys.modules[spec.name] = mod; spec.loader.exec_module(mod)
+        self.assertFalse([s.name for s in mod.SLOTS if "regal proxy" in (s.inputs.get("schedule_slot") or s.name)])
         self.assertNotIn("FANDANGO_MAX_MB: '", fan)
         self.assertNotIn("CINEMARK_MAX_MB: '", cin)
         self.assertNotIn("CINEMARK_PROXY_PER_THEATRE_CAP: '", cin)
