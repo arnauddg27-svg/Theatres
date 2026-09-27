@@ -128,6 +128,42 @@ def build_row(theatre, perf, title, counts, weekend_of, run_id, now_utc, post=Fa
     }
 
 
+def stored_post_performances(weekend_of, now_utc, path=None, window_min=None):
+    """Sessions from stored pre rows that started 0..window minutes ago.
+    Harkins' schedule drops started showings, so the post-show (walk-in)
+    read must come from session ids stored by pre passes. Seat plans stay
+    readable after start (2026-09-27: a 7:35pm showing read 32 sold before
+    start, 61 sold 16 min after). Returns [(theatre_id, perf, title)]."""
+    import csv
+    from zoneinfo import ZoneInfo
+    path = Path(path or HARKINS_CSV)
+    window_min = POST_WINDOW_MIN if window_min is None else window_min
+    if not path.exists():
+        return []
+    seen, out = set(), []
+    with open(path, newline="") as f:
+        for r in csv.DictReader(f):
+            if r.get("weekend_of") != weekend_of or r.get("row_kind") == "post-show-census":
+                continue
+            sid = r.get("showtime_id") or ""
+            if sid in seen or ":" not in sid:
+                continue
+            seen.add(sid)
+            local = datetime.strptime(f"{r['show_date']} {r['showtime']}", "%Y-%m-%d %H:%M")
+            start = local.replace(tzinfo=ZoneInfo(r.get("timezone") or "America/Phoenix")).astimezone(timezone.utc)
+            if start > now_utc + timedelta(hours=12):
+                start -= timedelta(days=1)          # after-midnight show on the prior business date
+            mins = (now_utc - start).total_seconds() / 60
+            if not (0 <= mins <= window_min):
+                continue
+            tid, sess = sid.split(":", 1)
+            out.append((int(tid), {"sessionId": sess, "showtimeUTCDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                   "showtimeDate": local.strftime("%Y-%m-%dT%H:%M:%S"), "businessDate": r["show_date"],
+                                   "format": r.get("auditorium_type", ""), "ticketingUrl": r.get("amc_seat_map_url", "")},
+                        r["movie_title"]))
+    return out
+
+
 def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     from scraper import opening_weekend_friday, phase1_weekend_anchor, tracked_movie_titles_from_state
     now_utc = now_utc or datetime.now(timezone.utc)
@@ -149,6 +185,27 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     print(f"Harkins collect [{mode}] • weekend_of={weekend_of} • dates={dates} • titles={titles}", flush=True)
     theatres = [t for r in _get(f"{WEB}/theatres")["data"]["regions"] for t in (r.get("theatres") or [])]
     titles_by_id, vista_ids, rows = {}, {}, []
+    if mode == "post":
+        by_id = {int(t["id"]): t for t in theatres}
+        for tid, perf, title in stored_post_performances(weekend_of, now_utc):
+            th = by_id.get(tid)
+            if not th:
+                continue
+            totals["matched"] += 1
+            try:
+                if tid not in vista_ids:
+                    info = _get(f"{TIX}/GetTheatreShowtime/harkinsid/{tid}/sessionid/{perf['sessionId']}")
+                    vista_ids[tid] = info["data"]["theatre"]["value"][0]["id"]
+                plan = _get(f"{TIX}/GetSeatPlan/cinemaid/{vista_ids[tid]}/sessionId/{perf['sessionId']}")["data"]
+                counts = seat_counts(plan)
+            except Exception:
+                totals["errors"] += 1
+                continue
+            if counts["total"]:
+                rows.append(build_row(th, perf, title, counts, weekend_of, run_id, now_utc, post=True))
+                totals["captured"] += 1
+            time.sleep(SLEEP)
+        theatres = []          # the schedule walk below is the pre pass only
     for th in theatres:
         totals["theatres"] += 1
         for d in dates:

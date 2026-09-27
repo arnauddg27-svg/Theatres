@@ -44,5 +44,21 @@ class HarkinsLaneTest(unittest.TestCase):
         self.assertEqual("America/Denver", H.theatre_tz({"state": "CO", "timeZone": {"id": "Mountain Standard Time"}}))
 
 
+    def test_post_reads_stored_sessions_after_start(self):
+        import tempfile, os
+        from fandango_collect import append_unique_fandango_rows
+        th = {"id": 16, "name": "Arizona Mills 18", "city": "Tempe", "state": "AZ", "timeZone": {"id": "US Mountain Standard Time"}}
+        perf = H.normalize_performance(DAY["movies"][0]["performances"][0])      # 19:35 MST = 02:35Z
+        before = datetime(2026, 9, 27, 1, 50, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "h.csv")
+            row = H.build_row(th, perf, "Heart of the Beast", H.seat_counts({"numberOfSeats": 119, "openSeats": 87}),
+                              "2026-09-25", "r", before)
+            append_unique_fandango_rows([row], csv_path=__import__("pathlib").Path(path))
+            got = H.stored_post_performances("2026-09-25", datetime(2026, 9, 27, 2, 51, tzinfo=timezone.utc), path=path)
+            self.assertEqual([(16, "573969")], [(t, p["sessionId"]) for t, p, _ in got])
+            self.assertEqual([], H.stored_post_performances("2026-09-25", before, path=path))
+
+
 if __name__ == "__main__":
     unittest.main()
