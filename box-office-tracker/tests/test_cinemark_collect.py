@@ -247,3 +247,35 @@ class PostCensusDepthTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class HttpSeatReadTest(unittest.TestCase):
+    HTML = ('<h1 class="seats-tickets-title">Heart of the Beast</h1>'
+            '<input class="seatBlank seatBlock" info="C,30,3,2"/>'
+            '<button available="True" class="seatAvailable seatBlock" id="r1c1" type="button"></button>'
+            '<button available="False" class="seatUnavailable seatBlock" id="r1c2" type="button"></button>'
+            '<button available="True" class="leftLoveSeatAvailable seatBlock" type="button"></button>')
+
+    def test_parse_counts_seat_buttons_only(self):
+        self.assertEqual({"total": 3, "available": 2, "unavailable": 1, "census": None, "title": "Heart of the Beast"},
+                         cc.parse_seat_html(self.HTML))
+
+    def test_reader_backs_off_on_throttle_then_reads(self):
+        class R:
+            def __init__(self, code, text): self.status_code, self.text = code, text
+        class S:
+            def __init__(self): self.calls = 0
+            def get(self, url, timeout=30):
+                self.calls += 1
+                return R(429, "Just a moment...") if self.calls == 1 else R(200, HttpSeatReadTest.HTML)
+        import time as _t
+        reader = cc.HttpSeatReader(pace_sec=0, session=S())
+        orig = _t.sleep; _t.sleep = lambda s: None
+        try:
+            reader.next_at = 0
+            seats = reader.read("/TicketSeatMap/?x=1")
+        finally:
+            _t.sleep = orig
+        self.assertEqual(3, seats["total"])
+        self.assertEqual(1, reader.stats["http_throttled"])
+        self.assertEqual(1, reader.stats["http_ok"])

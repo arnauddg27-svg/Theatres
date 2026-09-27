@@ -30,6 +30,7 @@ Run:  python3 cinemark_collect.py --discover        # build/refresh the pool
       python3 cinemark_collect.py --selftest        # offline logic checks
 """
 import argparse
+from html import unescape
 import csv
 import json
 import os
@@ -242,6 +243,65 @@ CINEMARK_POST_SHOW_WINDOW_MIN = min(_CINEMARK_WINDOW_RAW, 1350)
 if _CINEMARK_WINDOW_RAW > 1350:
     print(f"CINEMARK_POST_SHOW_WINDOW_MIN={_CINEMARK_WINDOW_RAW} clamped to "
           f"1350 (duplicate-capture ceiling)", flush=True)
+
+
+# ── HTTP seat reads (2026-09-27) ─────────────────────────────────────────────
+# TicketSeatMap is server-rendered: one <button available="True|False"
+# class="seat... seatBlock"> per seat. A plain GET reads the whole map in ~1 s.
+# cinemark.com throttles per address (429 "Just a moment") after a ~15-read
+# burst; at a 5 s pace a GitHub runner read 60/60 maps with zero throttles
+# (run 36292945533), vs the browser lane's 2-3 good maps/min with 44-67% of
+# pages coming back as the client-side "Something went wrong" error. The
+# browser stays for the theatre listings (built client-side).
+CINEMARK_SEAT_FETCH = (os.environ.get("CINEMARK_SEAT_FETCH") or "http").strip().lower()
+CINEMARK_HTTP_PACE_SEC = float(os.environ.get("CINEMARK_HTTP_PACE_SEC", "5"))
+_SEAT_BTN_RE = re.compile(r'<button[^>]*?available="(True|False)"[^>]*?class="[^"]*seatBlock', re.I)
+_TITLE_RE = re.compile(r'class="[^"]*seats-tickets-title[^"]*"[^>]*>\s*([^<]+?)\s*<', re.I)
+
+
+def parse_seat_html(html):
+    """Pure: TicketSeatMap HTML -> seats dict (same keys as SEAT_COUNT_JS)."""
+    av = _SEAT_BTN_RE.findall(html or "")
+    m = _TITLE_RE.search(html or "")
+    return {"total": len(av), "available": av.count("True"), "unavailable": av.count("False"),
+            "census": None, "title": unescape(m.group(1)) if m else ""}
+
+
+class HttpSeatReader:
+    """Paced plain-HTTP seat reader with a back-off on Cinemark's throttle."""
+
+    def __init__(self, pace_sec=None, session=None):
+        self.pace = CINEMARK_HTTP_PACE_SEC if pace_sec is None else pace_sec
+        self.session = session
+        self.next_at = 0.0
+        self.stats = {"http_ok": 0, "http_empty": 0, "http_throttled": 0, "http_error": 0}
+
+    def _sess(self):
+        if self.session is None:
+            from curl_cffi import requests as cr
+            self.session = cr.Session(impersonate="chrome")
+        return self.session
+
+    def read(self, href):
+        url = href if href.startswith("http") else BASE + href
+        for attempt in range(2):
+            wait = self.next_at - time.monotonic()
+            if wait > 0:
+                time.sleep(wait)
+            self.next_at = time.monotonic() + self.pace
+            try:
+                r = self._sess().get(url, timeout=30)
+            except Exception:
+                self.stats["http_error"] += 1
+                return None
+            if r.status_code == 429 or "Just a moment" in r.text[:3000]:
+                self.stats["http_throttled"] += 1
+                self.next_at = time.monotonic() + 30 + self.pace      # let the bucket refill
+                continue
+            seats = parse_seat_html(r.text)
+            self.stats["http_ok" if seats["total"] else "http_empty"] += 1
+            return seats
+        return None
 
 
 def select_showtimes(entries, target_slugs, window_dates, tz_name, now_utc, cap,
@@ -702,6 +762,7 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
         totals["skipped"] += d
         rows.clear()
 
+    http_reader = HttpSeatReader() if CINEMARK_SEAT_FETCH == "http" else None
     with sync_playwright() as p:
         browser = p.chromium.launch(**proxy_egress.launch_kwargs(
             {"headless": headless, "args": ["--disable-blink-features=AutomationControlled"]}))
@@ -712,20 +773,22 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
         for item in revisit:
             if time.monotonic() > deadline or budget.exhausted():
                 break
-            try:
-                page.goto(item["pick"]["href"], wait_until="domcontentloaded",
-                          timeout=30000)
+            seats = http_reader.read(item["pick"]["href"]) if http_reader else None
+            if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                 try:
-                    page.wait_for_selector(
-                        "[class*='seatblock' i], button[class*='seat' i]",
-                        timeout=10000)
-                except Exception:
-                    pass
-                page.wait_for_timeout(1500)
-                seats = page.evaluate(SEAT_COUNT_JS)
-            except Exception as e:
-                print(f"    revisit ERROR {str(e)[:60]}", flush=True)
-                continue
+                    page.goto(item["pick"]["href"], wait_until="domcontentloaded",
+                              timeout=30000)
+                    try:
+                        page.wait_for_selector(
+                            "[class*='seatblock' i], button[class*='seat' i]",
+                            timeout=10000)
+                    except Exception:
+                        pass
+                    page.wait_for_timeout(1500)
+                    seats = page.evaluate(SEAT_COUNT_JS)
+                except Exception as e:
+                    print(f"    revisit ERROR {str(e)[:60]}", flush=True)
+                    continue
             if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                 totals["incomplete"] += 1
                 print(f"    revisit incomplete (map gone post-start?): "
@@ -861,64 +924,68 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
             for pick in picks:
                 if time.monotonic() > deadline or budget.exhausted():
                     break
-                try:
-                    # Navigate the ORIGINAL href — reconstructing it with
-                    # CinemarkMovieId=0 broke the seat render (validation run
-                    # 33424701048: 10/10 incomplete).
-                    href = pick["href"]
-                    page.goto(href if href.startswith("http") else BASE + href,
-                              wait_until="domcontentloaded", timeout=30000)
+                seats = http_reader.read(pick["href"]) if http_reader else None
+                if seats and int(seats.get("total") or 0) >= CINEMARK_MIN_SEATS:
+                    pass      # HTTP read the map; skip the browser load
+                else:
                     try:
-                        page.wait_for_selector(
-                            "[class*='seatblock' i], button[class*='seat' i]",
-                            timeout=12000)
-                    except Exception:
-                        pass
-                    page.wait_for_timeout(1500)
-                    seats = page.evaluate(SEAT_COUNT_JS)
-                    if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
-                        # "Performing security verification" interstitial: a
-                        # transient JS challenge that auto-clears for real
-                        # browsers (load-sensitive — ~55% of pages under the
-                        # sustained scale run, 2/28 on a small run). Wait it
-                        # out and retry once.
+                        # Navigate the ORIGINAL href — reconstructing it with
+                        # CinemarkMovieId=0 broke the seat render (validation run
+                        # 33424701048: 10/10 incomplete).
+                        href = pick["href"]
+                        page.goto(href if href.startswith("http") else BASE + href,
+                                  wait_until="domcontentloaded", timeout=30000)
                         try:
-                            body = (page.inner_text("body") or "")[:400].lower()
+                            page.wait_for_selector(
+                                "[class*='seatblock' i], button[class*='seat' i]",
+                                timeout=12000)
                         except Exception:
-                            body = ""
-                        if "security verification" in body or "verifies" in body:
-                            totals["challenges"] = totals.get("challenges", 0) + 1
+                            pass
+                        page.wait_for_timeout(1500)
+                        seats = page.evaluate(SEAT_COUNT_JS)
+                        if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
+                            # "Performing security verification" interstitial: a
+                            # transient JS challenge that auto-clears for real
+                            # browsers (load-sensitive — ~55% of pages under the
+                            # sustained scale run, 2/28 on a small run). Wait it
+                            # out and retry once.
                             try:
-                                page.wait_for_selector(
-                                    "[class*='seatblock' i], button[class*='seat' i]",
-                                    timeout=15000)
+                                body = (page.inner_text("body") or "")[:400].lower()
                             except Exception:
-                                page.reload(wait_until="domcontentloaded",
-                                            timeout=30000)
+                                body = ""
+                            if "security verification" in body or "verifies" in body:
+                                totals["challenges"] = totals.get("challenges", 0) + 1
                                 try:
                                     page.wait_for_selector(
-                                        "[class*='seatblock' i], "
-                                        "button[class*='seat' i]", timeout=12000)
+                                        "[class*='seatblock' i], button[class*='seat' i]",
+                                        timeout=15000)
                                 except Exception:
-                                    pass
-                            page.wait_for_timeout(1200)
-                            seats = page.evaluate(SEAT_COUNT_JS)
-                    if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
-                        # Seat grid may live in an embedded frame — evaluate()
-                        # does not pierce iframes.
-                        for fr in page.frames[1:]:
-                            try:
-                                alt = fr.evaluate(SEAT_COUNT_JS)
-                            except Exception:
-                                continue
-                            if int((alt or {}).get("total") or 0) > \
-                                    int((seats or {}).get("total") or 0):
-                                alt["title"] = alt.get("title") or (seats or {}).get("title", "")
-                                alt["from_frame"] = fr.url[:90]
-                                seats = alt
-                except Exception as e:
-                    print(f"    seatmap ERROR {str(e)[:60]}", flush=True)
-                    continue
+                                    page.reload(wait_until="domcontentloaded",
+                                                timeout=30000)
+                                    try:
+                                        page.wait_for_selector(
+                                            "[class*='seatblock' i], "
+                                            "button[class*='seat' i]", timeout=12000)
+                                    except Exception:
+                                        pass
+                                page.wait_for_timeout(1200)
+                                seats = page.evaluate(SEAT_COUNT_JS)
+                        if int((seats or {}).get("total") or 0) < CINEMARK_MIN_SEATS:
+                            # Seat grid may live in an embedded frame — evaluate()
+                            # does not pierce iframes.
+                            for fr in page.frames[1:]:
+                                try:
+                                    alt = fr.evaluate(SEAT_COUNT_JS)
+                                except Exception:
+                                    continue
+                                if int((alt or {}).get("total") or 0) > \
+                                        int((seats or {}).get("total") or 0):
+                                    alt["title"] = alt.get("title") or (seats or {}).get("title", "")
+                                    alt["from_frame"] = fr.url[:90]
+                                    seats = alt
+                    except Exception as e:
+                        print(f"    seatmap ERROR {str(e)[:60]}", flush=True)
+                        continue
                 if not seats or int(seats.get("total") or 0) < CINEMARK_MIN_SEATS:
                     totals["incomplete"] += 1
                     snippet = ""
@@ -945,11 +1012,14 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
                     pick = {**pick, "title": canon}
                 totals["captured"] += 1
                 rows.append(build_row(th, pick, seats, weekend_of, run_id, check_time))
-                time.sleep(random.uniform(*CINEMARK_POLITE_SEC))
+                if not http_reader:
+                    time.sleep(random.uniform(*CINEMARK_POLITE_SEC))   # the HTTP reader paces itself
             _flush()
         browser.close()
 
     _flush()
+    if http_reader:
+        totals.update(http_reader.stats)
     totals.setdefault("written", 0)
     print(budget.summary(), flush=True)
     print(budget.breakdown(), flush=True)
@@ -960,7 +1030,9 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
           f"incomplete={totals['incomplete']} blocks={totals['blocks']} "
           f"challenges={totals.get('challenges', 0)} "
           f"date_nav ok/empty/failed={totals['date_nav_ok']}/"
-          f"{totals['date_nav_empty']}/{totals['date_nav_failed']}\n"
+          f"{totals['date_nav_empty']}/{totals['date_nav_failed']} "
+          f"http ok/empty/throttled/error={totals.get('http_ok', 0)}/{totals.get('http_empty', 0)}/"
+          f"{totals.get('http_throttled', 0)}/{totals.get('http_error', 0)} links={totals.get('links_stored', 0)}\n"
           f"  -> {CINEMARK_CSV}", flush=True)
     return totals
 
