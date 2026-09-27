@@ -54,12 +54,12 @@ class CinemarkCollectTest(unittest.TestCase):
         sys.modules[spec.name] = mod
         spec.loader.exec_module(mod)
         cin = [s for s in mod.SLOTS if s.inputs.get("phase") == "scrape-cinemark"]
-        n = mod.CINEMARK_PRE_SLICES
-        self.assertEqual(4 * n, len(cin))
+        n, n_post = mod.CINEMARK_PRE_SLICES, mod.CINEMARK_POST_SLICES
+        self.assertEqual(3 * n + n_post, len(cin))
         pre = [s for s in cin if s.inputs.get("cinemark_mode") != "post"]
         post = [s for s in cin if s.inputs.get("cinemark_mode") == "post"]
         self.assertEqual(3 * n, len(pre))
-        self.assertEqual(n, len(post))
+        self.assertEqual(n_post, len(post))
         for s in pre:
             self.assertEqual(frozenset(range(7)), s.cron_days, s.name)
         for s in post:
@@ -71,8 +71,8 @@ class CinemarkCollectTest(unittest.TestCase):
             self.assertEqual({(str(i), str(n)) for i in range(n)},
                              {(s.inputs["cinemark_shard"], s.inputs["cinemark_num_shards"]) for s in at})
         self.assertEqual(len(pre), len({s.name for s in pre}))       # distinct slot names = distinct queues
-        # post census: same 6 slices, in parallel (2026-09-27)
-        self.assertEqual({(str(i), str(n)) for i in range(n)},
+        # post census: 12 parallel slices, every showing (2026-09-27)
+        self.assertEqual({(str(i), str(n_post)) for i in range(n_post)},
                          {(s.inputs["cinemark_shard"], s.inputs["cinemark_num_shards"]) for s in post})
 
 
@@ -233,6 +233,9 @@ class PostCensusDepthTest(unittest.TestCase):
         shard = cc.post_candidates(links, "2026-09-25", {"Primetime"}, now, pool_names={"B"}, per_film=3, window_min=1080)
         self.assertEqual({"B"}, {g["theatre"]["name"] for g in shard})
         self.assertEqual([], cc.post_candidates(links, "2026-09-25", {"Other"}, now))
+        # default (2026-09-27): every started showing, no per-film cap
+        self.assertEqual(0, cc.CINEMARK_POST_PER_FILM)
+        self.assertEqual(10, len(cc.post_candidates(links, "2026-09-25", {"Primetime"}, now, window_min=1080)))
 
     def test_append_links_dedupes_on_href(self):
         import tempfile, os

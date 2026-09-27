@@ -102,6 +102,9 @@ def pipeline_inputs(
 
 
 CINEMARK_PRE_SLICES = 6
+# Post census reads EVERY stored showing (2026-09-27, ~8.4k/day on a
+# weekend) -> twice the pre slicing so each runner stays ~700 reads.
+CINEMARK_POST_SLICES = 12
 
 
 def cinemark_slot_inputs(mode: str = "", shard: int | None = None,
@@ -425,13 +428,13 @@ SLOTS: tuple[Slot, ...] = (
              frozenset({0, 1, 4, 5, 6}), h, 55, harkins_slot_inputs("post"))
         for h in (*range(18, 24), *range(0, 7))
     ],
-    # Post-show census in 6 parallel slices (2026-09-27): up to 3 showings per
-    # theatre-film-day from the stored link set, ~6x the old single pass.
+    # Post-show census in 12 parallel slices (2026-09-27): EVERY stored
+    # showing of the day, each slice ~1/12 of the pool on its own runner.
     *[
         Slot(f"cinemark post 06:20Z s{s}", "box office scrape-cinemark ALL",
              frozenset({0, 1, 5, 6}), 6, 20 + 3 * s,
-             cinemark_slot_inputs("post", shard=s, num_shards=CINEMARK_PRE_SLICES))
-        for s in range(CINEMARK_PRE_SLICES)
+             cinemark_slot_inputs("post", shard=s, num_shards=CINEMARK_POST_SLICES))
+        for s in range(CINEMARK_POST_SLICES)
     ],
     Slot(
         "regular scrape 07Z",

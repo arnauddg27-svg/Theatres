@@ -240,7 +240,11 @@ def theatre_from_url(url):
 # once proxy reads lifted the 70-maps-per-address cap (pre slices captured
 # ~98% of picks at ~7 MB each) and seat maps proved readable 12.6+ h after
 # showtime, so the nightly pass reaches the day's matinees.
-CINEMARK_POST_PER_FILM = _env_int("CINEMARK_POST_PER_FILM", 6)
+# 6 -> 0 (= EVERY showing) on 2026-09-27: Sunday's link set had a median of
+# 10 showings per theatre-film-day, so 6 left ~39% of showings (3,234 of
+# 8,363) uncounted. Cost ~36 KB/proxy read; post runs as 12 slices so each
+# stays ~700 reads (~55 min, ~23 MB) inside the 90-min deadline / 40 MB cap.
+CINEMARK_POST_PER_FILM = _env_int("CINEMARK_POST_PER_FILM", 0)
 _CINEMARK_WINDOW_RAW = _env_int("CINEMARK_POST_SHOW_WINDOW_MIN", 1080)
 CINEMARK_POST_SHOW_WINDOW_MIN = min(_CINEMARK_WINDOW_RAW, 1350)
 if _CINEMARK_WINDOW_RAW > 1350:
