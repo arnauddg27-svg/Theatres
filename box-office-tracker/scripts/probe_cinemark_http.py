@@ -30,7 +30,7 @@ def main():
     links = [r["href"].replace("https://www.cinemark.com", "") for r in rows]
     print(f"stored links available: {len(rows)}", flush=True)
     t0 = time.time()
-    for h in links[:60]:
+    for h in links[:int(__import__('os').environ.get('PROBE_MAPS', '110'))]:
         try:
             r = s.get("https://www.cinemark.com" + h, timeout=30)
             av = SEAT_RE.findall(r.text)
@@ -43,12 +43,12 @@ def main():
                 print(f"  map status={r.status_code} seats={len(av)} sold={av.count('False')} {len(r.content)//1024}KB", flush=True)
             else:
                 stats["maps_empty"] += 1
-                print(f"  map status={r.status_code} EMPTY {len(r.content)//1024}KB title={re.search(r'<title>([^<]*)', r.text).group(1)[:50] if '<title>' in r.text else ''}", flush=True)
+                print(f"  map#{len([1]) and stats['maps_ok'] + stats['maps_empty']} status={r.status_code} EMPTY {len(r.content)//1024}KB title={re.search(r'<title>([^<]*)', r.text).group(1)[:50] if '<title>' in r.text else ''}", flush=True)
         except Exception as e:
             stats["maps_fail"] += 1
             print(f"  map {type(e).__name__}", flush=True)
         time.sleep(float(__import__('os').environ.get('PROBE_PACE_SEC', '5')))
-    n = max(1, len(links[:60]))
+    n = max(1, len(links[:int(__import__('os').environ.get('PROBE_MAPS', '110'))]))
     print(f"SUMMARY {stats} per_map={(time.time() - t0) / n:.2f}s")
     return 0
 
