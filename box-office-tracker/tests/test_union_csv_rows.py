@@ -42,5 +42,16 @@ class UnionCsvRowsTest(unittest.TestCase):
             self.assertEqual("", rows[0]["extra"])
 
 
+    def test_key_dedupes_same_showing_read_by_two_runners(self):
+        with tempfile.TemporaryDirectory() as td:
+            main = os.path.join(td, "main.csv"); ours = os.path.join(td, "ours.csv")
+            f = ["bucket", "showing", "snap", "sold"]
+            _write(main, f, [{"bucket": "02:00", "showing": "A", "snap": "02:10:01", "sold": "5"}])
+            _write(ours, f, [{"bucket": "02:00", "showing": "A", "snap": "02:10:07", "sold": "5"},
+                             {"bucket": "02:00", "showing": "B", "snap": "02:10:07", "sold": "1"}])
+            self.assertEqual(1, U.union_rows(ours, main, key=["bucket", "showing"]))
+            self.assertEqual(["A", "B"], [r["showing"] for r in _read(main)])
+
+
 if __name__ == "__main__":
     unittest.main()

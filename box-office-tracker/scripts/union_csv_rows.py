@@ -7,27 +7,33 @@ rows are dropped after three retries. Instead each runner saves its own copy,
 resets to the latest main and re-applies its rows with this union — idempotent,
 so a retry after a lost push race never duplicates.
 
-  python3 scripts/union_csv_rows.py OURS.csv TARGET.csv   -> prints rows added
+  python3 scripts/union_csv_rows.py OURS.csv TARGET.csv [--key f1,f2,...]   -> prints rows added
+
+--key dedupes on those columns instead of the whole row: two runners reading
+the same showing in the same snapshot bucket write rows that differ only in
+snapshot_time/run_id (three catch-up Alamo post passes at 02:10Z on
+2026-09-27 wrote the same 57 showings three times).
 """
 import csv
 import sys
 
 
-def union_rows(ours_path, target_path):
+def union_rows(ours_path, target_path, key=None):
     with open(target_path, newline="") as f:
         reader = csv.DictReader(f)
         fields = list(reader.fieldnames or [])
-        have = {tuple((k, (r.get(k) or "")) for k in fields) for r in reader}
+        keyf = list(key) if key else fields
+        have = {tuple((k, (r.get(k) or "")) for k in keyf) for r in reader}
     with open(ours_path, newline="") as f:
         ours = csv.DictReader(f)
         extra = [c for c in (ours.fieldnames or []) if c not in fields]
         fields_out = fields + extra
         new = []
         for r in ours:
-            key = tuple((k, (r.get(k) or "")) for k in fields)
-            if key in have:
+            k_ = tuple((k, (r.get(k) or "")) for k in keyf)
+            if k_ in have:
                 continue
-            have.add(key)
+            have.add(k_)
             new.append(r)
     if not new:
         return 0
@@ -45,4 +51,7 @@ def union_rows(ours_path, target_path):
 
 
 if __name__ == "__main__":
-    print(union_rows(sys.argv[1], sys.argv[2]))
+    key = None
+    if "--key" in sys.argv:
+        key = [k for k in sys.argv[sys.argv.index("--key") + 1].split(",") if k]
+    print(union_rows(sys.argv[1], sys.argv[2], key=key))
