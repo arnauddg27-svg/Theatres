@@ -826,6 +826,14 @@ jobs:
         continue-on-error: true
         run: python scripts/import_wiki_pageviews.py
 
+      - name: Census coverage scorecard (informational)
+        # Share of America's seats sold that we COUNT at/after showtime, per
+        # film-day with a reported national gross (AMC post-show + Cinemark /
+        # Alamo / Harkins post-show census). Goal set 2026-09-26: push it up.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        run: python3 scripts/census_coverage.py || echo "::warning::census coverage scorecard crashed — coverage not recorded this run"
+
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
