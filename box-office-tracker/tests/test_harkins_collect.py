@@ -53,10 +53,10 @@ class HarkinsLaneTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "h.csv")
             row = H.build_row(th, perf, "Heart of the Beast", H.seat_counts({"numberOfSeats": 119, "openSeats": 87}),
-                              "2026-09-25", "r", before)
+                              "2026-09-25", "r", before, vista_id="0000000002")
             append_unique_fandango_rows([row], csv_path=__import__("pathlib").Path(path))
             got = H.stored_post_performances("2026-09-25", datetime(2026, 9, 27, 2, 51, tzinfo=timezone.utc), path=path)
-            self.assertEqual([(16, "573969")], [(t, p["sessionId"]) for t, p, _ in got])
+            self.assertEqual([(16, "573969", "0000000002")], [(t, p["sessionId"], p["vistaId"]) for t, p, _ in got])
             self.assertEqual([], H.stored_post_performances("2026-09-25", before, path=path))
 
 

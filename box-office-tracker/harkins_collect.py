@@ -106,7 +106,7 @@ def pick_performances(day, titles_by_id, target_slugs, now_utc, mode="pre"):
     return out
 
 
-def build_row(theatre, perf, title, counts, weekend_of, run_id, now_utc, post=False):
+def build_row(theatre, perf, title, counts, weekend_of, run_id, now_utc, post=False, vista_id=""):
     from scraper import snapshot_bucket
     local = datetime.fromisoformat(perf["showtimeDate"])
     start = datetime.fromisoformat(perf["showtimeUTCDate"].replace("Z", "+00:00"))
@@ -123,7 +123,8 @@ def build_row(theatre, perf, title, counts, weekend_of, run_id, now_utc, post=Fa
         "total_seats": counts["total"], "reserved_seats": counts["sold"], "available_seats": counts["available"],
         "occupancy_pct": occ, "delta_reserved_since_previous": "",
         "amc_seat_map_url": perf.get("ticketingUrl", ""),
-        "notes": f"harkins-api; {'post-show-census; ' if post else ''}sold_out={int(bool(perf.get('soldOut')))}",
+        "notes": f"harkins-api; {'post-show-census; ' if post else ''}sold_out={int(bool(perf.get('soldOut')))}"
+                 + (f"; vista={vista_id}" if vista_id else ""),
         "chain": "HARK", "row_kind": "post-show-census" if post else "harkins-api",
     }
 
@@ -157,11 +158,45 @@ def stored_post_performances(weekend_of, now_utc, path=None, window_min=None):
             if not (0 <= mins <= window_min):
                 continue
             tid, sess = sid.split(":", 1)
-            out.append((int(tid), {"sessionId": sess, "showtimeUTCDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            import re as _re
+            vm = _re.search(r"vista=(\w+)", r.get("notes") or "")
+            out.append((int(tid), {"sessionId": sess, "vistaId": vm.group(1) if vm else "", "showtimeUTCDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
                                    "showtimeDate": local.strftime("%Y-%m-%dT%H:%M:%S"), "businessDate": r["show_date"],
                                    "format": r.get("auditorium_type", ""), "ticketingUrl": r.get("amc_seat_map_url", "")},
                         r["movie_title"]))
     return out
+
+
+def stored_sessions_by_theatre(weekend_of, path=None):
+    """{theatre_id: [session ids, latest showtime first]} from stored rows —
+    lookup candidates for the theatre's vista id."""
+    import csv
+    path = Path(path or HARKINS_CSV)
+    out = {}
+    if path.exists():
+        with open(path, newline="") as f:
+            rows = [r for r in csv.DictReader(f) if r.get("weekend_of") == weekend_of]
+        rows.sort(key=lambda r: (r.get("show_date", ""), r.get("showtime", "")), reverse=True)
+        for r in rows:
+            sid = r.get("showtime_id") or ""
+            if ":" in sid:
+                tid, sess = sid.split(":", 1)
+                lst = out.setdefault(int(tid), [])
+                if sess not in lst:
+                    lst.append(sess)
+    return out
+
+
+def lookup_vista_id(theatre_id, session_ids, tries=6):
+    """GetTheatreShowtime returns no data for a started session, so try the
+    given sessions in order (latest showtimes first) until one resolves."""
+    for sess in session_ids[:tries]:
+        try:
+            info = _get(f"{TIX}/GetTheatreShowtime/harkinsid/{theatre_id}/sessionid/{sess}")
+            return info["data"]["theatre"]["value"][0]["id"]
+        except Exception:
+            continue
+    raise LookupError(f"no vista id for Harkins theatre {theatre_id}")
 
 
 def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
@@ -187,22 +222,28 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     titles_by_id, vista_ids, rows = {}, {}, []
     if mode == "post":
         by_id = {int(t["id"]): t for t in theatres}
+        sessions_by_theatre = stored_sessions_by_theatre(weekend_of)
         for tid, perf, title in stored_post_performances(weekend_of, now_utc):
             th = by_id.get(tid)
             if not th:
                 continue
             totals["matched"] += 1
             try:
+                # GetTheatreShowtime returns no data for a STARTED session
+                # (2026-09-27: 12/40 post reads failed on it), so use the vista
+                # id the pre pass stored on the row.
+                if perf.get("vistaId"):
+                    vista_ids.setdefault(tid, perf["vistaId"])
                 if tid not in vista_ids:
-                    info = _get(f"{TIX}/GetTheatreShowtime/harkinsid/{tid}/sessionid/{perf['sessionId']}")
-                    vista_ids[tid] = info["data"]["theatre"]["value"][0]["id"]
+                    vista_ids[tid] = lookup_vista_id(tid, [perf["sessionId"]] + sessions_by_theatre.get(tid, []))
                 plan = _get(f"{TIX}/GetSeatPlan/cinemaid/{vista_ids[tid]}/sessionId/{perf['sessionId']}")["data"]
                 counts = seat_counts(plan)
             except Exception:
                 totals["errors"] += 1
                 continue
             if counts["total"]:
-                rows.append(build_row(th, perf, title, counts, weekend_of, run_id, now_utc, post=True))
+                rows.append(build_row(th, perf, title, counts, weekend_of, run_id, now_utc, post=True,
+                                      vista_id=vista_ids.get(tid, "")))
                 totals["captured"] += 1
             time.sleep(SLEEP)
         theatres = []          # the schedule walk below is the pre pass only
@@ -236,7 +277,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                 if not counts["total"]:
                     totals["empty"] += 1
                     continue
-                rows.append(build_row(th, perf, title, counts, weekend_of, run_id, now_utc, post=(mode == "post")))
+                rows.append(build_row(th, perf, title, counts, weekend_of, run_id, now_utc,
+                                      post=(mode == "post"), vista_id=vista_ids.get(th["id"], "")))
                 totals["captured"] += 1
                 time.sleep(SLEEP)
             time.sleep(SLEEP)
