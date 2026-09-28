@@ -347,3 +347,29 @@ class PerAddressCapTest(unittest.TestCase):
             self.assertIsNone(r2.read("/e"))         # budget spent -> stop, never go direct-unbounded
         finally:
             _t.sleep = orig
+
+
+class HttpErrorStreakTest(unittest.TestCase):
+    """2026-09-28: census slice s0 burned its deadline on 125 unlogged HTTP
+    errors; a direct-path error streak now flips to the proxy and errors log
+    their kind."""
+
+    def test_direct_error_streak_switches_to_proxy_and_counts_kinds(self):
+        class Boom:
+            def get(self, url, timeout=None):
+                raise ConnectionError("boom")
+        html = ('<button available="True" class="a seatBlock"></button>'
+                '<button available="False" class="a seatBlock"></button>')
+
+        class R:
+            status_code = 200; text = html; content = html.encode(); headers = {}
+        r = cc.HttpSeatReader(pace_sec=0, session=Boom(), proxy_url="http://proxy.invalid")
+        r._proxy_get = lambda url: R()
+        for _ in range(cc.CINEMARK_ERROR_STREAK - 1):
+            self.assertIsNone(r.read("/TicketSeatMap/?x=1"))
+        self.assertFalse(r.via_proxy)
+        seats = r.read("/TicketSeatMap/?x=1")          # streak reached -> proxy -> read succeeds
+        self.assertTrue(r.via_proxy)
+        self.assertEqual(2, seats["total"])
+        self.assertEqual({"ConnectionError": cc.CINEMARK_ERROR_STREAK}, r.error_kinds)
+        self.assertEqual(cc.CINEMARK_ERROR_STREAK, r.stats["http_error"])

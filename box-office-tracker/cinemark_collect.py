@@ -287,6 +287,13 @@ def parse_seat_html(html):
 # the browser lane reads that one, and browser pages through the proxy cost
 # 6.3 MB/theatre (rejected 2026-09-12).
 CINEMARK_PROXY_MAX_MB = float(os.environ.get("CINEMARK_PROXY_MAX_MB", "40"))
+# Seat-read timeout and the direct error streak that flips to the proxy.
+# 2026-09-28 06:20Z census: slice s0 spent its 90-min deadline on 125 HTTP
+# errors (up to 30 s each, kind never logged) and captured 349 maps vs ~700
+# for the other 11 slices. Errors now log their kind, and a streak of
+# direct-path errors switches to the proxy like the 404 streak does.
+CINEMARK_HTTP_TIMEOUT_SEC = _env_int("CINEMARK_HTTP_TIMEOUT_SEC", 20)
+CINEMARK_ERROR_STREAK = _env_int("CINEMARK_ERROR_STREAK", 5)
 CINEMARK_PROXY_PACE_SEC = float(os.environ.get("CINEMARK_PROXY_PACE_SEC", "1"))
 CINEMARK_CAP_404_STREAK = 3
 PROXY_OVERHEAD_BYTES = 6 * 1024
@@ -304,6 +311,8 @@ class HttpSeatReader:
         self.proxy_bytes = 0
         self.via_proxy = False
         self.streak_404 = 0
+        self.streak_error = 0
+        self.error_kinds = {}
         self.proxy_session = None
         self.next_at = 0.0
         self.stats = {"http_ok": 0, "http_empty": 0, "http_throttled": 0, "http_error": 0,
@@ -330,7 +339,8 @@ class HttpSeatReader:
             self.proxy_session = cr.Session(impersonate="chrome",
                                             curl_options={CurlOpt.SSL_EC_CURVES: seat_fetch_http.TLS_CURVES})
         try:
-            r = self.proxy_session.get(url, timeout=30, proxies={"http": self.proxy_url, "https": self.proxy_url})
+            r = self.proxy_session.get(url, timeout=CINEMARK_HTTP_TIMEOUT_SEC,
+                                       proxies={"http": self.proxy_url, "https": self.proxy_url})
         finally:
             seat_fetch_http.drop_thread_connection(self.proxy_session)
         # decoded length overstates the wire bytes ~9x; bill the compressed
@@ -354,10 +364,25 @@ class HttpSeatReader:
                 time.sleep(wait)
             self.next_at = time.monotonic() + (CINEMARK_PROXY_PACE_SEC if use_proxy else self.pace)
             try:
-                r = self._proxy_get(url) if use_proxy else self._sess().get(url, timeout=30)
-            except Exception:
+                r = self._proxy_get(url) if use_proxy else self._sess().get(url, timeout=CINEMARK_HTTP_TIMEOUT_SEC)
+            except Exception as exc:
                 self.stats["http_error"] += 1
+                kind = type(exc).__name__
+                self.error_kinds[kind] = self.error_kinds.get(kind, 0) + 1
+                n = self.stats["http_error"]
+                if n <= 3 or n % 25 == 0:
+                    print(f"    http error sample #{n} ({'proxy' if use_proxy else 'direct'}): "
+                          f"{kind}: {str(exc)[:90]} | kinds={self.error_kinds}", flush=True)
+                if not use_proxy:
+                    self.streak_error += 1
+                    if self.streak_error >= CINEMARK_ERROR_STREAK and self.proxy_available():
+                        self.via_proxy = True
+                        print(f"    {self.streak_error} consecutive direct HTTP errors — "
+                              f"switching to the residential proxy", flush=True)
+                        continue
                 return None
+            if not use_proxy:
+                self.streak_error = 0
             if r.status_code == 404:
                 # Direct: a run of 404s means this address hit Cinemark's
                 # 70-map cap -> switch to the proxy and re-read this map there.
