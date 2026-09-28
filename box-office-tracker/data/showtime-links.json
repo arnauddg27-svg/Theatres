@@ -2,7 +2,7 @@
   "date": "2026-10-02",
   "weekend_of": "2026-10-02",
   "collected_local_date": "2026-09-28",
-  "collected_at": "2026-09-28T15:45:40.030963+00:00",
+  "collected_at": "2026-09-28T16:12:45.535035+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -18364,12 +18364,1538 @@
           }
         ]
       }
+    },
+    "AMC Chapel Hills 13": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147233664",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "4:05pm",
+                "showtime_id": "147233674",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "147233675",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531968+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "4:05pm",
+                "showtime_id": "147233667",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "147233673",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531906+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "147233666",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531940+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147233664",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC Albuquerque 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147232076",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147232174",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147232077",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147232070",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232067",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147232069",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147232068",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147232142",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147232140",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147232141",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:08:21.102744+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147232145",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147232073",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147232143",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147232072",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531909+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147232061",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147232139",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232064",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147232137",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147232066",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147232138",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147232065",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531926+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "147232076",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147232174",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147232077",
+            "format": "IMAX at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Layton Hills 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147046427",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147326800",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147046510",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "147046511",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147046512",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147046470",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531976+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147046415",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147046418",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531944+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147046507",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "147046508",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147046509",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147046469",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531964+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147046427",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "147326800",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC Brighton 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147193550",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147193455",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "147193456",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147193530",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147193527",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531948+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147193443",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147193511",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:08:21.102777+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147193473",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147193474",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147193531",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147193532",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531894+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147193550",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Provo 8": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147030943",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147030936",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147030944",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531918+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147030940",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147030939",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147030938",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531929+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147030943",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN SOUTHGATE 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147048239",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "147048240",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147048242",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147048243",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531984+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147048356",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "147048234",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147048235",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147048236",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531898+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147048351",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "2:40pm",
+                "showtime_id": "147048237",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:50pm",
+                "showtime_id": "147048238",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147048233",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531922+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "147048239",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "147048240",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Missoula 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147222971",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147222974",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531991+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147222978",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147222979",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147222980",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532005+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147222975",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147222976",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147222977",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531952+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147222971",
+            "format": "IMAX at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Castle Rock 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147181091",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147180994",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181102",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531956+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147181090",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147181089",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147181088",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181038",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531933+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147181087",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147181086",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147181092",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181039",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531995+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147181091",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC 9+CO 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:05pm",
+                "showtime_id": "147223597",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:10pm",
+                "showtime_id": "147223595",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147223665",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147223649",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "147223650",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531902+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147223662",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "147223654",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147223652",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "147223653",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532015+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147223661",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "147223660",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147223658",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "147223659",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531980+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "147223597",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "147223595",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147223665",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Fort Collins 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147220793",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147220795",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147220756",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531998+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "147220800",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147220799",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147220798",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147220755",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531913+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "147220803",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147220802",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147220801",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531936+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147220793",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC Orchard 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147079043",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147079094",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147079044",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147079079",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147079133",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147079070",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "147079132",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147079069",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "147079135",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147079068",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:35pm",
+                "showtime_id": "147079137",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147079071",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079067",
+                "format": "IMAX with Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147079062",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147079061",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147079060",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079059",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147079072",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147079127",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147079129",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147079130",
+                "format": "XL at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:08:21.102800+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147079064",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079063",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147079078",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147079141",
+                "format": "XL at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532011+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-03",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "11:15am",
+            "showtime_id": "147079133",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "12:50pm",
+            "showtime_id": "147079070",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "147079132",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147079069",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147079135",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147079068",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:35pm",
+            "showtime_id": "147079137",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147079071",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147079067",
+            "format": "IMAX with Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC West Jordan 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147049497",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147049498",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532002+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147049499",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147049500",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147049501",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532009+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147049502",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147049503",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147049504",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.532017+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-01": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147049494",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "147049495",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-01",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147049494",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "147049495",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
+    },
+    "AMC Shiloh 14": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-02": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147235440",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:55pm",
+                "showtime_id": "147235536",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147235381",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-03": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147235433",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147235531",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147235434",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "147235532",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "147235435",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "147235533",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:40pm",
+                "showtime_id": "147235398",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147235436",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531972+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-04": {
+          "movies": {
+            "Digger": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147235437",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147235438",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "147235431",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147235432",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "11:50am",
+                "showtime_id": "147235528",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147235529",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147235530",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147235397",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-09-28T16:12:45.531987+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-02",
+      "movies": {
+        "Digger": [
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147235440",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:55pm",
+            "showtime_id": "147235536",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147235381",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.9397,
-    "fresh": 436,
-    "expected": 464,
+    "ratio": 0.9615,
+    "fresh": 50,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
