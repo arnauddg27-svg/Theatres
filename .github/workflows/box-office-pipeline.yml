@@ -1328,6 +1328,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           csv=box-office-tracker/data/webedia-pre-reservation-snapshots.csv
+          cache=box-office-tracker/data/theatres-webedia.json
+          [ -f "$cache" ] && cp "$cache" /tmp/theatres-webedia.json
           [ -f "$csv" ] || { echo "No Webedia data."; exit 0; }
           cp "$csv" /tmp/webedia-ours.csv
           for i in 1 2 3 4 5; do
@@ -1339,6 +1341,9 @@ jobs:
               cp /tmp/webedia-ours.csv "$csv"; added=all
             fi
             echo "Webedia rows added on top of main: $added"
+            # theatre-list cache (2026-09-28): the collector falls back to it
+            # when the sites' daily rebuild leaves discovery empty.
+            if [ -f /tmp/theatres-webedia.json ]; then cp /tmp/theatres-webedia.json "$cache"; git add "$cache"; fi
             # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
             # archives so the CSV never nears GitHub's 100 MB push limit.
             python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/webedia-archive

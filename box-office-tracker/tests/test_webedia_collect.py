@@ -53,3 +53,30 @@ class WebediaTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DiscoveryCacheTest(unittest.TestCase):
+    """2026-09-28 14:15Z: all seven sites returned no theatres for ~15 min and
+    three passes failed; discovery now falls back to the last good list."""
+
+    def test_falls_back_to_cached_list(self):
+        import tempfile, os
+        class Dead:
+            def get(self, url, timeout=None): raise ConnectionError("cdn")
+        class Resp:
+            def __init__(self, j): self._j = j
+            def json(self): return self._j
+        class Live:
+            def get(self, url, timeout=None):
+                if url.endswith("index/page-data.json"): return Resp({"staticQueryHashes": ["h1"]})
+                return Resp({"data": [{"__typename": "Theater", "id": "X0KAO", "name": TH["name"],
+                                      "timeZone": TH["timeZone"], "screens": []}]})
+        with tempfile.TemporaryDirectory() as d:
+            old = W.THEATRES_CACHE; W.THEATRES_CACHE = Path(d) / "theatres-webedia.json"
+            try:
+                self.assertEqual([], W.discover_theatres(Dead(), "https://x", chain="LMRK"))       # nothing cached yet
+                self.assertEqual(["X0KAO"], [t["id"] for t in W.discover_theatres(Live(), "https://x", chain="LMRK")])
+                self.assertEqual(["X0KAO"], [t["id"] for t in W.discover_theatres(Dead(), "https://x", chain="LMRK")])  # cache
+                self.assertEqual([], W.discover_theatres(Dead(), "https://x", chain="SHOW"))       # other chain: no cache
+            finally:
+                W.THEATRES_CACHE = old

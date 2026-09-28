@@ -1,0 +1,850 @@
+{
+"BBTH": [
+{
+"id": "G00SC",
+"name": "Airway Heights 8",
+"screens": 8,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X11HL",
+"name": "Ankeny 12 w/ B-Roll Bowling",
+"screens": 24,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0Y7E",
+"name": "Athens 12",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0VDN",
+"name": "Blacksburg 11 w/ B-Roll Bowling",
+"screens": 11,
+"timeZone": "America/New_York"
+},
+{
+"id": "X08U5",
+"name": "Bloomington 13 at Mall of America",
+"screens": 13,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X04CS",
+"name": "Bolivar Cinema 5",
+"screens": 5,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X04CG",
+"name": "Chillicothe Grand 6",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X07FY",
+"name": "Claremore Cinema 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0VBW",
+"name": "Clinton Missouri Cinema 6",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X085J",
+"name": "Conway 12",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "G01I1",
+"name": "Creve Coeur West Olive 10 w/ B-Roll Bowling",
+"screens": 16,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X04HL",
+"name": "Dodge City Village 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X04IE",
+"name": "Festus 8 Cinema",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0MY0",
+"name": "Grain Valley Marketplace 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G04LY",
+"name": "Grand Island 7 w/B-Roll Bowling",
+"screens": 7,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0ARP",
+"name": "Hannibal Main Street Cinema 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0FOP",
+"name": "Harrisonville Cineplex",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVA",
+"name": "Hutchinson Mall 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G05M7",
+"name": "Joplin 7 w/Duckpin Bowling",
+"screens": 7,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0U08",
+"name": "Junction City Gem",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVG",
+"name": "KC Northland 14",
+"screens": 14,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X10JB",
+"name": "Leavenworth Landing 5",
+"screens": 5,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X043F",
+"name": "Lebanon Ritz 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVE",
+"name": "Lee's Summit 16",
+"screens": 16,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X110Z",
+"name": "Lee's Summit New Longview 7",
+"screens": 7,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X019Q",
+"name": "Liberty Cinema 12 - Missouri",
+"screens": 12,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G0FO5",
+"name": "Liberty Township 15 - Ohio",
+"screens": 15,
+"timeZone": "America/New_York"
+},
+{
+"id": "G028B",
+"name": "Macedonia 15",
+"screens": 15,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0815",
+"name": "Miami Cineplex",
+"screens": 4,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X04HD",
+"name": "Moberly Five and Drive",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0433",
+"name": "Monett Plaza 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X05GC",
+"name": "Neosho Cinema 6",
+"screens": 6,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G01J4",
+"name": "North Richland Hills 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G01AF",
+"name": "Omaha Oakview Plaza 14",
+"screens": 14,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVH",
+"name": "Overland Park 16",
+"screens": 16,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0LMM",
+"name": "Ozark/Nixa 12",
+"screens": 12,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVF",
+"name": "Port Arthur Central Mall 10",
+"screens": 10,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G01JE",
+"name": "Portland Northshore 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G01W1",
+"name": "Red Oak 12 w/B-Roll Bowling",
+"screens": 12,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X02X0",
+"name": "Ridgeland Northpark 14",
+"screens": 14,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X06N6",
+"name": "Sapulpa Cinema 8",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UV6",
+"name": "Shawnee 18",
+"screens": 18,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X12A8",
+"name": "Topeka Wheatfield 9",
+"screens": 9,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0UVB",
+"name": "Tulsa Starworld 20",
+"screens": 20,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G02OE",
+"name": "Warrensburg 10",
+"screens": 10,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0U09",
+"name": "Waynesville Patriot 12",
+"screens": 12,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0WUF",
+"name": "Wentzville Tower 12",
+"screens": 12,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G00YM",
+"name": "Wesley Chapel The Grove 16",
+"screens": 16,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0JZ8",
+"name": "Wildwood 10",
+"screens": 10,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G0GAZ",
+"name": "Wooster 9",
+"screens": 9,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0N39",
+"name": "Wylie 12",
+"screens": 12,
+"timeZone": "America/Chicago"
+}
+],
+"EPIC": [
+{
+"id": "G0205",
+"name": "Epic Theatres Old Mill Playhouse",
+"screens": 8,
+"timeZone": "America/New_York"
+},
+{
+"id": "X01YS",
+"name": "Epic Theatres Stuart",
+"screens": 8,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0X0T",
+"name": "Epic Theatres at Lee Vista with Epic XL",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X114I",
+"name": "Epic Theatres at Mount Dora with Epic XL",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0X3V",
+"name": "Epic Theatres at Oakleaf with Epic XL",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X114J",
+"name": "Epic Theatres at Titusville with Epic XL",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0B27",
+"name": "Epic Theatres of Clermont",
+"screens": 16,
+"timeZone": "America/New_York"
+},
+{
+"id": "X07GN",
+"name": "Epic Theatres of Hendersonville with IMAX",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X125T",
+"name": "Epic Theatres of Ocala with Epic XL",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X047Z",
+"name": "Epic Theatres of Palm Coast",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0B5V",
+"name": "Epic Theatres of St. Augustine with IMAX",
+"screens": 16,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0LX1",
+"name": "Epic Theatres of West Volusia with Epic XL and IMAX",
+"screens": 14,
+"timeZone": "America/New_York"
+}
+],
+"FLIX": [
+{
+"id": "X0X2T",
+"name": "ABQ Coors",
+"screens": 18,
+"timeZone": "America/Denver"
+},
+{
+"id": "G04GZ",
+"name": "ABQ Tramway",
+"screens": 7,
+"timeZone": "America/Denver"
+},
+{
+"id": "X0VPQ",
+"name": "Carmel",
+"screens": 9,
+"timeZone": "America/Indiana/Indianapolis"
+},
+{
+"id": "X05OK",
+"name": "Des Moines",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G0FWZ",
+"name": "El Paso East",
+"screens": 10,
+"timeZone": "America/Denver"
+},
+{
+"id": "G0FX0",
+"name": "El Paso Montecillo ",
+"screens": 8,
+"timeZone": "America/Denver"
+},
+{
+"id": "X12H1",
+"name": "El Paso West Towne",
+"screens": 9,
+"timeZone": "America/Denver"
+},
+{
+"id": "X1158",
+"name": "Frisco/Little Elm",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G0FX5",
+"name": "Katy",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G0FWY",
+"name": "Lubbock",
+"screens": 8,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X118K",
+"name": "Madison",
+"screens": 9,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X11NG",
+"name": "Mansfield",
+"screens": 9,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G000T",
+"name": "Oklahoma City",
+"screens": 9,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0LE3",
+"name": "Round Rock",
+"screens": 9,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G000K",
+"name": "San Antonio",
+"screens": 9,
+"timeZone": "America/Chicago"
+}
+],
+"LMRK": [
+{
+"id": "X00TM",
+"name": "Landmark Aquarius Theatre, Palo Alto",
+"screens": 5,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X0WLT",
+"name": "Landmark Atlantic Plumbing Cinema",
+"screens": 13,
+"timeZone": "America/New_York"
+},
+{
+"id": "X06C1",
+"name": "Landmark Bethesda Row Cinema",
+"screens": 8,
+"timeZone": "America/New_York"
+},
+{
+"id": "X05IO",
+"name": "Landmark Century Centre Cinema, Chicago",
+"screens": 16,
+"timeZone": "America/Chicago"
+},
+{
+"id": "G01AA",
+"name": "Landmark Closter Plaza",
+"screens": 11,
+"timeZone": "America/New_York"
+},
+{
+"id": "X00MT",
+"name": "Landmark Crest Cinema Center, Shoreline",
+"screens": 9,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X00QV",
+"name": "Landmark Del Mar Theatre, Santa Cruz",
+"screens": 3,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X0KAO",
+"name": "Landmark Glendale 12, Indianapolis",
+"screens": 12,
+"timeZone": "America/Indiana/Indianapolis"
+},
+{
+"id": "X02KC",
+"name": "Landmark Inwood Theatre, Dallas",
+"screens": 7,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X019B",
+"name": "Landmark Kendall Square Cinema, Cambridge",
+"screens": 20,
+"timeZone": "America/New_York"
+},
+{
+"id": "X07M6",
+"name": "Landmark Keystone Art Cinema, Indianapolis",
+"screens": 7,
+"timeZone": "America/Indiana/Indianapolis"
+},
+{
+"id": "X01QW",
+"name": "Landmark Lagoon Cinema, Minneapolis",
+"screens": 5,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X02AK",
+"name": "Landmark Mayan Theatre, Denver",
+"screens": 7,
+"timeZone": "America/Denver"
+},
+{
+"id": "X00QM",
+"name": "Landmark Midtown Art Cinema, Atlanta",
+"screens": 17,
+"timeZone": "America/New_York"
+},
+{
+"id": "X00CW",
+"name": "Landmark Nuart Theatre, West Los Angeles",
+"screens": 4,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X00U8",
+"name": "Landmark Opera Plaza Cinema, San Francisco",
+"screens": 10,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X00Y7",
+"name": "Landmark Piedmont Theatre, Oakland",
+"screens": 4,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X081D",
+"name": "Landmark Ritz Five, Philadelphia",
+"screens": 5,
+"timeZone": "America/New_York"
+},
+{
+"id": "X03C1",
+"name": "Landmark Scottsdale Quarter Theatre",
+"screens": 18,
+"timeZone": "America/Phoenix"
+},
+{
+"id": "G01SI",
+"name": "Landmark Sunset Hollywood",
+"screens": 12,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "G01CH",
+"name": "Landmark Theatres Pasadena",
+"screens": 16,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "X00D9",
+"name": "Landmark Westwood, Los Angeles",
+"screens": 3,
+"timeZone": "America/Los_Angeles"
+},
+{
+"id": "G019L",
+"name": "Landmark at Annapolis Harbour Center",
+"screens": 19,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0JYT",
+"name": "Landmark at The Glen, Glenview",
+"screens": 21,
+"timeZone": "America/Chicago"
+},
+{
+"id": "X0873",
+"name": "The Landmark Greenwood Village",
+"screens": 13,
+"timeZone": "America/Denver"
+},
+{
+"id": "X0XDF",
+"name": "The Landmark at Merrick Park, Coral Gables",
+"screens": 16,
+"timeZone": "America/New_York"
+}
+],
+"MARQ": [
+{
+"id": "X0K7S",
+"name": "Marquee Cinemas - Coralwood 10",
+"screens": 10,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7I",
+"name": "Marquee Cinemas - Galleria 14",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7H",
+"name": "Marquee Cinemas - Highlands 14",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K8B",
+"name": "Marquee Cinemas - Mimosa 7",
+"screens": 7,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K8C",
+"name": "Marquee Cinemas - Nicholas Showcase",
+"screens": 4,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7T",
+"name": "Marquee Cinemas - Orchard 10",
+"screens": 10,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7G",
+"name": "Marquee Cinemas - Orchard 14",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0WFJ",
+"name": "Marquee Cinemas - Pinnacle 12",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7F",
+"name": "Marquee Cinemas - Pullman Square 16",
+"screens": 16,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7K",
+"name": "Marquee Cinemas - Southridge 12",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7N",
+"name": "Marquee Cinemas - Wakefield 12",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0K7W",
+"name": "Marquee Cinemas - Wytheville 8",
+"screens": 8,
+"timeZone": "America/New_York"
+}
+],
+"MJRT": [
+{
+"id": "X027B",
+"name": "MJR Adrian Cinema",
+"screens": 10,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X062H",
+"name": "MJR Brighton Cinema",
+"screens": 20,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X027D",
+"name": "MJR Chesterfield Cinema",
+"screens": 16,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X07M4",
+"name": "MJR Marketplace Cinema",
+"screens": 20,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X086T",
+"name": "MJR Partridge Creek Cinema",
+"screens": 14,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X042Y",
+"name": "MJR Southgate Cinema",
+"screens": 21,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X0TUX",
+"name": "MJR Troy Cinema",
+"screens": 16,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X02OO",
+"name": "MJR Universal Cinema",
+"screens": 16,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X027E",
+"name": "MJR Waterford Cinema",
+"screens": 16,
+"timeZone": "America/Detroit"
+},
+{
+"id": "X0LIE",
+"name": "MJR Westland Cinema",
+"screens": 16,
+"timeZone": "America/Detroit"
+}
+],
+"SHOW": [
+{
+"id": "X06PR",
+"name": "Blackstone Valley 14: Cinema de Lux",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X06DU",
+"name": "Island 16: Cinema de Lux",
+"screens": 16,
+"timeZone": "America/New_York"
+},
+{
+"id": "X000P",
+"name": "Showcase Cinema de Lux Cross County",
+"screens": 10,
+"timeZone": "America/New_York"
+},
+{
+"id": "X00UF",
+"name": "Showcase Cinema de Lux Farmingdale",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "G019K",
+"name": "Showcase Cinema de Lux Hanover Crossing",
+"screens": 8,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0C11",
+"name": "Showcase Cinema de Lux Legacy Place",
+"screens": 15,
+"timeZone": "America/New_York"
+},
+{
+"id": "X02XX",
+"name": "Showcase Cinema de Lux Lowell",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X02RA",
+"name": "Showcase Cinema de Lux North Attleboro",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0L42",
+"name": "Showcase Cinema de Lux Ridge Hill",
+"screens": 12,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0343",
+"name": "Showcase Cinema de Lux Springdale",
+"screens": 18,
+"timeZone": "America/New_York"
+},
+{
+"id": "X01AF",
+"name": "Showcase Cinema de Lux Woburn",
+"screens": 14,
+"timeZone": "America/New_York"
+},
+{
+"id": "X02NZ",
+"name": "Showcase Cinemas Warwick - Quaker Lane",
+"screens": 15,
+"timeZone": "America/New_York"
+},
+{
+"id": "X0PTT",
+"name": "Showcase SuperLux Chestnut Hill",
+"screens": 6,
+"timeZone": "America/New_York"
+}
+]
+}

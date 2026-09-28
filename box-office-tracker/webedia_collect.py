@@ -87,16 +87,52 @@ def theatres_from_static(obj):
     return list(out.values())
 
 
-def discover_theatres(s, base):
-    pd = s.get(f"{base}/page-data/index/page-data.json", timeout=30).json()
+THEATRES_CACHE = DATA_DIR / "theatres-webedia.json"
+
+
+def _load_cache():
+    try:
+        return json.load(open(THEATRES_CACHE))
+    except Exception:
+        return {}
+
+
+def _save_cache(chain, theatres):
+    cache = _load_cache()
+    cache[chain] = theatres
+    tmp = str(THEATRES_CACHE) + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(cache, f, indent=0, sort_keys=True)
+    os.replace(tmp, THEATRES_CACHE)
+
+
+def discover_theatres(s, base, chain=None):
+    """Theatre list from the site's Gatsby static-query data; on a miss (the
+    sites rebuild daily and 2026-09-28 14:15Z found nothing at any of the 7
+    chains for ~15 min) fall back to the list cached from the last success."""
     found = {}
-    for h in pd.get("staticQueryHashes") or []:
-        try:
-            for t in theatres_from_static(s.get(f"{base}/page-data/sq/d/{h}.json", timeout=30).json()):
-                found[t["id"]] = t
-        except Exception:
-            continue
-    return list(found.values())
+    try:
+        pd = s.get(f"{base}/page-data/index/page-data.json", timeout=30).json()
+        for h in pd.get("staticQueryHashes") or []:
+            try:
+                for t in theatres_from_static(s.get(f"{base}/page-data/sq/d/{h}.json", timeout=30).json()):
+                    found[t["id"]] = t
+            except Exception:
+                continue
+    except Exception:
+        pass
+    theatres = list(found.values())
+    if theatres:
+        if chain:
+            try:
+                _save_cache(chain, theatres)
+            except Exception:
+                pass
+        return theatres
+    cached = _load_cache().get(chain or "", []) if chain else []
+    if cached:
+        print(f"  {chain}: discovery found nothing — using {len(cached)} cached theatres", flush=True)
+    return cached
 
 
 def schedule_url(base, theatre, day_from, day_to):
@@ -188,7 +224,7 @@ def collect(weekend_of=None, titles=None, now_utc=None, session=None):
         if ONLY and chain not in ONLY:
             continue
         try:
-            theatres = discover_theatres(s, base)
+            theatres = discover_theatres(s, base, chain=chain)
         except Exception as e:
             print(f"  {label}: discovery ERROR {type(e).__name__}", flush=True)
             totals["chain_errors"] += 1
