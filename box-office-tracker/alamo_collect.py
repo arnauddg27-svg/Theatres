@@ -160,13 +160,26 @@ def stored_post_sessions(weekend_of, now_utc, path=ALAMO_CSV):
     return out
 
 
+def pre_pass_weekend(now_utc):
+    """Weekend a PRE pass reads: anchored forward Mon-Wed (upcoming opening),
+    EXCEPT the early UTC hours of Monday — Sunday evening in the US — when the
+    weekend still playing is the one to read. 2026-09-28 00:40Z: the pass
+    anchored to 10-02, found no tracked titles and left Sunday's CT/MT/PT
+    shows unread before showtime (same rule as the Webedia lane)."""
+    from scraper import opening_weekend_friday, phase1_weekend_anchor
+    local = now_utc.replace(tzinfo=None)      # GitHub runners are UTC: same clock as datetime.now()
+    if now_utc.weekday() == 0 and now_utc.hour < 12:
+        return opening_weekend_friday(local)
+    return phase1_weekend_anchor(local, full_weekend=True)
+
+
 def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     from scraper import (opening_weekend_friday, phase1_weekend_anchor,
                          tracked_movie_titles_from_state)
     now_utc = now_utc or datetime.now(timezone.utc)
     if not weekend_of:
         weekend_of = (opening_weekend_friday(datetime.now()) if mode == "post"
-                      else phase1_weekend_anchor(datetime.now(), full_weekend=True))
+                      else pre_pass_weekend(now_utc))
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     totals = Counter()
     if not titles:

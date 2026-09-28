@@ -62,3 +62,21 @@ class HarkinsLaneTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PrePassWeekendTest(unittest.TestCase):
+    """2026-09-28: Monday 00:40Z pre passes anchored to the NEXT weekend (no
+    titles) and skipped Sunday's remaining shows."""
+
+    def test_early_monday_reads_the_playing_weekend(self):
+        from datetime import datetime, timezone
+        from scraper import opening_weekend_friday, phase1_weekend_anchor
+        import alamo_collect as A
+        import harkins_collect as H
+        early = datetime(2026, 9, 28, 0, 40, tzinfo=timezone.utc)      # Sunday 8:40pm ET
+        noon = datetime(2026, 9, 28, 13, 0, tzinfo=timezone.utc)
+        for mod in (A, H):
+            self.assertEqual(opening_weekend_friday(early.replace(tzinfo=None)), mod.pre_pass_weekend(early))
+            self.assertEqual("2026-09-25", mod.pre_pass_weekend(early))
+            self.assertEqual(phase1_weekend_anchor(noon.replace(tzinfo=None), full_weekend=True),
+                             mod.pre_pass_weekend(noon))
