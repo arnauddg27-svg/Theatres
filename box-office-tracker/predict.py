@@ -246,9 +246,51 @@ def relative_sampled_price(row, prices, assumed):
     return assumed * max(lo, min(hi, sampled / median))
 
 
-def price_for_row(row, format_rank, weekend_of):
+# DAYPART PRICING (2026-09-28). The assumed table is an EVENING price, yet every
+# showing was valued at it. Measured on data/ticket-prices.csv (3 weekends,
+# 546 matinee samples): where the SAME theatre+format was sampled at both
+# dayparts (161 pairs) the matinee (<4pm local) adult price is 0.80x the
+# evening one (p25 0.76, p75 0.82; by region 0.73-0.85). Matinee seats are
+# 38% of counted Saturday seats and 47% of Sunday's (Thu/Fri captures are
+# evening-only), so pricing them right moves ~5% between matinee-heavy
+# (family) and evening-heavy (adult) films. Mode "relative" keeps the fleet
+# level the calibration was fitted on: each day's factors are divided by the
+# seat-weighted mean factor of that day (DAYPART_LEVEL_NORM, from the
+# historical seat mix), so an average-mix film is unchanged and only the
+# between-film split moves. "off" restores flat evening pricing.
+PRICE_DAYPART_MODE = (os.environ.get("PRICE_DAYPART_MODE") or "relative").strip().lower()
+MATINEE_PRICE_RATIO = float(os.environ.get("MATINEE_PRICE_RATIO") or 0.80)
+MATINEE_CUTOFF_HOUR = 16.0
+# Matinee share of seats in each pricing base, 8 weekends to 2026-09-25.
+# Thu/Fri captures (both bases) are evening-only: no matinee rows, no norm.
+_MATINEE_SEAT_SHARE = {
+    "seat":     {"Saturday": 0.383, "Sunday": 0.466},   # seat-counts (post-show reads)
+    "snapshot": {"Saturday": 0.431, "Sunday": 0.541},   # pre-reservation snapshots
+}
+DAYPART_LEVEL_NORM = {base: {d: 1.0 - (1.0 - MATINEE_PRICE_RATIO) * s for d, s in shares.items()}
+                      for base, shares in _MATINEE_SEAT_SHARE.items()}
+
+
+def daypart_price_factor(row, base="seat"):
+    """Pure: multiplier on the evening price for this row's showtime, level-
+    normalised per day for its pricing base ("seat" | "snapshot"). 1.0 when
+    the mode is off or the hour is unknown."""
+    if PRICE_DAYPART_MODE == "off":
+        return 1.0
+    hour = _parse_showtime_hour(row.get("showtime"))
+    if hour is None:
+        return 1.0
+    factor = MATINEE_PRICE_RATIO if hour < MATINEE_CUTOFF_HOUR else 1.0
+    return factor / DAYPART_LEVEL_NORM.get(base, {}).get(row.get("day_of_week", ""), 1.0)
+
+
+def price_for_row(row, format_rank, weekend_of, base="seat"):
     """The adult price the model uses for a seat/snapshot row, by mode."""
     assumed = FORMAT_TICKET_PRICES.get(format_rank, FORMAT_TICKET_PRICES.get(0))
+    return _sampled_price_for_row(row, assumed, weekend_of) * daypart_price_factor(row, base)
+
+
+def _sampled_price_for_row(row, assumed, weekend_of):
     if AMC_SAMPLED_PRICE_MODE == "off":
         return assumed
     prices = load_ticket_prices(weekend_of)
@@ -270,6 +312,13 @@ def load_ticket_prices(weekend_of=None):
         with open(TICKET_PRICES_CSV, newline="") as f:
             for r in csv.DictReader(f):
                 if weekend_of and r.get("weekend_of") != weekend_of:
+                    continue
+                # Evening samples only (2026-09-28): a matinee sample (<4pm,
+                # 0.80x) compared with the rank's evening median would mark
+                # the theatre ~20% cheap. Matinee samples feed the daypart
+                # ratio measurement, not the theatre's relative price.
+                hour = _parse_showtime_hour(r.get("showtime"))
+                if hour is not None and hour < MATINEE_CUTOFF_HOUR:
                     continue
                 try:
                     price = float(r.get("adult_price") or 0)
@@ -2540,7 +2589,7 @@ def estimate_snapshot_showtime_revenue(row):
     minutes_until_showtime = _parse_numeric(row.get("minutes_until_showtime", 0), default=0)
     multiplier = snapshot_reservation_multiplier(minutes_until_showtime)
     projected_reserved = min(total_seats, reserved * multiplier)
-    ticket_price = price_for_row(row, format_rank, row.get("weekend_of"))
+    ticket_price = price_for_row(row, format_rank, row.get("weekend_of"), base="snapshot")
     revenue = projected_reserved * ticket_price
     return {
         "revenue": revenue,

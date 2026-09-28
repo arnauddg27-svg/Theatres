@@ -1759,6 +1759,14 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertIn("reported actual input", captured.getvalue())
 
     def test_snapshot_layer_calibrates_future_days_from_same_week_overlap(self):
+        # This test isolates the same-week overlap layer: identical rows on
+        # Friday and Saturday must produce identical dollars. Daypart pricing
+        # (2026-09-28) deliberately values a matinee row differently per day,
+        # so it is switched off here.
+        import predict as _P
+        _old_mode = _P.PRICE_DAYPART_MODE
+        _P.PRICE_DAYPART_MODE = "off"
+        self.addCleanup(setattr, _P, "PRICE_DAYPART_MODE", _old_mode)
         cal = {
             "history": [],
             "calibration_factors": {

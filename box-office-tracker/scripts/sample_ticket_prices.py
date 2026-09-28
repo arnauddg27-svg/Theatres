@@ -31,10 +31,34 @@ MAX_MB = float(os.environ.get("TICKET_PRICE_MAX_MB") or 40)
 MAX_SEC = float(os.environ.get("TICKET_PRICE_MAX_SEC") or 600)
 
 
+MATINEE_CUTOFF_HOUR = 16.0     # AMC matinee pricing runs before 4pm local
+
+
+def showtime_hour(label):
+    """Pure: '1:30pm' / '13:30' -> 13.5, or None."""
+    import re
+    m = re.search(r"(\d{1,2}):(\d{2})\s*(am|pm)", str(label or "").strip(), re.I)
+    if m:
+        h = int(m.group(1)) % 12 + (12 if m.group(3).lower() == "pm" else 0)
+        return h + int(m.group(2)) / 60
+    m = re.fullmatch(r"(\d{1,2}):(\d{2})", str(label or "").strip())
+    return int(m.group(1)) + int(m.group(2)) / 60 if m else None
+
+
+def daypart(label):
+    h = showtime_hour(label)
+    return "matinee" if h is not None and h < MATINEE_CUTOFF_HOUR else "evening"
+
+
 def pick_samples(links: dict, weekend_of: str, already: set) -> list:
-    """Pure: one (theatre, format) -> showtime per pair not yet sampled.
-    Prefers the weekend Friday, then Saturday, then any date; within a date
-    the middle showtime (an evening slot rather than a matinee)."""
+    """Pure: per (theatre, format) one EVENING showtime, plus per theatre one
+    MATINEE showtime of its commonest format, for pairs not yet sampled.
+    `already` holds (theatre, format, daypart) triples. Evening prefers the
+    weekend Friday, then Saturday, then any date; the matinee prefers Saturday
+    (the day with matinees), then Sunday. 2026-09-28: the matinee pick makes
+    the 0.80x matinee/evening measurement systematic — until now matinee
+    samples only came from small theatres whose "middle" showtime was an
+    afternoon one."""
     try:
         fri = datetime.strptime(weekend_of, "%Y-%m-%d")
     except (TypeError, ValueError):
@@ -42,6 +66,7 @@ def pick_samples(links: dict, weekend_of: str, already: set) -> list:
     from datetime import timedelta
     order = [fri.strftime("%Y-%m-%d"), (fri + timedelta(days=1)).strftime("%Y-%m-%d"),
              (fri - timedelta(days=1)).strftime("%Y-%m-%d"), (fri + timedelta(days=2)).strftime("%Y-%m-%d")]
+    mat_order = [order[1], order[3], order[0]]
     out = []
     for theatre, entry in (links.get("theatres") or {}).items():
         dates = entry.get("dates") or {}
@@ -53,24 +78,41 @@ def pick_samples(links: dict, weekend_of: str, already: set) -> list:
                     fmt = s.get("format") or "Standard"
                     by_fmt.setdefault(fmt, []).append((d, s))
         for fmt, shows in by_fmt.items():
-            if (theatre, fmt) in already:
+            if (theatre, fmt, "evening") in already:
                 continue
-            # keep the first date in preference order; take its middle showtime
+            # keep the first date in preference order; take its middle EVENING
+            # showtime (falls back to the middle of the date when none is evening)
             first_date = shows[0][0]
             same = [s for d, s in shows if d == first_date]
-            s = same[len(same) // 2]
+            evening = [s for s in same if daypart(s.get("showtime")) == "evening"] or same
+            s = evening[len(evening) // 2]
             if s.get("showtime_id"):
                 out.append({"theatre_name": theatre, "tz": entry.get("tz", ""), "show_date": first_date,
                             "showtime": s.get("showtime", ""), "showtime_id": str(s["showtime_id"]),
                             "auditorium_type": fmt})
+        if by_fmt:
+            fmt = max(by_fmt, key=lambda f: len(by_fmt[f]))
+            if (theatre, fmt, "matinee") not in already:
+                for d in mat_order:
+                    mats = [s for dd, s in by_fmt[fmt] if dd == d and daypart(s.get("showtime")) == "matinee"
+                            and s.get("showtime_id")]
+                    if mats:
+                        s = mats[len(mats) // 2]
+                        out.append({"theatre_name": theatre, "tz": entry.get("tz", ""), "show_date": d,
+                                    "showtime": s.get("showtime", ""), "showtime_id": str(s["showtime_id"]),
+                                    "auditorium_type": fmt})
+                        break
     return out
 
 
 def load_already(weekend_of: str) -> set:
+    """(theatre, format, daypart) triples already sampled this weekend; the
+    daypart is derived from the sampled showtime (no schema change)."""
     if not OUT.exists():
         return set()
     with open(OUT, newline="") as f:
-        return {(r["theatre_name"], r["auditorium_type"]) for r in csv.DictReader(f) if r.get("weekend_of") == weekend_of}
+        return {(r["theatre_name"], r["auditorium_type"], daypart(r.get("showtime")))
+                for r in csv.DictReader(f) if r.get("weekend_of") == weekend_of}
 
 
 def main() -> int:

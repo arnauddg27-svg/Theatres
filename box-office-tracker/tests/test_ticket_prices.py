@@ -46,7 +46,8 @@ class PickSamplesTest(unittest.TestCase):
         self.assertEqual("9", by[("AMC B", "Standard")]["showtime_id"])          # Saturday when no Friday
 
     def test_already_sampled_pairs_are_skipped(self):
-        picks = stp.pick_samples(self.LINKS, "2026-09-18", {("AMC A", "Laser at AMC"), ("AMC B", "Standard")})
+        # keys are (theatre, format, daypart) since the matinee pick (2026-09-28)
+        picks = stp.pick_samples(self.LINKS, "2026-09-18", {("AMC A", "Laser at AMC", "evening"), ("AMC B", "Standard", "evening")})
         self.assertEqual([("AMC A", "IMAX at AMC")], [(p["theatre_name"], p["auditorium_type"]) for p in picks])
         self.assertEqual([], stp.pick_samples(self.LINKS, "not-a-date", set()))
 
@@ -97,3 +98,42 @@ class ModelGateTest(unittest.TestCase):
         cal = P.load_calibration()
         base = P.estimate_theatre_daily_revenue(dict(row), cal)
         self.assertTrue(base)
+
+
+class MatineeSampleTest(unittest.TestCase):
+    """2026-09-28: one deliberate matinee sample per theatre, keyed by daypart."""
+
+    def _links(self):
+        def show(t, i): return {"showtime": t, "showtime_id": str(i), "format": "Standard"}
+        return {"theatres": {"AMC Test 8": {"tz": "ET", "dates": {
+            "2026-10-02": {"movies": {"F": [show("4:30pm", 1), show("7:30pm", 2), show("10:00pm", 3)]}},
+            "2026-10-03": {"movies": {"F": [show("11:00am", 4), show("1:30pm", 5), show("4:00pm", 6), show("7:30pm", 7)]}},
+        }}}}
+
+    def test_evening_and_matinee_picks(self):
+        picks = stp.pick_samples(self._links(), "2026-10-02", set())
+        by = {(p["show_date"], p["showtime"]) for p in picks}
+        self.assertIn(("2026-10-02", "7:30pm"), by)        # evening: Friday, middle evening slot
+        self.assertIn(("2026-10-03", "1:30pm"), by)        # matinee: Saturday, middle matinee slot
+        self.assertEqual(2, len(picks))
+        # already-sampled triples are skipped, per daypart
+        again = stp.pick_samples(self._links(), "2026-10-02", {("AMC Test 8", "Standard", "evening")})
+        self.assertEqual([("2026-10-03", "1:30pm")], [(p["show_date"], p["showtime"]) for p in again])
+        self.assertEqual("matinee", stp.daypart("1:30pm")); self.assertEqual("evening", stp.daypart("16:00"))
+
+
+class EveningOnlySamplesTest(unittest.TestCase):
+    def test_matinee_samples_do_not_set_theatre_relative_price(self):
+        import os, tempfile, predict as P
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "ticket-prices.csv")
+            with open(path, "w") as f:
+                f.write("weekend_of,theatre_name,auditorium_type,showtime,adult_price\n"
+                        "2026-09-25,AMC Eve 10,Standard,7:30pm,15.00\n"
+                        "2026-09-25,AMC Mat 10,Standard,1:30pm,12.00\n")
+            old = P.TICKET_PRICES_CSV; P.TICKET_PRICES_CSV = path; P._TICKET_PRICE_CACHE.clear()
+            try:
+                prices = P.load_ticket_prices("2026-09-25")
+                self.assertEqual({("AMC Eve 10", "Standard"): 15.0}, prices)
+            finally:
+                P.TICKET_PRICES_CSV = old; P._TICKET_PRICE_CACHE.clear()

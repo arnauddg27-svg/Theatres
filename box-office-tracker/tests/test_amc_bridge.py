@@ -364,3 +364,30 @@ class SeatWaitConfigTest(unittest.TestCase):
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
         self.assertIn("FANDANGO_SEAT_WAIT_MS: ${{ contains(github.event.inputs.schedule_slot, 'near') && '25000' || '' }}", fan)
+
+
+class DaypartPriceTest(unittest.TestCase):
+    """2026-09-28: matinee (<4pm) adult price measured at 0.80x evening; the
+    factor is level-neutral per day so the fitted calibration does not move."""
+
+    def test_matinee_discount_is_level_neutral_per_day(self):
+        import predict as P
+        old = P.PRICE_DAYPART_MODE
+        try:
+            P.PRICE_DAYPART_MODE = "relative"
+            sat_mat = P.daypart_price_factor({"showtime": "1:30pm", "day_of_week": "Saturday"})
+            sat_eve = P.daypart_price_factor({"showtime": "7:30pm", "day_of_week": "Saturday"})
+            self.assertAlmostEqual(0.80, sat_mat / sat_eve, places=6)
+            share = P._MATINEE_SEAT_SHARE["seat"]["Saturday"]
+            self.assertAlmostEqual(1.0, share * sat_mat + (1 - share) * sat_eve, places=6)   # fleet level unchanged
+            self.assertEqual(1.0, P.daypart_price_factor({"showtime": "7:30pm", "day_of_week": "Friday"}))
+            self.assertEqual(1.0, P.daypart_price_factor({"showtime": "", "day_of_week": "Saturday"}))
+            self.assertEqual(0.80 / P.DAYPART_LEVEL_NORM["seat"]["Sunday"],
+                             P.daypart_price_factor({"showtime": "13:00", "day_of_week": "Sunday"}))   # 24h label
+            snap = P.daypart_price_factor({"showtime": "1:30pm", "day_of_week": "Sunday"}, base="snapshot")
+            sh = P._MATINEE_SEAT_SHARE["snapshot"]["Sunday"]
+            self.assertAlmostEqual(1.0, sh * snap + (1 - sh) * snap / 0.80, places=6)
+            P.PRICE_DAYPART_MODE = "off"
+            self.assertEqual(1.0, P.daypart_price_factor({"showtime": "1:30pm", "day_of_week": "Saturday"}))
+        finally:
+            P.PRICE_DAYPART_MODE = old
