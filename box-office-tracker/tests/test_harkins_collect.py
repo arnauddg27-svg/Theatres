@@ -80,3 +80,11 @@ class PrePassWeekendTest(unittest.TestCase):
             self.assertEqual("2026-09-25", mod.pre_pass_weekend(early))
             self.assertEqual(phase1_weekend_anchor(noon.replace(tzinfo=None), full_weekend=True),
                              mod.pre_pass_weekend(noon))
+
+
+class LoudFailThresholdTest(unittest.TestCase):
+    def test_single_failed_read_is_not_an_outage(self):
+        import alamo_collect as A
+        import harkins_collect as H
+        for mod in (A, H):
+            self.assertEqual(5, mod.LOUD_FAIL_MIN_MATCHED)

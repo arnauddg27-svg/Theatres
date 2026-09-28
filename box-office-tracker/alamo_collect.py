@@ -227,6 +227,9 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     return totals
 
 
+LOUD_FAIL_MIN_MATCHED = int(os.environ.get("LANE_LOUD_FAIL_MIN_MATCHED", "5") or 5)
+
+
 def main():
     mode = "post" if os.environ.get("ALAMO_MODE") == "post" else "pre"
     if mode == "post" and ALAMO_LOOP_MIN > 0:
@@ -242,7 +245,10 @@ def main():
     t = collect(mode=mode)
     if mode == "pre" and t.get("markets", 0) >= 5 and t.get("matched", 0) == 0 and t.get("market_errors", 0) == 0:
         print("::warning::Alamo pre pass matched no tracked showings (titles not playing, or a slug mismatch)")
-    if t.get("matched", 0) and not t.get("captured", 0):
+    # Loud-fail only when a real batch failed: a single stored session whose
+    # seat plan has gone (Harkins post 06:55Z 2026-09-28: matched=1, errors=1)
+    # is not a lane outage, and the failure only made the watchdog re-run it.
+    if t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED and not t.get("captured", 0):
         print("❌ Alamo: every seat read failed — failing loudly.")
         return 1
     return 0
