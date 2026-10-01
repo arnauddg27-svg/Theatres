@@ -373,3 +373,39 @@ class HttpErrorStreakTest(unittest.TestCase):
         self.assertEqual(2, seats["total"])
         self.assertEqual({"ConnectionError": cc.CINEMARK_ERROR_STREAK}, r.error_kinds)
         self.assertEqual(cc.CINEMARK_ERROR_STREAK, r.stats["http_error"])
+
+
+class ThrottleStreakTest(unittest.TestCase):
+    """2026-10-01: pre passes spent their 90-min deadline on 35 s throttle
+    backoffs and never reached the proxy; a direct throttle streak now flips."""
+
+    def test_direct_throttle_streak_switches_to_proxy(self):
+        html = ('<button available="True" class="a seatBlock"></button>'
+                '<button available="False" class="a seatBlock"></button>')
+
+        class Throttled:
+            status_code = 429; text = "Just a moment"; content = b""; headers = {}
+
+        class Sess:
+            def get(self, url, timeout=None): return Throttled()
+
+        class R:
+            status_code = 200; text = html; content = html.encode(); headers = {}
+        r = cc.HttpSeatReader(pace_sec=0, session=Sess(), proxy_url="http://proxy.invalid")
+        r._proxy_get = lambda url: R()
+        import time as _t
+        waits = []
+        orig = _t.sleep
+        _t.sleep = lambda s: waits.append(s)
+        try:
+            seats = None
+            for _ in range(3):                      # a read makes 2 attempts; the streak spans reads
+                seats = r.read("/TicketSeatMap/?x=1")
+                if seats:
+                    break
+        finally:
+            _t.sleep = orig
+        self.assertTrue(r.via_proxy)
+        self.assertEqual(2, seats["total"])
+        self.assertLess(sum(waits), 90)           # not 35 s per throttle for the whole slice
+        self.assertGreaterEqual(r.stats["http_throttled"], cc.CINEMARK_THROTTLE_STREAK)

@@ -294,6 +294,13 @@ CINEMARK_PROXY_MAX_MB = float(os.environ.get("CINEMARK_PROXY_MAX_MB", "40"))
 # direct-path errors switches to the proxy like the 404 streak does.
 CINEMARK_HTTP_TIMEOUT_SEC = _env_int("CINEMARK_HTTP_TIMEOUT_SEC", 20)
 CINEMARK_ERROR_STREAK = _env_int("CINEMARK_ERROR_STREAK", 5)
+# Direct-path 429/"Just a moment" streak that flips to the proxy. Wed-Thu
+# 2026-09-30/10-01 pre passes (4 dated listings + 2 new titles per theatre):
+# 76-92 throttled reads per slice, each a 35 s backoff, never a 404 streak, so
+# the proxy was never used (proxy_mb=0.0) — every slice ran to its 90-min
+# deadline capturing ~75% (s1 hung past it and lost its rows). Throttling is a
+# per-address signal like the 70-map cap: switch addresses instead of waiting.
+CINEMARK_THROTTLE_STREAK = _env_int("CINEMARK_THROTTLE_STREAK", 3)
 CINEMARK_PROXY_PACE_SEC = float(os.environ.get("CINEMARK_PROXY_PACE_SEC", "1"))
 CINEMARK_CAP_404_STREAK = 3
 PROXY_OVERHEAD_BYTES = 6 * 1024
@@ -312,6 +319,7 @@ class HttpSeatReader:
         self.via_proxy = False
         self.streak_404 = 0
         self.streak_error = 0
+        self.streak_throttle = 0
         self.error_kinds = {}
         self.proxy_session = None
         self.next_at = 0.0
@@ -399,8 +407,18 @@ class HttpSeatReader:
                 return None
             if r.status_code == 429 or "Just a moment" in r.text[:3000]:
                 self.stats["http_throttled"] += 1
-                self.next_at = time.monotonic() + 30 + self.pace      # let the bucket refill
-                continue
+                if not use_proxy:
+                    self.streak_throttle += 1
+                    if self.streak_throttle >= CINEMARK_THROTTLE_STREAK and self.proxy_available():
+                        self.via_proxy = True
+                        print(f"    {self.streak_throttle} consecutive direct throttles — "
+                              f"switching to the residential proxy", flush=True)
+                        continue
+                    self.next_at = time.monotonic() + 30 + self.pace      # let the bucket refill
+                    continue
+                return None          # fresh address per read — a throttle here is not ours to wait out
+            if not use_proxy:
+                self.streak_throttle = 0
             seats = parse_seat_html(r.text)
             if seats["total"]:
                 self.stats["proxy_ok" if use_proxy else "http_ok"] += 1
