@@ -31,6 +31,7 @@ the evening is the final count); the rest as webedia-api (pre).
 Rows: Fandango superset schema, data/webedia-pre-reservation-snapshots.csv.
 Not wired into the model yet.
 """
+import csv
 import json
 import os
 import re
@@ -200,6 +201,34 @@ def build_row(chain, theatre, title, day, st, weekend_of, run_id, now_utc):
     }
 
 
+def latest_stored(csv_path):
+    """{(showtime_id, movie_title): (occupancy_pct, row_kind)} — the latest
+    stored value per showing (rows are appended chronologically)."""
+    out = {}
+    try:
+        with open(csv_path, newline="", errors="replace") as f:
+            for r in csv.DictReader(f):
+                out[(r.get("showtime_id", ""), r.get("movie_title", ""))] = (
+                    str(r.get("occupancy_pct", "")), r.get("row_kind", ""))
+    except OSError:
+        pass
+    return out
+
+
+def changed_rows(rows, latest):
+    """Pure: drop rows whose (occupancy_pct, row_kind) equals the latest stored
+    value for the same showing; later duplicates within the batch too."""
+    out = []
+    for r in rows:
+        k = (r["showtime_id"], r["movie_title"])
+        v = (str(r["occupancy_pct"]), r["row_kind"])
+        if latest.get(k) == v:
+            continue
+        latest[k] = v
+        out.append(r)
+    return out
+
+
 def collect(weekend_of=None, titles=None, now_utc=None, session=None):
     from scraper import opening_weekend_friday, phase1_weekend_anchor, tracked_movie_titles_from_state
     now_utc = now_utc or datetime.now(timezone.utc)
@@ -266,8 +295,17 @@ def collect(weekend_of=None, titles=None, now_utc=None, session=None):
             rows.append(row)
             chain_rows += 1
         print(f"  {label}: {len(theatres)} theatres, {chain_rows} rows", flush=True)
+    # Changed-only (2026-10-02): eight passes a day rewrote every upcoming
+    # showing of next weekend's films — 87% of 100k rows repeated the previous
+    # value for the same showing and the file grew 9 MB/day. A row is written
+    # only when the showing's occupancy or row kind differs from the latest
+    # stored one, so the first read, every change and the first post-show read
+    # are kept and nothing of value is dropped.
+    before = len(rows)
+    rows = changed_rows(rows, latest_stored(WEBEDIA_CSV))
+    totals["unchanged"] = before - len(rows)
     written, deduped = append_unique_fandango_rows(rows, csv_path=WEBEDIA_CSV)
-    totals["captured"], totals["written"], totals["deduped"] = len(rows), written, deduped
+    totals["captured"], totals["written"], totals["deduped"] = before, written, deduped
     print("=== Webedia collect summary === " + " ".join(f"{k}={v}" for k, v in sorted(totals.items())), flush=True)
     return totals
 

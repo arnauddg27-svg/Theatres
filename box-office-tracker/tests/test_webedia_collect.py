@@ -80,3 +80,17 @@ class DiscoveryCacheTest(unittest.TestCase):
                 self.assertEqual([], W.discover_theatres(Dead(), "https://x", chain="SHOW"))       # other chain: no cache
             finally:
                 W.THEATRES_CACHE = old
+
+
+class ChangedOnlyTest(unittest.TestCase):
+    """2026-10-02: 87% of rows repeated the previous value; only changes are stored."""
+
+    def test_changed_rows(self):
+        latest = {("X:1", "F"): ("3.0", "webedia-api")}
+        rows = [{"showtime_id": "X:1", "movie_title": "F", "occupancy_pct": 3.0, "row_kind": "webedia-api"},   # unchanged
+                {"showtime_id": "X:2", "movie_title": "F", "occupancy_pct": 0.0, "row_kind": "webedia-api"},   # new showing
+                {"showtime_id": "X:1", "movie_title": "F", "occupancy_pct": 5.0, "row_kind": "webedia-api"},   # changed
+                {"showtime_id": "X:1", "movie_title": "F", "occupancy_pct": 5.0, "row_kind": "post-show-census"}]  # first post read
+        kept = W.changed_rows(rows, latest)
+        self.assertEqual(["X:2", "X:1", "X:1"], [r["showtime_id"] for r in kept])
+        self.assertEqual([], W.changed_rows([rows[3]], latest))                 # repeat post read skipped
