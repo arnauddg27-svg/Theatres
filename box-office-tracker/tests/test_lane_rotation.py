@@ -82,3 +82,19 @@ class CrossChainArchiveTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CommitLaneScriptTest(unittest.TestCase):
+    """2026-10-02: lane commits share scripts/commit_lane.sh; loop jobs call it per pass."""
+
+    def test_script_and_workflow_wiring(self):
+        import subprocess
+        root = ROOT.parent
+        script = root / "box-office-tracker" / "scripts" / "commit_lane.sh"
+        self.assertEqual(0, subprocess.run(["bash", "-n", str(script)]).returncode)
+        yml = (root / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        for lane in ("alamo", "harkins", "webedia"):
+            self.assertIn(f"commit_lane.sh {lane} box-office-tracker/data/{lane}-pre-reservation-snapshots.csv", yml)
+        self.assertIn("ALAMO_LOOP_COMMIT: ${{ contains(github.event.inputs.schedule_slot, 'loop') && '1' || '0' }}", yml)
+        import alamo_collect as A
+        self.assertFalse(A.ALAMO_LOOP_COMMIT)      # off outside loop jobs

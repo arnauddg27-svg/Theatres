@@ -1210,36 +1210,14 @@ jobs:
           ALAMO_MODE: ${{ github.event.inputs.cinemark_mode }}
           # loop slots poll every 15 min for 5.5 h, ending before the step timeout
           ALAMO_LOOP_MIN: ${{ contains(github.event.inputs.schedule_slot, 'loop') && '330' || '0' }}
+          # Loop passes commit as they go (2026-10-02: a runner shutdown 2 h into
+          # the 02:40Z loop lost every pass; the step below is then a no-op).
+          ALAMO_LOOP_COMMIT: ${{ contains(github.event.inputs.schedule_slot, 'loop') && '1' || '0' }}
         run: python -u alamo_collect.py
       - name: Commit Alamo data
         if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          csv=box-office-tracker/data/alamo-pre-reservation-snapshots.csv
-          [ -f "$csv" ] || { echo "No Alamo data."; exit 0; }
-          cp "$csv" /tmp/alamo-ours.csv
-          for i in 1 2 3 4 5; do
-            git fetch -q origin main
-            git reset -q --hard origin/main
-            if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/alamo-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/alamo-archive)
-            else
-              cp /tmp/alamo-ours.csv "$csv"; added=all
-            fi
-            echo "Alamo rows added on top of main: $added"
-            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
-            # archives so the CSV never nears GitHub's 100 MB push limit.
-            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/alamo-archive
-            [ -d box-office-tracker/data/alamo-archive ] && git add box-office-tracker/data/alamo-archive
-            git add "$csv"
-            if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
-            git commit -q -m "data: box office alamo lane"
-            git push -q origin HEAD:main && exit 0
-            echo "Push attempt $i lost a race, re-applying on the new main..."
-            sleep $((i * 7))
-          done
-          exit 1
+          bash box-office-tracker/scripts/commit_lane.sh alamo box-office-tracker/data/alamo-pre-reservation-snapshots.csv "data: box office alamo lane"
 
   scrape-harkins:
     # Harkins (2026-09-27): open JSON services, full census of every tracked
@@ -1270,32 +1248,7 @@ jobs:
       - name: Commit Harkins data
         if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          csv=box-office-tracker/data/harkins-pre-reservation-snapshots.csv
-          [ -f "$csv" ] || { echo "No Harkins data."; exit 0; }
-          cp "$csv" /tmp/harkins-ours.csv
-          for i in 1 2 3 4 5; do
-            git fetch -q origin main
-            git reset -q --hard origin/main
-            if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/harkins-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/harkins-archive)
-            else
-              cp /tmp/harkins-ours.csv "$csv"; added=all
-            fi
-            echo "Harkins rows added on top of main: $added"
-            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
-            # archives so the CSV never nears GitHub's 100 MB push limit.
-            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/harkins-archive
-            [ -d box-office-tracker/data/harkins-archive ] && git add box-office-tracker/data/harkins-archive
-            git add "$csv"
-            if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
-            git commit -q -m "data: box office harkins lane"
-            git push -q origin HEAD:main && exit 0
-            echo "Push attempt $i lost a race, re-applying on the new main..."
-            sleep $((i * 7))
-          done
-          exit 1
+          bash box-office-tracker/scripts/commit_lane.sh harkins box-office-tracker/data/harkins-pre-reservation-snapshots.csv "data: box office harkins lane"
 
   scrape-webedia:
     # Webedia chains (2026-09-27): Landmark, Showcase, MJR, Flix Brewhouse,
@@ -1325,37 +1278,7 @@ jobs:
       - name: Commit Webedia data
         if: always()
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          csv=box-office-tracker/data/webedia-pre-reservation-snapshots.csv
-          cache=box-office-tracker/data/theatres-webedia.json
-          [ -f "$cache" ] && cp "$cache" /tmp/theatres-webedia.json
-          [ -f "$csv" ] || { echo "No Webedia data."; exit 0; }
-          cp "$csv" /tmp/webedia-ours.csv
-          for i in 1 2 3 4 5; do
-            git fetch -q origin main
-            git reset -q --hard origin/main
-            if [ -f "$csv" ]; then
-              added=$(python3 box-office-tracker/scripts/union_csv_rows.py /tmp/webedia-ours.csv "$csv" --key weekend_of,snapshot_bucket,show_date,theatre_name,movie_title,showtime_id,auditorium_type,chain,row_kind --archived-dir box-office-tracker/data/webedia-archive)
-            else
-              cp /tmp/webedia-ours.csv "$csv"; added=all
-            fi
-            echo "Webedia rows added on top of main: $added"
-            # theatre-list cache (2026-09-28): the collector falls back to it
-            # when the sites' daily rebuild leaves discovery empty.
-            if [ -f /tmp/theatres-webedia.json ]; then cp /tmp/theatres-webedia.json "$cache"; git add "$cache"; fi
-            # Lane-owned rotation (2026-09-27): settled weekends -> per-weekend gzip
-            # archives so the CSV never nears GitHub's 100 MB push limit.
-            python3 box-office-tracker/scripts/rotate_lane_csv.py "$csv" --archive-dir box-office-tracker/data/webedia-archive
-            [ -d box-office-tracker/data/webedia-archive ] && git add box-office-tracker/data/webedia-archive
-            git add "$csv"
-            if git diff --staged --quiet; then echo "Nothing new relative to main."; exit 0; fi
-            git commit -q -m "data: box office webedia lane"
-            git push -q origin HEAD:main && exit 0
-            echo "Push attempt $i lost a race, re-applying on the new main..."
-            sleep $((i * 7))
-          done
-          exit 1
+          bash box-office-tracker/scripts/commit_lane.sh webedia box-office-tracker/data/webedia-pre-reservation-snapshots.csv "data: box office webedia lane" box-office-tracker/data/theatres-webedia.json
 
   scrape-cinemark:
     if: github.event.inputs.phase == 'scrape-cinemark'

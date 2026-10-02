@@ -46,6 +46,20 @@ ALAMO_LOOP_MIN = int(os.environ.get("ALAMO_LOOP_MIN", "0") or 0)
 ALAMO_LOOP_EVERY_MIN = int(os.environ.get("ALAMO_LOOP_EVERY_MIN", "15") or 15)
 ALAMO_SLEEP_SEC = float(os.environ.get("ALAMO_SLEEP_SEC", "0.25"))
 ALAMO_MAX_SESSIONS = int(os.environ.get("ALAMO_MAX_SESSIONS", "0") or 0)
+# Loop jobs commit after every pass (scripts/commit_lane.sh) so a runner
+# shutdown mid-loop cannot lose the passes already taken (2026-10-02 02:40Z).
+ALAMO_LOOP_COMMIT = (os.environ.get("ALAMO_LOOP_COMMIT") or "0").strip() == "1"
+
+
+def commit_pass():
+    """Push this pass's rows onto main via the shared lane committer."""
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    r = subprocess.run(["bash", "box-office-tracker/scripts/commit_lane.sh", "alamo",
+                        "box-office-tracker/data/alamo-pre-reservation-snapshots.csv",
+                        "data: box office alamo lane"], cwd=root)
+    if r.returncode:
+        print(f"  ⚠️  per-pass commit failed (exit {r.returncode}); the final commit step retries", flush=True)
 
 
 def _get(path, timeout=30):
@@ -236,7 +250,10 @@ def main():
         end = time.monotonic() + ALAMO_LOOP_MIN * 60
         total = Counter()
         while True:
-            total.update(collect(mode=mode))
+            t = collect(mode=mode)
+            total.update(t)
+            if ALAMO_LOOP_COMMIT and t.get("written", 0):
+                commit_pass()
             if time.monotonic() + ALAMO_LOOP_EVERY_MIN * 60 > end:
                 break
             time.sleep(ALAMO_LOOP_EVERY_MIN * 60)
