@@ -29,7 +29,7 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fandango_collect import (  # noqa: E402
-    FANDANGO_PRE_RESERVATION_FIELDS, append_unique_fandango_rows, slugify_title)
+    FANDANGO_PRE_RESERVATION_FIELDS, append_unique_fandango_rows, filter_unchanged, slugify_title)
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 ALAMO_CSV = DATA_DIR / "alamo-pre-reservation-snapshots.csv"
@@ -235,6 +235,9 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
         rows.append(build_row(session, cinema, title, counts, weekend_of, run_id, now_utc, post=(mode == "post")))
         totals["captured"] += 1
         time.sleep(ALAMO_SLEEP_SEC)
+    before = len(rows)
+    rows = filter_unchanged(rows, ALAMO_CSV)          # changed readings only (2026-10-02)
+    totals["unchanged"] = before - len(rows)
     written, deduped = append_unique_fandango_rows(rows, csv_path=ALAMO_CSV)
     totals["written"], totals["deduped"] = written, deduped
     print(f"=== Alamo collect summary [{mode}] === " + " ".join(f"{k}={v}" for k, v in sorted(totals.items())), flush=True)

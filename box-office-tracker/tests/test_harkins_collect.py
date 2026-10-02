@@ -88,3 +88,20 @@ class LoudFailThresholdTest(unittest.TestCase):
         import harkins_collect as H
         for mod in (A, H):
             self.assertEqual(5, mod.LOUD_FAIL_MIN_MATCHED)
+
+
+class FilterUnchangedTest(unittest.TestCase):
+    def test_only_changed_readings_are_kept(self):
+        import tempfile, os
+        from fandango_collect import filter_unchanged
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "x.csv")
+            open(p, "w").write("showtime_id,movie_title,reserved_seats,row_kind\n1:1,F,10,harkins-api\n")
+            rows = [{"showtime_id": "1:1", "movie_title": "F", "reserved_seats": 10, "row_kind": "harkins-api"},   # unchanged
+                    {"showtime_id": "1:1", "movie_title": "F", "reserved_seats": 12, "row_kind": "harkins-api"},   # changed
+                    {"showtime_id": "1:1", "movie_title": "F", "reserved_seats": 12, "row_kind": "post-show-census"},
+                    {"showtime_id": "1:1", "movie_title": "F", "reserved_seats": 12, "row_kind": "post-show-census"},
+                    {"showtime_id": "2:9", "movie_title": "F", "reserved_seats": 0, "row_kind": "harkins-api"}]      # new
+            kept = filter_unchanged(rows, p)
+            self.assertEqual([(12, "harkins-api"), (12, "post-show-census"), (0, "harkins-api")],
+                             [(r["reserved_seats"], r["row_kind"]) for r in kept])

@@ -545,6 +545,31 @@ def ensure_fandango_header(csv_path=None):
         migrate_header(csv_path, FANDANGO_PRE_RESERVATION_FIELDS)
 
 
+def filter_unchanged(rows, csv_path, key_fields=("showtime_id", "movie_title"),
+                     value_fields=("reserved_seats", "row_kind")):
+    """Pure-ish: drop rows whose value fields equal the latest stored row for
+    the same key (and later in-batch repeats). 2026-10-02: hourly/15-min
+    passes rewrote every unchanged showing — Webedia 87%, Harkins 71%, Alamo
+    58% of rows carried no new information. The first read, every change and
+    the first post-show read are kept; latest-value readers see no difference."""
+    latest = {}
+    try:
+        with open(csv_path, newline="", errors="replace") as f:
+            for r in csv.DictReader(f):
+                latest[tuple(str(r.get(k, "") or "") for k in key_fields)] = tuple(str(r.get(v, "") or "") for v in value_fields)
+    except OSError:
+        pass
+    out = []
+    for r in rows:
+        k = tuple(str(r.get(x, "") or "") for x in key_fields)
+        v = tuple(str(r.get(x, "") or "") for x in value_fields)
+        if latest.get(k) == v:
+            continue
+        latest[k] = v
+        out.append(r)
+    return out
+
+
 def append_unique_fandango_rows(rows, csv_path=None):
     """Append snapshots to the isolated Fandango file, deduped by the chain-aware
     key, computing delta_reserved vs the prior bucket for the same showtime."""

@@ -22,6 +22,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from fandango_collect import filter_unchanged  # noqa: E402
 from fandango_collect import append_unique_fandango_rows, slugify_title  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -295,6 +296,9 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                 totals["captured"] += 1
                 time.sleep(SLEEP)
             time.sleep(SLEEP)
+    before = len(rows)
+    rows = filter_unchanged(rows, HARKINS_CSV)          # changed readings only (2026-10-02)
+    totals["unchanged"] = before - len(rows)
     written, deduped = append_unique_fandango_rows(rows, csv_path=HARKINS_CSV)
     totals["written"], totals["deduped"] = written, deduped
     print(f"=== Harkins collect summary [{mode}] === " + " ".join(f"{k}={v}" for k, v in sorted(totals.items())), flush=True)
