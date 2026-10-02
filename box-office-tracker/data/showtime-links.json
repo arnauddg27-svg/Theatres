@@ -2,7 +2,7 @@
   "date": "2026-10-02",
   "weekend_of": "2026-10-02",
   "collected_local_date": "2026-10-02",
-  "collected_at": "2026-10-02T21:16:35.439964+00:00",
+  "collected_at": "2026-10-02T23:47:01.792317+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -186,24 +186,44 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186039+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:50pm",
-            "showtime_id": "147189038",
+            "showtime": "6:30pm",
+            "showtime_id": "147189020",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "147189019",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "147479419",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "146770307",
+            "showtime": "7:00pm",
+            "showtime_id": "146770308",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147513737",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146770301",
             "format": "undefined"
           }
         ]
@@ -1853,34 +1873,54 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186190+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147198828",
+            "showtime": "1:00pm",
+            "showtime_id": "147498040",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147198829",
+            "showtime": "4:15pm",
+            "showtime_id": "147198873",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147198872",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147198874",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:05pm",
-            "showtime_id": "146818766",
+            "showtime": "1:00pm",
+            "showtime_id": "146818759",
             "format": "undefined"
           },
           {
-            "showtime": "8:10pm",
-            "showtime_id": "146818767",
+            "showtime": "4:00pm",
+            "showtime_id": "146818760",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146818753",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146818754",
             "format": "undefined"
           }
         ]
@@ -2391,7 +2431,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186017+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -2456,7 +2496,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186176+00:00",
+          "collected_at": "2026-10-02T23:47:01.758080+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -2526,29 +2566,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "147026845",
+            "showtime": "6:50pm",
+            "showtime_id": "147026846",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147026818",
+            "showtime": "10:00pm",
+            "showtime_id": "147443559",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146683178",
+            "showtime": "6:25pm",
+            "showtime_id": "147443606",
             "format": "undefined"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146683175",
+            "showtime": "7:15pm",
+            "showtime_id": "146683177",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "147443607",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147443604",
             "format": "undefined"
           }
         ]
@@ -2969,7 +3019,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186617+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -3189,50 +3239,50 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147053439",
+            "showtime": "6:45pm",
+            "showtime_id": "147053445",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147053370",
+            "showtime_id": "147053364",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147053438",
-            "format": "IMAX with Laser at AMC"
+            "showtime_id": "147053154",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147053152",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "147053444",
+            "format": "IMAX with Laser at AMC"
           }
         ],
         "Verity": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146624318",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146624256",
+            "showtime_id": "146624255",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146624282",
+            "showtime": "7:00pm",
+            "showtime_id": "146624279",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146624317",
+            "showtime": "8:00pm",
+            "showtime_id": "146624316",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146624280",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -3871,7 +3921,7 @@
               }
             ]
           },
-          "collected_at": "2026-09-29T15:16:24.352774+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -3956,34 +4006,49 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147101325",
+            "showtime": "1:15pm",
+            "showtime_id": "147101320",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147101324",
+            "showtime": "4:30pm",
+            "showtime_id": "147101319",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147101382",
+            "showtime": "7:15pm",
+            "showtime_id": "147101267",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147101266",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146620446",
+            "showtime": "1:00pm",
+            "showtime_id": "146620477",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146620445",
+            "showtime": "4:00pm",
+            "showtime_id": "146620476",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146620475",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146620474",
             "format": "Laser at AMC"
           }
         ]
@@ -5347,7 +5412,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186745+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -5572,60 +5637,55 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "147025582",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "147025446",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147025547",
+            "showtime_id": "147025544",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147025425",
+            "showtime": "7:05pm",
+            "showtime_id": "147025414",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147025546",
+            "showtime_id": "147025543",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147025307",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:00pm",
-            "showtime_id": "147528366",
+            "showtime_id": "147025402",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146824060",
+            "showtime_id": "146824089",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "146824092",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "146824054",
+            "showtime": "7:00pm",
+            "showtime_id": "146824059",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146824076",
+            "showtime": "8:15pm",
+            "showtime_id": "146824074",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147008374",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -6443,7 +6503,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186180+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -6508,39 +6568,44 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186440+00:00",
+          "collected_at": "2026-10-02T23:47:01.757872+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147048153",
+            "showtime": "5:30pm",
+            "showtime_id": "147048128",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147048150",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147048046",
+            "showtime": "8:45pm",
+            "showtime_id": "147048129",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147048154",
+            "showtime": "10:20pm",
+            "showtime_id": "147048151",
             "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146810618",
+            "showtime": "7:30pm",
+            "showtime_id": "146810612",
             "format": "undefined"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146810619",
+            "showtime": "10:30pm",
+            "showtime_id": "146810613",
             "format": "undefined"
           }
         ]
@@ -6737,7 +6802,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186828+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -6842,49 +6907,94 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147045485",
+            "showtime": "11:45am",
+            "showtime_id": "147045493",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147197965",
+            "showtime": "1:15pm",
+            "showtime_id": "147396008",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147045494",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147424941",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147045486",
+            "showtime": "6:15pm",
+            "showtime_id": "147045495",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147197964",
+            "showtime": "7:45pm",
+            "showtime_id": "147442131",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147045496",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "147424948",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146816502",
+            "showtime": "11:00am",
+            "showtime_id": "147442118",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146760200",
+            "showtime": "12:00pm",
+            "showtime_id": "147425026",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147424938",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146760330",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147396007",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146816501",
+            "showtime": "6:00pm",
+            "showtime_id": "147425028",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146760360",
+            "showtime": "7:30pm",
+            "showtime_id": "147045481",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147425027",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147045482",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -7041,7 +7151,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186450+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -7116,34 +7226,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147052193",
+            "showtime": "12:15pm",
+            "showtime_id": "147052142",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:40pm",
-            "showtime_id": "147413284",
+            "showtime": "3:00pm",
+            "showtime_id": "147052189",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147510442",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147052144",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147510443",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147052194",
+            "showtime_id": "147052188",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147510488",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146818396",
+            "showtime": "1:30pm",
+            "showtime_id": "146696657",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147413290",
+            "showtime": "4:30pm",
+            "showtime_id": "146696656",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147510394",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146696654",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147510411",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146696655",
             "format": "undefined"
           }
         ]
@@ -9173,44 +9323,74 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186454+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
+            "showtime": "12:15pm",
+            "showtime_id": "147480502",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147392998",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147044958",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "147044962",
+            "showtime_id": "147044956",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147044963",
+            "showtime_id": "147044957",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "147392999",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "146818816",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146818828",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "147392987",
+            "showtime_id": "147392996",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146818806",
+            "showtime_id": "146818826",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147392988",
+            "showtime_id": "147392997",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "146818807",
+            "showtime_id": "146818827",
             "format": "Laser at AMC"
           }
         ]
@@ -10358,7 +10538,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186475+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -10513,45 +10693,40 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147233298",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "147233299",
+            "showtime": "7:00pm",
+            "showtime_id": "147233300",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147233292",
+            "showtime_id": "147233301",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147543797",
+            "showtime": "6:00pm",
+            "showtime_id": "147470661",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146816354",
-            "format": "Laser at AMC"
+            "showtime_id": "146816358",
+            "format": "XL at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147543796",
+            "showtime": "9:00pm",
+            "showtime_id": "147470662",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146816355",
-            "format": "Laser at AMC"
+            "showtime_id": "146816378",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -10936,7 +11111,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186521+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -11051,34 +11226,69 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147014116",
+            "showtime": "12:30pm",
+            "showtime_id": "147479971",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147014117",
+            "showtime": "2:00pm",
+            "showtime_id": "147014168",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147479884",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147014169",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147014170",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147387068",
+            "showtime": "12:45pm",
+            "showtime_id": "147545379",
             "format": "undefined"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "146620899",
+            "showtime": "1:15pm",
+            "showtime_id": "146620867",
             "format": "BigD at AMC"
           },
           {
+            "showtime": "3:00pm",
+            "showtime_id": "146620868",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147479911",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146620869",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147479992",
+            "format": "undefined"
+          },
+          {
             "showtime": "8:30pm",
-            "showtime_id": "146620898",
+            "showtime_id": "147479912",
             "format": "undefined"
           }
         ]
@@ -11987,7 +12197,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186881+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -12097,7 +12307,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186885+00:00",
+          "collected_at": "2026-10-02T23:47:01.757841+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -12202,54 +12412,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
+            "showtime": "5:00pm",
+            "showtime_id": "147110544",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147508988",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "147110478",
+            "showtime_id": "147110475",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147475510",
+            "showtime": "8:15pm",
+            "showtime_id": "147110543",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147110479",
+            "showtime_id": "147110476",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147110452",
+            "showtime": "10:15pm",
+            "showtime_id": "147110453",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Verity": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146823916",
+            "showtime_id": "146823934",
             "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146823939",
+            "showtime_id": "146823940",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "8:30pm",
+            "showtime_id": "147508962",
+            "format": "undefined"
+          },
+          {
             "showtime": "9:00pm",
-            "showtime_id": "146823917",
+            "showtime_id": "146823935",
             "format": "undefined"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147475497",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:25pm",
-            "showtime_id": "147475517",
+            "showtime": "9:45pm",
+            "showtime_id": "147508966",
             "format": "undefined"
           }
         ]
@@ -12566,59 +12786,104 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186169+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147200422",
+            "showtime": "12:00pm",
+            "showtime_id": "147200405",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "147200569",
+            "showtime": "1:00pm",
+            "showtime_id": "147200557",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147200417",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147200563",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147200416",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147200564",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147200516",
+            "showtime_id": "147200527",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147200421",
+            "showtime_id": "147200415",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147200395",
+            "showtime_id": "147200389",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Verity": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "147429479",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "146800323",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147429497",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146800331",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147200390",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146800219",
+            "showtime_id": "146800216",
             "format": "undefined"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146800295",
+            "showtime_id": "146800297",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146800220",
+            "showtime_id": "146800217",
             "format": "undefined"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "147429475",
+            "showtime": "10:30pm",
+            "showtime_id": "147429478",
             "format": "undefined"
           }
         ]
@@ -12695,7 +12960,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186899+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -12775,7 +13040,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186906+00:00",
+          "collected_at": "2026-10-02T23:47:01.758109+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -12845,29 +13110,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147162640",
+            "showtime": "7:30pm",
+            "showtime_id": "147162637",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147162642",
+            "showtime": "10:45pm",
+            "showtime_id": "147162638",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147522914",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147162530",
+            "showtime": "7:00pm",
+            "showtime_id": "146840380",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147162531",
+            "showtime": "9:15pm",
+            "showtime_id": "147522954",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147522900",
             "format": "Laser at AMC"
           }
         ]
@@ -13333,7 +13608,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187122+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -13413,39 +13688,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147220293",
+            "showtime": "6:30pm",
+            "showtime_id": "147220295",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147220294",
+            "showtime": "9:45pm",
+            "showtime_id": "147220296",
             "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147470901",
-            "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146730630",
+            "showtime": "5:40pm",
+            "showtime_id": "147417508",
             "format": "undefined"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146730631",
+            "showtime": "7:00pm",
+            "showtime_id": "146730600",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147470848",
+            "showtime": "8:30pm",
+            "showtime_id": "147417511",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146730601",
             "format": "undefined"
           }
         ]
@@ -14048,7 +14323,7 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "8:45pm",
+                "showtime": "7:30pm",
                 "showtime_id": "147174729",
                 "format": "Laser at AMC"
               },
@@ -14141,74 +14416,139 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186934+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147174564",
+            "showtime": "11:45am",
+            "showtime_id": "147174551",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "147174594",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "147174668",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147174554",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "147174667",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147174552",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147174602",
+            "showtime_id": "147174592",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147174565",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147174732",
+            "showtime": "7:30pm",
+            "showtime_id": "147174729",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "147174631",
+            "showtime": "9:30pm",
+            "showtime_id": "147174553",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147498922",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147174411",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147499073",
             "format": "PRIME at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147498980",
+            "showtime": "11:30am",
+            "showtime_id": "147499181",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "146810234",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147498970",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147499182",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146810235",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146810161",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147232239",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147499194",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "146810211",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147499068",
+            "showtime_id": "146810236",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "146810163",
+            "showtime_id": "146810167",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147498950",
+            "showtime": "8:30pm",
+            "showtime_id": "147499195",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146810212",
+            "showtime_id": "146810237",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147174601",
+            "showtime_id": "147174593",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -14425,7 +14765,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187101+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -14515,94 +14855,69 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-02T23:47:01.757950+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-04",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147054356",
+            "showtime": "5:15pm",
+            "showtime_id": "147054348",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147428973",
+            "showtime": "5:45pm",
+            "showtime_id": "147428981",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147054749",
+            "showtime": "7:00pm",
+            "showtime_id": "147054741",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147054666",
+            "showtime": "8:30pm",
+            "showtime_id": "147054350",
             "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "3:10pm",
-            "showtime_id": "147428971",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "4:20pm",
-            "showtime_id": "147054747",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147054354",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147054746",
-            "format": "IMAX at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147054668",
+            "showtime_id": "147428980",
             "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147054679",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147054743",
+            "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "12:20pm",
-            "showtime_id": "147429125",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "1:50pm",
-            "showtime_id": "147429021",
+            "showtime": "6:00pm",
+            "showtime_id": "147429132",
             "format": "undefined"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147429124",
+            "showtime": "7:30pm",
+            "showtime_id": "146797641",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147429023",
+            "showtime": "9:10pm",
+            "showtime_id": "147429133",
             "format": "undefined"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147429126",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:40pm",
-            "showtime_id": "147429022",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "147429170",
+            "showtime": "10:30pm",
+            "showtime_id": "146797633",
             "format": "undefined"
           }
         ]
@@ -14734,7 +15049,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186500+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -14859,50 +15174,75 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:05pm",
-            "showtime_id": "147409938",
+            "showtime": "1:20pm",
+            "showtime_id": "147175198",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:40pm",
+            "showtime_id": "147409951",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147175150",
+            "showtime": "4:30pm",
+            "showtime_id": "147175197",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "147175196",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147175212",
+            "showtime_id": "147175195",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146709022",
+            "showtime": "11:05am",
+            "showtime_id": "147409932",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146709021",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:10pm",
-            "showtime_id": "147409937",
+            "showtime": "12:35pm",
+            "showtime_id": "147409952",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "146709020",
+            "showtime": "2:00pm",
+            "showtime_id": "146708944",
             "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146708955",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147409950",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146708953",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147409953",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147409936",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "146708954",
+            "format": "Dine-In Delivery to Seat"
           }
         ]
       }
@@ -17385,6 +17725,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "147416638",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "6:00pm",
                 "showtime_id": "146818246",
                 "format": "Dine-In Delivery to Seat"
@@ -17406,7 +17751,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186270+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -17486,44 +17831,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "147124270",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147124268",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147416625",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "147124278",
+            "showtime_id": "147124277",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147124280",
+            "showtime_id": "147124269",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147416783",
+            "showtime": "12:00pm",
+            "showtime_id": "146818234",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "147416628",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146818245",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147416638",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146818219",
+            "showtime_id": "146818246",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147416613",
+            "showtime_id": "147416626",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146818220",
+            "showtime_id": "146818247",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147416614",
+            "showtime_id": "147416627",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -17815,64 +18190,89 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187003+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "147020386",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147020515",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147020385",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "5:15pm",
-            "showtime_id": "147025294",
+            "showtime_id": "147020514",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147025290",
+            "showtime_id": "147020384",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147025295",
+            "showtime_id": "147020516",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147025296",
+            "showtime_id": "147020575",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147025291",
+            "showtime_id": "147020387",
             "format": "IMAX with Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146622528",
+            "showtime": "12:30pm",
+            "showtime_id": "147487432",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "146622555",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147020574",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146622556",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "146622574",
+            "showtime_id": "146622570",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147419022",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "146622529",
+            "showtime": "7:15pm",
+            "showtime_id": "146622557",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "146622530",
+            "showtime": "10:15pm",
+            "showtime_id": "146622558",
             "format": "Laser at AMC"
           }
         ]
@@ -19350,6 +19750,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "1:15pm",
+                "showtime_id": "147572849",
+                "format": "undefined"
+              },
+              {
                 "showtime": "3:45pm",
                 "showtime_id": "146658649",
                 "format": "undefined"
@@ -19376,34 +19781,69 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186166+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147178510",
+            "showtime": "12:30pm",
+            "showtime_id": "147178506",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147178507",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147178508",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147178497",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146658653",
+            "showtime": "12:45pm",
+            "showtime_id": "146658641",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147543297",
+            "showtime": "1:15pm",
+            "showtime_id": "147572849",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146658654",
+            "showtime": "3:45pm",
+            "showtime_id": "146658649",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146658648",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147543294",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "147543341",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "146658647",
             "format": "undefined"
           }
         ]
@@ -19620,7 +20060,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187038+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -19720,60 +20160,95 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147214069",
+            "showtime": "11:30am",
+            "showtime_id": "147214064",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "147400383",
+            "showtime": "12:45pm",
+            "showtime_id": "147400363",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147214070",
+            "showtime": "2:45pm",
+            "showtime_id": "147214065",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147400384",
+            "showtime": "4:15pm",
+            "showtime_id": "147213974",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147214066",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147400364",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147483420",
+            "showtime": "9:15pm",
+            "showtime_id": "147214067",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147400365",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146840729",
+            "showtime": "11:00am",
+            "showtime_id": "147400400",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146840738",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147400411",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146840737",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147400410",
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146838131",
-            "format": "PRIME at AMC"
+            "showtime_id": "146840736",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146840728",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147483588",
+            "showtime_id": "146840764",
             "format": "PRIME at AMC"
           },
           {
+            "showtime": "10:00pm",
+            "showtime_id": "146840739",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "11:00pm",
-            "showtime_id": "146840731",
-            "format": "Laser at AMC"
+            "showtime_id": "147400409",
+            "format": "PRIME at AMC"
           }
         ]
       }
@@ -19919,7 +20394,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186948+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -20064,49 +20539,89 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147069396",
+            "showtime": "12:00pm",
+            "showtime_id": "147069315",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147069470",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147069316",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "147069468",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "147069317",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147069453",
+            "showtime_id": "147069465",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147069394",
+            "showtime": "8:15pm",
+            "showtime_id": "147069318",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "147069454",
+            "showtime_id": "147069463",
             "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146661853",
+            "showtime": "12:00pm",
+            "showtime_id": "146661833",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "147418657",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146661846",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147418656",
+            "format": "BigD at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146661847",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146661990",
+            "showtime_id": "146661987",
             "format": "BigD at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146661854",
+            "showtime": "9:00pm",
+            "showtime_id": "146661848",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147418646",
+            "showtime_id": "147418655",
             "format": "BigD at AMC"
           }
         ]
@@ -21827,6 +22342,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:50pm",
+                "showtime_id": "147568306",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:30pm",
                 "showtime_id": "147473677",
                 "format": "Laser at AMC"
@@ -21838,7 +22358,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187071+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -22133,84 +22653,84 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147174991",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:15pm",
-            "showtime_id": "147174910",
+            "showtime_id": "147174907",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147174982",
+            "showtime": "7:40pm",
+            "showtime_id": "147174988",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147174835",
+            "showtime_id": "147174833",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147174990",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "9:30pm",
-            "showtime_id": "147174911",
+            "showtime_id": "147174906",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147174867",
+            "showtime": "9:55pm",
+            "showtime_id": "147473701",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147174813",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147174866",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:50pm",
+            "showtime_id": "147473729",
+            "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146621453",
-            "format": "Laser at AMC"
+            "showtime": "5:30pm",
+            "showtime_id": "147473649",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146621441",
+            "showtime": "6:45pm",
+            "showtime_id": "147473700",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147424592",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:15pm",
-            "showtime_id": "146621447",
+            "showtime_id": "146621452",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146621454",
+            "showtime_id": "146621478",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147424707",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "146621386",
+            "showtime": "9:50pm",
+            "showtime_id": "147568306",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147426657",
+            "showtime_id": "147473677",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "146621428",
             "format": "Laser at AMC"
           }
         ]
@@ -22382,7 +22902,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186924+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -22472,29 +22992,89 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147021783",
+            "showtime": "12:30pm",
+            "showtime_id": "147021730",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147021842",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147021725",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147021840",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147021734",
+            "showtime": "7:05pm",
+            "showtime_id": "147021726",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "8:05pm",
+            "showtime_id": "147021841",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147021727",
             "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146831143",
+            "showtime": "12:00pm",
+            "showtime_id": "147526162",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146640764",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147526163",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146640792",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147526164",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146640765",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146831144",
+            "showtime_id": "147562420",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147526165",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146640793",
             "format": "undefined"
           }
         ]
@@ -22894,6 +23474,11 @@
             ],
             "Verity": [
               {
+                "showtime": "12:45pm",
+                "showtime_id": "147571278",
+                "format": "undefined"
+              },
+              {
                 "showtime": "1:30pm",
                 "showtime_id": "146779904",
                 "format": "undefined"
@@ -22925,7 +23510,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186986+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -23035,49 +23620,69 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186993+00:00",
+          "collected_at": "2026-10-02T23:47:01.757996+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "147088666",
+            "showtime": "1:10pm",
+            "showtime_id": "147088691",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147088667",
+            "showtime": "3:55pm",
+            "showtime_id": "147088690",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147088708",
+            "showtime": "7:05pm",
+            "showtime_id": "147088688",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147088689",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146779945",
+            "showtime": "12:45pm",
+            "showtime_id": "147571278",
             "format": "undefined"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "146779946",
+            "showtime": "1:30pm",
+            "showtime_id": "146779904",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146779913",
+            "showtime": "3:45pm",
+            "showtime_id": "147512307",
             "format": "undefined"
           },
           {
-            "showtime": "10:35pm",
-            "showtime_id": "147494995",
+            "showtime": "4:30pm",
+            "showtime_id": "146779903",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147512306",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146779901",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "146779902",
             "format": "undefined"
           }
         ]
@@ -24138,10 +24743,15 @@
                 "showtime": "7:00pm",
                 "showtime_id": "146767011",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147571885",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186877+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -24281,29 +24891,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147026924",
+            "showtime": "12:15pm",
+            "showtime_id": "147027011",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147026917",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147027010",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147026916",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147027039",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147026915",
             "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146834466",
+            "showtime": "12:30pm",
+            "showtime_id": "146766838",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146841309",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146766837",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146841308",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146766836",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146767012",
+            "showtime_id": "146767011",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146766847",
+            "showtime": "7:30pm",
+            "showtime_id": "147571885",
             "format": "Laser at AMC"
           }
         ]
@@ -25532,29 +26187,64 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186845+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147111627",
+            "showtime": "11:30am",
+            "showtime_id": "147483594",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147111680",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147111741",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147111681",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147111740",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147483593",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146807322",
+            "showtime": "12:30pm",
+            "showtime_id": "146807310",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146807323",
+            "showtime": "3:30pm",
+            "showtime_id": "146807309",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "146807319",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146807320",
             "format": "undefined"
           }
         ]
@@ -26264,7 +26954,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186817+00:00",
+          "collected_at": "2026-10-02T23:47:01.757918+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -26293,6 +26983,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "147571399",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "147555720",
                 "format": "undefined"
@@ -26303,50 +26998,70 @@
                 "format": "undefined"
               },
               {
+                "showtime": "9:45pm",
+                "showtime_id": "147571398",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "147555719",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186831+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147216875",
+            "showtime": "7:00pm",
+            "showtime_id": "147216825",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147216876",
+            "showtime_id": "147216859",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147555199",
+            "showtime": "6:00pm",
+            "showtime_id": "147438979",
             "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146846265",
+            "showtime_id": "146846267",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147571399",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147555720",
             "format": "undefined"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146846257",
+            "showtime_id": "146846258",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147555201",
+            "showtime_id": "147571398",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147555719",
             "format": "undefined"
           }
         ]
@@ -26502,9 +27217,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:10pm",
+                "showtime_id": "147569839",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147424772",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147569853",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "10:00pm",
@@ -26523,7 +27248,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187185+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -26828,75 +27553,105 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "147011414",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "147402845",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147402870",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147011443",
+            "showtime_id": "146815677",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147199926",
-            "format": "Laser at AMC"
+            "showtime_id": "147011415",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147011445",
+            "showtime_id": "147011452",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147011444",
+            "showtime_id": "146815678",
             "format": "IMAX with Laser at AMC"
           }
         ],
         "Verity": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "147199925",
+            "showtime_id": "146619140",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147424746",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146646562",
+            "showtime_id": "146619190",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147402882",
+            "showtime_id": "147424779",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146646547",
+            "showtime_id": "147400930",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147402971",
+            "showtime_id": "146619134",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146815981",
-            "format": "Dolby Cinema at AMC"
+            "showtime_id": "147424743",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "147569839",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147424774",
+            "showtime_id": "147424772",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146646531",
+            "showtime": "9:30pm",
+            "showtime_id": "147569853",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146688286",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147424765",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "147011416",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -27019,7 +27774,7 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "9:30pm",
+                "showtime": "10:00pm",
                 "showtime_id": "147235299",
                 "format": "Dine-In Delivery to Seat"
               }
@@ -27036,18 +27791,33 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147570043",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147412531",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147570045",
                 "format": "Dine-In Delivery to Seat"
               },
               {
                 "showtime": "10:00pm",
                 "showtime_id": "146604537",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147570485",
+                "format": "Dine-In Delivery to Seat"
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186811+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-03": {
@@ -27122,69 +27892,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-04",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147235297",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147235296",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "147235294",
+            "showtime_id": "147235298",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147235295",
+            "showtime": "10:00pm",
+            "showtime_id": "147235299",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Verity": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147412524",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "146604547",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "147412523",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146604546",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "147412522",
+            "showtime_id": "147412520",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146604544",
+            "showtime_id": "146604536",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147570043",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147412525",
+            "showtime_id": "147412531",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147570045",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146604545",
+            "showtime_id": "146604537",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147570485",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -28258,7 +29013,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186610+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -28408,29 +29163,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:20pm",
-            "showtime_id": "147150111",
+            "showtime": "7:00pm",
+            "showtime_id": "147150144",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147150138",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147440331",
+            "showtime": "6:40pm",
+            "showtime_id": "147440330",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146623163",
+            "showtime": "7:15pm",
+            "showtime_id": "146623164",
             "format": "undefined"
           },
           {
-            "showtime": "8:35pm",
-            "showtime_id": "147440294",
+            "showtime": "9:25pm",
+            "showtime_id": "147440327",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146623166",
             "format": "undefined"
           }
         ]
@@ -29245,44 +30010,79 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186660+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147155172",
+            "showtime": "12:45pm",
+            "showtime_id": "147155081",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "147155135",
+            "showtime": "2:45pm",
+            "showtime_id": "147502820",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147155138",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147155109",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147155170",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "146836976",
+            "showtime": "12:00pm",
+            "showtime_id": "147159108",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "146836970",
+            "showtime": "1:00pm",
+            "showtime_id": "147502882",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147502880",
+            "showtime": "3:00pm",
+            "showtime_id": "147502874",
             "format": "undefined"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147159102",
+            "showtime": "4:00pm",
+            "showtime_id": "146836979",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147502875",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146836980",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "146836969",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147502894",
             "format": "undefined"
           }
         ]
@@ -29702,13 +30502,28 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "147427822",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:50pm",
                 "showtime_id": "147427768",
                 "format": "PRIME at AMC"
               },
               {
+                "showtime": "8:55pm",
+                "showtime_id": "147571884",
+                "format": "undefined"
+              },
+              {
                 "showtime": "9:55pm",
                 "showtime_id": "147427804",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147427833",
                 "format": "undefined"
               },
               {
@@ -29718,7 +30533,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186281+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -29818,34 +30633,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:35pm",
-            "showtime_id": "147200849",
+            "showtime": "2:45pm",
+            "showtime_id": "147200898",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "147427767",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147200896",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147200897",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146824765",
+            "showtime": "1:00pm",
+            "showtime_id": "146824762",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147489084",
+            "showtime": "1:45pm",
+            "showtime_id": "147427770",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146824761",
             "format": "undefined"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146824766",
+            "showtime": "7:00pm",
+            "showtime_id": "146824759",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147489082",
+            "showtime": "7:30pm",
+            "showtime_id": "147427822",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147427768",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "8:55pm",
+            "showtime_id": "147571884",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147427804",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147427833",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147427769",
             "format": "PRIME at AMC"
           }
         ]
@@ -30056,6 +30916,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "147573241",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "146625476",
                 "format": "PRIME at AMC"
@@ -30067,7 +30932,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186694+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -30122,44 +30987,94 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147032881",
+            "showtime": "11:30am",
+            "showtime_id": "147382440",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147032940",
+            "showtime": "12:45pm",
+            "showtime_id": "147500582",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147032882",
+            "showtime": "2:45pm",
+            "showtime_id": "147032909",
             "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147032978",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147032910",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147033009",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147032911",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147500528",
+            "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147382441",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147500542",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146844712",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146625522",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "146625489",
+            "showtime_id": "146625521",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147500518",
+            "showtime_id": "147500541",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147573241",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146625478",
+            "showtime_id": "146625476",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146625537",
+            "showtime_id": "146625520",
             "format": "undefined"
           }
         ]
@@ -30929,7 +31844,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186716+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-04": {
@@ -30999,44 +31914,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147022599",
+            "showtime": "12:45pm",
+            "showtime_id": "147022527",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147022600",
+            "showtime": "4:00pm",
+            "showtime_id": "147022528",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147022612",
+            "showtime": "7:45pm",
+            "showtime_id": "147022557",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147022597",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146795300",
+            "showtime": "1:00pm",
+            "showtime_id": "146795281",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147460923",
+            "showtime": "2:15pm",
+            "showtime_id": "147466696",
             "format": "undefined"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146795301",
+            "showtime": "3:45pm",
+            "showtime_id": "146795286",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146795302",
+            "showtime": "5:30pm",
+            "showtime_id": "147466567",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146795262",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147466569",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146795263",
             "format": "undefined"
           }
         ]
@@ -32314,7 +33249,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187247+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -32364,44 +33299,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:05pm",
-            "showtime_id": "147021927",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147021970",
+            "showtime": "12:00pm",
+            "showtime_id": "147021955",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147022031",
+            "showtime": "1:30pm",
+            "showtime_id": "147021929",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:05pm",
+            "showtime_id": "147021973",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147021932",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "147021971",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147021928",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147021972",
+            "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146635156",
+            "showtime": "12:00pm",
+            "showtime_id": "147414837",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "146635119",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147414836",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146635130",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "146635131",
+            "showtime_id": "147414835",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147414816",
+            "showtime_id": "146635129",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "146635125",
+            "showtime_id": "147414834",
             "format": "Laser at AMC"
           }
         ]
@@ -33371,7 +34341,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187339+00:00",
+          "collected_at": "2026-10-02T23:47:01.758164+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -33421,49 +34391,54 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187349+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "147061664",
+            "showtime_id": "147061666",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147428412",
+            "showtime": "7:00pm",
+            "showtime_id": "147428416",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147428422",
+            "showtime": "10:10pm",
+            "showtime_id": "147061669",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147428417",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "146626275",
+            "showtime_id": "147530477",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147530474",
+            "showtime": "7:15pm",
+            "showtime_id": "146626276",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146626307",
+            "showtime_id": "147530476",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147428476",
+            "showtime": "10:15pm",
+            "showtime_id": "146626277",
             "format": "undefined"
           }
         ]
@@ -33625,7 +34600,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187272+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -33780,59 +34755,94 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147179445",
+            "showtime": "12:30pm",
+            "showtime_id": "147179476",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147482487",
+            "showtime": "2:00pm",
+            "showtime_id": "147437287",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147179446",
+            "showtime": "3:00pm",
+            "showtime_id": "147437340",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147179475",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147403376",
+            "showtime": "5:05pm",
+            "showtime_id": "147437288",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147179485",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147437227",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147437251",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "147179474",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146629055",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147402684",
+            "showtime": "12:00pm",
+            "showtime_id": "147437339",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "146629056",
+            "showtime": "1:15pm",
+            "showtime_id": "146629048",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147562317",
+            "showtime": "2:25pm",
+            "showtime_id": "147437237",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146629047",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147437341",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146629046",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147564004",
-            "format": "Laser at AMC"
+            "showtime_id": "147437338",
+            "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:40pm",
-            "showtime_id": "146629057",
+            "showtime": "10:15pm",
+            "showtime_id": "146629045",
             "format": "Laser at AMC"
           }
         ]
@@ -33999,7 +35009,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187319+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -34039,29 +35049,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147330698",
+            "showtime": "1:00pm",
+            "showtime_id": "147433671",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147330699",
+            "showtime": "3:45pm",
+            "showtime_id": "147216683",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "147433673",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147216681",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147433672",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147433615",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147216682",
             "format": "Laser at AMC"
           }
         ],
         "Verity": [
           {
+            "showtime": "1:20pm",
+            "showtime_id": "146841736",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "146841735",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:00pm",
-            "showtime_id": "146841702",
+            "showtime_id": "146841733",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147330584",
+            "showtime_id": "146841734",
             "format": "Laser at AMC"
           }
         ]
@@ -34547,34 +35592,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "147096161",
+            "showtime": "1:30pm",
+            "showtime_id": "147096239",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147096154",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147096093",
+            "showtime": "4:30pm",
+            "showtime_id": "147448430",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147096238",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147096155",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "147469409",
+            "showtime": "1:00pm",
+            "showtime_id": "146796436",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147448410",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147469416",
+            "showtime": "4:00pm",
+            "showtime_id": "146796477",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "146796478",
+            "showtime": "4:45pm",
+            "showtime_id": "147448420",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146796442",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147448421",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146796476",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "147448422",
             "format": "undefined"
           }
         ]
@@ -35080,7 +36165,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187353+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -35135,44 +36220,84 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147441884",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147056648",
+            "showtime": "12:15pm",
+            "showtime_id": "147269214",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147056554",
+            "showtime": "2:30pm",
+            "showtime_id": "147056627",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147441906",
-            "format": "Laser at AMC"
+            "showtime": "3:30pm",
+            "showtime_id": "147056641",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147441911",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147056626",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147056639",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147056625",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147056640",
+            "format": "IMAX at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146626064",
+            "showtime": "1:00pm",
+            "showtime_id": "146626054",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146626136",
+            "showtime": "2:00pm",
+            "showtime_id": "147441990",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "4:00pm",
+            "showtime_id": "146626053",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146626128",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146626052",
+            "format": "XL at AMC"
+          },
+          {
             "showtime": "8:00pm",
-            "showtime_id": "146626063",
+            "showtime_id": "146626127",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146626056",
             "format": "XL at AMC"
           }
         ]
@@ -36002,44 +37127,69 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.187229+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-03",
       "movies": {
         "Digger": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147191695",
+            "showtime": "12:45pm",
+            "showtime_id": "147191656",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147191696",
+            "showtime": "1:45pm",
+            "showtime_id": "147438901",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147191662",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147191661",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147191646",
             "format": "AMC Artisan Films"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147419589",
+            "showtime": "1:00pm",
+            "showtime_id": "146775419",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146775635",
+            "showtime": "3:00pm",
+            "showtime_id": "147438889",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147419607",
+            "showtime": "4:00pm",
+            "showtime_id": "146775418",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146818423",
+            "showtime": "6:00pm",
+            "showtime_id": "147438887",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146775416",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146775417",
             "format": "undefined"
           }
         ]
@@ -36196,7 +37346,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186562+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-01": {
@@ -36231,30 +37381,60 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
-        "Verity": [
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "147234438",
-            "format": "undefined"
-          }
-        ],
         "Digger": [
           {
-            "showtime": "5:10pm",
-            "showtime_id": "147484796",
+            "showtime": "12:10pm",
+            "showtime_id": "147484784",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "147484697",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147484786",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147219128",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147484785",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147484750",
+            "showtime_id": "147219129",
             "format": "AMC Artisan Films"
+          }
+        ],
+        "Verity": [
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "147484742",
+            "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147484797",
-            "format": "IMAX at AMC"
+            "showtime": "2:30pm",
+            "showtime_id": "147484712",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147234448",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147234449",
+            "format": "undefined"
           }
         ]
       }
@@ -36618,13 +37798,33 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "147566633",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "6:45pm",
                 "showtime_id": "147425490",
                 "format": "PRIME at AMC"
               },
               {
+                "showtime": "7:10pm",
+                "showtime_id": "147571801",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147566634",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "146747938",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147571111",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -36639,7 +37839,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186274+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-01": {
@@ -36694,49 +37894,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-02",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147205565",
+            "showtime": "7:15pm",
+            "showtime_id": "147205533",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147205566",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147425507",
+            "showtime": "10:30pm",
+            "showtime_id": "147205534",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Verity": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "146738156",
+            "showtime_id": "146747940",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "147425497",
+            "showtime": "6:30pm",
+            "showtime_id": "147566633",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147425490",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146738157",
+            "showtime": "7:10pm",
+            "showtime_id": "147571801",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147425495",
+            "showtime": "7:45pm",
+            "showtime_id": "147566634",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146747938",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "147571111",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147425492",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "146738158",
+            "showtime_id": "146747939",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -37910,7 +39125,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186773+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-02": {
@@ -38010,44 +39225,89 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147036045",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "147537146",
+            "showtime": "12:00pm",
+            "showtime_id": "147537161",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "1:20pm",
+            "showtime_id": "147036116",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "3:10pm",
+            "showtime_id": "147537159",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147537348",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147036117",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "147036079",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "147537326",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "10:30pm",
-            "showtime_id": "147537313",
+            "showtime_id": "147036080",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147537325",
             "format": "English Spoken with Spanish Subtitles"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146626712",
+            "showtime": "1:00pm",
+            "showtime_id": "146626709",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147537145",
+            "showtime": "4:10pm",
+            "showtime_id": "146626674",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147537160",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146626682",
+            "showtime": "7:10pm",
+            "showtime_id": "146626681",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "146626683",
+            "showtime": "8:00pm",
+            "showtime_id": "147542083",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "147542070",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147537121",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -38274,7 +39534,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-01T15:35:28.186814+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-01": {
@@ -38329,50 +39589,85 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-01",
+      "show_date": "2026-10-04",
       "movies": {
         "Digger": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147209027",
+            "showtime": "11:30am",
+            "showtime_id": "147209065",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147209017",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147209064",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147209019",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147209062",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147481370",
+            "showtime_id": "147209018",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147209028",
+            "showtime": "9:15pm",
+            "showtime_id": "147209063",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147209075",
+            "showtime_id": "147209093",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Verity": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146753229",
+            "showtime": "12:00pm",
+            "showtime_id": "146753223",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147481407",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146753222",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147209089",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146753220",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146753205",
+            "showtime_id": "146753201",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "146753230",
+            "showtime": "9:00pm",
+            "showtime_id": "146753221",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "147481281",
-            "format": "Laser at AMC"
           }
         ]
       }
@@ -141084,9 +142379,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9882,
-    "fresh": 587,
-    "expected": 594,
+    "ratio": 0.9914,
+    "fresh": 345,
+    "expected": 348,
     "min_ratio": 0.9,
     "degraded": false
   }
