@@ -10,6 +10,12 @@ someone typed; only fills blanks. Review the printed rows.
 
   python3 scripts/fill_movie_metadata.py --from-history [--write]
   python3 scripts/fill_movie_metadata.py "Resident Evil" 2026-09-18 [--write]
+  python3 scripts/fill_movie_metadata.py --tracked --write     # the pipeline's mode
+
+--tracked (2026-10-03): the weekend's tracked titles, run by every finalize
+before predictions. Until then this was a manual step — nobody ran it for
+2026-10-02 and both films' audience gates and genre handling were inactive
+("NO AUDIENCE METADATA"). Lookup failures never fail the run.
 """
 import csv, html, json, os, re, sys, time, urllib.parse, urllib.request
 from pathlib import Path
@@ -96,6 +102,17 @@ def load_rows():
         return list(csv.DictReader(f))
 
 
+def tracked_films(now=None):
+    """[(title, weekend_of)] for the weekend the pipeline is tracking now:
+    the one that just opened Thu-Sun, the upcoming one Mon-Wed."""
+    sys.path.insert(0, str(ROOT))
+    from datetime import datetime
+    from scraper import opening_weekend_friday, phase1_weekend_anchor, tracked_movie_titles_from_state
+    now = now or datetime.now()
+    weekend_of = opening_weekend_friday(now) if now.weekday() >= 3 else phase1_weekend_anchor(now, full_weekend=True)
+    return [(t, weekend_of) for t in (tracked_movie_titles_from_state(weekend_of) or [])]
+
+
 def history_films():
     cal = json.loads((ROOT / "data" / "calibration.json").read_text())
     return sorted({(h["movie"], h.get("weekend_of", "")) for h in cal.get("history", [])})
@@ -125,7 +142,13 @@ def main(argv):
     write = "--write" in argv
     args = [a for a in argv if not a.startswith("--")]
     rows = load_rows()
-    targets = history_films() if "--from-history" in argv else ([(args[0], args[1] if len(args) > 1 else "")] if args else [])
+    if "--tracked" in argv:
+        targets = tracked_films()
+        if not targets:
+            print("fill_movie_metadata --tracked: no tracked titles for the current weekend; nothing to do")
+            return 0
+    else:
+        targets = history_films() if "--from-history" in argv else ([(args[0], args[1] if len(args) > 1 else "")] if args else [])
     if not targets:
         print(__doc__); return 1
     for movie, weekend_of in targets:

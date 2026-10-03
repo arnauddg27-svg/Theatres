@@ -753,6 +753,13 @@ jobs:
           done
           python3 scripts/rotate_pre_reservation_snapshots.py --max-mb 60
 
+      - name: Fill movie metadata for the tracked films (Box Office Mojo)
+        # 2026-10-03: this was a manual script; the 2026-10-02 films had no
+        # metadata row and the audience gates / genre handling ran on defaults.
+        # Fills blanks only, never overwrites, never fails the run.
+        working-directory: box-office-tracker
+        run: python3 scripts/fill_movie_metadata.py --tracked --write || echo "::warning::movie metadata fill failed — predictions run on defaults for unfilled films"
+
       - name: Auto-fetch reported daily actuals (every finalize, all four days)
         # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
         # every day), so a newly published number alone forces a fresh

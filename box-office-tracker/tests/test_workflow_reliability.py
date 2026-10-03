@@ -629,3 +629,19 @@ if __name__ == "__main__":
         self.assertIn("capture_completeness.py", block)
         i = block.index("capture_completeness.py")
         self.assertIn("continue-on-error: true", block[max(0, i - 700):i])
+
+
+class MovieMetadataAutoFillTest(unittest.TestCase):
+    """2026-10-03: metadata fill was a manual step; now every finalize runs it."""
+
+    def test_finalize_fills_metadata_before_predictions_and_stages_the_file(self):
+        yml = WORKFLOW.read_text() if "WORKFLOW" in globals() else (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
+        i = yml.index("fill_movie_metadata.py --tracked --write")
+        j = yml.index("Auto-fetch reported daily actuals (every finalize")
+        self.assertLess(i, j)
+        sfo = (Path(__file__).resolve().parents[1] / "scripts" / "stage_finalize_outputs.py").read_text()
+        self.assertIn("box-office-tracker/data/movie-metadata.csv", sfo)
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+        import fill_movie_metadata as F
+        self.assertTrue(callable(F.tracked_films))

@@ -20,6 +20,7 @@ OUTPUT_FILES = [
     "box-office-tracker/data/reviews.csv",
     "box-office-tracker/data/social-signals.csv",
     "box-office-tracker/data/daily-actual-overrides.csv",
+    "box-office-tracker/data/movie-metadata.csv",
     "box-office-tracker/data/census-coverage.csv",
     "box-office-tracker/data/prediction-log.csv",
 ]
