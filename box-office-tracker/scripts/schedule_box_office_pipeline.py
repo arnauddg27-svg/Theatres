@@ -177,6 +177,14 @@ def fandango_slot_inputs(shard: int, num_shards: int,
 # signal. The VPS cannot host this (Fandango geo-blocks non-US egress:
 # "not available outside the United States").
 AMC_BRIDGE_SLOT_PREFIX = "amc bridge"
+# 2026-10-04: the 17Z/19Z bridge slots run on weekdays only. On weekends they
+# made Fandango's seat budget a 30-render slot EVERY hour from 15Z to 23Z
+# (bridge 15/17/19 + Regal near 16/18/20-23), and the near slots' yields
+# degraded through the evening (Sat 10-03: 20/18/12/16 of 30, recovering to
+# 24 at 23Z) — a sustained-rate limit, not slowness (the 25 s seat-wait A/B
+# changed nothing). With the native AMC lane healthy the bridge spills to
+# Regal anyway, so the weekend loses nothing of AMC value.
+WEEKDAYS_ONLY = frozenset({1, 2, 3, 4, 5})
 
 
 def amc_bridge_slot(hour: int, shard: int, order: str | None = None,
@@ -382,8 +390,8 @@ SLOTS: tuple[Slot, ...] = (
     amc_bridge_slot(1, 1, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
     amc_bridge_slot(2, 2, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
     amc_bridge_slot(15, 3, order="nearest"),
-    amc_bridge_slot(17, 4, order="nearest"),
-    amc_bridge_slot(19, 5, order="nearest"),
+    amc_bridge_slot(17, 4, order="nearest", cron_days=WEEKDAYS_ONLY),
+    amc_bridge_slot(19, 5, order="nearest", cron_days=WEEKDAYS_ONLY),
     # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31;
     # pre passes 3-way sharded since 2026-09-04). Read structure per design:
     #   pre passes EVERY day, covering today + all remaining/upcoming window

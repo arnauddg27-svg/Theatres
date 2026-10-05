@@ -996,11 +996,11 @@ jobs:
           # post-recovery batch. False-positive odds at a 15% background
           # fail rate: 0.15^8 ≈ 3e-7.
           FANDANGO_STOP_AFTER: '8'
-          # A/B (2026-09-27): "near" slots wait longer for the seat map to
-          # hydrate; all other slots keep the 8 s / 10 s defaults. See
-          # FANDANGO_SEAT_WAIT_MS in fandango_collect.py. Read Thu 10-01 evening.
-          FANDANGO_SEAT_WAIT_MS: ${{ contains(github.event.inputs.schedule_slot, 'near') && '25000' || '' }}
-          FANDANGO_SEAT_RETRY_WAIT_MS: ${{ contains(github.event.inputs.schedule_slot, 'near') && '15000' || '' }}
+          # Seat-map wait A/B (2026-09-27 -> 10-04): a 25 s wait on "near"
+          # slots changed nothing (Sat 10-03 evening 18/12/16/24 of 30 vs
+          # 29/16/11/25 untreated) — the evening losses are a sustained-rate
+          # limit, addressed by slot spacing (weekday-only 17Z/19Z bridge).
+          # Defaults (8 s / 10 s) apply everywhere.
           # Ad-hoc test overrides (empty on scheduled/production runs):
           FANDANGO_TITLES: ${{ github.event.inputs.fandango_titles }}
           FANDANGO_SHOW_DATES: ${{ github.event.inputs.fandango_show_dates }}

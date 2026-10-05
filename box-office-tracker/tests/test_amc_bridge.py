@@ -195,6 +195,11 @@ class BridgeSchedulingTest(unittest.TestCase):
         hours = [s.hour for s in fan]
         self.assertEqual(len(hours), len(set(hours)))
         self.assertEqual({0, 1, 2, 15, 17, 19}, {s.hour for s in bridge})
+        # 2026-10-04: 17Z/19Z are weekdays-only so weekend evenings are not a
+        # 30-render Fandango slot every hour (near-slot yields degraded).
+        for s in bridge:
+            if s.hour in (17, 19):
+                self.assertEqual(frozenset({1, 2, 3, 4, 5}), s.cron_days, s.name)
         # every shard once a day; shard inputs are the same 6-way split
         self.assertEqual({"0", "1", "2", "3", "4", "5"}, {s.inputs["fandango_shard"] for s in bridge})
         self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in bridge))
@@ -203,7 +208,8 @@ class BridgeSchedulingTest(unittest.TestCase):
                 self.assertEqual(frozenset({0, 2, 3, 4, 5, 6}), s.cron_days, s.name)  # = AMC 02:30Z
                 self.assertNotIn("fandango_order", s.inputs)
             else:
-                self.assertEqual(frozenset(range(7)), s.cron_days, s.name)          # = AMC 14:30Z/22:30Z
+                expected = frozenset({1, 2, 3, 4, 5}) if s.hour in (17, 19) else frozenset(range(7))
+                self.assertEqual(expected, s.cron_days, s.name)   # = AMC 14:30Z/22:30Z; 17/19Z weekdays (2026-10-04)
                 self.assertEqual("nearest", s.inputs["fandango_order"])
 
     def test_workflow_keys_the_chain_off_the_slot_name(self):
@@ -363,7 +369,8 @@ class SeatWaitConfigTest(unittest.TestCase):
         self.assertEqual((8000, 10000), (fc.FANDANGO_SEAT_WAIT_MS, fc.FANDANGO_SEAT_RETRY_WAIT_MS))
         yml = (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         fan = yml.split("- name: Fandango snapshot", 1)[1].split("run: |", 1)[0]
-        self.assertIn("FANDANGO_SEAT_WAIT_MS: ${{ contains(github.event.inputs.schedule_slot, 'near') && '25000' || '' }}", fan)
+        # A/B concluded 2026-10-04 (no effect): no per-slot override in the workflow
+        self.assertNotIn("FANDANGO_SEAT_WAIT_MS:", fan)
 
 
 class DaypartPriceTest(unittest.TestCase):
