@@ -242,6 +242,7 @@ def collect(weekend_of=None, titles=None, now_utc=None, session=None):
     totals = Counter()
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
+        totals["no_titles"] = 1
         return totals
     target = {slugify_title(t): t for t in titles}
     wdates = window_dates(weekend_of)
@@ -314,6 +315,11 @@ def main():
     t = collect()
     if t.get("theatres", 0) >= 20 and t.get("matched", 0) == 0:
         print("::warning::Webedia pass matched no tracked showings (titles not playing, or a title mismatch)")
+    # No tracked titles yet (Mon/Tue before the next weekend's markets list)
+    # is a no-op, not an outage: 2026-10-05 three passes x3 retries failed
+    # loudly on it.
+    if t.get("no_titles"):
+        return 0
     if t.get("theatres", 0) == 0:
         print("❌ Webedia: no theatre schedule read at all — failing loudly.")
         return 1

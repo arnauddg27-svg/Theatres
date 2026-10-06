@@ -94,3 +94,13 @@ class ChangedOnlyTest(unittest.TestCase):
         kept = W.changed_rows(rows, latest)
         self.assertEqual(["X:2", "X:1", "X:1"], [r["showtime_id"] for r in kept])
         self.assertEqual([], W.changed_rows([rows[3]], latest))                 # repeat post read skipped
+
+
+class NoTitlesIsNotAnOutageTest(unittest.TestCase):
+    def test_main_returns_zero_without_titles(self):
+        orig = W.collect
+        W.collect = lambda *a, **k: {"no_titles": 1}
+        try:
+            self.assertEqual(0, W.main())
+        finally:
+            W.collect = orig

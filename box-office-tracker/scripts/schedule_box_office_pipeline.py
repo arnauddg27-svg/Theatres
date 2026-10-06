@@ -437,8 +437,11 @@ SLOTS: tuple[Slot, ...] = (
         for h in (0, 12, 16, 20)
     ],
     *[
+        # 18-23Z = the US afternoon/evening of that UTC day (Thu previews, Fri,
+        # Sat, Sun); 00-06Z = the previous US evening (Thu..Sun nights). The
+        # Monday-afternoon passes had no shows to read (2026-10-06 audit).
         Slot(f"harkins post {h:02d}:55Z", "box office scrape-harkins ALL",
-             frozenset({0, 1, 4, 5, 6}), h, 55, harkins_slot_inputs("post"))
+             frozenset({0, 4, 5, 6}) if h >= 18 else frozenset({0, 1, 5, 6}), h, 55, harkins_slot_inputs("post"))
         for h in (*range(18, 24), *range(0, 7))
     ],
     # Webedia occupancy lane (2026-09-27): one cheap pass (~140 requests)
