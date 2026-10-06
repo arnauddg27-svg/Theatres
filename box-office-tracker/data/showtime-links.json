@@ -2,7 +2,7 @@
   "date": "2026-10-09",
   "weekend_of": "2026-10-09",
   "collected_local_date": "2026-10-05",
-  "collected_at": "2026-10-06T00:14:45.158602+00:00",
+  "collected_at": "2026-10-06T00:22:45.991918+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -21605,13 +21605,1405 @@
           }
         ]
       }
+    },
+    "AMC Albuquerque 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147576338",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147576339",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147576340",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983333+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147576346",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147576345",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147576343",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147576344",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983275+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147576350",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147576349",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147576347",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147576348",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983301+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147576338",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC West Jordan 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:55pm",
+                "showtime_id": "147490535",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147490536",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147490554",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147490553",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147490552",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147601363",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983447+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147490537",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147601361",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983436+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147490551",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147490550",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147490549",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147601362",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-10",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147490551",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:50pm",
+            "showtime_id": "147490550",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147490549",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147601362",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chapel Hills 13": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147233522",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147233525",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147233526",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983346+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147233524",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983352+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147233538",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147233539",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983408+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147233522",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Layton Hills 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147046462",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147046463",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147046466",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147046467",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983235+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147046456",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147046457",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147046458",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147046459",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983422+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147046460",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147046461",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147046451",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147046452",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983365+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147046462",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147046463",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Castle Rock 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147181016",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147180999",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147181000",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147181001",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983282+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147181006",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147180997",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147180998",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147181084",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:17:00.776012+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147181005",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147181083",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983314+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147181016",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Brighton 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147193553",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147193534",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147193487",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147193486",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983269+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147193491",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147193492",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147193536",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147193537",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983220+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147193538",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147193535",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983416+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147193553",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Provo 8": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147030904",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147030893",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147030894",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147030895",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983372+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147030901",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147030902",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983256+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147030897",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147030898",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147030899",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:17:00.776120+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147030904",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN SOUTHGATE 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147048478",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:05pm",
+                "showtime_id": "147048471",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147048472",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983429+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147048465",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:55pm",
+                "showtime_id": "147048466",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147048467",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147048468",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983320+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147048473",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:55pm",
+                "showtime_id": "147048474",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147048475",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147048476",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:17:00.776073+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147048478",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Missoula 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147222958",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147222929",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983459+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147222924",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147222952",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147222934",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983228+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147222913",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147222970",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147222935",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983288+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147222958",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Shiloh 14": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147235515",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147235393",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147600822",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983326+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147235510",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "147235511",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "147235512",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147600851",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147600747",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:17:00.775916+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147235503",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "147235504",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "147235505",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147600854",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147600751",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-11",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147235503",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:50pm",
+            "showtime_id": "147235504",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "147235505",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147600854",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:05pm",
+            "showtime_id": "147600751",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Fort Collins 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147520914",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147520875",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147520874",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147520873",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983242+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147520867",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:17:00.776059+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147520872",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147520871",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147520870",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983442+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147520914",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC 9+CO 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147224727",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147224705",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147224703",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147224701",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147224731",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983359+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147224728",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147224711",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147605537",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147224709",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147605664",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147224707",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147605675",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147224730",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983453+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147223646",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147223664",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983263+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147222027",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147222028",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147222027",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "147222028",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Orchard 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-09": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147079225",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147079226",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-10": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147079227",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147079228",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147079230",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147079231",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983307+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147079233",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147079235",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147079237",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "147079239",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-06T00:22:45.983339+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147594284",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147079222",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147079223",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-08",
+      "movies": {
+        "The Social Reckoning": [
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "147594284",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147079222",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "147079223",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.8134,
-    "fresh": 231,
-    "expected": 284,
+    "ratio": 1.0,
+    "fresh": 52,
+    "expected": 52,
     "min_ratio": 0.9,
-    "degraded": true
+    "degraded": false
   }
 }
