@@ -2,7 +2,7 @@
   "date": "2026-10-09",
   "weekend_of": "2026-10-09",
   "collected_local_date": "2026-10-05",
-  "collected_at": "2026-10-06T01:04:53.168710+00:00",
+  "collected_at": "2026-10-06T01:51:10.093094+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -13128,7 +13128,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:35:28.773947+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13156,22 +13156,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153260+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
+            "showtime": "1:15pm",
+            "showtime_id": "147183770",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147183765",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "147183768",
+            "showtime_id": "147183771",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147183769",
+            "showtime_id": "147183772",
             "format": "Laser at AMC"
           }
         ]
@@ -13214,7 +13224,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153094+00:00",
+          "collected_at": "2026-10-06T01:35:28.773676+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13242,7 +13252,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152947+00:00",
+          "collected_at": "2026-10-06T01:51:10.080051+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13270,7 +13280,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153066+00:00",
+          "collected_at": "2026-10-06T01:51:10.080022+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13304,8 +13314,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "147606713",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147402654",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147606714",
                 "format": "Laser at AMC"
               },
               {
@@ -13333,7 +13353,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079668+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13366,7 +13386,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152746+00:00",
+          "collected_at": "2026-10-06T01:51:10.079689+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13399,22 +13419,37 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152774+00:00",
+          "collected_at": "2026-10-06T01:51:10.079701+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147211693",
+            "showtime": "5:00pm",
+            "showtime_id": "147402653",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147211617",
+            "showtime": "6:00pm",
+            "showtime_id": "147606713",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147402654",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147606714",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147399679",
             "format": "Dolby Cinema at AMC"
           }
         ]
@@ -13472,7 +13507,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079857+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13505,7 +13540,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152103+00:00",
+          "collected_at": "2026-10-06T01:51:10.079479+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -13523,7 +13558,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153109+00:00",
+          "collected_at": "2026-10-06T01:51:10.079806+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13591,7 +13626,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152767+00:00",
+          "collected_at": "2026-10-06T01:51:10.079410+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -13609,7 +13644,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152919+00:00",
+          "collected_at": "2026-10-06T01:51:10.079888+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13637,7 +13672,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152739+00:00",
+          "collected_at": "2026-10-06T01:51:10.079845+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13690,7 +13725,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152802+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13713,7 +13748,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152830+00:00",
+          "collected_at": "2026-10-06T01:51:10.079738+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13736,17 +13771,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152851+00:00",
+          "collected_at": "2026-10-06T01:51:10.079760+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147014855",
+            "showtime": "6:45pm",
+            "showtime_id": "147014856",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147014857",
             "format": "Laser at AMC"
           }
         ]
@@ -13789,7 +13829,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153081+00:00",
+          "collected_at": "2026-10-06T01:51:10.080055+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13817,7 +13857,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558143+00:00",
+          "collected_at": "2026-10-06T01:51:10.079750+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13845,7 +13885,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153122+00:00",
+          "collected_at": "2026-10-06T01:51:10.080066+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13898,7 +13938,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152118+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -13921,7 +13961,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152161+00:00",
+          "collected_at": "2026-10-06T01:35:28.773931+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -13939,17 +13979,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152205+00:00",
+          "collected_at": "2026-10-06T01:35:28.774042+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147191248",
+            "showtime": "7:00pm",
+            "showtime_id": "147191249",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147191250",
             "format": "Laser at AMC"
           }
         ]
@@ -13987,7 +14032,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153379+00:00",
+          "collected_at": "2026-10-06T01:51:10.079358+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14020,7 +14065,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153414+00:00",
+          "collected_at": "2026-10-06T01:51:10.079403+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -14048,7 +14093,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153431+00:00",
+          "collected_at": "2026-10-06T01:35:28.773959+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -14157,7 +14202,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153178+00:00",
+          "collected_at": "2026-10-06T01:51:10.080025+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -14225,7 +14270,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153040+00:00",
+          "collected_at": "2026-10-06T01:51:10.079903+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -14243,7 +14288,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558676+00:00",
+          "collected_at": "2026-10-06T01:51:10.079664+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14271,7 +14316,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152878+00:00",
+          "collected_at": "2026-10-06T01:51:10.079776+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -14334,7 +14379,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153454+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -14362,7 +14407,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152066+00:00",
+          "collected_at": "2026-10-06T01:51:10.079487+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14390,22 +14435,27 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152026+00:00",
+          "collected_at": "2026-10-06T01:51:10.079468+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "6:40pm",
-            "showtime_id": "147095237",
+            "showtime": "5:10pm",
+            "showtime_id": "147095240",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "147095238",
+            "showtime": "7:50pm",
+            "showtime_id": "147095241",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147095230",
             "format": "Laser at AMC"
           }
         ]
@@ -14453,7 +14503,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153218+00:00",
+          "collected_at": "2026-10-06T01:51:10.079579+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14491,7 +14541,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558982+00:00",
+          "collected_at": "2026-10-06T01:51:10.079830+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -14534,7 +14584,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152270+00:00",
+          "collected_at": "2026-10-06T01:51:10.079981+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -14562,6 +14612,11 @@
         "2026-10-08": {
           "movies": {
             "The Social Reckoning": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147611329",
+                "format": "Dolby Cinema at AMC"
+              },
               {
                 "showtime": "6:45pm",
                 "showtime_id": "147079596",
@@ -14591,9 +14646,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:35pm",
+                "showtime_id": "147611530",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147079603",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147611325",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "7:45pm",
@@ -14607,7 +14672,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152968+00:00",
+          "collected_at": "2026-10-06T01:51:10.079818+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -14629,6 +14694,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:30pm",
+                "showtime_id": "147611316",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "147079608",
                 "format": "Laser at AMC"
@@ -14640,12 +14710,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152982+00:00",
+          "collected_at": "2026-10-06T01:51:10.079833+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
           "movies": {
             "The Social Reckoning": [
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147611321",
+                "format": "Dolby Cinema at AMC"
+              },
               {
                 "showtime": "7:30pm",
                 "showtime_id": "147079600",
@@ -14654,6 +14729,11 @@
               {
                 "showtime": "10:15pm",
                 "showtime_id": "147079601",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147611402",
                 "format": "Laser at AMC"
               }
             ]
@@ -14667,6 +14747,11 @@
       "movies": {
         "The Social Reckoning": [
           {
+            "showtime": "5:15pm",
+            "showtime_id": "147611321",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "147079600",
             "format": "Laser at AMC"
@@ -14674,6 +14759,11 @@
           {
             "showtime": "10:15pm",
             "showtime_id": "147079601",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147611402",
             "format": "Laser at AMC"
           }
         ]
@@ -14726,7 +14816,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153403+00:00",
+          "collected_at": "2026-10-06T01:51:10.079785+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14754,7 +14844,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558390+00:00",
+          "collected_at": "2026-10-06T01:51:10.079714+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -14772,22 +14862,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152292+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147020128",
+            "showtime": "6:45pm",
+            "showtime_id": "147020130",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147020129",
+            "showtime": "9:45pm",
+            "showtime_id": "147020132",
             "format": "undefined"
           }
         ]
@@ -14830,7 +14920,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152858+00:00",
+          "collected_at": "2026-10-06T01:51:10.080001+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -14858,7 +14948,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152139+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -14886,22 +14976,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152183+00:00",
+          "collected_at": "2026-10-06T01:51:10.079746+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147191120",
+            "showtime": "1:00pm",
+            "showtime_id": "147191117",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147191121",
+            "showtime": "4:00pm",
+            "showtime_id": "147191116",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147191114",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147191115",
             "format": "Laser at AMC"
           }
         ]
@@ -14997,7 +15097,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558282+00:00",
+          "collected_at": "2026-10-06T01:51:10.079870+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15040,27 +15140,27 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153025+00:00",
+          "collected_at": "2026-10-06T01:35:28.774016+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147591755",
+            "showtime": "5:45pm",
+            "showtime_id": "147591759",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147218698",
+            "showtime": "7:15pm",
+            "showtime_id": "147218700",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147218715",
+            "showtime": "10:00pm",
+            "showtime_id": "147218702",
             "format": "Laser at AMC"
           }
         ]
@@ -15108,7 +15208,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153172+00:00",
+          "collected_at": "2026-10-06T01:35:28.773884+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15154,7 +15254,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:14:45.145438+00:00",
+          "collected_at": "2026-10-06T01:51:10.079962+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -15237,7 +15337,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152997+00:00",
+          "collected_at": "2026-10-06T01:35:28.774065+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -15255,7 +15355,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152043+00:00",
+          "collected_at": "2026-10-06T01:51:10.079651+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15288,7 +15388,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152096+00:00",
+          "collected_at": "2026-10-06T01:51:10.079757+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -15346,7 +15446,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153074+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15374,7 +15474,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558062+00:00",
+          "collected_at": "2026-10-06T01:51:10.079899+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15402,22 +15502,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153115+00:00",
+          "collected_at": "2026-10-06T01:51:10.079913+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147218443",
+            "showtime": "7:30pm",
+            "showtime_id": "147218441",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147218444",
+            "showtime": "10:30pm",
+            "showtime_id": "147218442",
             "format": "Laser at AMC"
           }
         ]
@@ -15459,13 +15559,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "147609845",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:30pm",
                 "showtime_id": "147055051",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152125+00:00",
+          "collected_at": "2026-10-06T01:51:10.079873+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -15483,7 +15588,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152263+00:00",
+          "collected_at": "2026-10-06T01:51:10.080048+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15511,7 +15616,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558482+00:00",
+          "collected_at": "2026-10-06T01:51:10.079862+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -15569,7 +15674,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153320+00:00",
+          "collected_at": "2026-10-06T01:51:10.079416+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15597,7 +15702,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153344+00:00",
+          "collected_at": "2026-10-06T01:51:10.079448+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15625,22 +15730,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153373+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-11",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147210981",
+            "showtime": "12:30pm",
+            "showtime_id": "147211020",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147210980",
+            "showtime": "3:20pm",
+            "showtime_id": "147211019",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147211017",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147211018",
             "format": "Laser at AMC"
           }
         ]
@@ -15683,7 +15798,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152940+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15711,7 +15826,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152962+00:00",
+          "collected_at": "2026-10-06T01:51:10.079810+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15734,22 +15849,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152975+00:00",
+          "collected_at": "2026-10-06T01:51:10.079825+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147207253",
+            "showtime": "6:30pm",
+            "showtime_id": "147207254",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147580232",
+            "showtime": "9:30pm",
+            "showtime_id": "147207255",
             "format": "Laser at AMC"
           }
         ]
@@ -15792,7 +15907,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152277+00:00",
+          "collected_at": "2026-10-06T01:51:10.079896+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -15825,7 +15940,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152326+00:00",
+          "collected_at": "2026-10-06T01:51:10.079587+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15858,7 +15973,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558774+00:00",
+          "collected_at": "2026-10-06T01:51:10.079631+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -15926,7 +16041,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153148+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -15944,7 +16059,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558100+00:00",
+          "collected_at": "2026-10-06T01:35:28.773962+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -15972,22 +16087,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558164+00:00",
+          "collected_at": "2026-10-06T01:51:10.079959+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147232449",
+            "showtime": "1:15pm",
+            "showtime_id": "147232448",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147232550",
+            "showtime": "4:15pm",
+            "showtime_id": "147232447",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147232445",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147232446",
             "format": "Laser at AMC"
           }
         ]
@@ -16040,7 +16165,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559083+00:00",
+          "collected_at": "2026-10-06T01:51:10.079643+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -16068,7 +16193,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152175+00:00",
+          "collected_at": "2026-10-06T01:51:10.079508+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -16086,7 +16211,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558461+00:00",
+          "collected_at": "2026-10-06T01:51:10.079492+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -16154,7 +16279,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558890+00:00",
+          "collected_at": "2026-10-06T01:51:10.079423+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -16182,7 +16307,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153448+00:00",
+          "collected_at": "2026-10-06T01:51:10.079436+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -16200,7 +16325,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153408+00:00",
+          "collected_at": "2026-10-06T01:51:10.079397+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -16278,7 +16403,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079841+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -16374,28 +16499,28 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147194435",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "6:30pm",
-            "showtime_id": "147194539",
+            "showtime_id": "147194542",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147194436",
+            "showtime": "7:30pm",
+            "showtime_id": "147194440",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147194456",
+            "showtime": "9:00pm",
+            "showtime_id": "147194457",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147194441",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -16447,7 +16572,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152760+00:00",
+          "collected_at": "2026-10-06T01:51:10.079910+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -16470,7 +16595,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152788+00:00",
+          "collected_at": "2026-10-06T01:51:10.079814+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -16488,7 +16613,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:14:45.145502+00:00",
+          "collected_at": "2026-10-06T01:51:10.079730+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -16561,7 +16686,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153207+00:00",
+          "collected_at": "2026-10-06T01:51:10.079884+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -16584,7 +16709,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152927+00:00",
+          "collected_at": "2026-10-06T01:51:10.079596+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -16675,7 +16800,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152059+00:00",
+          "collected_at": "2026-10-06T01:51:10.079483+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -16708,7 +16833,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152081+00:00",
+          "collected_at": "2026-10-06T01:51:10.079500+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -16726,7 +16851,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152017+00:00",
+          "collected_at": "2026-10-06T01:51:10.079462+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -16804,7 +16929,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153060+00:00",
+          "collected_at": "2026-10-06T01:51:10.079877+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -16847,7 +16972,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153087+00:00",
+          "collected_at": "2026-10-06T01:51:10.079892+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -16856,16 +16981,6 @@
               {
                 "showtime": "10:45am",
                 "showtime_id": "147609224",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:30pm",
-                "showtime_id": "147609222",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:30pm",
-                "showtime_id": "147160715",
                 "format": "Dolby Cinema at AMC"
               },
               {
@@ -16879,9 +16994,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:30pm",
+                "showtime_id": "147609222",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "6:30pm",
                 "showtime_id": "147160650",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147160715",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "9:30pm",
@@ -16890,7 +17015,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153101+00:00",
+          "collected_at": "2026-10-06T01:51:10.079906+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17016,7 +17141,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079572+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -17054,47 +17179,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153420+00:00",
+          "collected_at": "2026-10-06T01:35:28.773904+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "147217537",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "147217540",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:40pm",
-            "showtime_id": "147217539",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:40pm",
-            "showtime_id": "147599000",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "147217434",
+            "showtime_id": "147217435",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:20pm",
-            "showtime_id": "147606659",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147599219",
+            "showtime": "10:15pm",
+            "showtime_id": "147217497",
             "format": "Laser at AMC"
           }
         ]
@@ -17137,7 +17237,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558319+00:00",
+          "collected_at": "2026-10-06T01:51:10.080006+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -17160,7 +17260,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153266+00:00",
+          "collected_at": "2026-10-06T01:51:10.080014+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17188,7 +17288,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153291+00:00",
+          "collected_at": "2026-10-06T01:51:10.080029+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17276,7 +17376,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153128+00:00",
+          "collected_at": "2026-10-06T01:51:10.079924+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -17304,7 +17404,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153142+00:00",
+          "collected_at": "2026-10-06T01:51:10.079944+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17332,7 +17432,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153161+00:00",
+          "collected_at": "2026-10-06T01:51:10.079955+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17418,7 +17518,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152899+00:00",
+          "collected_at": "2026-10-06T01:51:10.079853+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17446,7 +17546,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153397+00:00",
+          "collected_at": "2026-10-06T01:51:10.079977+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17509,7 +17609,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152298+00:00",
+          "collected_at": "2026-10-06T01:51:10.079635+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17537,7 +17637,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152340+00:00",
+          "collected_at": "2026-10-06T01:35:28.774012+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -17555,7 +17655,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152249+00:00",
+          "collected_at": "2026-10-06T01:51:10.079623+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17648,7 +17748,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153230+00:00",
+          "collected_at": "2026-10-06T01:51:10.079993+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17696,7 +17796,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153201+00:00",
+          "collected_at": "2026-10-06T01:51:10.079672+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -17704,27 +17804,27 @@
             "The Social Reckoning": [
               {
                 "showtime": "6:00pm",
-                "showtime_id": "147209922",
-                "format": "undefined"
-              },
-              {
-                "showtime": "9:00pm",
-                "showtime_id": "147209919",
+                "showtime_id": "147209833",
                 "format": "undefined"
               },
               {
                 "showtime": "6:00pm",
-                "showtime_id": "147209833",
+                "showtime_id": "147209922",
                 "format": "undefined"
               },
               {
                 "showtime": "9:00pm",
                 "showtime_id": "147209834",
                 "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147209919",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153356+00:00",
+          "collected_at": "2026-10-06T01:51:10.079928+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -17787,7 +17887,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079379+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -17815,7 +17915,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153425+00:00",
+          "collected_at": "2026-10-06T01:35:28.774061+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -17838,22 +17938,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153442+00:00",
+          "collected_at": "2026-10-06T01:35:28.774030+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147155897",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147155896",
+            "showtime": "7:00pm",
+            "showtime_id": "147155895",
             "format": "Laser at AMC"
           }
         ]
@@ -17911,7 +18006,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153602+00:00",
+          "collected_at": "2026-10-06T01:35:28.774443+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -17934,14 +18029,19 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153555+00:00",
+          "collected_at": "2026-10-06T01:51:10.080158+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
           "movies": {
             "The Social Reckoning": [
               {
-                "showtime": "1:15pm",
+                "showtime": "12:15pm",
+                "showtime_id": "147614844",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:45pm",
                 "showtime_id": "147224209",
                 "format": "Laser at AMC"
               },
@@ -17951,7 +18051,7 @@
                 "format": "English Spoken with Spanish Subtitles"
               },
               {
-                "showtime": "4:15pm",
+                "showtime": "4:40pm",
                 "showtime_id": "147224208",
                 "format": "Laser at AMC"
               },
@@ -17961,18 +18061,18 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "7:15pm",
+                "showtime": "7:00pm",
                 "showtime_id": "147224206",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:00pm",
+                "showtime": "9:30pm",
                 "showtime_id": "147224267",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153591+00:00",
+          "collected_at": "2026-10-06T01:51:10.080154+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18030,7 +18130,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559293+00:00",
+          "collected_at": "2026-10-06T01:35:28.774432+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18058,7 +18158,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153521+00:00",
+          "collected_at": "2026-10-06T01:51:10.080164+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -18086,7 +18186,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153538+00:00",
+          "collected_at": "2026-10-06T01:51:10.080107+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18144,7 +18244,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153485+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -18177,7 +18277,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153532+00:00",
+          "collected_at": "2026-10-06T01:51:10.080180+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18210,22 +18310,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153597+00:00",
+          "collected_at": "2026-10-06T01:51:10.080176+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147217362",
+            "showtime_id": "147217356",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147217361",
+            "showtime_id": "147217355",
             "format": "Laser at AMC"
           }
         ]
@@ -18268,7 +18368,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153526+00:00",
+          "collected_at": "2026-10-06T01:51:10.080138+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18296,7 +18396,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153472+00:00",
+          "collected_at": "2026-10-06T01:51:10.080120+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -18324,7 +18424,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153614+00:00",
+          "collected_at": "2026-10-06T01:51:10.080127+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18382,7 +18482,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.080172+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -18415,7 +18515,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559368+00:00",
+          "collected_at": "2026-10-06T01:51:10.080131+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18448,37 +18548,22 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:35:28.774446+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147087645",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:50pm",
-            "showtime_id": "147087643",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147087642",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "147087640",
+            "showtime_id": "147087629",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147087641",
+            "showtime_id": "147087630",
             "format": "Laser at AMC"
           }
         ]
@@ -18526,7 +18611,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153561+00:00",
+          "collected_at": "2026-10-06T01:51:10.080115+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -18544,7 +18629,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153549+00:00",
+          "collected_at": "2026-10-06T01:35:28.774418+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18572,7 +18657,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559305+00:00",
+          "collected_at": "2026-10-06T01:51:10.080147+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18660,7 +18745,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153585+00:00",
+          "collected_at": "2026-10-06T01:35:28.774436+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -18703,7 +18788,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153567+00:00",
+          "collected_at": "2026-10-06T01:51:10.080123+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -18731,7 +18816,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153515+00:00",
+          "collected_at": "2026-10-06T01:51:10.080112+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18811,7 +18896,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153368+00:00",
+          "collected_at": "2026-10-06T01:51:10.079866+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -18829,7 +18914,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558801+00:00",
+          "collected_at": "2026-10-06T01:51:10.080018+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -18870,7 +18955,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152312+00:00",
+          "collected_at": "2026-10-06T01:51:10.079936+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -18920,7 +19005,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152753+00:00",
+          "collected_at": "2026-10-06T01:51:10.079693+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -18989,7 +19074,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152348+00:00",
+          "collected_at": "2026-10-06T01:51:10.079655+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -19029,7 +19114,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152795+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -19057,7 +19142,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152823+00:00",
+          "collected_at": "2026-10-06T01:51:10.079734+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19103,22 +19188,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152844+00:00",
+          "collected_at": "2026-10-06T01:51:10.079753+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "147198401",
+            "showtime_id": "147198587",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147198402",
+            "showtime_id": "147198588",
             "format": "Laser at AMC"
           }
         ]
@@ -19143,7 +19228,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152872+00:00",
+          "collected_at": "2026-10-06T01:51:10.079768+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -19166,7 +19251,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152913+00:00",
+          "collected_at": "2026-10-06T01:51:10.079781+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -19189,7 +19274,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152892+00:00",
+          "collected_at": "2026-10-06T01:51:10.079772+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19242,7 +19327,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152722+00:00",
+          "collected_at": "2026-10-06T01:35:28.773951+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -19265,7 +19350,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152781+00:00",
+          "collected_at": "2026-10-06T01:35:28.774023+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -19283,7 +19368,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079917+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19341,7 +19426,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152242+00:00",
+          "collected_at": "2026-10-06T01:51:10.080062+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19392,7 +19477,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153018+00:00",
+          "collected_at": "2026-10-06T01:51:10.079680+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -19430,23 +19515,43 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153047+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147123122",
+            "showtime": "1:00pm",
+            "showtime_id": "147581138",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147123119",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147571879",
+            "showtime": "3:45pm",
+            "showtime_id": "147581132",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147123120",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147123146",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "147123145",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -19490,7 +19595,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153166+00:00",
+          "collected_at": "2026-10-06T01:51:10.079789+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19551,7 +19656,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153309+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -19574,27 +19679,42 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152319+00:00",
+          "collected_at": "2026-10-06T01:51:10.080033+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147215473",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:40pm",
-            "showtime_id": "147215420",
+            "showtime": "1:15pm",
+            "showtime_id": "147215442",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "147215421",
+            "showtime": "2:00pm",
+            "showtime_id": "147215499",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "147215447",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147215445",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147215497",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147215446",
             "format": "Laser at AMC"
           }
         ]
@@ -19634,7 +19754,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152191+00:00",
+          "collected_at": "2026-10-06T01:51:10.079591+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -19667,7 +19787,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152220+00:00",
+          "collected_at": "2026-10-06T01:35:28.773781+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19703,7 +19823,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152146+00:00",
+          "collected_at": "2026-10-06T01:51:10.079558+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -19753,7 +19873,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152198+00:00",
+          "collected_at": "2026-10-06T01:51:10.079496+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -19781,7 +19901,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558245+00:00",
+          "collected_at": "2026-10-06T01:51:10.079429+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19812,7 +19932,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152110+00:00",
+          "collected_at": "2026-10-06T01:51:10.079540+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -19847,16 +19967,21 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152132+00:00",
+          "collected_at": "2026-10-06T01:35:28.773596+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
           "movies": {
             "The Social Reckoning": [
               {
-                "showtime": "1:45pm",
+                "showtime": "1:00pm",
                 "showtime_id": "147223142",
                 "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147615635",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "4:00pm",
@@ -19864,13 +19989,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:30pm",
+                "showtime_id": "147615454",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147223133",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147615585",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152153+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -19890,23 +20025,58 @@
           "movies": {
             "The Social Reckoning": [
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147615465",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:45pm",
                 "showtime_id": "147223135",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147615587",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558668+00:00",
+          "collected_at": "2026-10-06T01:51:10.079838+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-11",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147223136",
+            "showtime": "1:00pm",
+            "showtime_id": "147223142",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147615635",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147223132",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147615454",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147223133",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147615585",
             "format": "Laser at AMC"
           }
         ]
@@ -19931,7 +20101,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079391+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -19964,7 +20134,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152837+00:00",
+          "collected_at": "2026-10-06T01:51:10.080036+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20015,22 +20185,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152865+00:00",
+          "collected_at": "2026-10-06T01:51:10.079921+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "147045610",
+            "showtime_id": "147045614",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147045611",
+            "showtime_id": "147045608",
             "format": "Laser at AMC"
           }
         ]
@@ -20060,7 +20230,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153183+00:00",
+          "collected_at": "2026-10-06T01:51:10.079970+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -20088,7 +20258,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153195+00:00",
+          "collected_at": "2026-10-06T01:35:28.773731+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -20168,6 +20338,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147613858",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "147028829",
                 "format": "Dine-In Delivery to Seat"
@@ -20179,19 +20354,19 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152886+00:00",
+          "collected_at": "2026-10-06T01:51:10.079717+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
           "movies": {
             "The Social Reckoning": [
               {
-                "showtime": "11:00am",
+                "showtime": "11:15am",
                 "showtime_id": "147028819",
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "1:50pm",
+                "showtime": "2:15pm",
                 "showtime_id": "147028818",
                 "format": "Dine-In Delivery to Seat"
               },
@@ -20212,7 +20387,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152934+00:00",
+          "collected_at": "2026-10-06T01:51:10.079613+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20263,7 +20438,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152906+00:00",
+          "collected_at": "2026-10-06T01:51:10.079797+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -20303,7 +20478,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153303+00:00",
+          "collected_at": "2026-10-06T01:51:10.080040+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -20359,7 +20534,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153349+00:00",
+          "collected_at": "2026-10-06T01:51:10.080070+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20417,7 +20592,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153314+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -20445,7 +20620,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153362+00:00",
+          "collected_at": "2026-10-06T01:51:10.080073+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20496,27 +20671,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153338+00:00",
+          "collected_at": "2026-10-06T01:51:10.080059+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
             "showtime": "7:00pm",
-            "showtime_id": "147196134",
+            "showtime_id": "147196132",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147589281",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:00pm",
-            "showtime_id": "147196083",
+            "showtime_id": "147196219",
             "format": "Laser at AMC"
           }
         ]
@@ -20551,7 +20721,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152355+00:00",
+          "collected_at": "2026-10-06T01:51:10.079659+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20592,7 +20762,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079385+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -20615,27 +20785,12 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "147214476",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147214477",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "147214478",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147214479",
+            "showtime": "6:45pm",
+            "showtime_id": "147214468",
             "format": "undefined"
           }
         ]
@@ -20660,7 +20815,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558781+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -20693,7 +20848,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:35:28.773651+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -20726,7 +20881,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153053+00:00",
+          "collected_at": "2026-10-06T01:35:28.773614+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20749,17 +20904,17 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147171385",
+            "showtime": "7:00pm",
+            "showtime_id": "147171298",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147171383",
+            "showtime": "10:00pm",
+            "showtime_id": "147171299",
             "format": "Laser at AMC"
           }
         ]
@@ -20779,7 +20934,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153460+00:00",
+          "collected_at": "2026-10-06T01:51:10.079454+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -20802,27 +20957,40 @@
               }
             ]
           },
+          "collected_at": "2026-10-06T01:51:10.079475+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-08": {
+          "movies": {
+            "The Social Reckoning": [
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147214890",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147214889",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
           "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-10",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147214878",
+            "showtime": "7:40pm",
+            "showtime_id": "147214890",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147599596",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:50pm",
-            "showtime_id": "147214877",
+            "showtime": "10:30pm",
+            "showtime_id": "147214889",
             "format": "Laser at AMC"
           }
         ]
@@ -20857,7 +21025,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152168+00:00",
+          "collected_at": "2026-10-06T01:51:10.079564+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -20893,7 +21061,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152088+00:00",
+          "collected_at": "2026-10-06T01:51:10.079504+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -20921,7 +21089,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152212+00:00",
+          "collected_at": "2026-10-06T01:51:10.079605+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -20961,7 +21129,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559128+00:00",
+          "collected_at": "2026-10-06T01:51:10.079951+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -20989,7 +21157,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-06T01:51:10.079940+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21017,7 +21185,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153242+00:00",
+          "collected_at": "2026-10-06T01:51:10.079966+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21045,27 +21213,22 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-10",
+      "show_date": "2026-10-08",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "147192981",
+            "showtime": "6:00pm",
+            "showtime_id": "147597654",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147192980",
+            "showtime": "7:00pm",
+            "showtime_id": "147192984",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147192978",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147192979",
+            "showtime": "10:00pm",
+            "showtime_id": "147192985",
             "format": "Laser at AMC"
           }
         ]
@@ -21118,7 +21281,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152256+00:00",
+          "collected_at": "2026-10-06T01:51:10.079627+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21141,7 +21304,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152305+00:00",
+          "collected_at": "2026-10-06T01:51:10.079639+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -21199,7 +21362,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152285+00:00",
+          "collected_at": "2026-10-06T01:35:28.773896+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21235,7 +21398,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152332+00:00",
+          "collected_at": "2026-10-06T01:51:10.079647+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -21275,7 +21438,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153189+00:00",
+          "collected_at": "2026-10-06T01:51:10.079973+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -21303,7 +21466,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153213+00:00",
+          "collected_at": "2026-10-06T01:51:10.079988+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21331,7 +21494,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153236+00:00",
+          "collected_at": "2026-10-06T01:35:28.774328+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21384,7 +21547,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153466+00:00",
+          "collected_at": "2026-10-06T01:51:10.080143+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -21402,7 +21565,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153544+00:00",
+          "collected_at": "2026-10-06T01:51:10.080150+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21425,7 +21588,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153631+00:00",
+          "collected_at": "2026-10-06T01:51:10.080168+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21483,7 +21646,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153502+00:00",
+          "collected_at": "2026-10-06T01:51:10.080100+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21511,7 +21674,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153620+00:00",
+          "collected_at": "2026-10-06T01:51:10.080085+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -21539,7 +21702,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153608+00:00",
+          "collected_at": "2026-10-06T01:51:10.080093+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21632,7 +21795,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153508+00:00",
+          "collected_at": "2026-10-06T01:51:10.080089+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -21680,7 +21843,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153573+00:00",
+          "collected_at": "2026-10-06T01:51:10.080096+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -21703,7 +21866,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153625+00:00",
+          "collected_at": "2026-10-06T01:51:10.080104+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21761,7 +21924,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153497+00:00",
+          "collected_at": "2026-10-06T01:51:10.080183+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -21779,7 +21942,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153491+00:00",
+          "collected_at": "2026-10-06T01:35:28.774425+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -21792,7 +21955,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.559333+00:00",
+          "collected_at": "2026-10-06T01:51:10.080081+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -21878,7 +22041,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153254+00:00",
+          "collected_at": "2026-10-06T01:51:10.079985+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -21911,17 +22074,12 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153298+00:00",
+          "collected_at": "2026-10-06T01:51:10.079821+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
           "movies": {
             "The Social Reckoning": [
-              {
-                "showtime": "7:00pm",
-                "showtime_id": "147231434",
-                "format": "Dolby Cinema at AMC"
-              },
               {
                 "showtime": "12:20pm",
                 "showtime_id": "147231351",
@@ -21938,13 +22096,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147231434",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:10pm",
                 "showtime_id": "147231350",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153278+00:00",
+          "collected_at": "2026-10-06T01:51:10.079996+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22007,7 +22170,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T00:46:49.558171+00:00",
+          "collected_at": "2026-10-06T01:51:10.079726+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -22035,7 +22198,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153385+00:00",
+          "collected_at": "2026-10-06T01:51:10.079697+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -22063,7 +22226,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.152074+00:00",
+          "collected_at": "2026-10-06T01:51:10.079764+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22126,7 +22289,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153690+00:00",
+          "collected_at": "2026-10-06T01:51:10.080134+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -22154,7 +22317,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T01:04:53.153579+00:00",
+          "collected_at": "2026-10-06T01:51:10.080161+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -23574,8 +23737,8 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.8979,
-    "fresh": 255,
+    "ratio": 0.9014,
+    "fresh": 256,
     "expected": 284,
     "min_ratio": 0.9,
     "degraded": true
