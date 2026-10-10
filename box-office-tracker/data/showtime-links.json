@@ -2,7 +2,7 @@
   "date": "2026-10-09",
   "weekend_of": "2026-10-09",
   "collected_local_date": "2026-10-09",
-  "collected_at": "2026-10-09T23:27:00.718736+00:00",
+  "collected_at": "2026-10-10T01:13:14.827815+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -35299,44 +35299,79 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
+            "showtime": "1:15pm",
+            "showtime_id": "147183770",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147183765",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147624604",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "147183775",
+            "showtime_id": "147183771",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147183774",
+            "showtime_id": "147183772",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146850644",
+            "showtime": "11:45am",
+            "showtime_id": "147624606",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147624676",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147624585",
+            "showtime": "2:30pm",
+            "showtime_id": "147624605",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "146965569",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "146965568",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "146965586",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147624586",
+            "showtime_id": "147624603",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "8:30pm",
+            "showtime_id": "146965566",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "10:30pm",
-            "showtime_id": "146965562",
+            "showtime_id": "147624602",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "146965567",
             "format": "Laser at AMC"
           }
         ]
@@ -36694,49 +36729,89 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841747+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-11",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147697294",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147014855",
+            "showtime": "1:00pm",
+            "showtime_id": "147697171",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147697183",
+            "showtime": "3:15pm",
+            "showtime_id": "147014866",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147697300",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147014860",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147014861",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146850586",
+            "showtime": "12:00pm",
+            "showtime_id": "147697301",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "147697194",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146878771",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147697303",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146878770",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146878564",
+            "showtime_id": "146878769",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147697295",
+            "showtime_id": "147697270",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147697299",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146878779",
+            "showtime": "9:30pm",
+            "showtime_id": "146878772",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147697271",
             "format": "Laser at AMC"
           }
         ]
@@ -37112,7 +37187,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841776+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -37287,55 +37362,60 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147654506",
+            "showtime": "6:50pm",
+            "showtime_id": "147191249",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147191248",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "147654507",
+            "showtime": "7:30pm",
+            "showtime_id": "147654443",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147654602",
+            "showtime": "9:45pm",
+            "showtime_id": "147654488",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147191250",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146862333",
-            "format": "XL at AMC"
+            "showtime": "5:30pm",
+            "showtime_id": "146884818",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146884781",
+            "showtime_id": "147654588",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146884776",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147654465",
-            "format": "XL at AMC"
+            "showtime": "9:30pm",
+            "showtime_id": "147654587",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147654407",
+            "showtime": "10:00pm",
+            "showtime_id": "147654429",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147654607",
-            "format": "Laser at AMC"
+            "showtime_id": "147654440",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -37456,7 +37536,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841295+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -37511,24 +37591,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147196366",
+            "showtime": "11:00am",
+            "showtime_id": "147196333",
             "format": "Laser at AMC"
-          }
-        ],
-        "Other Mommy": [
+          },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146850761",
+            "showtime": "1:25pm",
+            "showtime_id": "147196335",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147196334",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146886865",
+            "showtime_id": "147196360",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147196371",
+            "format": "Open Caption (On-screen Subtitles)"
+          }
+        ],
+        "Other Mommy": [
+          {
+            "showtime": "10:50am",
+            "showtime_id": "147587736",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146886859",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "146886866",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "146886879",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146886880",
             "format": "Laser at AMC"
           }
         ]
@@ -38019,79 +38134,64 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147672663",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:45pm",
-            "showtime_id": "147572474",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147572473",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:45pm",
-            "showtime_id": "147572472",
+            "showtime_id": "147572476",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147572496",
+            "showtime_id": "147572495",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147672662",
+            "showtime_id": "147672667",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147221599",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "147221598",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:30pm",
-            "showtime_id": "147221597",
+            "showtime_id": "147221587",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147672612",
+            "showtime_id": "147672622",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147221596",
+            "showtime_id": "147221586",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:35pm",
+            "showtime_id": "147672723",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147672587",
+            "showtime_id": "147672578",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147672678",
+            "showtime_id": "147672668",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147221600",
+            "showtime_id": "147221590",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "147672729",
             "format": "Laser at AMC"
           }
         ]
@@ -38575,7 +38675,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841724+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -38650,39 +38750,74 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "147037358",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "147599496",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147037372",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147599495",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "6:50pm",
-            "showtime_id": "147037374",
+            "showtime_id": "147037373",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "147599203",
+            "showtime_id": "147037363",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146862307",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147599288",
+            "showtime": "2:00pm",
+            "showtime_id": "146915101",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147599489",
+            "showtime": "3:25pm",
+            "showtime_id": "147599333",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146915100",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147599267",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "146915157",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147599298",
+            "showtime": "10:00pm",
+            "showtime_id": "147599491",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146915099",
             "format": "Laser at AMC"
           }
         ]
@@ -39095,6 +39230,11 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
+                "showtime": "1:15pm",
+                "showtime_id": "147624412",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "3:45pm",
                 "showtime_id": "147020153",
                 "format": "undefined"
@@ -39109,9 +39249,81 @@
                 "showtime_id": "147020150",
                 "format": "undefined"
               }
+            ],
+            "Other Mommy": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "146947403",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "1:40pm",
+                "showtime_id": "147624285",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147624154",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "146947404",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147624411",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147624214",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "5:35pm",
+                "showtime_id": "147624153",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147624456",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147624409",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "146947390",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "147624152",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147624457",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147624410",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "146947393",
+                "format": "Thrills & Chills"
+              }
             ]
           },
-          "collected_at": "2026-10-06T01:51:10.079785+00:00",
+          "collected_at": "2026-10-10T01:13:14.802153+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -41072,8 +41284,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "147744086",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "146998647",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147742063",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147746859",
                 "format": "Laser at AMC"
               },
               {
@@ -41083,7 +41310,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841115+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -41143,34 +41370,49 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147055233",
+            "showtime": "7:30pm",
+            "showtime_id": "147055043",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "147055234",
+            "showtime": "10:30pm",
+            "showtime_id": "147055044",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146850650",
+            "showtime": "5:15pm",
+            "showtime_id": "146998649",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147609756",
+            "showtime": "6:30pm",
+            "showtime_id": "147744086",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146998646",
+            "showtime": "8:00pm",
+            "showtime_id": "146998647",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147742063",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147746859",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "146998648",
             "format": "Laser at AMC"
           }
         ]
@@ -44900,13 +45142,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147742630",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "146958213",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841711+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -44994,34 +45241,34 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147087000",
+            "showtime": "7:15pm",
+            "showtime_id": "147086940",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147087001",
+            "showtime_id": "147086939",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146850631",
+            "showtime": "7:00pm",
+            "showtime_id": "146958212",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146958210",
+            "showtime": "7:45pm",
+            "showtime_id": "147742630",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "146958211",
+            "showtime_id": "146958213",
             "format": "Laser at AMC"
           }
         ]
@@ -46151,7 +46398,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:20pm",
+                "showtime": "10:15pm",
                 "showtime_id": "147170341",
                 "format": "Laser at AMC"
               }
@@ -46171,73 +46418,53 @@
                 "showtime": "9:10pm",
                 "showtime_id": "146935906",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147665979",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-06T17:18:40.110343+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "12:35pm",
-            "showtime_id": "147170331",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "147665984",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "147170330",
+            "showtime": "7:25pm",
+            "showtime_id": "147170333",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147665985",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:25pm",
-            "showtime_id": "147170329",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147170328",
+            "showtime": "10:15pm",
+            "showtime_id": "147170341",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "146935901",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "3:50pm",
-            "showtime_id": "146935900",
+            "showtime": "6:30pm",
+            "showtime_id": "146935907",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "146935899",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "146935866",
+            "showtime_id": "146935864",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "146935898",
+            "showtime_id": "146935906",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147665979",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -48050,7 +48277,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-09T01:12:03.344507+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -48265,54 +48492,69 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147217362",
+            "showtime_id": "147217356",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147217361",
+            "showtime": "10:20pm",
+            "showtime_id": "147217355",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146862297",
+            "showtime": "5:00pm",
+            "showtime_id": "147628542",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:40pm",
-            "showtime_id": "147633016",
+            "showtime": "5:30pm",
+            "showtime_id": "146885150",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147628503",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147633145",
+            "showtime_id": "147628608",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146885124",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "147633061",
+            "showtime_id": "147628543",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147633146",
+            "showtime": "8:00pm",
+            "showtime_id": "146885126",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147628504",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147628609",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "146885125",
+            "showtime": "10:00pm",
+            "showtime_id": "147628544",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "146885149",
             "format": "Laser at AMC"
           }
         ]
@@ -48868,49 +49110,89 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841924+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-11",
       "movies": {
         "The Social Reckoning": [
           {
+            "showtime": "11:00am",
+            "showtime_id": "147087645",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:50pm",
+            "showtime_id": "147087643",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147087642",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
-            "showtime_id": "147087629",
+            "showtime_id": "147087640",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147087630",
+            "showtime_id": "147087641",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147713066",
+            "showtime": "10:45am",
+            "showtime_id": "147713102",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:30am",
+            "showtime_id": "147000122",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "147713035",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147000121",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:05pm",
+            "showtime_id": "147713029",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147000120",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147713036",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146850640",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "147713059",
+            "showtime_id": "147000118",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147000106",
+            "showtime_id": "147000119",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147713043",
+            "showtime": "10:05pm",
+            "showtime_id": "147713047",
             "format": "Laser at AMC"
           }
         ]
@@ -49853,7 +50135,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841268+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -49998,50 +50280,60 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146862303",
+            "showtime": "5:00pm",
+            "showtime_id": "147000019",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147000056",
+            "showtime": "6:30pm",
+            "showtime_id": "147000032",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147000029",
+            "showtime_id": "147000028",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147000057",
+            "showtime": "9:00pm",
+            "showtime_id": "147000033",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147627312",
-            "format": "Laser at AMC"
+            "showtime": "10:30pm",
+            "showtime_id": "147226647",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "The Social Reckoning": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147226688",
+            "showtime": "5:00pm",
+            "showtime_id": "147226681",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147226649",
+            "showtime": "7:00pm",
+            "showtime_id": "147226699",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147226646",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147226669",
+            "showtime_id": "147226666",
             "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147226674",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -50054,6 +50346,11 @@
           "movies": {
             "The Social Reckoning": [
               {
+                "showtime": "1:30pm",
+                "showtime_id": "147701094",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147196722",
                 "format": "Open Caption (On-screen Subtitles)"
@@ -50062,10 +50359,47 @@
                 "showtime": "6:30pm",
                 "showtime_id": "147196723",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147701114",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Other Mommy": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147701106",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147701121",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "146957882",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146957881",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147701161",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147701107",
+                "format": "Open Caption (On-screen Subtitles)"
               }
             ]
           },
-          "collected_at": "2026-10-06T01:51:10.079866+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-09": {
@@ -50195,60 +50529,60 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-10",
+      "show_date": "2026-10-11",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147196730",
+            "showtime": "1:30pm",
+            "showtime_id": "147701094",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147196719",
+            "showtime_id": "147196722",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147196723",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147196720",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147196721",
+            "showtime": "9:45pm",
+            "showtime_id": "147701114",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147701165",
+            "showtime": "12:45pm",
+            "showtime_id": "147701106",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "147701160",
+            "showtime": "2:00pm",
+            "showtime_id": "147701121",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147701109",
+            "showtime": "4:30pm",
+            "showtime_id": "146957882",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146957879",
+            "showtime": "7:15pm",
+            "showtime_id": "146957881",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147701159",
+            "showtime": "8:30pm",
+            "showtime_id": "147701161",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147240369",
-            "format": "Laser at AMC"
+            "showtime": "9:30pm",
+            "showtime_id": "147701107",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ]
       }
@@ -50931,9 +51265,31 @@
                 "showtime_id": "147183660",
                 "format": "Laser at AMC"
               }
+            ],
+            "Other Mommy": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147631450",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "146876835",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147631447",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "146876834",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-06T01:51:10.079768+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -51118,34 +51474,39 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147183658",
+            "showtime": "6:45pm",
+            "showtime_id": "147183659",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147183660",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146850611",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146876833",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "147631498",
+            "showtime": "6:15pm",
+            "showtime_id": "147631450",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "7:30pm",
+            "showtime_id": "146876835",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:00pm",
-            "showtime_id": "146876855",
+            "showtime_id": "147631447",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146876834",
             "format": "Laser at AMC"
           }
         ]
@@ -51499,7 +51860,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841751+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -51594,7 +51955,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T17:18:40.110429+00:00",
+          "collected_at": "2026-10-10T01:13:14.802057+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-10": {
@@ -51674,74 +52035,44 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-10",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147581138",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "147123119",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147581132",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147123120",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:45pm",
-            "showtime_id": "147123146",
+            "showtime_id": "147123124",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "147123145",
+            "showtime_id": "147123123",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147584665",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "146947174",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "5:00pm",
-            "showtime_id": "146947173",
+            "showtime_id": "146947169",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147581136",
+            "showtime_id": "147581128",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "146947172",
+            "showtime_id": "146947168",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147581134",
+            "showtime_id": "147581126",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "146947171",
+            "showtime_id": "146947167",
             "format": "Laser at AMC"
           }
         ]
@@ -52551,7 +52882,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-09T01:12:03.344166+00:00",
+          "collected_at": "2026-10-10T01:13:14.802143+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -52761,114 +53092,64 @@
               }
             ]
           },
-          "collected_at": "2026-10-09T01:12:03.344264+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147703717",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "12:00pm",
-            "showtime_id": "147215014",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147715464",
+            "showtime": "5:00pm",
+            "showtime_id": "147703651",
             "format": "XL at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "147703716",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "147215012",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147215013",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147715465",
+            "showtime": "6:15pm",
+            "showtime_id": "147703749",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147215011",
+            "showtime": "7:15pm",
+            "showtime_id": "147189502",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147703759",
+            "showtime": "9:00pm",
+            "showtime_id": "147703750",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147715466",
-            "format": "XL at AMC"
+            "showtime": "10:00pm",
+            "showtime_id": "147189501",
+            "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147703757",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "146998713",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147703758",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146998712",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "147703714",
+            "showtime": "6:00pm",
+            "showtime_id": "147703707",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147715542",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "146998710",
+            "showtime": "7:00pm",
+            "showtime_id": "146998702",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147703715",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "147715543",
+            "showtime_id": "147703653",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "146998711",
+            "showtime": "8:45pm",
+            "showtime_id": "147703708",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146998703",
             "format": "Laser at AMC"
           }
         ]
@@ -55298,7 +55579,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-09T01:12:03.344259+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -55428,39 +55709,89 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147171385",
+            "showtime": "10:40am",
+            "showtime_id": "147154300",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147171383",
+            "showtime": "1:35pm",
+            "showtime_id": "147154299",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147154298",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "147154297",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147154301",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
+            "showtime": "10:10am",
+            "showtime_id": "147631143",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:25am",
+            "showtime_id": "146942899",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:40pm",
+            "showtime_id": "147631151",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146942898",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:10pm",
+            "showtime_id": "147631150",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "146942900",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "146850768",
+            "showtime_id": "147631149",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146942891",
+            "showtime": "7:10pm",
+            "showtime_id": "146942901",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147678033",
+            "showtime": "8:30pm",
+            "showtime_id": "147631152",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "146942892",
+            "showtime": "9:45pm",
+            "showtime_id": "146942902",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147631107",
             "format": "Laser at AMC"
           }
         ]
@@ -56677,7 +57008,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841034+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -56817,50 +57148,100 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-10",
       "movies": {
-        "Other Mommy": [
+        "The Social Reckoning": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "146934365",
+            "showtime": "11:00am",
+            "showtime_id": "147710933",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "146862383",
-            "format": "XL at AMC"
+            "showtime": "1:00pm",
+            "showtime_id": "147158215",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147710739",
+            "showtime": "3:50pm",
+            "showtime_id": "147158219",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "147710990",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147158282",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "146934363",
+            "showtime_id": "147710995",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "147710740",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "146934364",
+            "showtime": "10:00pm",
+            "showtime_id": "147158220",
             "format": "Laser at AMC"
           }
         ],
-        "The Social Reckoning": [
+        "Other Mommy": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147710687",
+            "showtime": "11:00am",
+            "showtime_id": "147710751",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "147710884",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147710610",
+            "showtime": "1:30pm",
+            "showtime_id": "147710750",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "146934371",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147710876",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147710749",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "146934374",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146934372",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147710730",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146934373",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147710748",
+            "format": "Dolby Cinema at AMC"
           }
         ]
       }
@@ -57034,7 +57415,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841696+00:00",
+          "collected_at": "2026-10-10T01:13:14.802117+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -58699,7 +59080,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-09T01:12:03.344402+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -58949,129 +59330,89 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-10T01:13:14.802019+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-10",
+      "show_date": "2026-10-09",
       "movies": {
         "The Social Reckoning": [
           {
-            "showtime": "12:20pm",
-            "showtime_id": "147231351",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147633921",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147231356",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:10pm",
-            "showtime_id": "147231355",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147231357",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147231434",
+            "showtime_id": "147231435",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:10pm",
-            "showtime_id": "147231350",
+            "showtime_id": "147231359",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147715088",
+            "showtime_id": "147715089",
             "format": "Laser at AMC"
           }
         ],
         "Other Mommy": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147633700",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "12:00pm",
-            "showtime_id": "147633953",
+            "showtime": "5:00pm",
+            "showtime_id": "147634107",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:35pm",
-            "showtime_id": "147633888",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "1:20pm",
-            "showtime_id": "146997186",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:50pm",
-            "showtime_id": "147633954",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:35pm",
-            "showtime_id": "147633889",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "4:10pm",
-            "showtime_id": "147633920",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:10pm",
-            "showtime_id": "146997185",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:35pm",
-            "showtime_id": "147633951",
+            "showtime": "5:40pm",
+            "showtime_id": "147633956",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:25pm",
-            "showtime_id": "147633890",
+            "showtime_id": "147633886",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146997184",
+            "showtime_id": "146997188",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:35pm",
+            "showtime_id": "147715108",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147633952",
+            "showtime_id": "147633957",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "147634046",
+            "showtime_id": "147634044",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147633891",
+            "showtime_id": "147633887",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147633919",
+            "showtime": "10:05pm",
+            "showtime_id": "146997189",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "10:30pm",
+            "showtime_id": "147634108",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "11:00pm",
-            "showtime_id": "147633944",
+            "showtime_id": "147633955",
             "format": "Laser at AMC"
           }
         ]
@@ -126639,20 +126980,58 @@
           },
           "collected_at": "2026-10-08T17:21:45.841247+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-11": {
+          "movies": {
+            "Other Mommy": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147719780",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "146999852",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146999850",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "146999851",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-11",
       "movies": {
         "Other Mommy": [
           {
+            "showtime": "2:15pm",
+            "showtime_id": "147719780",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "146999852",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:15pm",
-            "showtime_id": "146999844",
+            "showtime_id": "146999850",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146999845",
+            "showtime_id": "146999851",
             "format": "Laser at AMC"
           }
         ]
@@ -127021,7 +127400,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841909+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -127074,49 +127453,54 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "Other Mommy": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "146862200",
+            "showtime_id": "147011357",
             "format": "XL at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147011332",
+            "showtime": "7:30pm",
+            "showtime_id": "147011336",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:50pm",
-            "showtime_id": "147011356",
+            "showtime": "8:45pm",
+            "showtime_id": "147011358",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147011333",
+            "showtime": "10:15pm",
+            "showtime_id": "147011337",
             "format": "Laser at AMC"
           }
         ],
         "The Social Reckoning": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147632682",
+            "showtime": "5:00pm",
+            "showtime_id": "147632668",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147632810",
+            "showtime_id": "147632788",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147632683",
+            "showtime": "8:00pm",
+            "showtime_id": "147632634",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147632811",
+            "showtime": "9:15pm",
+            "showtime_id": "147632770",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147632790",
             "format": "XL at AMC"
           }
         ]
@@ -127293,7 +127677,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T17:18:40.110482+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -127334,17 +127718,17 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-09",
+      "show_date": "2026-10-10",
       "movies": {
         "Other Mommy": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147613724",
+            "showtime_id": "147613720",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147613729",
+            "showtime_id": "147613732",
             "format": "Thrills & Chills"
           }
         ]
@@ -127407,7 +127791,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-08T17:21:45.841386+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-08": {
@@ -127463,17 +127847,22 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-08",
+      "show_date": "2026-10-09",
       "movies": {
         "Other Mommy": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147064209",
+            "showtime": "5:00pm",
+            "showtime_id": "147064220",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147064207",
+            "showtime": "7:30pm",
+            "showtime_id": "147064217",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147064215",
             "format": "Thrills & Chills"
           }
         ]
@@ -127546,7 +127935,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-06T17:18:40.110198+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-11": {
@@ -127589,37 +127978,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-11",
+      "show_date": "2026-10-09",
       "movies": {
         "Other Mommy": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "146999968",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "146999967",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:15pm",
-            "showtime_id": "147645396",
+            "showtime_id": "147628436",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "146999965",
+            "showtime_id": "146999958",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:45pm",
-            "showtime_id": "147645395",
+            "showtime_id": "147628437",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "146999966",
+            "showtime_id": "146999959",
             "format": "Laser at AMC"
           }
         ]
@@ -130051,9 +130430,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9914,
-    "fresh": 345,
-    "expected": 348,
+    "ratio": 0.9953,
+    "fresh": 212,
+    "expected": 213,
     "min_ratio": 0.9,
     "degraded": false
   }
