@@ -753,12 +753,87 @@ jobs:
           done
           python3 scripts/rotate_pre_reservation_snapshots.py --max-mb 60
 
-      - name: Fill movie metadata for the tracked films (Box Office Mojo)
-        # 2026-10-03: this was a manual script; the 2026-10-02 films had no
-        # metadata row and the audience gates / genre handling ran on defaults.
-        # Fills blanks only, never overwrites, never fails the run.
+      - name: Auto-fetch reported daily actuals (every finalize, all four days)
+        # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
+        # every day), so a newly published number alone forces a fresh
+        # prediction + commit. Records Thursday previews and opening Friday
+        # (previews split out) as well as Saturday/Sunday — nothing is left to
+        # a manual step. When the model USES each day is decided in
+        # predict.stage_gated_overrides (Thu/Fri wait for Friday seats; backtest
+        # 2026-09-26). urllib only; best effort, a fetch miss never fails finalize.
         working-directory: box-office-tracker
-        run: python3 scripts/fill_movie_metadata.py --tracked --write || echo "::warning::movie metadata fill failed — predictions run on defaults for unfilled films"
+        continue-on-error: true
+        run: python3 scripts/fetch_daily_actuals.py
+
+      - name: Finalize guard — skip if latest scrape already has derived artifacts
+        id: finalize_guard
+        run: |
+          row_changes=$(python3 -c 'import json; s=json.load(open("/tmp/box-office-merge-summary.json")); print(sum(int(s.get(k, 0) or 0) for k in ("seat_added", "seat_metadata_updated", "pre_reservation_added", "polymarket_added")))')
+          canonical_status="$(git status --short -- \
+            box-office-tracker/data/seat-counts.csv \
+            box-office-tracker/data/pre-reservation-snapshots.csv \
+            box-office-tracker/data/polymarket-markets.csv \
+            box-office-tracker/data/daily-actual-overrides.csv \
+            box-office-tracker/data/calibration.json \
+            box-office-tracker/data/calibration-freezes \
+            box-office-tracker/data/run-logs)"
+          if [ -z "$canonical_status" ]; then
+            if [ "$row_changes" -eq 0 ]; then
+              echo "No canonical seat, snapshot, market rows, or seat metadata were merged; skipping finalize."
+            else
+              echo "Merged rows were duplicate or cleaned away; no net canonical data changes."
+            fi
+            # STALENESS LABEL (audit finding): skipping finalize means the
+            # committed predictions/xlsx stay as they were — but nothing said
+            # so, and a reader of the repo saw stale forecasts presented as
+            # current. Say when they were last actually regenerated.
+            last_pred=$(git log -1 --format="%cI" -- box-office-tracker/data/seat-counts.xlsx 2>/dev/null || true)
+            [ -z "$last_pred" ] && last_pred="unknown (no regeneration within the shallow fetch window)" 
+            echo "::notice::finalize skipped — predictions/xlsx NOT regenerated this run; last regeneration was $last_pred"
+            echo "needs_finalize=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Merged or cleaned scrape artifacts changed canonical data; finalize required."
+          echo "$canonical_status"
+          echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Install dependencies
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        run: |
+          pip install -r requirements.txt
+          # No playwright needed here — predict.py and export_seat_counts_xlsx.py
+          # are pure-pandas. Skipping the chromium download saves ~2 min.
+
+      - name: Auto-fetch review scores
+        # Word-of-mouth layer: pull this weekend's films' Rotten Tomatoes
+        # audience/critic scores into data/reviews.csv before predicting. Best
+        # effort — a fetch miss leaves the review layer neutral, so it must not
+        # fail finalize.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python scripts/import_reviews.py
+
+      - name: Auto-fetch Wikipedia anticipation (diagnostic)
+        # Word-of-mouth DIAGNOSTIC only: release-week Wikipedia pageviews are a
+        # leak-free anticipation signal, but the backtest showed they're
+        # redundant with the Thursday seat read (LOO MAE 21.6%->21.8%), so they
+        # render as a social-signal context card and DO NOT move the headline.
+        # Best effort — never fail finalize.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        continue-on-error: true
+        run: python scripts/import_wiki_pageviews.py
+
+      - name: Census coverage scorecard (informational)
+        # Share of America's seats sold that we COUNT at/after showtime, per
+        # film-day with a reported national gross (AMC post-show + Cinemark /
+        # Alamo / Harkins post-show census). Goal set 2026-09-26: push it up.
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        run: python3 scripts/census_coverage.py || echo "::warning::census coverage scorecard crashed — coverage not recorded this run"
 
       - name: Auto-fetch reported daily actuals (every finalize, all four days)
         # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
@@ -841,6 +916,16 @@ jobs:
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
         run: python3 scripts/census_coverage.py || echo "::warning::census coverage scorecard crashed — coverage not recorded this run"
+
+      - name: Fill movie metadata for the tracked films (Box Office Mojo)
+        # 2026-10-03: this was a manual script; the 2026-10-02 films had no
+        # metadata row and the audience gates / genre handling ran on defaults.
+        # Fills blanks only, never overwrites, never fails the run. Runs AFTER
+        # 'Install dependencies' (2026-10-10: placed before it, the import of
+        # scraper failed on every finalize and the '|| echo' hid it as a warning
+        # — two more weekends ran without metadata).
+        working-directory: box-office-tracker
+        run: python3 scripts/fill_movie_metadata.py --tracked --write || echo "::warning::movie metadata fill failed — predictions run on defaults for unfilled films"
 
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'

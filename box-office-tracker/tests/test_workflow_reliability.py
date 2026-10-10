@@ -637,8 +637,13 @@ class MovieMetadataAutoFillTest(unittest.TestCase):
     def test_finalize_fills_metadata_before_predictions_and_stages_the_file(self):
         yml = WORKFLOW.read_text() if "WORKFLOW" in globals() else (Path(__file__).resolve().parents[2] / ".github" / "workflows" / "box-office-pipeline.yml").read_text()
         i = yml.index("fill_movie_metadata.py --tracked --write")
-        j = yml.index("Auto-fetch reported daily actuals (every finalize")
-        self.assertLess(i, j)
+        fin = yml.index("  finalize:")
+        inst = yml.index("- name: Install dependencies", fin)
+        gen = yml.index("- name: Generate predictions", fin)
+        # 2026-10-10: it ran BEFORE the install for a week, failed on
+        # `import scraper` every time, and the fallback hid it as a warning.
+        self.assertLess(inst, i)
+        self.assertLess(i, gen)
         sfo = (Path(__file__).resolve().parents[1] / "scripts" / "stage_finalize_outputs.py").read_text()
         self.assertIn("box-office-tracker/data/movie-metadata.csv", sfo)
         import sys as _sys
