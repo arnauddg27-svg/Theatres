@@ -804,33 +804,35 @@ class ScraperLoggingTest(unittest.TestCase):
 
             scraper.local_now = lambda tz: datetime(2026, 5, 8, 22, 30)
             self.assertEqual(
-                {"ET": ["2026-05-09", "2026-05-10"]},
+                {"ET": ["2026-05-08", "2026-05-09", "2026-05-10"]},
                 scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
             )
 
+            # Sunday evening: today's remaining shows are still read (2026-10-10:
+            # the old cutoff left the Sunday daytime slots with nothing to do).
             scraper.local_now = lambda tz: datetime(2026, 5, 10, 22, 30)
             self.assertEqual(
-                {"ET": []},
+                {"ET": ["2026-05-10"]},
                 scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
             )
             self.assertEqual(
-                {},
+                {"ET": "2026-05-10"},
                 scraper.phase2_expected_dates(["ET"], snapshots_only=True),
             )
         finally:
             scraper.local_now = old_local_now
 
-    def test_snapshot_only_phase2_skips_current_opening_day_when_actuals_are_next(self):
+    def test_snapshot_only_phase2_keeps_current_opening_day(self):
         old_local_now = scraper.local_now
         try:
             scraper.local_now = lambda tz: datetime(2026, 5, 7, 22, 30)
 
             self.assertEqual(
-                {"ET": "2026-05-08"},
+                {"ET": "2026-05-07"},
                 scraper.phase2_expected_dates(["ET"], snapshots_only=True),
             )
             self.assertEqual(
-                {"ET": ["2026-05-08", "2026-05-09", "2026-05-10"]},
+                {"ET": ["2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10"]},
                 scraper.phase2_collection_dates_by_group(["ET"], snapshots_only=True),
             )
         finally:

@@ -1064,7 +1064,15 @@ SNAPSHOT_REPAIR_LINKS = _env_bool("SNAPSHOT_REPAIR_LINKS", False)
 # throughput; per-TZ legs stay within the (raised) snapshot deadline, and the
 # demand-first ordering degrades gracefully if a heavy Wednesday probe runs long.
 SNAPSHOT_TOP_THEATRE_CAP = _env_int("SNAPSHOT_TOP_THEATRE_CAP", 120, minimum=1)  # yml exports 120 too (2026-09-04)
-SNAPSHOT_SAME_DAY_CUTOFF_HOUR = _env_int("SNAPSHOT_SAME_DAY_CUTOFF_HOUR", 6, minimum=0)
+# Same-day reads (2026-10-10). The old cutoff (6) dropped the current show
+# date from every daytime snapshot slot, so Saturday's forecast rested on
+# reservations as of Friday midnight and the Sunday daytime slots read nothing
+# at all (Other Mommy: Sat called at 0.6x Friday while the film tracked ~1.0x).
+# The model projects short leads itself (snapshot_reservation_multiplier:
+# <=1h 1.15 ... <=6h 1.60) and keeps the freshest run per showtime, so a 10:30
+# and 18:30 local read of today's remaining shows is pure signal. 24 = always
+# keep today on Thu-Sun; set 6 to restore the old behaviour.
+SNAPSHOT_SAME_DAY_CUTOFF_HOUR = _env_int("SNAPSHOT_SAME_DAY_CUTOFF_HOUR", 24, minimum=0)
 
 # After the opening weekend closes, we still collect Mon-Wed seat maps for the
 # same tracked title. Those weekday curves are calibration data; they should not
@@ -1171,9 +1179,9 @@ def phase2_snapshot_collection_dates(local, max_dates=None):
         start = local + timedelta(days=1)
     else:  # Thu-Sun opening weekend
         weekend = opening_weekend_friday(local)
-        # A delayed 02:30Z snapshot can cross midnight in ET while the full
-        # show day is still ahead. Keep that current local show date until the
-        # early-morning cutoff instead of silently losing the Friday/Sunday read.
+        # Keep the current local show date while local.hour is below the
+        # cutoff. With the default (24) that is always: the daytime slots read
+        # today's remaining shows at short lead (see SNAPSHOT_SAME_DAY_CUTOFF_HOUR).
         start = local if local.hour < SNAPSHOT_SAME_DAY_CUTOFF_HOUR else local + timedelta(days=1)
 
     start_date = start.strftime("%Y-%m-%d")
