@@ -656,7 +656,7 @@ def regular_day_has_partial_daypart(day_name, details):
 # Sat/Sun while the film tracked $27.5M vs the $22.8M call. Mode "fan"
 # halves the Thursday->Sat/Sun transfer for horror_fan / fan_driven titles;
 # "off" keeps the original table. Backtested before shipping (see ledger).
-THU_ANCHOR_FAN_MODE = (os.environ.get("THU_ANCHOR_FAN_MODE") or "off").strip().lower()
+THU_ANCHOR_FAN_MODE = (os.environ.get("THU_ANCHOR_FAN_MODE") or "fan").strip().lower()
 THU_ANCHOR_FAN_AUDIENCES = frozenset({"horror_fan", "fan_driven"})
 THU_ANCHOR_FAN_SIMILARITY = {"Saturday": 0.30, "Sunday": 0.25}
 
@@ -6593,7 +6593,8 @@ def apply_same_week_snapshot_scale(details, scale):
     return adjusted
 
 
-def same_week_actual_snapshot_scale_for_day(day_name, regular_daily_details):
+def same_week_actual_snapshot_scale_for_day(day_name, regular_daily_details,
+                                            audience_type=None):
     """Transfer reported-actual residuals into future snapshot demand.
 
     A real Thursday preview can prove the same movie is monetizing/behaving
@@ -6608,7 +6609,9 @@ def same_week_actual_snapshot_scale_for_day(day_name, regular_daily_details):
         raw_factor = _positive_float(anchor.get("seat_model_actual_scale"))
         if raw_factor is None:
             continue
-        similarity = same_week_actual_seat_scale_similarity(anchor_day, day_name)
+        similarity = same_week_actual_seat_scale_similarity(
+            anchor_day, day_name, audience_type
+        )
         if similarity <= 0:
             continue
         coverage = _coverage_value(
@@ -6917,7 +6920,8 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
                                 regular_seat_data=None,
                                 amc_share_anchor=None,
                                 amc_share_anchors=None,
-                                amc_share_override=None):
+                                amc_share_override=None,
+                                audience_type=None):
     """Use snapshots only for opening-weekend days without seat-count actuals."""
     if not snapshot_data:
         return None
@@ -7062,6 +7066,7 @@ def build_snapshot_future_layer(snapshot_data, regular_daily_details, cal,
         actual_scale_info = same_week_actual_snapshot_scale_for_day(
             day_name,
             regular_daily_details,
+            audience_type,
         )
         support_info = snapshot_calibration_support_factor(
             cal,
@@ -8401,6 +8406,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         amc_share_anchor=dynamic_amc_share_anchor,
         amc_share_anchors=dynamic_amc_share_anchors,
         amc_share_override=share_override_resolved,
+        audience_type=getattr(movie_metadata, "audience_type", "") or "",
     )
     # A presale-only forecast needs direct coverage of all four days. Do not
     # turn a sparse or uncalibrated sample into a zero-dollar headline.

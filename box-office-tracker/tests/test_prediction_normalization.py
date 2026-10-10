@@ -4117,3 +4117,37 @@ class ThursdayAnchorFanTransferTest(unittest.TestCase):
             self.assertAlmostEqual(1 + (0.80 - 1) * 0.30, fan, places=6)
         finally:
             P.THU_ANCHOR_FAN_MODE = old
+
+    def test_default_is_fan(self):
+        # Shipped 2026-10-10: Friday-stage backtest 20.5% -> 20.1% MAE, no
+        # film worse (only Obsession, the one fan-audience film with a
+        # Thursday actual in replay, moved: 22.4 -> 21.4 vs 17.2 actual).
+        import os
+        import predict as P
+        if not os.environ.get("THU_ANCHOR_FAN_MODE"):
+            self.assertEqual("fan", P.THU_ANCHOR_FAN_MODE)
+
+    def test_snapshot_path_uses_audience(self):
+        """Sat/Sun before the weekend are snapshot days; the first cut only
+        threaded audience_type through the regular-seat path, so the fan
+        mode changed 0 of 30 replay films. The snapshot transfer must see it."""
+        import predict as P
+        old = P.THU_ANCHOR_FAN_MODE
+        try:
+            P.THU_ANCHOR_FAN_MODE = "fan"
+            regular = {"Thursday": {
+                "actual_override": True,
+                "seat_model_actual_scale": 0.80,
+                "effective_coverage_ratio": 0.9,
+                "actual_override_m": 3.6,
+            }}
+            broad = P.same_week_actual_snapshot_scale_for_day("Saturday", regular, "broad_family")
+            fan = P.same_week_actual_snapshot_scale_for_day("Saturday", regular, "horror_fan")
+            none = P.same_week_actual_snapshot_scale_for_day("Saturday", regular)
+            self.assertAlmostEqual(broad["factor"], none["factor"], places=9)
+            self.assertLess(abs(fan["factor"] - 1.0), abs(broad["factor"] - 1.0))
+            self.assertAlmostEqual(
+                1 + (max(0.80, P.SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN) - 1) * 0.30,
+                fan["factor"], places=6)
+        finally:
+            P.THU_ANCHOR_FAN_MODE = old
