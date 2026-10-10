@@ -648,7 +648,20 @@ def regular_day_has_partial_daypart(day_name, details):
     ) < WEEKEND_DAYPART_SNAPSHOT_SUPPORT_THRESHOLD
 
 
-def same_week_actual_seat_scale_similarity(anchor_day, target_day):
+# Thursday-anchor transfer for FAN-DRIVEN titles (2026-10-10 audit, Other Mommy):
+# a preview crowd is the most AMC-skewed, most pre-booked audience of the
+# weekend, so a Thursday actual-vs-seat residual says little about Saturday
+# and Sunday walk-ups. Other Mommy's Thursday read ran +25% (seat-implied
+# $4.5M vs $3.6M) and the 0.80 scale transferred at 0.60 took ~$1.3M off
+# Sat/Sun while the film tracked $27.5M vs the $22.8M call. Mode "fan"
+# halves the Thursday->Sat/Sun transfer for horror_fan / fan_driven titles;
+# "off" keeps the original table. Backtested before shipping (see ledger).
+THU_ANCHOR_FAN_MODE = (os.environ.get("THU_ANCHOR_FAN_MODE") or "off").strip().lower()
+THU_ANCHOR_FAN_AUDIENCES = frozenset({"horror_fan", "fan_driven"})
+THU_ANCHOR_FAN_SIMILARITY = {"Saturday": 0.30, "Sunday": 0.25}
+
+
+def same_week_actual_seat_scale_similarity(anchor_day, target_day, audience_type=None):
     """Transfer strength for same-movie actual-vs-seat residuals."""
     anchor = anchor_day if anchor_day in OPENING_WEEKEND_DAYS else None
     target = target_day if target_day in OPENING_WEEKEND_DAYS else None
@@ -658,12 +671,14 @@ def same_week_actual_seat_scale_similarity(anchor_day, target_day):
     target_idx = OPENING_WEEKEND_DAYS.index(target)
     if anchor_idx > target_idx:
         return 0.0
+    fan = (THU_ANCHOR_FAN_MODE == "fan"
+           and (audience_type or "").strip().lower() in THU_ANCHOR_FAN_AUDIENCES)
     if anchor == "Thursday" and target == "Friday":
         return 1.0
     if anchor == "Thursday" and target == "Saturday":
-        return 0.60
+        return THU_ANCHOR_FAN_SIMILARITY["Saturday"] if fan else 0.60
     if anchor == "Thursday" and target == "Sunday":
-        return 0.50
+        return THU_ANCHOR_FAN_SIMILARITY["Sunday"] if fan else 0.50
     if anchor == "Friday" and target == "Saturday":
         return 0.85
     if anchor == "Friday" and target == "Sunday":
@@ -673,7 +688,7 @@ def same_week_actual_seat_scale_similarity(anchor_day, target_day):
     return 0.0
 
 
-def same_week_actual_seat_scale_for_day(day_name, anchors):
+def same_week_actual_seat_scale_for_day(day_name, anchors, audience_type=None):
     """Blend same-week reported-actual seat residuals for a target day."""
     weighted = []
     for anchor in anchors or []:
@@ -683,6 +698,7 @@ def same_week_actual_seat_scale_for_day(day_name, anchors):
         similarity = same_week_actual_seat_scale_similarity(
             anchor.get("day"),
             day_name,
+            audience_type,
         )
         if similarity <= 0:
             continue
@@ -905,7 +921,7 @@ def same_week_actual_amc_ratio_for_day(day_name, details, anchors, cal=None):
     }
 
 
-def apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=None):
+def apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=None, audience_type=None):
     """Use same-week actuals to repair regular seat-count days.
 
     A reported Thursday preview can prove that this movie's seat-derived gross
@@ -944,7 +960,7 @@ def apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=None)
         if details.get("actual_override"):
             continue
         if partial:
-            scale_info = same_week_actual_seat_scale_for_day(day_name, anchors)
+            scale_info = same_week_actual_seat_scale_for_day(day_name, anchors, audience_type)
             if scale_info:
                 factor = scale_info["factor"]
                 if abs(factor - 1.0) >= 0.001:
@@ -8294,7 +8310,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     if not daily_estimates and not snapshot_data:
         return None
 
-    apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=cal)
+    apply_same_week_actual_seat_scales(daily_estimates, daily_details, cal=cal,
+                                       audience_type=getattr(movie_metadata, "audience_type", "") or "")
 
     daily_raw_coverage_ratios = {
         day: details["coverage_ratio"]

@@ -4092,3 +4092,28 @@ class PredictionNormalizationTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ThursdayAnchorFanTransferTest(unittest.TestCase):
+    """2026-10-10: the Thursday actual-vs-seat residual transfers to Sat/Sun at
+    0.60/0.50; in 'fan' mode horror_fan / fan_driven titles transfer at
+    0.30/0.25 (a preview crowd says little about weekend walk-ups)."""
+
+    def test_modes(self):
+        import predict as P
+        old = P.THU_ANCHOR_FAN_MODE
+        try:
+            P.THU_ANCHOR_FAN_MODE = "off"
+            self.assertEqual(0.60, P.same_week_actual_seat_scale_similarity("Thursday", "Saturday", "horror_fan"))
+            P.THU_ANCHOR_FAN_MODE = "fan"
+            self.assertEqual(0.30, P.same_week_actual_seat_scale_similarity("Thursday", "Saturday", "horror_fan"))
+            self.assertEqual(0.25, P.same_week_actual_seat_scale_similarity("Thursday", "Sunday", "fan_driven"))
+            self.assertEqual(0.60, P.same_week_actual_seat_scale_similarity("Thursday", "Saturday", "broad_family"))
+            self.assertEqual(1.0, P.same_week_actual_seat_scale_similarity("Thursday", "Friday", "horror_fan"))
+            self.assertEqual(0.85, P.same_week_actual_seat_scale_similarity("Friday", "Saturday", "horror_fan"))
+            # Thursday 0.80 scale -> Saturday factor
+            anchors = [{"day": "Thursday", "scale_factor": 0.80}]
+            fan = P.same_week_actual_seat_scale_for_day("Saturday", anchors, "horror_fan")["factor"]
+            self.assertAlmostEqual(1 + (0.80 - 1) * 0.30, fan, places=6)
+        finally:
+            P.THU_ANCHOR_FAN_MODE = old
