@@ -650,3 +650,62 @@ class MovieMetadataAutoFillTest(unittest.TestCase):
         _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
         import fill_movie_metadata as F
         self.assertTrue(callable(F.tracked_films))
+
+
+
+def workflow_structure_violations(yaml_text):
+    """Pure: the GitHub-side parse errors PyYAML cannot see. 2026-10-10: a
+    duplicated block of finalize steps (second `id: finalize_guard`) parsed as
+    YAML but GitHub rejected every dispatch for 7 hours."""
+    import re
+    import yaml
+    out = []
+    for job, spec in (yaml.safe_load(yaml_text).get("jobs") or {}).items():
+        names, ids = [], []
+        seen = set()
+        for step in spec.get("steps", []) or []:
+            if step.get("name"):
+                names.append(step["name"])
+            text = " ".join(str(step.get(k, "")) for k in ("if", "run", "with", "env"))
+            for ref in set(re.findall(r"steps\.([A-Za-z0-9_\-]+)\.", text)):
+                if ref not in seen:
+                    out.append(f"{job}: '{step.get('name')}' references steps.{ref} before it is defined")
+            if step.get("id"):
+                if step["id"] in ids:
+                    out.append(f"{job}: duplicate step id '{step['id']}'")
+                ids.append(step["id"])
+                seen.add(step["id"])
+        for n in {n for n in names if names.count(n) > 1}:
+            out.append(f"{job}: duplicate step name '{n}'")
+    return out
+
+
+class WorkflowStructureTest(unittest.TestCase):
+    def test_live_workflow_has_no_structural_violations(self):
+        self.assertEqual([], workflow_structure_violations(WORKFLOW.read_text()))
+
+    def test_detects_the_2026_10_10_duplication(self):
+        broken = """
+jobs:
+  finalize:
+    steps:
+      - name: Guard
+        id: finalize_guard
+        run: echo
+      - name: Predict
+        if: steps.finalize_guard.outputs.go == 'true'
+        run: echo
+      - name: Guard
+        id: finalize_guard
+        run: echo
+      - name: Early
+        if: steps.later.outputs.x == '1'
+        run: echo
+      - name: Later
+        id: later
+        run: echo
+"""
+        v = workflow_structure_violations(broken)
+        self.assertTrue(any("duplicate step id 'finalize_guard'" in x for x in v), v)
+        self.assertTrue(any("duplicate step name 'Guard'" in x for x in v), v)
+        self.assertTrue(any("references steps.later before" in x for x in v), v)
