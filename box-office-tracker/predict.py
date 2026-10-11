@@ -154,7 +154,7 @@ SOCIAL_LAYER_MAX_ADJUSTMENT = 0.08
 SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
 SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
-SNAPSHOT_MAX_SLICE_AGE_HOURS = 8
+SNAPSHOT_MAX_SLICE_AGE_HOURS = float(os.environ.get("SNAPSHOT_MAX_SLICE_AGE_HOURS") or 8)
 # Era boundary sits between the last legacy weekend's show dates (<= 2026-07-13)
 # and the first measured-era weekend's PREVIEW date (2026-07-16): the min
 # snapshot show-date is compared, so the cutoff must precede Thursday previews.
