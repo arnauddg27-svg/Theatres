@@ -5319,6 +5319,97 @@ FANDANGO_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "fandango-pre-reservation-snapsh
 # the REGL+CNMK blend, and Regal-only rc_occ runs 3-10x lower than the blend
 # (CNMK skews high) — dropping CNMK would push every share toward the clamp.
 CINEMARK_SNAPSHOTS_CSV = os.path.join(DATA_DIR, "cinemark-pre-reservation-snapshots.csv")
+
+# CENSUS DAYPART RATIO (2026-10-11, Other Mommy). The AMC Friday capture is an
+# evening window (5pm-11pm links), so the day is extrapolated with the generic
+# 1.7x evening->day multiplier. The Cinemark post-show census reads EVERY
+# showing of the same film on the same day, so the film's real full-day /
+# evening seat ratio is measurable: Other Mommy Fri 1.21 / Sat 1.36 (AMC's own
+# full-day Saturday count: 1.37), The Social Reckoning Fri 1.78 / Sat 2.12.
+# With 1.7x, Other Mommy's Friday seat-implied gross printed $9.8M against a
+# $9.0M actual, the same-week residual came out x0.92 and was transferred to
+# a full-day Saturday — the headline sat at $24.8M while the film tracked
+# ~$28M. Mode "census" replaces the generic uplift on partial-window days with
+# the measured ratio over the AMC-captured window; "off" restores 1.7x.
+CENSUS_DAYPART_MODE = (os.environ.get("CENSUS_DAYPART_MODE") or "census").strip().lower()
+CENSUS_DAYPART_MIN_SHOWINGS = 150     # census showings needed on the day
+CENSUS_DAYPART_MIN_WINDOW_SHARE = 0.25   # captured window must hold >= 25% of the day
+_CENSUS_DAYPART_CACHE = {}
+
+
+def _census_showtime_hour(value):
+    text = str(value or "").strip()
+    match = re.match(r"^(\d{1,2}):(\d{2})$", text)
+    if match:
+        return int(match.group(1)) + int(match.group(2)) / 60.0
+    return _parse_showtime_hour(text)
+
+
+def load_census_daypart_seats(weekend_of=None, through_date=None):
+    """{movie: {show_date: {"hours": {hour: seats}, "showings": n}}} from the
+    Cinemark post-show census (every showing). Leak-safe by SHOW DATE: a day's
+    census is read the following 06:20Z, exactly like the AMC post-show seat
+    counts, so a replay through Friday sees Friday's census as it sees
+    Friday's AMC finals."""
+    if weekend_of is None:
+        weekend_of = _current_weekend_friday()
+    key = (weekend_of, through_date)
+    if key in _CENSUS_DAYPART_CACHE:
+        return _CENSUS_DAYPART_CACHE[key]
+    stem = os.path.splitext(os.path.basename(CINEMARK_SNAPSHOTS_CSV))[0]
+    paths = [
+        os.path.join(DATA_DIR, "cinemark-archive", f"{stem}-{weekend_of}.csv.gz"),
+        CINEMARK_SNAPSHOTS_CSV,
+    ]
+    out = {}
+    seen = set()
+    for path in paths:
+        if not os.path.exists(path):
+            continue
+        opener = gzip.open if path.endswith(".gz") else open
+        with opener(path, "rt", newline="") as f:
+            for row in csv.DictReader(f):
+                if (row.get("weekend_of") or "").strip() != weekend_of:
+                    continue
+                if (row.get("row_kind") or "").strip() != "post-show-census":
+                    continue
+                show_date = (row.get("show_date") or "").strip()
+                if through_date and show_date > through_date:
+                    continue
+                ident = (row.get("theatre_name"), show_date, row.get("showtime"), row.get("movie_title"))
+                if ident in seen:
+                    continue
+                seen.add(ident)
+                hour = _census_showtime_hour(row.get("showtime"))
+                sold = _parse_numeric(row.get("reserved_seats"), default=None)
+                if hour is None or sold is None:
+                    continue
+                entry = out.setdefault((row.get("movie_title") or "").strip(), {}).setdefault(
+                    show_date, {"hours": {}, "showings": 0})
+                entry["hours"][hour] = entry["hours"].get(hour, 0.0) + float(sold)
+                entry["showings"] += 1
+    _CENSUS_DAYPART_CACHE[key] = out
+    return out
+
+
+def census_evening_to_daily(entry, window_start_hour):
+    """Full-day / captured-window seat ratio for one film-day, or None."""
+    if not entry or entry.get("showings", 0) < CENSUS_DAYPART_MIN_SHOWINGS:
+        return None
+    try:
+        start = float(window_start_hour)
+    except (TypeError, ValueError):
+        return None
+    hours = entry.get("hours") or {}
+    total = sum(hours.values())
+    window = sum(seats for hour, seats in hours.items() if hour >= start)
+    if total <= 0 or window <= 0:
+        return None
+    # A window holding under a quarter of the day's seats is not the window
+    # AMC captured (a mislabelled earliest hour or a near-empty census day).
+    if window / total < CENSUS_DAYPART_MIN_WINDOW_SHARE:
+        return None
+    return max(1.0, total / window)
 # Walk-up multiplier, RE-DERIVED FROM EVIDENCE 2026-08-23 (was a 1.15 prior).
 # Method: for each film with a freeze, an actual, and cross-chain coverage,
 # replay the AMC-captured gross, compute the true AMC share, and invert
@@ -7854,7 +7945,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   social_data=None, daily_actual_overrides=None,
                   showtime_link_profiles=None,
                   apply_empirical_regression=True, reviews_data=None,
-                  cross_chain_data=None, apply_stage_model=True):
+                  cross_chain_data=None, apply_stage_model=True,
+                  census_daypart_data=None):
     """Run full prediction pipeline for a single movie."""
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
@@ -7999,6 +8091,12 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
 
     dynamic_amc_share_anchors = []
     dynamic_amc_share_anchor = None
+    if census_daypart_data is None and CENSUS_DAYPART_MODE == "census":
+        census_daypart_data = load_census_daypart_seats(
+            weekend_of=seat_data_weekend_of(seat_data or snapshot_data)
+        )
+    census_daypart_movie = movie_mapping_get(census_daypart_data or {}, movie, None) or {}
+
     for date_str in opening_dates:
         rows = seat_data.get(date_str, [])
         # Use day_of_week from CSV if available, else compute from date
@@ -8126,6 +8224,17 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             scheduled_full_day_window_coverage_ratio=scheduled_full_day_window_coverage_ratio,
             scheduled_earliest_showtime_hour=schedule_profile.get("earliest_showtime_hour"),
         )
+        # Measured film-day ratio from the Cinemark census replaces the generic
+        # uplift on partial-window days (see CENSUS_DAYPART_MODE).
+        census_ev_to_daily = None
+        if CENSUS_DAYPART_MODE == "census" and ev_to_daily > 1.0 + 1e-9:
+            census_ev_to_daily = census_evening_to_daily(
+                census_daypart_movie.get(date_str),
+                earliest_showtime_hour if earliest_showtime_hour is not None
+                else FRIDAY_PARTIAL_DAY_EARLIEST_HOUR,
+            )
+            if census_ev_to_daily is not None:
+                ev_to_daily = min(FAMILY_DAYPART_MAX_EVENING_TO_DAILY, census_ev_to_daily)
         theatre_results = []
         for t_name, captured_rows in captured_by_theatre.items():
             captured_rev = sum(r["revenue"] for r in captured_rows)
@@ -8299,6 +8408,7 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             "evening_to_daily": ev_to_daily,
             "base_evening_to_daily": base_ev_to_daily,
             "daypart_adjusted_evening_to_daily": abs(ev_to_daily - base_ev_to_daily) > 0.001,
+            "census_evening_to_daily": census_ev_to_daily,
             "daypart_adjustment_factor": (
                 ev_to_daily / base_ev_to_daily if base_ev_to_daily else 1.0
             ),

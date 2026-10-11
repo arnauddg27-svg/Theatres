@@ -98,6 +98,7 @@ def main():
                 daily_actual_overrides=dao,
                 showtime_link_profiles=P.movie_mapping_get(slp, movie, {}),
                 cross_chain_data=ccd,
+                census_daypart_data=P.load_census_daypart_seats(weekend_of=w, through_date=friday),
             )
         except Exception as e:
             rows.append((movie, w, actual, None, None, f"err:{str(e)[:36]}", freeze_n))
