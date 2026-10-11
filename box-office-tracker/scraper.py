@@ -3177,7 +3177,14 @@ def collection_window_start_hour(date_str):
         day_name = datetime.strptime(date_str, "%Y-%m-%d").strftime("%A")
     except (TypeError, ValueError):
         return DEFAULT_COLLECTION_START_HOUR
-    if day_name in {"Saturday", "Sunday"}:
+    # Friday joined the full-day window on 2026-10-11: the 5pm start (a May
+    # design choice) left the model extrapolating Friday with a generic 1.7x,
+    # while the Cinemark census showed 17% (Other Mommy) to 41% (Digger) of
+    # Friday seats sold before 5pm. Thursday stays evening-only (previews).
+    # SHOWTIME_WINDOW_VERSION is deliberately unchanged so cached weekend
+    # links are not invalidated mid-weekend; next Friday's links are collected
+    # fresh Mon-Fri with this window.
+    if day_name in {"Friday", "Saturday", "Sunday"}:
         return WEEKEND_FULL_DAY_START_HOUR
     return DEFAULT_COLLECTION_START_HOUR
 

@@ -346,9 +346,14 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertFalse(scraper.showtime_in_collection_window("11:30pm", "2026-05-10"))
 
     def test_weekday_collection_window_keeps_existing_5pm_start(self):
-        self.assertFalse(scraper.showtime_in_collection_window("10:00am", "2026-05-08"))
+        # Friday is a full-day window since 2026-10-11 (matinees were 17-41% of
+        # Friday census seats); Thursday previews stay evening-only.
+        self.assertTrue(scraper.showtime_in_collection_window("10:00am", "2026-05-08"))
         self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-08"))
         self.assertTrue(scraper.showtime_in_collection_window("11:00pm", "2026-05-08"))
+        self.assertFalse(scraper.showtime_in_collection_window("9:55am", "2026-05-08"))
+        self.assertFalse(scraper.showtime_in_collection_window("10:00am", "2026-05-07"))
+        self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-07"))
 
     def test_phase2_saved_entries_use_same_showtime_window(self):
         entries = [
