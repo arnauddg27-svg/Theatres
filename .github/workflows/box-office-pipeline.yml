@@ -1129,6 +1129,12 @@ jobs:
         working-directory: box-office-tracker
         run: python3 scripts/share_truth_audit.py || echo "::warning::share_truth_audit crashed — the share-error monitor is down"
 
+      - name: Fit the pre-sale pickup table (every archived weekend)
+        working-directory: box-office-tracker
+        env:
+          PYTHONUNBUFFERED: "1"
+        run: python3 scripts/fit_snapshot_pickup.py --quiet --out data/snapshot-pickup-table.json || echo "::warning::fit_snapshot_pickup crashed — predict.py keeps the previous table (or the constants)"
+
       - name: Rotate settled pre-reservation snapshots
         # The live snapshot CSV grows ~15-25MB per weekend and GitHub hard-blocks
         # pushes at 100MB (it hit 99MB on 2026-07-12 and killed a finalize push).
@@ -1146,6 +1152,7 @@ jobs:
           # stray untracked file on the VPS runner (e.g. a playwright cache,
           # a locally-edited .env) can't ride along into the commit.
           git add box-office-tracker/data/calibration.json
+          git add box-office-tracker/data/snapshot-pickup-table.json 2>/dev/null || true
           git add box-office-tracker/data/pre-reservation-snapshots.csv
           git add box-office-tracker/data/seat-counts.csv
           if compgen -G "box-office-tracker/data/pre-reservation-archive/*.csv.gz" > /dev/null; then

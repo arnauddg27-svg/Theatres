@@ -2155,7 +2155,10 @@ class PredictionNormalizationTest(unittest.TestCase):
         self.assertEqual(20, profile["reserved_seats_at_snapshot"])
         self.assertEqual(54, profile["final_sold_seats"])
         self.assertEqual(34, profile["post_snapshot_pickup_seats"])
-        self.assertAlmostEqual(2.0, profile["projected_revenue_scale"], places=6)
+        # final / (reserved x lead multiplier); the multiplier is the fitted
+        # table's le_3h cell when data/snapshot-pickup-table.json exists.
+        multiplier = predict.snapshot_reservation_multiplier(180, "Friday")
+        self.assertAlmostEqual(54 / (20 * multiplier), profile["projected_revenue_scale"], places=6)
         self.assertAlmostEqual(0.6296, profile["post_snapshot_pickup_share"], places=4)
 
     def test_snapshot_future_layer_uses_matched_pickup_scale(self):

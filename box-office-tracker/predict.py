@@ -2506,15 +2506,82 @@ def sum_amc_theatres(theatre_results):
     }
 
 
-def snapshot_reservation_multiplier(minutes_until_showtime):
+# FITTED PICKUP TABLE (2026-10-11). The hard-coded curve below was written in
+# May and never fitted; `scripts/fit_snapshot_pickup.py` measures final/
+# reserved per lead bucket (and per day) from every archived weekend's
+# matched snapshot->seat-count pairs (1.17M pairs over 22 weekends). The
+# calibrate step writes the result to data/snapshot-pickup-table.json; this
+# layer reads it, falling back per bucket to the constants. Thursday picks
+# up far less than Sat/Sun at the same lead (<=24h: 1.39 vs 2.03/2.12), which
+# the day-blind table could not express. SNAPSHOT_PICKUP_MODE=table restores
+# the constants; SNAPSHOT_PICKUP_TABLE_JSON points at another file (backtests
+# use a leave-one-weekend-out fit).
+SNAPSHOT_PICKUP_MODE = (os.environ.get("SNAPSHOT_PICKUP_MODE") or "fitted").strip().lower()
+SNAPSHOT_PICKUP_TABLE_JSON = os.environ.get("SNAPSHOT_PICKUP_TABLE_JSON") or os.path.join(
+    DATA_DIR, "snapshot-pickup-table.json")
+SNAPSHOT_PICKUP_LEAD_BUCKETS = (
+    (60, "le_1h"), (180, "le_3h"), (360, "le_6h"), (720, "le_12h"),
+    (1440, "le_24h"), (2880, "le_48h"), (5760, "le_96h"), (float("inf"), "gt_96h"),
+)
+_SNAPSHOT_PICKUP_TABLE = None
+_SNAPSHOT_PICKUP_TABLE_LOADED = False
+
+
+def snapshot_pickup_lead_bucket(minutes):
+    for limit, name in SNAPSHOT_PICKUP_LEAD_BUCKETS:
+        if minutes <= limit:
+            return name
+    return "gt_96h"
+
+
+def set_snapshot_pickup_table(table):
+    """Install a fitted table ({"all": {...}, "by_day": {day: {...}}}) or None."""
+    global _SNAPSHOT_PICKUP_TABLE, _SNAPSHOT_PICKUP_TABLE_LOADED
+    _SNAPSHOT_PICKUP_TABLE = table or None
+    _SNAPSHOT_PICKUP_TABLE_LOADED = True
+
+
+def snapshot_pickup_table():
+    global _SNAPSHOT_PICKUP_TABLE, _SNAPSHOT_PICKUP_TABLE_LOADED
+    if not _SNAPSHOT_PICKUP_TABLE_LOADED:
+        _SNAPSHOT_PICKUP_TABLE_LOADED = True
+        try:
+            with open(SNAPSHOT_PICKUP_TABLE_JSON) as f:
+                loaded = json.load(f)
+            _SNAPSHOT_PICKUP_TABLE = loaded if isinstance(loaded, dict) and loaded.get("all") else None
+        except (OSError, ValueError):
+            _SNAPSHOT_PICKUP_TABLE = None
+    return _SNAPSHOT_PICKUP_TABLE
+
+
+def fitted_snapshot_reservation_multiplier(minutes, day_name=None):
+    """Fitted multiplier for a lead (and day), or None when the table lacks it."""
+    if SNAPSHOT_PICKUP_MODE != "fitted":
+        return None
+    table = snapshot_pickup_table()
+    if not table:
+        return None
+    bucket = snapshot_pickup_lead_bucket(minutes)
+    by_day = (table.get("by_day") or {}).get(day_name or "") or {}
+    value = by_day.get(bucket)
+    if value is None:
+        value = (table.get("all") or {}).get(bucket)
+    value = _positive_float(value)
+    return value if value and value >= 1.0 else None
+
+
+def snapshot_reservation_multiplier(minutes_until_showtime, day_name=None):
     """Project pre-reserved seats forward to final attendance.
 
-    This is deliberately conservative and separately calibrated by
-    snapshot_to_day_scale_factors once actuals are available.
+    Fitted per lead bucket x day when data/snapshot-pickup-table.json exists
+    (see SNAPSHOT_PICKUP_MODE); the constants below are the fallback.
     """
     minutes = _parse_numeric(minutes_until_showtime, default=0)
     if minutes <= 0:
         return 1.0
+    fitted = fitted_snapshot_reservation_multiplier(minutes, day_name)
+    if fitted is not None:
+        return fitted
     if minutes <= 60:
         return 1.15
     if minutes <= 180:
@@ -2603,7 +2670,13 @@ def estimate_snapshot_showtime_revenue(row):
         format_rank = 2
 
     minutes_until_showtime = _parse_numeric(row.get("minutes_until_showtime", 0), default=0)
-    multiplier = snapshot_reservation_multiplier(minutes_until_showtime)
+    day_name = row.get("day_of_week") or ""
+    if not day_name and row.get("show_date"):
+        try:
+            day_name = datetime.strptime(row["show_date"], "%Y-%m-%d").strftime("%A")
+        except ValueError:
+            day_name = ""
+    multiplier = snapshot_reservation_multiplier(minutes_until_showtime, day_name)
     projected_reserved = min(total_seats, reserved * multiplier)
     ticket_price = price_for_row(row, format_rank, row.get("weekend_of"), base="snapshot")
     revenue = projected_reserved * ticket_price

@@ -21,7 +21,17 @@ import sys
 from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import predict as P  # noqa: E402
+import predict as P
+# Leave-one-weekend-out fitted pickup table (SNAPSHOT_PICKUP_CACHE=path to the
+# per-weekend sums written by scripts/fit_snapshot_pickup.py --cache).
+_PICKUP_CACHE = None
+if os.environ.get("SNAPSHOT_PICKUP_CACHE"):
+    import json as _json
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import fit_snapshot_pickup as _fit
+    with open(os.environ["SNAPSHOT_PICKUP_CACHE"]) as _f:
+        _PICKUP_CACHE = _json.load(_f)
+  # noqa: E402
 
 
 def thursday_of(weekend_of):
@@ -71,6 +81,8 @@ def main():
         nat = P.national_theatre_count_for_movie(movie, tc, metadata=md)
 
         try:
+            if _PICKUP_CACHE:
+                P.set_snapshot_pickup_table(_fit.loo_table(_PICKUP_CACHE, w))
             pred = P.predict_movie(
                 movie, sd, P.movie_mapping_get(poly, movie, []), cal,
                 national_theatre_count=nat,

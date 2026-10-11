@@ -1257,6 +1257,49 @@ def order_phase2_theatres_for_collection(theatres, snapshots_only=False, signal_
     return ordered
 
 
+def snapshot_expected_theatres(theatres, saved_links, now_by_tz=None, grace_minutes=15):
+    """Drop theatre-date work items that had nothing left to read.
+
+    Same-day reads (2026-10-11): once the local evening is under way, a
+    theatre's remaining linked showtimes for today have all started, so the
+    slice can never be "covered" — the 02:30Z run reported ET 238/434 (55%)
+    with a clean HTTP lane. Keep an item when any linked showtime for its
+    date starts after now (minus a short grace), or when the links are
+    unknown (never hide a real miss)."""
+    kept = []
+    now_cache = dict(now_by_tz or {})
+    for theatre in theatres:
+        date_str = theatre.get("_date", "")
+        tz = theatre.get("_tz", "")
+        name = theatre.get("name", "")
+        entry = (saved_links or {}).get(name) if saved_links is not None else None
+        if not entry or not date_str or not tz:
+            kept.append(theatre)
+            continue
+        if tz not in now_cache:
+            try:
+                now_cache[tz] = local_now(tz)
+            except Exception:
+                now_cache[tz] = None
+        now_local = now_cache[tz]
+        if now_local is None or now_local.strftime("%Y-%m-%d") != date_str:
+            kept.append(theatre)
+            continue
+        shows = [
+            show.get("showtime", "")
+            for shows in phase1_entry_movies(entry, date_str).values()
+            for show in (shows or [])
+        ]
+        if not shows:
+            kept.append(theatre)
+            continue
+        cutoff = now_local.hour + now_local.minute / 60.0 - grace_minutes / 60.0
+        hours = [parse_showtime_hour(show) for show in shows]
+        if any(hour is not None and hour >= cutoff for hour in hours) or all(h is None for h in hours):
+            kept.append(theatre)
+    return kept
+
+
 def snapshot_theatre_coverage(expected_theatres, snapshot_rows):
     """Measure snapshot breadth by show-date/timezone theatre coverage.
 
@@ -2593,6 +2636,17 @@ def _is_proxy_error(exc_text):
 # for its whole egress IP — stop launching theatres and fail fast so the
 # retry/fatal-marker machinery engages within minutes, not hours.
 CF_BLOCK_ABORT_AFTER = _env_int("CF_BLOCK_ABORT_AFTER", 12, minimum=3)
+# Block-wave pause (2026-10-11): the first same-day evening run hit a
+# Cloudflare wave 23:35-00:36Z — CT read 188 ok / 3,340 blocked in 29 min and
+# finished at 36% coverage while the 02:30Z run an hour later was clean. The
+# streak never reached the abort threshold (fallback rows kept resetting it)
+# so the leg burned through its theatres inside the wave. Now a streak of
+# CF_BLOCK_PAUSE_AFTER blocked theatres pauses every worker for
+# CF_BLOCK_PAUSE_SEC (up to CF_BLOCK_PAUSES times per leg) and the theatres
+# blocked during the wave are retried once at the end of the leg.
+CF_BLOCK_PAUSE_AFTER = _env_int("CF_BLOCK_PAUSE_AFTER", 6, minimum=2)
+CF_BLOCK_PAUSE_SEC = _env_int("CF_BLOCK_PAUSE_SEC", 240, minimum=30)
+CF_BLOCK_PAUSES = _env_int("CF_BLOCK_PAUSES", 3, minimum=0)
 
 
 def _is_cloudflare_challenge(title, body_snippet=""):
@@ -6507,6 +6561,10 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
               f"trim={'ON' if AMC_SEAT_TRIM else 'off'}", flush=True)
 
         cf_block_streak = 0
+        cf_pause_until = 0.0
+        cf_pauses_left = CF_BLOCK_PAUSES
+        cf_blocked_retry = []
+        cf_retry_names = set()
         fallback_names = set()
         relaunch_lock = asyncio.Lock()
         direct_gate = asyncio.Semaphore(AMC_DIRECT_FALLBACK_TABS)
@@ -6514,7 +6572,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
-            nonlocal cf_block_streak, browser
+            nonlocal cf_block_streak, browser, cf_pause_until, cf_pauses_left
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
@@ -6523,6 +6581,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 if asyncio.get_event_loop().time() >= overall_deadline:
                     all_issues.append(f"{name}: overall deadline reached — skipped")
                     return
+                # Block-wave pause: wait out a Cloudflare wave instead of
+                # burning theatres through it (see CF_BLOCK_PAUSE_AFTER).
+                while asyncio.get_event_loop().time() < cf_pause_until:
+                    if asyncio.get_event_loop().time() >= overall_deadline:
+                        all_issues.append(f"{name}: overall deadline reached — skipped")
+                        return
+                    await asyncio.sleep(5)
                 # Checked INSIDE the semaphore: every coroutine of a 60-theatre
                 # chunk is created at streak 0 and parks here, so a pre-sem
                 # check could never fire (audit-8).
@@ -6618,7 +6683,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             all_issues.extend(issues)
             cf_block_streak, why = _next_block_streak(
                 cf_block_streak, results, snapshot_rows, issues)
-            if why:
+            if (not results and not snapshot_rows
+                    and any(CF_BLOCK_ISSUE in i for i in issues)
+                    and name not in cf_retry_names):
+                cf_retry_names.add(name)
+                cf_blocked_retry.append(theatre)
+            if (cf_block_streak >= CF_BLOCK_PAUSE_AFTER and cf_pauses_left > 0
+                    and asyncio.get_event_loop().time() + CF_BLOCK_PAUSE_SEC < overall_deadline):
+                cf_pauses_left -= 1
+                cf_pause_until = asyncio.get_event_loop().time() + CF_BLOCK_PAUSE_SEC
+                cf_block_streak = 0
+                print(f"\n🧱 {CF_BLOCK_PAUSE_AFTER} consecutive theatres blocked — pausing "
+                      f"the leg {CF_BLOCK_PAUSE_SEC}s to let the wave pass "
+                      f"({cf_pauses_left} pause(s) left; blocked theatres retried at the end)",
+                      flush=True)
+            elif why:
                 print(f"\n🧱 {cf_block_streak} consecutive theatres failed — {why}; "
                       f"aborting the leg fast (coverage floor will fail it red).",
                       flush=True)
@@ -6704,6 +6783,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         ]
         await run_scrape_batch(core_theatres, CORE_COHORT)
         await run_scrape_batch(expansion_theatres, EXPANSION_COHORT)
+        if cf_blocked_retry and cf_block_streak < CF_BLOCK_ABORT_AFTER:
+            retry = list(cf_blocked_retry)
+            cf_blocked_retry.clear()
+            cf_block_streak = 0
+            print(f"\n🔁 retrying {len(retry)} theatre(s) blocked during a Cloudflare wave",
+                  flush=True)
+            await run_scrape_batch(retry, "cf-retry")
 
         try:
             await asyncio.wait_for(browser.close(), timeout=15)
@@ -6721,7 +6807,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     snapshot_failures = []
     fatal_snapshot_failure = False
     if snapshots_only and not test_max:
-        snapshot_report = snapshot_theatre_coverage(all_theatres, all_snapshot_rows)
+        snapshot_report = snapshot_theatre_coverage(
+            snapshot_expected_theatres(all_theatres, saved_links), all_snapshot_rows)
         print(
             "\n🧯 Snapshot theatre coverage: "
             f"{snapshot_report['observed_total']}/{snapshot_report['expected_total']} "
