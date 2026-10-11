@@ -6004,13 +6004,52 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
         )
         latest_run_id = latest_item[1].get("run_id", "")
         latest_bucket = latest_item[1].get("snapshot_bucket", "")
+        latest_run_time = latest_item[2]
+        kept_showtimes = set()
         for idx, row, _ in items:
             if latest_run_id and row.get("run_id", "") == latest_run_id:
                 keep_indexes.add(idx)
+                kept_showtimes.add(_snapshot_showtime_key(row))
             elif not latest_run_id and row.get("snapshot_bucket", "") == latest_bucket:
                 keep_indexes.add(idx)
+                kept_showtimes.add(_snapshot_showtime_key(row))
+        # Same-day reads (2026-10-10): an evening run no longer lists the
+        # matinees that already played, so "freshest run only" silently dropped
+        # 48% of Saturday's showtimes (1,763 of 3,671 for Other Mommy) and the
+        # Saturday call fell $5.5M -> $3.8M on MORE data. Carry forward the
+        # freshest earlier read of any showtime missing from the latest run
+        # whose start time had already passed when that run read the theatre —
+        # it is the last pre-show reading of a show that legitimately rolled off
+        # the listing. Showtimes still in the future stay dropped (a cancelled
+        # or de-listed show must not be resurrected from a stale read).
+        started = {}
+        for idx, row, parsed in items:
+            if idx in keep_indexes or parsed is None:
+                continue
+            key = _snapshot_showtime_key(row)
+            if key in kept_showtimes:
+                continue
+            lead = _parse_numeric(row.get("minutes_until_showtime"), default=None)
+            if lead is None:
+                continue
+            if parsed + timedelta(minutes=lead) > latest_run_time:
+                continue
+            prev = started.get(key)
+            if prev is None or parsed > prev[1]:
+                started[key] = (idx, parsed)
+        keep_indexes.update(idx for idx, _ in started.values())
 
     return [row for idx, row, _ in parsed_rows if idx in keep_indexes]
+
+
+def _snapshot_showtime_key(row):
+    """Per-theatre showtime identity shared by the slice and latest-row filters."""
+    showtime_key = (
+        row.get("showtime_id")
+        or row.get("amc_seat_map_url")
+        or f"{row.get('auditorium_type') or row.get('auditorium_name')}|{row.get('showtime')}"
+    )
+    return f"{row.get('theatre_name', '')}|{showtime_key}"
 
 
 def _latest_snapshot_showtime_rows(rows):
