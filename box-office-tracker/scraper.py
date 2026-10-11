@@ -3182,9 +3182,14 @@ def collection_window_start_hour(date_str):
     # while the Cinemark census showed 17% (Other Mommy) to 41% (Digger) of
     # Friday seats sold before 5pm. Thursday stays evening-only (previews).
     # SHOWTIME_WINDOW_VERSION is deliberately unchanged so cached weekend
-    # links are not invalidated mid-weekend; next Friday's links are collected
+    # links are not invalidated mid-weekend; next week's links are collected
     # fresh Mon-Fri with this window.
-    if day_name in {"Friday", "Saturday", "Sunday"}:
+    # Thursday too (2026-10-11 audit): "preview night" starts at 2-3pm for
+    # most wide releases now — the Cinemark census put 16% (Other Mommy),
+    # 17% (Verity) and 31% (Digger, The Social Reckoning) of Thursday seats
+    # before 5pm, and the Thursday multiplier is 1.0 (no extrapolation), so the
+    # evening-only window under-read every Thursday-stage call by that much.
+    if day_name in {"Thursday", "Friday", "Saturday", "Sunday"}:
         return WEEKEND_FULL_DAY_START_HOUR
     return DEFAULT_COLLECTION_START_HOUR
 

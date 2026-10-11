@@ -352,8 +352,12 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-08"))
         self.assertTrue(scraper.showtime_in_collection_window("11:00pm", "2026-05-08"))
         self.assertFalse(scraper.showtime_in_collection_window("9:55am", "2026-05-08"))
-        self.assertFalse(scraper.showtime_in_collection_window("10:00am", "2026-05-07"))
-        self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-07"))
+        # Thursday previews start mid-afternoon now (16-31% of census seats
+        # before 5pm), so Thursday is a full-day window too; Mon-Wed stay 5pm.
+        self.assertTrue(scraper.showtime_in_collection_window("10:00am", "2026-05-07"))
+        self.assertTrue(scraper.showtime_in_collection_window("2:00pm", "2026-05-07"))
+        self.assertFalse(scraper.showtime_in_collection_window("2:00pm", "2026-05-06"))
+        self.assertTrue(scraper.showtime_in_collection_window("5:00pm", "2026-05-06"))
 
     def test_phase2_saved_entries_use_same_showtime_window(self):
         entries = [

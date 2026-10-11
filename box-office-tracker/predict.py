@@ -10144,8 +10144,24 @@ def prediction_log_row(pred, logged_at=None, weekend_of=None):
     }
 
 
+def prediction_log_append_enabled():
+    """Only the pipeline's finalize writes the canonical headline log.
+
+    A local `predict.py --movie X` run used to append a row too (four
+    reverts on 2026-10-11 alone), silently mixing ad-hoc replays into the
+    graded history. Set PREDICTION_LOG_APPEND=1 to opt in outside CI."""
+    flag = (os.environ.get("PREDICTION_LOG_APPEND") or "").strip().lower()
+    if flag in {"1", "true", "yes"}:
+        return True
+    if flag in {"0", "false", "no"}:
+        return False
+    return bool(os.environ.get("GITHUB_ACTIONS"))
+
+
 def append_prediction_log(pred, path=None, weekend_of=None):
     """Append the live headline to data/prediction-log.csv (best effort)."""
+    if path is None and not prediction_log_append_enabled():
+        return False
     path = path or PREDICTION_LOG_CSV
     try:
         row = prediction_log_row(pred, weekend_of=weekend_of)

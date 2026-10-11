@@ -191,3 +191,29 @@ class FamilySnapshotLiftTest(unittest.TestCase):
         layer_without_thu = {"snapshot_daily_details": {"Friday": {"raw_domestic_mid": 1e6}}}
         self.assertEqual(P.FAMILY_SNAPSHOT_LIFT, P.snapshot_lift(fam, layer_without_thu, data, "2026-08-14"))
         self.assertEqual(1.0, P.snapshot_lift(fam, layer_without_thu))          # no rows, no Thursday: no lift
+
+
+class PredictionLogAppendGuardTest(unittest.TestCase):
+    """The canonical log is written by the pipeline only (2026-10-11)."""
+
+    def test_canonical_path_requires_ci_or_opt_in(self):
+        import predict as P
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "", "PREDICTION_LOG_APPEND": ""}):
+            self.assertFalse(P.prediction_log_append_enabled())
+        with mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "PREDICTION_LOG_APPEND": ""}):
+            self.assertTrue(P.prediction_log_append_enabled())
+        with mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "", "PREDICTION_LOG_APPEND": "1"}):
+            self.assertTrue(P.prediction_log_append_enabled())
+        with mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "true", "PREDICTION_LOG_APPEND": "0"}):
+            self.assertFalse(P.prediction_log_append_enabled())
+
+    def test_explicit_path_always_writes(self):
+        import predict as P
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as td, mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "", "PREDICTION_LOG_APPEND": ""}):
+            path = os.path.join(td, "log.csv")
+            self.assertTrue(P.append_prediction_log(_pred(), path=path))
+            with mock.patch.object(P, "PREDICTION_LOG_CSV", os.path.join(td, "canonical.csv")):
+                self.assertFalse(P.append_prediction_log(_pred()))
+                self.assertFalse(os.path.exists(P.PREDICTION_LOG_CSV))
