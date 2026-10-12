@@ -12085,3 +12085,453 @@ weekend_of,sampled_at,theatre_name,tz,show_date,day_of_week,showtime,showtime_id
 2026-10-09,2026-10-12T01:07:12Z,AMC Arizona Center 24,PT,2026-10-10,Saturday,12:30pm,146952839,Open Caption (On-screen Subtitles),7.84,6.1,6.97,2.69,"{""Adult"":7.84,""Child"":6.1,""Senior"":6.97}",9915
 2026-10-09,2026-10-12T01:07:12Z,AMC Aventura 24,ET,2026-10-11,Sunday,2:40pm,147722681,Open Caption (On-screen Subtitles),12.83,10.26,11.55,2.69,"{""Adult"":12.83,""Child"":10.26,""Senior"":11.55}",10297
 2026-10-09,2026-10-12T01:07:12Z,AMC Bay Terrace 6,ET,2026-10-10,Saturday,12:00pm,147647913,Open Caption (On-screen Subtitles),15.19,12.79,13.99,2.69,"{""Adult"":15.19,""Child"":12.79,""Senior"":13.99}",9977
+2026-10-16,2026-10-12T13:46:19Z,AMC Fayetteville 14,ET,2026-10-16,Friday,7:00pm,147057793,IMAX with Laser at AMC,18.71,15.5,17.11,2.99,"{""Adult"":18.71,""Child"":15.5,""Senior"":17.11}",121783
+2026-10-16,2026-10-12T13:46:19Z,AMC Fayetteville 14,ET,2026-10-16,Friday,8:00pm,147057857,undefined,13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9159
+2026-10-16,2026-10-12T13:46:20Z,AMC Fayetteville 14,ET,2026-10-16,Friday,6:15pm,147057953,Dolby Cinema at AMC,19.78,16.57,18.18,2.99,"{""Adult"":19.78,""Child"":16.57,""Senior"":18.18}",9316
+2026-10-16,2026-10-12T13:46:20Z,AMC Fayetteville 14,ET,2026-10-18,Sunday,3:15pm,147057870,Open Caption (On-screen Subtitles),10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",9795
+2026-10-16,2026-10-12T13:46:20Z,AMC Fayetteville 14,ET,2026-10-17,Saturday,1:00pm,147057800,IMAX with Laser at AMC,16.04,13.47,14.76,2.99,"{""Adult"":16.04,""Child"":13.47,""Senior"":14.76}",9977
+2026-10-16,2026-10-12T13:46:21Z,AMC Morgantown 12,ET,2026-10-16,Friday,7:00pm,147020274,undefined,11.76,8.55,10.15,2.69,"{""Adult"":11.76,""Child"":8.55,""Senior"":10.15}",9229
+2026-10-16,2026-10-12T13:46:22Z,AMC Morgantown 12,ET,2026-10-18,Sunday,1:00pm,147020284,Open Caption (On-screen Subtitles),9.41,6.84,8.12,2.69,"{""Adult"":9.41,""Child"":6.84,""Senior"":8.12}",10227
+2026-10-16,2026-10-12T13:46:22Z,AMC Morgantown 12,ET,2026-10-17,Saturday,1:00pm,147020280,undefined,9.41,6.84,8.12,2.69,"{""Adult"":9.41,""Child"":6.84,""Senior"":8.12}",9944
+2026-10-16,2026-10-12T13:46:23Z,AMC Fiesta Square 12,ET,2026-10-16,Friday,7:00pm,147142183,undefined,13.16,9.87,11.51,2.69,"{""Adult"":13.16,""Child"":9.87,""Senior"":11.51}",9267
+2026-10-16,2026-10-12T13:46:23Z,AMC Vestal Town Square 9,ET,2026-10-16,Friday,7:30pm,147021001,undefined,13.49,10.49,11.99,2.69,"{""Adult"":13.49,""Child"":10.49,""Senior"":11.99}",9230
+2026-10-16,2026-10-12T13:46:23Z,AMC Pompano Beach 18,ET,2026-10-16,Friday,7:00pm,147052970,PRIME at AMC,21.39,18.18,19.78,2.99,"{""Adult"":21.39,""Child"":18.18,""Senior"":19.78}",9327
+2026-10-16,2026-10-12T13:46:24Z,AMC Pompano Beach 18,ET,2026-10-16,Friday,9:00pm,147052893,Laser at AMC,14.97,11.76,13.36,2.69,"{""Adult"":14.97,""Child"":11.76,""Senior"":13.36}",9315
+2026-10-16,2026-10-12T13:46:24Z,AMC Pompano Beach 18,ET,2026-10-17,Saturday,1:00pm,147052968,PRIME at AMC,18.39,15.83,17.11,2.99,"{""Adult"":18.39,""Child"":15.83,""Senior"":17.11}",10035
+2026-10-16,2026-10-12T13:46:24Z,AMC Washington Square 12,ET,2026-10-16,Friday,7:30pm,147015364,undefined,12.99,9.99,11.49,2.69,"{""Adult"":12.99,""Child"":9.99,""Senior"":11.49}",9214
+2026-10-16,2026-10-12T13:46:25Z,AMC Washington Square 12,ET,2026-10-17,Saturday,1:30pm,147015366,undefined,10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",9915
+2026-10-16,2026-10-12T13:46:25Z,AMC Fire Tower 12,ET,2026-10-16,Friday,7:15pm,147224486,undefined,13.9,10.69,12.29,2.69,"{""Adult"":13.9,""Child"":10.69,""Senior"":12.29}",9239
+2026-10-16,2026-10-12T13:46:26Z,AMC Fire Tower 12,ET,2026-10-17,Saturday,1:20pm,147224493,undefined,11.12,8.55,9.83,2.69,"{""Adult"":11.12,""Child"":8.55,""Senior"":9.83}",9914
+2026-10-16,2026-10-12T13:46:27Z,AMC Academy 8,ET,2026-10-16,Friday,7:00pm,147179187,Laser at AMC,14.84,11.54,13.19,2.69,"{""Adult"":14.84,""Child"":11.54,""Senior"":13.19}",9328
+2026-10-16,2026-10-12T13:46:27Z,AMC Academy 8,ET,2026-10-18,Sunday,4:00pm,147179194,Open Caption (On-screen Subtitles),14.84,11.54,13.19,2.69,"{""Adult"":14.84,""Child"":11.54,""Senior"":13.19}",9337
+2026-10-16,2026-10-12T13:46:28Z,AMC Academy 8,ET,2026-10-17,Saturday,1:00pm,147179201,Laser at AMC,11.87,9.23,10.55,2.69,"{""Adult"":11.87,""Child"":9.23,""Senior"":10.55}",10030
+2026-10-16,2026-10-12T13:46:29Z,AMC Muncie 12,ET,2026-10-16,Friday,7:00pm,147150853,undefined,12.49,9.49,10.99,2.69,"{""Adult"":12.49,""Child"":9.49,""Senior"":10.99}",9213
+2026-10-16,2026-10-12T13:46:29Z,AMC Muncie 12,ET,2026-10-16,Friday,9:00pm,147151022,IMAX at AMC,18.49,15.49,16.99,2.99,"{""Adult"":18.49,""Child"":15.49,""Senior"":16.99}",9241
+2026-10-16,2026-10-12T13:46:30Z,AMC Muncie 12,ET,2026-10-17,Saturday,2:00pm,147150765,undefined,9.99,7.59,8.79,2.69,"{""Adult"":9.99,""Child"":7.59,""Senior"":8.79}",9909
+2026-10-16,2026-10-12T13:46:31Z,AMC Sunset Place 24,ET,2026-10-16,Friday,7:30pm,147208920,IMAX at AMC,20.32,17.11,18.71,2.99,"{""Adult"":20.32,""Child"":17.11,""Senior"":18.71}",9255
+2026-10-16,2026-10-12T13:46:31Z,AMC Sunset Place 24,ET,2026-10-16,Friday,6:30pm,147208934,Dolby Cinema at AMC,20.85,17.64,19.25,2.99,"{""Adult"":20.85,""Child"":17.64,""Senior"":19.25}",9324
+2026-10-16,2026-10-12T13:46:32Z,AMC Sunset Place 24,ET,2026-10-16,Friday,8:30pm,147208958,undefined,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9200
+2026-10-16,2026-10-12T13:46:33Z,AMC Sunset Place 24,ET,2026-10-17,Saturday,2:15pm,147208955,Open Caption (On-screen Subtitles),11.55,8.98,10.26,2.69,"{""Adult"":11.55,""Child"":8.98,""Senior"":10.26}",10002
+2026-10-16,2026-10-12T13:46:34Z,AMC Sunset Place 24,ET,2026-10-17,Saturday,1:15pm,147208914,IMAX at AMC,17.43,14.86,16.15,2.99,"{""Adult"":17.43,""Child"":14.86,""Senior"":16.15}",9952
+2026-10-16,2026-10-12T13:46:34Z,AMC Fleming Island 12,ET,2026-10-16,Friday,7:30pm,147035259,Laser at AMC,14.5,11.28,12.89,2.69,"{""Adult"":14.5,""Child"":11.28,""Senior"":12.89}",9326
+2026-10-16,2026-10-12T13:46:35Z,AMC Fleming Island 12,ET,2026-10-17,Saturday,1:30pm,147035255,Laser at AMC,11.6,9.02,10.31,2.69,"{""Adult"":11.6,""Child"":9.02,""Senior"":10.31}",10033
+2026-10-16,2026-10-12T13:46:36Z,AMC Wayne 14,ET,2026-10-16,Friday,8:30pm,147225670,Laser at AMC,14.38,11.18,12.78,2.69,"{""Adult"":14.38,""Child"":11.18,""Senior"":12.78}",9280
+2026-10-16,2026-10-12T13:46:36Z,AMC Wayne 14,ET,2026-10-16,Friday,10:15pm,147225705,PRIME at AMC,19.71,16.52,18.12,2.99,"{""Adult"":19.71,""Child"":16.52,""Senior"":18.12}",9296
+2026-10-16,2026-10-12T13:46:37Z,AMC Wayne 14,ET,2026-10-17,Saturday,2:00pm,147225685,Laser at AMC,11.5,8.95,10.23,2.69,"{""Adult"":11.5,""Child"":8.95,""Senior"":10.23}",9990
+2026-10-16,2026-10-12T13:46:37Z,AMC Allegany 8,ET,2026-10-16,Friday,9:55pm,147051551,undefined,13.49,10.49,11.99,2.69,"{""Adult"":13.49,""Child"":10.49,""Senior"":11.99}",9252
+2026-10-16,2026-10-12T13:46:38Z,AMC Allegany 8,ET,2026-10-17,Saturday,2:00pm,147051455,undefined,10.79,8.39,9.59,2.69,"{""Adult"":10.79,""Child"":8.39,""Senior"":9.59}",9938
+2026-10-16,2026-10-12T13:46:38Z,AMC Bellevue 12,ET,2026-10-16,Friday,7:00pm,147211911,Dolby Cinema at AMC,21.94,18.65,20.29,2.99,"{""Adult"":21.94,""Child"":18.65,""Senior"":20.29}",9335
+2026-10-16,2026-10-12T13:46:39Z,AMC Bellevue 12,ET,2026-10-16,Friday,8:30pm,147211963,Laser at AMC,15.35,12.06,13.71,2.69,"{""Adult"":15.35,""Child"":12.06,""Senior"":13.71}",9325
+2026-10-16,2026-10-12T13:46:40Z,AMC Bellevue 12,ET,2026-10-17,Saturday,1:00pm,147211913,Dolby Cinema at AMC,18.87,16.23,17.55,2.99,"{""Adult"":18.87,""Child"":16.23,""Senior"":17.55}",10052
+2026-10-16,2026-10-12T13:46:40Z,AMC Foothills 12,ET,2026-10-16,Friday,9:00pm,147109929,undefined,12.06,8.77,10.42,2.69,"{""Adult"":12.06,""Child"":8.77,""Senior"":10.42}",9189
+2026-10-16,2026-10-12T13:46:42Z,AMC Foothills 12,ET,2026-10-16,Friday,10:00pm,147109787,BigD at AMC,15.35,12.06,13.71,2.99,"{""Adult"":15.35,""Child"":12.06,""Senior"":13.71}",9299
+2026-10-16,2026-10-12T13:46:43Z,AMC Foothills 12,ET,2026-10-17,Saturday,2:40pm,147109924,undefined,9.65,7.01,8.33,2.69,"{""Adult"":9.65,""Child"":7.01,""Senior"":8.33}",9870
+2026-10-16,2026-10-12T13:46:43Z,AMC Webster 12,ET,2026-10-16,Friday,7:00pm,147041704,undefined,13.99,10.99,12.49,2.69,"{""Adult"":13.99,""Child"":10.99,""Senior"":12.49}",9206
+2026-10-16,2026-10-12T13:46:44Z,AMC Webster 12,ET,2026-10-17,Saturday,1:10pm,147041534,Open Caption (On-screen Subtitles),11.19,8.79,9.99,2.69,"{""Adult"":11.19,""Child"":8.79,""Senior"":9.99}",9910
+2026-10-16,2026-10-12T13:46:44Z,AMC Webster 12,ET,2026-10-18,Sunday,2:00pm,147041662,undefined,11.19,8.79,9.99,2.69,"{""Adult"":11.19,""Child"":8.79,""Senior"":9.99}",9917
+2026-10-16,2026-10-12T13:46:45Z,AMC Thoroughbred 20,ET,2026-10-16,Friday,7:00pm,147201692,IMAX with Laser at AMC,21.94,18.65,20.29,2.99,"{""Adult"":21.94,""Child"":18.65,""Senior"":20.29}",9313
+2026-10-16,2026-10-12T13:46:45Z,AMC Thoroughbred 20,ET,2026-10-16,Friday,8:00pm,147201714,Laser at AMC,15.9,12.61,14.26,2.69,"{""Adult"":15.9,""Child"":12.61,""Senior"":14.26}",9267
+2026-10-16,2026-10-12T13:46:46Z,AMC Thoroughbred 20,ET,2026-10-16,Friday,9:15pm,147370854,Dolby Cinema at AMC,22.49,19.2,20.84,2.99,"{""Adult"":22.49,""Child"":19.2,""Senior"":20.84}",9331
+2026-10-16,2026-10-12T13:46:46Z,AMC Thoroughbred 20,ET,2026-10-17,Saturday,12:30pm,147201726,Open Caption (On-screen Subtitles),12.72,10.09,11.4,2.69,"{""Adult"":12.72,""Child"":10.09,""Senior"":11.4}",9924
+2026-10-16,2026-10-12T13:46:47Z,AMC Thoroughbred 20,ET,2026-10-17,Saturday,1:00pm,147201686,IMAX with Laser at AMC,18.76,16.12,17.44,2.99,"{""Adult"":18.76,""Child"":16.12,""Senior"":17.44}",10035
+2026-10-16,2026-10-12T13:46:48Z,AMC Freehold 14,ET,2026-10-16,Friday,7:30pm,147034257,Laser at AMC,16.52,13.32,14.92,2.69,"{""Adult"":16.52,""Child"":13.32,""Senior"":14.92}",9302
+2026-10-16,2026-10-12T13:46:49Z,AMC Freehold 14,ET,2026-10-17,Saturday,1:30pm,147034253,Laser at AMC,13.21,10.65,11.93,2.69,"{""Adult"":13.21,""Child"":10.65,""Senior"":11.93}",9981
+2026-10-16,2026-10-12T13:46:49Z,AMC Anderson Towne Center 9,ET,2026-10-16,Friday,10:00pm,147001400,PRIME at AMC,16.99,13.99,15.49,2.99,"{""Adult"":16.99,""Child"":13.99,""Senior"":15.49}",9311
+2026-10-16,2026-10-12T13:46:49Z,AMC Anderson Towne Center 9,ET,2026-10-17,Saturday,3:45pm,147001390,PRIME at AMC,14.59,12.19,13.39,2.99,"{""Adult"":14.59,""Child"":12.19,""Senior"":13.39}",10023
+2026-10-16,2026-10-12T13:46:51Z,AMC Northgate 14,ET,2026-10-16,Friday,7:00pm,147108016,undefined,13.1,9.82,11.46,2.69,"{""Adult"":13.1,""Child"":9.82,""Senior"":11.46}",9165
+2026-10-16,2026-10-12T13:46:52Z,AMC Northgate 14,ET,2026-10-17,Saturday,1:00pm,147108003,undefined,10.48,7.86,9.17,2.69,"{""Adult"":10.48,""Child"":7.86,""Senior"":9.17}",9867
+2026-10-16,2026-10-12T13:46:52Z,AMC 34th Street 14,ET,2026-10-16,Friday,8:00pm,147073116,IMAX with Laser at AMC,28.49,25.49,26.99,2.99,"{""Adult"":28.49,""Child"":25.49,""Senior"":26.99}",9369
+2026-10-16,2026-10-12T13:46:53Z,AMC 34th Street 14,ET,2026-10-16,Friday,9:00pm,147072775,Laser at AMC,20.49,17.49,18.99,2.69,"{""Adult"":20.49,""Child"":17.49,""Senior"":18.99}",9308
+2026-10-16,2026-10-12T13:46:54Z,AMC 34th Street 14,ET,2026-10-16,Friday,7:00pm,147072876,Dolby Cinema at AMC,28.49,25.49,26.99,2.99,"{""Adult"":28.49,""Child"":25.49,""Senior"":26.99}",9336
+2026-10-16,2026-10-12T13:46:54Z,AMC 34th Street 14,ET,2026-10-17,Saturday,12:00pm,147072745,Open Caption (On-screen Subtitles),16.39,13.99,15.19,2.69,"{""Adult"":16.39,""Child"":13.99,""Senior"":15.19}",9982
+2026-10-16,2026-10-12T13:46:55Z,AMC 34th Street 14,ET,2026-10-17,Saturday,2:00pm,147073103,IMAX with Laser at AMC,24.39,21.99,23.19,2.99,"{""Adult"":24.39,""Child"":21.99,""Senior"":23.19}",10343
+2026-10-16,2026-10-12T13:46:56Z,AMC West Oaks 14,ET,2026-10-16,Friday,7:00pm,147208233,Laser at AMC,12.24,9.04,10.64,2.69,"{""Adult"":12.24,""Child"":9.04,""Senior"":10.64}",9314
+2026-10-16,2026-10-12T13:46:57Z,AMC West Oaks 14,ET,2026-10-18,Sunday,4:00pm,147208229,English Spoken with Spanish Subtitles,12.24,9.04,10.64,2.69,"{""Adult"":12.24,""Child"":9.04,""Senior"":10.64}",9315
+2026-10-16,2026-10-12T13:46:57Z,AMC West Oaks 14,ET,2026-10-17,Saturday,1:00pm,147208235,Laser at AMC,9.79,7.23,8.51,2.69,"{""Adult"":9.79,""Child"":7.23,""Senior"":8.51}",9986
+2026-10-16,2026-10-12T13:46:58Z,AMC Owings Mills 17,ET,2026-10-16,Friday,7:15pm,147351884,IMAX at AMC,21.44,18.14,19.79,2.99,"{""Adult"":21.44,""Child"":18.14,""Senior"":19.79}",9282
+2026-10-16,2026-10-12T13:46:59Z,AMC Owings Mills 17,ET,2026-10-16,Friday,8:15pm,147351850,Laser at AMC,15.94,12.64,14.29,2.69,"{""Adult"":15.94,""Child"":12.64,""Senior"":14.29}",9377
+2026-10-16,2026-10-12T13:46:59Z,AMC Owings Mills 17,ET,2026-10-16,Friday,6:15pm,147351878,PRIME at AMC,21.44,18.14,19.79,2.99,"{""Adult"":21.44,""Child"":18.14,""Senior"":19.79}",9364
+2026-10-16,2026-10-12T13:47:00Z,AMC Owings Mills 17,ET,2026-10-17,Saturday,1:15pm,147376853,IMAX at AMC,18.25,15.61,16.93,2.99,"{""Adult"":18.25,""Child"":15.61,""Senior"":16.93}",9955
+2026-10-16,2026-10-12T13:47:00Z,AMC 84th Street 6,ET,2026-10-16,Friday,7:15pm,147058938,Laser at AMC,22.49,19.49,20.99,2.69,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9313
+2026-10-16,2026-10-12T13:47:01Z,AMC 84th Street 6,ET,2026-10-18,Sunday,7:15pm,147058946,Open Caption (On-screen Subtitles),22.49,19.49,20.99,2.69,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9298
+2026-10-16,2026-10-12T13:47:02Z,AMC 84th Street 6,ET,2026-10-17,Saturday,1:00pm,147058945,Laser at AMC,17.99,15.59,16.79,2.69,"{""Adult"":17.99,""Child"":15.59,""Senior"":16.79}",10014
+2026-10-16,2026-10-12T13:47:02Z,AMC Glen Cove 6,ET,2026-10-16,Friday,7:00pm,147102433,Laser at AMC,15.99,12.99,14.49,2.69,"{""Adult"":15.99,""Child"":12.99,""Senior"":14.49}",9284
+2026-10-16,2026-10-12T13:47:03Z,AMC Glen Cove 6,ET,2026-10-17,Saturday,1:00pm,147102476,Laser at AMC,12.79,10.39,11.59,2.69,"{""Adult"":12.79,""Child"":10.39,""Senior"":11.59}",10257
+2026-10-16,2026-10-12T13:47:03Z,AMC Antioch 8,ET,2026-10-16,Friday,9:30pm,147184592,undefined,13.71,10.42,12.06,2.69,"{""Adult"":13.71,""Child"":10.42,""Senior"":12.06}",9271
+2026-10-16,2026-10-12T13:47:04Z,AMC Antioch 8,ET,2026-10-17,Saturday,3:30pm,147184568,undefined,10.96,8.33,9.65,2.69,"{""Adult"":10.96,""Child"":8.33,""Senior"":9.65}",9976
+2026-10-16,2026-10-12T13:47:05Z,AMC Palisades 21,ET,2026-10-16,Friday,9:30pm,147038796,Laser at AMC,16.49,13.49,14.99,2.69,"{""Adult"":16.49,""Child"":13.49,""Senior"":14.99}",9327
+2026-10-16,2026-10-12T13:47:05Z,AMC Palisades 21,ET,2026-10-16,Friday,7:30pm,147038876,IMAX at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9310
+2026-10-16,2026-10-12T13:47:06Z,AMC Palisades 21,ET,2026-10-17,Saturday,12:30pm,147038792,Open Caption (On-screen Subtitles),13.19,10.79,11.99,2.69,"{""Adult"":13.19,""Child"":10.79,""Senior"":11.99}",9958
+2026-10-16,2026-10-12T13:47:07Z,AMC Palisades 21,ET,2026-10-17,Saturday,1:30pm,147038872,IMAX at AMC,19.19,16.79,17.99,2.99,"{""Adult"":19.19,""Child"":16.79,""Senior"":17.99}",10005
+2026-10-16,2026-10-12T13:47:07Z,AMC Empire 25,ET,2026-10-16,Friday,7:00pm,147185630,IMAX with Laser at AMC,28.49,25.49,26.99,2.99,"{""Adult"":28.49,""Child"":25.49,""Senior"":26.99}",9364
+2026-10-16,2026-10-12T13:47:08Z,AMC Empire 25,ET,2026-10-16,Friday,8:00pm,147185772,XL at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9301
+2026-10-16,2026-10-12T13:47:09Z,AMC Empire 25,ET,2026-10-16,Friday,5:30pm,147358523,PRIME at AMC,26.49,23.49,24.99,2.99,"{""Adult"":26.49,""Child"":23.49,""Senior"":24.99}",9252
+2026-10-16,2026-10-12T13:47:09Z,AMC Empire 25,ET,2026-10-16,Friday,1:30pm,147185653,English Spoken with Spanish Subtitles,16.39,13.99,15.19,2.69,"{""Adult"":16.39,""Child"":13.99,""Senior"":15.19}",9982
+2026-10-16,2026-10-12T13:47:10Z,AMC Empire 25,ET,2026-10-16,Friday,10:30pm,147358508,Dolby Cinema at AMC,28.49,25.49,26.99,2.99,"{""Adult"":28.49,""Child"":25.49,""Senior"":26.99}",9318
+2026-10-16,2026-10-12T13:47:11Z,AMC Empire 25,ET,2026-10-17,Saturday,2:00pm,147185767,Open Caption (On-screen Subtitles),18.39,15.99,17.19,2.99,"{""Adult"":18.39,""Child"":15.99,""Senior"":17.19}",9984
+2026-10-16,2026-10-12T13:47:11Z,AMC Empire 25,ET,2026-10-17,Saturday,1:00pm,147185621,IMAX with Laser at AMC,24.39,21.99,23.19,2.99,"{""Adult"":24.39,""Child"":21.99,""Senior"":23.19}",10066
+2026-10-16,2026-10-12T13:47:12Z,AMC Grand Rapids 18,ET,2026-10-16,Friday,7:00pm,147206861,undefined,12.99,9.99,11.49,2.69,"{""Adult"":12.99,""Child"":9.99,""Senior"":11.49}",9217
+2026-10-16,2026-10-12T13:47:12Z,AMC Grand Rapids 18,ET,2026-10-17,Saturday,1:00pm,147206855,undefined,10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",9919
+2026-10-16,2026-10-12T13:47:13Z,AMC Weston 8,ET,2026-10-16,Friday,7:30pm,147038389,Laser at AMC,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9308
+2026-10-16,2026-10-12T13:47:14Z,AMC Weston 8,ET,2026-10-17,Saturday,1:30pm,147038441,Laser at AMC,11.55,8.98,10.26,2.69,"{""Adult"":11.55,""Child"":8.98,""Senior"":10.26}",10000
+2026-10-16,2026-10-12T13:47:14Z,AMC Avenue 16,ET,2026-10-16,Friday,7:30pm,147024986,BigD at AMC,14.97,11.76,13.36,2.99,"{""Adult"":14.97,""Child"":11.76,""Senior"":13.36}",9247
+2026-10-16,2026-10-12T13:47:15Z,AMC Avenue 16,ET,2026-10-16,Friday,8:30pm,147024964,Laser at AMC,11.76,8.55,10.15,2.69,"{""Adult"":11.76,""Child"":8.55,""Senior"":10.15}",9202
+2026-10-16,2026-10-12T13:47:17Z,AMC Avenue 16,ET,2026-10-17,Saturday,1:30pm,147024979,BigD at AMC,12.62,10.05,11.33,2.99,"{""Adult"":12.62,""Child"":10.05,""Senior"":11.33}",9953
+2026-10-16,2026-10-12T13:47:18Z,AMC Park Place 16,ET,2026-10-16,Friday,3:50pm,147014542,Open Caption (On-screen Subtitles),10.29,7.71,9.0,2.69,"{""Adult"":10.29,""Child"":7.71,""Senior"":9.0}",9945
+2026-10-16,2026-10-12T13:47:19Z,AMC Park Place 16,ET,2026-10-16,Friday,10:00pm,147014544,undefined,12.86,9.64,11.25,2.69,"{""Adult"":12.86,""Child"":9.64,""Senior"":11.25}",9266
+2026-10-16,2026-10-12T13:47:19Z,AMC Park Place 16,ET,2026-10-17,Saturday,1:00pm,147014545,English Spoken with Spanish Subtitles,10.29,7.71,9.0,2.69,"{""Adult"":10.29,""Child"":7.71,""Senior"":9.0}",9957
+2026-10-16,2026-10-12T13:47:20Z,AMC Park Place 16,ET,2026-10-18,Sunday,1:00pm,147014549,undefined,10.29,7.71,9.0,2.69,"{""Adult"":10.29,""Child"":7.71,""Senior"":9.0}",9957
+2026-10-16,2026-10-12T13:47:20Z,AMC Kips Bay 15,ET,2026-10-16,Friday,7:00pm,147173195,IMAX with Laser at AMC,27.49,24.49,25.99,2.99,"{""Adult"":27.49,""Child"":24.49,""Senior"":25.99}",9377
+2026-10-16,2026-10-12T13:47:21Z,AMC Kips Bay 15,ET,2026-10-17,Saturday,1:00pm,147228404,IMAX with Laser at AMC,23.39,20.99,22.19,2.99,"{""Adult"":23.39,""Child"":20.99,""Senior"":22.19}",10065
+2026-10-16,2026-10-12T13:47:21Z,AMC Hampton Towne Centre 24,ET,2026-10-16,Friday,7:00pm,147120975,IMAX with Laser at AMC,20.89,17.59,19.24,2.99,"{""Adult"":20.89,""Child"":17.59,""Senior"":19.24}",9351
+2026-10-16,2026-10-12T13:47:22Z,AMC Hampton Towne Centre 24,ET,2026-10-16,Friday,8:00pm,147121018,Laser at AMC,14.29,10.99,12.64,2.69,"{""Adult"":14.29,""Child"":10.99,""Senior"":12.64}",9367
+2026-10-16,2026-10-12T13:47:22Z,AMC Hampton Towne Centre 24,ET,2026-10-16,Friday,6:00pm,147120945,Dolby Cinema at AMC,20.89,17.59,19.24,2.99,"{""Adult"":20.89,""Child"":17.59,""Senior"":19.24}",9398
+2026-10-16,2026-10-12T13:47:23Z,AMC Hampton Towne Centre 24,ET,2026-10-18,Sunday,2:00pm,147121030,Open Caption (On-screen Subtitles),11.43,8.79,10.11,2.69,"{""Adult"":11.43,""Child"":8.79,""Senior"":10.11}",10047
+2026-10-16,2026-10-12T13:47:24Z,AMC Hampton Towne Centre 24,ET,2026-10-17,Saturday,1:00pm,147120973,IMAX with Laser at AMC,18.03,15.39,16.71,2.99,"{""Adult"":18.03,""Child"":15.39,""Senior"":16.71}",10316
+2026-10-16,2026-10-12T13:47:25Z,AMC Westwood Town Center 6,ET,2026-10-16,Friday,9:00pm,147573668,undefined,13.89,10.8,12.35,2.69,"{""Adult"":13.89,""Child"":10.8,""Senior"":12.35}",9252
+2026-10-16,2026-10-12T13:47:26Z,AMC Westwood Town Center 6,ET,2026-10-17,Saturday,1:00pm,147573638,undefined,11.11,8.64,9.88,2.69,"{""Adult"":11.11,""Child"":8.64,""Senior"":9.88}",9932
+2026-10-16,2026-10-12T13:47:27Z,AMC Avenue Forsyth 12,ET,2026-10-16,Friday,7:00pm,147201003,Dolby Cinema at AMC,22.99,19.78,21.39,2.99,"{""Adult"":22.99,""Child"":19.78,""Senior"":21.39}",9329
+2026-10-16,2026-10-12T13:47:27Z,AMC Avenue Forsyth 12,ET,2026-10-16,Friday,6:00pm,147201053,Laser at AMC,16.04,12.83,14.43,2.69,"{""Adult"":16.04,""Child"":12.83,""Senior"":14.43}",9260
+2026-10-16,2026-10-12T13:47:29Z,AMC Avenue Forsyth 12,ET,2026-10-17,Saturday,2:45pm,147201058,Open Caption (On-screen Subtitles),12.83,10.26,11.55,2.69,"{""Adult"":12.83,""Child"":10.26,""Senior"":11.55}",9975
+2026-10-16,2026-10-12T13:47:29Z,AMC Avenue Forsyth 12,ET,2026-10-17,Saturday,12:45pm,147201051,Dolby Cinema at AMC,19.78,17.22,18.5,2.99,"{""Adult"":19.78,""Child"":17.22,""Senior"":18.5}",10041
+2026-10-16,2026-10-12T13:47:30Z,AMC Lincoln Square 13,ET,2026-10-16,Friday,7:00pm,147123397,IMAX with Laser at AMC,29.49,26.49,27.99,2.99,"{""Adult"":29.49,""Child"":26.49,""Senior"":27.99}",9385
+2026-10-16,2026-10-12T13:47:31Z,AMC Lincoln Square 13,ET,2026-10-16,Friday,8:00pm,147123394,Dolby Cinema at AMC,29.49,26.49,27.99,2.99,"{""Adult"":29.49,""Child"":26.49,""Senior"":27.99}",9322
+2026-10-16,2026-10-12T13:47:31Z,AMC Lincoln Square 13,ET,2026-10-17,Saturday,1:00pm,147123418,IMAX with Laser at AMC,25.19,22.79,23.99,2.99,"{""Adult"":25.19,""Child"":22.79,""Senior"":23.99}",10352
+2026-10-16,2026-10-12T13:47:32Z,AMC Wheaton Mall 9,ET,2026-10-16,Friday,7:15pm,147013577,Laser at AMC,15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9319
+2026-10-16,2026-10-12T13:47:33Z,AMC Wheaton Mall 9,ET,2026-10-18,Sunday,2:15pm,147013566,Open Caption (On-screen Subtitles),12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10058
+2026-10-16,2026-10-12T13:47:33Z,AMC Wheaton Mall 9,ET,2026-10-17,Saturday,2:15pm,147013567,Laser at AMC,12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10080
+2026-10-16,2026-10-12T13:47:33Z,AMC Hanes 12,ET,2026-10-16,Friday,1:30pm,147019458,Open Caption (On-screen Subtitles),10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",9847
+2026-10-16,2026-10-12T13:47:34Z,AMC Hanes 12,ET,2026-10-16,Friday,7:30pm,147019456,undefined,13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9217
+2026-10-16,2026-10-12T13:47:35Z,AMC Hanes 12,ET,2026-10-17,Saturday,1:30pm,147019459,undefined,10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",9953
+2026-10-16,2026-10-12T13:47:35Z,AMC Aviation 12,ET,2026-10-16,Friday,7:00pm,147228250,IMAX at AMC,22.38,19.18,20.78,2.99,"{""Adult"":22.38,""Child"":19.18,""Senior"":20.78}",9285
+2026-10-16,2026-10-12T13:47:35Z,AMC Aviation 12,ET,2026-10-16,Friday,8:00pm,147228326,Dolby Cinema at AMC,22.91,19.71,21.31,2.99,"{""Adult"":22.91,""Child"":19.71,""Senior"":21.31}",9324
+2026-10-16,2026-10-12T13:47:36Z,AMC Aviation 12,ET,2026-10-17,Saturday,1:00pm,147228240,IMAX at AMC,19.18,16.62,17.9,2.99,"{""Adult"":19.18,""Child"":16.62,""Senior"":17.9}",9974
+2026-10-16,2026-10-12T13:47:38Z,AMC Parkway Pointe 15,ET,2026-10-16,Friday,9:00pm,147184298,Laser at AMC,18.01,14.83,16.42,2.69,"{""Adult"":18.01,""Child"":14.83,""Senior"":16.42}",9337
+2026-10-16,2026-10-12T13:47:38Z,AMC Parkway Pointe 15,ET,2026-10-16,Friday,10:15pm,147749147,Dolby Cinema at AMC,24.37,21.19,22.78,2.99,"{""Adult"":24.37,""Child"":21.19,""Senior"":22.78}",9338
+2026-10-16,2026-10-12T13:47:38Z,AMC Parkway Pointe 15,ET,2026-10-18,Sunday,12:00pm,147184274,Open Caption (On-screen Subtitles),14.41,11.86,13.13,2.69,"{""Adult"":14.41,""Child"":11.86,""Senior"":13.13}",9981
+2026-10-16,2026-10-12T13:47:39Z,AMC Parkway Pointe 15,ET,2026-10-17,Saturday,3:00pm,147184294,Laser at AMC,14.41,11.86,13.13,2.69,"{""Adult"":14.41,""Child"":11.86,""Senior"":13.13}",9998
+2026-10-16,2026-10-12T13:47:40Z,AMC Magic Johnson Harlem 9,ET,2026-10-16,Friday,7:15pm,147220965,Dolby Cinema at AMC,21.49,18.49,19.99,2.99,"{""Adult"":21.49,""Child"":18.49,""Senior"":19.99}",9351
+2026-10-16,2026-10-12T13:47:40Z,AMC Magic Johnson Harlem 9,ET,2026-10-17,Saturday,1:15pm,147220972,Dolby Cinema at AMC,18.39,15.99,17.19,2.99,"{""Adult"":18.39,""Child"":15.99,""Senior"":17.19}",10115
+2026-10-16,2026-10-12T13:47:40Z,AMC Harbison 14,ET,2026-10-16,Friday,7:00pm,147131886,PRIME at AMC,17.84,14.69,16.26,2.99,"{""Adult"":17.84,""Child"":14.69,""Senior"":16.26}",9303
+2026-10-16,2026-10-12T13:47:41Z,AMC Harbison 14,ET,2026-10-16,Friday,9:00pm,147131952,undefined,12.59,9.44,11.01,2.69,"{""Adult"":12.59,""Child"":9.44,""Senior"":11.01}",9250
+2026-10-16,2026-10-12T13:47:41Z,AMC Harbison 14,ET,2026-10-17,Saturday,1:00pm,147131879,PRIME at AMC,15.32,12.8,14.06,2.99,"{""Adult"":15.32,""Child"":12.8,""Senior"":14.06}",10264
+2026-10-16,2026-10-12T13:47:42Z,AMC White Marsh 16,ET,2026-10-16,Friday,8:45pm,147218107,Laser at AMC,16.49,13.19,14.84,2.69,"{""Adult"":16.49,""Child"":13.19,""Senior"":14.84}",9349
+2026-10-16,2026-10-12T13:47:42Z,AMC White Marsh 16,ET,2026-10-16,Friday,7:30pm,147218094,IMAX with Laser at AMC,24.19,20.89,22.54,2.99,"{""Adult"":24.19,""Child"":20.89,""Senior"":22.54}",9424
+2026-10-16,2026-10-12T13:47:43Z,AMC White Marsh 16,ET,2026-10-16,Friday,6:30pm,147218053,Dolby Cinema at AMC,24.19,20.89,22.54,2.99,"{""Adult"":24.19,""Child"":20.89,""Senior"":22.54}",9385
+2026-10-16,2026-10-12T13:47:43Z,AMC White Marsh 16,ET,2026-10-18,Sunday,12:00pm,147218130,Open Caption (On-screen Subtitles),13.19,10.55,11.87,2.69,"{""Adult"":13.19,""Child"":10.55,""Senior"":11.87}",10029
+2026-10-16,2026-10-12T13:47:44Z,AMC White Marsh 16,ET,2026-10-17,Saturday,1:30pm,147218086,IMAX with Laser at AMC,20.89,18.25,19.57,2.99,"{""Adult"":20.89,""Child"":18.25,""Senior"":19.57}",10117
+2026-10-16,2026-10-12T13:47:45Z,AMC Bay Plaza Cinema 13,ET,2026-10-16,Friday,7:15pm,147189068,Dolby Cinema at AMC,25.99,22.99,24.49,2.99,"{""Adult"":25.99,""Child"":22.99,""Senior"":24.49}",9368
+2026-10-16,2026-10-12T13:47:45Z,AMC Bay Plaza Cinema 13,ET,2026-10-16,Friday,9:15pm,147189146,Laser at AMC,18.99,15.99,17.49,2.69,"{""Adult"":18.99,""Child"":15.99,""Senior"":17.49}",9362
+2026-10-16,2026-10-12T13:47:46Z,AMC Bay Plaza Cinema 13,ET,2026-10-17,Saturday,12:15pm,147189149,Open Caption (On-screen Subtitles),15.19,12.79,13.99,2.69,"{""Adult"":15.19,""Child"":12.79,""Senior"":13.99}",10034
+2026-10-16,2026-10-12T13:47:46Z,AMC Bay Plaza Cinema 13,ET,2026-10-17,Saturday,1:15pm,147189083,Dolby Cinema at AMC,22.19,19.79,20.99,2.99,"{""Adult"":22.19,""Child"":19.79,""Senior"":20.99}",10066
+2026-10-16,2026-10-12T13:47:47Z,AMC Headquarters Plaza 10,ET,2026-10-16,Friday,9:45pm,147217037,Laser at AMC,14.92,11.72,13.32,2.69,"{""Adult"":14.92,""Child"":11.72,""Senior"":13.32}",9316
+2026-10-16,2026-10-12T13:47:47Z,AMC Headquarters Plaza 10,ET,2026-10-17,Saturday,1:00pm,147217039,Laser at AMC,11.93,9.37,10.65,2.69,"{""Adult"":11.93,""Child"":9.37,""Senior"":10.65}",10327
+2026-10-16,2026-10-12T13:47:48Z,AMC Woodhaven 10,ET,2026-10-16,Friday,7:00pm,147032805,Laser at AMC,14.99,11.99,13.49,2.69,"{""Adult"":14.99,""Child"":11.99,""Senior"":13.49}",9271
+2026-10-16,2026-10-12T13:47:48Z,AMC Woodhaven 10,ET,2026-10-17,Saturday,1:00pm,147032809,Laser at AMC,11.99,9.59,10.79,2.69,"{""Adult"":11.99,""Child"":9.59,""Senior"":10.79}",9966
+2026-10-16,2026-10-12T13:47:49Z,AMC Port Chester 14,ET,2026-10-16,Friday,10:15pm,147169674,IMAX with Laser at AMC,21.49,18.49,19.99,2.99,"{""Adult"":21.49,""Child"":18.49,""Senior"":19.99}",9395
+2026-10-16,2026-10-12T13:47:50Z,AMC Port Chester 14,ET,2026-10-16,Friday,6:00pm,147169720,Dolby Cinema at AMC,21.49,18.49,19.99,2.99,"{""Adult"":21.49,""Child"":18.49,""Senior"":19.99}",9324
+2026-10-16,2026-10-12T13:47:51Z,AMC Port Chester 14,ET,2026-10-17,Saturday,3:45pm,147169707,IMAX with Laser at AMC,18.49,16.09,17.29,2.99,"{""Adult"":18.49,""Child"":16.09,""Senior"":17.29}",10083
+2026-10-16,2026-10-12T13:47:51Z,AMC Altamonte Mall 18,ET,2026-10-16,Friday,8:00pm,147528751,XL at AMC,16.57,13.36,14.97,2.99,"{""Adult"":16.57,""Child"":13.36,""Senior"":14.97}",9316
+2026-10-16,2026-10-12T13:47:52Z,AMC Altamonte Mall 18,ET,2026-10-16,Friday,9:30pm,147040781,IMAX with Laser at AMC,20.85,17.64,19.25,2.99,"{""Adult"":20.85,""Child"":17.64,""Senior"":19.25}",9413
+2026-10-16,2026-10-12T13:47:53Z,AMC Altamonte Mall 18,ET,2026-10-16,Friday,10:00pm,147528739,Laser at AMC,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9240
+2026-10-16,2026-10-12T13:47:53Z,AMC Altamonte Mall 18,ET,2026-10-16,Friday,4:00pm,147040758,Open Caption (On-screen Subtitles),14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9203
+2026-10-16,2026-10-12T13:47:54Z,AMC Altamonte Mall 18,ET,2026-10-16,Friday,10:30pm,147238257,Dolby Cinema at AMC,20.85,17.64,19.25,2.99,"{""Adult"":20.85,""Child"":17.64,""Senior"":19.25}",9291
+2026-10-16,2026-10-12T13:47:54Z,AMC Altamonte Mall 18,ET,2026-10-18,Sunday,4:00pm,147040750,English Spoken with Spanish Subtitles,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9210
+2026-10-16,2026-10-12T13:47:55Z,AMC Altamonte Mall 18,ET,2026-10-17,Saturday,3:30pm,147040778,IMAX with Laser at AMC,17.97,15.4,16.68,2.99,"{""Adult"":17.97,""Child"":15.4,""Senior"":16.68}",10090
+2026-10-16,2026-10-12T13:47:55Z,AMC Yulee 10,ET,2026-10-16,Friday,7:00pm,147187119,BigD at AMC,16.04,12.83,14.43,2.99,"{""Adult"":16.04,""Child"":12.83,""Senior"":14.43}",9255
+2026-10-16,2026-10-12T13:47:56Z,AMC Yulee 10,ET,2026-10-16,Friday,8:00pm,147187204,Laser at AMC,12.83,9.62,11.22,2.69,"{""Adult"":12.83,""Child"":9.62,""Senior"":11.22}",9223
+2026-10-16,2026-10-12T13:47:57Z,AMC Yulee 10,ET,2026-10-17,Saturday,1:00pm,147187116,BigD at AMC,13.47,10.9,12.19,2.99,"{""Adult"":13.47,""Child"":10.9,""Senior"":12.19}",9965
+2026-10-16,2026-10-12T13:47:57Z,AMC Boulevard 10,ET,2026-10-16,Friday,8:30pm,147092190,undefined,12.29,9.08,10.69,2.69,"{""Adult"":12.29,""Child"":9.08,""Senior"":10.69}",9170
+2026-10-16,2026-10-12T13:47:58Z,AMC Boulevard 10,ET,2026-10-16,Friday,7:00pm,147092234,BigD at AMC,15.5,12.29,13.9,2.99,"{""Adult"":15.5,""Child"":12.29,""Senior"":13.9}",9275
+2026-10-16,2026-10-12T13:47:59Z,AMC Boulevard 10,ET,2026-10-17,Saturday,1:00pm,147092232,BigD at AMC,13.04,10.48,11.76,2.99,"{""Adult"":13.04,""Child"":10.48,""Senior"":11.76}",9979
+2026-10-16,2026-10-12T13:48:00Z,AMC DINE-IN Disney Springs 24,ET,2026-10-16,Friday,7:00pm,147191520,Dine-In Delivery to Seat,18.09,14.9,16.5,2.69,"{""Adult"":18.09,""Child"":14.9,""Senior"":16.5}",9475
+2026-10-16,2026-10-12T13:48:00Z,AMC DINE-IN Disney Springs 24,ET,2026-10-16,Friday,8:00pm,147191324,Dolby Cinema at AMC,22.89,19.69,21.29,2.99,"{""Adult"":22.89,""Child"":19.69,""Senior"":21.29}",9400
+2026-10-16,2026-10-12T13:48:01Z,AMC DINE-IN Disney Springs 24,ET,2026-10-17,Saturday,1:00pm,147191515,Open Caption (On-screen Subtitles),14.47,11.92,13.2,2.69,"{""Adult"":14.47,""Child"":11.92,""Senior"":13.2}",10158
+2026-10-16,2026-10-12T13:48:02Z,AMC DINE-IN Disney Springs 24,ET,2026-10-18,Sunday,3:30pm,147191507,English Spoken with Spanish Subtitles,14.47,11.92,13.2,2.69,"{""Adult"":14.47,""Child"":11.92,""Senior"":13.2}",10173
+2026-10-16,2026-10-12T13:48:02Z,AMC DINE-IN Disney Springs 24,ET,2026-10-17,Saturday,2:00pm,147191319,Dolby Cinema at AMC,19.69,17.14,18.41,2.99,"{""Adult"":19.69,""Child"":17.14,""Senior"":18.41}",10095
+2026-10-16,2026-10-12T13:48:03Z,AMC Hickory 15,ET,2026-10-16,Friday,9:20pm,147111821,undefined,13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9152
+2026-10-16,2026-10-12T13:48:04Z,AMC Hickory 15,ET,2026-10-16,Friday,3:45pm,147111829,Open Caption (On-screen Subtitles),10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",9700
+2026-10-16,2026-10-12T13:48:05Z,AMC Hickory 15,ET,2026-10-16,Friday,6:30pm,147111879,Dolby Cinema at AMC,19.78,16.57,18.18,2.99,"{""Adult"":19.78,""Child"":16.57,""Senior"":18.18}",9305
+2026-10-16,2026-10-12T13:48:05Z,AMC Hickory 15,ET,2026-10-17,Saturday,1:00pm,147111822,English Spoken with Spanish Subtitles,10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",10016
+2026-10-16,2026-10-12T13:48:06Z,AMC Hickory 15,ET,2026-10-17,Saturday,3:45pm,147111823,undefined,10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",10105
+2026-10-16,2026-10-12T13:48:07Z,AMC Barrett Commons 24,ET,2026-10-16,Friday,7:00pm,147040648,IMAX with Laser at AMC,23.31,20.13,21.72,2.99,"{""Adult"":23.31,""Child"":20.13,""Senior"":21.72}",9374
+2026-10-16,2026-10-12T13:48:08Z,AMC Barrett Commons 24,ET,2026-10-16,Friday,3:00pm,147040604,Open Caption (On-screen Subtitles),13.56,11.01,12.29,2.69,"{""Adult"":13.56,""Child"":11.01,""Senior"":12.29}",10020
+2026-10-16,2026-10-12T13:48:09Z,AMC Barrett Commons 24,ET,2026-10-16,Friday,9:00pm,147040603,Laser at AMC,16.95,13.77,15.36,2.69,"{""Adult"":16.95,""Child"":13.77,""Senior"":15.36}",9366
+2026-10-16,2026-10-12T13:48:10Z,AMC Barrett Commons 24,ET,2026-10-16,Friday,11:00pm,147348182,Dolby Cinema at AMC,23.31,20.13,21.72,2.99,"{""Adult"":23.31,""Child"":20.13,""Senior"":21.72}",9329
+2026-10-16,2026-10-12T13:48:10Z,AMC Barrett Commons 24,ET,2026-10-17,Saturday,1:00pm,147040645,IMAX with Laser at AMC,19.92,17.37,18.65,2.99,"{""Adult"":19.92,""Child"":17.37,""Senior"":18.65}",10086
+2026-10-16,2026-10-12T13:48:12Z,AMC Bradley Square 12,ET,2026-10-16,Friday,9:00pm,147227407,undefined,12.06,8.77,10.42,2.69,"{""Adult"":12.06,""Child"":8.77,""Senior"":10.42}",9205
+2026-10-16,2026-10-12T13:48:12Z,AMC Bradley Square 12,ET,2026-10-16,Friday,7:00pm,147227329,BigD at AMC,15.35,12.06,13.71,2.99,"{""Adult"":15.35,""Child"":12.06,""Senior"":13.71}",9318
+2026-10-16,2026-10-12T13:48:13Z,AMC Bradley Square 12,ET,2026-10-17,Saturday,3:00pm,147227408,undefined,9.65,7.01,8.33,2.69,"{""Adult"":9.65,""Child"":7.01,""Senior"":8.33}",9885
+2026-10-16,2026-10-12T13:48:13Z,AMC Potomac Mills 18,ET,2026-10-16,Friday,7:00pm,147021328,IMAX with Laser at AMC,20.99,17.99,19.49,2.99,"{""Adult"":20.99,""Child"":17.99,""Senior"":19.49}",9318
+2026-10-16,2026-10-12T13:48:14Z,AMC Potomac Mills 18,ET,2026-10-16,Friday,8:00pm,147021380,Laser at AMC,14.99,11.99,13.49,2.69,"{""Adult"":14.99,""Child"":11.99,""Senior"":13.49}",9242
+2026-10-16,2026-10-12T13:48:14Z,AMC Potomac Mills 18,ET,2026-10-16,Friday,6:00pm,147021357,Dolby Cinema at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9348
+2026-10-16,2026-10-12T13:48:15Z,AMC Potomac Mills 18,ET,2026-10-18,Sunday,2:00pm,147021372,Open Caption (On-screen Subtitles),11.99,9.59,10.79,2.69,"{""Adult"":11.99,""Child"":9.59,""Senior"":10.79}",10196
+2026-10-16,2026-10-12T13:48:16Z,AMC Potomac Mills 18,ET,2026-10-17,Saturday,1:00pm,147021317,IMAX with Laser at AMC,17.99,15.59,16.79,2.99,"{""Adult"":17.99,""Child"":15.59,""Senior"":16.79}",9993
+2026-10-16,2026-10-12T13:48:17Z,AMC Cherry Hill 24,ET,2026-10-16,Friday,7:00pm,147146283,IMAX with Laser at AMC,21.85,18.65,20.25,2.99,"{""Adult"":21.85,""Child"":18.65,""Senior"":20.25}",9359
+2026-10-16,2026-10-12T13:48:18Z,AMC Cherry Hill 24,ET,2026-10-16,Friday,8:00pm,147146213,XL at AMC,16.52,13.32,14.92,2.99,"{""Adult"":16.52,""Child"":13.32,""Senior"":14.92}",9274
+2026-10-16,2026-10-12T13:48:18Z,AMC Cherry Hill 24,ET,2026-10-16,Friday,6:00pm,147146301,Dolby Cinema at AMC,21.85,18.65,20.25,2.99,"{""Adult"":21.85,""Child"":18.65,""Senior"":20.25}",9330
+2026-10-16,2026-10-12T13:48:19Z,AMC Cherry Hill 24,ET,2026-10-17,Saturday,3:00pm,147145958,Open Caption (On-screen Subtitles),11.5,8.95,10.23,2.69,"{""Adult"":11.5,""Child"":8.95,""Senior"":10.23}",9895
+2026-10-16,2026-10-12T13:48:20Z,AMC Cherry Hill 24,ET,2026-10-17,Saturday,1:00pm,147146277,IMAX with Laser at AMC,18.97,16.41,17.69,2.99,"{""Adult"":18.97,""Child"":16.41,""Senior"":17.69}",10066
+2026-10-16,2026-10-12T13:48:20Z,AMC High Point 8,ET,2026-10-16,Friday,7:15pm,147200143,undefined,13.33,10.13,11.73,2.69,"{""Adult"":13.33,""Child"":10.13,""Senior"":11.73}",9253
+2026-10-16,2026-10-12T13:48:21Z,AMC High Point 8,ET,2026-10-17,Saturday,1:00pm,147200145,undefined,10.66,8.1,9.38,2.69,"{""Adult"":10.66,""Child"":8.1,""Senior"":9.38}",9961
+2026-10-16,2026-10-12T13:48:21Z,AMC Brick Plaza 10,ET,2026-10-16,Friday,7:25pm,147152838,Laser at AMC,15.45,12.25,13.85,2.69,"{""Adult"":15.45,""Child"":12.25,""Senior"":13.85}",9301
+2026-10-16,2026-10-12T13:48:22Z,AMC Brick Plaza 10,ET,2026-10-17,Saturday,1:00pm,147152834,Laser at AMC,12.36,9.8,11.08,2.69,"{""Adult"":12.36,""Child"":9.8,""Senior"":11.08}",9975
+2026-10-16,2026-10-12T13:48:22Z,AMC Ridge Park Square 8,ET,2026-10-16,Friday,7:00pm,147061072,undefined,13.89,10.8,12.35,2.69,"{""Adult"":13.89,""Child"":10.8,""Senior"":12.35}",9251
+2026-10-16,2026-10-12T13:48:23Z,AMC Ridge Park Square 8,ET,2026-10-17,Saturday,1:00pm,147061078,undefined,11.11,8.64,9.88,2.69,"{""Adult"":11.11,""Child"":8.64,""Senior"":9.88}",9963
+2026-10-16,2026-10-12T13:48:23Z,AMC DINE-IN Fashion District 8,ET,2026-10-16,Friday,10:15pm,147133590,Dolby Cinema at AMC,23.09,19.94,21.51,2.99,"{""Adult"":23.09,""Child"":19.94,""Senior"":21.51}",9486
+2026-10-16,2026-10-12T13:48:24Z,AMC DINE-IN Fashion District 8,ET,2026-10-17,Saturday,3:45pm,147133595,Dolby Cinema at AMC,19.73,17.21,18.47,2.99,"{""Adult"":19.73,""Child"":17.21,""Senior"":18.47}",10146
+2026-10-16,2026-10-12T13:48:24Z,AMC Highwoods 20,ET,2026-10-16,Friday,7:20pm,147182787,Laser at AMC,12.35,9.13,10.74,2.69,"{""Adult"":12.35,""Child"":9.13,""Senior"":10.74}",9192
+2026-10-16,2026-10-12T13:48:25Z,AMC Highwoods 20,ET,2026-10-17,Saturday,1:00pm,147182783,Laser at AMC,9.88,7.3,8.59,2.69,"{""Adult"":9.88,""Child"":7.3,""Senior"":8.59}",9889
+2026-10-16,2026-10-12T13:48:26Z,AMC DINE-IN North Point Mall 12,ET,2026-10-16,Friday,6:00pm,147063433,IMAX with Laser at AMC,25.31,22.08,23.69,2.99,"{""Adult"":25.31,""Child"":22.08,""Senior"":23.69}",9374
+2026-10-16,2026-10-12T13:48:27Z,AMC DINE-IN North Point Mall 12,ET,2026-10-16,Friday,7:00pm,147063473,Dolby Cinema at AMC,25.31,22.08,23.69,2.99,"{""Adult"":25.31,""Child"":22.08,""Senior"":23.69}",9322
+2026-10-16,2026-10-12T13:48:27Z,AMC Broadstreet 7,ET,2026-10-16,Friday,7:00pm,147210342,Laser at AMC,14.69,11.54,13.11,2.69,"{""Adult"":14.69,""Child"":11.54,""Senior"":13.11}",9286
+2026-10-16,2026-10-12T13:48:28Z,AMC Broadstreet 7,ET,2026-10-17,Saturday,1:00pm,147210336,Laser at AMC,11.75,9.23,10.49,2.69,"{""Adult"":11.75,""Child"":9.23,""Senior"":10.49}",10237
+2026-10-16,2026-10-12T13:48:28Z,AMC Ridgefield Park 12,ET,2026-10-16,Friday,7:00pm,147227212,undefined,14.92,11.72,13.32,2.69,"{""Adult"":14.92,""Child"":11.72,""Senior"":13.32}",9247
+2026-10-16,2026-10-12T13:48:29Z,AMC Neshaminy 24,ET,2026-10-16,Friday,7:00pm,147038181,IMAX with Laser at AMC,20.49,17.49,18.99,2.99,"{""Adult"":20.49,""Child"":17.49,""Senior"":18.99}",9347
+2026-10-16,2026-10-12T13:48:30Z,AMC Neshaminy 24,ET,2026-10-16,Friday,2:15pm,147038217,Open Caption (On-screen Subtitles),10.79,8.39,9.59,2.69,"{""Adult"":10.79,""Child"":8.39,""Senior"":9.59}",9891
+2026-10-16,2026-10-12T13:48:30Z,AMC Neshaminy 24,ET,2026-10-16,Friday,8:15pm,147038218,Laser at AMC,13.49,10.49,11.99,2.69,"{""Adult"":13.49,""Child"":10.49,""Senior"":11.99}",9216
+2026-10-16,2026-10-12T13:48:31Z,AMC Neshaminy 24,ET,2026-10-16,Friday,6:00pm,147038313,Dolby Cinema at AMC,20.49,17.49,18.99,2.99,"{""Adult"":20.49,""Child"":17.49,""Senior"":18.99}",9305
+2026-10-16,2026-10-12T13:48:31Z,AMC Neshaminy 24,ET,2026-10-17,Saturday,1:00pm,147038180,IMAX with Laser at AMC,17.79,15.39,16.59,2.99,"{""Adult"":17.79,""Child"":15.39,""Senior"":16.59}",10031
+2026-10-16,2026-10-12T13:48:32Z,AMC Holland 8,ET,2026-10-16,Friday,7:30pm,147156783,undefined,10.49,7.49,8.99,2.69,"{""Adult"":10.49,""Child"":7.49,""Senior"":8.99}",9209
+2026-10-16,2026-10-12T13:48:33Z,AMC Holland 8,ET,2026-10-17,Saturday,1:00pm,147156778,undefined,8.39,5.99,7.19,2.69,"{""Adult"":8.39,""Child"":5.99,""Senior"":7.19}",9906
+2026-10-16,2026-10-12T13:48:33Z,AMC Northlake 14,ET,2026-10-16,Friday,9:00pm,147188163,IMAX at AMC,20.02,16.77,18.39,2.99,"{""Adult"":20.02,""Child"":16.77,""Senior"":18.39}",9284
+2026-10-16,2026-10-12T13:48:34Z,AMC Northlake 14,ET,2026-10-16,Friday,7:00pm,147188190,Dolby Cinema at AMC,20.56,17.31,18.93,2.99,"{""Adult"":20.56,""Child"":17.31,""Senior"":18.93}",9322
+2026-10-16,2026-10-12T13:48:34Z,AMC Northlake 14,ET,2026-10-16,Friday,8:00pm,147188107,undefined,14.06,10.81,12.44,2.69,"{""Adult"":14.06,""Child"":10.81,""Senior"":12.44}",9268
+2026-10-16,2026-10-12T13:48:35Z,AMC Northlake 14,ET,2026-10-17,Saturday,3:00pm,147188162,IMAX at AMC,17.2,14.6,15.9,2.99,"{""Adult"":17.2,""Child"":14.6,""Senior"":15.9}",10007
+2026-10-16,2026-10-12T13:48:35Z,AMC Ritz 13,ET,2026-10-16,Friday,6:30pm,147212902,undefined,14.16,10.89,12.52,2.69,"{""Adult"":14.16,""Child"":10.89,""Senior"":12.52}",9138
+2026-10-16,2026-10-12T13:48:36Z,AMC Ritz 13,ET,2026-10-17,Saturday,3:30pm,147212903,undefined,10.89,8.27,9.58,2.69,"{""Adult"":10.89,""Child"":8.27,""Senior"":9.58}",10123
+2026-10-16,2026-10-12T13:48:37Z,AMC Plymouth Meeting Mall 12,ET,2026-10-16,Friday,7:00pm,147182290,Laser at AMC,17.04,13.74,15.39,2.69,"{""Adult"":17.04,""Child"":13.74,""Senior"":15.39}",9336
+2026-10-16,2026-10-12T13:48:37Z,AMC Plymouth Meeting Mall 12,ET,2026-10-17,Saturday,1:00pm,147182279,Laser at AMC,13.63,10.99,12.31,2.69,"{""Adult"":13.63,""Child"":10.99,""Senior"":12.31}",10338
+2026-10-16,2026-10-12T13:48:38Z,AMC Huntington Square 12,ET,2026-10-16,Friday,7:00pm,147172540,Dolby Cinema at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9372
+2026-10-16,2026-10-12T13:48:39Z,AMC Huntington Square 12,ET,2026-10-17,Saturday,1:00pm,147172556,Dolby Cinema at AMC,19.19,16.79,17.99,2.99,"{""Adult"":19.19,""Child"":16.79,""Senior"":17.99}",10303
+2026-10-16,2026-10-12T13:48:40Z,AMC Camp Hill 12,ET,2026-10-16,Friday,7:00pm,147161628,undefined,11.49,8.49,9.99,2.69,"{""Adult"":11.49,""Child"":8.49,""Senior"":9.99}",9139
+2026-10-16,2026-10-12T13:48:40Z,AMC Camp Hill 12,ET,2026-10-17,Saturday,1:00pm,147161622,undefined,9.19,6.79,7.99,2.69,"{""Adult"":9.19,""Child"":6.79,""Senior"":7.99}",9843
+2026-10-16,2026-10-12T13:48:41Z,AMC River Hills 10,ET,2026-10-16,Friday,7:05pm,147155596,undefined,12.83,9.62,11.22,2.69,"{""Adult"":12.83,""Child"":9.62,""Senior"":11.22}",9251
+2026-10-16,2026-10-12T13:48:41Z,AMC River Hills 10,ET,2026-10-17,Saturday,1:00pm,147155637,undefined,10.26,7.69,8.98,2.69,"{""Adult"":10.26,""Child"":7.69,""Senior"":8.98}",9931
+2026-10-16,2026-10-12T13:48:42Z,AMC Voorhees 16,ET,2026-10-16,Friday,3:30pm,147132332,Open Caption (On-screen Subtitles),10.65,8.09,9.37,2.69,"{""Adult"":10.65,""Child"":8.09,""Senior"":9.37}",9710
+2026-10-16,2026-10-12T13:48:42Z,AMC Voorhees 16,ET,2026-10-16,Friday,9:30pm,147132334,undefined,13.32,10.12,11.72,2.69,"{""Adult"":13.32,""Child"":10.12,""Senior"":11.72}",9095
+2026-10-16,2026-10-12T13:48:43Z,AMC Voorhees 16,ET,2026-10-17,Saturday,3:30pm,147132335,undefined,10.65,8.09,9.37,2.69,"{""Adult"":10.65,""Child"":8.09,""Senior"":9.37}",9850
+2026-10-16,2026-10-12T13:48:44Z,AMC Indian Mound 9,ET,2026-10-16,Friday,8:00pm,147102019,undefined,11.49,8.49,9.99,2.69,"{""Adult"":11.49,""Child"":8.49,""Senior"":9.99}",9239
+2026-10-16,2026-10-12T13:48:44Z,AMC Indian Mound 9,ET,2026-10-17,Saturday,2:00pm,147102082,undefined,9.19,6.79,7.99,2.69,"{""Adult"":9.19,""Child"":6.79,""Senior"":7.99}",9915
+2026-10-16,2026-10-12T13:48:45Z,AMC Sugarloaf Mills 18,ET,2026-10-16,Friday,9:45pm,147061866,Laser at AMC,15.36,12.18,13.77,2.69,"{""Adult"":15.36,""Child"":12.18,""Senior"":13.77}",9245
+2026-10-16,2026-10-12T13:48:45Z,AMC Sugarloaf Mills 18,ET,2026-10-16,Friday,7:15pm,147061899,Dolby Cinema at AMC,21.72,18.54,20.13,2.99,"{""Adult"":21.72,""Child"":18.54,""Senior"":20.13}",9341
+2026-10-16,2026-10-12T13:48:46Z,AMC Sugarloaf Mills 18,ET,2026-10-17,Saturday,3:15pm,147061872,Laser at AMC,12.29,9.74,11.01,2.69,"{""Adult"":12.29,""Child"":9.74,""Senior"":11.01}",9947
+2026-10-16,2026-10-12T13:48:46Z,AMC Crystal Run 16,ET,2026-10-16,Friday,1:30pm,147016043,Open Caption (On-screen Subtitles),13.59,11.19,12.39,2.69,"{""Adult"":13.59,""Child"":11.19,""Senior"":12.39}",10016
+2026-10-16,2026-10-12T13:48:47Z,AMC Crystal Run 16,ET,2026-10-16,Friday,7:30pm,147016041,Laser at AMC,16.99,13.99,15.49,2.69,"{""Adult"":16.99,""Child"":13.99,""Senior"":15.49}",9322
+2026-10-16,2026-10-12T13:48:48Z,AMC Crystal Run 16,ET,2026-10-17,Saturday,1:30pm,147016047,Laser at AMC,13.59,11.19,12.39,2.69,"{""Adult"":13.59,""Child"":11.19,""Senior"":12.39}",10012
+2026-10-16,2026-10-12T13:48:49Z,AMC Highland 12,ET,2026-10-16,Friday,7:00pm,147219539,Laser at AMC,13.16,9.87,11.51,2.69,"{""Adult"":13.16,""Child"":9.87,""Senior"":11.51}",9248
+2026-10-16,2026-10-12T13:48:50Z,AMC Highland 12,ET,2026-10-17,Saturday,1:00pm,147219545,Laser at AMC,10.53,7.89,9.21,2.69,"{""Adult"":10.53,""Child"":7.89,""Senior"":9.21}",9960
+2026-10-16,2026-10-12T13:48:50Z,AMC Rivertowne 12,ET,2026-10-16,Friday,7:00pm,147015640,Laser at AMC,15.94,12.64,14.29,2.69,"{""Adult"":15.94,""Child"":12.64,""Senior"":14.29}",9314
+2026-10-16,2026-10-12T13:48:51Z,AMC Rivertowne 12,ET,2026-10-17,Saturday,1:30pm,147015645,Laser at AMC,12.75,10.11,11.43,2.69,"{""Adult"":12.75,""Child"":10.11,""Senior"":11.43}",10029
+2026-10-16,2026-10-12T13:48:52Z,AMC Waterfront 22,ET,2026-10-16,Friday,7:00pm,147024789,IMAX with Laser at AMC,17.99,14.99,16.49,2.99,"{""Adult"":17.99,""Child"":14.99,""Senior"":16.49}",9257
+2026-10-16,2026-10-12T13:48:52Z,AMC Waterfront 22,ET,2026-10-16,Friday,4:45pm,147339489,PRIME at AMC,16.99,13.99,15.49,2.99,"{""Adult"":16.99,""Child"":13.99,""Senior"":15.49}",9256
+2026-10-16,2026-10-12T13:48:53Z,AMC Waterfront 22,ET,2026-10-16,Friday,9:15pm,147024868,Laser at AMC,12.99,9.99,11.49,2.69,"{""Adult"":12.99,""Child"":9.99,""Senior"":11.49}",9249
+2026-10-16,2026-10-12T13:48:53Z,AMC Waterfront 22,ET,2026-10-16,Friday,10:30pm,147339498,Dolby Cinema at AMC,17.99,14.99,16.49,2.99,"{""Adult"":17.99,""Child"":14.99,""Senior"":16.49}",9314
+2026-10-16,2026-10-12T13:48:55Z,AMC Waterfront 22,ET,2026-10-17,Saturday,2:00pm,147024862,Open Caption (On-screen Subtitles),10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",10230
+2026-10-16,2026-10-12T13:48:55Z,AMC Waterfront 22,ET,2026-10-17,Saturday,1:00pm,147024820,IMAX with Laser at AMC,15.59,13.19,14.39,2.99,"{""Adult"":15.59,""Child"":13.19,""Senior"":14.39}",9964
+2026-10-16,2026-10-12T13:48:56Z,AMC Indianapolis 17,ET,2026-10-16,Friday,7:00pm,147018270,IMAX at AMC,19.49,16.49,17.99,2.99,"{""Adult"":19.49,""Child"":16.49,""Senior"":17.99}",9202
+2026-10-16,2026-10-12T13:48:57Z,AMC Indianapolis 17,ET,2026-10-16,Friday,8:15pm,147018222,Laser at AMC,13.99,10.99,12.49,2.69,"{""Adult"":13.99,""Child"":10.99,""Senior"":12.49}",9288
+2026-10-16,2026-10-12T13:48:57Z,AMC Indianapolis 17,ET,2026-10-16,Friday,6:15pm,147018120,Dolby Cinema at AMC,20.49,17.49,18.99,2.99,"{""Adult"":20.49,""Child"":17.49,""Senior"":18.99}",9307
+2026-10-16,2026-10-12T13:48:58Z,AMC Indianapolis 17,ET,2026-10-17,Saturday,2:15pm,147018221,Open Caption (On-screen Subtitles),11.19,8.79,9.99,2.69,"{""Adult"":11.19,""Child"":8.79,""Senior"":9.99}",9982
+2026-10-16,2026-10-12T13:48:58Z,AMC Indianapolis 17,ET,2026-10-17,Saturday,1:00pm,147018293,IMAX at AMC,16.69,14.29,15.49,2.99,"{""Adult"":16.69,""Child"":14.29,""Senior"":15.49}",9923
+2026-10-16,2026-10-12T13:48:59Z,AMC Assembly Row 12,ET,2026-10-16,Friday,8:00pm,147021501,IMAX with Laser at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9378
+2026-10-16,2026-10-12T13:48:59Z,AMC Assembly Row 12,ET,2026-10-16,Friday,7:00pm,147021534,Dolby Cinema at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9337
+2026-10-16,2026-10-12T13:49:00Z,AMC Assembly Row 12,ET,2026-10-17,Saturday,2:00pm,147021500,IMAX with Laser at AMC,18.79,16.39,17.59,2.99,"{""Adult"":18.79,""Child"":16.39,""Senior"":17.59}",10141
+2026-10-16,2026-10-12T13:49:00Z,AMC Chattanooga 18,ET,2026-10-16,Friday,9:30pm,147061395,IMAX at AMC,18.56,15.28,16.92,2.99,"{""Adult"":18.56,""Child"":15.28,""Senior"":16.92}",9271
+2026-10-16,2026-10-12T13:49:01Z,AMC Chattanooga 18,ET,2026-10-16,Friday,7:30pm,147061611,undefined,13.1,9.82,11.46,2.69,"{""Adult"":13.1,""Child"":9.82,""Senior"":11.46}",9123
+2026-10-16,2026-10-12T13:49:02Z,AMC Chattanooga 18,ET,2026-10-18,Sunday,1:00pm,147061597,Open Caption (On-screen Subtitles),10.48,7.86,9.17,2.69,"{""Adult"":10.48,""Child"":7.86,""Senior"":9.17}",9795
+2026-10-16,2026-10-12T13:49:04Z,AMC Chattanooga 18,ET,2026-10-18,Sunday,7:05pm,147061601,English Spoken with Spanish Subtitles,13.1,9.82,11.46,2.69,"{""Adult"":13.1,""Child"":9.82,""Senior"":11.46}",9085
+2026-10-16,2026-10-12T13:49:04Z,AMC Chattanooga 18,ET,2026-10-17,Saturday,1:00pm,147061451,IMAX at AMC,15.94,13.32,14.63,2.99,"{""Adult"":15.94,""Child"":13.32,""Senior"":14.63}",9965
+2026-10-16,2026-10-12T13:49:05Z,AMC Riverview 14,ET,2026-10-16,Friday,7:45pm,147023660,GDX,22.03,18.8,20.41,2.99,"{""Adult"":22.03,""Child"":18.8,""Senior"":20.41}",9317
+2026-10-16,2026-10-12T13:49:05Z,AMC Riverview 14,ET,2026-10-16,Friday,6:30pm,147023751,undefined,15.58,12.35,13.96,2.69,"{""Adult"":15.58,""Child"":12.35,""Senior"":13.96}",9265
+2026-10-16,2026-10-12T13:49:06Z,AMC Riverview 14,ET,2026-10-17,Saturday,1:45pm,147023657,GDX,18.91,16.33,17.62,2.99,"{""Adult"":18.91,""Child"":16.33,""Senior"":17.62}",9981
+2026-10-16,2026-10-12T13:49:07Z,AMC Bradenton 20,ET,2026-10-16,Friday,9:45pm,147091656,Laser at AMC,13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9242
+2026-10-16,2026-10-12T13:49:07Z,AMC Bradenton 20,ET,2026-10-16,Friday,4:45pm,147091696,Open Caption (On-screen Subtitles),13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9216
+2026-10-16,2026-10-12T13:49:08Z,AMC Bradenton 20,ET,2026-10-18,Sunday,4:45pm,147091701,English Spoken with Spanish Subtitles,13.36,10.15,11.76,2.69,"{""Adult"":13.36,""Child"":10.15,""Senior"":11.76}",9227
+2026-10-16,2026-10-12T13:49:09Z,AMC Bradenton 20,ET,2026-10-17,Saturday,1:35pm,147091695,Laser at AMC,10.69,8.12,9.41,2.69,"{""Adult"":10.69,""Child"":8.12,""Senior"":9.41}",9916
+2026-10-16,2026-10-12T13:49:09Z,AMC Boston Common 19,ET,2026-10-16,Friday,7:00pm,147094206,IMAX with Laser at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9361
+2026-10-16,2026-10-12T13:49:10Z,AMC Boston Common 19,ET,2026-10-16,Friday,6:00pm,147094343,Dolby Cinema at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9343
+2026-10-16,2026-10-12T13:49:10Z,AMC Boston Common 19,ET,2026-10-17,Saturday,1:00pm,147094196,IMAX with Laser at AMC,19.29,16.89,18.09,2.99,"{""Adult"":19.29,""Child"":16.89,""Senior"":18.09}",10098
+2026-10-16,2026-10-12T13:49:11Z,AMC Cherry Blossom 14,ET,2026-10-16,Friday,7:00pm,147296934,IMAX at AMC,18.49,15.49,16.99,2.99,"{""Adult"":18.49,""Child"":15.49,""Senior"":16.99}",9230
+2026-10-16,2026-10-12T13:49:11Z,AMC Cherry Blossom 14,ET,2026-10-16,Friday,3:00pm,147297120,Open Caption (On-screen Subtitles),10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",9719
+2026-10-16,2026-10-12T13:49:12Z,AMC Cherry Blossom 14,ET,2026-10-16,Friday,6:00pm,147297121,undefined,12.99,9.99,11.49,2.69,"{""Adult"":12.99,""Child"":9.99,""Senior"":11.49}",9146
+2026-10-16,2026-10-12T13:49:12Z,AMC Cherry Blossom 14,ET,2026-10-17,Saturday,1:00pm,147296929,IMAX at AMC,15.89,13.49,14.69,2.99,"{""Adult"":15.89,""Child"":13.49,""Senior"":14.69}",9931
+2026-10-16,2026-10-12T13:49:13Z,AMC Rockaway 16,ET,2026-10-16,Friday,7:30pm,147053916,IMAX with Laser at AMC,22.91,19.71,21.31,2.99,"{""Adult"":22.91,""Child"":19.71,""Senior"":21.31}",9352
+2026-10-16,2026-10-12T13:49:13Z,AMC Rockaway 16,ET,2026-10-16,Friday,6:30pm,147053970,Dolby Cinema at AMC,22.91,19.71,21.31,2.99,"{""Adult"":22.91,""Child"":19.71,""Senior"":21.31}",9310
+2026-10-16,2026-10-12T13:49:15Z,AMC Rockaway 16,ET,2026-10-17,Saturday,1:30pm,147053922,IMAX with Laser at AMC,19.82,17.26,18.54,2.99,"{""Adult"":19.82,""Child"":17.26,""Senior"":18.54}",10091
+2026-10-16,2026-10-12T13:49:15Z,AMC Sundial 12,ET,2026-10-16,Friday,7:00pm,147026595,IMAX with Laser at AMC,20.85,17.64,19.25,2.99,"{""Adult"":20.85,""Child"":17.64,""Senior"":19.25}",9365
+2026-10-16,2026-10-12T13:49:16Z,AMC Sundial 12,ET,2026-10-16,Friday,8:30pm,147026512,Laser at AMC,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9273
+2026-10-16,2026-10-12T13:49:17Z,AMC Sundial 12,ET,2026-10-16,Friday,6:00pm,147374017,PRIME at AMC,19.78,16.57,18.18,2.99,"{""Adult"":19.78,""Child"":16.57,""Senior"":18.18}",9312
+2026-10-16,2026-10-12T13:49:17Z,AMC Sundial 12,ET,2026-10-17,Saturday,1:00pm,147026593,IMAX with Laser at AMC,17.97,15.4,16.68,2.99,"{""Adult"":17.97,""Child"":15.4,""Senior"":16.68}",10069
+2026-10-16,2026-10-12T13:49:18Z,AMC Jersey Gardens 20,ET,2026-10-16,Friday,7:00pm,147103129,IMAX with Laser at AMC,22.38,19.18,20.78,2.99,"{""Adult"":22.38,""Child"":19.18,""Senior"":20.78}",9377
+2026-10-16,2026-10-12T13:49:19Z,AMC Jersey Gardens 20,ET,2026-10-16,Friday,8:00pm,147103105,Dolby Cinema at AMC,22.38,19.18,20.78,2.99,"{""Adult"":22.38,""Child"":19.18,""Senior"":20.78}",9332
+2026-10-16,2026-10-12T13:49:20Z,AMC Jersey Gardens 20,ET,2026-10-17,Saturday,1:00pm,147103174,IMAX with Laser at AMC,19.29,16.73,18.01,2.99,"{""Adult"":19.29,""Child"":16.73,""Senior"":18.01}",10066
+2026-10-16,2026-10-12T13:49:20Z,AMC Braintree 10,ET,2026-10-16,Friday,8:00pm,147182189,Laser at AMC,16.49,13.49,14.99,2.69,"{""Adult"":16.49,""Child"":13.49,""Senior"":14.99}",9316
+2026-10-16,2026-10-12T13:49:21Z,AMC Braintree 10,ET,2026-10-16,Friday,7:00pm,147182205,PRIME at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9311
+2026-10-16,2026-10-12T13:49:22Z,AMC Braintree 10,ET,2026-10-17,Saturday,2:00pm,147182191,Laser at AMC,13.19,10.79,11.99,2.69,"{""Adult"":13.19,""Child"":10.79,""Senior"":11.99}",10007
+2026-10-16,2026-10-12T13:49:23Z,AMC Royale 6,ET,2026-10-16,Friday,10:40pm,147223303,undefined,14.99,11.99,13.49,2.69,"{""Adult"":14.99,""Child"":11.99,""Senior"":13.49}",9236
+2026-10-16,2026-10-12T13:49:24Z,AMC Royale 6,ET,2026-10-17,Saturday,3:50pm,147523564,undefined,11.99,9.59,10.79,2.69,"{""Adult"":11.99,""Child"":9.59,""Senior"":10.79}",9936
+2026-10-16,2026-10-12T13:49:25Z,AMC Johnson City 14,ET,2026-10-16,Friday,7:30pm,147378395,undefined,14.22,10.94,12.58,2.69,"{""Adult"":14.22,""Child"":10.94,""Senior"":12.58}",9281
+2026-10-16,2026-10-12T13:49:26Z,AMC Johnson City 14,ET,2026-10-17,Saturday,1:30pm,147378392,undefined,11.38,8.75,10.06,2.69,"{""Adult"":11.38,""Child"":8.75,""Senior"":10.06}",9976
+2026-10-16,2026-10-12T13:49:26Z,AMC Burlington Cinema 10,ET,2026-10-16,Friday,7:30pm,147168773,Laser at AMC,15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9332
+2026-10-16,2026-10-12T13:49:27Z,AMC Burlington Cinema 10,ET,2026-10-17,Saturday,3:45pm,147168775,Laser at AMC,12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10041
+2026-10-16,2026-10-12T13:49:27Z,AMC Colonial 18,ET,2026-10-16,Friday,8:30pm,147165998,PRIME at AMC,24.37,21.19,22.78,2.99,"{""Adult"":24.37,""Child"":21.19,""Senior"":22.78}",9294
+2026-10-16,2026-10-12T13:49:28Z,AMC Colonial 18,ET,2026-10-16,Friday,7:30pm,147166107,Laser at AMC,18.01,14.83,16.42,2.69,"{""Adult"":18.01,""Child"":14.83,""Senior"":16.42}",9294
+2026-10-16,2026-10-12T13:49:29Z,AMC Saratoga Springs 11,ET,2026-10-16,Friday,7:00pm,147100151,XL at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9265
+2026-10-16,2026-10-12T13:49:30Z,AMC Saratoga Springs 11,ET,2026-10-17,Saturday,1:00pm,147100157,XL at AMC,18.99,16.59,17.79,2.99,"{""Adult"":18.99,""Child"":16.59,""Senior"":17.79}",9960
+2026-10-16,2026-10-12T13:49:31Z,AMC West Shore 14,ET,2026-10-16,Friday,7:00pm,147210553,Dolby Cinema at AMC,20.95,17.73,19.34,2.99,"{""Adult"":20.95,""Child"":17.73,""Senior"":19.34}",9341
+2026-10-16,2026-10-12T13:49:32Z,AMC West Shore 14,ET,2026-10-16,Friday,8:15pm,147210532,undefined,13.96,10.74,12.35,2.69,"{""Adult"":13.96,""Child"":10.74,""Senior"":12.35}",9169
+2026-10-16,2026-10-12T13:49:32Z,AMC West Shore 14,ET,2026-10-17,Saturday,1:00pm,147210549,Dolby Cinema at AMC,18.16,15.58,16.87,2.99,"{""Adult"":18.16,""Child"":15.58,""Senior"":16.87}",10019
+2026-10-16,2026-10-12T13:49:33Z,AMC Kalli 12,ET,2026-10-16,Friday,7:00pm,147195533,Dolby Cinema at AMC,20.32,17.11,18.71,2.99,"{""Adult"":20.32,""Child"":17.11,""Senior"":18.71}",9306
+2026-10-16,2026-10-12T13:49:34Z,AMC Framingham 16,ET,2026-10-16,Friday,9:45pm,147033952,Laser at AMC,15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9316
+2026-10-16,2026-10-12T13:49:35Z,AMC Framingham 16,ET,2026-10-16,Friday,7:15pm,147033928,PRIME at AMC,20.49,17.49,18.99,2.99,"{""Adult"":20.49,""Child"":17.49,""Senior"":18.99}",9318
+2026-10-16,2026-10-12T13:49:36Z,AMC Framingham 16,ET,2026-10-18,Sunday,3:00pm,147033945,Open Caption (On-screen Subtitles),12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10000
+2026-10-16,2026-10-12T13:49:36Z,AMC Framingham 16,ET,2026-10-17,Saturday,3:45pm,147033951,Laser at AMC,12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10075
+2026-10-16,2026-10-12T13:49:37Z,AMC Schererville 12,ET,2026-10-16,Friday,7:00pm,147016744,XL at AMC,15.99,12.99,14.49,2.99,"{""Adult"":15.99,""Child"":12.99,""Senior"":14.49}",9203
+2026-10-16,2026-10-12T13:49:39Z,AMC Schererville 12,ET,2026-10-17,Saturday,1:00pm,147016753,XL at AMC,13.39,10.99,12.19,2.99,"{""Adult"":13.39,""Child"":10.99,""Senior"":12.19}",9917
+2026-10-16,2026-10-12T13:49:39Z,AMC Georgetown 14,ET,2026-10-16,Friday,7:00pm,147222740,IMAX with Laser at AMC,25.96,22.78,24.37,2.99,"{""Adult"":25.96,""Child"":22.78,""Senior"":24.37}",9364
+2026-10-16,2026-10-12T13:49:40Z,AMC Georgetown 14,ET,2026-10-16,Friday,10:45pm,147382016,Dolby Cinema at AMC,25.96,22.78,24.37,2.99,"{""Adult"":25.96,""Child"":22.78,""Senior"":24.37}",9327
+2026-10-16,2026-10-12T13:49:41Z,AMC Georgetown 14,ET,2026-10-17,Saturday,2:30pm,147222719,Open Caption (On-screen Subtitles),13.98,11.44,12.71,2.69,"{""Adult"":13.98,""Child"":11.44,""Senior"":12.71}",9976
+2026-10-16,2026-10-12T13:49:41Z,AMC Georgetown 14,ET,2026-10-17,Saturday,1:30pm,147222739,IMAX with Laser at AMC,22.46,19.92,21.19,2.99,"{""Adult"":22.46,""Child"":19.92,""Senior"":21.19}",10079
+2026-10-16,2026-10-12T13:49:42Z,AMC Lake Square 12,ET,2026-10-16,Friday,1:00pm,147164967,Open Caption (On-screen Subtitles),8.98,6.41,7.69,2.69,"{""Adult"":8.98,""Child"":6.41,""Senior"":7.69}",9964
+2026-10-16,2026-10-12T13:49:42Z,AMC Lake Square 12,ET,2026-10-16,Friday,7:00pm,147164964,Laser at AMC,11.22,8.01,9.62,2.69,"{""Adult"":11.22,""Child"":8.01,""Senior"":9.62}",9302
+2026-10-16,2026-10-12T13:49:43Z,AMC Lake Square 12,ET,2026-10-17,Saturday,1:00pm,147164956,Laser at AMC,8.98,6.41,7.69,2.69,"{""Adult"":8.98,""Child"":6.41,""Senior"":7.69}",9992
+2026-10-16,2026-10-12T13:49:43Z,AMC Methuen 20,ET,2026-10-16,Friday,7:15pm,147212498,IMAX with Laser at AMC,20.99,17.99,19.49,2.99,"{""Adult"":20.99,""Child"":17.99,""Senior"":19.49}",9327
+2026-10-16,2026-10-12T13:49:44Z,AMC Methuen 20,ET,2026-10-16,Friday,6:15pm,147212522,Dolby Cinema at AMC,20.99,17.99,19.49,2.99,"{""Adult"":20.99,""Child"":17.99,""Senior"":19.49}",9275
+2026-10-16,2026-10-12T13:49:45Z,AMC Methuen 20,ET,2026-10-17,Saturday,2:00pm,147212469,Open Caption (On-screen Subtitles),11.59,9.19,10.39,2.69,"{""Adult"":11.59,""Child"":9.19,""Senior"":10.39}",9949
+2026-10-16,2026-10-12T13:49:46Z,AMC Methuen 20,ET,2026-10-17,Saturday,11:00am,147377420,Laser at AMC,11.59,9.19,10.39,2.69,"{""Adult"":11.59,""Child"":9.19,""Senior"":10.39}",10007
+2026-10-16,2026-10-12T13:49:46Z,AMC Methuen 20,ET,2026-10-17,Saturday,1:00pm,147212487,IMAX with Laser at AMC,18.09,15.69,16.89,2.99,"{""Adult"":18.09,""Child"":15.69,""Senior"":16.89}",10067
+2026-10-16,2026-10-12T13:49:47Z,AMC Columbus 10,ET,2026-10-16,Friday,7:00pm,147203134,undefined,11.01,7.86,9.44,2.69,"{""Adult"":11.01,""Child"":7.86,""Senior"":9.44}",9228
+2026-10-16,2026-10-12T13:49:47Z,AMC Columbus 10,ET,2026-10-17,Saturday,1:00pm,147203129,undefined,8.81,6.29,7.55,2.69,"{""Adult"":8.81,""Child"":6.29,""Senior"":7.55}",9915
+2026-10-16,2026-10-12T13:49:48Z,AMC Hoffman Center 22,ET,2026-10-16,Friday,7:00pm,147211412,IMAX with Laser at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9311
+2026-10-16,2026-10-12T13:49:48Z,AMC Hoffman Center 22,ET,2026-10-16,Friday,8:00pm,147211375,XL at AMC,17.49,14.49,15.99,2.99,"{""Adult"":17.49,""Child"":14.49,""Senior"":15.99}",9244
+2026-10-16,2026-10-12T13:49:49Z,AMC Hoffman Center 22,ET,2026-10-16,Friday,6:00pm,147211427,Dolby Cinema at AMC,22.49,19.49,20.99,2.99,"{""Adult"":22.49,""Child"":19.49,""Senior"":20.99}",9337
+2026-10-16,2026-10-12T13:49:50Z,AMC Hoffman Center 22,ET,2026-10-17,Saturday,2:30pm,147211450,Open Caption (On-screen Subtitles),12.49,10.09,11.29,2.69,"{""Adult"":12.49,""Child"":10.09,""Senior"":11.29}",9946
+2026-10-16,2026-10-12T13:49:51Z,AMC Hoffman Center 22,ET,2026-10-17,Saturday,1:00pm,147211404,IMAX with Laser at AMC,18.99,16.59,17.79,2.99,"{""Adult"":18.99,""Child"":16.59,""Senior"":17.79}",10034
+2026-10-16,2026-10-12T13:49:52Z,AMC Lakeshore 8,ET,2026-10-16,Friday,7:00pm,147204191,Laser at AMC,14.5,11.28,12.89,2.69,"{""Adult"":14.5,""Child"":11.28,""Senior"":12.89}",9308
+2026-10-16,2026-10-12T13:49:52Z,AMC Lakeshore 8,ET,2026-10-18,Sunday,1:00pm,147204226,Laser at AMC,11.6,9.02,10.31,2.69,"{""Adult"":11.6,""Child"":9.02,""Senior"":10.31}",10012
+2026-10-16,2026-10-12T13:49:53Z,AMC Columbus Park 15,ET,2026-10-16,Friday,7:00pm,147207750,IMAX at AMC,20.7,17.43,19.06,2.99,"{""Adult"":20.7,""Child"":17.43,""Senior"":19.06}",9227
+2026-10-16,2026-10-12T13:49:53Z,AMC Columbus Park 15,ET,2026-10-16,Friday,9:00pm,147207849,undefined,14.16,10.89,12.52,2.69,"{""Adult"":14.16,""Child"":10.89,""Senior"":12.52}",9161
+2026-10-16,2026-10-12T13:49:54Z,AMC Columbus Park 15,ET,2026-10-17,Saturday,3:00pm,147207843,Open Caption (On-screen Subtitles),11.33,8.71,10.02,2.69,"{""Adult"":11.33,""Child"":8.71,""Senior"":10.02}",9728
+2026-10-16,2026-10-12T13:49:54Z,AMC Columbus Park 15,ET,2026-10-17,Saturday,1:00pm,147207739,IMAX at AMC,17.87,15.25,16.56,2.99,"{""Adult"":17.87,""Child"":15.25,""Senior"":16.56}",9921
+2026-10-16,2026-10-12T13:49:55Z,AMC Security Square 8,ET,2026-10-16,Friday,7:30pm,147112288,Laser at AMC,15.39,12.09,13.74,2.69,"{""Adult"":15.39,""Child"":12.09,""Senior"":13.74}",9355
+2026-10-16,2026-10-12T13:49:56Z,AMC Security Square 8,ET,2026-10-18,Sunday,1:30pm,147112275,Open Caption (On-screen Subtitles),12.31,9.67,10.99,2.69,"{""Adult"":12.31,""Child"":9.67,""Senior"":10.99}",10305
+2026-10-16,2026-10-12T13:49:56Z,AMC Security Square 8,ET,2026-10-17,Saturday,1:30pm,147112283,Laser at AMC,12.31,9.67,10.99,2.69,"{""Adult"":12.31,""Child"":9.67,""Senior"":10.99}",10060
+2026-10-16,2026-10-12T13:49:57Z,AMC Shirlington 7,ET,2026-10-16,Friday,1:00pm,147213541,Open Caption (On-screen Subtitles),12.79,10.39,11.59,2.69,"{""Adult"":12.79,""Child"":10.39,""Senior"":11.59}",9989
+2026-10-16,2026-10-12T13:49:58Z,AMC Shirlington 7,ET,2026-10-16,Friday,7:00pm,147213559,Laser at AMC,15.99,12.99,14.49,2.69,"{""Adult"":15.99,""Child"":12.99,""Senior"":14.49}",9307
+2026-10-16,2026-10-12T13:49:58Z,AMC Shirlington 7,ET,2026-10-17,Saturday,1:00pm,147213561,Laser at AMC,12.79,10.39,11.59,2.69,"{""Adult"":12.79,""Child"":10.39,""Senior"":11.59}",10010
+2026-10-16,2026-10-12T13:49:59Z,AMC Landmark 8,ET,2026-10-16,Friday,6:00pm,147215728,undefined,14.99,11.99,13.49,2.69,"{""Adult"":14.99,""Child"":11.99,""Senior"":13.49}",9220
+2026-10-16,2026-10-12T13:49:59Z,AMC Landmark 8,ET,2026-10-17,Saturday,3:30pm,147215729,undefined,11.99,9.59,10.79,2.69,"{""Adult"":11.99,""Child"":9.59,""Senior"":10.79}",9936
+2026-10-16,2026-10-12T13:50:01Z,AMC Courthouse Plaza 8,ET,2026-10-16,Friday,7:00pm,147032252,Laser at AMC,16.49,13.49,14.99,2.69,"{""Adult"":16.49,""Child"":13.49,""Senior"":14.99}",9321
+2026-10-16,2026-10-12T13:50:01Z,AMC Courthouse Plaza 8,ET,2026-10-17,Saturday,1:00pm,147032246,Open Caption (On-screen Subtitles),13.19,10.79,11.99,2.69,"{""Adult"":13.19,""Child"":10.79,""Senior"":11.99}",10278
+2026-10-16,2026-10-12T13:50:02Z,AMC Courthouse Plaza 8,ET,2026-10-18,Sunday,1:00pm,147032250,Laser at AMC,13.19,10.79,11.99,2.69,"{""Adult"":13.19,""Child"":10.79,""Senior"":11.99}",10295
+2026-10-16,2026-10-12T13:50:03Z,AMC SoNo8,ET,2026-10-16,Friday,7:00pm,147099256,undefined,14.99,11.99,13.49,2.69,"{""Adult"":14.99,""Child"":11.99,""Senior"":13.49}",9232
+2026-10-16,2026-10-12T13:50:04Z,AMC SoNo8,ET,2026-10-17,Saturday,1:00pm,147099231,undefined,11.99,9.59,10.79,2.69,"{""Adult"":11.99,""Child"":9.59,""Senior"":10.79}",9924
+2026-10-16,2026-10-12T13:50:04Z,AMC Tysons Corner 16,ET,2026-10-16,Friday,9:10pm,147181381,IMAX with Laser at AMC,24.99,21.99,23.49,2.99,"{""Adult"":24.99,""Child"":21.99,""Senior"":23.49}",9383
+2026-10-16,2026-10-12T13:50:05Z,AMC Tysons Corner 16,ET,2026-10-16,Friday,7:45pm,147181455,Dolby Cinema at AMC,24.99,21.99,23.49,2.99,"{""Adult"":24.99,""Child"":21.99,""Senior"":23.49}",9343
+2026-10-16,2026-10-12T13:50:05Z,AMC Tysons Corner 16,ET,2026-10-16,Friday,10:00pm,147719710,4DX at AMC,26.99,23.99,25.49,2.99,"{""Adult"":26.99,""Child"":23.99,""Senior"":25.49}",9293
+2026-10-16,2026-10-12T13:50:06Z,AMC Tysons Corner 16,ET,2026-10-17,Saturday,3:00pm,147181377,IMAX with Laser at AMC,21.39,18.99,20.19,2.99,"{""Adult"":21.39,""Child"":18.99,""Senior"":20.19}",10109
+2026-10-16,2026-10-12T13:50:06Z,AMC Loudoun Station 11,ET,2026-10-16,Friday,7:00pm,147233701,undefined,12.49,9.49,10.99,2.69,"{""Adult"":12.49,""Child"":9.49,""Senior"":10.99}",9266
+2026-10-16,2026-10-12T13:50:07Z,AMC Loudoun Station 11,ET,2026-10-18,Sunday,2:30pm,147380297,Open Caption (On-screen Subtitles),9.99,7.59,8.79,2.69,"{""Adult"":9.99,""Child"":7.59,""Senior"":8.79}",9948
+2026-10-16,2026-10-12T13:50:07Z,AMC Loudoun Station 11,ET,2026-10-17,Saturday,1:00pm,147233716,undefined,9.99,7.59,8.79,2.69,"{""Adult"":9.99,""Child"":7.59,""Senior"":8.79}",9949
+2026-10-16,2026-10-12T13:50:08Z,AMC Newport On The Levee 20,ET,2026-10-16,Friday,7:20pm,147017506,IMAX at AMC,19.07,15.89,17.48,2.99,"{""Adult"":19.07,""Child"":15.89,""Senior"":17.48}",9237
+2026-10-16,2026-10-12T13:50:08Z,AMC Newport On The Levee 20,ET,2026-10-16,Friday,8:20pm,147237266,undefined,13.24,10.06,11.65,2.69,"{""Adult"":13.24,""Child"":10.06,""Senior"":11.65}",9286
+2026-10-16,2026-10-12T13:50:09Z,AMC Newport On The Levee 20,ET,2026-10-16,Friday,9:20pm,147237249,Dolby Cinema at AMC,19.6,16.42,18.01,2.99,"{""Adult"":19.6,""Child"":16.42,""Senior"":18.01}",9357
+2026-10-16,2026-10-12T13:50:10Z,AMC Newport On The Levee 20,ET,2026-10-18,Sunday,2:20pm,147237252,Open Caption (On-screen Subtitles),10.59,8.05,9.32,2.69,"{""Adult"":10.59,""Child"":8.05,""Senior"":9.32}",9948
+2026-10-16,2026-10-12T13:50:11Z,AMC Newport On The Levee 20,ET,2026-10-17,Saturday,1:20pm,147017512,IMAX at AMC,16.42,13.88,15.15,2.99,"{""Adult"":16.42,""Child"":13.88,""Senior"":15.15}",10234
+2026-10-16,2026-10-12T13:50:12Z,AMC DINE-IN Berkshire 8,ET,2026-10-16,Friday,7:00pm,147032524,PRIME at AMC,20.99,17.99,19.49,2.99,"{""Adult"":20.99,""Child"":17.99,""Senior"":19.49}",9391
+2026-10-16,2026-10-12T13:50:13Z,AMC DINE-IN Berkshire 8,ET,2026-10-17,Saturday,1:00pm,147378561,PRIME at AMC,17.79,15.39,16.59,2.99,"{""Adult"":17.79,""Child"":15.39,""Senior"":16.59}",10132
+2026-10-16,2026-10-12T13:50:13Z,AMC South Bay Center 12,ET,2026-10-16,Friday,10:00pm,147222643,IMAX at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9331
+2026-10-16,2026-10-12T13:50:14Z,AMC South Bay Center 12,ET,2026-10-16,Friday,6:00pm,147222666,Dolby Cinema at AMC,21.99,18.99,20.49,2.99,"{""Adult"":21.99,""Child"":18.99,""Senior"":20.49}",9314
+2026-10-16,2026-10-12T13:50:15Z,AMC South Bay Center 12,ET,2026-10-16,Friday,8:15pm,147226023,Laser at AMC,15.99,12.99,14.49,2.69,"{""Adult"":15.99,""Child"":12.99,""Senior"":14.49}",9297
+2026-10-16,2026-10-12T13:50:15Z,AMC South Bay Center 12,ET,2026-10-17,Saturday,1:45pm,147226024,Laser at AMC,12.79,10.39,11.59,2.69,"{""Adult"":12.79,""Child"":10.39,""Senior"":11.59}",10023
+2026-10-16,2026-10-12T13:50:16Z,AMC Worldgate 9,ET,2026-10-16,Friday,6:30pm,147201731,undefined,15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9242
+2026-10-16,2026-10-12T13:50:17Z,AMC Worldgate 9,ET,2026-10-16,Friday,9:30pm,147201732,Open Caption (On-screen Subtitles),15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9228
+2026-10-16,2026-10-12T13:50:18Z,AMC Worldgate 9,ET,2026-10-17,Saturday,3:30pm,147201733,undefined,12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",9922
+2026-10-16,2026-10-12T13:50:19Z,AMC Lynnhaven 18,ET,2026-10-16,Friday,7:15pm,147202531,IMAX with Laser at AMC,18.69,15.39,17.04,2.99,"{""Adult"":18.69,""Child"":15.39,""Senior"":17.04}",9327
+2026-10-16,2026-10-12T13:50:20Z,AMC Lynnhaven 18,ET,2026-10-16,Friday,2:30pm,147202462,Open Caption (On-screen Subtitles),10.11,7.47,8.79,2.69,"{""Adult"":10.11,""Child"":7.47,""Senior"":8.79}",9939
+2026-10-16,2026-10-12T13:50:20Z,AMC Lynnhaven 18,ET,2026-10-16,Friday,9:15pm,147243795,Dolby Cinema at AMC,19.24,15.94,17.59,2.99,"{""Adult"":19.24,""Child"":15.94,""Senior"":17.59}",9361
+2026-10-16,2026-10-12T13:50:21Z,AMC Lynnhaven 18,ET,2026-10-17,Saturday,1:15pm,147202524,IMAX with Laser at AMC,16.16,13.52,14.84,2.99,"{""Adult"":16.16,""Child"":13.52,""Senior"":14.84}",10266
+2026-10-16,2026-10-12T13:50:21Z,AMC West Chester 18,ET,2026-10-16,Friday,7:30pm,147186949,IMAX at AMC,19.49,16.49,17.99,2.99,"{""Adult"":19.49,""Child"":16.49,""Senior"":17.99}",9221
+2026-10-16,2026-10-12T13:50:22Z,AMC West Chester 18,ET,2026-10-16,Friday,9:30pm,147186895,undefined,13.99,10.99,12.49,2.69,"{""Adult"":13.99,""Child"":10.99,""Senior"":12.49}",9212
+2026-10-16,2026-10-12T13:50:23Z,AMC West Chester 18,ET,2026-10-16,Friday,6:45pm,147186976,Dolby Cinema at AMC,19.99,16.99,18.49,2.99,"{""Adult"":19.99,""Child"":16.99,""Senior"":18.49}",9312
+2026-10-16,2026-10-12T13:50:23Z,AMC West Chester 18,ET,2026-10-17,Saturday,1:30pm,147186948,IMAX at AMC,16.69,14.29,15.49,2.99,"{""Adult"":16.69,""Child"":14.29,""Senior"":15.49}",9925
+2026-10-16,2026-10-12T13:50:24Z,AMC DINE-IN Bridgewater 7,ET,2026-10-16,Friday,6:15pm,147239459,Dine-In Delivery to Seat,14.92,11.72,13.32,2.69,"{""Adult"":14.92,""Child"":11.72,""Senior"":13.32}",9288
+2026-10-16,2026-10-12T13:50:25Z,AMC DINE-IN Bridgewater 7,ET,2026-10-17,Saturday,3:15pm,147301475,Dine-In Delivery to Seat,11.93,9.37,10.65,2.69,"{""Adult"":11.93,""Child"":9.37,""Senior"":10.65}",10238
+2026-10-16,2026-10-12T13:50:26Z,AMC Southington 12,ET,2026-10-16,Friday,9:30pm,147047713,undefined,11.49,8.49,9.99,2.69,"{""Adult"":11.49,""Child"":8.49,""Senior"":9.99}",9213
+2026-10-16,2026-10-12T13:50:26Z,AMC Southington 12,ET,2026-10-17,Saturday,3:30pm,147047706,undefined,9.19,6.79,7.99,2.69,"{""Adult"":9.19,""Child"":6.79,""Senior"":7.99}",9950
+2026-10-16,2026-10-12T13:50:27Z,AMC Dublin Village 18,ET,2026-10-16,Friday,12:30pm,147091395,Open Caption (On-screen Subtitles),10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",9907
+2026-10-16,2026-10-12T13:50:27Z,AMC Dublin Village 18,ET,2026-10-16,Friday,9:30pm,147091396,undefined,12.99,9.99,11.49,2.69,"{""Adult"":12.99,""Child"":9.99,""Senior"":11.49}",9232
+2026-10-16,2026-10-12T13:50:28Z,AMC Dublin Village 18,ET,2026-10-17,Saturday,3:30pm,147091400,undefined,10.39,7.99,9.19,2.69,"{""Adult"":10.39,""Child"":7.99,""Senior"":9.19}",9934
+2026-10-16,2026-10-12T13:50:28Z,AMC Southpoint 17,ET,2026-10-16,Friday,10:00pm,147209248,undefined,14.5,11.28,12.89,2.69,"{""Adult"":14.5,""Child"":11.28,""Senior"":12.89}",9239
+2026-10-16,2026-10-12T13:50:29Z,AMC Southpoint 17,ET,2026-10-16,Friday,7:45pm,147209310,IMAX with Laser at AMC,19.88,16.65,18.26,2.99,"{""Adult"":19.88,""Child"":16.65,""Senior"":18.26}",9249
+2026-10-16,2026-10-12T13:50:30Z,AMC Southpoint 17,ET,2026-10-16,Friday,4:00pm,147209249,Open Caption (On-screen Subtitles),14.5,11.28,12.89,2.69,"{""Adult"":14.5,""Child"":11.28,""Senior"":12.89}",9248
+2026-10-16,2026-10-12T13:50:30Z,AMC Southpoint 17,ET,2026-10-16,Friday,9:15pm,147375204,Dolby Cinema at AMC,20.95,17.73,19.34,2.99,"{""Adult"":20.95,""Child"":17.73,""Senior"":19.34}",9309
+2026-10-16,2026-10-12T13:50:32Z,AMC Southpoint 17,ET,2026-10-17,Saturday,1:45pm,147209303,IMAX with Laser at AMC,16.97,14.39,15.68,2.99,"{""Adult"":16.97,""Child"":14.39,""Senior"":15.68}",10290
+2026-10-16,2026-10-12T13:50:32Z,AMC Easton Town Center 30,ET,2026-10-16,Friday,7:30pm,147121383,IMAX with Laser at AMC,21.51,18.36,19.94,2.99,"{""Adult"":21.51,""Child"":18.36,""Senior"":19.94}",9321
+2026-10-16,2026-10-12T13:50:34Z,AMC Easton Town Center 30,ET,2026-10-16,Friday,9:45pm,147353261,Dolby Cinema at AMC,21.51,18.36,19.94,2.99,"{""Adult"":21.51,""Child"":18.36,""Senior"":19.94}",9356
+2026-10-16,2026-10-12T13:50:35Z,AMC Easton Town Center 30,ET,2026-10-16,Friday,9:00pm,147121328,undefined,15.21,12.06,13.64,2.69,"{""Adult"":15.21,""Child"":12.06,""Senior"":13.64}",9234
+2026-10-16,2026-10-12T13:50:35Z,AMC Easton Town Center 30,ET,2026-10-17,Saturday,2:30pm,147353263,PRIME at AMC,17.94,15.42,16.68,2.99,"{""Adult"":17.94,""Child"":15.42,""Senior"":16.68}",10076
+2026-10-16,2026-10-12T13:50:36Z,AMC Easton Town Center 30,ET,2026-10-17,Saturday,1:30pm,147211778,IMAX with Laser at AMC,18.47,15.95,17.21,2.99,"{""Adult"":18.47,""Child"":15.95,""Senior"":17.21}",10251
+2026-10-16,2026-10-12T13:50:38Z,AMC DINE-IN Holly Springs 9,ET,2026-10-16,Friday,9:30pm,147173736,Dine-In Delivery to Seat,13.93,10.71,12.32,2.69,"{""Adult"":13.93,""Child"":10.71,""Senior"":12.32}",9400
+2026-10-16,2026-10-12T13:50:38Z,AMC DINE-IN Holly Springs 9,ET,2026-10-16,Friday,7:30pm,147173741,Dolby Cinema at AMC,20.37,17.15,18.76,2.99,"{""Adult"":20.37,""Child"":17.15,""Senior"":18.76}",9474
+2026-10-16,2026-10-12T13:50:39Z,AMC DINE-IN Holly Springs 9,ET,2026-10-17,Saturday,1:30pm,147173758,Dolby Cinema at AMC,17.58,15.0,16.29,2.99,"{""Adult"":17.58,""Child"":15.0,""Senior"":16.29}",10428
+2026-10-16,2026-10-12T13:50:40Z,AMC Spring Hill 12,ET,2026-10-16,Friday,7:00pm,147199226,BigD at AMC,17.55,14.26,15.9,2.99,"{""Adult"":17.55,""Child"":14.26,""Senior"":15.9}",9239
+2026-10-16,2026-10-12T13:50:41Z,AMC Spring Hill 12,ET,2026-10-16,Friday,5:00pm,147199248,Open Caption (On-screen Subtitles),14.26,10.96,12.61,2.69,"{""Adult"":14.26,""Child"":10.96,""Senior"":12.61}",9252
+2026-10-16,2026-10-12T13:50:41Z,AMC Spring Hill 12,ET,2026-10-16,Friday,8:00pm,147199298,Laser at AMC,14.26,10.96,12.61,2.69,"{""Adult"":14.26,""Child"":10.96,""Senior"":12.61}",9258
+2026-10-16,2026-10-12T13:50:42Z,AMC Spring Hill 12,ET,2026-10-17,Saturday,1:00pm,147199224,BigD at AMC,14.7,12.06,13.38,2.99,"{""Adult"":14.7,""Child"":12.06,""Senior"":13.38}",9972
+2026-10-16,2026-10-12T13:50:42Z,AMC Majestic 6,ET,2026-10-16,Friday,7:30pm,147215575,PRIME at AMC,19.99,16.99,18.49,2.99,"{""Adult"":19.99,""Child"":16.99,""Senior"":18.49}",9315
+2026-10-16,2026-10-12T13:50:43Z,AMC Majestic 6,ET,2026-10-17,Saturday,1:30pm,147215592,PRIME at AMC,16.99,14.59,15.79,2.99,"{""Adult"":16.99,""Child"":14.59,""Senior"":15.79}",10000
+2026-10-16,2026-10-12T13:50:44Z,AMC Grove City 14,ET,2026-10-16,Friday,7:00pm,147117290,IMAX at AMC,13.99,11.99,12.99,2.99,"{""Adult"":13.99,""Child"":11.99,""Senior"":12.99}",9196
+2026-10-16,2026-10-12T13:50:45Z,AMC Grove City 14,ET,2026-10-16,Friday,2:30pm,147117246,Open Caption (On-screen Subtitles),7.19,5.59,6.39,2.69,"{""Adult"":7.19,""Child"":5.59,""Senior"":6.39}",9972
+2026-10-16,2026-10-12T13:50:46Z,AMC Grove City 14,ET,2026-10-16,Friday,8:30pm,147117244,undefined,8.99,6.99,7.99,2.69,"{""Adult"":8.99,""Child"":6.99,""Senior"":7.99}",9112
+2026-10-16,2026-10-12T13:50:47Z,AMC Grove City 14,ET,2026-10-17,Saturday,1:00pm,147117281,IMAX at AMC,12.19,10.59,11.39,2.99,"{""Adult"":12.19,""Child"":10.59,""Senior"":11.39}",9922
+2026-10-16,2026-10-12T13:50:47Z,AMC DINE-IN Menlo Park 12,ET,2026-10-16,Friday,7:30pm,147034090,Dine-In Delivery to Seat,16.52,13.32,14.92,2.69,"{""Adult"":16.52,""Child"":13.32,""Senior"":14.92}",9339
+2026-10-16,2026-10-12T13:50:47Z,AMC DINE-IN Menlo Park 12,ET,2026-10-17,Saturday,1:30pm,147034086,Dine-In Delivery to Seat,13.21,10.65,11.93,2.69,"{""Adult"":13.21,""Child"":10.65,""Senior"":11.93}",10055
+2026-10-16,2026-10-12T13:50:48Z,AMC Star Gratiot 15,ET,2026-10-16,Friday,7:10pm,147024061,Dolby Cinema at AMC,17.99,14.99,16.49,2.99,"{""Adult"":17.99,""Child"":14.99,""Senior"":16.49}",9281
+2026-10-16,2026-10-12T13:50:49Z,AMC Star Gratiot 15,ET,2026-10-16,Friday,8:30pm,147024104,undefined,11.99,8.99,10.49,2.69,"{""Adult"":11.99,""Child"":8.99,""Senior"":10.49}",9237
+2026-10-16,2026-10-12T13:50:50Z,AMC Star Gratiot 15,ET,2026-10-17,Saturday,1:10pm,147024053,Dolby Cinema at AMC,15.59,13.19,14.39,2.99,"{""Adult"":15.59,""Child"":13.19,""Senior"":14.39}",10017
+2026-10-16,2026-10-12T13:50:50Z,AMC Montgomery 16,ET,2026-10-16,Friday,9:00pm,147017859,Laser at AMC,19.25,16.04,17.65,2.69,"{""Adult"":19.25,""Child"":16.04,""Senior"":17.65}",9354
+2026-10-16,2026-10-12T13:50:51Z,AMC Montgomery 16,ET,2026-10-16,Friday,7:30pm,147017929,PRIME at AMC,25.67,22.46,24.07,2.99,"{""Adult"":25.67,""Child"":22.46,""Senior"":24.07}",9353
+2026-10-16,2026-10-12T13:50:52Z,AMC Montgomery 16,ET,2026-10-17,Saturday,3:00pm,147017861,Laser at AMC,15.4,12.83,14.12,2.69,"{""Adult"":15.4,""Child"":12.83,""Senior"":14.12}",10085
+2026-10-16,2026-10-12T13:50:52Z,AMC Maple Ridge 8,ET,2026-10-16,Friday,7:00pm,147172636,undefined,13.99,10.99,12.49,2.69,"{""Adult"":13.99,""Child"":10.99,""Senior"":12.49}",9251
+2026-10-16,2026-10-12T13:50:53Z,AMC Maple Ridge 8,ET,2026-10-17,Saturday,1:00pm,147172623,undefined,11.19,8.79,9.99,2.69,"{""Adult"":11.19,""Child"":8.79,""Senior"":9.99}",9946
+2026-10-16,2026-10-12T13:50:54Z,AMC DINE-IN Midlothian 10,ET,2026-10-16,Friday,7:00pm,147235052,Dine-In Delivery to Seat,12.49,9.49,10.99,2.69,"{""Adult"":12.49,""Child"":9.49,""Senior"":10.99}",9320
+2026-10-16,2026-10-12T13:50:55Z,AMC DINE-IN Midlothian 10,ET,2026-10-18,Sunday,1:00pm,147235047,Open Caption (On-screen Subtitles),9.99,7.59,8.79,2.69,"{""Adult"":9.99,""Child"":7.59,""Senior"":8.79}",9974
+2026-10-16,2026-10-12T13:50:55Z,AMC DINE-IN Midlothian 10,ET,2026-10-17,Saturday,1:00pm,147235054,Dine-In Delivery to Seat,9.99,7.59,8.79,2.69,"{""Adult"":9.99,""Child"":7.59,""Senior"":8.79}",10007
+2026-10-16,2026-10-12T13:50:56Z,AMC Staten Island 11,ET,2026-10-16,Friday,9:00pm,147187813,IMAX with Laser at AMC,23.99,20.99,22.49,2.99,"{""Adult"":23.99,""Child"":20.99,""Senior"":22.49}",9388
+2026-10-16,2026-10-12T13:50:57Z,AMC Staten Island 11,ET,2026-10-16,Friday,7:30pm,147187848,Dolby Cinema at AMC,23.99,20.99,22.49,2.99,"{""Adult"":23.99,""Child"":20.99,""Senior"":22.49}",9241
+2026-10-16,2026-10-12T13:50:57Z,AMC Staten Island 11,ET,2026-10-17,Saturday,3:00pm,147187809,IMAX with Laser at AMC,20.59,18.19,19.39,2.99,"{""Adult"":20.59,""Child"":18.19,""Senior"":19.39}",10093
+2026-10-16,2026-10-12T13:50:58Z,AMC Market Fair 15,ET,2026-10-16,Friday,9:45pm,147102598,undefined,14.43,11.22,12.83,2.69,"{""Adult"":14.43,""Child"":11.22,""Senior"":12.83}",9243
+2026-10-16,2026-10-12T13:50:59Z,AMC Market Fair 15,ET,2026-10-17,Saturday,3:15pm,147102600,undefined,11.55,8.98,10.26,2.69,"{""Adult"":11.55,""Child"":8.98,""Senior"":10.26}",9946
+2026-10-16,2026-10-12T13:50:59Z,AMC John R 15,ET,2026-10-16,Friday,7:30pm,147077245,undefined,11.99,8.99,10.49,2.69,"{""Adult"":11.99,""Child"":8.99,""Senior"":10.49}",9202
+2026-10-16,2026-10-12T13:51:00Z,AMC John R 15,ET,2026-10-17,Saturday,1:30pm,147077251,undefined,9.59,7.19,8.39,2.69,"{""Adult"":9.59,""Child"":7.19,""Senior"":8.39}",9903
+2026-10-16,2026-10-12T13:51:00Z,AMC DINE-IN Painters Crossing 9,ET,2026-10-16,Friday,7:00pm,147065041,Dine-In Delivery to Seat,15.49,12.49,13.99,2.69,"{""Adult"":15.49,""Child"":12.49,""Senior"":13.99}",9445
+2026-10-16,2026-10-12T13:51:01Z,AMC DINE-IN Painters Crossing 9,ET,2026-10-18,Sunday,3:00pm,147065048,Dine-In Delivery to Seat,12.39,9.99,11.19,2.69,"{""Adult"":12.39,""Child"":9.99,""Senior"":11.19}",10118
+2026-10-16,2026-10-12T13:51:02Z,AMC Stones River 9,ET,2026-10-16,Friday,7:00pm,147190294,Dolby Cinema at AMC,22.49,19.2,20.84,2.99,"{""Adult"":22.49,""Child"":19.2,""Senior"":20.84}",9352
+2026-10-16,2026-10-12T13:51:02Z,AMC Stones River 9,ET,2026-10-17,Saturday,1:00pm,147190292,Dolby Cinema at AMC,19.31,16.67,17.99,2.99,"{""Adult"":19.31,""Child"":16.67,""Senior"":17.99}",10076
+2026-10-16,2026-10-12T13:51:03Z,AMC MarketFair 10,ET,2026-10-16,Friday,7:15pm,147018022,undefined,16.52,13.32,14.92,2.69,"{""Adult"":16.52,""Child"":13.32,""Senior"":14.92}",9201
+2026-10-16,2026-10-12T13:51:03Z,AMC MarketFair 10,ET,2026-10-17,Saturday,12:00pm,147544426,undefined,13.21,10.65,11.93,2.69,"{""Adult"":13.21,""Child"":10.65,""Senior"":11.93}",9918
+2026-10-16,2026-10-12T13:51:04Z,AMC Livonia 20,ET,2026-10-16,Friday,7:00pm,147224616,IMAX at AMC,13.99,11.99,12.99,2.99,"{""Adult"":13.99,""Child"":11.99,""Senior"":12.99}",9206
+2026-10-16,2026-10-12T13:51:05Z,AMC Livonia 20,ET,2026-10-16,Friday,8:00pm,147224597,undefined,8.99,6.99,7.99,2.69,"{""Adult"":8.99,""Child"":6.99,""Senior"":7.99}",9126
+2026-10-16,2026-10-12T13:51:05Z,AMC Livonia 20,ET,2026-10-16,Friday,5:00pm,147224596,Open Caption (On-screen Subtitles),8.99,6.99,7.99,2.69,"{""Adult"":8.99,""Child"":6.99,""Senior"":7.99}",8994
+2026-10-16,2026-10-12T13:51:06Z,AMC Livonia 20,ET,2026-10-17,Saturday,3:00pm,147224632,undefined,7.19,5.59,6.39,2.69,"{""Adult"":7.19,""Child"":5.59,""Senior"":6.39}",9823
+2026-10-16,2026-10-12T13:51:06Z,AMC DINE-IN Shops at Riverside 9,ET,2026-10-16,Friday,7:45pm,147227556,Dolby Cinema at AMC,27.18,23.98,25.58,2.99,"{""Adult"":27.18,""Child"":23.98,""Senior"":25.58}",9448
+2026-10-16,2026-10-12T13:51:07Z,AMC DINE-IN Shops at Riverside 9,ET,2026-10-17,Saturday,1:15pm,147227551,Dolby Cinema at AMC,23.23,20.67,21.95,2.99,"{""Adult"":23.23,""Child"":20.67,""Senior"":21.95}",10164
+2026-10-16,2026-10-12T13:51:07Z,AMC Stonybrook 20,ET,2026-10-16,Friday,7:15pm,147116155,IMAX at AMC,19.07,15.89,17.48,2.99,"{""Adult"":19.07,""Child"":15.89,""Senior"":17.48}",9263
+2026-10-16,2026-10-12T13:51:08Z,AMC Stonybrook 20,ET,2026-10-16,Friday,8:45pm,147116184,undefined,13.77,10.59,12.18,2.69,"{""Adult"":13.77,""Child"":10.59,""Senior"":12.18}",9117
+2026-10-16,2026-10-12T13:51:09Z,AMC Stonybrook 20,ET,2026-10-17,Saturday,1:15pm,147116140,IMAX at AMC,16.31,13.77,15.04,2.99,"{""Adult"":16.31,""Child"":13.77,""Senior"":15.04}",9926
+2026-10-16,2026-10-12T13:51:09Z,AMC Marlton 8,ET,2026-10-16,Friday,7:00pm,147155649,PRIME at AMC,22.38,19.18,20.78,2.99,"{""Adult"":22.38,""Child"":19.18,""Senior"":20.78}",9291
+2026-10-16,2026-10-12T13:51:10Z,AMC Marlton 8,ET,2026-10-17,Saturday,1:00pm,147155670,PRIME at AMC,19.18,16.62,17.9,2.99,"{""Adult"":19.18,""Child"":16.62,""Senior"":17.9}",10259
+2026-10-16,2026-10-12T13:51:10Z,AMC Danbury 16,ET,2026-10-16,Friday,9:00pm,147736457,IMAX with Laser at AMC,19.49,16.49,17.99,2.99,"{""Adult"":19.49,""Child"":16.49,""Senior"":17.99}",9322
+2026-10-16,2026-10-12T13:51:10Z,AMC Danbury 16,ET,2026-10-16,Friday,7:00pm,147149323,Dolby Cinema at AMC,19.49,16.49,17.99,2.99,"{""Adult"":19.49,""Child"":16.49,""Senior"":17.99}",9312
+2026-10-16,2026-10-12T13:51:11Z,AMC Danbury 16,ET,2026-10-17,Saturday,1:00pm,147149320,Dolby Cinema at AMC,16.79,14.39,15.59,2.99,"{""Adult"":16.79,""Child"":14.39,""Senior"":15.59}",10278
+2026-10-16,2026-10-12T13:51:12Z,AMC Tallahassee 20,ET,2026-10-16,Friday,7:00pm,147206115,Dolby Cinema at AMC,22.03,18.8,20.41,2.99,"{""Adult"":22.03,""Child"":18.8,""Senior"":20.41}",9300
+2026-10-16,2026-10-12T13:51:12Z,AMC Tallahassee 20,ET,2026-10-16,Friday,9:00pm,147206156,Laser at AMC,15.04,11.81,13.43,2.69,"{""Adult"":15.04,""Child"":11.81,""Senior"":13.43}",9323
+2026-10-16,2026-10-12T13:51:13Z,AMC Tallahassee 20,ET,2026-10-18,Sunday,3:00pm,147206146,Open Caption (On-screen Subtitles),12.03,9.45,10.74,2.69,"{""Adult"":12.03,""Child"":9.45,""Senior"":10.74}",9980
+2026-10-16,2026-10-12T13:51:13Z,AMC Tallahassee 20,ET,2026-10-17,Saturday,1:00pm,147206111,Dolby Cinema at AMC,19.02,16.44,17.73,2.99,"{""Adult"":19.02,""Child"":16.44,""Senior"":17.73}",10027
+2026-10-16,2026-10-12T13:51:14Z,AMC Marquis 16,ET,2026-10-16,Friday,8:45pm,147100592,undefined,13.49,10.49,11.99,2.69,"{""Adult"":13.49,""Child"":10.49,""Senior"":11.99}",9232
+2026-10-16,2026-10-12T13:51:14Z,AMC Marquis 16,ET,2026-10-16,Friday,10:15pm,147100834,Dolby Cinema at AMC,19.49,16.49,17.99,2.99,"{""Adult"":19.49,""Child"":16.49,""Senior"":17.99}",9333
+2026-10-16,2026-10-12T13:51:15Z,AMC Marquis 16,ET,2026-10-17,Saturday,2:30pm,147100590,undefined,10.79,8.39,9.59,2.69,"{""Adult"":10.79,""Child"":8.39,""Senior"":9.59}",9947
+2026-10-16,2026-10-12T13:51:15Z,AMC Perry Crossing 18,ET,2026-10-16,Friday,7:00pm,147138079,Dolby Cinema at AMC,17.99,14.99,16.49,2.99,"{""Adult"":17.99,""Child"":14.99,""Senior"":16.49}",9315
+2026-10-16,2026-10-12T13:51:16Z,AMC Perry Crossing 18,ET,2026-10-16,Friday,8:00pm,147138118,undefined,11.99,8.99,10.49,2.69,"{""Adult"":11.99,""Child"":8.99,""Senior"":10.49}",9136
