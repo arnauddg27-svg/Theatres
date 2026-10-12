@@ -2,7 +2,7 @@
   "date": "2026-10-16",
   "weekend_of": "2026-10-16",
   "collected_local_date": "2026-10-12",
-  "collected_at": "2026-10-12T16:17:00.491376+00:00",
+  "collected_at": "2026-10-12T16:28:52.195696+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -59785,12 +59785,1916 @@
           }
         ]
       }
+    },
+    "AMC Albuquerque 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147232100",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232099",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147232101",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147232170",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006363",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147232102",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147232098",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147232192",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232097",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147232194",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147232095",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147232195",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147232096",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185352+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147232094",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147232191",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232093",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147232193",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147232091",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147232190",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147232092",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185325+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147232090",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232089",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147232087",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147232088",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147232189",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147232187",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147232188",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185241+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147232100",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147232099",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147232101",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147232170",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006363",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147232102",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Orchard 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147079052",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147079075",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006066",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147384151",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147079048",
+                "format": "IMAX with Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147079037",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147079051",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147079076",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147079050",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079049",
+                "format": "IMAX with Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185332+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147079047",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147079077",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147079046",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079045",
+                "format": "IMAX with Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185231+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147079036",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147079035",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079034",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147079081",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147078974",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185220+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147079052",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147079075",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006066",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147384151",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "147079048",
+            "format": "IMAX with Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC West Jordan 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147049473",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147049474",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147638916",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147049475",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147049476",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147049477",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185246+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147049478",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147049479",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147049480",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185256+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147049481",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147049482",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147049483",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185271+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147049473",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147049474",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147638916",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Chapel Hills 13": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147233173",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147233182",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147233174",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006147",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147233192",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147233181",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147233191",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185266+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147233184",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147233175",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147233183",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185281+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147233173",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147233182",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "147233174",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006147",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC 9+CO 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147223610",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:55pm",
+                "showtime_id": "147223611",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006067",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147223612",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147223645",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147385094",
+                "format": "Dolby Cinema at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147223620",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147223603",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147223602",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147223588",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147223601",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185261+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147223586",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147223609",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:05pm",
+                "showtime_id": "147223608",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147223607",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:24:21.931177+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147223619",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147223606",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:05pm",
+                "showtime_id": "147223605",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147223587",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147223604",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185336+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147223610",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:55pm",
+            "showtime_id": "147223611",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006067",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147223612",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "147223645",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147385094",
+            "format": "Dolby Cinema at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Layton Hills 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147046410",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147046411",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147046412",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147046417",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147046398",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147046399",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147046400",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147046386",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185322+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147046407",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147046408",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147046409",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147046390",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185308+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147046404",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147046405",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147046406",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147046389",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:24:21.931270+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147046410",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147046411",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147046412",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147046417",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Castle Rock 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147181068",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147181069",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181070",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147181073",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147181072",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147181071",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185312+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147181099",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147181095",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147181100",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181107",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:24:21.931182+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "147315751",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147181096",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147181098",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147181097",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147181108",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:24:21.931255+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147181068",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147181069",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147181070",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Brighton 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147193453",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147193454",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147193521",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147193447",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147193461",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147193462",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185345+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147193451",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147193452",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147193465",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147193466",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185299+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147193449",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147193450",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147193467",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147193468",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185276+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147193453",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147193454",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147193521",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Provo 8": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147030973",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147030977",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006178",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147030978",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147030967",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147031009",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147030968",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147031010",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147030969",
+                "format": "PRIME at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185289+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147030970",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147030971",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147030972",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147031012",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147031013",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147031014",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:24:21.931265+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147030974",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147031015",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147030975",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147031016",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147030976",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147031017",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185354+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147030973",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147030977",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006178",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147030978",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC DINE-IN SOUTHGATE 9": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147048269",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147048270",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147048271",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147048265",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147048266",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147048267",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147048256",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185304+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147048260",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147048257",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147048258",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147048259",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185317+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147048268",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147048262",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147048263",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147048264",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185251+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147048269",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147048270",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147048271",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ]
+      }
+    },
+    "AMC Shiloh 14": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147235419",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147235453",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147235418",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147235375",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:25pm",
+                "showtime_id": "147235421",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147235377",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147235420",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185348+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147235372",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147235417",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147235373",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147235416",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147235374",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147235415",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185226+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006164",
+                "format": "IMAX at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147235422",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147235423",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147235424",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "147235380",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147235378",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147235379",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185357+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006164",
+            "format": "IMAX at AMC"
+          }
+        ]
+      }
+    },
+    "AMC Missoula 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147222915",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147222938",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147222992",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147222966",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185285+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147222937",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147222967",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147222987",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147222931",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185236+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147222916",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147222940",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147222988",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147222964",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185342+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147222956",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147222914",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147006161",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147222932",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147222956",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147222914",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006161",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147222932",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC Fort Collins 10": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-18": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147220051",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147220050",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147220049",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185294+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147220047",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147220046",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147220045",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147220048",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185339+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-15": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147220072",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147220039",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147220040",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-16": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147220043",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147220042",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147220041",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147220044",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-12T16:28:52.185329+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-15",
+      "movies": {
+        "Street Fighter": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147220072",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147220039",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147220040",
+            "format": "undefined"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.9483,
-    "fresh": 440,
-    "expected": 464,
+    "ratio": 0.9808,
+    "fresh": 51,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
