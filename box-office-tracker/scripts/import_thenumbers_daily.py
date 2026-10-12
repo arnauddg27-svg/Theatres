@@ -38,14 +38,36 @@ def _get(url):
 
 
 def slug_candidates(title, year):
+    raw_title = title
     # a trailing parenthesized year in the TITLE ('Moana (2026)') must not end up
     # duplicated in the slug — the-numbers wants 'Moana-(2026)', not 'Moana-2026-(2026)'
     title = re.sub(r"\s*\((?:19|20)\d{2}\)\s*$", "", title)
     base = title.replace("&", "and")
     base = re.sub(r"[^A-Za-z0-9 ]", " ", base)      # drop :, ', etc.
     base = re.sub(r"\s+", "-", base.strip())
-    return [f"https://www.the-numbers.com/movie/{base}-({year})",
-            f"https://www.the-numbers.com/movie/{base}"]
+    bases = []
+    # the-numbers moves a leading article to the end of the main title (before
+    # any subtitle): 'The Dog Stars' lives at Dog-Stars-The-(2026), 'The
+    # Amazing Digital Circus: The Last Act' at Amazing-Digital-Circus-The-The-
+    # Last-Act-(2026). Without this every "The ..." title 404'd and the
+    # auto-fetch silently logged "no published days yet" all weekend (The
+    # Social Reckoning, 2026-10-09). Article-last slugs are tried first.
+    stripped = re.sub(r"\s*\((?:19|20)\d{2}\)\s*$", "", raw_title).replace("&", "and")
+    article = re.match(r"^(The|A|An)\s+(.+)$", stripped.strip())
+    if article:
+        main, _, sub = article.group(2).partition(":")
+        variants = [f"{main} {article.group(1)}" + (f" {sub}" if sub else "")]
+        if sub:
+            variants.append(f"{article.group(2)} {article.group(1)}")
+        for v in variants:
+            v = re.sub(r"[^A-Za-z0-9 ]", " ", v)
+            bases.append(re.sub(r"\s+", "-", v.strip()))
+    bases.append(base)
+    out = []
+    for b in bases:
+        out += [f"https://www.the-numbers.com/movie/{b}-({year})",
+                f"https://www.the-numbers.com/movie/{b}"]
+    return out
 
 
 def fetch_daily_table(title, year):

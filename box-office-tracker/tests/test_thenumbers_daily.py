@@ -57,6 +57,17 @@ class SlugTests(unittest.TestCase):
         cands = T.slug_candidates("Jackass: Best and Last", 2026)
         self.assertIn("Jackass-Best-and-Last-(2026)", cands[0])
 
+    def test_leading_article_moves_to_end(self):
+        # the-numbers convention, verified against stored history sources:
+        # Dog-Stars-The-(2026), Odyssey-The-(2026), Devil-Wears-Prada-2-The-(2026)
+        cands = T.slug_candidates("The Social Reckoning", 2026)
+        self.assertTrue(cands[0].endswith("/Social-Reckoning-The-(2026)"))
+        self.assertIn("https://www.the-numbers.com/movie/The-Social-Reckoning-(2026)", cands)
+        self.assertTrue(T.slug_candidates("The Amazing Digital Circus: The Last Act", 2026)[0]
+                        .endswith("/Amazing-Digital-Circus-The-The-Last-Act-(2026)"))
+        self.assertTrue(T.slug_candidates("A Quiet Place", 2026)[0].endswith("/Quiet-Place-A-(2026)"))
+        self.assertTrue(T.slug_candidates("Other Mommy", 2026)[0].endswith("/Other-Mommy-(2026)"))
+
 
 if __name__ == "__main__":
     unittest.main()
