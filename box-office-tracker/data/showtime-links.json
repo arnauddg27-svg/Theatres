@@ -2,7 +2,7 @@
   "date": "2026-10-16",
   "weekend_of": "2026-10-16",
   "collected_local_date": "2026-10-13",
-  "collected_at": "2026-10-13T15:36:28.772739+00:00",
+  "collected_at": "2026-10-13T16:20:57.064699+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -65129,7 +65129,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185352+00:00",
+          "collected_at": "2026-10-13T16:20:57.048808+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -65184,24 +65184,14 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "4:00pm",
-                "showtime_id": "147232089",
-                "format": "IMAX at AMC"
-              },
-              {
-                "showtime": "7:00pm",
-                "showtime_id": "147232087",
-                "format": "IMAX at AMC"
-              },
-              {
-                "showtime": "10:00pm",
-                "showtime_id": "147232088",
-                "format": "IMAX at AMC"
-              },
-              {
                 "showtime": "3:00pm",
                 "showtime_id": "147232189",
                 "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147232089",
+                "format": "IMAX at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -65209,13 +65199,23 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147232087",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147232188",
                 "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147232088",
+                "format": "IMAX at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185241+00:00",
+          "collected_at": "2026-10-13T16:20:57.048859+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -65264,9 +65264,34 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "2:00pm",
+                "showtime_id": "147784546",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147784556",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147784547",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147079052",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147784545",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "147784555",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -65277,6 +65302,16 @@
                 "showtime": "7:00pm",
                 "showtime_id": "147006066",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147784544",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147784554",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "9:00pm",
@@ -65297,9 +65332,39 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "11:30am",
+                "showtime_id": "147776735",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:10pm",
+                "showtime_id": "147776854",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147776829",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "1:15pm",
                 "showtime_id": "147079037",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147776736",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "147776850",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147776828",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "4:15pm",
@@ -65307,14 +65372,39 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
+                "showtime": "5:30pm",
+                "showtime_id": "147776737",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:00pm",
                 "showtime_id": "147079076",
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "6:35pm",
+                "showtime_id": "147776826",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147079050",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147776738",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147776849",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147776827",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "10:15pm",
@@ -65323,16 +65413,46 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185332+00:00",
+          "collected_at": "2026-10-13T16:20:57.048891+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "12:10pm",
+                "showtime_id": "147776846",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147776821",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "147776845",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "147776848",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147776820",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147079047",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147776734",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -65340,9 +65460,24 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "6:40pm",
+                "showtime_id": "147776818",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147079046",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147776847",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147776819",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "10:15pm",
@@ -65351,7 +65486,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185231+00:00",
+          "collected_at": "2026-10-13T16:20:57.048875+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -65393,9 +65528,34 @@
       "movies": {
         "Street Fighter": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "147784546",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147784556",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147784547",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
             "showtime": "4:00pm",
             "showtime_id": "147079052",
             "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147784545",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147784555",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
@@ -65406,6 +65566,16 @@
             "showtime": "7:00pm",
             "showtime_id": "147006066",
             "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147784544",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147784554",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
@@ -65474,8 +65644,18 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "1:10pm",
+                "showtime_id": "147774547",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147049478",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147774548",
                 "format": "undefined"
               },
               {
@@ -65484,21 +65664,51 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "147774612",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147774549",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147049480",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147774613",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147774550",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185256+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "1:10pm",
+                "showtime_id": "147774551",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147049481",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147774552",
                 "format": "undefined"
               },
               {
@@ -65507,33 +65717,83 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "147774608",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147774553",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147049483",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147774609",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147774554",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185271+00:00",
+          "collected_at": "2026-10-13T16:20:57.048883+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-15",
+      "show_date": "2026-10-17",
       "movies": {
         "Street Fighter": [
           {
+            "showtime": "1:10pm",
+            "showtime_id": "147774547",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147049478",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "147774548",
+            "format": "undefined"
+          },
+          {
             "showtime": "5:00pm",
-            "showtime_id": "147049473",
+            "showtime_id": "147049479",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "147774612",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147774549",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147049474",
+            "showtime_id": "147049480",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147638916",
+            "showtime": "9:20pm",
+            "showtime_id": "147774613",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147774550",
             "format": "undefined"
           }
         ]
@@ -65591,7 +65851,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185266+00:00",
+          "collected_at": "2026-10-13T16:20:57.048812+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -65614,7 +65874,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185281+00:00",
+          "collected_at": "2026-10-13T16:20:57.048821+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -65724,8 +65984,8 @@
           "movies": {
             "Street Fighter": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "147223586",
+                "showtime": "1:00pm",
+                "showtime_id": "147770046",
                 "format": "Dolby Cinema at AMC"
               },
               {
@@ -65734,32 +65994,62 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:00pm",
+                "showtime_id": "147770045",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "5:05pm",
                 "showtime_id": "147223608",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147223586",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147223607",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147770044",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:24:21.931177+00:00",
+          "collected_at": "2026-10-13T16:20:57.048783+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "11:00am",
+                "showtime_id": "147770063",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "11:15am",
                 "showtime_id": "147223619",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147770050",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "2:10pm",
                 "showtime_id": "147223606",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147770049",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "5:05pm",
@@ -65775,10 +66065,15 @@
                 "showtime": "8:00pm",
                 "showtime_id": "147223604",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147770048",
+                "format": "Dolby Cinema at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185336+00:00",
+          "collected_at": "2026-10-13T16:20:57.048830+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -65876,7 +66171,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185322+00:00",
+          "collected_at": "2026-10-13T16:20:57.048846+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -65904,7 +66199,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185308+00:00",
+          "collected_at": "2026-10-13T16:20:57.048833+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -66010,7 +66305,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185312+00:00",
+          "collected_at": "2026-10-13T16:20:57.048838+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -66038,7 +66333,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:24:21.931182+00:00",
+          "collected_at": "2026-10-13T16:20:57.048894+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -66071,7 +66366,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:24:21.931255+00:00",
+          "collected_at": "2026-10-13T16:20:57.048863+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -66144,7 +66439,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185345+00:00",
+          "collected_at": "2026-10-13T16:20:57.048776+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -66172,7 +66467,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185299+00:00",
+          "collected_at": "2026-10-13T16:20:57.048867+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -66200,7 +66495,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185276+00:00",
+          "collected_at": "2026-10-13T16:20:57.048902+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -66267,7 +66562,7 @@
                 "format": "PRIME at AMC"
               },
               {
-                "showtime": "4:00pm",
+                "showtime": "4:45pm",
                 "showtime_id": "147031009",
                 "format": "undefined"
               },
@@ -66277,7 +66572,7 @@
                 "format": "PRIME at AMC"
               },
               {
-                "showtime": "7:00pm",
+                "showtime": "7:30pm",
                 "showtime_id": "147031010",
                 "format": "undefined"
               },
@@ -66288,7 +66583,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185289+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -66300,19 +66595,14 @@
                 "format": "PRIME at AMC"
               },
               {
-                "showtime": "5:00pm",
-                "showtime_id": "147030971",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "8:00pm",
-                "showtime_id": "147030972",
-                "format": "PRIME at AMC"
-              },
-              {
                 "showtime": "3:00pm",
                 "showtime_id": "147031012",
                 "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147030971",
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -66320,13 +66610,23 @@
                 "format": "undefined"
               },
               {
+                "showtime": "8:00pm",
+                "showtime_id": "147030972",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147031014",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147785438",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:24:21.931265+00:00",
+          "collected_at": "2026-10-13T16:20:57.048909+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -66364,33 +66664,38 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185354+00:00",
+          "collected_at": "2026-10-13T16:20:57.048906+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-15",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147030973",
+            "showtime": "3:00pm",
+            "showtime_id": "147030967",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147030977",
+            "showtime": "4:45pm",
+            "showtime_id": "147031009",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147006178",
+            "showtime": "6:00pm",
+            "showtime_id": "147030968",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147030978",
+            "showtime": "7:30pm",
+            "showtime_id": "147031010",
             "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147030969",
+            "format": "PRIME at AMC"
           }
         ]
       }
@@ -66475,7 +66780,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185317+00:00",
+          "collected_at": "2026-10-13T16:20:57.048880+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -66503,7 +66808,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185251+00:00",
+          "collected_at": "2026-10-13T16:20:57.048887+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -66542,7 +66847,7 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "1:00pm",
+                "showtime": "1:10pm",
                 "showtime_id": "147235453",
                 "format": "Open Caption (On-screen Subtitles)"
               },
@@ -66552,9 +66857,14 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "4:00pm",
+                "showtime": "4:15pm",
                 "showtime_id": "147235375",
                 "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147774314",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "6:25pm",
@@ -66562,9 +66872,14 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "7:00pm",
+                "showtime": "7:30pm",
                 "showtime_id": "147235377",
                 "format": "undefined"
+              },
+              {
+                "showtime": "8:10pm",
+                "showtime_id": "147774315",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "9:30pm",
@@ -66573,21 +66888,31 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185348+00:00",
+          "collected_at": "2026-10-13T16:20:57.048842+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "12:30pm",
+                "showtime_id": "147797158",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147235417",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "12:50pm",
                 "showtime_id": "147235372",
                 "format": "undefined"
               },
               {
-                "showtime": "1:30pm",
-                "showtime_id": "147235417",
-                "format": "IMAX at AMC"
+                "showtime": "3:30pm",
+                "showtime_id": "147797156",
+                "format": "undefined"
               },
               {
                 "showtime": "3:50pm",
@@ -66595,9 +66920,19 @@
                 "format": "undefined"
               },
               {
-                "showtime": "4:50pm",
+                "showtime": "4:00pm",
                 "showtime_id": "147235416",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147797074",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147797157",
+                "format": "undefined"
               },
               {
                 "showtime": "6:50pm",
@@ -66605,22 +66940,52 @@
                 "format": "undefined"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "7:05pm",
                 "showtime_id": "147235415",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147797075",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147797159",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185226+00:00",
+          "collected_at": "2026-10-13T16:20:57.048850+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "3:00pm",
+                "showtime_id": "147797160",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147797151",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147006164",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147797085",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147797150",
+                "format": "undefined"
               }
             ]
           },
@@ -66636,9 +67001,29 @@
                 "format": "IMAX at AMC"
               },
               {
+                "showtime": "2:40pm",
+                "showtime_id": "147235380",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147765897",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "4:50pm",
                 "showtime_id": "147235423",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "147235378",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147765899",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "8:00pm",
@@ -66646,23 +67031,18 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "1:10pm",
-                "showtime_id": "147235380",
-                "format": "undefined"
-              },
-              {
-                "showtime": "4:10pm",
-                "showtime_id": "147235378",
-                "format": "undefined"
-              },
-              {
-                "showtime": "7:10pm",
+                "showtime": "8:40pm",
                 "showtime_id": "147235379",
                 "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147765903",
+                "format": "XL at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185357+00:00",
+          "collected_at": "2026-10-13T16:20:57.048826+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -66671,9 +67051,29 @@
       "movies": {
         "Street Fighter": [
           {
+            "showtime": "3:00pm",
+            "showtime_id": "147797160",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147797151",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "147006164",
             "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147797085",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147797150",
+            "format": "undefined"
           }
         ]
       }
@@ -66707,7 +67107,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185285+00:00",
+          "collected_at": "2026-10-13T16:20:57.048898+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -66735,7 +67135,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185236+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -66796,27 +67196,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-15",
+      "show_date": "2026-10-16",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147222956",
+            "showtime": "1:30pm",
+            "showtime_id": "147222937",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147222914",
+            "showtime": "4:45pm",
+            "showtime_id": "147222967",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147006161",
+            "showtime": "6:30pm",
+            "showtime_id": "147222987",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147222932",
+            "showtime_id": "147222931",
             "format": "undefined"
           }
         ]
@@ -66835,18 +67235,38 @@
                 "format": "undefined"
               },
               {
+                "showtime": "2:10pm",
+                "showtime_id": "147795727",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147220050",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147795717",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147795638",
                 "format": "undefined"
               },
               {
                 "showtime": "7:00pm",
                 "showtime_id": "147220049",
                 "format": "undefined"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147795600",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185294+00:00",
+          "collected_at": "2026-10-13T16:20:57.048799+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -66858,8 +67278,23 @@
                 "format": "undefined"
               },
               {
+                "showtime": "2:10pm",
+                "showtime_id": "147795732",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147220046",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147795712",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147795647",
                 "format": "undefined"
               },
               {
@@ -66874,7 +67309,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185339+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -66909,8 +67344,23 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
+                "showtime": "2:10pm",
+                "showtime_id": "147795734",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147220042",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147795708",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147795644",
                 "format": "undefined"
               },
               {
@@ -66925,27 +67375,47 @@
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185329+00:00",
+          "collected_at": "2026-10-13T16:20:57.048816+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-15",
+      "show_date": "2026-10-17",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147220072",
+            "showtime": "1:00pm",
+            "showtime_id": "147220047",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:10pm",
+            "showtime_id": "147795732",
             "format": "undefined"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147220039",
+            "showtime_id": "147220046",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147795712",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147795647",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147220040",
+            "showtime_id": "147220045",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147220048",
             "format": "undefined"
           }
         ]
@@ -85110,9 +85580,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9784,
-    "fresh": 454,
-    "expected": 464,
+    "ratio": 0.9808,
+    "fresh": 51,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
