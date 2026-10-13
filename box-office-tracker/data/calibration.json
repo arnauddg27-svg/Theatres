@@ -6178,65 +6178,359 @@
         "Sunday": 1.0
       },
       "coverage_ratio": 0.996
+    },
+    {
+      "movie": "Other Mommy",
+      "weekend_of": "2026-10-09",
+      "date": "2026-10-13",
+      "predicted_mid": 23.78,
+      "predicted_low": 13.17,
+      "predicted_high": 53.78,
+      "actual_total": 27.81,
+      "daily_actuals": {
+        "Thursday": 3.6,
+        "Friday": 8.97,
+        "Saturday": 8.93,
+        "Sunday": 6.31
+      },
+      "daily_predictions": {
+        "Thursday": 3.64,
+        "Friday": 6.9,
+        "Saturday": 7.47,
+        "Sunday": 5.59
+      },
+      "error_pct": -14.5,
+      "n_theatres": 424,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 28.55,
+        "low_m": 21.55,
+        "high_m": 64.55,
+        "logged_at": "2026-10-12T08:50:29Z",
+        "source": "seat-snapshot-regression",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 20,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 22.2,
+            "logged_at": "2026-10-08T04:12:10Z",
+            "cutoff": "2026-10-08T16:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 22.2,
+            "low_m": 11.1,
+            "high_m": 55.5,
+            "error_pct": -20.16,
+            "baseline_error_pct": -20.16,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 19.32,
+            "logged_at": "2026-10-09T07:58:45Z",
+            "cutoff": "2026-10-09T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 19.32,
+            "low_m": 10.69,
+            "high_m": 43.68,
+            "error_pct": -30.52,
+            "baseline_error_pct": -30.52,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 22.75,
+            "logged_at": "2026-10-10T08:13:50Z",
+            "cutoff": "2026-10-10T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 25.08,
+            "low_m": 12.59,
+            "high_m": 56.7,
+            "error_pct": -18.18,
+            "baseline_error_pct": -9.8,
+            "absolute_error_improvement_pp": -8.38,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 25.22,
+            "logged_at": "2026-10-11T15:37:05Z",
+            "cutoff": "2026-10-11T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 26.41,
+            "low_m": 21.55,
+            "high_m": 59.72,
+            "error_pct": -9.3,
+            "baseline_error_pct": -5.02,
+            "absolute_error_improvement_pp": -4.28,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 17.52,
+        "thursday_logged_at": "2026-10-10T04:30:54Z"
+      },
+      "live_error_pct": 2.7,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Other-Mommy-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 3.31,
+        "Friday": 7.0,
+        "Saturday": 6.96,
+        "Sunday": 5.35
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0006,
+        "Friday": 0.0048,
+        "Saturday": 0.0017,
+        "Sunday": 0.0003
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 2.0,
+        "Friday": 4.81,
+        "Saturday": 6.22,
+        "Sunday": 4.88
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.008,
+        "Friday": 0.004,
+        "Saturday": 0.856,
+        "Sunday": 0.988
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.00006,
+        "adjustment_pct": 0.01,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.0032,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.3566,
+        "reach": 172.94,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 405,
+        "Friday": 416,
+        "Saturday": 416,
+        "Sunday": 423
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.953,
+        "Friday": 0.979,
+        "Saturday": 0.979,
+        "Sunday": 0.995
+      },
+      "coverage_ratio": 0.976
+    },
+    {
+      "movie": "The Social Reckoning",
+      "weekend_of": "2026-10-09",
+      "date": "2026-10-13",
+      "predicted_mid": 5.24,
+      "predicted_low": 2.9,
+      "predicted_high": 11.85,
+      "actual_total": 5.02,
+      "daily_actuals": {
+        "Thursday": 0.65,
+        "Friday": 1.46,
+        "Saturday": 1.63,
+        "Sunday": 1.28
+      },
+      "daily_predictions": {
+        "Thursday": 0.74,
+        "Friday": 1.52,
+        "Saturday": 1.59,
+        "Sunday": 1.29
+      },
+      "error_pct": 4.4,
+      "n_theatres": 405,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 5.24,
+        "low_m": 2.9,
+        "high_m": 11.85,
+        "logged_at": "2026-10-12T08:50:30Z",
+        "source": "seat-snapshot-regression",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 21,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 8.76,
+            "logged_at": "2026-10-08T04:12:11Z",
+            "cutoff": "2026-10-08T16:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 8.76,
+            "low_m": 4.38,
+            "high_m": 21.91,
+            "error_pct": 74.56,
+            "baseline_error_pct": 74.56,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 6.1,
+            "logged_at": "2026-10-09T07:58:45Z",
+            "cutoff": "2026-10-09T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 6.1,
+            "low_m": 3.38,
+            "high_m": 13.79,
+            "error_pct": 21.56,
+            "baseline_error_pct": 21.56,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 5.89,
+            "logged_at": "2026-10-10T08:13:51Z",
+            "cutoff": "2026-10-10T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.77,
+            "low_m": 3.19,
+            "high_m": 13.31,
+            "error_pct": 17.37,
+            "baseline_error_pct": 14.98,
+            "absolute_error_improvement_pp": -2.39,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 5.54,
+            "logged_at": "2026-10-11T15:37:05Z",
+            "cutoff": "2026-10-11T16:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.61,
+            "low_m": 3.07,
+            "high_m": 12.68,
+            "error_pct": 10.4,
+            "baseline_error_pct": 11.79,
+            "absolute_error_improvement_pp": 1.39,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 6.16,
+        "thursday_logged_at": "2026-10-10T04:30:55Z"
+      },
+      "live_error_pct": 4.4,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Social-Reckoning-The-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 0.67,
+        "Friday": 1.56,
+        "Saturday": 1.46,
+        "Sunday": 1.21
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0023,
+        "Friday": 0.004,
+        "Saturday": 0.0005,
+        "Sunday": 0.0
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.68,
+        "Friday": 0.88,
+        "Saturday": 1.81,
+        "Sunday": 1.37
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.904,
+        "Friday": 0.941,
+        "Saturday": 0.696,
+        "Sunday": 0.946
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99994,
+        "adjustment_pct": -0.01,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.0032,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.356,
+        "reach": 171.42,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 397,
+        "Friday": 400,
+        "Saturday": 400,
+        "Sunday": 404
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.934,
+        "Friday": 0.941,
+        "Saturday": 0.941,
+        "Sunday": 0.951
+      },
+      "coverage_ratio": 0.942
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2281,
+    "amc_market_share": 0.2278,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.13385563496881983,
-      "Friday": 0.2871831722332124,
-      "Saturday": 0.33087849273715497,
-      "Sunday": 0.24808270006081282
+      "Thursday": 0.13359741849714957,
+      "Friday": 0.2883307062254983,
+      "Saturday": 0.33040942582618693,
+      "Sunday": 0.24766244945116528
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "Evil Dead Burn",
-        "weekend_of": "2026-07-10",
-        "abs_error_pct": 80.6,
-        "n_theatres": 417,
-        "n_days": 3,
-        "coverage_ratio": 0.976,
-        "daily_coverage_ratios": {
-          "Thursday": 0.976,
-          "Friday": 0.979,
-          "Saturday": 0.974
-        },
-        "daily_errors": {
-          "Thursday": 100.0,
-          "Friday": 63.9,
-          "Saturday": 34.9
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "The Odyssey",
-        "weekend_of": "2026-07-17",
-        "abs_error_pct": 1.1,
-        "n_theatres": 424,
-        "n_days": 4,
-        "coverage_ratio": 0.887,
-        "daily_coverage_ratios": {
-          "Thursday": 0.991,
-          "Friday": 0.993,
-          "Saturday": 0.993,
-          "Sunday": 0.571
-        },
-        "daily_errors": {
-          "Thursday": 12.4,
-          "Friday": 9.8,
-          "Saturday": 7.6,
-          "Sunday": 8.8
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Spider-Man: Brand New Day",
         "weekend_of": "2026-07-31",
@@ -6575,8 +6869,8 @@
         },
         "daily_errors": {
           "Thursday": 15.0,
-          "Friday": 13.6,
-          "Saturday": 4.6,
+          "Friday": 13.5,
+          "Saturday": 4.5,
           "Sunday": 17.3
         },
         "model_cohort_key": "core,expansion",
@@ -6596,40 +6890,84 @@
           "Sunday": 1.0
         },
         "daily_errors": {
-          "Thursday": 23.4,
+          "Thursday": 23.3,
           "Friday": 6.4,
           "Saturday": 5.3,
-          "Sunday": 11.2
+          "Sunday": 11.1
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Other Mommy",
+        "weekend_of": "2026-10-09",
+        "abs_error_pct": 14.5,
+        "n_theatres": 424,
+        "n_days": 4,
+        "coverage_ratio": 0.976,
+        "daily_coverage_ratios": {
+          "Thursday": 0.953,
+          "Friday": 0.979,
+          "Saturday": 0.979,
+          "Sunday": 0.995
+        },
+        "daily_errors": {
+          "Thursday": 1.0,
+          "Friday": 23.1,
+          "Saturday": 16.4,
+          "Sunday": 11.4
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The Social Reckoning",
+        "weekend_of": "2026-10-09",
+        "abs_error_pct": 4.4,
+        "n_theatres": 405,
+        "n_days": 4,
+        "coverage_ratio": 0.942,
+        "daily_coverage_ratios": {
+          "Thursday": 0.934,
+          "Friday": 0.941,
+          "Saturday": 0.941,
+          "Sunday": 0.951
+        },
+        "daily_errors": {
+          "Thursday": 13.3,
+          "Friday": 3.8,
+          "Saturday": 2.1,
+          "Sunday": 0.9
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-10-06",
+    "last_updated": "2026-10-13",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 10,
-          "support": 6.704
+          "n": 11,
+          "support": 7.608
         },
         "Friday": {
           "n": 14,
-          "support": 9.673
+          "support": 10.143
         },
         "Saturday": {
           "n": 18,
-          "support": 12.382
+          "support": 13.007
         },
         "Sunday": {
           "n": 20,
-          "support": 13.012
+          "support": 14.028
         }
       },
       "leads": {
         "same_day": {
-          "n": 56,
-          "support": 37.443
+          "n": 57,
+          "support": 40.458
         },
         "next_day": {
           "n": 6,
@@ -6649,10 +6987,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.13385563496881983,
-        "Friday": 0.2871831722332124,
-        "Saturday": 0.33087849273715497,
-        "Sunday": 0.24808270006081282
+        "Thursday": 0.13359741849714957,
+        "Friday": 0.2883307062254983,
+        "Saturday": 0.33040942582618693,
+        "Sunday": 0.24766244945116528
       },
       "trained_on": [
         "Michael",
@@ -6687,14 +7025,16 @@
         "Heart of the Beast",
         "Forgotten Island",
         "Digger",
-        "Verity"
+        "Verity",
+        "Other Mommy",
+        "The Social Reckoning"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.1534060621911157,
-        "resid_scale": 0.3355550658506099
+        "log_ratio_mean": 0.15003676514256817,
+        "resid_scale": 0.3254145357743235
       },
       "identity": {
-        "seat_sd": 0.3689588352851733
+        "seat_sd": 0.35833734244098064
       },
       "seat": {
         "features": [
@@ -6707,13 +7047,13 @@
           "sellout_frac"
         ],
         "coef": [
-          0.2706658628593521,
-          0.8887570335586386,
-          0.04568401927494337,
-          0.06814688696388521,
-          0.04031751399936172,
-          0.7592782845935759,
-          0.8119933342475159
+          0.2736131855985841,
+          0.9138887765722663,
+          0.008762256383987642,
+          0.03809014435300036,
+          0.01924183249182107,
+          0.03050641867504553,
+          0.010452883741896716
         ],
         "prior": [
           0.0,
@@ -6724,8 +7064,8 @@
           0.0,
           0.0
         ],
-        "lambda": 0.1,
-        "daily_resid_sd": 0.33309640692872655
+        "lambda": 10.0,
+        "daily_resid_sd": 0.3271556413788754
       },
       "snapshot": {
         "features": [
@@ -6739,12 +7079,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.6692136741724338,
-          0.6794349430018648,
-          -0.06136663676458484,
-          0.2968018151018782,
-          0.14419895541405606,
-          -0.09284241109343486,
+          0.6181891894445666,
+          0.7019100267152347,
+          -0.05930558656088998,
+          0.3015631563624909,
+          0.13693101269615066,
+          -0.07758684480886825,
           0.0,
           0.0
         ],
@@ -6759,17 +7099,17 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.5269085028222514
+        "daily_resid_sd": 0.5234519927162894
       },
       "weekend": {
-        "log_half_width": 0.5139,
-        "resid_mean": 0.10419206702593464,
-        "df": 31,
-        "loo_hit_rate": 0.9375,
+        "log_half_width": 0.5129,
+        "resid_mean": 0.10570099908404518,
+        "df": 33,
+        "loo_hit_rate": 0.9412,
         "loo_hit_rate_basis": "calibration-set coverage; validate on later weekends",
-        "loo_mae_pct": 21.7,
-        "loo_median_ae_pct": 13.33,
-        "n_movies": 32
+        "loo_mae_pct": 21.01,
+        "loo_median_ae_pct": 11.92,
+        "n_movies": 34
       },
       "loo_detail": [
         {
@@ -6780,9 +7120,9 @@
         },
         {
           "movie": "The Devil Wears Prada 2",
-          "pred_m": 74.68,
+          "pred_m": 74.82,
           "actual_m": 76.75,
-          "observed_share": 0.382
+          "observed_share": 0.381
         },
         {
           "movie": "Mortal Kombat II",
@@ -6792,13 +7132,13 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 23.83,
+          "pred_m": 23.82,
           "actual_m": 15.09,
           "observed_share": 0.866
         },
         {
           "movie": "Obsession",
-          "pred_m": 15.23,
+          "pred_m": 15.21,
           "actual_m": 17.2,
           "observed_share": 0.669
         },
@@ -6834,9 +7174,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 37.5,
+          "pred_m": 37.56,
           "actual_m": 44.53,
-          "observed_share": 0.579
+          "observed_share": 0.578
         },
         {
           "movie": "Toy Story 5",
@@ -6858,25 +7198,25 @@
         },
         {
           "movie": "Young Washington",
-          "pred_m": 12.46,
+          "pred_m": 12.45,
           "actual_m": 19.37,
           "observed_share": 0.866
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 31.13,
+          "pred_m": 31.11,
           "actual_m": 43.14,
-          "observed_share": 0.752
+          "observed_share": 0.753
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 18.86,
+          "pred_m": 18.85,
           "actual_m": 13.7,
-          "observed_share": 0.751
+          "observed_share": 0.752
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 123.25,
+          "pred_m": 123.18,
           "actual_m": 123.5,
           "observed_share": 0.752
         },
@@ -6900,15 +7240,15 @@
         },
         {
           "movie": "Insidious: Out of the Further",
-          "pred_m": 21.13,
+          "pred_m": 21.11,
           "actual_m": 25.11,
-          "observed_share": 0.617
+          "observed_share": 0.618
         },
         {
           "movie": "Mutiny",
-          "pred_m": 4.23,
+          "pred_m": 4.22,
           "actual_m": 7.71,
-          "observed_share": 0.617
+          "observed_share": 0.618
         },
         {
           "movie": "The Dog Stars",
@@ -6920,11 +7260,11 @@
           "movie": "Coyote vs. Acme",
           "pred_m": 18.81,
           "actual_m": 15.91,
-          "observed_share": 0.865
+          "observed_share": 0.866
         },
         {
           "movie": "Practical Magic 2",
-          "pred_m": 27.51,
+          "pred_m": 27.45,
           "actual_m": 30.0,
           "observed_share": 0.421
         },
@@ -6963,12 +7303,24 @@
           "pred_m": 30.51,
           "actual_m": 32.03,
           "observed_share": 1.0
+        },
+        {
+          "movie": "Other Mommy",
+          "pred_m": 22.62,
+          "actual_m": 27.81,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "The Social Reckoning",
+          "pred_m": 4.9,
+          "actual_m": 5.02,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 21.7,
-        "global_ratio": 22.53,
-        "regression": 24.24
+        "identity": 21.01,
+        "global_ratio": 21.77,
+        "regression": 22.34
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
