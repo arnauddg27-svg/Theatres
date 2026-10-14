@@ -2,7 +2,7 @@
   "date": "2026-10-16",
   "weekend_of": "2026-10-16",
   "collected_local_date": "2026-10-14",
-  "collected_at": "2026-10-14T17:35:54.030755+00:00",
+  "collected_at": "2026-10-14T22:08:32.982443+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -135217,7 +135217,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852181+00:00",
+          "collected_at": "2026-10-14T22:08:32.946263+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -135287,7 +135287,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852117+00:00",
+          "collected_at": "2026-10-14T22:08:32.946113+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -135362,7 +135362,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852151+00:00",
+          "collected_at": "2026-10-14T22:08:32.946206+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135631,7 +135631,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852129+00:00",
+          "collected_at": "2026-10-14T22:08:32.946293+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -135841,94 +135841,119 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852212+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-15",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147784546",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "2:30pm",
-            "showtime_id": "147784556",
+            "showtime": "11:00am",
+            "showtime_id": "147776802",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147784547",
+            "showtime": "12:10pm",
+            "showtime_id": "147776853",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147079052",
+            "showtime": "12:40pm",
+            "showtime_id": "147776825",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "147776844",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147078974",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:05pm",
+            "showtime_id": "147776852",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:35pm",
+            "showtime_id": "147776824",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147079036",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147784545",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "147784555",
+            "showtime_id": "147776803",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147079075",
+            "showtime_id": "147079081",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147006066",
+            "showtime": "6:35pm",
+            "showtime_id": "147776822",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147079035",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147784544",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "147784554",
+            "showtime_id": "147776804",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147384151",
+            "showtime_id": "147776851",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "147079048",
+            "showtime": "9:30pm",
+            "showtime_id": "147776823",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147079034",
             "format": "IMAX with Laser at AMC"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147237365",
+            "showtime": "11:10am",
+            "showtime_id": "147237388",
             "format": "XL at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147237366",
+            "showtime": "1:55pm",
+            "showtime_id": "147237398",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "147237397",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147237367",
+            "showtime_id": "147237396",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147237368",
+            "showtime": "10:20pm",
+            "showtime_id": "147237387",
             "format": "XL at AMC"
           }
         ]
@@ -136002,8 +136027,18 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "1:10pm",
+                "showtime_id": "147774557",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147049475",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147774558",
                 "format": "undefined"
               },
               {
@@ -136012,13 +136047,55 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "147774603",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147774559",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147049477",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147774604",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147774560",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147271480",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147271481",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147271482",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "147774501",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185246+00:00",
+          "collected_at": "2026-10-14T22:08:32.946168+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -136093,7 +136170,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852113+00:00",
+          "collected_at": "2026-10-14T22:08:32.946198+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -136168,7 +136245,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852177+00:00",
+          "collected_at": "2026-10-14T22:08:32.946220+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136382,7 +136459,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852121+00:00",
+          "collected_at": "2026-10-14T22:08:32.946299+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136467,36 +136544,21 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852234+00:00",
+          "collected_at": "2026-10-14T22:08:32.946333+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
           "movies": {
             "Street Fighter": [
               {
-                "showtime": "12:40pm",
-                "showtime_id": "147890339",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "3:45pm",
-                "showtime_id": "147233190",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:00pm",
-                "showtime_id": "147233189",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:05pm",
-                "showtime_id": "147890338",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "12:00pm",
                 "showtime_id": "147890309",
                 "format": "undefined"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147890339",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "1:45pm",
@@ -136509,6 +136571,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "147233190",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "4:50pm",
                 "showtime_id": "147890319",
                 "format": "undefined"
@@ -136519,6 +136586,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147233189",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "7:45pm",
                 "showtime_id": "147890320",
                 "format": "undefined"
@@ -136527,6 +136599,11 @@
                 "showtime": "8:45pm",
                 "showtime_id": "147890306",
                 "format": "undefined"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147890338",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Whalefall": [
@@ -136552,7 +136629,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852187+00:00",
+          "collected_at": "2026-10-14T22:08:32.946128+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136790,7 +136867,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852249+00:00",
+          "collected_at": "2026-10-14T22:08:32.946339+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136945,7 +137022,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852133+00:00",
+          "collected_at": "2026-10-14T22:08:32.946136+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137141,7 +137218,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852109+00:00",
+          "collected_at": "2026-10-14T22:08:32.946326+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -137211,7 +137288,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852125+00:00",
+          "collected_at": "2026-10-14T22:08:32.946191+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -137281,7 +137358,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852148+00:00",
+          "collected_at": "2026-10-14T22:08:32.946313+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137470,7 +137547,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852144+00:00",
+          "collected_at": "2026-10-14T22:08:32.946184+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -137550,7 +137627,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852137+00:00",
+          "collected_at": "2026-10-14T22:08:32.946086+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -137630,7 +137707,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852104+00:00",
+          "collected_at": "2026-10-14T22:08:32.946177+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137814,7 +137891,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852173+00:00",
+          "collected_at": "2026-10-14T22:08:32.946242+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -137889,7 +137966,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852231+00:00",
+          "collected_at": "2026-10-14T22:08:32.946319+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -137969,7 +138046,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852159+00:00",
+          "collected_at": "2026-10-14T22:08:32.946227+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -138113,7 +138190,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852216+00:00",
+          "collected_at": "2026-10-14T22:08:32.946268+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -138407,7 +138484,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852238+00:00",
+          "collected_at": "2026-10-14T22:08:32.946278+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -138467,7 +138544,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852223+00:00",
+          "collected_at": "2026-10-14T22:08:32.946306+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -138666,7 +138743,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852227+00:00",
+          "collected_at": "2026-10-14T22:08:32.946093+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -138761,7 +138838,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852184+00:00",
+          "collected_at": "2026-10-14T22:08:32.946121+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -139045,7 +139122,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852219+00:00",
+          "collected_at": "2026-10-14T22:08:32.946258+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -139140,7 +139217,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852169+00:00",
+          "collected_at": "2026-10-14T22:08:32.946286+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -139220,7 +139297,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852155+00:00",
+          "collected_at": "2026-10-14T22:08:32.946107+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -139409,7 +139486,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852162+00:00",
+          "collected_at": "2026-10-14T22:08:32.946213+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -139474,7 +139551,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-14T16:16:16.852166+00:00",
+          "collected_at": "2026-10-14T22:08:32.946100+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -139565,9 +139642,31 @@
                 "showtime_id": "147220044",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147277444",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147277443",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147277442",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147277445",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048816+00:00",
+          "collected_at": "2026-10-14T22:08:32.946250+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -184763,8 +184862,8 @@
   },
   "link_coverage": {
     "ratio": 1.0,
-    "fresh": 284,
-    "expected": 284,
+    "fresh": 52,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
