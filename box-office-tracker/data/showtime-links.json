@@ -2,7 +2,7 @@
   "date": "2026-10-16",
   "weekend_of": "2026-10-16",
   "collected_local_date": "2026-10-14",
-  "collected_at": "2026-10-14T16:09:09.106336+00:00",
+  "collected_at": "2026-10-14T16:16:16.868756+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -135109,6 +135109,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "147860601",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147006363",
                 "format": "IMAX at AMC"
@@ -135116,6 +135121,23 @@
               {
                 "showtime": "8:00pm",
                 "showtime_id": "147232102",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "147378053",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147378082",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:10pm",
+                "showtime_id": "147378055",
                 "format": "undefined"
               }
             ]
@@ -135132,7 +135154,12 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "3:00pm",
+                "showtime": "2:00pm",
+                "showtime_id": "147860496",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:10pm",
                 "showtime_id": "147232192",
                 "format": "undefined"
               },
@@ -135152,6 +135179,11 @@
                 "format": "IMAX at AMC"
               },
               {
+                "showtime": "8:15pm",
+                "showtime_id": "147860596",
+                "format": "undefined"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147232195",
                 "format": "undefined"
@@ -135161,9 +135193,31 @@
                 "showtime_id": "147232096",
                 "format": "IMAX at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147378106",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147378079",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147378104",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147378078",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048808+00:00",
+          "collected_at": "2026-10-14T16:16:16.852181+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -135175,7 +135229,7 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "3:00pm",
+                "showtime": "3:10pm",
                 "showtime_id": "147232191",
                 "format": "undefined"
               },
@@ -135185,7 +135239,7 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "6:00pm",
+                "showtime": "6:05pm",
                 "showtime_id": "147232193",
                 "format": "undefined"
               },
@@ -135193,6 +135247,11 @@
                 "showtime": "7:00pm",
                 "showtime_id": "147232091",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147860593",
+                "format": "undefined"
               },
               {
                 "showtime": "9:00pm",
@@ -135204,9 +135263,31 @@
                 "showtime_id": "147232092",
                 "format": "IMAX at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147378098",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147378071",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147378102",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147378076",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185325+00:00",
+          "collected_at": "2026-10-14T16:16:16.852117+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -135218,7 +135299,12 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "3:00pm",
+                "showtime": "2:00pm",
+                "showtime_id": "147860584",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "3:10pm",
                 "showtime_id": "147232189",
                 "format": "undefined"
               },
@@ -135228,7 +135314,7 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "6:00pm",
+                "showtime": "6:05pm",
                 "showtime_id": "147232187",
                 "format": "undefined"
               },
@@ -135236,6 +135322,11 @@
                 "showtime": "7:00pm",
                 "showtime_id": "147232087",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147860595",
+                "format": "undefined"
               },
               {
                 "showtime": "9:00pm",
@@ -135247,9 +135338,31 @@
                 "showtime_id": "147232088",
                 "format": "IMAX at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147378096",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147378069",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147378100",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147378068",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048859+00:00",
+          "collected_at": "2026-10-14T16:16:16.852151+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135278,6 +135391,11 @@
             "format": "undefined"
           },
           {
+            "showtime": "6:00pm",
+            "showtime_id": "147860601",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "147006363",
             "format": "IMAX at AMC"
@@ -135285,6 +135403,23 @@
           {
             "showtime": "8:00pm",
             "showtime_id": "147232102",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "147378053",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147378082",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "147378055",
             "format": "undefined"
           }
         ]
@@ -135356,6 +135491,28 @@
                 "showtime": "10:05pm",
                 "showtime_id": "147079048",
                 "format": "IMAX with Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147237365",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147237366",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147237367",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147237368",
+                "format": "XL at AMC"
               }
             ]
           },
@@ -135445,9 +135602,36 @@
                 "showtime_id": "147079049",
                 "format": "IMAX with Laser at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "11:10am",
+                "showtime_id": "147237395",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "1:55pm",
+                "showtime_id": "147237393",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147237374",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147237373",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147237394",
+                "format": "XL at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048891+00:00",
+          "collected_at": "2026-10-14T16:16:16.852129+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -135518,28 +135702,80 @@
                 "showtime_id": "147079045",
                 "format": "IMAX with Laser at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147237371",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147237370",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147237369",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147237372",
+                "format": "XL at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048875+00:00",
+          "collected_at": "2026-10-14T16:16:16.852253+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "11:00am",
+                "showtime_id": "147776802",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:10pm",
+                "showtime_id": "147776853",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147776825",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147776844",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147078974",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "147776852",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147776824",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147079036",
                 "format": "IMAX with Laser at AMC"
               },
               {
-                "showtime": "7:15pm",
-                "showtime_id": "147079035",
-                "format": "IMAX with Laser at AMC"
-              },
-              {
-                "showtime": "10:15pm",
-                "showtime_id": "147079034",
-                "format": "IMAX with Laser at AMC"
+                "showtime": "5:00pm",
+                "showtime_id": "147776803",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -135547,13 +135783,65 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "2:00pm",
-                "showtime_id": "147078974",
+                "showtime": "6:35pm",
+                "showtime_id": "147776822",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147079035",
+                "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147776804",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147776851",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147776823",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147079034",
+                "format": "IMAX with Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "11:10am",
+                "showtime_id": "147237388",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "1:55pm",
+                "showtime_id": "147237398",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147237397",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147237396",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147237387",
+                "format": "XL at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185220+00:00",
+          "collected_at": "2026-10-14T16:16:16.852212+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135621,6 +135909,28 @@
             "showtime_id": "147079048",
             "format": "IMAX with Laser at AMC"
           }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147237365",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147237366",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147237367",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147237368",
+            "format": "XL at AMC"
+          }
         ]
       }
     },
@@ -135632,8 +135942,18 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "3:05pm",
+                "showtime_id": "147774647",
+                "format": "undefined"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147049473",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "147774500",
                 "format": "undefined"
               },
               {
@@ -135642,8 +135962,35 @@
                 "format": "undefined"
               },
               {
-                "showtime": "10:00pm",
+                "showtime": "9:05pm",
+                "showtime_id": "147774556",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:05pm",
                 "showtime_id": "147638916",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "147774555",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:05pm",
+                "showtime_id": "147271484",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147271485",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "147638930",
                 "format": "undefined"
               }
             ]
@@ -135722,9 +136069,31 @@
                 "showtime_id": "147774550",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147271474",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147271475",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147271476",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147774506",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-14T16:16:16.852113+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -135775,59 +136144,88 @@
                 "showtime_id": "147774554",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147271477",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147271478",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147271479",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "147774510",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048883+00:00",
+          "collected_at": "2026-10-14T16:16:16.852177+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-15",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "1:10pm",
-            "showtime_id": "147774547",
-            "format": "undefined"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147049478",
-            "format": "undefined"
-          },
-          {
-            "showtime": "4:10pm",
-            "showtime_id": "147774548",
+            "showtime": "3:05pm",
+            "showtime_id": "147774647",
             "format": "undefined"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147049479",
+            "showtime_id": "147049473",
             "format": "undefined"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "147774612",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "147774549",
+            "showtime": "7:05pm",
+            "showtime_id": "147774500",
             "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147049480",
+            "showtime_id": "147049474",
             "format": "undefined"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "147774613",
+            "showtime": "9:05pm",
+            "showtime_id": "147774556",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147774550",
+            "showtime": "10:05pm",
+            "showtime_id": "147638916",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "3:25pm",
+            "showtime_id": "147774555",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "147271484",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147271485",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "147638930",
             "format": "undefined"
           }
         ]
@@ -135851,14 +136249,51 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "5:10pm",
+                "showtime": "5:00pm",
                 "showtime_id": "147233174",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:50pm",
+                "showtime_id": "147890288",
                 "format": "undefined"
               },
               {
                 "showtime": "7:00pm",
                 "showtime_id": "147006147",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:55pm",
+                "showtime_id": "147890294",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:50pm",
+                "showtime_id": "147890370",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147382691",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:55pm",
+                "showtime_id": "147382692",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147382693",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:55pm",
+                "showtime_id": "147890401",
+                "format": "undefined"
               }
             ]
           },
@@ -135868,6 +136303,26 @@
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147890305",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147890335",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147890317",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:55pm",
+                "showtime_id": "147890304",
+                "format": "undefined"
+              },
               {
                 "showtime": "3:45pm",
                 "showtime_id": "147233192",
@@ -135879,18 +136334,80 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
+                "showtime": "5:50pm",
+                "showtime_id": "147890303",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147233191",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147890318",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147890302",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147890334",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147890188",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147382703",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147382704",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147890191",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048812+00:00",
+          "collected_at": "2026-10-14T16:16:16.852121+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
           "movies": {
             "Street Fighter": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147890313",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147890337",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147890314",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:55pm",
+                "showtime_id": "147890312",
+                "format": "undefined"
+              },
               {
                 "showtime": "3:45pm",
                 "showtime_id": "147233184",
@@ -135902,13 +136419,140 @@
                 "format": "undefined"
               },
               {
+                "showtime": "5:50pm",
+                "showtime_id": "147890311",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147233183",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147890316",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147890310",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147890336",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147890182",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147382694",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "147382695",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147890179",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048821+00:00",
+          "collected_at": "2026-10-14T16:16:16.852234+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-17": {
+          "movies": {
+            "Street Fighter": [
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147890339",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147233190",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147233189",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147890338",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147890309",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147890315",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:55pm",
+                "showtime_id": "147890308",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147890319",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:50pm",
+                "showtime_id": "147890307",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147890320",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147890306",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147890184",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147382696",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "147382702",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147890186",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-14T16:16:16.852187+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135927,14 +136571,51 @@
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:10pm",
+            "showtime": "5:00pm",
             "showtime_id": "147233174",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:50pm",
+            "showtime_id": "147890288",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
             "showtime_id": "147006147",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:55pm",
+            "showtime_id": "147890294",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:50pm",
+            "showtime_id": "147890370",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147382691",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:55pm",
+            "showtime_id": "147382692",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147382693",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:55pm",
+            "showtime_id": "147890401",
+            "format": "undefined"
           }
         ]
       }
@@ -135976,6 +136657,30 @@
                 "showtime_id": "147385094",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147770064",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "147770065",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147770290",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147770289",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -135990,9 +136695,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147770053",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "3:30pm",
                 "showtime_id": "147223603",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147770052",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "6:30pm",
@@ -136008,10 +136723,74 @@
                 "showtime": "9:30pm",
                 "showtime_id": "147223601",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147770051",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147714800",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147770117",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147714790",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147770074",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147714789",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147770076",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147714788",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147770279",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147770278",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147770119",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147770121",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185261+00:00",
+          "collected_at": "2026-10-14T16:16:16.852249+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136105,9 +136884,68 @@
                 "showtime_id": "147770048",
                 "format": "Dolby Cinema at AMC"
               }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "147714801",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147714787",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147770089",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147714785",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147770073",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147714786",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147770275",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147770274",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147770273",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147770124",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147770123",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048830+00:00",
+          "collected_at": "2026-10-14T16:16:16.852133+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136145,6 +136983,30 @@
             "showtime_id": "147385094",
             "format": "Dolby Cinema at AMC"
           }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147770064",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147770065",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147770290",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147770289",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -136161,8 +137023,18 @@
                 "format": "undefined"
               },
               {
+                "showtime": "3:00pm",
+                "showtime_id": "147853343",
+                "format": "undefined"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147046411",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147853342",
                 "format": "undefined"
               },
               {
@@ -136173,6 +137045,28 @@
               {
                 "showtime": "9:00pm",
                 "showtime_id": "147046417",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147256270",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147256271",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147256272",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147853454",
                 "format": "undefined"
               }
             ]
@@ -136189,8 +137083,18 @@
                 "format": "undefined"
               },
               {
+                "showtime": "1:45pm",
+                "showtime_id": "147853406",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147046399",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147853403",
                 "format": "undefined"
               },
               {
@@ -136199,13 +137103,45 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147853400",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "147046386",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147853402",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147256287",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147256282",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147256283",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147256284",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048846+00:00",
+          "collected_at": "2026-10-14T16:16:16.852109+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -136217,8 +137153,18 @@
                 "format": "undefined"
               },
               {
+                "showtime": "1:45pm",
+                "showtime_id": "147853419",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147046408",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147853418",
                 "format": "undefined"
               },
               {
@@ -136227,13 +137173,45 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147853415",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147046390",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147853416",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147256289",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147256290",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147256285",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "147256286",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048833+00:00",
+          "collected_at": "2026-10-14T16:16:16.852125+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136245,8 +137223,18 @@
                 "format": "undefined"
               },
               {
+                "showtime": "1:45pm",
+                "showtime_id": "147853413",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147046405",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147853411",
                 "format": "undefined"
               },
               {
@@ -136255,13 +137243,45 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147853407",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147046389",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147853409",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147256291",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:05pm",
+                "showtime_id": "147256292",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:55pm",
+                "showtime_id": "147256293",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147256288",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:24:21.931270+00:00",
+          "collected_at": "2026-10-14T16:16:16.852148+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136275,8 +137295,18 @@
             "format": "undefined"
           },
           {
+            "showtime": "3:00pm",
+            "showtime_id": "147853343",
+            "format": "undefined"
+          },
+          {
             "showtime": "5:00pm",
             "showtime_id": "147046411",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147853342",
             "format": "undefined"
           },
           {
@@ -136287,6 +137317,28 @@
           {
             "showtime": "9:00pm",
             "showtime_id": "147046417",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147256270",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147256271",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147256272",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "147853454",
             "format": "undefined"
           }
         ]
@@ -136300,8 +137352,18 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "2:00pm",
+                "showtime_id": "147892544",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:00pm",
                 "showtime_id": "147181068",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147892288",
                 "format": "Laser at AMC"
               },
               {
@@ -136310,8 +137372,35 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147892485",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147892523",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147181070",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147315670",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147315669",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147315689",
                 "format": "Laser at AMC"
               }
             ]
@@ -136323,6 +137412,16 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147892584",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147892524",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:30pm",
                 "showtime_id": "147181073",
                 "format": "Laser at AMC"
@@ -136333,26 +137432,83 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:30pm",
+                "showtime": "7:30pm",
+                "showtime_id": "147892567",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147909085",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
                 "showtime_id": "147181071",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147315640",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147315641",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147315642",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147315661",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048838+00:00",
+          "collected_at": "2026-10-14T16:16:16.852144+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
               {
-                "showtime": "1:00pm",
+                "showtime": "12:00pm",
+                "showtime_id": "147892559",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:15pm",
                 "showtime_id": "147181099",
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
-                "showtime": "4:00pm",
+                "showtime": "2:00pm",
+                "showtime_id": "147892551",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147892460",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
                 "showtime_id": "147181095",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147892550",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "147892560",
                 "format": "Laser at AMC"
               },
               {
@@ -136361,13 +137517,40 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:00pm",
+                "showtime_id": "147892549",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147181107",
                 "format": "Laser at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147315631",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147315632",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147315633",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147315602",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048894+00:00",
+          "collected_at": "2026-10-14T16:16:16.852137+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -136379,13 +137562,33 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147892506",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147181096",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "3:00pm",
+                "showtime_id": "147909082",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147892505",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147181098",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147892600",
                 "format": "Laser at AMC"
               },
               {
@@ -136397,10 +137600,37 @@
                 "showtime": "9:00pm",
                 "showtime_id": "147181108",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147892597",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147315639",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147315638",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147315636",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "147315637",
+                "format": "Open Caption (On-screen Subtitles)"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048863+00:00",
+          "collected_at": "2026-10-14T16:16:16.852104+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136409,8 +137639,18 @@
       "movies": {
         "Street Fighter": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "147892544",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "3:00pm",
             "showtime_id": "147181068",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147892288",
             "format": "Laser at AMC"
           },
           {
@@ -136419,8 +137659,35 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:00pm",
+            "showtime_id": "147892485",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147892523",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:00pm",
             "showtime_id": "147181070",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147315670",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147315669",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147315689",
             "format": "Laser at AMC"
           }
         ]
@@ -136444,8 +137711,30 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "147837839",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147193521",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147371713",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147837992",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147371677",
                 "format": "Laser at AMC"
               }
             ]
@@ -136457,8 +137746,23 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "11:30am",
+                "showtime_id": "147838011",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "12:30pm",
                 "showtime_id": "147193447",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147838055",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147838000",
                 "format": "Laser at AMC"
               },
               {
@@ -136467,13 +137771,50 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147838031",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147193462",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147838014",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147371712",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147838032",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147371675",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147371676",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147838029",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048776+00:00",
+          "collected_at": "2026-10-14T16:16:16.852173+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -136485,9 +137826,24 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:15pm",
+                "showtime_id": "147837924",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:30pm",
                 "showtime_id": "147193452",
                 "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147837922",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147838022",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "7:00pm",
@@ -136495,13 +137851,45 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "147838023",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147193466",
                 "format": "Laser at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147371711",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "147371710",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147371672",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147838033",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147371674",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048867+00:00",
+          "collected_at": "2026-10-14T16:16:16.852231+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136513,8 +137901,23 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "2:00pm",
+                "showtime_id": "147837999",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:30pm",
                 "showtime_id": "147193450",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147837998",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147838017",
                 "format": "Laser at AMC"
               },
               {
@@ -136523,13 +137926,50 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "147838025",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147838018",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147193468",
                 "format": "Laser at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147371700",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147838008",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147377466",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147371671",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147371670",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048902+00:00",
+          "collected_at": "2026-10-14T16:16:16.852159+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136548,8 +137988,30 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "6:00pm",
+            "showtime_id": "147837839",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:30pm",
             "showtime_id": "147193521",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147371713",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147837992",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147371677",
             "format": "Laser at AMC"
           }
         ]
@@ -136580,6 +138042,23 @@
               {
                 "showtime": "8:00pm",
                 "showtime_id": "147030978",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147309545",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147309546",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147309547",
                 "format": "undefined"
               }
             ]
@@ -136615,9 +138094,26 @@
                 "showtime_id": "147030969",
                 "format": "PRIME at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147309548",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "147309561",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147309560",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-14T16:16:16.852216+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -136658,9 +138154,31 @@
                 "showtime_id": "147785438",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147785404",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147309565",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147309580",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147309564",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048909+00:00",
+          "collected_at": "2026-10-14T16:16:16.852242+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136696,40 +138214,74 @@
                 "showtime_id": "147031017",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147785406",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:35pm",
+                "showtime_id": "147309568",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147309583",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147309567",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048906+00:00",
+          "collected_at": "2026-10-14T16:16:16.852141+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-18",
+      "show_date": "2026-10-15",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147030967",
+            "showtime": "4:00pm",
+            "showtime_id": "147030973",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147031009",
+            "showtime": "5:00pm",
+            "showtime_id": "147030977",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006178",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147030978",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147309545",
             "format": "undefined"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147030968",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147031010",
+            "showtime_id": "147309546",
             "format": "undefined"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147030969",
-            "format": "PRIME at AMC"
+            "showtime": "8:45pm",
+            "showtime_id": "147309547",
+            "format": "undefined"
           }
         ]
       }
@@ -136747,13 +138299,45 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "3:20pm",
+                "showtime_id": "147837747",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "147048270",
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "5:45pm",
+                "showtime_id": "147837778",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:15pm",
                 "showtime_id": "147048271",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147837780",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147251775",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147251776",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147251777",
                 "format": "Dine-In Delivery to Seat"
               }
             ]
@@ -136770,8 +138354,18 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "1:30pm",
+                "showtime_id": "147837786",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147048266",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147837785",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -136780,20 +138374,47 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "8:00pm",
+                "showtime_id": "147837784",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147048256",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "147251750",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147251751",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147251752",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147251746",
+                "format": "Dine-In Delivery to Seat"
+              }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185304+00:00",
+          "collected_at": "2026-10-14T16:16:16.852238+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
           "movies": {
             "Street Fighter": [
               {
-                "showtime": "12:00pm",
+                "showtime": "12:45pm",
                 "showtime_id": "147048260",
                 "format": "Dine-In Delivery to Seat"
               },
@@ -136803,18 +138424,50 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "6:00pm",
+                "showtime": "4:00pm",
+                "showtime_id": "147837779",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:20pm",
+                "showtime_id": "147837770",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:15pm",
                 "showtime_id": "147048258",
                 "format": "Dine-In Delivery to Seat"
               },
               {
-                "showtime": "9:00pm",
+                "showtime": "8:20pm",
                 "showtime_id": "147048259",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147251773",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147251772",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147251771",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147251770",
                 "format": "Dine-In Delivery to Seat"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048880+00:00",
+          "collected_at": "2026-10-14T16:16:16.852223+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -136831,8 +138484,18 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "5:00pm",
+                "showtime_id": "147837901",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147048263",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147837903",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -136840,9 +138503,31 @@
                 "showtime_id": "147048264",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147251753",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147251747",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147251748",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147251749",
+                "format": "Dine-In Delivery to Seat"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048887+00:00",
+          "collected_at": "2026-10-14T16:16:16.852191+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136856,13 +138541,45 @@
             "format": "Dine-In Delivery to Seat"
           },
           {
+            "showtime": "3:20pm",
+            "showtime_id": "147837747",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "5:00pm",
             "showtime_id": "147048270",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:00pm",
+            "showtime": "5:45pm",
+            "showtime_id": "147837778",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:15pm",
             "showtime_id": "147048271",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147837780",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147251775",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "147251776",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "147251777",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -136920,9 +138637,36 @@
                 "showtime_id": "147235420",
                 "format": "IMAX at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147774295",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147774313",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147774296",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147774300",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147774301",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048842+00:00",
+          "collected_at": "2026-10-14T16:16:16.852227+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -136988,9 +138732,36 @@
                 "showtime_id": "147797159",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147797021",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147797073",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147797022",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147797046",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147797047",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048850+00:00",
+          "collected_at": "2026-10-14T16:16:16.852184+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -137019,6 +138790,28 @@
               {
                 "showtime": "9:00pm",
                 "showtime_id": "147797150",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147797086",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147381716",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "147381717",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:25pm",
+                "showtime_id": "147797058",
                 "format": "undefined"
               }
             ]
@@ -137074,9 +138867,36 @@
                 "showtime_id": "147765903",
                 "format": "XL at AMC"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147765901",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:25pm",
+                "showtime_id": "147765880",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147381698",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147381736",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147381734",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048826+00:00",
+          "collected_at": "2026-10-14T16:16:16.852245+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137109,6 +138929,28 @@
             "showtime_id": "147797150",
             "format": "undefined"
           }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147797086",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147381716",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147381717",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:25pm",
+            "showtime_id": "147797058",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -137120,14 +138962,34 @@
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147836692",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147222915",
                 "format": "undefined"
               },
               {
-                "showtime": "4:30pm",
+                "showtime": "3:30pm",
+                "showtime_id": "147836717",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147836691",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "5:15pm",
                 "showtime_id": "147222938",
                 "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147836718",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "7:00pm",
@@ -137135,25 +138997,82 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "8:30pm",
                 "showtime_id": "147222966",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147836715",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147836693",
+                "format": "IMAX at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147376934",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147836716",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "147376949",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "147836506",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147376915",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147836582",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048898+00:00",
+          "collected_at": "2026-10-14T16:16:16.852219+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
           "movies": {
             "Street Fighter": [
               {
+                "showtime": "12:30pm",
+                "showtime_id": "147836689",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "1:30pm",
-                "showtime_id": "147222937",
+                "showtime_id": "147836664",
                 "format": "undefined"
               },
               {
-                "showtime": "4:45pm",
+                "showtime": "3:30pm",
+                "showtime_id": "147836688",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147836724",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:30pm",
                 "showtime_id": "147222967",
                 "format": "undefined"
               },
@@ -137163,13 +139082,65 @@
                 "format": "IMAX at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147836725",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147222931",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147222937",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147836690",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147836726",
+                "format": "XL at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147376924",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147836723",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147376930",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147836575",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147376916",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147836616",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-14T16:16:16.852169+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-18": {
@@ -137177,13 +139148,33 @@
             "Street Fighter": [
               {
                 "showtime": "1:00pm",
+                "showtime_id": "147836697",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "2:45pm",
                 "showtime_id": "147222916",
                 "format": "undefined"
               },
               {
-                "showtime": "4:30pm",
+                "showtime": "3:15pm",
+                "showtime_id": "147836720",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147836696",
+                "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:15pm",
                 "showtime_id": "147222940",
                 "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147836721",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "7:00pm",
@@ -137191,13 +139182,45 @@
                 "format": "IMAX at AMC"
               },
               {
-                "showtime": "8:15pm",
+                "showtime": "8:45pm",
                 "showtime_id": "147222964",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147836722",
+                "format": "XL at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147836719",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147376923",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "147376943",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147376935",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147836523",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-10-12T16:28:52.185342+00:00",
+          "collected_at": "2026-10-14T16:16:16.852155+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -137214,6 +139237,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147836704",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147006161",
                 "format": "IMAX at AMC"
@@ -137221,6 +139249,33 @@
               {
                 "showtime": "8:00pm",
                 "showtime_id": "147222932",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147836705",
+                "format": "XL at AMC"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147376929",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147836703",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147376944",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147376936",
                 "format": "undefined"
               }
             ]
@@ -137230,27 +139285,59 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-16",
+      "show_date": "2026-10-15",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147222937",
+            "showtime": "2:00pm",
+            "showtime_id": "147222956",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147222967",
+            "showtime": "4:15pm",
+            "showtime_id": "147222914",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147222987",
+            "showtime": "5:15pm",
+            "showtime_id": "147836704",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147006161",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147222931",
+            "showtime_id": "147222932",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147836705",
+            "format": "XL at AMC"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147376929",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "147836703",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147376944",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "147376936",
             "format": "undefined"
           }
         ]
@@ -137298,9 +139385,31 @@
                 "showtime_id": "147795600",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147277434",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147277437",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147277436",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "147795625",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-10-13T16:20:57.048799+00:00",
+          "collected_at": "2026-10-14T16:16:16.852162+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -137341,9 +139450,31 @@
                 "showtime_id": "147220048",
                 "format": "undefined"
               }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147277440",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147277439",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147277438",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147277441",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-14T16:16:16.852166+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -137360,8 +139491,35 @@
                 "format": "undefined"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147795642",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147220040",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147795643",
+                "format": "undefined"
+              }
+            ],
+            "Whalefall": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147277425",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147277426",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147277427",
                 "format": "undefined"
               }
             ]
@@ -137414,42 +139572,49 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-15",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147220047",
-            "format": "undefined"
-          },
-          {
-            "showtime": "2:10pm",
-            "showtime_id": "147795732",
+            "showtime": "2:00pm",
+            "showtime_id": "147220072",
             "format": "undefined"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147220046",
+            "showtime_id": "147220039",
             "format": "undefined"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147795712",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147795647",
+            "showtime": "5:15pm",
+            "showtime_id": "147795642",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147220045",
+            "showtime_id": "147220040",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147220048",
+            "showtime": "8:15pm",
+            "showtime_id": "147795643",
+            "format": "undefined"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147277425",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147277426",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147277427",
             "format": "undefined"
           }
         ]
@@ -157815,9 +159980,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9828,
-    "fresh": 456,
-    "expected": 464,
+    "ratio": 1.0,
+    "fresh": 52,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
