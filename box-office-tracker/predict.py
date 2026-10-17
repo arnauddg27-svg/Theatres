@@ -2913,6 +2913,109 @@ def remember_reference_amc_theatres(cal, reference_amc_theatres, model_cohort_ke
     return ref
 
 
+# AMC FOOTPRINT (2026-10-17, You Can See Everything). Every AMC read was
+# normalized up to the fleet reference (~425 theatres) and every day's coverage
+# was measured against it. A documentary programmed through AMC Artisan Films
+# played ~245 AMC theatres: a complete Thursday read (239/245) scored 56%
+# coverage, fell under the 60% regression floor and was dropped, and both the
+# Thursday seats and the pre-sales were inflated x1.78 as if the film played
+# everywhere (pre-sales $34M, Thursday seat-implied $5.0M vs $1.75M actual).
+# The film's own AMC footprint is known: Phase 1 links list every AMC theatre
+# that programs it, and the seat/snapshot lanes read those theatres. When the
+# footprint is clearly sub-fleet it replaces the fleet reference for both the
+# sample normalization and the coverage ratio. Wide releases (footprint >=
+# AMC_FOOTPRINT_WIDE_SHARE of the reference) are untouched.
+AMC_FOOTPRINT_MODE = (os.environ.get("AMC_FOOTPRINT_MODE") or "footprint").strip().lower()
+AMC_FOOTPRINT_WIDE_SHARE = 0.85
+AMC_FOOTPRINT_MIN_THEATRES = 25
+
+
+def film_amc_footprint(showtime_link_profiles, opening_dates=None):
+    """Distinct AMC theatres programming the film on its busiest opening day,
+    from the Phase 1 schedule (link profiles). 0 when unknown — historical
+    replays carry no link profiles, so they are unaffected by construction."""
+    best = 0
+    for date_str, profile in (showtime_link_profiles or {}).items():
+        if opening_dates and date_str not in opening_dates:
+            continue
+        best = max(best, int((profile or {}).get("n_theatres") or 0))
+    return best
+
+
+# CHAIN FOOTPRINT SKEW (2026-10-17). A sub-fleet release is not spread evenly
+# across chains: You Can See Everything (AMC Artisan Films) played 56% of AMC's
+# fleet but 43% of Cinemark's, and its reported Thursday implied an AMC share
+# ~1.6x the 24.8% the model divided by. When AMC carries a film in a larger
+# fraction of its theatres than Cinemark does (Cinemark = the one other chain
+# read census-wide), AMC's share of the film's audience rises by that ratio.
+# Only for sub-fleet AMC footprints; bounded; CHAIN_SKEW_MODE=off disables.
+CHAIN_SKEW_MODE = (os.environ.get("CHAIN_SKEW_MODE") or "on").strip().lower()
+CHAIN_SKEW_BOUNDS = (0.67, 1.60)
+CHAIN_SKEW_MIN_CINEMARK_THEATRES = 10
+_CINEMARK_FOOTPRINT_CACHE = {}
+
+
+def cinemark_pool_size():
+    try:
+        with open(os.path.join(DATA_DIR, "theatres-cinemark.json")) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return 0
+    items = data.get("theatres", data) if isinstance(data, dict) else data
+    return len(items or [])
+
+
+def cinemark_film_footprint(movie, weekend_of):
+    """Distinct Cinemark theatres with any row for the film this weekend."""
+    key = weekend_of
+    if key not in _CINEMARK_FOOTPRINT_CACHE:
+        stem = os.path.splitext(os.path.basename(CINEMARK_SNAPSHOTS_CSV))[0]
+        by_movie = {}
+        for path in (os.path.join(DATA_DIR, "cinemark-archive", f"{stem}-{weekend_of}.csv.gz"),
+                     CINEMARK_SNAPSHOTS_CSV):
+            if not os.path.exists(path):
+                continue
+            opener = gzip.open if path.endswith(".gz") else open
+            with opener(path, "rt", newline="") as f:
+                for row in csv.DictReader(f):
+                    if (row.get("weekend_of") or "").strip() != weekend_of:
+                        continue
+                    name = (row.get("theatre_name") or "").strip()
+                    if name:
+                        by_movie.setdefault((row.get("movie_title") or "").strip(), set()).add(name)
+        _CINEMARK_FOOTPRINT_CACHE[key] = {m: len(v) for m, v in by_movie.items()}
+    return movie_mapping_get(_CINEMARK_FOOTPRINT_CACHE[key], movie, 0) or 0
+
+
+def amc_chain_footprint_skew(movie, amc_footprint, amc_fleet, weekend_of):
+    """{"multiplier", "amc_fraction", "cinemark_fraction"} or None."""
+    if CHAIN_SKEW_MODE != "on" or not amc_footprint or not amc_fleet or not weekend_of:
+        return None
+    amc_fraction = amc_footprint / float(amc_fleet)
+    if amc_fraction >= AMC_FOOTPRINT_WIDE_SHARE:
+        return None
+    pool = cinemark_pool_size()
+    cnmk = cinemark_film_footprint(movie, weekend_of)
+    if pool <= 0 or cnmk < CHAIN_SKEW_MIN_CINEMARK_THEATRES:
+        return None
+    cinemark_fraction = min(1.0, cnmk / float(pool))
+    multiplier = _clamp(amc_fraction / cinemark_fraction, *CHAIN_SKEW_BOUNDS)
+    return {"multiplier": multiplier, "amc_fraction": amc_fraction,
+            "cinemark_fraction": cinemark_fraction,
+            "amc_theatres": amc_footprint, "cinemark_theatres": cnmk}
+
+
+def footprint_reference_amc_theatres(reference, footprint):
+    """The AMC theatre count a film's reads normalize to (see AMC_FOOTPRINT_MODE)."""
+    reference = int(reference or 0)
+    footprint = int(footprint or 0)
+    if (AMC_FOOTPRINT_MODE != "footprint" or reference <= 0
+            or footprint < AMC_FOOTPRINT_MIN_THEATRES
+            or footprint >= AMC_FOOTPRINT_WIDE_SHARE * reference):
+        return reference
+    return footprint
+
+
 def normalize_amc_sample(amc_total, observed_theatres, reference_theatres,
                          representativeness=1.0):
     """Normalize sampled AMC revenue to the calibration reference sample size."""
@@ -8075,6 +8178,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
         fallback=observed_max_theatres,
         model_cohort_key=model_cohort_key,
     )
+    fleet_reference_amc_theatres = expected_amc_theatres
+    coverage_reference_amc_theatres = expected_amc_theatres
+    amc_footprint = film_amc_footprint(showtime_link_profiles, opening_dates)
     movie_metadata_map = load_movie_metadata()
     movie_metadata = metadata_for_movie(movie, movie_metadata_map)
     # A missing metadata row silently disables every audience-conditional
@@ -8096,6 +8202,19 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             movie_metadata,
             national_theatre_count=int(national_theatre_count),
         )
+
+    # Sub-fleet AMC release (see AMC_FOOTPRINT_MODE): coverage is always
+    # measured against the film's own AMC theatres; the sample is normalized to
+    # that footprint only when the national theatre count is unknown — a known
+    # count already scales a fleet-normalized read back down through the
+    # national footprint drag (Hope, 2026-09-11: 152 AMC / 1,560 national).
+    coverage_reference_amc_theatres = footprint_reference_amc_theatres(
+        fleet_reference_amc_theatres, amc_footprint)
+    if not national_theatre_count:
+        expected_amc_theatres = coverage_reference_amc_theatres
+    chain_skew = amc_chain_footprint_skew(
+        movie, amc_footprint, fleet_reference_amc_theatres,
+        seat_data_weekend_of(seat_data or snapshot_data))
 
     # Resolve the per-film AMC share once: an operator metadata override wins;
     # otherwise the cross-chain (Fandango) occupancy share applies when this
@@ -8156,6 +8275,15 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 and (info.get("volume_days") or 0) <= 1):
             cross_chain_volume_value = vol
             share_override_resolved = vol
+
+    if chain_skew and abs(chain_skew["multiplier"] - 1.0) >= 0.01:
+        base_share = (share_override_resolved if share_override_resolved is not None
+                      else calibrated_amc_market_share(cal))
+        share_override_resolved = _clamp(
+            base_share * chain_skew["multiplier"],
+            DYNAMIC_AMC_SHARE_MIN_SHARE, DYNAMIC_AMC_SHARE_MAX_SHARE)
+        chain_skew["base_share"] = base_share
+        chain_skew["share"] = share_override_resolved
 
     snapshot_daypart_profiles = {
         date_str: daypart_profile_from_rows(rows, source="snapshot")
@@ -8336,8 +8464,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
             representativeness=tz_profile["coverage_factor"],
         )
         coverage_ratio = (
-            min(1.0, n_amc_theatres / expected_amc_theatres)
-            if expected_amc_theatres else None
+            min(1.0, n_amc_theatres / coverage_reference_amc_theatres)
+            if coverage_reference_amc_theatres else None
         )
         effective_coverage_ratio = coverage_ratio
         if coverage_ratio is not None and tz_profile["missing_timezones"]:
@@ -8459,6 +8587,8 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                 if per_showtime_results else 0.0
             ),
             "expected_theatres": expected_amc_theatres,
+            "fleet_reference_theatres": fleet_reference_amc_theatres,
+            "amc_footprint_theatres": amc_footprint,
             "coverage_ratio": coverage_ratio,
             "effective_coverage_ratio": effective_coverage_ratio,
             "observed_timezones": tz_profile["observed_timezones"],
@@ -8839,6 +8969,9 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
     result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
+    result["amc_chain_skew"] = chain_skew
+    result["amc_footprint_theatres"] = amc_footprint or None
+    result["coverage_reference_amc_theatres"] = coverage_reference_amc_theatres
     result["metadata_missing"] = bool(metadata_missing)
     if cross_chain_volume_value is not None:
         result["cross_chain_volume_share"] = round(cross_chain_volume_value, 4)
@@ -9589,6 +9722,12 @@ def print_prediction(pred, verbose=False):
     if pred.get("cross_chain_volume_share") is not None:
         applied = "APPLIED" if pred.get("cross_chain_volume_applied") else "log-only, validating on this weekend's actual"
         print(f"  Cross-chain VOLUME share: {pred['cross_chain_volume_share']:.1%} ({applied})")
+    skew = pred.get("amc_chain_skew")
+    if skew and skew.get("share") is not None:
+        print(f"  Sub-fleet AMC release: {skew['amc_theatres']} AMC theatres "
+              f"({skew['amc_fraction']:.0%} of fleet) vs {skew['cinemark_theatres']} Cinemark "
+              f"({skew['cinemark_fraction']:.0%}) -> AMC share x{skew['multiplier']:.2f} "
+              f"({skew['base_share']:.1%} -> {skew['share']:.1%})")
     if pred.get("cross_chain_share") is not None:
         d = pred.get("cross_chain_share_detail") or {}
         print(f"  Cross-chain share: {pred['cross_chain_share']:.1%} "
