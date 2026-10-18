@@ -1908,6 +1908,53 @@ def unique_preserving_order(values):
     return ordered
 
 
+RELEASE_CALENDAR_JSON = Path(__file__).resolve().parent / "data" / "release-calendar.json"
+RELEASE_CALENDAR_MAX_AGE_DAYS = 10
+
+
+def _title_key(title):
+    text = re.sub(r"[^a-z0-9 ]", " ", (title or "").lower())
+    text = re.sub(r"^(the|a|an)\s+", "", text.strip())
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def calendar_titles_for_weekend(weekend_of):
+    """Wide releases for `weekend_of` from data/release-calendar.json
+    (scripts/release_calendar.py, refreshed by every collect-links run).
+
+    2026-10-18: the slate was seeded only by Polymarket; Sense and Sensibility's
+    market appeared on Saturday and Thursday/Friday were lost on every chain.
+    Empty when the file is missing, for another weekend, or stale."""
+    try:
+        with open(RELEASE_CALENDAR_JSON) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    if data.get("weekend_of") != weekend_of:
+        return []
+    try:
+        fetched = datetime.fromisoformat(str(data.get("fetched_at", "")).replace("Z", "+00:00"))
+        if fetched.tzinfo is not None:
+            fetched = fetched.replace(tzinfo=None)
+        if (datetime.utcnow() - fetched).days > RELEASE_CALENDAR_MAX_AGE_DAYS:
+            return []
+    except ValueError:
+        pass
+    return unique_preserving_order(
+        (t.get("title") or "").strip() for t in (data.get("titles") or []) if (t.get("title") or "").strip())
+
+
+def merge_calendar_titles(markets, weekend, phase_label):
+    """Append calendar titles missing from `markets` as tracked-title markets."""
+    present = {_title_key(m.get("movie_title")) for m in (markets or [])}
+    extra = [t for t in calendar_titles_for_weekend(weekend) if _title_key(t) not in present]
+    if not extra:
+        return list(markets or [])
+    print(f"  📅 {phase_label}: adding release-calendar title(s) for weekend {weekend}: "
+          f"{', '.join(extra)}")
+    return list(markets or []) + markets_for_tracked_titles(extra)
+
+
 def tracked_movie_titles_from_state(weekend_of):
     """Load the current collection-window movie list from durable state.
 
@@ -2054,7 +2101,20 @@ def filter_live_markets_for_weekend(live_markets, weekend, phase_label):
 def select_collection_markets(live_markets, ref_dt, phase_label,
                               weekend_override=None,
                               prefer_live_markets=False):
-    """Choose which movie markets drive the data-collection run."""
+    """Choose which movie markets drive the data-collection run.
+
+    Polymarket (live or tracked-from-links) first, then any wide release on the
+    Box Office Mojo calendar for the weekend that nothing else listed."""
+    weekend = weekend_override or opening_weekend_friday(ref_dt)
+    markets = _select_collection_markets_base(
+        live_markets, ref_dt, phase_label,
+        weekend_override=weekend_override, prefer_live_markets=prefer_live_markets)
+    return merge_calendar_titles(markets, weekend, phase_label)
+
+
+def _select_collection_markets_base(live_markets, ref_dt, phase_label,
+                                    weekend_override=None,
+                                    prefer_live_markets=False):
     live_markets = live_markets or []
     weekend = weekend_override or opening_weekend_friday(ref_dt)
     live_markets = filter_live_markets_for_weekend(live_markets, weekend, phase_label)

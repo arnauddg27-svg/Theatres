@@ -237,6 +237,11 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
 
+      - name: Refresh the release calendar (Box Office Mojo wide releases)
+        if: steps.dedup.outputs.skip != 'true'
+        working-directory: box-office-tracker
+        run: python3 scripts/release_calendar.py --write || echo "::warning::release calendar refresh failed — Polymarket seeding only"
+
       - name: Phase 1 — collect showtime links (${{ github.event.inputs.tz_group }})
         if: steps.dedup.outputs.skip != 'true' && steps.amc_lock.outputs.acquired == 'true'
         working-directory: box-office-tracker
@@ -314,6 +319,7 @@ jobs:
           # `git add box-office-tracker/` would sweep up any stray untracked
           # files (e.g. runner caches, locally-modified secrets).
           git add box-office-tracker/data/showtime-links.json
+          git add box-office-tracker/data/release-calendar.json 2>/dev/null || true
           git add box-office-tracker/data/theatre-counts.json
           git add box-office-tracker/data/amc-classic-reserved.json
           if [ -f "box-office-tracker/data/ticket-prices.csv" ]; then

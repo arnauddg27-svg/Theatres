@@ -295,12 +295,33 @@ def _csv_market_titles(repo_root: Path, expected_weekend: str, market_since: str
     return _unique_titles(titles)
 
 
+RELEASE_CALENDAR_PATH = "box-office-tracker/data/release-calendar.json"
+
+
+def _calendar_titles(repo_root: Path, expected_weekend: str) -> list[str]:
+    """Wide releases seeded from data/release-calendar.json for the weekend
+    (scripts/release_calendar.py); the guard must demand links for them too."""
+    path = repo_root / RELEASE_CALENDAR_PATH
+    if not path.exists():
+        return []
+    try:
+        with path.open(encoding="utf-8") as f:
+            payload = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return []
+    if not isinstance(payload, dict) or payload.get("weekend_of") != expected_weekend:
+        return []
+    return [str(t.get("title") or "").strip() for t in (payload.get("titles") or [])
+            if isinstance(t, dict) and str(t.get("title") or "").strip()]
+
+
 def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: str) -> list[str]:
     saved_links = _load_showtime_links(repo_root)
     titles: list[str] = []
     titles.extend(_tracked_titles_from_showtime_links(saved_links, expected_weekend))
     titles.extend(_tracked_titles_from_theatre_counts(repo_root, expected_weekend))
     titles.extend(_csv_market_titles(repo_root, expected_weekend, market_since))
+    titles.extend(_calendar_titles(repo_root, expected_weekend))
     active = _unique_titles(titles)
     if not active:
         print(f"No active movie state found for weekend {expected_weekend}; running")

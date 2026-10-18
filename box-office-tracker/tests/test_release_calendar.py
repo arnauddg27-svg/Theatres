@@ -1,0 +1,69 @@
+"""Release-calendar seeding (2026-10-18)."""
+import json
+import os
+import sys
+import tempfile
+import unittest
+from unittest import mock
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts"))
+
+import release_calendar as RC  # noqa: E402
+import scraper  # noqa: E402
+
+PAGE = """
+<table>
+<tr><th>Release</th><th>Distributor</th><th>Scale</th></tr>
+<tr><th colspan="3">October 22, 2026</th></tr>
+<tr><td><a>Early Bird</a> Comedy With: Someone 1 hr 30 min Cast, Crew, and Company Info</td><td>Neon</td><td>Wide</td></tr>
+<tr><th colspan="3">October 23, 2026</th></tr>
+<tr><td><a>Clayface</a> Horror Sci-Fi Thriller With: Tom Rhys Harries 1 hr 48 min Cast, Crew, and Company Info</td><td>Warner Bros.</td><td>Wide</td></tr>
+<tr><td><a>Love Language</a> Comedy Romance With: Chloe 1 hr 44 min Cast, Crew, and Company Info</td><td>Vertical</td><td>Limited</td></tr>
+<tr><td><a>You Can See Everything</a> Documentary With: Nathan Fielder 2 hr 54 min Cast, Crew, and Company Info</td><td>A24</td><td>Wide</td></tr>
+<tr><td><a>Rocky (50th Anniversary)</a> Drama With: Sylvester 2 hr Cast, Crew, and Company Info</td><td>Fathom</td><td>Wide</td></tr>
+<tr><th colspan="3">October 30, 2026</th></tr>
+<tr><td><a>Next Week Film</a> Action With: X 1 hr Cast, Crew, and Company Info</td><td>Sony</td><td>Wide</td></tr>
+</table>
+"""
+
+
+class ReleaseCalendarParseTest(unittest.TestCase):
+    def test_parse_keeps_wide_wed_to_fri_and_skips_expansions_and_rereleases(self):
+        with mock.patch.object(RC, "earlier_tracked_titles", return_value={RC._key("You Can See Everything")}):
+            rows = RC.parse_calendar(PAGE, "2026-10-23")
+        titles = [r["title"] for r in rows]
+        self.assertEqual(["Clayface", "Early Bird"], titles)      # major first, Thursday opener kept
+        self.assertEqual("Warner Bros.", rows[0]["distributor"])
+        self.assertIn("Horror", rows[0]["genres"])
+
+    def test_earlier_tracked_titles(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as f:
+            f.write("movie,weekend_of\nYou Can See Everything,2026-10-16\nClayface,2026-10-23\n")
+        try:
+            keys = RC.earlier_tracked_titles("2026-10-23", metadata_csv=f.name)
+        finally:
+            os.unlink(f.name)
+        self.assertEqual({RC._key("You Can See Everything")}, keys)
+
+
+class ScraperCalendarMergeTest(unittest.TestCase):
+    def test_merge_adds_missing_calendar_titles(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "release-calendar.json")
+            with open(path, "w") as f:
+                json.dump({"weekend_of": "2026-10-23", "fetched_at": "2026-10-19T12:00:00+00:00",
+                           "titles": [{"title": "Clayface"}, {"title": "Wildwood"}]}, f)
+            with mock.patch.object(scraper, "RELEASE_CALENDAR_JSON", scraper.Path(path)), \
+                 mock.patch.object(scraper, "latest_market_urls_from_csv", return_value={}):
+                merged = scraper.merge_calendar_titles(
+                    [{"movie_title": "Clayface", "market_url": "u"}], "2026-10-23", "Phase 1")
+                self.assertEqual(["Clayface", "Wildwood"], [m["movie_title"] for m in merged])
+                self.assertEqual([], scraper.calendar_titles_for_weekend("2026-10-30"))
+                stale = dict(json.load(open(path)), fetched_at="2026-09-01T00:00:00+00:00")
+                json.dump(stale, open(path, "w"))
+                self.assertEqual([], scraper.calendar_titles_for_weekend("2026-10-23"))
+
+
+if __name__ == "__main__":
+    unittest.main()
