@@ -1696,6 +1696,59 @@ def daypart_profile_from_rows(rows, *, source=None):
     return daypart_profile_from_theatre_hours(theatre_hours, source=source)
 
 
+# SUNDAY RATIO (2026-10-18). Once Friday and Saturday are reported, Sunday
+# is the only unknown and Sunday/Saturday is remarkably stable: 42 recorded
+# openings, median 0.74, p10-p90 0.66-0.88 (family 0.83). The snapshot layer's
+# Sunday swung 0.46x-1.27x Saturday on the same films. On the 11 live
+# after-Saturday calls (2026-09-25..10-16, leave-one-out) the ratio cut the
+# weekend error from 6.6% to 1.5% MAE (max 15.7% -> 3.2%).
+# SUNDAY_RATIO_MODE=off restores the snapshot Sunday.
+SUNDAY_RATIO_MODE = (os.environ.get("SUNDAY_RATIO_MODE") or "on").strip().lower()
+SUNDAY_RATIO_SHRINK = 8.0
+SUNDAY_RATIO_MIN_FILMS = 10
+
+
+def sunday_saturday_ratio(cal, audience_type=None, exclude=None):
+    """{"ratio", "low", "high", "n", "basis"} from recorded daily actuals.
+
+    Audience-class median shrunk toward the global median (k=SUNDAY_RATIO_SHRINK);
+    the band is the global p10/p90 scaled to the class ratio. `exclude` =
+    (weekend_of, movie) keeps a replayed film out of its own fit."""
+    rows = []
+    try:
+        metadata = load_movie_metadata()
+    except Exception:
+        metadata = {}
+    for entry in (cal or {}).get("history", []) or []:
+        if exclude and (entry.get("weekend_of"), entry.get("movie")) == tuple(exclude):
+            continue
+        daily = entry.get("daily_actuals") or {}
+        sat = _positive_float(daily.get("Saturday"))
+        sun = _positive_float(daily.get("Sunday"))
+        if not sat or not sun:
+            continue
+        meta = metadata_for_movie(entry.get("movie", ""), metadata)
+        rows.append((sun / sat, (getattr(meta, "audience_type", "") or "").strip()))
+    if len(rows) < SUNDAY_RATIO_MIN_FILMS:
+        return None
+    ratios = sorted(r for r, _ in rows)
+    global_median = statistics.median(ratios)
+    p10 = ratios[max(0, int(0.10 * len(ratios)))]
+    p90 = ratios[min(len(ratios) - 1, int(0.90 * len(ratios)))]
+    aud = (audience_type or "").strip()
+    cls = [r for r, a in rows if aud and a == aud]
+    ratio = global_median
+    basis = f"median of {len(ratios)} openings"
+    if cls:
+        n = len(cls)
+        ratio = (n * statistics.median(cls) + SUNDAY_RATIO_SHRINK * global_median) / (
+            n + SUNDAY_RATIO_SHRINK)
+        basis = f"{aud} n={n} shrunk to {len(ratios)}-film median {global_median:.2f}"
+    scale = ratio / global_median if global_median else 1.0
+    return {"ratio": ratio, "low": p10 * scale, "high": p90 * scale,
+            "n": len(ratios), "basis": basis}
+
+
 def daypart_profile_from_theatre_hours(theatre_hours, *, source=None):
     """Summarize showtime daypart shape from theatre → hour lists."""
     n_theatres = len(theatre_hours)
@@ -5406,6 +5459,22 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
         pred["forecast_provisional"] = any(
             v.get("actual_override_status") == "provisional"
             for v in (pred.get("daily_details") or {}).values())
+    elif ({"Friday", "Saturday"} <= set(reported) and "Sunday" not in reported
+          and SUNDAY_RATIO_MODE == "on"):
+        # Only Sunday is left: Sunday/Saturday is the most stable ratio in the
+        # whole weekend (see sunday_saturday_ratio). It beats the snapshot
+        # layer's Sunday by a wide margin once Saturday is reported.
+        ratio = sunday_saturday_ratio(cal, pred.get("audience_type"),
+                                      exclude=(pred.get("weekend_of"), pred.get("movie")))
+        if ratio:
+            sat = reported["Saturday"]
+            mid = reported_total + sat * ratio["ratio"]
+            low = reported_total + sat * ratio["low"]
+            high = reported_total + sat * ratio["high"]
+            source = "sunday-ratio"
+            basis = (f"Thu-Sat reported ${reported_total:.1f}M + Sunday = Saturday "
+                     f"${sat:.1f}M x {ratio['ratio']:.2f} ({ratio['basis']})")
+            pred["sunday_saturday_ratio"] = ratio
     elif reported_total > 0:
         # The unreported remainder cannot have negative revenue.
         mid, low = max(mid, reported_total), max(low, reported_total)
