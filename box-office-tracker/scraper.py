@@ -2086,6 +2086,19 @@ def select_collection_markets(live_markets, ref_dt, phase_label,
         return markets
 
     if live_markets:
+        # A market can disappear from Polymarket mid-weekend (You Can See
+        # Everything, 2026-10-16: listed through Thursday, gone Friday). The
+        # AMC lanes then silently stopped reading it — no Friday/Saturday
+        # finals at 241 linked theatres — while Cinemark (tracked list) kept
+        # going. Keep every title already tracked for this weekend.
+        live_lower = {(m.get("movie_title") or "").lower() for m in live_markets}
+        dropped = [t for t in tracked_titles if t.lower() not in live_lower]
+        if dropped:
+            print(
+                f"  ↩️  {phase_label}: keeping tracked title(s) no longer listed on "
+                f"Polymarket for weekend {weekend}: {', '.join(dropped)}"
+            )
+            return list(live_markets) + markets_for_tracked_titles(dropped)
         return live_markets
 
     if tracked_titles:

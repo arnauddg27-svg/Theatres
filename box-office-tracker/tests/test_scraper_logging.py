@@ -967,6 +967,27 @@ class ScraperLoggingTest(unittest.TestCase):
         self.assertEqual(["2026-05-08"], seen_weekends)
         self.assertEqual(["Upcoming Movie"], [m["movie_title"] for m in markets])
 
+    def test_opening_weekend_keeps_tracked_title_dropped_from_polymarket(self):
+        """You Can See Everything (2026-10-16) vanished from Polymarket after
+        Thursday and the AMC lanes stopped reading it Friday/Saturday."""
+        old_tracked = scraper.tracked_movie_titles_from_state
+        old_urls = scraper.latest_market_urls_from_csv
+        try:
+            scraper.tracked_movie_titles_from_state = lambda weekend: [
+                "Street Fighter", "You Can See Everything"]
+            scraper.latest_market_urls_from_csv = lambda: {}
+            markets = scraper.select_collection_markets(
+                [{"movie_title": "Street Fighter", "market_url": "https://example.test/sf"}],
+                datetime(2026, 10, 17, 3, 0),   # Saturday
+                "Phase 2",
+                weekend_override="2026-10-16",
+            )
+        finally:
+            scraper.tracked_movie_titles_from_state = old_tracked
+            scraper.latest_market_urls_from_csv = old_urls
+        self.assertEqual(["Street Fighter", "You Can See Everything"],
+                         [m["movie_title"] for m in markets])
+
     def test_live_market_selection_keeps_only_current_weekend_events(self):
         old_tracked = scraper.tracked_movie_titles_from_state
         try:
