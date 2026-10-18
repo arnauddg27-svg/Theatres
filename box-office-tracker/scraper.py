@@ -1991,7 +1991,18 @@ def tracked_movie_titles_from_state(weekend_of):
         except Exception as e:
             print(f"  ⚠️  Could not read tracked movies from theatre counts: {e}")
 
-    return unique_preserving_order(titles)
+    # Release-calendar titles are tracked from Monday on every lane, before
+    # Phase 1 has linked them (2026-10-18).
+    titles.extend(calendar_titles_for_weekend(weekend_of))
+
+    seen = set()
+    deduped = []
+    for title in titles:
+        key = _title_key(title)
+        if key and key not in seen:
+            seen.add(key)
+            deduped.append(title)
+    return deduped
 
 
 def movie_titles_missing_metadata(movie_titles, metadata_csv=None):

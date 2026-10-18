@@ -67,3 +67,33 @@ class ScraperCalendarMergeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TrackedStateIncludesCalendarTest(unittest.TestCase):
+    def test_tracked_titles_include_calendar(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "release-calendar.json")
+            with open(path, "w") as f:
+                json.dump({"weekend_of": "2026-10-23", "fetched_at": "2026-10-19T12:00:00+00:00",
+                           "titles": [{"title": "Clayface"}, {"title": "The Clayface"}]}, f)
+            with mock.patch.object(scraper, "RELEASE_CALENDAR_JSON", scraper.Path(path)), \
+                 mock.patch.object(scraper, "LINKS_JSON", scraper.Path(os.path.join(td, "none.json"))), \
+                 mock.patch.object(scraper, "THEATRE_COUNTS_JSON", scraper.Path(os.path.join(td, "none2.json"))):
+                self.assertEqual(["Clayface"], scraper.tracked_movie_titles_from_state("2026-10-23"))
+                self.assertEqual([], scraper.tracked_movie_titles_from_state("2026-10-30"))
+
+
+class DedupGuardCalendarTest(unittest.TestCase):
+    def test_guard_counts_calendar_titles_as_active(self):
+        import importlib.util
+        from pathlib import Path
+        spec = importlib.util.spec_from_file_location(
+            "guard", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                  "scripts", "collect_links_dedup_guard.py"))
+        guard = importlib.util.module_from_spec(spec); spec.loader.exec_module(guard)
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); (root / "box-office-tracker" / "data").mkdir(parents=True)
+            (root / "box-office-tracker" / "data" / "release-calendar.json").write_text(json.dumps(
+                {"weekend_of": "2026-10-23", "titles": [{"title": "Clayface"}, {"title": "Wildwood"}]}))
+            self.assertEqual(["Clayface", "Wildwood"], guard._calendar_titles(root, "2026-10-23"))
+            self.assertEqual([], guard._calendar_titles(root, "2026-10-30"))
