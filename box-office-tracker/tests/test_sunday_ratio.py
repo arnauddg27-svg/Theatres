@@ -44,3 +44,17 @@ class SundayRatioTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SundaySeatRatioTest(unittest.TestCase):
+    def test_seat_ratio_used_when_plausible(self):
+        sat = {"sold_seats": 130000, "n_theatres": 416}
+        sun = {"sold_seats": 101000, "n_theatres": 423}
+        out = P.sunday_seat_ratio(sat, sun, 0.74)
+        self.assertAlmostEqual(101000 / 130000 * P.SUNDAY_SEAT_PRICE_K, out["ratio"], places=6)
+
+    def test_implausible_or_incomplete_falls_back(self):
+        sat = {"sold_seats": 100000, "n_theatres": 420}
+        self.assertIsNone(P.sunday_seat_ratio(sat, {"sold_seats": 160000, "n_theatres": 420}, 0.72))  # 1.49x norm
+        self.assertIsNone(P.sunday_seat_ratio(sat, {"sold_seats": 70000, "n_theatres": 200}, 0.72))   # half the theatres
+        self.assertIsNone(P.sunday_seat_ratio(sat, None, 0.72))

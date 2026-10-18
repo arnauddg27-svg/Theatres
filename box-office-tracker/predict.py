@@ -1708,6 +1708,43 @@ SUNDAY_RATIO_SHRINK = 8.0
 SUNDAY_RATIO_MIN_FILMS = 10
 
 
+# SUNDAY FROM SEATS (2026-10-18). Once Sunday's AMC finals are counted
+# (Mon 07Z, hours before the reported Sunday), Sunday gross = Saturday gross x
+# (Sunday final seats / Saturday final seats) x SUNDAY_SEAT_PRICE_K — the seat
+# ratio runs ~7% above the gross ratio (cheaper Sunday matinee mix). 35 films,
+# leave-one-out Sunday error: flat ratio 9.6% mean / 6.5% median; seats
+# guarded at |log(seat/norm)| <= 0.20: 7.6% / 4.0%. Unguarded seats blew up on
+# incomplete or duplicated Sunday seat files (Super Troopers 3 1.42x,
+# Practical Magic 2 1.60x vs 0.66-0.72 actual), so a seat ratio far from the
+# norm falls back to the norm. Sunday PRE-SALES (Saturday night) do not
+# predict the ratio (37 films, correlation ~0), so before the finals the
+# historical ratio stands.
+SUNDAY_SEAT_PRICE_K = 0.93
+SUNDAY_SEAT_GUARD = 0.20
+SUNDAY_SEAT_BAND = 0.08
+SUNDAY_SEAT_MIN_THEATRE_PARITY = 0.80
+
+
+def sunday_seat_ratio(saturday_detail, sunday_detail, norm_ratio):
+    """Seat-derived Sunday/Saturday gross ratio, or None (no finals / implausible)."""
+    if not saturday_detail or not sunday_detail or not norm_ratio:
+        return None
+    if sunday_detail.get("actual_override") and not sunday_detail.get("sold_seats"):
+        return None
+    sat_seats = _positive_float(saturday_detail.get("sold_seats"))
+    sun_seats = _positive_float(sunday_detail.get("sold_seats"))
+    sat_th = _positive_float(saturday_detail.get("n_theatres"))
+    sun_th = _positive_float(sunday_detail.get("n_theatres"))
+    if not sat_seats or not sun_seats or not sat_th or not sun_th:
+        return None
+    if sun_th < SUNDAY_SEAT_MIN_THEATRE_PARITY * sat_th or sat_th < SUNDAY_SEAT_MIN_THEATRE_PARITY * sun_th:
+        return None
+    ratio = sun_seats / sat_seats * SUNDAY_SEAT_PRICE_K
+    if abs(log(ratio / norm_ratio)) > SUNDAY_SEAT_GUARD:
+        return None
+    return {"ratio": ratio, "sunday_seats": sun_seats, "saturday_seats": sat_seats}
+
+
 def sunday_saturday_ratio(cal, audience_type=None, exclude=None):
     """{"ratio", "low", "high", "n", "basis"} from recorded daily actuals.
 
@@ -5468,12 +5505,25 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
                                       exclude=(pred.get("weekend_of"), pred.get("movie")))
         if ratio:
             sat = reported["Saturday"]
-            mid = reported_total + sat * ratio["ratio"]
-            low = reported_total + sat * ratio["low"]
-            high = reported_total + sat * ratio["high"]
-            source = "sunday-ratio"
-            basis = (f"Thu-Sat reported ${reported_total:.1f}M + Sunday = Saturday "
-                     f"${sat:.1f}M x {ratio['ratio']:.2f} ({ratio['basis']})")
+            details = pred.get("daily_details") or {}
+            seat = sunday_seat_ratio(details.get("Saturday"), details.get("Sunday"), ratio["ratio"])
+            if seat:
+                use = seat["ratio"]
+                mid = reported_total + sat * use
+                low = reported_total + sat * use * (1 - SUNDAY_SEAT_BAND)
+                high = reported_total + sat * use * (1 + SUNDAY_SEAT_BAND)
+                source = "sunday-seats"
+                basis = (f"Thu-Sat reported ${reported_total:.1f}M + Sunday = Saturday ${sat:.1f}M x "
+                         f"{use:.2f} from AMC final seats (Sun {seat['sunday_seats']:,.0f} / Sat "
+                         f"{seat['saturday_seats']:,.0f} x {SUNDAY_SEAT_PRICE_K:.2f}); norm {ratio['ratio']:.2f}")
+                ratio = dict(ratio, seat=seat)
+            else:
+                mid = reported_total + sat * ratio["ratio"]
+                low = reported_total + sat * ratio["low"]
+                high = reported_total + sat * ratio["high"]
+                source = "sunday-ratio"
+                basis = (f"Thu-Sat reported ${reported_total:.1f}M + Sunday = Saturday "
+                         f"${sat:.1f}M x {ratio['ratio']:.2f} ({ratio['basis']})")
             pred["sunday_saturday_ratio"] = ratio
     elif reported_total > 0:
         # The unreported remainder cannot have negative revenue.
