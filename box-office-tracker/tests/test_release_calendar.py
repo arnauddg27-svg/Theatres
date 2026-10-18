@@ -97,3 +97,28 @@ class DedupGuardCalendarTest(unittest.TestCase):
                 {"weekend_of": "2026-10-23", "titles": [{"title": "Clayface"}, {"title": "Wildwood"}]}))
             self.assertEqual(["Clayface", "Wildwood"], guard._calendar_titles(root, "2026-10-23"))
             self.assertEqual([], guard._calendar_titles(root, "2026-10-30"))
+
+
+class DedupGuardCalendarDemandTest(unittest.TestCase):
+    def _guard(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "guard2", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                   "scripts", "collect_links_dedup_guard.py"))
+        g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g); return g
+
+    def test_calendar_titles_without_amc_links_are_not_demanded_once_cache_exists(self):
+        from pathlib import Path
+        guard = self._guard()
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); (root / "box-office-tracker" / "data").mkdir(parents=True)
+            (root / "box-office-tracker" / "data" / "release-calendar.json").write_text(json.dumps(
+                {"weekend_of": "2026-10-23", "titles": [{"title": "Clayface"}, {"title": "Wildwood"}]}))
+            # no cache yet -> demand everything
+            self.assertEqual(["Clayface", "Wildwood"], guard._calendar_titles_to_demand(root, {}, "2026-10-23"))
+            # cache for this weekend lists Clayface only -> Wildwood is not-at-AMC
+            links = {"weekend_of": "2026-10-23", "theatres": {"AMC X": {"dates": {"2026-10-23": {"movies": {"Clayface": []}}}}}}
+            self.assertEqual(["Clayface"], guard._calendar_titles_to_demand(root, links, "2026-10-23"))
+            # cache for another weekend -> demand everything again
+            stale = dict(links, weekend_of="2026-10-16")
+            self.assertEqual(["Clayface", "Wildwood"], guard._calendar_titles_to_demand(root, stale, "2026-10-23"))

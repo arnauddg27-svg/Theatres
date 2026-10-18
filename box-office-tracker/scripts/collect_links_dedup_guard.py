@@ -315,13 +315,42 @@ def _calendar_titles(repo_root: Path, expected_weekend: str) -> list[str]:
             if isinstance(t, dict) and str(t.get("title") or "").strip()]
 
 
+def _calendar_titles_to_demand(repo_root: Path, saved_links: dict, expected_weekend: str) -> list[str]:
+    """Calendar titles the guard should require links for.
+
+    A calendar title AMC does not book (Fathom/Wildwood-style releases) never
+    gets a link, and demanding it would make the guard re-run Phase 1 at
+    every slot forever. Once this weekend's link cache exists, a calendar
+    title with zero links in ANY timezone/date is treated as not-at-AMC and
+    dropped from the demand; before the cache exists, every calendar title is
+    demanded so the first collection goes looking for it."""
+    titles = _calendar_titles(repo_root, expected_weekend)
+    if not titles or not saved_links:
+        return titles
+    links_weekend = saved_links.get("weekend_of") or saved_links.get("date")
+    if links_weekend and links_weekend != expected_weekend:
+        return titles
+    linked = set()
+    for entry in (saved_links.get("theatres") or {}).values():
+        for movie in (entry.get("movies") or {}):
+            linked.add(movie.strip().lower())
+        for date_entry in (entry.get("dates") or {}).values():
+            for movie in (date_entry.get("movies") or {}):
+                linked.add(movie.strip().lower())
+    kept = [t for t in titles if t.strip().lower() in linked]
+    dropped = [t for t in titles if t.strip().lower() not in linked]
+    if dropped:
+        print(f"Calendar title(s) with no AMC links this weekend, not demanded: {', '.join(dropped)}")
+    return kept
+
+
 def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: str) -> list[str]:
     saved_links = _load_showtime_links(repo_root)
     titles: list[str] = []
     titles.extend(_tracked_titles_from_showtime_links(saved_links, expected_weekend))
     titles.extend(_tracked_titles_from_theatre_counts(repo_root, expected_weekend))
     titles.extend(_csv_market_titles(repo_root, expected_weekend, market_since))
-    titles.extend(_calendar_titles(repo_root, expected_weekend))
+    titles.extend(_calendar_titles_to_demand(repo_root, saved_links, expected_weekend))
     active = _unique_titles(titles)
     if not active:
         print(f"No active movie state found for weekend {expected_weekend}; running")
