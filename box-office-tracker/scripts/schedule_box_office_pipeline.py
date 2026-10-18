@@ -701,6 +701,9 @@ def missing_slots(
     return missing
 
 
+RECONCILE_MAX_PAGES = 10
+
+
 def reconcile_date(*, client: GitHubClient, workflow: str, date: dt.date) -> int:
     """After-the-fact slot ledger (audit 2026-08-23).
 
@@ -712,11 +715,21 @@ def reconcile_date(*, client: GitHubClient, workflow: str, date: dt.date) -> int
     """
     expected = expected_slots_for_date(date)
     next_day = date + dt.timedelta(days=1)
-    runs = client.request_json(
-        "GET",
-        f"/repos/{client.repo}/actions/workflows/{workflow}/runs"
-        f"?event=workflow_dispatch&per_page=100&created={date}..{next_day}",
-    ).get("workflow_runs", [])
+    # Paginate: the window spans two days (~150-200 runs since the lanes
+    # scaled up), and a single page of 100 dropped the earliest runs, so the
+    # ledger reported 30-80 phantom "NEVER DISPATCHED" slots a day
+    # (2026-10-18 audit) while every slot had in fact run.
+    runs = []
+    for page in range(1, RECONCILE_MAX_PAGES + 1):
+        batch = client.request_json(
+            "GET",
+            f"/repos/{client.repo}/actions/workflows/{workflow}/runs"
+            f"?event=workflow_dispatch&per_page=100&page={page}"
+            f"&created={date}..{next_day}",
+        ).get("workflow_runs", [])
+        runs.extend(batch)
+        if len(batch) < 100:
+            break
     gone = missing_slots(expected, runs)
     print(f"slot ledger for {date}: {len(expected)} expected, "
           f"{len(expected) - len(gone)} dispatched, {len(gone)} missing")

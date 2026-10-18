@@ -572,3 +572,22 @@ class SlotLedgerTests(unittest.TestCase):
                                      workflow="wf.yml",
                                      date=dt.date(2026, 8, 22))
         self.assertEqual(0, rc)
+
+
+class ReconcilePaginationTest(unittest.TestCase):
+    """2026-10-18: one page of 100 runs dropped the earliest runs of a busy
+    two-day window, so the ledger reported dozens of phantom missing slots."""
+
+    def test_reconcile_reads_every_page(self):
+        pages = []
+
+        class PagingClient:
+            repo = "o/r"
+
+            def request_json(self, method, path, body=None):
+                pages.append(path)
+                n = 100 if "page=1&" in path or "page=2&" in path else 7
+                return {"workflow_runs": [{"display_title": "x", "created_at": "2026-10-16T00:00:00Z"}] * n}
+
+        schedule.reconcile_date(client=PagingClient(), workflow="w.yml", date=dt.date(2026, 10, 16))
+        self.assertEqual(3, len(pages))
