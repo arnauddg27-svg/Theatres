@@ -184,7 +184,7 @@ MAX_REASONABLE_PRE_SHOW_MINUTES = 360
 # throws away signal we already have in `auditorium_type`. These are realized
 # evening prices (not advertised), already net of typical loyalty discounts,
 # which is why they're a touch below AMC's headline rates.
-FORMAT_TICKET_PRICES = {
+FORMAT_TICKET_PRICES_LEGACY = {
     8: 19.00, 7: 19.00,   # IMAX with Laser
     6: 18.00,             # IMAX / IMAX 3D
     5: 17.00,             # Dolby Cinema
@@ -192,6 +192,27 @@ FORMAT_TICKET_PRICES = {
     2: 14.00,             # Laser
     1: 13.00, 0: 13.00,   # Standard / Digital
 }
+# REFIT (2026-10-18 audit): 4,798 evening AMC adult stickers sampled over four
+# weekends (Sep 25 - Oct 16) put the premium spread far wider than the legacy
+# table — standard $13.99, Laser $15.49, XL $17.17, PRIME $20.99, Dolby $21.72,
+# IMAX $18.94, IMAX Laser $21.85. The legacy table priced Dolby at 1.31x
+# standard; sampled is 1.55x. Premium formats are 39% of counted AMC seats, so
+# the mix error moved dollars between premium-heavy (fan) and standard-heavy
+# (family) films. This table keeps the LEGACY seat-weighted level (x0.863 on
+# the sampled medians, weights = counted seats by rank) so the fitted AMC
+# share is untouched; only the between-format split changes. Selected by
+# PRICE_TABLE_MODE=refit; "legacy" restores the old table.
+FORMAT_TICKET_PRICES_REFIT = {
+    8: 18.86, 7: 18.86,   # IMAX with Laser
+    6: 16.35,             # IMAX / IMAX 3D
+    5: 18.75,             # Dolby Cinema
+    4: 18.12, 3: 14.82,   # Prime / XL
+    2: 13.37,             # Laser
+    1: 12.08, 0: 12.08,   # Standard / Digital
+}
+PRICE_TABLE_MODE = (os.environ.get("PRICE_TABLE_MODE") or "legacy").strip().lower()
+FORMAT_TICKET_PRICES = (FORMAT_TICKET_PRICES_REFIT if PRICE_TABLE_MODE == "refit"
+                        else FORMAT_TICKET_PRICES_LEGACY)
 
 # SAMPLED PRICES (2026-09-19). scripts/sample_ticket_prices.py records AMC's
 # real per-showtime prices (data/ticket-prices.csv). The model keeps using
@@ -5097,6 +5118,137 @@ CONFORMAL_BUCKET_MARGIN = 1.3
 CONFORMAL_MIN_HALF_WIDTH = 0.15
 
 
+COMP_MULTIPLIER_MODE = (os.environ.get("COMP_MULTIPLIER_MODE") or "on").strip().lower()
+COMP_MULTIPLIER_WEIGHT = float(os.environ.get("COMP_MULTIPLIER_WEIGHT") or 0.5)
+COMP_MULTIPLIER_SHRINK = 4.0
+COMP_MULTIPLIER_MIN_FILMS = 10
+
+
+def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of=None):
+    """Median opening-weekend / reported-day multiplier from recorded dailies.
+
+    basis "previews": weekend / Thursday previews; "thu_fri": weekend /
+    (Thursday + Friday). Audience-class median shrunk toward the global median
+    (k=COMP_MULTIPLIER_SHRINK). Only history before `weekend_of` and never the
+    film itself (`exclude` = (weekend_of, movie)), like conformal_ratio_band."""
+    rows = []
+    try:
+        metadata = load_movie_metadata()
+    except Exception:
+        metadata = {}
+    for entry in (cal or {}).get("history", []) or []:
+        if exclude and (entry.get("weekend_of"), entry.get("movie")) == tuple(exclude):
+            continue
+        if weekend_of and entry.get("weekend_of") and entry["weekend_of"] >= weekend_of:
+            continue
+        daily = entry.get("daily_actuals") or {}
+        total = _positive_float(entry.get("actual_total"))
+        thu = _positive_float(daily.get("Thursday"))
+        fri = _positive_float(daily.get("Friday"))
+        if not total or not thu or (basis == "thu_fri" and not fri):
+            continue
+        denom = thu if basis == "previews" else thu + fri
+        meta = metadata_for_movie(entry.get("movie", ""), metadata)
+        rows.append((total / denom, (getattr(meta, "audience_type", "") or "").strip()))
+    if len(rows) < COMP_MULTIPLIER_MIN_FILMS:
+        return None
+    global_median = statistics.median(m for m, _ in rows)
+    aud = (audience_type or "").strip()
+    cls = [m for m, a in rows if aud and a == aud]
+    if cls:
+        n = len(cls)
+        mult = (n * statistics.median(cls) + COMP_MULTIPLIER_SHRINK * global_median) / (
+            n + COMP_MULTIPLIER_SHRINK)
+        label = f"{aud} n={n} shrunk to {len(rows)}-film median {global_median:.2f}"
+    else:
+        mult = global_median
+        label = f"median of {len(rows)} openings"
+    return {"multiplier": mult, "n": len(rows), "basis": label}
+
+
+def comp_multiplier_estimate(cal, pred):
+    """Weekend estimate from the reported days x class multiplier, or None."""
+    details = pred.get("daily_details") or {}
+    reported = {d: _detail_mid_m(v) for d, v in details.items()
+                if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
+    thu = reported.get("Thursday")
+    if not thu or thu <= 0 or "Saturday" in reported:
+        return None
+    fri = reported.get("Friday")
+    basis = "thu_fri" if fri else "previews"
+    mult = class_opening_multiplier(
+        cal, pred.get("audience_type"), basis,
+        exclude=(pred.get("weekend_of"), pred.get("movie")), weekend_of=pred.get("weekend_of"))
+    if not mult:
+        return None
+    base = thu + (fri or 0.0)
+    return {"estimate_m": base * mult["multiplier"], "multiplier": mult["multiplier"],
+            "basis": f"{'Thu+Fri' if fri else 'previews'} ${base:.1f}M x {mult['multiplier']:.2f} ({mult['basis']})"}
+
+
+# STAGE BANDS (2026-10-18 audit). The conformal floor was fitted on the
+# calibrate replay's single "predicted_mid" per film, so every stage got the
+# same 4-5x (hi/lo) band — after-Friday calls that land within 11% carried a
+# 0.55x-2.26x band. The graded LIVE headlines in prediction-log.csv give an
+# error distribution PER STAGE: after-Friday actual/headline 0.85-1.20 (n=7),
+# after-Saturday 0.86-1.05. Once a stage has STAGE_BAND_MIN_N graded calls
+# its [min, max] widened by CONFORMAL_BUCKET_MARGIN replaces the conformal
+# floor (never narrower than CONFORMAL_MIN_HALF_WIDTH, LOO by movie). Early
+# stages keep the wide conformal band until they earn a narrower one.
+STAGE_BAND_MIN_N = 6
+STAGE_BAND_MODE = (os.environ.get("STAGE_BAND_MODE") or "on").strip().lower()
+_STAGE_BAND_CACHE = {}
+
+
+def _graded_live_ratios(cal):
+    """{stage: [(movie, weekend_of, actual/headline)]} from the live log."""
+    key = id(cal)
+    if key in _STAGE_BAND_CACHE:
+        return _STAGE_BAND_CACHE[key]
+    actual = {}
+    for e in (cal or {}).get("history", []) or []:
+        if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
+            actual[(e["weekend_of"], _movie_lookup_key(e["movie"]))] = float(e["actual_total"])
+    latest = {}
+    try:
+        with open(PREDICTION_LOG_CSV, newline="") as f:
+            for r in csv.DictReader(f):
+                k = (r.get("weekend_of"), _movie_lookup_key(r.get("movie", "")), r.get("forecast_stage"))
+                mid = _positive_float(r.get("headline_mid_m"))
+                if mid:
+                    latest[k] = mid
+    except OSError:
+        pass
+    out = {}
+    for (w, mk, stage), mid in latest.items():
+        a = actual.get((w, mk))
+        if a:
+            out.setdefault(stage, []).append((mk, w, a / mid))
+    _STAGE_BAND_CACHE[key] = out
+    return out
+
+
+def stage_ratio_band(cal, stage, movie=None, weekend_of=None):
+    """(r_lo, r_hi) from graded live calls at this stage, or None."""
+    if STAGE_BAND_MODE != "on" or not stage:
+        return None
+    key = _movie_lookup_key(movie or "")
+    ratios = sorted(r for mk, w, r in _graded_live_ratios(cal).get(stage, [])
+                    if mk != key and (not weekend_of or not w or w < weekend_of))
+    if len(ratios) < STAGE_BAND_MIN_N:
+        return None
+    r_lo = 1.0 - (1.0 - ratios[0]) * CONFORMAL_BUCKET_MARGIN
+    r_hi = 1.0 + (ratios[-1] - 1.0) * CONFORMAL_BUCKET_MARGIN
+    return (max(0.0, min(r_lo, 1.0 - CONFORMAL_MIN_HALF_WIDTH)),
+            max(r_hi, 1.0 + CONFORMAL_MIN_HALF_WIDTH))
+
+
+def headline_ratio_band(cal, movie, predicted_mid=None, weekend_of=None, stage=None):
+    """Stage band when the stage has earned one, else the conformal band."""
+    return (stage_ratio_band(cal, stage, movie, weekend_of)
+            or conformal_ratio_band(cal, movie, predicted_mid=predicted_mid, weekend_of=weekend_of))
+
+
 def conformal_ratio_band(cal, movie, predicted_mid=None, weekend_of=None):
     """(r_lo, r_hi) empirical band of actual/predicted from history (LOO by movie).
 
@@ -5444,8 +5596,9 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     evidence = daily_evidence_candidate(pred) if apply_stage_model else None
     pred["stage_daily_evidence_applied"] = bool(evidence)
     if evidence:
-        baseline_band = conformal_ratio_band(
-            cal, pred.get("movie", ""), predicted_mid=mid, weekend_of=pred.get("weekend_of"))
+        baseline_band = headline_ratio_band(
+            cal, pred.get("movie", ""), predicted_mid=mid, weekend_of=pred.get("weekend_of"),
+            stage=pred.get("forecast_stage"))
         if baseline_band and mid and mid > 0:
             low = min(low, mid * baseline_band[0])
             high = max(high, mid * baseline_band[1])
@@ -5460,11 +5613,34 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
         if fa is not None:
             pred["friday_anchor_blend_weight"] = 0.0
 
+    # COMP MULTIPLIER BLEND (2026-10-18 audit). Once a day is REPORTED, the
+    # trades' method — reported gross x a class-median multiplier — is a strong
+    # second opinion: on 39 films (leave-one-out) previews x class multiplier
+    # lands 24.8% MAE (median 10.7%) and on the 7 most recent after-previews
+    # calls 8.9% vs the model's 24%; (Thu+Fri) x multiplier 10.6% vs 11.0%.
+    # The seat model and the multiplier fail on different films (seat share
+    # by class vs comp-set drift), so a geometric blend beats either. Applied
+    # while Thursday and/or Friday are reported and Saturday is not (the
+    # Sunday ratio takes over after Saturday). COMP_MULTIPLIER_MODE=off.
+    comp = comp_multiplier_estimate(cal, pred) if COMP_MULTIPLIER_MODE == "on" else None
+    if comp and mid and mid > 0:
+        blended = exp(COMP_MULTIPLIER_WEIGHT * log(comp["estimate_m"])
+                      + (1.0 - COMP_MULTIPLIER_WEIGHT) * log(mid))
+        scale = blended / mid
+        comp["model_mid_m"] = mid
+        comp["blended_mid_m"] = blended
+        comp["weight"] = COMP_MULTIPLIER_WEIGHT
+        mid, low, high = blended, low * scale, high * scale
+        pred["comp_multiplier"] = comp
+        basis += (f"; comp multiplier {comp['basis']}: ${comp['estimate_m']:.1f}M "
+                  f"blended {COMP_MULTIPLIER_WEIGHT:.0%}")
+
     # Conformal floor: the band must be at least as wide as the model's own
     # historical error distribution implies (audit: stated bands covered only
     # 44% of actuals). Widens only — the midpoint is untouched.
-    band = conformal_ratio_band(cal, pred.get("movie", ""), predicted_mid=mid,
-                                weekend_of=pred.get("weekend_of")) if mid and mid > 0 else None
+    band = headline_ratio_band(cal, pred.get("movie", ""), predicted_mid=mid,
+                               weekend_of=pred.get("weekend_of"),
+                               stage=pred.get("forecast_stage")) if mid and mid > 0 else None
     if band:
         r_lo, r_hi = band
         c_low, c_high = mid * r_lo, mid * r_hi
