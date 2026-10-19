@@ -2,7 +2,7 @@
   "date": "2026-10-16",
   "weekend_of": "2026-10-16",
   "collected_local_date": "2026-10-18",
-  "collected_at": "2026-10-18T23:08:03.467414+00:00",
+  "collected_at": "2026-10-19T01:06:42.112794+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -169926,7 +169926,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700428+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -170185,253 +170185,248 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "147833445",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "1:00pm",
-            "showtime_id": "147833160",
+            "showtime_id": "147833163",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147833325",
+            "showtime_id": "147833321",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147209797",
+            "showtime_id": "147209796",
             "format": "GXL"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147209885",
+            "showtime_id": "147209879",
             "format": "GXL"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147833159",
+            "showtime_id": "147833162",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147833324",
+            "showtime_id": "147833322",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147209798",
+            "showtime_id": "147209793",
             "format": "GXL"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147209882",
+            "showtime_id": "147209880",
             "format": "GXL"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147209758",
+            "showtime_id": "147209757",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147209842",
+            "showtime_id": "147209841",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147209799",
+            "showtime_id": "147209794",
             "format": "GXL"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147209883",
+            "showtime_id": "147209881",
             "format": "GXL"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147833158",
+            "showtime_id": "147833161",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147833326",
+            "showtime_id": "147833323",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147209800",
+            "showtime_id": "147209795",
             "format": "GXL"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147209884",
+            "showtime_id": "147209876",
             "format": "GXL"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147833259",
-            "format": "AMC Artisan Films"
+            "showtime_id": "147833262",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "147833429",
-            "format": "AMC Artisan Films"
+            "showtime_id": "147833433",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "12:15pm",
-            "showtime_id": "147833187",
+            "showtime_id": "147833183",
             "format": "GXL"
           },
           {
             "showtime": "12:15pm",
-            "showtime_id": "147833354",
+            "showtime_id": "147833358",
             "format": "GXL"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147566803",
+            "showtime_id": "147566802",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147566813",
+            "showtime_id": "147566815",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "147833201",
+            "showtime_id": "147833205",
             "format": "GXL"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "147833367",
+            "showtime_id": "147833363",
             "format": "GXL"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147566804",
+            "showtime_id": "147566801",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147566816",
+            "showtime_id": "147566814",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "147833199",
+            "showtime_id": "147833203",
             "format": "GXL"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "147833368",
+            "showtime_id": "147833364",
             "format": "GXL"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147566828",
+            "showtime_id": "147566827",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147833190",
+            "showtime_id": "147833186",
             "format": "GXL"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147833357",
+            "showtime_id": "147833361",
             "format": "GXL"
           }
         ],
         "Whalefall": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "147382085",
+            "showtime_id": "147382081",
             "format": "undefined"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147382131",
+            "showtime_id": "147382125",
             "format": "undefined"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147382084",
-            "format": "undefined"
+            "showtime_id": "147382080",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147382132",
+            "showtime_id": "147382126",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147382078",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147382082",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147382129",
+            "showtime_id": "147382127",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147382083",
+            "showtime_id": "147382079",
             "format": "undefined"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147382130",
+            "showtime_id": "147382128",
             "format": "undefined"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147382109",
+            "showtime_id": "147382105",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "147382157",
+            "showtime_id": "147382155",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147382110",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147382106",
+            "format": "AMC Artisan Films"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147382158",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "147382111",
+            "showtime_id": "147382152",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147382159",
+            "showtime_id": "147382107",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147382153",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147382112",
+            "showtime_id": "147382108",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147382156",
+            "showtime_id": "147382154",
             "format": "AMC Artisan Films"
           }
         ]
@@ -172578,9 +172573,21 @@
                 "showtime_id": "147890729",
                 "format": "Laser at AMC"
               }
+            ],
+            "Sense and Sensibility": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147377234",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "147377235",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-16T01:09:43.235433+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -172707,143 +172714,143 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147874121",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "10:35am",
-            "showtime_id": "147211657",
+            "showtime_id": "147211652",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "12:10pm",
-            "showtime_id": "147211525",
+            "showtime_id": "147211524",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "147211656",
+            "showtime_id": "147211651",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "2:40pm",
-            "showtime_id": "147874132",
+            "showtime": "3:20pm",
+            "showtime_id": "147211523",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:20pm",
-            "showtime_id": "147211529",
+            "showtime": "4:00pm",
+            "showtime_id": "147890727",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:55pm",
-            "showtime_id": "147211655",
+            "showtime_id": "147211650",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147211527",
+            "showtime_id": "147211521",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147211599",
+            "showtime_id": "147211597",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:05pm",
-            "showtime_id": "147211653",
+            "showtime_id": "147211658",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "147211528",
+            "showtime_id": "147211522",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147377250",
+            "showtime_id": "147377248",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "10:40am",
-            "showtime_id": "147874136",
+            "showtime_id": "147890731",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:05pm",
-            "showtime_id": "147573388",
+            "showtime_id": "147573386",
             "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "2:40pm",
-            "showtime_id": "147573398",
+            "showtime_id": "147573403",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147874131",
+            "showtime": "4:30pm",
+            "showtime_id": "147890713",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147573391",
+            "showtime_id": "147573389",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147890714",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147573397",
+            "showtime_id": "147573402",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147874130",
+            "showtime": "10:10pm",
+            "showtime_id": "147890710",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147377252",
+            "showtime_id": "147890724",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "147377225",
+            "showtime_id": "147377221",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:20pm",
-            "showtime_id": "147377249",
+            "showtime_id": "147377246",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147377227",
+            "showtime_id": "147377223",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147377228",
+            "showtime": "10:45pm",
+            "showtime_id": "147890729",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "6:00pm",
-            "showtime_id": "147377237",
+            "showtime_id": "147377234",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:20pm",
-            "showtime_id": "147377238",
+            "showtime_id": "147377235",
             "format": "Laser at AMC"
           }
         ]
@@ -177359,6 +177366,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "147943409",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147785685",
                 "format": "Laser at AMC"
@@ -177526,153 +177538,148 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "147785833",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "12:00pm",
-            "showtime_id": "147027537",
+            "showtime_id": "147027533",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147027483",
+            "showtime_id": "147027481",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147785683",
+            "showtime_id": "147785826",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147027536",
+            "showtime_id": "147027532",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147027482",
+            "showtime_id": "147027480",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147785829",
+            "showtime": "5:00pm",
+            "showtime_id": "147785684",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147027534",
+            "showtime_id": "147027530",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147027484",
+            "showtime_id": "147027479",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147785825",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147027535",
+            "showtime_id": "147027531",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147785813",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Whalefall": [
-          {
-            "showtime": "11:15am",
-            "showtime_id": "147785773",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147785774",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147239711",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "147239712",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147785740",
+            "showtime_id": "147785783",
             "format": "Laser at AMC"
           }
         ],
         "You Can See Everything": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "147785746",
+            "showtime": "12:30pm",
+            "showtime_id": "147567483",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147567482",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "1:15pm",
+            "showtime_id": "147785749",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147567473",
+            "showtime_id": "147567477",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147785682",
+            "showtime": "4:15pm",
+            "showtime_id": "147785764",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147567486",
+            "showtime_id": "147567487",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147785722",
+            "showtime": "7:15pm",
+            "showtime_id": "147943409",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147785685",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147785648",
+            "showtime_id": "147785649",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Whalefall": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "147239687",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147239688",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "147239689",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147785739",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147785810",
+            "showtime": "12:30pm",
+            "showtime_id": "147785723",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147785721",
-            "format": "Laser at AMC"
+            "showtime": "3:15pm",
+            "showtime_id": "147389574",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147390539",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147785710",
+            "showtime": "6:15pm",
+            "showtime_id": "147785650",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147785711",
+            "showtime_id": "147785819",
             "format": "Laser at AMC"
           }
         ]
@@ -182112,6 +182119,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "147938444",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147540908",
                 "format": "Laser at AMC"
@@ -182153,9 +182165,21 @@
                 "showtime_id": "147371836",
                 "format": "Laser at AMC"
               }
+            ],
+            "Sense and Sensibility": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147371871",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147371872",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-16T01:09:43.235579+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -182309,198 +182333,168 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147905247",
-            "format": "Laser at AMC"
+            "showtime_id": "147784529",
+            "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:30am",
-            "showtime_id": "147223188",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "11:00am",
+            "showtime_id": "147712135",
+            "format": "SCREENX at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147712125",
-            "format": "SCREENX at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147905255",
+            "showtime_id": "147905242",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147218644",
+            "showtime": "1:00pm",
+            "showtime_id": "147218648",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "2:30pm",
-            "showtime_id": "147712121",
+            "showtime": "2:00pm",
+            "showtime_id": "147712124",
             "format": "SCREENX at AMC"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147784520",
+            "showtime": "2:30pm",
+            "showtime_id": "147905239",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147784524",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147905250",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147218641",
+            "showtime_id": "147218649",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "147712120",
+            "showtime": "5:00pm",
+            "showtime_id": "147712123",
             "format": "SCREENX at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147218610",
+            "showtime": "5:30pm",
+            "showtime_id": "147905237",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147218611",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147905232",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147218643",
+            "showtime_id": "147218650",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147712118",
+            "showtime": "8:00pm",
+            "showtime_id": "147712122",
             "format": "SCREENX at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147784518",
+            "showtime": "8:30pm",
+            "showtime_id": "147905235",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147784521",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147905244",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147218642",
+            "showtime_id": "147218651",
             "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147905310",
-            "format": "Laser at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "11:15am",
-            "showtime_id": "147540876",
+            "showtime_id": "147540899",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147540907",
+            "showtime": "1:15pm",
+            "showtime_id": "147540883",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147540889",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "3:15pm",
+            "showtime_id": "147540909",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147540906",
+            "showtime": "5:15pm",
+            "showtime_id": "147540884",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147540890",
+            "showtime_id": "147938444",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147540905",
+            "showtime": "7:15pm",
+            "showtime_id": "147540908",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147540882",
+            "showtime": "9:15pm",
+            "showtime_id": "147540885",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147784523",
+            "showtime": "11:00am",
+            "showtime_id": "147905138",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "147784522",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "11:15am",
-            "showtime_id": "147905140",
+            "showtime": "1:45pm",
+            "showtime_id": "147371845",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147784519",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147371853",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147371842",
+            "showtime": "4:30pm",
+            "showtime_id": "147371846",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147371843",
+            "showtime": "7:15pm",
+            "showtime_id": "147371847",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147371844",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147938446",
+            "showtime": "10:00pm",
+            "showtime_id": "147371836",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "147371877",
+            "showtime": "6:30pm",
+            "showtime_id": "147371871",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147371878",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "147371879",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147371880",
+            "showtime": "9:45pm",
+            "showtime_id": "147371872",
             "format": "Laser at AMC"
           }
         ]
@@ -182769,6 +182763,11 @@
               {
                 "showtime": "4:00pm",
                 "showtime_id": "147876790",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147945383",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -183042,6 +183041,11 @@
           {
             "showtime": "4:00pm",
             "showtime_id": "147876790",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147945383",
             "format": "Dine-In Delivery to Seat"
           },
           {
@@ -183363,6 +183367,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147944278",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "8:20pm",
                 "showtime_id": "147534175",
                 "format": "XL at AMC"
@@ -183399,9 +183408,26 @@
                 "showtime_id": "147377678",
                 "format": "Laser at AMC"
               }
+            ],
+            "Sense and Sensibility": [
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "147813494",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147377645",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147813561",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-16T01:09:43.235285+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -183794,218 +183820,183 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147813424",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:45am",
-            "showtime_id": "147813452",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "12:00pm",
-            "showtime_id": "147231426",
+            "showtime_id": "147231422",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "147231464",
+            "showtime_id": "147231458",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:10pm",
-            "showtime_id": "147231385",
+            "showtime_id": "147231379",
             "format": "XL at AMC"
           },
           {
-            "showtime": "2:05pm",
-            "showtime_id": "147231557",
+            "showtime": "2:00pm",
+            "showtime_id": "147813443",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147231554",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147231424",
+            "showtime_id": "147231420",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147231463",
+            "showtime_id": "147231461",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147231386",
+            "showtime_id": "147231380",
             "format": "XL at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147231556",
+            "showtime_id": "147231553",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147813441",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147231423",
+            "showtime_id": "147231419",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147231462",
+            "showtime_id": "147231460",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147231383",
+            "showtime_id": "147231381",
             "format": "XL at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147231555",
+            "showtime_id": "147813442",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147813437",
+            "showtime": "8:35pm",
+            "showtime_id": "147231552",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147231328",
+            "showtime_id": "147231327",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147231425",
+            "showtime_id": "147231421",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147231465",
+            "showtime_id": "147231459",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147231384",
+            "showtime_id": "147231382",
             "format": "XL at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147534173",
+            "showtime_id": "147534176",
             "format": "XL at AMC"
           },
           {
-            "showtime": "1:10pm",
-            "showtime_id": "147813300",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "147540924",
+            "showtime": "2:50pm",
+            "showtime_id": "147540916",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "147534171",
+            "showtime_id": "147534174",
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "147813301",
+            "showtime": "7:00pm",
+            "showtime_id": "147540915",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147540923",
+            "showtime": "7:45pm",
+            "showtime_id": "147944278",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:20pm",
-            "showtime_id": "147534172",
+            "showtime_id": "147534175",
             "format": "XL at AMC"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "147813366",
+            "showtime_id": "147813361",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "12:10pm",
-            "showtime_id": "147813431",
+            "showtime_id": "147813432",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "12:55pm",
-            "showtime_id": "147377689",
+            "showtime": "1:00pm",
+            "showtime_id": "147377681",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147377688",
+            "showtime_id": "147377680",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147377687",
+            "showtime": "7:00pm",
+            "showtime_id": "147377679",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "147377686",
+            "showtime": "10:00pm",
+            "showtime_id": "147377678",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "10:25am",
-            "showtime_id": "147813557",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:45pm",
-            "showtime_id": "147377651",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147813558",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147377652",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:35pm",
-            "showtime_id": "147813559",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:20pm",
-            "showtime_id": "147813486",
+            "showtime_id": "147813494",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147377653",
+            "showtime_id": "147377645",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:05pm",
-            "showtime_id": "147813560",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147377654",
+            "showtime": "10:15pm",
+            "showtime_id": "147813561",
             "format": "Laser at AMC"
           }
         ]
@@ -185031,9 +185022,21 @@
                 "showtime_id": "147371044",
                 "format": "Laser at AMC"
               }
+            ],
+            "Sense and Sensibility": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147371003",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "147371006",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-16T01:09:43.235459+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -185202,163 +185205,158 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-16",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:45am",
-            "showtime_id": "147059781",
+            "showtime_id": "147059771",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147778491",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:10pm",
-            "showtime_id": "147059667",
+            "showtime_id": "147778675",
             "format": "XL at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147778540",
-            "format": "Laser at AMC"
+            "showtime": "12:10pm",
+            "showtime_id": "147059680",
+            "format": "XL at AMC"
           },
           {
             "showtime": "1:55pm",
-            "showtime_id": "147059782",
+            "showtime_id": "147059772",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:35pm",
-            "showtime_id": "147778483",
-            "format": "Laser at AMC"
+            "showtime_id": "147778509",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147059665",
+            "showtime_id": "147059679",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147778661",
+            "showtime_id": "147778670",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147059783",
+            "showtime_id": "147059773",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "147778487",
+            "showtime_id": "147778507",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147059664",
+            "showtime_id": "147059677",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147059805",
+            "showtime_id": "147059807",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147059784",
+            "showtime_id": "147059774",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147778485",
+            "showtime_id": "147778505",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147059662",
+            "showtime_id": "147059675",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147778663",
+            "showtime_id": "147778672",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147553225",
-            "format": "XL at AMC"
+            "showtime": "10:45am",
+            "showtime_id": "147553248",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147778684",
+            "showtime": "12:45pm",
+            "showtime_id": "147778694",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147553226",
+            "showtime": "2:45pm",
+            "showtime_id": "147553236",
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147778685",
+            "showtime": "4:45pm",
+            "showtime_id": "147778695",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147553227",
+            "showtime": "6:45pm",
+            "showtime_id": "147553237",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147778686",
+            "showtime": "8:45pm",
+            "showtime_id": "147778696",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "11:00pm",
-            "showtime_id": "147553242",
+            "showtime": "10:45pm",
+            "showtime_id": "147553238",
             "format": "XL at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "11:15am",
-            "showtime_id": "147371054",
-            "format": "Laser at AMC"
+            "showtime_id": "147371053",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "147778662",
+            "showtime_id": "147778671",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "147371055",
+            "showtime_id": "147371042",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147371056",
+            "showtime_id": "147371043",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147371057",
+            "showtime_id": "147371044",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147371118",
+            "showtime_id": "147371003",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147371119",
+            "showtime_id": "147371006",
             "format": "Laser at AMC"
           }
         ]
@@ -192185,6 +192183,11 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "147942269",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:10pm",
                 "showtime_id": "147788860",
                 "format": "Dolby Cinema at AMC"
@@ -192209,6 +192212,16 @@
               {
                 "showtime": "7:20pm",
                 "showtime_id": "147545299",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147942270",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147940928",
                 "format": "Laser at AMC"
               },
               {
@@ -192277,7 +192290,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-17T01:57:01.688603+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -192406,123 +192419,143 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:30am",
-            "showtime_id": "147788874",
+            "showtime_id": "147788873",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147217465",
+            "showtime_id": "147217459",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:50pm",
-            "showtime_id": "147788857",
+            "showtime_id": "147788861",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147217464",
+            "showtime_id": "147217468",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147217429",
+            "showtime_id": "147217428",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147217473",
+            "showtime_id": "147217467",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147788856",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "8:30pm",
+            "showtime_id": "147942269",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147940933",
-            "format": "Laser at AMC"
+            "showtime": "10:10pm",
+            "showtime_id": "147788860",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147788948",
+            "showtime_id": "147788938",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147545287",
+            "showtime_id": "147545288",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:40pm",
-            "showtime_id": "147788985",
+            "showtime_id": "147789007",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "147545298",
+            "showtime_id": "147545299",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147942270",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147940928",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147545279",
+            "showtime_id": "147545280",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147788859",
+            "showtime_id": "147788863",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:00am",
-            "showtime_id": "147282171",
+            "showtime_id": "147282164",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147788858",
+            "showtime_id": "147788862",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147282170",
+            "showtime_id": "147282163",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:50pm",
-            "showtime_id": "147282169",
+            "showtime_id": "147282162",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:50pm",
-            "showtime_id": "147282174",
+            "showtime_id": "147282172",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147282168",
+            "showtime_id": "147282173",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
+            "showtime": "12:55pm",
+            "showtime_id": "147368908",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147368907",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:40pm",
-            "showtime_id": "147368896",
+            "showtime_id": "147368893",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147368897",
+            "showtime_id": "147368894",
             "format": "Laser at AMC"
           }
         ]
@@ -194218,7 +194251,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700308+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -194382,158 +194415,153 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
-        "You Can See Everything": [
-          {
-            "showtime": "10:05am",
-            "showtime_id": "147546504",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147546511",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147546512",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "147546513",
-            "format": "Laser at AMC"
-          }
-        ],
         "Street Fighter": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147887121",
-            "format": "SCREENX at AMC"
-          },
-          {
-            "showtime": "10:30am",
-            "showtime_id": "147887075",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "11:30am",
+            "showtime_id": "147231907",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147887132",
+            "showtime_id": "147887136",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147231866",
+            "showtime_id": "147231867",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147231919",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147231917",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "147887047",
+            "showtime_id": "147887053",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147887131",
+            "showtime_id": "147887135",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147231882",
+            "showtime_id": "147231879",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147231922",
+            "showtime_id": "147231916",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147231850",
+            "showtime_id": "147231849",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147887130",
+            "showtime_id": "147887134",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147231881",
+            "showtime_id": "147231878",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147231921",
+            "showtime_id": "147231920",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147887045",
+            "showtime_id": "147887052",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147887129",
+            "showtime_id": "147887133",
             "format": "SCREENX at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147231880",
+            "showtime_id": "147231877",
             "format": "IMAX with Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147546514",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147546515",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "147546516",
+            "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147887071",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:15am",
-            "showtime_id": "147393995",
-            "format": "Laser at AMC"
+            "showtime": "11:25am",
+            "showtime_id": "147393987",
+            "format": "English Spoken with Spanish Subtitles"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "147887050",
+            "showtime_id": "147887056",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147394009",
+            "showtime": "2:05pm",
+            "showtime_id": "147394013",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147394010",
+            "showtime_id": "147394002",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "147394011",
+            "showtime_id": "147394003",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147394012",
+            "showtime_id": "147394004",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
+            "showtime": "12:45pm",
+            "showtime_id": "147393972",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147393986",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "7:10pm",
-            "showtime_id": "147393982",
+            "showtime_id": "147393985",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "147393981",
+            "showtime_id": "147393984",
             "format": "Laser at AMC"
           }
         ]
@@ -197935,136 +197963,131 @@
               }
             ]
           },
-          "collected_at": "2026-10-17T01:57:01.689076+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147214383",
+            "showtime": "12:30pm",
+            "showtime_id": "147214382",
             "format": "GXL"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "147804369",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147214416",
+            "format": "undefined"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147214419",
+            "showtime_id": "147804447",
             "format": "undefined"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147804367",
+            "showtime": "3:30pm",
+            "showtime_id": "147214378",
+            "format": "GXL"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147804372",
             "format": "undefined"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147214384",
-            "format": "GXL"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147804400",
-            "format": "GXL"
+            "showtime": "5:00pm",
+            "showtime_id": "147214417",
+            "format": "undefined"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147214420",
+            "showtime_id": "147804445",
             "format": "undefined"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147804382",
+            "showtime": "6:30pm",
+            "showtime_id": "147214379",
+            "format": "GXL"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147804374",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147214385",
-            "format": "GXL"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147804401",
-            "format": "GXL"
+            "showtime": "8:00pm",
+            "showtime_id": "147214418",
+            "format": "undefined"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147214421",
+            "showtime_id": "147804443",
             "format": "undefined"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147804384",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147214381",
-            "format": "GXL"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147804403",
+            "showtime": "9:30pm",
+            "showtime_id": "147214380",
             "format": "GXL"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147804422",
-            "format": "GXL"
+            "showtime": "12:45pm",
+            "showtime_id": "147804573",
+            "format": "undefined"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147804635",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147804432",
+            "format": "GXL"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "147804421",
-            "format": "GXL"
+            "showtime_id": "147804571",
+            "format": "undefined"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147804638",
-            "format": "undefined"
+            "showtime_id": "147804433",
+            "format": "GXL"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147804419",
-            "format": "GXL"
+            "showtime": "6:15pm",
+            "showtime_id": "147804569",
+            "format": "undefined"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147804640",
-            "format": "undefined"
+            "showtime_id": "147804435",
+            "format": "GXL"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147804417",
-            "format": "GXL"
+            "showtime": "9:00pm",
+            "showtime_id": "147804567",
+            "format": "undefined"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147804633",
+            "showtime_id": "147285999",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147804631",
+            "showtime_id": "147286000",
             "format": "AMC Artisan Films"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147286004",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147804753",
+            "showtime_id": "147286001",
             "format": "AMC Artisan Films"
           }
         ]
@@ -198343,7 +198366,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-17T01:57:01.689128+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -198410,93 +198433,93 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "147028793",
+            "showtime_id": "147028789",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147028792",
+            "showtime_id": "147028788",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147028791",
+            "showtime_id": "147028787",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147028790",
+            "showtime_id": "147028786",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "3:00pm",
-            "showtime_id": "147796353",
+            "showtime_id": "147796349",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147796352",
+            "showtime_id": "147796348",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147796385",
+            "showtime_id": "147796387",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Whalefall": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "147796311",
+            "showtime_id": "147796314",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147267082",
+            "showtime_id": "147267084",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147267081",
+            "showtime_id": "147267083",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147267070",
+            "showtime_id": "147267071",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147267063",
+            "showtime_id": "147346543",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "147796391",
+            "showtime_id": "147796392",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "147346562",
+            "showtime_id": "147346554",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147346560",
+            "showtime_id": "147346563",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147346561",
+            "showtime_id": "147346564",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -199136,91 +199159,91 @@
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700356+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "147813860",
+            "showtime_id": "147813863",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "147236150",
+            "showtime_id": "147236139",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147236159",
+            "showtime_id": "147236162",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147813853",
+            "showtime_id": "147813861",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147236160",
+            "showtime_id": "147236151",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147813854",
+            "showtime": "9:15pm",
+            "showtime_id": "147813862",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147236161",
+            "showtime": "10:15pm",
+            "showtime_id": "147236152",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "1:15pm",
-            "showtime_id": "147383396",
+            "showtime_id": "147383397",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147383406",
+            "showtime_id": "147383409",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147383404",
+            "showtime_id": "147383407",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147383405",
+            "showtime_id": "147383408",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "147813816",
+            "showtime_id": "147813814",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147813806",
+            "showtime_id": "147813809",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147813818",
+            "showtime_id": "147813813",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147813807",
+            "showtime_id": "147813811",
             "format": "Laser at AMC"
           }
         ]
@@ -203271,6 +203294,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "147942570",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:15pm",
                 "showtime_id": "147771767",
                 "format": "Laser at AMC"
@@ -203416,6 +203444,11 @@
             "showtime": "8:30pm",
             "showtime_id": "147243404",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147942570",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
@@ -207860,6 +207893,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:45pm",
+                "showtime_id": "147944276",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:15pm",
                 "showtime_id": "147806217",
                 "format": "Laser at AMC"
@@ -207903,7 +207941,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-17T01:57:01.689136+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -208005,106 +208043,111 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147806212",
+            "showtime_id": "147806213",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147806175",
+            "showtime_id": "147806172",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147087059",
+            "showtime_id": "147087065",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147806176",
+            "showtime_id": "147806173",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147087057",
+            "showtime_id": "147087063",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147806177",
+            "showtime_id": "147806174",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147087054",
+            "showtime_id": "147087061",
             "format": "Laser at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147806166",
+            "showtime_id": "147806163",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "147806221",
+            "showtime_id": "147806218",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147546865",
+            "showtime_id": "147546876",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147806165",
+            "showtime_id": "147806162",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147944276",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147806220",
+            "showtime_id": "147806217",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147546875",
+            "showtime_id": "147546877",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147806167",
+            "showtime_id": "147806164",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147546814",
+            "showtime_id": "147546815",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "1:45pm",
-            "showtime_id": "147806170",
+            "showtime_id": "147806171",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147369211",
+            "showtime_id": "147369202",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147369210",
+            "showtime_id": "147369213",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147369209",
+            "showtime_id": "147369212",
             "format": "Laser at AMC"
           }
         ]
@@ -209377,7 +209420,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700464+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-17": {
@@ -209559,116 +209602,111 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147199024",
+            "showtime_id": "147199021",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147779616",
+            "showtime_id": "147199058",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147199061",
+            "showtime_id": "147801985",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147199025",
+            "showtime_id": "147199022",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147199060",
+            "showtime_id": "147199057",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147779631",
+            "showtime_id": "147801986",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147199026",
+            "showtime_id": "147199023",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147199059",
+            "showtime_id": "147199056",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147779632",
+            "showtime_id": "147801987",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147199027",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147779614",
+            "showtime_id": "147199018",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147366687",
+            "showtime_id": "147366686",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147366688",
+            "showtime_id": "147366685",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147366693",
+            "showtime": "4:00pm",
+            "showtime_id": "147939279",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147366695",
+            "showtime": "5:45pm",
+            "showtime_id": "147366680",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147366694",
+            "showtime": "9:00pm",
+            "showtime_id": "147366679",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147366648",
+            "showtime": "12:00pm",
+            "showtime_id": "147801968",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "147366640",
+            "showtime": "2:00pm",
+            "showtime_id": "147366646",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "147366647",
+            "showtime": "5:05pm",
+            "showtime_id": "147366645",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147366639",
+            "showtime_id": "147801970",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147366641",
+            "showtime": "8:30pm",
+            "showtime_id": "147802038",
             "format": "Laser at AMC"
           }
         ]
@@ -210866,7 +210904,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-17T01:57:01.689448+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-15": {
@@ -210973,158 +211011,158 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:45am",
-            "showtime_id": "147803147",
+            "showtime_id": "147803148",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:45am",
-            "showtime_id": "147791965",
+            "showtime_id": "147791963",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "147075114",
+            "showtime_id": "147075118",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "147075251",
+            "showtime_id": "147075260",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147791880",
+            "showtime_id": "147791883",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147791960",
+            "showtime_id": "147791961",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147075113",
+            "showtime_id": "147075117",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147075250",
+            "showtime_id": "147075259",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147075141",
+            "showtime_id": "147075136",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147075111",
+            "showtime_id": "147075115",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147075249",
+            "showtime_id": "147075258",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147791882",
+            "showtime_id": "147791885",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147791964",
+            "showtime_id": "147791962",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147075112",
+            "showtime_id": "147075116",
             "format": "IMAX with Laser at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "10:30am",
-            "showtime_id": "147803151",
+            "showtime_id": "147803149",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "147553715",
+            "showtime_id": "147553714",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147553705",
+            "showtime_id": "147553706",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147553689",
+            "showtime_id": "147553690",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147553669",
+            "showtime_id": "147553667",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "10:30am",
-            "showtime_id": "147803145",
+            "showtime_id": "147803144",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:00pm",
-            "showtime_id": "147791881",
+            "showtime_id": "147791884",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:15pm",
-            "showtime_id": "147328645",
+            "showtime_id": "147328644",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147328646",
+            "showtime_id": "147328643",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147328669",
+            "showtime_id": "147328666",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147328668",
+            "showtime_id": "147328667",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "147791928",
+            "showtime_id": "147791937",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:20pm",
-            "showtime_id": "147791970",
+            "showtime_id": "147791973",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "147791907",
+            "showtime_id": "147791915",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "147791887",
+            "showtime_id": "147791893",
             "format": "Laser at AMC"
           }
         ]
@@ -211423,13 +211461,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:50pm",
+                "showtime_id": "147944601",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "147281025",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700457+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -211680,143 +211723,158 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "11:30am",
-            "showtime_id": "147805490",
+            "showtime_id": "147805491",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:30pm",
-            "showtime_id": "147194678",
+            "showtime_id": "147194669",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147805584",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "1:30pm",
+            "showtime_id": "147805474",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147194692",
+            "showtime_id": "147194689",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147194677",
+            "showtime_id": "147194674",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147805468",
+            "showtime_id": "147805475",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147194693",
+            "showtime_id": "147194690",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147194675",
+            "showtime_id": "147194672",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147805469",
+            "showtime_id": "147805476",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147194694",
+            "showtime_id": "147194691",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147194676",
+            "showtime_id": "147194673",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "11:45am",
-            "showtime_id": "147805531",
-            "format": "Laser at AMC"
+            "showtime_id": "147805534",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "1:45pm",
-            "showtime_id": "147549755",
+            "showtime_id": "147549758",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147805532",
+            "showtime_id": "147805535",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147549753",
+            "showtime_id": "147549756",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "147805533",
+            "showtime_id": "147805536",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147805284",
+            "showtime_id": "147805291",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147549754",
+            "showtime_id": "147549757",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147281049",
+            "showtime_id": "147281053",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147281050",
+            "showtime_id": "147281054",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "4:00pm",
+            "showtime_id": "147805254",
+            "format": "English Spoken with Spanish Subtitles"
+          },
+          {
             "showtime": "6:00pm",
-            "showtime_id": "147281051",
+            "showtime_id": "147281043",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147281052",
+            "showtime_id": "147281044",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147805328",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "Sense and Sensibility": [
           {
             "showtime": "11:00am",
-            "showtime_id": "147805355",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147805356",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "147281024",
+            "showtime_id": "147281015",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147281023",
+            "showtime_id": "147281026",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147944601",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147281022",
+            "showtime_id": "147281025",
             "format": "Laser at AMC"
           }
         ]
@@ -219565,6 +219623,11 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "147939585",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:20pm",
                 "showtime_id": "147804946",
                 "format": "XL at AMC"
@@ -219573,6 +219636,11 @@
                 "showtime": "10:00pm",
                 "showtime_id": "147263698",
                 "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147939583",
+                "format": "Laser at AMC"
               }
             ],
             "Whalefall": [
@@ -219630,133 +219698,148 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147805099",
+            "showtime_id": "147805101",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:30am",
-            "showtime_id": "147215825",
+            "showtime_id": "147215820",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147749956",
+            "showtime_id": "147749954",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147215824",
+            "showtime_id": "147215819",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147749955",
+            "showtime_id": "147749953",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147215823",
+            "showtime_id": "147215818",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147215821",
+            "showtime_id": "147215816",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147215934",
+            "showtime_id": "147215933",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147215822",
+            "showtime_id": "147215817",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "147369045",
+            "showtime_id": "147369049",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
-            "showtime": "10:25am",
-            "showtime_id": "147829896",
-            "format": "Laser at AMC"
+            "showtime": "10:00am",
+            "showtime_id": "147804924",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "11:30am",
-            "showtime_id": "147263686",
+            "showtime_id": "147263683",
             "format": "XL at AMC"
           },
           {
             "showtime": "3:30pm",
-            "showtime_id": "147263685",
+            "showtime_id": "147263682",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147263701",
+            "showtime": "6:10pm",
+            "showtime_id": "147263689",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147939585",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "147804954",
+            "showtime_id": "147804946",
             "format": "XL at AMC"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "147263702",
+            "showtime": "10:00pm",
+            "showtime_id": "147263698",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "147804993",
+            "showtime": "10:30pm",
+            "showtime_id": "147939583",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "147369010",
+            "showtime": "10:25am",
+            "showtime_id": "147804828",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147369015",
+            "showtime": "1:15pm",
+            "showtime_id": "147369008",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147369046",
+            "showtime_id": "147369039",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147369009",
+            "showtime_id": "147368995",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147369011",
+            "showtime_id": "147368996",
             "format": "PRIME at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147368997",
+            "showtime": "10:45am",
+            "showtime_id": "147369041",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147369040",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147369012",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147368989",
+            "showtime": "9:30pm",
+            "showtime_id": "147369007",
             "format": "Laser at AMC"
           }
         ]
@@ -219916,6 +219999,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "147944274",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147553736",
                 "format": "Laser at AMC"
@@ -219971,7 +220059,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-18T01:10:26.700403+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-16": {
@@ -220120,103 +220208,108 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-17",
+      "show_date": "2026-10-18",
       "movies": {
         "Street Fighter": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147226631",
+            "showtime_id": "147226624",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147226620",
+            "showtime_id": "147226625",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147226621",
+            "showtime_id": "147226614",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147226622",
+            "showtime_id": "147226615",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147226623",
+            "showtime_id": "147226616",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "You Can See Everything": [
           {
             "showtime": "10:00am",
-            "showtime_id": "147553737",
+            "showtime_id": "147553733",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147553738",
+            "showtime_id": "147553734",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147553739",
+            "showtime_id": "147553735",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147944274",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147553740",
+            "showtime_id": "147553736",
             "format": "Laser at AMC"
           }
         ],
         "Whalefall": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "147541032",
+            "showtime": "11:30am",
+            "showtime_id": "147541037",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147541033",
+            "showtime": "2:15pm",
+            "showtime_id": "147541028",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147541034",
+            "showtime": "5:00pm",
+            "showtime_id": "147541029",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147541035",
+            "showtime": "7:45pm",
+            "showtime_id": "147541030",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147541036",
+            "showtime": "10:30pm",
+            "showtime_id": "147541031",
             "format": "Laser at AMC"
           }
         ],
         "Sense and Sensibility": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "147903116",
+            "showtime": "12:45pm",
+            "showtime_id": "147903117",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147541178",
+            "showtime": "4:00pm",
+            "showtime_id": "147541181",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147541176",
+            "showtime": "7:15pm",
+            "showtime_id": "147541179",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147541177",
+            "showtime": "10:30pm",
+            "showtime_id": "147541180",
             "format": "Laser at AMC"
           }
         ]
@@ -223251,6 +223344,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:50pm",
+                "showtime_id": "147940658",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:00pm",
                 "showtime_id": "147542140",
                 "format": "Laser at AMC"
@@ -223310,6 +223408,11 @@
           {
             "showtime": "7:50pm",
             "showtime_id": "147880205",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "147940658",
             "format": "Laser at AMC"
           },
           {
@@ -223733,9 +223836,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9828,
-    "fresh": 114,
-    "expected": 116,
+    "ratio": 1.0,
+    "fresh": 71,
+    "expected": 71,
     "min_ratio": 0.9,
     "degraded": false
   }
