@@ -39,7 +39,25 @@ def archive_path(archive_dir, csv_path, weekend):
     return os.path.join(archive_dir, f"{stem}-{weekend}.csv.gz")
 
 
-def rotate(csv_path, archive_dir, keep=2, dry_run=False):
+# SIZE CAP (2026-10-18 capacity audit). GitHub rejects any file over 100 MB
+# (2026-09-24: four finalize pushes bounced). With the release-calendar slate
+# (6-8 titles) a lane file holding two whole weekends reaches ~80 MB (Cinemark
+# was 37.7 MB with 4+2 titles). When the live file is still over LANE_MAX_MB
+# after the normal rotation, rotate again keeping only the newest weekend.
+LANE_MAX_MB = float(os.environ.get("LANE_MAX_MB") or 60)
+
+
+def rotate(csv_path, archive_dir, keep=2, dry_run=False, max_mb=None):
+    max_mb = LANE_MAX_MB if max_mb is None else max_mb
+    result = _rotate(csv_path, archive_dir, keep=keep, dry_run=dry_run)
+    if (not dry_run and max_mb and keep > 1 and os.path.exists(csv_path)
+            and os.path.getsize(csv_path) > max_mb * 1e6):
+        print(f"  {os.path.basename(csv_path)} still over {max_mb:.0f}MB — keeping only the newest weekend")
+        _rotate(csv_path, archive_dir, keep=1, dry_run=dry_run)
+    return result
+
+
+def _rotate(csv_path, archive_dir, keep=2, dry_run=False):
     if not os.path.exists(csv_path):
         print(f"{csv_path}: no file; nothing to rotate")
         return 0

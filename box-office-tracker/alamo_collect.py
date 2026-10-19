@@ -49,6 +49,11 @@ ALAMO_MAX_SESSIONS = int(os.environ.get("ALAMO_MAX_SESSIONS", "0") or 0)
 # Loop jobs commit after every pass (scripts/commit_lane.sh) so a runner
 # shutdown mid-loop cannot lose the passes already taken (2026-10-02 02:40Z).
 ALAMO_LOOP_COMMIT = (os.environ.get("ALAMO_LOOP_COMMIT") or "0").strip() == "1"
+# Commit every Nth pass, not every pass (2026-10-18 capacity audit): the 15-min
+# loop committed ~59 times a day, each rewriting the 11 MB Alamo CSV (the
+# single largest source of repo churn). Hourly commits still bound a runner
+# loss to one hour; the job's final commit step always runs.
+ALAMO_LOOP_COMMIT_EVERY = max(1, int(os.environ.get("ALAMO_LOOP_COMMIT_EVERY", "4") or 4))
 
 
 def commit_pass():
@@ -252,11 +257,16 @@ def main():
     if mode == "post" and ALAMO_LOOP_MIN > 0:
         end = time.monotonic() + ALAMO_LOOP_MIN * 60
         total = Counter()
+        passes = 0
+        pending_written = 0
         while True:
             t = collect(mode=mode)
             total.update(t)
-            if ALAMO_LOOP_COMMIT and t.get("written", 0):
+            passes += 1
+            pending_written += t.get("written", 0)
+            if ALAMO_LOOP_COMMIT and pending_written and passes % ALAMO_LOOP_COMMIT_EVERY == 0:
                 commit_pass()
+                pending_written = 0
             if time.monotonic() + ALAMO_LOOP_EVERY_MIN * 60 > end:
                 break
             time.sleep(ALAMO_LOOP_EVERY_MIN * 60)

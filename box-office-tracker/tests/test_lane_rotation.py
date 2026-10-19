@@ -98,3 +98,41 @@ class CommitLaneScriptTest(unittest.TestCase):
         self.assertIn("ALAMO_LOOP_COMMIT: ${{ contains(github.event.inputs.schedule_slot, 'loop') && '1' || '0' }}", yml)
         import alamo_collect as A
         self.assertFalse(A.ALAMO_LOOP_COMMIT)      # off outside loop jobs
+
+
+class LaneSizeCapTest(unittest.TestCase):
+    """2026-10-18: two whole weekends of a 6-8 title slate would pass 80 MB."""
+
+    def test_over_cap_keeps_only_newest_weekend(self):
+        import importlib.util, tempfile, csv as _csv
+        spec = importlib.util.spec_from_file_location(
+            "rot", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts", "rotate_lane_csv.py"))
+        rot = importlib.util.module_from_spec(spec); spec.loader.exec_module(rot)
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "lane.csv")
+            with open(path, "w", newline="") as f:
+                w = _csv.writer(f); w.writerow(["weekend_of", "pad"])
+                for wk in ("2026-10-09", "2026-10-16"):
+                    for i in range(2000):
+                        w.writerow([wk, "x" * 200])
+            rot.rotate(path, os.path.join(td, "arch"), keep=2, max_mb=0.5)
+            with open(path, newline="") as f:
+                weekends = {r["weekend_of"] for r in _csv.DictReader(f)}
+            self.assertEqual({"2026-10-16"}, weekends)
+            self.assertTrue(os.path.exists(os.path.join(td, "arch", "lane-2026-10-09.csv.gz")))
+
+    def test_under_cap_keeps_two_weekends(self):
+        import importlib.util, tempfile, csv as _csv
+        spec = importlib.util.spec_from_file_location(
+            "rot2", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts", "rotate_lane_csv.py"))
+        rot = importlib.util.module_from_spec(spec); spec.loader.exec_module(rot)
+        with tempfile.TemporaryDirectory() as td:
+            path = os.path.join(td, "lane.csv")
+            with open(path, "w", newline="") as f:
+                w = _csv.writer(f); w.writerow(["weekend_of", "pad"])
+                for wk in ("2026-10-02", "2026-10-09", "2026-10-16"):
+                    w.writerow([wk, "x"])
+            rot.rotate(path, os.path.join(td, "arch"), keep=2, max_mb=60)
+            with open(path, newline="") as f:
+                weekends = {r["weekend_of"] for r in _csv.DictReader(f)}
+            self.assertEqual({"2026-10-09", "2026-10-16"}, weekends)

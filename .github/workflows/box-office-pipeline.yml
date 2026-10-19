@@ -765,6 +765,17 @@ jobs:
             [ -f "$f" ] && echo "$f: $(( $(wc -c < "$f") / 1024 / 1024 ))MB"
           done
           python3 scripts/rotate_pre_reservation_snapshots.py --max-mb 60
+          # Early warning (2026-10-18 capacity audit): a single unplayed weekend
+          # cannot be cut further (the merge guard refuses rows for archived
+          # show dates), so with a 6-8 title slate the live file could approach
+          # GitHub's 100 MB push limit before Thursday. Flag it at 80 MB, well
+          # before the push bounces; any data/*.csv counts.
+          for f in data/*.csv; do
+            mb=$(( $(wc -c < "$f") / 1000000 ))
+            if [ "$mb" -ge 80 ]; then
+              echo "::warning::$f is ${mb}MB (GitHub rejects files over 100MB) — cut the slate or the snapshot date window before the next push"
+            fi
+          done
 
       - name: Auto-fetch reported daily actuals (every finalize, all four days)
         # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
