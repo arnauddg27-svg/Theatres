@@ -2,7 +2,7 @@
   "date": "2026-10-23",
   "weekend_of": "2026-10-23",
   "collected_local_date": "2026-10-19",
-  "collected_at": "2026-10-19T22:07:53.013908+00:00",
+  "collected_at": "2026-10-19T23:29:26.371013+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -117228,7 +117228,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945456+00:00",
+          "collected_at": "2026-10-19T23:29:26.313783+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -117329,7 +117329,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945408+00:00",
+          "collected_at": "2026-10-19T23:29:26.314361+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -117353,33 +117353,8 @@
             ],
             "Clayface": [
               {
-                "showtime": "7:45pm",
-                "showtime_id": "147571465",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:30pm",
-                "showtime_id": "147571466",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "1:15pm",
                 "showtime_id": "147571551",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "4:00pm",
-                "showtime_id": "147571552",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "6:45pm",
-                "showtime_id": "147571553",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "9:30pm",
-                "showtime_id": "147571554",
                 "format": "PRIME at AMC"
               },
               {
@@ -117388,14 +117363,39 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:00pm",
+                "showtime_id": "147571552",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "5:45pm",
                 "showtime_id": "147571475",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:45pm",
+                "showtime_id": "147571553",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147571465",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "147571474",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147571554",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147571466",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
@@ -117430,83 +117430,105 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944632+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Wildwood": [
           {
             "showtime": "3:45pm",
-            "showtime_id": "147571424",
+            "showtime_id": "146857948",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146857946",
+            "showtime_id": "146857947",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147571423",
+            "showtime_id": "147571494",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
+            "showtime": "1:15pm",
+            "showtime_id": "147571551",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147571471",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "147571562",
+            "showtime_id": "147571552",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "147571473",
+            "showtime_id": "147571475",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147571563",
+            "showtime_id": "147571553",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147571449",
+            "showtime_id": "147571465",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:30pm",
-            "showtime_id": "147571472",
+            "showtime_id": "147571474",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147571564",
+            "showtime_id": "147571554",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147571450",
+            "showtime_id": "147571466",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Klara and the Sun": [
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147721106",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147721183",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147721185",
+            "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147721259",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147721261",
+            "showtime": "6:30pm",
+            "showtime_id": "147721263",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
             "showtime": "7:15pm",
-            "showtime_id": "147912792",
+            "showtime_id": "147912663",
             "format": "Laser at AMC"
           }
         ]
@@ -117676,7 +117698,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654540+00:00",
+          "collected_at": "2026-10-19T23:29:26.313164+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -117794,29 +117816,14 @@
             ],
             "Clayface": [
               {
-                "showtime": "2:30pm",
-                "showtime_id": "147924856",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "5:15pm",
-                "showtime_id": "147924855",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "8:00pm",
-                "showtime_id": "147560979",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:45pm",
-                "showtime_id": "147560981",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "1:00pm",
                 "showtime_id": "147560969",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147924856",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "3:45pm",
@@ -117824,14 +117831,29 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147924855",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "6:30pm",
                 "showtime_id": "147560966",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:00pm",
+                "showtime_id": "147560979",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:15pm",
                 "showtime_id": "147560968",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147560981",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
@@ -117864,7 +117886,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654562+00:00",
+          "collected_at": "2026-10-19T23:29:26.313197+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -118440,7 +118462,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944511+00:00",
+          "collected_at": "2026-10-19T23:29:26.314128+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -118631,195 +118653,140 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.313819+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-24",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "146860846",
+            "showtime": "7:00pm",
+            "showtime_id": "146860849",
             "format": "GXL"
           },
           {
-            "showtime": "12:15pm",
-            "showtime_id": "146860871",
-            "format": "GXL"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "146860845",
-            "format": "GXL"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "146860872",
-            "format": "GXL"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "146860844",
-            "format": "GXL"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "146860869",
-            "format": "GXL"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146860843",
-            "format": "GXL"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146860870",
+            "showtime": "7:00pm",
+            "showtime_id": "146860877",
             "format": "GXL"
           }
         ],
         "Clayface": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147561353",
-            "format": "GXL"
-          },
-          {
-            "showtime": "12:00pm",
-            "showtime_id": "147561391",
-            "format": "GXL"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147561334",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147561371",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "3:00pm",
-            "showtime_id": "147561354",
+            "showtime_id": "147561339",
             "format": "GXL"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147561392",
+            "showtime_id": "147561398",
             "format": "GXL"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147561333",
+            "showtime_id": "147561319",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147561372",
+            "showtime_id": "147561377",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147561355",
+            "showtime_id": "147561340",
             "format": "GXL"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147561393",
+            "showtime_id": "147561399",
             "format": "GXL"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147561332",
+            "showtime_id": "147561320",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147561369",
+            "showtime_id": "147561378",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147561356",
+            "showtime_id": "147561341",
             "format": "GXL"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147561394",
+            "showtime_id": "147561400",
             "format": "GXL"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147561331",
+            "showtime_id": "147561321",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147561370",
+            "showtime_id": "147561379",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147726034",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147726101",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "147726033",
+            "showtime_id": "147726043",
             "format": "undefined"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147726102",
+            "showtime_id": "147726088",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147726032",
+            "showtime_id": "147726044",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147726103",
+            "showtime_id": "147726089",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147726035",
+            "showtime_id": "147726075",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147726104",
+            "showtime_id": "147726105",
             "format": "undefined"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147726079",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "4:00pm",
+            "showtime_id": "147726076",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147726077",
+            "format": "AMC Artisan Films"
           }
         ],
         "Wicker": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147576720",
+            "showtime": "6:30pm",
+            "showtime_id": "147576718",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147576728",
+            "showtime": "6:30pm",
+            "showtime_id": "147576730",
             "format": "AMC Artisan Films"
           }
         ]
@@ -119003,7 +118970,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945015+00:00",
+          "collected_at": "2026-10-19T23:29:26.313733+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -119109,7 +119076,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944992+00:00",
+          "collected_at": "2026-10-19T23:29:26.314317+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -119205,7 +119172,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944967+00:00",
+          "collected_at": "2026-10-19T23:29:26.314018+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -119360,7 +119327,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944979+00:00",
+          "collected_at": "2026-10-19T23:29:26.313752+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -119440,7 +119407,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654535+00:00",
+          "collected_at": "2026-10-19T23:29:26.314117+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -119560,7 +119527,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "8:45pm",
+                "showtime": "9:00pm",
                 "showtime_id": "146964164",
                 "format": "Laser at AMC"
               }
@@ -119577,13 +119544,20 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "8:30pm",
+                "showtime": "8:15pm",
                 "showtime_id": "147856385",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147951514",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945033+00:00",
+          "collected_at": "2026-10-19T23:29:26.313861+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -119668,9 +119642,16 @@
                 "showtime_id": "147856370",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wicker": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147951510",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.653789+00:00",
+          "collected_at": "2026-10-19T23:29:26.313808+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -119745,9 +119726,16 @@
                 "showtime_id": "147856445",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wicker": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147951513",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945009+00:00",
+          "collected_at": "2026-10-19T23:29:26.313831+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -119861,7 +119849,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314339+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -119884,27 +119872,45 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314106+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-23": {
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147547815",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147547820",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147547821",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-19T23:29:26.314401+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-25",
+      "show_date": "2026-10-22",
       "movies": {
         "Clayface": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147547784",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147547783",
+            "showtime": "4:30pm",
+            "showtime_id": "147547819",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147547818",
+            "showtime": "7:15pm",
+            "showtime_id": "147547792",
             "format": "Laser at AMC"
           }
         ]
@@ -120138,7 +120144,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944866+00:00",
+          "collected_at": "2026-10-19T23:29:26.313299+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -120460,7 +120466,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314158+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -120551,7 +120557,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945255+00:00",
+          "collected_at": "2026-10-19T23:29:26.313246+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -120635,95 +120641,78 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945421+00:00",
+          "collected_at": "2026-10-19T23:29:26.314061+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-23",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147729873",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146878110",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "146878120",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Ali G: Who Iz I?": [
-          {
             "showtime": "7:00pm",
-            "showtime_id": "147688914",
+            "showtime_id": "146878130",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "146878119",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
             "showtime": "2:00pm",
-            "showtime_id": "147565562",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147565563",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147565561",
+            "showtime_id": "147565564",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147565610",
+            "showtime_id": "147565588",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:50pm",
-            "showtime_id": "147565560",
+            "showtime_id": "147565565",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147565611",
+            "showtime_id": "147565589",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147565559",
+            "showtime_id": "147565566",
             "format": "Laser at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147729932",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "147729872",
+            "showtime_id": "147729884",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147729914",
+            "showtime": "6:30pm",
+            "showtime_id": "147729912",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:35pm",
-            "showtime_id": "147729915",
+            "showtime": "9:40pm",
+            "showtime_id": "147729913",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147907664",
+            "showtime": "6:30pm",
+            "showtime_id": "147907642",
             "format": "Laser at AMC"
           }
         ]
@@ -120883,7 +120872,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945204+00:00",
+          "collected_at": "2026-10-19T23:29:26.314043+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -120962,7 +120951,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944887+00:00",
+          "collected_at": "2026-10-19T23:29:26.314152+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -121051,7 +121040,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944567+00:00",
+          "collected_at": "2026-10-19T23:29:26.313927+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -121247,7 +121236,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945082+00:00",
+          "collected_at": "2026-10-19T23:29:26.313915+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -121395,7 +121384,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945058+00:00",
+          "collected_at": "2026-10-19T23:29:26.313890+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -121715,7 +121704,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944893+00:00",
+          "collected_at": "2026-10-19T23:29:26.313661+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -122015,7 +122004,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944499+00:00",
+          "collected_at": "2026-10-19T23:29:26.314146+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -122097,56 +122086,158 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944787+00:00",
+          "collected_at": "2026-10-19T23:29:26.314412+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-24": {
+          "movies": {
+            "Wildwood": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147426299",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "146907829",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "146907828",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147426300",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Clayface": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147426237",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147426238",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147426239",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147426240",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "147426241",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Klara and the Sun": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "147726467",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147726466",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147726447",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147726501",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-24",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146907859",
+            "showtime": "12:45pm",
+            "showtime_id": "147426299",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147426304",
+            "showtime": "4:00pm",
+            "showtime_id": "146907829",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "146907828",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147426300",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147426243",
+            "showtime": "11:15am",
+            "showtime_id": "147426237",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147426251",
+            "showtime": "2:10pm",
+            "showtime_id": "147426238",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147426249",
+            "showtime": "5:00pm",
+            "showtime_id": "147426239",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "147426240",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "147426241",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147726461",
+            "showtime": "10:45am",
+            "showtime_id": "147726467",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147726462",
+            "showtime": "1:45pm",
+            "showtime_id": "147726466",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147726463",
+            "showtime": "4:40pm",
+            "showtime_id": "147726447",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147726501",
             "format": "Laser at AMC"
           }
         ]
@@ -122329,6 +122420,11 @@
             ],
             "Clayface": [
               {
+                "showtime": "1:45pm",
+                "showtime_id": "147971622",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147563670",
                 "format": "Laser at AMC"
@@ -122386,7 +122482,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944693+00:00",
+          "collected_at": "2026-10-19T23:29:26.314054+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -122410,16 +122506,6 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "6:55pm",
-                "showtime_id": "147563691",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "9:40pm",
-                "showtime_id": "147563692",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "2:00pm",
                 "showtime_id": "147563668",
                 "format": "Laser at AMC"
@@ -122428,6 +122514,16 @@
                 "showtime": "4:45pm",
                 "showtime_id": "147563669",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:55pm",
+                "showtime_id": "147563691",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147563692",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
@@ -122472,7 +122568,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944680+00:00",
+          "collected_at": "2026-10-19T23:29:26.314466+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -122709,7 +122805,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944531+00:00",
+          "collected_at": "2026-10-19T23:29:26.314311+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -122800,7 +122896,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654221+00:00",
+          "collected_at": "2026-10-19T23:29:26.313306+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -122891,7 +122987,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945356+00:00",
+          "collected_at": "2026-10-19T23:29:26.313150+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -123015,14 +123111,29 @@
           "movies": {
             "Wildwood": [
               {
+                "showtime": "2:00pm",
+                "showtime_id": "147978211",
+                "format": "GXL"
+              },
+              {
                 "showtime": "3:00pm",
                 "showtime_id": "146955512",
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "5:15pm",
+                "showtime_id": "147978212",
+                "format": "GXL"
+              },
+              {
                 "showtime": "6:15pm",
                 "showtime_id": "146955513",
                 "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147978213",
+                "format": "GXL"
               }
             ],
             "Clayface": [
@@ -123032,9 +123143,19 @@
                 "format": "GXL"
               },
               {
+                "showtime": "6:15pm",
+                "showtime_id": "147978214",
+                "format": "Thrills & Chills"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147559297",
                 "format": "GXL"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147978215",
+                "format": "Thrills & Chills"
               },
               {
                 "showtime": "10:00pm",
@@ -123060,7 +123181,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945063+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -123189,36 +123310,76 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146955510",
+            "showtime": "2:00pm",
+            "showtime_id": "147978211",
+            "format": "GXL"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "146955512",
             "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "147978212",
+            "format": "GXL"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "146955513",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "147978213",
+            "format": "GXL"
           }
         ],
         "Clayface": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147559282",
+            "showtime": "4:00pm",
+            "showtime_id": "147559290",
             "format": "GXL"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147559281",
+            "showtime": "6:15pm",
+            "showtime_id": "147978214",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147559297",
+            "format": "GXL"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147978215",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147559296",
             "format": "GXL"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147627515",
+            "showtime": "3:00pm",
+            "showtime_id": "147627517",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147627516",
+            "showtime": "6:00pm",
+            "showtime_id": "147627518",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147627519",
             "format": "undefined"
           }
         ]
@@ -123372,7 +123533,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314234+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -123453,7 +123614,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945228+00:00",
+          "collected_at": "2026-10-19T23:29:26.314418+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -123544,85 +123705,60 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-24",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "146870137",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "146870138",
+            "showtime": "7:00pm",
+            "showtime_id": "146870134",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147408589",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "3:00pm",
-            "showtime_id": "147408526",
-            "format": "Laser at AMC"
+            "showtime_id": "147408595",
+            "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147408588",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "5:00pm",
+            "showtime_id": "147408548",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147408545",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147408587",
+            "showtime_id": "147408594",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147408546",
+            "showtime": "8:00pm",
+            "showtime_id": "147408550",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147408586",
+            "showtime": "9:00pm",
+            "showtime_id": "147408596",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147586792",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:30pm",
-            "showtime_id": "147586793",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147586756",
+            "showtime_id": "147586729",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147586740",
+            "showtime_id": "147586728",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
             "showtime": "7:30pm",
-            "showtime_id": "147586776",
+            "showtime_id": "147586774",
             "format": "Laser at AMC"
           }
         ]
@@ -123843,9 +123979,36 @@
                 "showtime_id": "147579604",
                 "format": "undefined"
               }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147957469",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "147957467",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "147957465",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147957463",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147957649",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654290+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -123922,42 +124085,114 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-25",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146858797",
+            "showtime": "12:45pm",
+            "showtime_id": "147187597",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147187511",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146858792",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146858791",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147187496",
             "format": "AMC Artisan Films"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147535016",
+            "showtime": "12:15pm",
+            "showtime_id": "147534972",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147535015",
+            "showtime": "2:15pm",
+            "showtime_id": "147534994",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147535019",
+            "showtime": "5:00pm",
+            "showtime_id": "147534993",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147534999",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147535024",
             "format": "Thrills & Chills"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147579601",
+            "showtime": "12:00pm",
+            "showtime_id": "147579605",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147579618",
+            "showtime": "2:00pm",
+            "showtime_id": "147579615",
             "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147579603",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147579616",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147579604",
+            "format": "undefined"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147957469",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "147957467",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "147957465",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147957463",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147957649",
+            "format": "AMC Artisan Films"
           }
         ]
       }
@@ -124009,7 +124244,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654263+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -124065,27 +124300,27 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944743+00:00",
+          "collected_at": "2026-10-19T23:29:26.314300+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Clayface": [
           {
             "showtime": "4:00pm",
-            "showtime_id": "147529703",
+            "showtime_id": "147529696",
             "format": "Thrills & Chills"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147529704",
+            "showtime_id": "147529695",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147529705",
+            "showtime": "10:00pm",
+            "showtime_id": "147529706",
             "format": "Thrills & Chills"
           }
         ]
@@ -124187,7 +124422,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654488+00:00",
+          "collected_at": "2026-10-19T23:29:26.314134+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -124244,7 +124479,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654316+00:00",
+          "collected_at": "2026-10-19T23:29:26.313279+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -124301,7 +124536,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945266+00:00",
+          "collected_at": "2026-10-19T23:29:26.314328+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -124465,7 +124700,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945261+00:00",
+          "collected_at": "2026-10-19T23:29:26.314100+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -124512,7 +124747,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654074+00:00",
+          "collected_at": "2026-10-19T23:29:26.314066+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -124657,6 +124892,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "8:45pm",
+                "showtime_id": "147970363",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:30pm",
                 "showtime_id": "147558933",
                 "format": "Laser at AMC"
@@ -124682,10 +124922,37 @@
                 "showtime": "9:30pm",
                 "showtime_id": "147735622",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147970325",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147970347",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147970344",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147970342",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147970355",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945291+00:00",
+          "collected_at": "2026-10-19T23:29:26.313987+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -124779,6 +125046,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:00pm",
+                "showtime_id": "147970338",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "147221631",
                 "format": "Laser at AMC"
@@ -124806,6 +125078,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:45pm",
+                "showtime_id": "147970366",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "10:30pm",
                 "showtime_id": "147558938",
                 "format": "Laser at AMC"
@@ -124828,82 +125105,151 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "9:30pm",
+                "showtime_id": "147970329",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "147735618",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147970341",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147970340",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147970339",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147970275",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944730+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-23",
+      "show_date": "2026-10-24",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147221552",
+            "showtime": "11:45am",
+            "showtime_id": "147221555",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "147221551",
+            "showtime": "3:00pm",
+            "showtime_id": "147221554",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147221550",
+            "showtime": "6:15pm",
+            "showtime_id": "147221553",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147221633",
+            "showtime_id": "147970338",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147221631",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "147558973",
+            "showtime": "11:30am",
+            "showtime_id": "147558941",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147558978",
+            "showtime": "2:15pm",
+            "showtime_id": "147558940",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147558976",
+            "showtime": "5:00pm",
+            "showtime_id": "147558939",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "147558977",
+            "showtime": "7:45pm",
+            "showtime_id": "147558937",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147970366",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147558938",
             "format": "Laser at AMC"
           }
         ],
         "Klara and the Sun": [
           {
             "showtime": "1:15pm",
-            "showtime_id": "147735617",
+            "showtime_id": "147735621",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147735616",
+            "showtime_id": "147735620",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147735614",
+            "showtime_id": "147735619",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147735615",
+            "showtime_id": "147970329",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147735618",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "147970341",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147970340",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147970339",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147970275",
             "format": "Laser at AMC"
           }
         ]
@@ -125097,7 +125443,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945039+00:00",
+          "collected_at": "2026-10-19T23:29:26.313877+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -125309,7 +125655,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945114+00:00",
+          "collected_at": "2026-10-19T23:29:26.313933+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -125546,7 +125892,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944829+00:00",
+          "collected_at": "2026-10-19T23:29:26.313775+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -125632,7 +125978,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945396+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -125708,75 +126054,90 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944762+00:00",
+          "collected_at": "2026-10-19T23:29:26.314077+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-24",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146858977",
+            "showtime": "4:00pm",
+            "showtime_id": "146858981",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146858980",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147491487",
+            "showtime": "1:15pm",
+            "showtime_id": "147491521",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147491702",
+            "showtime": "4:00pm",
+            "showtime_id": "147491522",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147491523",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147491695",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147491508",
+            "showtime": "8:45pm",
+            "showtime_id": "147491551",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147491701",
+            "showtime": "10:30pm",
+            "showtime_id": "147491705",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147599119",
+            "showtime": "1:30pm",
+            "showtime_id": "147599074",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147599121",
+            "showtime": "4:25pm",
+            "showtime_id": "147599066",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147599123",
+            "showtime": "7:20pm",
+            "showtime_id": "147599065",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147599063",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147599403",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147599404",
+            "showtime": "7:30pm",
+            "showtime_id": "147599406",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147599309",
+            "showtime": "7:40pm",
+            "showtime_id": "147599312",
             "format": "Laser at AMC"
           }
         ]
@@ -125955,7 +126316,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654321+00:00",
+          "collected_at": "2026-10-19T23:29:26.314176+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -126051,7 +126412,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944422+00:00",
+          "collected_at": "2026-10-19T23:29:26.314036+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -126142,90 +126503,95 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944454+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-25",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147002698",
+            "showtime": "4:20pm",
+            "showtime_id": "147002706",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147002712",
+            "showtime": "7:40pm",
+            "showtime_id": "147002707",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147455067",
+            "showtime": "1:30pm",
+            "showtime_id": "147455055",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147454952",
+            "showtime_id": "147455062",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147454953",
+            "showtime_id": "147455061",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147455009",
+            "showtime_id": "147455004",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147454954",
+            "showtime_id": "147455060",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147455010",
+            "showtime_id": "147455003",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147586866",
+            "showtime": "11:00am",
+            "showtime_id": "147586879",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147586867",
+            "showtime": "1:45pm",
+            "showtime_id": "147586878",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147586877",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147586876",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147586868",
+            "showtime_id": "147586875",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147586846",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147586847",
+            "showtime": "7:30pm",
+            "showtime_id": "147586826",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147586914",
+            "showtime": "7:00pm",
+            "showtime_id": "147586946",
             "format": "Laser at AMC"
           }
         ]
@@ -126625,7 +126991,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944736+00:00",
+          "collected_at": "2026-10-19T23:29:26.313292+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -126882,7 +127248,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945285+00:00",
+          "collected_at": "2026-10-19T23:29:26.314140+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -126973,7 +127339,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945315+00:00",
+          "collected_at": "2026-10-19T23:29:26.314164+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -127064,7 +127430,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945344+00:00",
+          "collected_at": "2026-10-19T23:29:26.314193+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -127331,7 +127697,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944705+00:00",
+          "collected_at": "2026-10-19T23:29:26.313963+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -127442,7 +127808,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.653657+00:00",
+          "collected_at": "2026-10-19T23:29:26.314253+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -127640,8 +128006,23 @@
           "movies": {
             "Wildwood": [
               {
+                "showtime": "2:30pm",
+                "showtime_id": "147975026",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147975023",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147752905",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147975025",
                 "format": "AMC Artisan Films"
               }
             ],
@@ -127674,6 +128055,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "4:00pm",
+                "showtime_id": "147975014",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:05pm",
                 "showtime_id": "147733346",
                 "format": "undefined"
@@ -127688,6 +128074,11 @@
               {
                 "showtime": "6:30pm",
                 "showtime_id": "147733344",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147975022",
                 "format": "AMC Artisan Films"
               }
             ]
@@ -127743,7 +128134,7 @@
             ],
             "Klara and the Sun": [
               {
-                "showtime": "1:00pm",
+                "showtime": "12:50pm",
                 "showtime_id": "147733341",
                 "format": "undefined"
               },
@@ -127786,7 +128177,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945133+00:00",
+          "collected_at": "2026-10-19T23:29:26.313957+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -127880,7 +128271,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945169+00:00",
+          "collected_at": "2026-10-19T23:29:26.313981+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -127983,8 +128374,23 @@
       "movies": {
         "Wildwood": [
           {
+            "showtime": "2:30pm",
+            "showtime_id": "147975026",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "147975023",
+            "format": "AMC Artisan Films"
+          },
+          {
             "showtime": "7:00pm",
             "showtime_id": "147752905",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147975025",
             "format": "AMC Artisan Films"
           }
         ],
@@ -128017,6 +128423,11 @@
             "format": "undefined"
           },
           {
+            "showtime": "4:00pm",
+            "showtime_id": "147975014",
+            "format": "undefined"
+          },
+          {
             "showtime": "7:05pm",
             "showtime_id": "147733346",
             "format": "undefined"
@@ -128031,6 +128442,11 @@
           {
             "showtime": "6:30pm",
             "showtime_id": "147733344",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "147975022",
             "format": "AMC Artisan Films"
           }
         ]
@@ -128286,7 +128702,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945415+00:00",
+          "collected_at": "2026-10-19T23:29:26.313813+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -128439,7 +128855,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944792+00:00",
+          "collected_at": "2026-10-19T23:29:26.313896+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -128587,7 +129003,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945151+00:00",
+          "collected_at": "2026-10-19T23:29:26.314345+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -128864,7 +129280,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944805+00:00",
+          "collected_at": "2026-10-19T23:29:26.314282+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -128955,7 +129371,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944823+00:00",
+          "collected_at": "2026-10-19T23:29:26.314005+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -129031,7 +129447,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.653777+00:00",
+          "collected_at": "2026-10-19T23:29:26.313746+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -129295,7 +129711,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945327+00:00",
+          "collected_at": "2026-10-19T23:29:26.314304+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -129386,7 +129802,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945443+00:00",
+          "collected_at": "2026-10-19T23:29:26.314424+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -129731,7 +130147,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945427+00:00",
+          "collected_at": "2026-10-19T23:29:26.314277+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -130180,7 +130596,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944674+00:00",
+          "collected_at": "2026-10-19T23:29:26.313939+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -130283,7 +130699,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654120+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -130319,16 +130735,6 @@
             ],
             "Clayface": [
               {
-                "showtime": "7:30pm",
-                "showtime_id": "147433277",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:30pm",
-                "showtime_id": "147433276",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "11:30am",
                 "showtime_id": "147433456",
                 "format": "Laser at AMC"
@@ -130344,9 +130750,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:30pm",
+                "showtime_id": "147433277",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "147433459",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147433276",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
@@ -130391,100 +130807,107 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944986+00:00",
+          "collected_at": "2026-10-19T23:29:26.314228+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "146911513",
+            "showtime": "11:30am",
+            "showtime_id": "146911517",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146911514",
+            "showtime": "2:45pm",
+            "showtime_id": "146911518",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146911515",
+            "showtime": "6:00pm",
+            "showtime_id": "146911519",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "146911458",
+            "showtime": "9:15pm",
+            "showtime_id": "146911520",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Ali G: Who Iz I?": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147687997",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147433414",
+            "showtime": "11:30am",
+            "showtime_id": "147433461",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147433415",
+            "showtime": "2:30pm",
+            "showtime_id": "147433462",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147433264",
+            "showtime": "5:30pm",
+            "showtime_id": "147433463",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147433278",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147433416",
+            "showtime": "8:30pm",
+            "showtime_id": "147433464",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147433263",
+            "showtime": "10:30pm",
+            "showtime_id": "147433279",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147433417",
-            "format": "Laser at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147724316",
+            "showtime": "12:00pm",
+            "showtime_id": "147724327",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147724329",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147724326",
+            "showtime_id": "147724330",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147724325",
+            "showtime_id": "147724332",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147724415",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "147724304",
+            "showtime": "8:30pm",
+            "showtime_id": "147724359",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147576666",
+            "showtime": "8:00pm",
+            "showtime_id": "147576667",
             "format": "Laser at AMC"
           }
         ]
@@ -130703,7 +131126,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945210+00:00",
+          "collected_at": "2026-10-19T23:29:26.314029+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -130824,7 +131247,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654086+00:00",
+          "collected_at": "2026-10-19T23:29:26.314083+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -130945,7 +131368,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945241+00:00",
+          "collected_at": "2026-10-19T23:29:26.314048+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -131135,7 +131558,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945003+00:00",
+          "collected_at": "2026-10-19T23:29:26.313944+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -131185,7 +131608,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945279+00:00",
+          "collected_at": "2026-10-19T23:29:26.314288+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -131407,7 +131830,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945069+00:00",
+          "collected_at": "2026-10-19T23:29:26.314367+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -131486,7 +131909,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944860+00:00",
+          "collected_at": "2026-10-19T23:29:26.314271+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -131505,11 +131928,6 @@
             ],
             "Clayface": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "147563962",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "12:00pm",
                 "showtime_id": "147563980",
                 "format": "Laser at AMC"
@@ -131523,6 +131941,11 @@
                 "showtime": "6:00pm",
                 "showtime_id": "147563973",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147563962",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "9:00pm",
@@ -131560,7 +131983,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945437+00:00",
+          "collected_at": "2026-10-19T23:29:26.313170+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -131814,7 +132237,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654478+00:00",
+          "collected_at": "2026-10-19T23:29:26.313825+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -131881,7 +132304,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944573+00:00",
+          "collected_at": "2026-10-19T23:29:26.314460+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -132255,7 +132678,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945380+00:00",
+          "collected_at": "2026-10-19T23:29:26.314240+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -132279,16 +132702,6 @@
             ],
             "Clayface": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "147536680",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:00pm",
-                "showtime_id": "147536679",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "2:00pm",
                 "showtime_id": "147536725",
                 "format": "Laser at AMC"
@@ -132299,9 +132712,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147536680",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "147536730",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147536679",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "11:00pm",
@@ -132340,14 +132763,14 @@
             ],
             "Wicker": [
               {
-                "showtime": "4:15pm",
-                "showtime_id": "147620122",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "2:30pm",
                 "showtime_id": "147620075",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147620122",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "5:15pm",
@@ -132366,7 +132789,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945402+00:00",
+          "collected_at": "2026-10-19T23:29:26.314259+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -132512,7 +132935,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945432+00:00",
+          "collected_at": "2026-10-19T23:29:26.313837+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -132829,7 +133252,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944398+00:00",
+          "collected_at": "2026-10-19T23:29:26.313143+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -132957,7 +133380,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945368+00:00",
+          "collected_at": "2026-10-19T23:29:26.314441+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -133421,7 +133844,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944625+00:00",
+          "collected_at": "2026-10-19T23:29:26.314293+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -133567,7 +133990,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945247+00:00",
+          "collected_at": "2026-10-19T23:29:26.313157+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -133713,7 +134136,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944711+00:00",
+          "collected_at": "2026-10-19T23:29:26.313872+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -133929,7 +134352,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944644+00:00",
+          "collected_at": "2026-10-19T23:29:26.314205+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -134047,7 +134470,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944669+00:00",
+          "collected_at": "2026-10-19T23:29:26.313136+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -134200,6 +134623,11 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "12:55pm",
+                "showtime_id": "147978522",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "3:30pm",
                 "showtime_id": "146237999",
                 "format": "AMC Artisan Films"
@@ -134281,13 +134709,28 @@
             ],
             "Wicker": [
               {
+                "showtime": "1:55pm",
+                "showtime_id": "147978504",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147978503",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:20pm",
                 "showtime_id": "147586104",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147978505",
                 "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945385+00:00",
+          "collected_at": "2026-10-19T23:29:26.313921+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -134301,6 +134744,11 @@
               {
                 "showtime": "3:30pm",
                 "showtime_id": "146237991",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:05pm",
+                "showtime_id": "147978529",
                 "format": "AMC Artisan Films"
               },
               {
@@ -134380,13 +134828,28 @@
             ],
             "Wicker": [
               {
+                "showtime": "1:55pm",
+                "showtime_id": "147978507",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147978506",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:20pm",
                 "showtime_id": "147586105",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147978508",
                 "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654377+00:00",
+          "collected_at": "2026-10-19T23:29:26.314247+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -134395,11 +134858,21 @@
               {
                 "showtime": "12:15pm",
                 "showtime_id": "146237984",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "147978531",
                 "format": "AMC Artisan Films"
               },
               {
                 "showtime": "3:30pm",
                 "showtime_id": "146237983",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147978532",
                 "format": "AMC Artisan Films"
               },
               {
@@ -134464,7 +134937,7 @@
               {
                 "showtime": "4:30pm",
                 "showtime_id": "147586155",
-                "format": "undefined"
+                "format": "Open Caption (On-screen Subtitles)"
               },
               {
                 "showtime": "7:25pm",
@@ -134479,99 +134952,149 @@
             ],
             "Wicker": [
               {
+                "showtime": "1:55pm",
+                "showtime_id": "147978512",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147978511",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:20pm",
                 "showtime_id": "147586106",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147978513",
                 "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945163+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-25",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "146237995",
+            "showtime": "12:15pm",
+            "showtime_id": "146237984",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "147978531",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "146237996",
+            "showtime": "3:30pm",
+            "showtime_id": "146237983",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "146237997",
+            "showtime": "4:25pm",
+            "showtime_id": "147978532",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "146237994",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "146237985",
             "format": "AMC Artisan Films"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147423098",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147422895",
+            "showtime": "1:45pm",
+            "showtime_id": "147422886",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147423095",
+            "showtime": "2:15pm",
+            "showtime_id": "147423084",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147422896",
+            "showtime": "4:30pm",
+            "showtime_id": "147422885",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147423096",
+            "showtime": "5:00pm",
+            "showtime_id": "147423083",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147422897",
+            "showtime": "7:15pm",
+            "showtime_id": "147422883",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147423097",
+            "showtime": "7:45pm",
+            "showtime_id": "147423085",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147422884",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147423086",
             "format": "PRIME at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147586190",
+            "showtime": "1:35pm",
+            "showtime_id": "147586156",
             "format": "undefined"
           },
           {
-            "showtime": "6:55pm",
-            "showtime_id": "147939278",
+            "showtime": "4:30pm",
+            "showtime_id": "147586155",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "147586153",
             "format": "undefined"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "147586192",
+            "showtime": "10:20pm",
+            "showtime_id": "147586154",
             "format": "undefined"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147586103",
+            "showtime": "1:55pm",
+            "showtime_id": "147978512",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "147978511",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "147765565",
+            "showtime": "7:20pm",
+            "showtime_id": "147586106",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147978513",
             "format": "AMC Artisan Films"
           }
         ]
@@ -134634,7 +135157,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944584+00:00",
+          "collected_at": "2026-10-19T23:29:26.314351+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -134690,32 +135213,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944614+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Clayface": [
           {
             "showtime": "2:00pm",
-            "showtime_id": "147432309",
+            "showtime_id": "147432304",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147432310",
+            "showtime_id": "147432303",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147432311",
+            "showtime_id": "147432301",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147432300",
+            "showtime_id": "147432302",
             "format": "Laser at AMC"
           }
         ]
@@ -134949,7 +135472,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944474+00:00",
+          "collected_at": "2026-10-19T23:29:26.314373+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -135060,7 +135583,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654424+00:00",
+          "collected_at": "2026-10-19T23:29:26.314406+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -135079,38 +135602,18 @@
             ],
             "Clayface": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "147519755",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "9:45pm",
-                "showtime_id": "147519756",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "11:15am",
                 "showtime_id": "147519780",
                 "format": "PRIME at AMC"
               },
               {
+                "showtime": "12:00pm",
+                "showtime_id": "147519804",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147519781",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "4:45pm",
-                "showtime_id": "147519782",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "7:30pm",
-                "showtime_id": "147519783",
-                "format": "PRIME at AMC"
-              },
-              {
-                "showtime": "10:15pm",
-                "showtime_id": "147519784",
                 "format": "PRIME at AMC"
               },
               {
@@ -135119,9 +135622,9 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
-                "showtime": "12:00pm",
-                "showtime_id": "147519804",
-                "format": "Laser at AMC"
+                "showtime": "4:45pm",
+                "showtime_id": "147519782",
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "5:30pm",
@@ -135129,9 +135632,29 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "147519755",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147519783",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "8:15pm",
                 "showtime_id": "147519802",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147519756",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147519784",
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "11:00pm",
@@ -135141,11 +135664,6 @@
             ],
             "Klara and the Sun": [
               {
-                "showtime": "4:00pm",
-                "showtime_id": "147717725",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "12:00pm",
                 "showtime_id": "147717740",
                 "format": "Open Caption (On-screen Subtitles)"
@@ -135154,6 +135672,11 @@
                 "showtime": "3:00pm",
                 "showtime_id": "147717737",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147717725",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -135181,7 +135704,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654403+00:00",
+          "collected_at": "2026-10-19T23:29:26.314396+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135342,7 +135865,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654010+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -135393,27 +135916,32 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945186+00:00",
+          "collected_at": "2026-10-19T23:29:26.314170+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-25",
       "movies": {
         "Clayface": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "147465019",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:45pm",
-            "showtime_id": "147465036",
+            "showtime_id": "147465030",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147465034",
+            "showtime_id": "147465028",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147465035",
+            "showtime_id": "147465029",
             "format": "Laser at AMC"
           }
         ]
@@ -135630,7 +136158,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945076+00:00",
+          "collected_at": "2026-10-19T23:29:26.314011+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -135756,7 +136284,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944775+00:00",
+          "collected_at": "2026-10-19T23:29:26.314095+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -135880,7 +136408,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654546+00:00",
+          "collected_at": "2026-10-19T23:29:26.313758+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -136031,6 +136559,11 @@
           "movies": {
             "Wildwood": [
               {
+                "showtime": "12:55pm",
+                "showtime_id": "147953884",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "146998180",
                 "format": "Laser at AMC"
@@ -136100,12 +136633,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944780+00:00",
+          "collected_at": "2026-10-19T23:29:26.313218+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
           "movies": {
             "Wildwood": [
+              {
+                "showtime": "1:05pm",
+                "showtime_id": "147953882",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
               {
                 "showtime": "4:15pm",
                 "showtime_id": "146998176",
@@ -136114,6 +136652,11 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "146998177",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147950591",
                 "format": "Laser at AMC"
               }
             ],
@@ -136176,12 +136719,17 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.313177+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
           "movies": {
             "Wildwood": [
+              {
+                "showtime": "12:55pm",
+                "showtime_id": "147953883",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "4:15pm",
                 "showtime_id": "146998178",
@@ -136190,6 +136738,11 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "146998179",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147950592",
                 "format": "Laser at AMC"
               }
             ],
@@ -136252,80 +136805,65 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654567+00:00",
+          "collected_at": "2026-10-19T23:29:26.313210+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-23",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146998176",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "146998177",
+            "showtime": "7:00pm",
+            "showtime_id": "146998175",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147574849",
+            "showtime": "2:00pm",
+            "showtime_id": "147574958",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147574850",
+            "showtime": "4:45pm",
+            "showtime_id": "147574959",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147574851",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147574852",
+            "showtime": "7:30pm",
+            "showtime_id": "147574960",
             "format": "Laser at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147747067",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "147747068",
+            "showtime_id": "147747065",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147747069",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:55pm",
-            "showtime_id": "147747070",
+            "showtime_id": "147747066",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
+            "showtime": "4:00pm",
+            "showtime_id": "147757488",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:45pm",
-            "showtime_id": "147757490",
+            "showtime_id": "147757489",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147901570",
+            "showtime": "6:30pm",
+            "showtime_id": "147901569",
             "format": "Laser at AMC"
           }
         ]
@@ -136554,7 +137092,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944554+00:00",
+          "collected_at": "2026-10-19T23:29:26.314429+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -137034,7 +137572,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945216+00:00",
+          "collected_at": "2026-10-19T23:29:26.314182+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -137118,7 +137656,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944486+00:00",
+          "collected_at": "2026-10-19T23:29:26.313883+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -137202,7 +137740,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945175+00:00",
+          "collected_at": "2026-10-19T23:29:26.313203+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137439,7 +137977,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945027+00:00",
+          "collected_at": "2026-10-19T23:29:26.314216+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -137527,7 +138065,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944595+00:00",
+          "collected_at": "2026-10-19T23:29:26.314447+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -137618,7 +138156,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945051+00:00",
+          "collected_at": "2026-10-19T23:29:26.313969+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -137783,7 +138321,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944881+00:00",
+          "collected_at": "2026-10-19T23:29:26.313312+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -137823,7 +138361,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944818+00:00",
+          "collected_at": "2026-10-19T23:29:26.313253+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -138069,7 +138607,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945235+00:00",
+          "collected_at": "2026-10-19T23:29:26.313286+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -138251,7 +138789,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944542+00:00",
+          "collected_at": "2026-10-19T23:29:26.313950+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -138639,7 +139177,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944748+00:00",
+          "collected_at": "2026-10-19T23:29:26.314390+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -138904,7 +139442,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944930+00:00",
+          "collected_at": "2026-10-19T23:29:26.313848+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -138980,68 +139518,63 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-25",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "146872756",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "146872757",
+            "showtime": "7:00pm",
+            "showtime_id": "146872762",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147571629",
+            "showtime": "2:00pm",
+            "showtime_id": "147571647",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147571630",
+            "showtime": "5:00pm",
+            "showtime_id": "147571648",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147571631",
-            "format": "Laser at AMC"
+            "showtime_id": "147571585",
+            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147571591",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147571632",
+            "showtime_id": "147571649",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "147571590",
+            "showtime": "9:45pm",
+            "showtime_id": "147571584",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147571650",
+            "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "7:50pm",
-            "showtime_id": "147945759",
+            "showtime": "4:00pm",
+            "showtime_id": "147945755",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147945756",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147745595",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:05pm",
-            "showtime_id": "147745637",
+            "showtime": "6:30pm",
+            "showtime_id": "147745634",
             "format": "Laser at AMC"
           }
         ]
@@ -139272,7 +139805,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944906+00:00",
+          "collected_at": "2026-10-19T23:29:26.313739+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -139516,7 +140049,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944936+00:00",
+          "collected_at": "2026-10-19T23:29:26.313763+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -139701,6 +140234,11 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:15pm",
+                "showtime_id": "147954593",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:30pm",
                 "showtime_id": "147909775",
                 "format": "Laser at AMC"
@@ -139818,7 +140356,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945620+00:00",
+          "collected_at": "2026-10-19T23:29:26.314504+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -140146,6 +140684,11 @@
             "format": "Laser at AMC"
           },
           {
+            "showtime": "7:15pm",
+            "showtime_id": "147954593",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "9:30pm",
             "showtime_id": "147909775",
             "format": "Laser at AMC"
@@ -140316,7 +140859,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945662+00:00",
+          "collected_at": "2026-10-19T23:29:26.314619+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -140409,12 +140952,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654676+00:00",
+          "collected_at": "2026-10-19T23:29:26.314607+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
           "movies": {
             "Wildwood": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "147972895",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "4:00pm",
                 "showtime_id": "146946127",
@@ -140434,6 +140982,11 @@
               }
             ],
             "Clayface": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147972915",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "2:00pm",
                 "showtime_id": "147488363",
@@ -140472,6 +141025,11 @@
             ],
             "Klara and the Sun": [
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147972949",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147658584",
                 "format": "Laser at AMC"
@@ -140496,13 +141054,28 @@
             ],
             "Wicker": [
               {
+                "showtime": "12:45pm",
+                "showtime_id": "147972918",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147972924",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:15pm",
                 "showtime_id": "147658479",
                 "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147972921",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945469+00:00",
+          "collected_at": "2026-10-19T23:29:26.314613+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -140787,49 +141360,54 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945644+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Clayface": [
           {
             "showtime": "2:00pm",
-            "showtime_id": "147563574",
+            "showtime_id": "147563577",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147563575",
+            "showtime": "4:45pm",
+            "showtime_id": "147563578",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147563576",
+            "showtime": "7:30pm",
+            "showtime_id": "147563611",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147563564",
+            "showtime": "10:30pm",
+            "showtime_id": "147714464",
             "format": "Laser at AMC"
           }
         ],
         "Klara and the Sun": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "147714402",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "147714401",
+            "showtime_id": "147714403",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147714427",
+            "showtime_id": "147714404",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147714428",
+            "showtime_id": "147714405",
             "format": "Laser at AMC"
           }
         ]
@@ -141116,7 +141694,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945535+00:00",
+          "collected_at": "2026-10-19T23:29:26.314524+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -141548,7 +142126,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654698+00:00",
+          "collected_at": "2026-10-19T23:29:26.314498+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -141691,7 +142269,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945668+00:00",
+          "collected_at": "2026-10-19T23:29:26.314511+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -141943,7 +142521,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:20:02.258111+00:00",
+          "collected_at": "2026-10-19T23:29:26.314637+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -141993,7 +142571,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945512+00:00",
+          "collected_at": "2026-10-19T23:29:26.314688+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -142129,7 +142707,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945481+00:00",
+          "collected_at": "2026-10-19T23:29:26.314492+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -142196,7 +142774,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945530+00:00",
+          "collected_at": "2026-10-19T23:29:26.314474+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -142263,7 +142841,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945686+00:00",
+          "collected_at": "2026-10-19T23:29:26.314480+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -142949,7 +143527,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314631+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -142990,34 +143568,14 @@
             ],
             "Clayface": [
               {
-                "showtime": "10:45am",
-                "showtime_id": "147540599",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "1:45pm",
-                "showtime_id": "147540597",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:45pm",
-                "showtime_id": "147540604",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:45pm",
-                "showtime_id": "147540603",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:45pm",
-                "showtime_id": "147540598",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "10:00am",
                 "showtime_id": "147889580",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45am",
+                "showtime_id": "147540599",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "12:50pm",
@@ -143025,9 +143583,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:45pm",
+                "showtime_id": "147540597",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "3:15pm",
                 "showtime_id": "147889585",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147540604",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -143035,9 +143603,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147540603",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:45pm",
                 "showtime_id": "147540610",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147540598",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
@@ -143097,7 +143675,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:20:02.258085+00:00",
+          "collected_at": "2026-10-19T23:29:26.314648+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -143250,150 +143828,95 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945523+00:00",
+          "collected_at": "2026-10-19T23:29:26.314660+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-25",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "10:35am",
-            "showtime_id": "147563229",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:45pm",
-            "showtime_id": "147563215",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146860672",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "146860673",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:25pm",
-            "showtime_id": "147563216",
+            "showtime": "7:00pm",
+            "showtime_id": "146860678",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "10:10am",
-            "showtime_id": "147540611",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45am",
-            "showtime_id": "147540595",
+            "showtime": "2:00pm",
+            "showtime_id": "147540582",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "12:55pm",
-            "showtime_id": "147540612",
+            "showtime": "3:30pm",
+            "showtime_id": "147540555",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:40pm",
-            "showtime_id": "147889586",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "147540573",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "147540600",
+            "showtime": "4:45pm",
+            "showtime_id": "147540584",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147540574",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147540594",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "147889579",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Klara and the Sun": [
-          {
-            "showtime": "10:30am",
-            "showtime_id": "147620756",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "147620755",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147620752",
+            "showtime": "6:30pm",
+            "showtime_id": "147540556",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147620753",
+            "showtime_id": "147540583",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147540557",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147620754",
+            "showtime_id": "147540605",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Klara and the Sun": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147620833",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "147620965",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147620966",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147624471",
+            "showtime": "4:00pm",
+            "showtime_id": "147624467",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "147624468",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147889587",
+            "showtime": "6:45pm",
+            "showtime_id": "147620707",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:40pm",
-            "showtime_id": "147807639",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:20pm",
-            "showtime_id": "147807638",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "147620856",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147620732",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "147807637",
+            "showtime": "9:30pm",
+            "showtime_id": "147807488",
             "format": "Laser at AMC"
           }
         ]
@@ -143489,7 +144012,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945596+00:00",
+          "collected_at": "2026-10-19T23:29:26.314571+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -143522,7 +144045,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945565+00:00",
+          "collected_at": "2026-10-19T23:29:26.314583+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -143610,7 +144133,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945681+00:00",
+          "collected_at": "2026-10-19T23:29:26.314643+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -143638,7 +144161,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945698+00:00",
+          "collected_at": "2026-10-19T23:29:26.314589+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -143666,7 +144189,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945476+00:00",
+          "collected_at": "2026-10-19T23:29:26.314655+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -143940,7 +144463,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314565+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -143976,12 +144499,17 @@
             ],
             "Clayface": [
               {
+                "showtime": "10:00am",
+                "showtime_id": "147975857",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "11:30am",
                 "showtime_id": "147565836",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "12:30pm",
+                "showtime": "12:45pm",
                 "showtime_id": "147811816",
                 "format": "Dolby Cinema at AMC"
               },
@@ -144083,7 +144611,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945608+00:00",
+          "collected_at": "2026-10-19T23:29:26.314577+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -144211,140 +144739,110 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945638+00:00",
+          "collected_at": "2026-10-19T23:29:26.314594+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-25",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147553772",
+            "showtime": "2:00pm",
+            "showtime_id": "147553754",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "146861625",
+            "showtime": "4:30pm",
+            "showtime_id": "147553820",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146861626",
+            "showtime": "7:00pm",
+            "showtime_id": "146861629",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147553773",
+            "showtime": "10:15pm",
+            "showtime_id": "147553780",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "10:30am",
-            "showtime_id": "147811812",
+            "showtime": "2:00pm",
+            "showtime_id": "147565910",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "11:30am",
-            "showtime_id": "147565835",
+            "showtime": "3:30pm",
+            "showtime_id": "147811684",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147811811",
+            "showtime": "4:45pm",
+            "showtime_id": "147565905",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "2:30pm",
-            "showtime_id": "147565907",
-            "format": "English Spoken with Spanish Subtitles"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147811810",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:00pm",
-            "showtime_id": "147565877",
+            "showtime": "6:30pm",
+            "showtime_id": "147565884",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147565929",
+            "showtime": "7:30pm",
+            "showtime_id": "147565935",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147565878",
+            "showtime": "9:30pm",
+            "showtime_id": "147565885",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147565930",
-            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147565879",
-            "format": "Laser at AMC"
+            "showtime_id": "147565936",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147633591",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "147633588",
+            "showtime_id": "147633603",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147633589",
+            "showtime_id": "147633604",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147633590",
+            "showtime_id": "147633605",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147633578",
+            "showtime": "4:00pm",
+            "showtime_id": "147633567",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147633575",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "10:30am",
-            "showtime_id": "147811683",
+            "showtime": "6:30pm",
+            "showtime_id": "147576830",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147576828",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147811682",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147811680",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147811681",
+            "showtime": "9:15pm",
+            "showtime_id": "147811661",
             "format": "Laser at AMC"
           }
         ]
@@ -144575,7 +145073,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945570+00:00",
+          "collected_at": "2026-10-19T23:29:26.314667+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -144656,7 +145154,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945590+00:00",
+          "collected_at": "2026-10-19T23:29:26.314559+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -144726,6 +145224,11 @@
           "movies": {
             "Clayface": [
               {
+                "showtime": "12:00pm",
+                "showtime_id": "147970690",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "1:30pm",
                 "showtime_id": "147544121",
                 "format": "Open Caption (On-screen Subtitles)"
@@ -144753,7 +145256,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "4:00pm",
+                "showtime": "4:05pm",
                 "showtime_id": "147685810",
                 "format": "Laser at AMC"
               },
@@ -144767,14 +145270,41 @@
                 "showtime_id": "147685814",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147951548",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147951549",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147951550",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147951551",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944608+00:00",
+          "collected_at": "2026-10-19T23:29:26.314072+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
           "movies": {
             "Clayface": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147970689",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "1:30pm",
                 "showtime_id": "147544113",
@@ -144803,7 +145333,7 @@
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
-                "showtime": "4:00pm",
+                "showtime": "4:05pm",
                 "showtime_id": "147685821",
                 "format": "Laser at AMC"
               },
@@ -144817,9 +145347,31 @@
                 "showtime_id": "147685825",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147951544",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147951545",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147951546",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147951547",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944911+00:00",
+          "collected_at": "2026-10-19T23:29:26.314379+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -144853,13 +145405,25 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:20pm",
+                "showtime": "7:10pm",
                 "showtime_id": "147685795",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
+                "showtime": "9:15pm",
                 "showtime_id": "147685798",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147951567",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "147951566",
                 "format": "Laser at AMC"
               }
             ]
@@ -144908,13 +145472,30 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:10pm",
+                "showtime": "10:30pm",
                 "showtime_id": "147685806",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "147951569",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "147951568",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147951570",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944579+00:00",
+          "collected_at": "2026-10-19T23:29:26.314199+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -144950,13 +145531,25 @@
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:20pm",
+            "showtime": "7:10pm",
             "showtime_id": "147685795",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
+            "showtime": "9:15pm",
             "showtime_id": "147685798",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147951567",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "147951566",
             "format": "Laser at AMC"
           }
         ]
@@ -145131,7 +145724,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945181+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -145289,68 +145882,83 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-24",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146884782",
+            "showtime": "1:45pm",
+            "showtime_id": "147421636",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "146884785",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "146884786",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147421710",
+            "showtime": "1:15pm",
+            "showtime_id": "147421689",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147421711",
+            "showtime": "4:00pm",
+            "showtime_id": "147421691",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147421665",
+            "showtime_id": "147421662",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147421623",
+            "showtime_id": "147421621",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147421664",
+            "showtime_id": "147421663",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147421624",
+            "showtime_id": "147421622",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147720552",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "147720601",
+            "showtime": "12:30pm",
+            "showtime_id": "147720537",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147720583",
+            "showtime": "4:30pm",
+            "showtime_id": "147720554",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147720584",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147720585",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147923105",
+            "showtime": "7:00pm",
+            "showtime_id": "147923118",
             "format": "Laser at AMC"
           }
         ]
@@ -145426,7 +146034,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944917+00:00",
+          "collected_at": "2026-10-19T23:29:26.314024+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -145495,7 +146103,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944656+00:00",
+          "collected_at": "2026-10-19T23:29:26.313975+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -145714,7 +146322,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654311+00:00",
+          "collected_at": "2026-10-19T23:29:26.314323+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -145759,18 +146367,18 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "6:30pm",
+                "showtime": "6:15pm",
                 "showtime_id": "147562450",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:15pm",
+                "showtime": "9:00pm",
                 "showtime_id": "147562443",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944449+00:00",
+          "collected_at": "2026-10-19T23:29:26.314356+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -145926,7 +146534,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944492+00:00",
+          "collected_at": "2026-10-19T23:29:26.313993+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -146047,7 +146655,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944517+00:00",
+          "collected_at": "2026-10-19T23:29:26.313908+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -146168,7 +146776,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944537+00:00",
+          "collected_at": "2026-10-19T23:29:26.313802+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -146656,29 +147264,14 @@
             ],
             "Clayface": [
               {
-                "showtime": "2:15pm",
-                "showtime_id": "147569709",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "5:00pm",
-                "showtime_id": "147569708",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "7:45pm",
-                "showtime_id": "147569706",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "10:30pm",
-                "showtime_id": "147569707",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "1:00pm",
                 "showtime_id": "147569695",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147569709",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "3:45pm",
@@ -146686,26 +147279,41 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:00pm",
+                "showtime_id": "147569708",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "6:30pm",
                 "showtime_id": "147569697",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "7:45pm",
+                "showtime_id": "147569706",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "9:15pm",
                 "showtime_id": "147569698",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147569707",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "Klara and the Sun": [
               {
-                "showtime": "4:00pm",
-                "showtime_id": "147712055",
-                "format": "PRIME at AMC"
-              },
-              {
                 "showtime": "2:00pm",
                 "showtime_id": "147712035",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147712055",
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -146733,80 +147341,100 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654227+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-24",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146855877",
+            "showtime": "4:00pm",
+            "showtime_id": "146855880",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146855881",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147569722",
+            "showtime": "1:00pm",
+            "showtime_id": "147569695",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147569723",
+            "showtime": "2:15pm",
+            "showtime_id": "147569709",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147569696",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147569708",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147569697",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147569715",
+            "showtime_id": "147569706",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147569724",
+            "showtime": "9:15pm",
+            "showtime_id": "147569698",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147569716",
+            "showtime_id": "147569707",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
+            "showtime": "2:00pm",
+            "showtime_id": "147712035",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "147712059",
+            "showtime_id": "147712055",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147712001",
+            "showtime_id": "147712003",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147712002",
+            "showtime_id": "147712004",
             "format": "Laser at AMC"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147712045",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:45pm",
-            "showtime_id": "147712046",
+            "showtime_id": "147712042",
             "format": "Laser at AMC"
           }
         ],
         "Wicker": [
           {
             "showtime": "6:30pm",
-            "showtime_id": "147900820",
+            "showtime_id": "147900830",
             "format": "Laser at AMC"
           }
         ]
@@ -146902,7 +147530,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945121+00:00",
+          "collected_at": "2026-10-19T23:29:26.314089+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -146984,7 +147612,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944842+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -147083,7 +147711,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944717+00:00",
+          "collected_at": "2026-10-19T23:29:26.313795+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -147155,66 +147783,81 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-25",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146908921",
+            "showtime": "12:50pm",
+            "showtime_id": "147565520",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147565515",
+            "showtime": "4:00pm",
+            "showtime_id": "146908927",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146908926",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147565519",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147565402",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147565437",
+            "showtime": "1:15pm",
+            "showtime_id": "147565428",
             "format": "Dolby Cinema at AMC"
           },
           {
+            "showtime": "3:30pm",
+            "showtime_id": "147565392",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "6:15pm",
-            "showtime_id": "147565401",
+            "showtime_id": "147565394",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147565436",
+            "showtime_id": "147565427",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147565400",
+            "showtime_id": "147565391",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147565439",
+            "showtime_id": "147565426",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147737108",
+            "showtime": "1:30pm",
+            "showtime_id": "147737122",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:50pm",
-            "showtime_id": "147737109",
+            "showtime": "4:30pm",
+            "showtime_id": "147737121",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147737110",
+            "showtime": "7:30pm",
+            "showtime_id": "147737120",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147737119",
             "format": "Laser at AMC"
           }
         ]
@@ -147290,7 +147933,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654439+00:00",
+          "collected_at": "2026-10-19T23:29:26.313240+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -147369,7 +148012,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944961+00:00",
+          "collected_at": "2026-10-19T23:29:26.314210+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -147448,7 +148091,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944650+00:00",
+          "collected_at": "2026-10-19T23:29:26.313903+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -147659,7 +148302,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945391+00:00",
+          "collected_at": "2026-10-19T23:29:26.314384+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -147768,7 +148411,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945197+00:00",
+          "collected_at": "2026-10-19T23:29:26.314435+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -147956,7 +148599,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945297+00:00",
+          "collected_at": "2026-10-19T23:29:26.314333+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -148056,8 +148699,13 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "6:45pm",
+                "showtime": "6:40pm",
                 "showtime_id": "147941464",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "147971066",
                 "format": "Laser at AMC"
               }
             ],
@@ -148100,13 +148748,13 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
+                "showtime": "10:30pm",
                 "showtime_id": "147591982",
                 "format": "Open Caption (On-screen Subtitles)"
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.944973+00:00",
+          "collected_at": "2026-10-19T23:29:26.313790+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -148230,12 +148878,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945021+00:00",
+          "collected_at": "2026-10-19T23:29:26.313842+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
           "movies": {
             "Wildwood": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147971128",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "4:10pm",
                 "showtime_id": "147941477",
@@ -148285,6 +148938,11 @@
       "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147971128",
+            "format": "Laser at AMC"
+          },
           {
             "showtime": "4:10pm",
             "showtime_id": "147941477",
@@ -148423,9 +149081,31 @@
                 "showtime_id": "147592029",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wicker": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147976106",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147976105",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147976103",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147976107",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-19T23:29:26.314123+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -148726,96 +149406,76 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-23",
+      "show_date": "2026-10-22",
       "movies": {
         "Wildwood": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "146888629",
+            "showtime": "2:00pm",
+            "showtime_id": "146888615",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146888630",
+            "showtime": "5:15pm",
+            "showtime_id": "146888616",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "146888613",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "147750500",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "146888612",
+            "showtime": "8:30pm",
+            "showtime_id": "146888611",
             "format": "Laser at AMC"
           }
         ],
         "Clayface": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147408686",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "2:00pm",
-            "showtime_id": "147408647",
+            "showtime_id": "147408656",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147408696",
+            "showtime": "3:30pm",
+            "showtime_id": "147408694",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147408655",
+            "showtime": "4:50pm",
+            "showtime_id": "147408650",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147408697",
+            "showtime": "6:20pm",
+            "showtime_id": "147408695",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147408653",
+            "showtime": "7:40pm",
+            "showtime_id": "147408651",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147408698",
+            "showtime": "9:15pm",
+            "showtime_id": "147408693",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147408654",
+            "showtime": "10:30pm",
+            "showtime_id": "147408652",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147592028",
+            "showtime": "4:00pm",
+            "showtime_id": "147592106",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147592027",
+            "showtime": "7:00pm",
+            "showtime_id": "147592107",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147592026",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147592029",
+            "showtime": "10:00pm",
+            "showtime_id": "147592108",
             "format": "Laser at AMC"
           }
         ]
@@ -148891,7 +149551,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945675+00:00",
+          "collected_at": "2026-10-19T23:29:26.314542+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -148950,7 +149610,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654653+00:00",
+          "collected_at": "2026-10-19T23:29:26.314553+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -149078,7 +149738,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654694+00:00",
+          "collected_at": "2026-10-19T23:29:26.314530+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -149220,7 +149880,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945692+00:00",
+          "collected_at": "2026-10-19T23:29:26.314600+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -149284,7 +149944,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945650+00:00",
+          "collected_at": "2026-10-19T23:29:26.314518+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -149363,7 +150023,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:32:53.654759+00:00",
+          "collected_at": "2026-10-19T23:29:26.314625+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -149565,7 +150225,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945542+00:00",
+          "collected_at": "2026-10-19T23:29:26.314536+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -149605,7 +150265,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T17:45:00.945560+00:00",
+          "collected_at": "2026-10-19T23:29:26.314547+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -150685,12 +151345,382 @@
           }
         ]
       }
+    },
+    "AMC Westminster Promenade 24": {
+      "tz": "PT",
+      "cohort": "core",
+      "dates": {
+        "2026-10-22": {
+          "movies": {
+            "Wildwood": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "146873883",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147558382",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147558381",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147558341",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "147558340",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147558344",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147558342",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Klara and the Sun": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147676767",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147676533",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147676534",
+                "format": "Laser at AMC"
+              }
+            ],
+            "A Talent for Murder": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147676885",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147676886",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147676930",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-19T23:29:26.312925+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-25": {
+          "movies": {
+            "Wildwood": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "146873878",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146873877",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147558375",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147558374",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147558451",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147558450",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147558454",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147558455",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Klara and the Sun": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147677015",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147677016",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147676701",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147676700",
+                "format": "Laser at AMC"
+              }
+            ],
+            "A Talent for Murder": [
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147676889",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147676768",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "147676936",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-19T23:29:26.313233+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-23": {
+          "movies": {
+            "Wildwood": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "146873885",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "146873884",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ali G: Who Iz I?": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147687973",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "147558380",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "147558379",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147747053",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "4:35pm",
+                "showtime_id": "147747052",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147747050",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147747051",
+                "format": "4DX at AMC"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147558338",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147558337",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147558343",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147558339",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Klara and the Sun": [
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147676769",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147676631",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147676529",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147676530",
+                "format": "Laser at AMC"
+              }
+            ],
+            "A Talent for Murder": [
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "147676887",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "147676933",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-10-19T23:29:26.314187+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-22",
+      "movies": {
+        "Wildwood": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "146873883",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147558382",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147558381",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147558341",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "147558340",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147558344",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "147558342",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Klara and the Sun": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147676767",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147676533",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "147676534",
+            "format": "Laser at AMC"
+          }
+        ],
+        "A Talent for Murder": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147676885",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147676886",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147676930",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 1.0,
-    "fresh": 52,
-    "expected": 52,
+    "ratio": 0.9824,
+    "fresh": 279,
+    "expected": 284,
     "min_ratio": 0.9,
     "degraded": false
   }
