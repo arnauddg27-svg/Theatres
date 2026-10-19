@@ -65,3 +65,13 @@ class SnapshotSliceCarryForwardTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PerDateFreshnessTest(unittest.TestCase):
+    def test_slice_age_is_judged_against_its_own_show_date(self):
+        # Saturday slice read at 03Z, Friday slice re-read at 15Z (daytime slot
+        # covering only the nearest dates): Saturday must survive.
+        sat = dict(_row("run-night", "2026-10-16T03:00:00+00:00", "s1", 20 * 60), show_date="2026-10-17")
+        fri = dict(_row("run-day", "2026-10-16T15:00:00+00:00", "f1", 180), show_date="2026-10-16")
+        kept = predict.latest_snapshot_window_rows([sat, fri], max_slice_age_hours=8)
+        self.assertEqual({"2026-10-16", "2026-10-17"}, {r["show_date"] for r in kept})

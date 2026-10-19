@@ -6529,6 +6529,17 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
     latest_overall = max((parsed for _, _, parsed in parsed_rows if parsed), default=None)
     if latest_overall is None:
         return list(rows)
+    # Freshness is judged PER SHOW DATE (2026-10-18). The daytime snapshot
+    # slots now read only the nearest two show dates on a crowded slate
+    # (SNAPSHOT_MAX_DATES=2), so Saturday/Sunday slices are refreshed by the
+    # 02:30Z run alone. Measured against a single global "latest" time those
+    # slices would be >8h old by the 14:30Z finalize and silently dropped.
+    latest_by_date = {}
+    for _, row, parsed in parsed_rows:
+        if parsed is not None:
+            d = row.get("show_date", "")
+            if d not in latest_by_date or parsed > latest_by_date[d]:
+                latest_by_date[d] = parsed
 
     by_slice = {}
     for item in parsed_rows:
@@ -6554,7 +6565,8 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
             keep_indexes.update(idx for idx, _, _ in items)
             continue
         latest_slice_time = max(parsed for _, _, parsed in timed)
-        if (latest_overall - latest_slice_time).total_seconds() > max_age_seconds:
+        reference = latest_by_date.get(timed[0][1].get("show_date", ""), latest_overall)
+        if (reference - latest_slice_time).total_seconds() > max_age_seconds:
             continue
         latest_item = max(
             timed,

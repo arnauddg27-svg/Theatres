@@ -110,9 +110,12 @@ class WorkflowReliabilityTest(unittest.TestCase):
         # = the whole universe, 8 tabs); the 120/3 posture stays for direct.
         self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=1000", phase_block)
         self.assertIn("SNAPSHOT_TOP_THEATRE_CAP=120", phase_block)
-        # full collection: every slot reads the whole window (operator choice)
-        self.assertIn("export SNAPSHOT_MAX_DATES=0", phase_block)
-        self.assertNotIn("SNAPSHOT_MAX_DATES=2", phase_block)
+        # 2026-10-18 capacity: the daytime slots read the nearest two show
+        # dates, the 02:30Z slot (and ad-hoc runs) the whole window. With four
+        # titles each snapshot run held the AMC lock ~4h; the calendar slate
+        # brings six or more.
+        self.assertIn('"snapshot 14:30Z"|"snapshot 22:30Z") export SNAPSHOT_MAX_DATES=2', phase_block)
+        self.assertIn("*) export SNAPSHOT_MAX_DATES=0", phase_block)
         # finalize's predict denominator must follow the same switch
         fin_start = self.workflow.index("  finalize:")
         fin_block = self.workflow[fin_start:]

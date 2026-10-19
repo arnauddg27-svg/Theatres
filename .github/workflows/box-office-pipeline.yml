@@ -472,11 +472,18 @@ jobs:
             # so the extra room comes from the repair budget (2700 -> 1800), not
             # the step timeout. Demand-first ordering drops the least-informative
             # tail when the cap binds.
-            # Date window: every slot reads the WHOLE remaining window (0 = all).
-            # A per-slot cap (nearest 2 dates on daytime slots, ~1/3 fewer
-            # loads) exists behind SNAPSHOT_MAX_DATES but the operator chose
-            # full collection over bandwidth (2026-09-10).
-            export SNAPSHOT_MAX_DATES=0
+            # Date window (2026-10-18): with four titles the three daily
+            # snapshot runs each held the AMC lock ~4h (Thu 14:30Z 14:35-18:27,
+            # 22:30Z 22:35-02:48, queuing the 02:30Z slot); the release-calendar
+            # slate brings six or more. The daytime slots read the NEAREST TWO
+            # show dates (today + tomorrow on Thu-Sun; Thu + Fri on Mon-Wed);
+            # the 02:30Z slot still reads the whole window, and predict.py
+            # judges snapshot freshness per show date, so Sat/Sun pre-sales
+            # refreshed once a night are kept. ~1/3 fewer loads per daytime run.
+            case "${{ github.event.inputs.schedule_slot }}" in
+              "snapshot 14:30Z"|"snapshot 22:30Z") export SNAPSHOT_MAX_DATES=2 ;;
+              *) export SNAPSHOT_MAX_DATES=0 ;;
+            esac
             export SNAPSHOT_REPAIR_LINKS=1
             export PHASE2_DEADLINE_SEC=9000
             export PHASE1_DEADLINE_SEC=1800
