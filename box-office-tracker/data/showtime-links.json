@@ -2,7 +2,7 @@
   "date": "2026-10-23",
   "weekend_of": "2026-10-23",
   "collected_local_date": "2026-10-20",
-  "collected_at": "2026-10-20T15:49:04.043723+00:00",
+  "collected_at": "2026-10-20T16:31:39.324572+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -133639,7 +133639,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982618+00:00",
+          "collected_at": "2026-10-20T16:31:39.303189+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -133684,7 +133684,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982670+00:00",
+          "collected_at": "2026-10-20T16:31:39.303185+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -133786,6 +133786,35 @@
                 "showtime_id": "147735277",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147972134",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147972133",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147972132",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147972245",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147972246",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -133794,6 +133823,11 @@
         "2026-10-25": {
           "movies": {
             "Clayface": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "147972118",
+                "format": "Dolby Cinema at AMC"
+              },
               {
                 "showtime": "12:45pm",
                 "showtime_id": "147732960",
@@ -133861,14 +133895,58 @@
                 "showtime_id": "147735291",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147972151",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147972236",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147972192",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147972125",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147972171",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "147972270",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147972145",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982683+00:00",
+          "collected_at": "2026-10-20T16:31:39.303229+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
           "movies": {
             "Clayface": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "147972117",
+                "format": "Dolby Cinema at AMC"
+              },
               {
                 "showtime": "12:45pm",
                 "showtime_id": "147732964",
@@ -133935,15 +134013,64 @@
                 "showtime": "10:00pm",
                 "showtime_id": "147735286",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147972226",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147972148",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147972185",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "147972141",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147972257",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147972140",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147972183",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147972184",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982572+00:00",
+          "collected_at": "2026-10-20T16:31:39.303128+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
           "movies": {
             "Clayface": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147972189",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "2:00pm",
                 "showtime_id": "147569072",
@@ -134001,9 +134128,48 @@
                 "showtime_id": "147735281",
                 "format": "Laser at AMC"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147972138",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147972149",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147972137",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147972175",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147972188",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147972250",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147972251",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982625+00:00",
+          "collected_at": "2026-10-20T16:31:39.303217+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -134056,6 +134222,35 @@
           {
             "showtime": "9:50pm",
             "showtime_id": "147735277",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147972134",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147972133",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147972132",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147972245",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147972246",
             "format": "Laser at AMC"
           }
         ]
@@ -134156,7 +134351,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982651+00:00",
+          "collected_at": "2026-10-20T16:31:39.303209+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -134213,7 +134408,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982696+00:00",
+          "collected_at": "2026-10-20T16:31:39.303221+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -134248,7 +134443,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982632+00:00",
+          "collected_at": "2026-10-20T16:31:39.303113+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -134322,6 +134517,30 @@
                 "showtime_id": "147622966",
                 "format": "undefined"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147994674",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147994678",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147994679",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147994664",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
           "collected_at": null,
@@ -134330,6 +134549,11 @@
         "2026-10-24": {
           "movies": {
             "Clayface": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148001800",
+                "format": "Thrills & Chills"
+              },
               {
                 "showtime": "1:30pm",
                 "showtime_id": "147520889",
@@ -134367,9 +134591,58 @@
                 "showtime_id": "147622969",
                 "format": "undefined"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148001831",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "148001870",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148001844",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148001880",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148001879",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148001760",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148001807",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148001784",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148001776",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982639+00:00",
+          "collected_at": "2026-10-20T16:31:39.303123+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -134411,6 +134684,11 @@
           "movies": {
             "Clayface": [
               {
+                "showtime": "12:30pm",
+                "showtime_id": "148001799",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
                 "showtime": "1:30pm",
                 "showtime_id": "147520892",
                 "format": "Open Caption (On-screen Subtitles)"
@@ -134423,6 +134701,11 @@
               {
                 "showtime": "7:15pm",
                 "showtime_id": "147520890",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148001729",
                 "format": "Thrills & Chills"
               }
             ],
@@ -134442,9 +134725,58 @@
                 "showtime_id": "147622972",
                 "format": "undefined"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148001829",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "148001872",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148001847",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148001871",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148001874",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148001761",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148001803",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148001779",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "148001738",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982740+00:00",
+          "collected_at": "2026-10-20T16:31:39.303168+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -134478,6 +134810,30 @@
             "showtime": "7:10pm",
             "showtime_id": "147622966",
             "format": "undefined"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147994674",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "147994678",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147994679",
+            "format": "AMC Artisan Films"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147994664",
+            "format": "AMC Artisan Films"
           }
         ]
       }
@@ -134577,7 +134933,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982605+00:00",
+          "collected_at": "2026-10-20T16:31:39.303201+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -134866,7 +135222,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982727+00:00",
+          "collected_at": "2026-10-20T16:31:39.303197+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -134938,7 +135294,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982612+00:00",
+          "collected_at": "2026-10-20T16:31:39.303163+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -135010,51 +135366,76 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982566+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147524504",
+            "showtime": "1:30pm",
+            "showtime_id": "147524507",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147524505",
+            "showtime": "4:25pm",
+            "showtime_id": "147524508",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147524506",
+            "showtime": "7:20pm",
+            "showtime_id": "147524509",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147524532",
             "format": "Thrills & Chills"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147730503",
+            "showtime": "1:30pm",
+            "showtime_id": "147730508",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147730504",
+            "showtime": "4:30pm",
+            "showtime_id": "147730507",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147730505",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147730506",
             "format": "undefined"
           }
         ],
         "Wildwood": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147533778",
+            "showtime": "12:50pm",
+            "showtime_id": "147533776",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "146910288",
+            "showtime": "4:00pm",
+            "showtime_id": "146910289",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "146910290",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147533775",
             "format": "AMC Artisan Films"
           }
         ]
@@ -135200,7 +135581,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T16:25:05.840392+00:00",
+          "collected_at": "2026-10-20T16:31:39.303177+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -135277,7 +135658,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982689+00:00",
+          "collected_at": "2026-10-20T16:31:39.303154+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -135354,7 +135735,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982746+00:00",
+          "collected_at": "2026-10-20T16:31:39.303143+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135495,7 +135876,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T16:25:05.840227+00:00",
+          "collected_at": "2026-10-20T16:31:39.303213+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -135535,7 +135916,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982734+00:00",
+          "collected_at": "2026-10-20T16:31:39.303133+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -135575,7 +135956,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982592+00:00",
+          "collected_at": "2026-10-20T16:31:39.303204+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135719,9 +136100,21 @@
                 "showtime_id": "147748704",
                 "format": "undefined"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147980222",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147980223",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982715+00:00",
+          "collected_at": "2026-10-20T16:31:39.303138+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -136083,7 +136476,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982520+00:00",
+          "collected_at": "2026-10-20T16:31:39.303182+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-23": {
@@ -136150,46 +136543,71 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982541+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-23",
       "movies": {
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147414278",
+            "showtime": "1:30pm",
+            "showtime_id": "147414191",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "147414279",
+            "showtime": "4:20pm",
+            "showtime_id": "147414190",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147414277",
+            "showtime": "7:10pm",
+            "showtime_id": "147414189",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147414188",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147682645",
+            "showtime": "3:00pm",
+            "showtime_id": "147682831",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147682647",
+            "showtime": "6:00pm",
+            "showtime_id": "147682827",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147682829",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Wicker": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147939486",
+            "showtime": "1:30pm",
+            "showtime_id": "147939487",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147939488",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147939489",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147939490",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -136290,7 +136708,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982657+00:00",
+          "collected_at": "2026-10-20T16:31:39.303118+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -136690,7 +137108,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982645+00:00",
+          "collected_at": "2026-10-20T16:31:39.303193+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-24": {
@@ -136730,7 +137148,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982721+00:00",
+          "collected_at": "2026-10-20T16:31:39.303158+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-22": {
@@ -136816,6 +137234,16 @@
                 "format": "Thrills & Chills"
               },
               {
+                "showtime": "12:40pm",
+                "showtime_id": "148009964",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "148009982",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "3:20pm",
                 "showtime_id": "147452785",
                 "format": "Open Caption (On-screen Subtitles)"
@@ -136826,9 +137254,19 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "6:05pm",
+                "showtime_id": "148009962",
+                "format": "Thrills & Chills"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147452717",
                 "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148010008",
+                "format": "Thrills & Chills"
               }
             ],
             "Klara and the Sun": [
@@ -136850,25 +137288,82 @@
             ],
             "A Talent for Murder": [
               {
+                "showtime": "1:15pm",
+                "showtime_id": "148009977",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148009972",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "6:15pm",
                 "showtime_id": "147730933",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148009973",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148009974",
                 "format": "AMC Artisan Films"
               }
             ],
             "Wildwood": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148009993",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "1:05pm",
+                "showtime_id": "148009975",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
               {
                 "showtime": "4:00pm",
                 "showtime_id": "146861133",
                 "format": "AMC Artisan Films"
               },
               {
-                "showtime": "7:10pm",
+                "showtime": "8:00pm",
                 "showtime_id": "146861134",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "148009992",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "1:40pm",
+                "showtime_id": "148009967",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "148009994",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "148010000",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "148009966",
                 "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982599+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-25": {
@@ -136993,8 +137488,13 @@
           "movies": {
             "Clayface": [
               {
-                "showtime": "1:15pm",
-                "showtime_id": "147452770",
+                "showtime": "1:35pm",
+                "showtime_id": "147981815",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147981849",
                 "format": "Thrills & Chills"
               },
               {
@@ -137003,8 +137503,18 @@
                 "format": "XL at AMC"
               },
               {
+                "showtime": "5:50pm",
+                "showtime_id": "147452770",
+                "format": "Thrills & Chills"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147452703",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "147981851",
                 "format": "XL at AMC"
               }
             ],
@@ -137027,12 +137537,32 @@
             ],
             "A Talent for Murder": [
               {
-                "showtime": "6:15pm",
+                "showtime": "1:15pm",
+                "showtime_id": "148009997",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147981804",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:10pm",
                 "showtime_id": "147730932",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147981786",
                 "format": "AMC Artisan Films"
               }
             ],
             "Wildwood": [
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147981811",
+                "format": "AMC Artisan Films"
+              },
               {
                 "showtime": "4:00pm",
                 "showtime_id": "146861131",
@@ -137042,61 +137572,175 @@
                 "showtime": "7:10pm",
                 "showtime_id": "146861132",
                 "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147981838",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Wicker": [
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147981795",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147981793",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "147981855",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "147981791",
+                "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-10-19T22:07:52.982585+00:00",
+          "collected_at": "2026-10-20T16:31:39.303234+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-22",
+      "show_date": "2026-10-24",
       "movies": {
         "Clayface": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147452769",
+            "showtime": "12:30pm",
+            "showtime_id": "147452783",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147452701",
+            "showtime": "12:40pm",
+            "showtime_id": "148009964",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:35pm",
+            "showtime_id": "148009982",
             "format": "XL at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147452700",
+            "showtime": "3:20pm",
+            "showtime_id": "147452785",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147452718",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:05pm",
+            "showtime_id": "148009962",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147452717",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "148010008",
+            "format": "Thrills & Chills"
           }
         ],
         "Klara and the Sun": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147730953",
+            "showtime": "1:10pm",
+            "showtime_id": "147730958",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147730954",
+            "showtime": "4:10pm",
+            "showtime_id": "147730959",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "147730960",
             "format": "undefined"
           }
         ],
         "A Talent for Murder": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147730930",
+            "showtime": "1:15pm",
+            "showtime_id": "148009977",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "148009972",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147730931",
+            "showtime": "6:15pm",
+            "showtime_id": "147730933",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148009973",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148009974",
             "format": "AMC Artisan Films"
           }
         ],
         "Wildwood": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "146861130",
+            "showtime": "12:30pm",
+            "showtime_id": "148009993",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "1:05pm",
+            "showtime_id": "148009975",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "146861133",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "146861134",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "148009992",
+            "format": "AMC Artisan Films"
+          }
+        ],
+        "Wicker": [
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "148009967",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:10pm",
+            "showtime_id": "148009994",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:25pm",
+            "showtime_id": "148010000",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:05pm",
+            "showtime_id": "148009966",
             "format": "AMC Artisan Films"
           }
         ]
@@ -172401,9 +173045,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9804,
-    "fresh": 451,
-    "expected": 460,
+    "ratio": 1.0,
+    "fresh": 52,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
