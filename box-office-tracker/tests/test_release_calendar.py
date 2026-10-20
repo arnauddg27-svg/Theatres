@@ -122,3 +122,13 @@ class DedupGuardCalendarDemandTest(unittest.TestCase):
             # cache for another weekend -> demand everything again
             stale = dict(links, weekend_of="2026-10-16")
             self.assertEqual(["Clayface", "Wildwood"], guard._calendar_titles_to_demand(root, stale, "2026-10-23"))
+
+
+class GenreMapPriorityTest(unittest.TestCase):
+    def test_priority_rules(self):
+        import fill_movie_metadata as F
+        self.assertEqual("broad_family", F.map_genre(["Adventure", "·", "Animation", "Horror"])[1])
+        self.assertEqual("adult_drama", F.map_genre(["Sci-Fi"])[1])
+        self.assertEqual("fan_driven", F.map_genre(["Sci-Fi", "Action"])[1])
+        self.assertEqual("female_skewing", F.map_genre(["Drama", "Romance"])[1])
+        self.assertEqual("horror_fan", F.map_genre(["Horror", "Sci-Fi", "Thriller"])[1])

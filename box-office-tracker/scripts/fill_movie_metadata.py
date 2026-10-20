@@ -29,9 +29,15 @@ FIELDS = ["movie", "weekend_of", "genre", "audience_type", "franchise_type", "ra
 
 # Box Office Mojo genre -> (model genre, default audience_type). First match in
 # the film's genre list wins; order below is the priority.
+# Order is priority (first match wins). 2026-10-20 audit: Animation now beats
+# Horror (Laika's Wildwood, "Adventure / Animation / Fantasy / Horror", was
+# classed horror_fan and would have taken the horror pre-sales lift), and
+# Romance beats Drama/Thriller (Sense and Sensibility, 84% female, was
+# adult_drama). Sci-Fi is fan_driven only alongside Action/Adventure — see
+# map_genre (Klara and the Sun, a literary drama listed only as Sci-Fi).
 GENRE_MAP = [
-    ("Horror", ("horror", "horror_fan")),
     ("Animation", ("animation", "broad_family")),
+    ("Horror", ("horror", "horror_fan")),
     ("Superhero", ("superhero", "fan_driven")),
     ("Musical", ("music_biopic", "female_skewing")),
     ("Music", ("music_biopic", "adult_drama")),
@@ -40,9 +46,9 @@ GENRE_MAP = [
     ("Sci-Fi", ("action", "fan_driven")),
     ("Action", ("action", "young_male")),
     ("Adventure", ("action", "fan_driven")),
+    ("Romance", ("drama", "female_skewing")),
     ("Thriller", ("drama", "adult_drama")),
     ("Drama", ("drama", "adult_drama")),
-    ("Romance", ("drama", "female_skewing")),
     ("Fantasy", ("action", "fan_driven")),
 ]
 
@@ -89,9 +95,14 @@ def bom_lookup(title, year_hint=None):
 
 
 def map_genre(genres):
+    genres = [g for g in (genres or []) if g and g.strip() not in ("·", "-")]
+    has = lambda key: any(key.lower() in g.lower() for g in genres)
     for key, out in GENRE_MAP:
-        if any(key.lower() in g.lower() for g in genres):
-            return out
+        if not has(key):
+            continue
+        if key == "Sci-Fi" and not (has("Action") or has("Adventure")):
+            return ("drama", "adult_drama")
+        return out
     return ("", "")
 
 
