@@ -1762,11 +1762,15 @@ class PredictionNormalizationTest(unittest.TestCase):
         # This test isolates the same-week overlap layer: identical rows on
         # Friday and Saturday must produce identical dollars. Daypart pricing
         # (2026-09-28) deliberately values a matinee row differently per day,
-        # so it is switched off here.
+        # so it is switched off here. The fitted pickup table is per day and
+        # refit by the pipeline from live data (2026-10-21 refit: Saturday
+        # 180-min pickup 2.3% above Friday's), so pin the fixed table too.
         import predict as _P
         _old_mode = _P.PRICE_DAYPART_MODE
         _P.PRICE_DAYPART_MODE = "off"
         self.addCleanup(setattr, _P, "PRICE_DAYPART_MODE", _old_mode)
+        self.addCleanup(setattr, _P, "SNAPSHOT_PICKUP_MODE", _P.SNAPSHOT_PICKUP_MODE)
+        _P.SNAPSHOT_PICKUP_MODE = "table"
         cal = {
             "history": [],
             "calibration_factors": {
