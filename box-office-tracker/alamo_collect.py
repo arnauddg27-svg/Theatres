@@ -54,6 +54,11 @@ ALAMO_LOOP_COMMIT = (os.environ.get("ALAMO_LOOP_COMMIT") or "0").strip() == "1"
 # single largest source of repo churn). Hourly commits still bound a runner
 # loss to one hour; the job's final commit step always runs.
 ALAMO_LOOP_COMMIT_EVERY = max(1, int(os.environ.get("ALAMO_LOOP_COMMIT_EVERY", "4") or 4))
+# Per-pass time budget (2026-10-22 audit): a normal pre pass takes 13-16 min of
+# the step's 30, but on 2026-10-21 12:40Z three slow passes hit the step
+# timeout and were killed before writing a single row. Past the budget the pass
+# stops reading seats and writes what it has.
+ALAMO_BUDGET_MIN = float(os.environ.get("ALAMO_BUDGET_MIN", "25") or 25)
 
 
 def commit_pass():
@@ -201,6 +206,7 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                       else pre_pass_weekend(now_utc))
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     totals = Counter()
+    deadline = time.monotonic() + ALAMO_BUDGET_MIN * 60
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return totals
@@ -214,6 +220,9 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
         picks = []
         markets = _get("/v1/page/cclamp?useUnifiedSchedule=true")["data"]["marketSummaries"]
         for m in markets:
+            if time.monotonic() > deadline:
+                totals["budget_skipped_markets"] += 1
+                continue
             try:
                 sched = _get(f"/v2/schedule/market/{m['slug']}")["data"]
                 totals["markets"] += 1
@@ -227,7 +236,12 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
         picks = picks[:ALAMO_MAX_SESSIONS]
     totals["matched"] = len(picks)
     rows = []
-    for session, cinema, title in picks:
+    for i, (session, cinema, title) in enumerate(picks):
+        if time.monotonic() > deadline:
+            totals["budget_skipped"] = len(picks) - i
+            print(f"::warning::Alamo pass hit its {ALAMO_BUDGET_MIN:g}-min budget; "
+                  f"skipped {len(picks) - i} of {len(picks)} seat reads, writing the rest", flush=True)
+            break
         try:
             seating = _get(f"/v1/app/seats/{session['cinemaId']}/{session['sessionId']}")["data"]["seatingData"]
             counts = seat_counts(seating)

@@ -74,3 +74,34 @@ class AlamoLaneTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AlamoBudgetTest(unittest.TestCase):
+    def test_slow_pass_stops_at_budget_and_still_writes_rows(self):
+        # 2026-10-21 12:40Z: slow seat reads ran past the 30-min step timeout and
+        # the pass was killed with nothing written. Past the budget, write what we have.
+        from unittest import mock
+        sessions = [dict(SCHEDULE["sessions"][0], sessionId=str(i)) for i in range(1, 6)]
+        sched = dict(SCHEDULE, sessions=sessions)
+        clock = [0.0]
+
+        def fake_get(path, timeout=30):
+            if path.startswith("/v1/page/cclamp"):
+                return {"data": {"marketSummaries": [{"slug": "austin"}]}}
+            if path.startswith("/v2/schedule/market/"):
+                return {"data": sched}
+            clock[0] += 600                                   # each seat read takes 10 min
+            return {"data": {"seatingData": SEATING}}
+
+        with tempfile.TemporaryDirectory() as td, \
+                mock.patch.object(A, "_get", fake_get), \
+                mock.patch.object(A, "ALAMO_CSV", Path(td) / "a.csv"), \
+                mock.patch.object(A, "ALAMO_SLEEP_SEC", 0), \
+                mock.patch.object(A, "ALAMO_BUDGET_MIN", 25), \
+                mock.patch.object(A.time, "monotonic", lambda: clock[0]):
+            t = A.collect(weekend_of="2026-09-25", titles=["Primetime"], now_utc=NOW)
+            rows = list(csv.DictReader(open(Path(td) / "a.csv")))
+        self.assertEqual(5, t["matched"])
+        self.assertEqual(3, t["captured"])                    # reads at 0, 10, 20 min; 30 > 25 stops
+        self.assertEqual(2, t["budget_skipped"])
+        self.assertEqual(3, len(rows))
