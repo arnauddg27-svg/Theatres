@@ -28,6 +28,7 @@ from forecast_windows import window_profile
 import gzip
 import json, csv, os, sys, re, statistics
 import seat_regression
+import small_film_gate
 from actuals_quality import independent_daily_actuals, independent_daily_override
 from forecast_evaluation import select_forecast_checkpoints, utc_timestamp
 from stage_forecasting import daily_evidence_candidate, forecast_stage
@@ -11125,6 +11126,11 @@ def main():
         movie for movie in prediction_movie_names(seat_data, snapshot_data)
         if not movie_filter or movie_filter in movie.lower()
     ]
+    if not through_date and not calibration_freeze_weekend:
+        # Live runs skip films the collectors stopped reading (forecast clearly
+        # under $3M, small_film_gate): their evidence is frozen mid-weekend.
+        movies_to_predict = small_film_gate.filter_titles(
+            movies_to_predict, replay_weekend, "forecast")
 
     print(f"\n{'='*70}")
     print(f"  Opening Weekend Box Office Predictions")

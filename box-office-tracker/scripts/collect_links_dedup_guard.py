@@ -19,12 +19,16 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import small_film_gate  # noqa: E402
+
 
 SHOWTIME_LINKS_PATH = "box-office-tracker/data/showtime-links.json"
 POLYMARKET_MARKETS_PATH = "box-office-tracker/data/polymarket-markets.csv"
 THEATRES_ALL_PATH = "box-office-tracker/data/theatres-all.json"
 THEATRE_COUNTS_PATH = "box-office-tracker/data/theatre-counts.json"
 MOVIE_METADATA_PATH = "box-office-tracker/data/movie-metadata.csv"
+PREDICTION_LOG_PATH = "box-office-tracker/data/prediction-log.csv"
 
 TZ_TO_ZONE = {
     "ET": "America/New_York",
@@ -351,7 +355,10 @@ def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: s
     titles.extend(_tracked_titles_from_theatre_counts(repo_root, expected_weekend))
     titles.extend(_csv_market_titles(repo_root, expected_weekend, market_since))
     titles.extend(_calendar_titles_to_demand(repo_root, saved_links, expected_weekend))
-    active = _unique_titles(titles)
+    # Films the gate stopped collecting must not be demanded (2026-10-23).
+    active = small_film_gate.filter_titles(
+        _unique_titles(titles), expected_weekend, "dedup guard",
+        path=repo_root / PREDICTION_LOG_PATH)
     if not active:
         print(f"No active movie state found for weekend {expected_weekend}; running")
     return active

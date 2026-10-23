@@ -30,6 +30,8 @@ import uuid
 import requests
 from playwright.async_api import async_playwright
 
+import small_film_gate
+
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 BASE_DIR = Path(__file__).parent
@@ -2002,7 +2004,8 @@ def tracked_movie_titles_from_state(weekend_of):
         if key and key not in seen:
             seen.add(key)
             deduped.append(title)
-    return deduped
+    # Films forecast clearly under $3M are not collected (2026-10-23).
+    return small_film_gate.filter_titles(deduped, weekend_of, "tracked titles")
 
 
 def movie_titles_missing_metadata(movie_titles, metadata_csv=None):
@@ -2120,7 +2123,13 @@ def select_collection_markets(live_markets, ref_dt, phase_label,
     markets = _select_collection_markets_base(
         live_markets, ref_dt, phase_label,
         weekend_override=weekend_override, prefer_live_markets=prefer_live_markets)
-    return merge_calendar_titles(markets, weekend, phase_label)
+    markets = merge_calendar_titles(markets, weekend, phase_label)
+    titles = [m.get("movie_title") or "" for m in markets]
+    kept = small_film_gate.filter_titles(titles, weekend, phase_label)
+    if len(kept) == len(titles):
+        return markets
+    kept = set(kept)
+    return [m for m, t in zip(markets, titles) if t in kept]
 
 
 def _select_collection_markets_base(live_markets, ref_dt, phase_label,
