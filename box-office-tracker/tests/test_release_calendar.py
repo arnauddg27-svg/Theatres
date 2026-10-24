@@ -37,6 +37,24 @@ class ReleaseCalendarParseTest(unittest.TestCase):
         self.assertEqual("Warner Bros.", rows[0]["distributor"])
         self.assertIn("Horror", rows[0]["genres"])
 
+    def test_parse_live_bom_header_format(self):
+        # Live BOM headers read "Fri Oct 30, 2026"; the first parser only
+        # matched "October 30, 2026" and wrote 0 titles on 2026-10-23/24.
+        page = (PAGE.replace("October 22, 2026", "Thu Oct 22, 2026")
+                    .replace("October 23, 2026", "Fri Oct 23, 2026")
+                    .replace("October 30, 2026", "Fri Oct 30, 2026"))
+        page = page.replace("</table>", '<tr><td><a>Show Live!</a> Musical With: X 2 hr Cast, Crew, and '
+                            'Company Info</td><td>Roadside</td><td>Wide</td></tr></table>')
+        with mock.patch.object(RC, "earlier_tracked_titles", return_value=set()):
+            titles = [r["title"] for r in RC.parse_calendar(page, "2026-10-23")]
+        self.assertEqual(["Clayface", "Early Bird", "You Can See Everything"], titles)
+        with mock.patch.object(RC, "earlier_tracked_titles", return_value=set()):
+            live = RC.parse_calendar(page.replace("Fri Oct 30, 2026", "Wed Oct 21, 2026"), "2026-10-23")
+        self.assertNotIn("Show Live!", [r["title"] for r in live])
+
+    def test_calendar_page_starts_on_wednesday(self):
+        self.assertEqual("2026-10-28", RC.calendar_start_date("2026-10-30"))
+
     def test_earlier_tracked_titles(self):
         with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as f:
             f.write("movie,weekend_of\nYou Can See Everything,2026-10-16\nClayface,2026-10-23\n")

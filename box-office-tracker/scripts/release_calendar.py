@@ -32,8 +32,8 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 MAX_TITLES = 8
 # Re-releases and event cinema are not opening weekends the model forecasts.
 SKIP_PATTERNS = re.compile(
-    r"\b(re-?release|anniversary|\d+th|fathom|live!|concert|in concert|"
-    r"restoration|sing-?along|ghibli fest|encore)\b", re.I)
+    r"\b(re-?release|anniversary|\d+th|fathom|concert|in concert|"
+    r"restoration|sing-?along|ghibli fest|encore)\b|\blive!", re.I)
 
 
 def _key(title):
@@ -74,6 +74,23 @@ def _clean(fragment):
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _header_date(text):
+    """'October 23, 2026' or BOM's live 'Fri Oct 23, 2026' -> 'October 23, 2026'."""
+    text = re.sub(r"^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*,?\s+", "", text.strip())
+    for fmt in ("%B %d, %Y", "%b %d, %Y"):
+        try:
+            return datetime.strptime(text, fmt).strftime("%B %-d, %Y")
+        except ValueError:
+            pass
+    return None
+
+
+def calendar_start_date(weekend_of):
+    """BOM's calendar page starts AT the requested date, so ask for the
+    Wednesday or a Wed/Thu opener never appears on the page."""
+    return (datetime.strptime(weekend_of, "%Y-%m-%d") - timedelta(days=2)).strftime("%Y-%m-%d")
+
+
 def parse_calendar(page, weekend_of):
     """[{title, distributor, date, scale, genres}] for Wide releases dated
     Wed-Fri of `weekend_of` (Thursday/Wednesday openers belong to the weekend)."""
@@ -85,7 +102,7 @@ def parse_calendar(page, weekend_of):
     # 2026</th>) opens that date's block; the rows that follow are its releases.
     for chunk in re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.S):
         header_dates = [_clean(h) for h in re.findall(r"<th[^>]*>(.*?)</th>", chunk, re.S)]
-        header_dates = [h for h in header_dates if re.match(r"^[A-Z][a-z]+ \d{1,2}, \d{4}$", h)]
+        header_dates = [d for d in (_header_date(h) for h in header_dates) if d]
         if header_dates:
             current_date = header_dates[0]
             continue
@@ -132,7 +149,7 @@ def main(argv=None):
     args = ap.parse_args(argv)
     weekend = args.weekend or opening_weekend_friday(datetime.now(timezone.utc)).strftime("%Y-%m-%d")
     try:
-        page = fetch(BOM_CALENDAR_URL.format(date=weekend))
+        page = fetch(BOM_CALENDAR_URL.format(date=calendar_start_date(weekend)))
         titles = parse_calendar(page, weekend)
     except Exception as exc:  # advisory
         print(f"::warning::release calendar fetch failed for {weekend}: {type(exc).__name__}: {exc}")
@@ -142,7 +159,7 @@ def main(argv=None):
         print(f"  {t['title']} — {t['distributor']} ({t['date']}; {', '.join(t['genres'])})")
     if args.write:
         payload = {"weekend_of": weekend, "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                   "source": BOM_CALENDAR_URL.format(date=weekend), "titles": titles}
+                   "source": BOM_CALENDAR_URL.format(date=calendar_start_date(weekend)), "titles": titles}
         with open(CALENDAR_JSON, "w") as f:
             json.dump(payload, f, indent=2)
         print(f"wrote {CALENDAR_JSON}")
