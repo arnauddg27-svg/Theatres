@@ -1,293 +1,293 @@
-logged_at,weekend_of,movie,headline_mid_m,headline_low_m,headline_high_m,source,seat_only_m,snapshot_mid_m,amc_share_used,poly_ev_m,seat_days,coverage_ratio,data_outage,model_version,forecast_stage,baseline_mid_m,model_gross_window,market_window_compatible
-2026-09-18T16:57:11Z,2026-09-18,Resident Evil,48.5,35.89,55.77,snapshot-daily-evidence,85.13,47.7,0.2753,66.64,Thursday,0.991,,,,,,
-2026-09-18T20:21:12Z,2026-09-18,Resident Evil,47.54,35.18,54.67,snapshot-daily-evidence,84.16,46.76,0.2786,66.64,Thursday,0.991,,,,,,
-2026-09-19T01:09:39Z,2026-09-18,Resident Evil,46.92,34.73,53.96,snapshot-daily-evidence,86.24,46.15,0.2716,56.78,Thursday,0.991,,,,,,
-2026-09-19T04:54:15Z,2026-09-18,Resident Evil,49.57,36.68,57.0,snapshot-daily-evidence,86.2,48.75,0.2717,57.56,Thursday,0.991,,,,,,
-2026-09-19T08:11:17Z,2026-09-18,Resident Evil,63.37,46.9,72.96,snapshot-daily-evidence,68.72,59.95,0.2281,57.56,Thursday+Friday,0.992,,,,,,
-2026-09-19T15:46:49Z,2026-09-18,Resident Evil,70.24,51.98,81.35,snapshot-daily-evidence,68.36,69.09,0.2197,57.56,Thursday+Friday,0.992,,,,,,
-2026-09-19T19:40:19Z,2026-09-18,Resident Evil,71.74,53.09,83.09,snapshot-daily-evidence,69.7,70.6,0.2197,57.56,Thursday+Friday,0.992,,,,,,
-2026-09-20T00:20:29Z,2026-09-18,Resident Evil,68.16,50.44,78.94,snapshot-daily-evidence,72.44,65.09,0.2197,61.72,Thursday+Friday,0.992,,,,,,
-2026-09-20T04:09:49Z,2026-09-18,Resident Evil,68.69,50.84,79.55,snapshot-daily-evidence,72.44,65.78,0.2197,61.72,Thursday+Friday,0.992,,,,,,
-2026-09-20T08:45:58Z,2026-09-18,Resident Evil,68.66,50.81,79.38,snapshot-daily-evidence,68.78,66.01,0.2222,55.47,Thursday+Friday+Saturday,0.992,,,,,,
-2026-09-20T15:16:07Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,
-2026-09-20T18:35:54Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,
-2026-09-20T22:44:53Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,
-2026-09-21T02:16:34Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,61.67,Thursday+Friday+Saturday,0.995,,,,,,
-2026-09-21T08:59:41Z,2026-09-18,Resident Evil,63.96,47.33,73.55,seat-snapshot-regression,62.09,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.994,,,,,,
-2026-09-21T17:48:39Z,2026-09-18,Resident Evil,63.1,46.7,72.57,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-21T19:41:05Z,2026-09-18,Resident Evil,63.1,46.7,72.57,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-22T01:12:04Z,2026-09-18,Resident Evil,63.03,46.65,72.48,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-22T05:36:26Z,2026-09-18,Resident Evil,63.03,46.65,72.48,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-22T16:40:56Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-22T20:52:07Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-23T02:26:11Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-23T08:42:21Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-23T09:28:08Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,
-2026-09-24T17:06:07Z,2026-09-25,Forgotten Island,11.29,5.65,28.23,presale-only,0.0,11.29,,18.17,,,,seat-regression-v31-evidence-integrity,presales,11.29,Thursday-Sunday,1
-2026-09-24T17:06:08Z,2026-09-25,Heart of the Beast,8.72,4.36,21.79,presale-only,0.0,8.72,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.72,Thursday-Sunday,1
-2026-09-24T17:06:09Z,2026-09-25,Primetime,29.95,14.98,74.88,presale-only,0.0,29.95,,21.31,,,,seat-regression-v31-evidence-integrity,presales,29.95,Thursday-Sunday,1
-2026-09-24T20:38:48Z,2026-09-25,Forgotten Island,13.54,6.77,33.85,presale-only,0.0,13.54,,18.17,,,,seat-regression-v31-evidence-integrity,presales,13.54,Thursday-Sunday,1
-2026-09-24T20:38:49Z,2026-09-25,Heart of the Beast,9.16,4.58,22.91,presale-only,0.0,9.16,,16.67,,,,seat-regression-v31-evidence-integrity,presales,9.16,Thursday-Sunday,1
-2026-09-24T20:38:49Z,2026-09-25,Primetime,30.54,15.27,76.34,presale-only,0.0,30.54,,21.31,,,,seat-regression-v31-evidence-integrity,presales,30.54,Thursday-Sunday,1
-2026-09-25T01:36:52Z,2026-09-25,Forgotten Island,13.53,6.76,33.82,presale-only,0.0,13.53,,18.17,,,,seat-regression-v31-evidence-integrity,presales,13.53,Thursday-Sunday,1
-2026-09-25T01:36:53Z,2026-09-25,Heart of the Beast,8.22,4.11,20.55,presale-only,0.0,8.22,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.22,Thursday-Sunday,1
-2026-09-25T01:36:53Z,2026-09-25,Primetime,28.92,14.46,72.3,presale-only,0.0,28.92,,21.31,,,,seat-regression-v31-evidence-integrity,presales,28.92,Thursday-Sunday,1
-2026-09-25T05:19:06Z,2026-09-25,Forgotten Island,14.07,7.04,35.18,presale-only,0.0,14.07,,18.17,,,,seat-regression-v31-evidence-integrity,presales,14.07,Thursday-Sunday,1
-2026-09-25T05:19:06Z,2026-09-25,Heart of the Beast,8.87,4.44,22.18,presale-only,0.0,8.87,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.87,Thursday-Sunday,1
-2026-09-25T05:19:07Z,2026-09-25,Primetime,29.46,14.73,73.66,presale-only,0.0,29.46,,21.31,,,,seat-regression-v31-evidence-integrity,presales,29.46,Thursday-Sunday,1
-2026-09-25T08:14:00Z,2026-09-25,Forgotten Island,10.51,5.82,23.77,stage-daily-evidence,8.41,10.37,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.51,Thursday-Sunday,1
-2026-09-25T08:14:01Z,2026-09-25,Heart of the Beast,7.99,4.42,18.06,stage-daily-evidence,7.06,7.92,0.2654,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.99,Thursday-Sunday,1
-2026-09-25T08:14:02Z,2026-09-25,Primetime,19.06,10.55,43.1,stage-daily-evidence,24.42,18.95,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.06,Thursday-Sunday,1
-2026-09-25T17:04:15Z,2026-09-25,Forgotten Island,10.88,6.02,24.61,stage-daily-evidence,8.41,10.74,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.88,Thursday-Sunday,1
-2026-09-25T17:04:15Z,2026-09-25,Heart of the Beast,8.51,4.71,19.24,stage-daily-evidence,7.24,8.44,0.2581,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,8.51,Thursday-Sunday,1
-2026-09-25T17:04:16Z,2026-09-25,Primetime,19.34,10.71,43.74,stage-daily-evidence,24.42,19.23,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.34,Thursday-Sunday,1
-2026-09-25T20:16:28Z,2026-09-25,Forgotten Island,10.88,6.02,24.61,stage-daily-evidence,8.41,10.74,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.88,Thursday-Sunday,1
-2026-09-25T20:16:29Z,2026-09-25,Heart of the Beast,8.54,4.73,19.32,stage-daily-evidence,7.27,8.47,0.2568,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,8.54,Thursday-Sunday,1
-2026-09-25T20:16:30Z,2026-09-25,Primetime,19.34,10.71,43.74,stage-daily-evidence,24.42,19.23,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.34,Thursday-Sunday,1
-2026-09-26T01:11:28Z,2026-09-25,Forgotten Island,10.89,6.03,24.63,stage-daily-evidence,8.41,10.75,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.89,Thursday-Sunday,1
-2026-09-26T01:11:29Z,2026-09-25,Heart of the Beast,7.25,4.01,16.39,stage-daily-evidence,7.4,7.19,0.2521,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.25,Thursday-Sunday,1
-2026-09-26T01:11:30Z,2026-09-25,Primetime,19.35,10.71,43.76,stage-daily-evidence,24.45,19.26,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.35,Thursday-Sunday,1
-2026-09-26T05:04:09Z,2026-09-25,Forgotten Island,10.89,6.03,24.63,stage-daily-evidence,8.41,10.75,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.89,Thursday-Sunday,1
-2026-09-26T05:04:10Z,2026-09-25,Heart of the Beast,7.36,4.07,16.64,stage-daily-evidence,7.51,7.3,0.248,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.36,Thursday-Sunday,1
-2026-09-26T05:04:11Z,2026-09-25,Primetime,19.35,10.71,43.76,stage-daily-evidence,24.45,19.26,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.35,Thursday-Sunday,1
-2026-09-26T08:02:40Z,2026-09-25,Forgotten Island,11.8,6.43,26.68,stage-daily-evidence,10.01,11.65,0.2125,18.17,Thursday+Friday,0.961,,seat-regression-v31-evidence-integrity,after-friday,11.61,Thursday-Sunday,1
-2026-09-26T08:02:41Z,2026-09-25,Heart of the Beast,7.84,4.34,17.72,stage-daily-evidence,7.42,7.77,0.3141,16.67,Thursday+Friday,0.959,,seat-regression-v31-evidence-integrity,after-friday,7.83,Thursday-Sunday,1
-2026-09-26T08:02:42Z,2026-09-25,Primetime,20.59,11.4,47.49,stage-daily-evidence,21.51,20.5,0.3087,21.31,Thursday+Friday,0.989,,seat-regression-v31-evidence-integrity,after-friday,21.0,Thursday-Sunday,1
-2026-09-26T16:11:07Z,2026-09-25,Forgotten Island,11.8,6.43,26.68,stage-daily-evidence,10.01,11.65,0.2125,18.17,Thursday+Friday,0.961,,seat-regression-v31-evidence-integrity,after-friday,11.61,Thursday-Sunday,1
-2026-09-26T16:11:07Z,2026-09-25,Heart of the Beast,7.65,4.24,17.3,seat-snapshot-regression,7.5,10.86,0.31,16.67,Thursday+Friday,0.959,,seat-regression-v31-evidence-integrity,after-friday,7.65,Thursday-Sunday,1
-2026-09-26T16:11:08Z,2026-09-25,Primetime,20.59,11.4,47.49,stage-daily-evidence,21.51,20.5,0.3087,21.31,Thursday+Friday,0.989,,seat-regression-v31-evidence-integrity,after-friday,21.0,Thursday-Sunday,1
-2026-09-26T19:47:16Z,2026-09-25,Forgotten Island,12.58,6.8,28.45,stage-daily-evidence,13.92,12.42,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.29,Thursday-Sunday,1
-2026-09-26T19:47:16Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,15.68,0.3074,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1
-2026-09-26T19:47:17Z,2026-09-25,Primetime,20.13,11.14,45.87,stage-daily-evidence,25.37,20.03,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.28,Thursday-Sunday,1
-2026-09-27T00:06:55Z,2026-09-25,Forgotten Island,12.49,6.77,28.25,stage-daily-evidence,13.92,12.33,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.23,Thursday-Sunday,1
-2026-09-27T00:06:55Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,18.16,0.2531,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1
-2026-09-27T00:06:56Z,2026-09-25,Primetime,20.26,11.21,46.14,stage-daily-evidence,25.37,20.06,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.41,Thursday-Sunday,1
-2026-09-27T04:15:56Z,2026-09-25,Forgotten Island,12.5,6.77,28.26,stage-daily-evidence,13.92,12.34,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.23,Thursday-Sunday,1
-2026-09-27T04:15:56Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,12.64,0.2531,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1
-2026-09-27T04:15:57Z,2026-09-25,Primetime,20.26,11.22,46.15,stage-daily-evidence,25.37,20.07,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.41,Thursday-Sunday,1
-2026-09-27T08:59:07Z,2026-09-25,Forgotten Island,15.44,7.99,34.92,stage-daily-evidence,16.13,15.24,0.2125,18.17,Thursday+Friday+Saturday,0.989,,seat-regression-v31-evidence-integrity,after-saturday,14.44,Thursday-Sunday,1
-2026-09-27T08:59:07Z,2026-09-25,Heart of the Beast,19.43,10.64,43.93,stage-daily-evidence,22.47,19.27,0.2605,16.67,Thursday+Friday+Saturday,0.992,,seat-regression-v31-evidence-integrity,after-saturday,19.21,Thursday-Sunday,1
-2026-09-27T08:59:08Z,2026-09-25,Primetime,20.96,11.59,47.39,stage-daily-evidence,20.7,20.76,0.2824,21.31,Thursday+Friday+Saturday,0.998,,seat-regression-v31-evidence-integrity,after-saturday,20.93,Thursday-Sunday,1
-2026-09-27T15:18:24Z,2026-09-25,Forgotten Island,12.89,9.34,29.14,stage-daily-evidence,16.06,12.72,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,12.52,Thursday-Sunday,1
-2026-09-27T15:18:24Z,2026-09-25,Heart of the Beast,19.43,10.64,43.93,stage-daily-evidence,22.47,19.27,0.2605,16.67,Thursday+Friday+Saturday,0.992,,seat-regression-v31-evidence-integrity,after-saturday,19.21,Thursday-Sunday,1
-2026-09-27T15:18:25Z,2026-09-25,Primetime,20.03,14.61,45.76,stage-daily-evidence,24.23,19.84,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.24,Thursday-Sunday,1
-2026-09-27T18:38:19Z,2026-09-25,Forgotten Island,12.89,9.34,29.14,stage-daily-evidence,16.06,12.72,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,12.52,Thursday-Sunday,1
-2026-09-27T18:38:20Z,2026-09-25,Heart of the Beast,18.21,14.75,41.38,stage-daily-evidence,24.33,18.06,0.2605,16.67,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,18.3,Thursday-Sunday,1
-2026-09-27T18:38:21Z,2026-09-25,Primetime,20.03,14.61,45.76,stage-daily-evidence,24.23,19.84,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.24,Thursday-Sunday,1
-2026-09-27T22:43:47Z,2026-09-25,Forgotten Island,13.53,9.34,30.58,stage-daily-evidence,16.06,13.35,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.0,Thursday-Sunday,1
-2026-09-27T22:43:48Z,2026-09-25,Heart of the Beast,19.05,14.75,43.08,stage-daily-evidence,24.33,18.9,0.2605,16.67,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,18.93,Thursday-Sunday,1
-2026-09-27T22:43:49Z,2026-09-25,Primetime,20.35,14.61,46.29,stage-daily-evidence,24.23,20.15,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.47,Thursday-Sunday,1
-2026-09-28T09:03:47Z,2026-09-25,Forgotten Island,14.26,9.34,32.25,seat-snapshot-regression,14.99,,0.2125,18.17,Thursday+Friday+Saturday+Sunday,0.997,,seat-regression-v31-evidence-integrity,complete,14.26,Thursday-Sunday,1
-2026-09-28T09:03:48Z,2026-09-25,Heart of the Beast,20.53,14.75,46.41,seat-snapshot-regression,20.97,,0.3005,16.67,Thursday+Friday+Saturday+Sunday,0.998,,seat-regression-v31-evidence-integrity,complete,20.53,Thursday-Sunday,1
-2026-09-28T09:03:49Z,2026-09-25,Primetime,20.3,14.61,45.89,seat-snapshot-regression,19.92,,0.2945,21.31,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,20.3,Thursday-Sunday,1
-2026-09-28T14:43:43Z,2026-09-25,Forgotten Island,12.81,12.81,12.81,reported-actuals,16.48,,0.2125,18.17,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,15.4,Thursday-Sunday,1
-2026-09-28T14:43:44Z,2026-09-25,Heart of the Beast,19.95,19.95,19.95,reported-actuals,24.65,,0.3005,16.67,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,23.32,Thursday-Sunday,1
-2026-09-28T14:43:45Z,2026-09-25,Primetime,19.2,19.2,19.2,reported-actuals,23.9,,0.2947,21.31,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,23.31,Thursday-Sunday,1
-2026-09-30T17:04:13Z,2026-10-02,Digger,13.64,6.82,34.09,presale-only,0.0,13.64,,,,,,seat-regression-v31-evidence-integrity,presales,13.64,Thursday-Sunday,1
-2026-09-30T17:04:13Z,2026-10-02,Verity,21.93,10.96,54.82,presale-only,0.0,21.93,,,,,,seat-regression-v31-evidence-integrity,presales,21.93,Thursday-Sunday,1
-2026-10-01T01:12:00Z,2026-10-02,Digger,14.62,7.31,36.54,presale-only,0.0,14.62,,,,,,seat-regression-v31-evidence-integrity,presales,14.62,Thursday-Sunday,1
-2026-10-01T01:12:01Z,2026-10-02,Verity,25.9,12.95,64.75,presale-only,0.0,25.9,,,,,,seat-regression-v31-evidence-integrity,presales,25.9,Thursday-Sunday,1
-2026-10-01T05:30:56Z,2026-10-02,Digger,14.95,7.48,37.38,presale-only,0.0,14.95,,,,,,seat-regression-v31-evidence-integrity,presales,14.95,Thursday-Sunday,1
-2026-10-01T05:30:56Z,2026-10-02,Verity,26.31,13.16,65.78,presale-only,0.0,26.31,,,,,,seat-regression-v31-evidence-integrity,presales,26.31,Thursday-Sunday,1
-2026-10-01T16:41:43Z,2026-10-02,Digger,15.52,7.76,38.81,presale-only,0.0,15.52,,,,,,seat-regression-v31-evidence-integrity,presales,15.52,Thursday-Sunday,1
-2026-10-01T16:41:43Z,2026-10-02,Verity,25.45,12.73,63.63,presale-only,0.0,25.45,,,,,,seat-regression-v31-evidence-integrity,presales,25.45,Thursday-Sunday,1
-2026-10-01T20:56:31Z,2026-10-02,Digger,15.55,7.77,38.86,presale-only,0.0,15.55,,,,,,seat-regression-v31-evidence-integrity,presales,15.55,Thursday-Sunday,1
-2026-10-01T20:56:31Z,2026-10-02,Verity,26.88,13.44,67.21,presale-only,0.0,26.88,,,,,,seat-regression-v31-evidence-integrity,presales,26.88,Thursday-Sunday,1
-2026-10-02T00:58:14Z,2026-10-02,Digger,15.42,7.71,38.55,presale-only,0.0,15.42,,,,,,seat-regression-v31-evidence-integrity,presales,15.42,Thursday-Sunday,1
-2026-10-02T00:58:15Z,2026-10-02,Verity,27.78,13.89,69.46,presale-only,0.0,27.78,,,,,,seat-regression-v31-evidence-integrity,presales,27.78,Thursday-Sunday,1
-2026-10-02T05:31:02Z,2026-10-02,Digger,15.21,7.61,38.03,presale-only,0.0,15.21,,,,,,seat-regression-v31-evidence-integrity,presales,15.21,Thursday-Sunday,1
-2026-10-02T05:31:03Z,2026-10-02,Verity,27.86,13.93,69.66,presale-only,0.0,27.86,,,,,,seat-regression-v31-evidence-integrity,presales,27.86,Thursday-Sunday,1
-2026-10-02T07:58:49Z,2026-10-02,Digger,9.65,5.34,21.83,stage-daily-evidence,11.38,9.65,0.3463,,Thursday,0.995,,seat-regression-v31-evidence-integrity,after-previews,9.65,Thursday-Sunday,1
-2026-10-02T07:58:50Z,2026-10-02,Verity,36.68,20.3,82.93,stage-daily-evidence,34.71,36.68,0.183,,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,36.68,Thursday-Sunday,1
-2026-10-02T16:36:56Z,2026-10-02,Digger,9.23,5.11,20.86,stage-daily-evidence,10.28,9.16,0.3323,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.23,Thursday-Sunday,1
-2026-10-02T16:36:57Z,2026-10-02,Verity,38.54,21.34,87.16,stage-daily-evidence,35.67,38.73,0.178,,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,38.54,Thursday-Sunday,1
-2026-10-02T20:21:15Z,2026-10-02,Digger,9.21,5.1,20.82,stage-daily-evidence,10.28,9.14,0.3244,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.21,Thursday-Sunday,1
-2026-10-02T20:21:16Z,2026-10-02,Verity,38.74,21.45,87.6,stage-daily-evidence,38.56,38.93,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.74,Thursday-Sunday,1
-2026-10-03T01:05:07Z,2026-10-02,Digger,9.06,5.02,20.49,stage-daily-evidence,10.28,8.99,0.324,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.06,Thursday-Sunday,1
-2026-10-03T01:05:08Z,2026-10-02,Verity,38.58,21.35,87.23,stage-daily-evidence,38.56,38.76,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.58,Thursday-Sunday,1
-2026-10-03T04:41:24Z,2026-10-02,Digger,8.78,4.86,19.85,stage-daily-evidence,10.28,8.71,0.324,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,8.78,Thursday-Sunday,1
-2026-10-03T04:41:25Z,2026-10-02,Verity,38.07,21.07,86.08,stage-daily-evidence,38.56,38.25,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.07,Thursday-Sunday,1
-2026-10-03T08:09:23Z,2026-10-02,Digger,8.33,4.47,18.83,stage-daily-evidence,7.13,8.26,0.3377,,Thursday+Friday,0.998,,seat-regression-v31-evidence-integrity,after-friday,8.08,Thursday-Sunday,1
-2026-10-03T08:09:24Z,2026-10-02,Verity,36.56,20.24,85.22,stage-daily-evidence,40.49,36.73,0.2104,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,37.69,Thursday-Sunday,1
-2026-10-03T15:44:26Z,2026-10-02,Digger,9.41,5.07,21.27,stage-daily-evidence,9.25,9.33,0.337,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.15,Thursday-Sunday,1
-2026-10-03T15:44:27Z,2026-10-02,Verity,34.79,19.26,79.68,stage-daily-evidence,41.1,34.96,0.2162,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.24,Thursday-Sunday,1
-2026-10-03T19:35:35Z,2026-10-02,Digger,9.43,5.08,21.32,stage-daily-evidence,9.25,9.35,0.3369,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.17,Thursday-Sunday,1
-2026-10-03T19:35:36Z,2026-10-02,Verity,34.74,19.23,79.59,stage-daily-evidence,41.1,34.91,0.2164,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.2,Thursday-Sunday,1
-2026-10-03T23:51:25Z,2026-10-02,Digger,9.31,5.03,21.06,stage-daily-evidence,9.25,9.24,0.3325,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.08,Thursday-Sunday,1
-2026-10-03T23:51:26Z,2026-10-02,Verity,34.43,19.06,79.06,stage-daily-evidence,41.1,34.6,0.2169,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,34.96,Thursday-Sunday,1
-2026-10-04T03:45:52Z,2026-10-02,Digger,9.35,5.05,21.15,stage-daily-evidence,9.25,9.27,0.3326,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.12,Thursday-Sunday,1
-2026-10-04T03:45:52Z,2026-10-02,Verity,34.5,19.1,79.18,stage-daily-evidence,41.1,34.67,0.217,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.02,Thursday-Sunday,1
-2026-10-04T09:02:12Z,2026-10-02,Digger,9.36,5.05,21.16,stage-daily-evidence,8.76,9.27,0.3277,,Thursday+Friday+Saturday,0.997,,seat-regression-v31-evidence-integrity,after-saturday,9.12,Thursday-Sunday,1
-2026-10-04T09:02:14Z,2026-10-02,Verity,36.35,20.12,82.32,stage-daily-evidence,37.76,36.53,0.2115,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,36.41,Thursday-Sunday,1
-2026-10-04T14:44:05Z,2026-10-02,Digger,9.33,5.03,21.09,stage-daily-evidence,8.76,9.24,0.3313,,Thursday+Friday+Saturday,0.997,,seat-regression-v31-evidence-integrity,after-saturday,9.09,Thursday-Sunday,1
-2026-10-04T14:44:06Z,2026-10-02,Verity,36.11,19.99,81.91,stage-daily-evidence,37.71,36.28,0.2174,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,36.22,Thursday-Sunday,1
-2026-10-04T18:39:05Z,2026-10-02,Digger,8.82,6.0,19.94,stage-daily-evidence,9.12,8.74,0.3334,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,8.71,Thursday-Sunday,1
-2026-10-04T18:39:06Z,2026-10-02,Verity,33.62,25.11,77.68,stage-daily-evidence,38.16,33.78,0.221,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,34.35,Thursday-Sunday,1
-2026-10-04T22:44:23Z,2026-10-02,Digger,8.82,6.0,19.94,stage-daily-evidence,9.12,8.74,0.334,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,8.71,Thursday-Sunday,1
-2026-10-04T22:44:24Z,2026-10-02,Verity,33.59,25.11,77.63,stage-daily-evidence,38.16,33.75,0.224,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,34.33,Thursday-Sunday,1
-2026-10-05T08:55:49Z,2026-10-02,Digger,8.4,6.0,19.0,seat-snapshot-regression,8.33,,0.3446,,Thursday+Friday+Saturday+Sunday,0.998,,seat-regression-v31-evidence-integrity,complete,8.4,Thursday-Sunday,1
-2026-10-05T08:55:50Z,2026-10-02,Verity,34.78,25.11,78.63,seat-snapshot-regression,34.34,,0.2152,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,34.78,Thursday-Sunday,1
-2026-10-05T14:44:01Z,2026-10-02,Digger,8.0,8.0,8.0,reported-actuals,9.12,,0.3446,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,9.01,Thursday-Sunday,1
-2026-10-05T14:44:02Z,2026-10-02,Verity,32.62,32.62,32.62,reported-actuals,37.2,,0.2152,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,36.91,Thursday-Sunday,1
-2026-10-07T16:03:06Z,2026-10-09,The Social Reckoning,7.75,3.87,19.36,presale-only,0.0,7.75,,,,,,seat-regression-v31-evidence-integrity,presales,7.75,Thursday-Sunday,1
-2026-10-07T23:58:45Z,2026-10-09,Other Mommy,20.42,10.21,51.04,presale-only,0.0,20.42,,,,,,seat-regression-v31-evidence-integrity,presales,20.42,Thursday-Sunday,1
-2026-10-07T23:58:45Z,2026-10-09,The Social Reckoning,8.46,4.23,21.14,presale-only,0.0,8.46,,,,,,seat-regression-v31-evidence-integrity,presales,8.46,Thursday-Sunday,1
-2026-10-08T04:12:10Z,2026-10-09,Other Mommy,22.2,11.1,55.5,presale-only,0.0,22.2,,,,,,seat-regression-v31-evidence-integrity,presales,22.2,Thursday-Sunday,1
-2026-10-08T04:12:11Z,2026-10-09,The Social Reckoning,8.76,4.38,21.91,presale-only,0.0,8.76,,,,,,seat-regression-v31-evidence-integrity,presales,8.76,Thursday-Sunday,1
-2026-10-08T16:29:30Z,2026-10-09,Other Mommy,19.35,9.67,48.37,presale-only,0.0,19.35,,,,,,seat-regression-v31-evidence-integrity,presales,19.35,Thursday-Sunday,1
-2026-10-08T16:29:31Z,2026-10-09,The Social Reckoning,9.3,4.65,23.24,presale-only,0.0,9.3,,,,,,seat-regression-v31-evidence-integrity,presales,9.3,Thursday-Sunday,1
-2026-10-08T20:32:26Z,2026-10-09,Other Mommy,20.17,10.08,50.41,presale-only,0.0,20.17,,,,,,seat-regression-v31-evidence-integrity,presales,20.17,Thursday-Sunday,1
-2026-10-08T20:32:26Z,2026-10-09,The Social Reckoning,9.49,4.74,23.72,presale-only,0.0,9.49,,,,,,seat-regression-v31-evidence-integrity,presales,9.49,Thursday-Sunday,1
-2026-10-09T00:45:35Z,2026-10-09,Other Mommy,19.25,9.62,48.12,presale-only,0.0,19.25,,,,,,seat-regression-v31-evidence-integrity,presales,19.25,Thursday-Sunday,1
-2026-10-09T00:45:35Z,2026-10-09,The Social Reckoning,8.82,4.41,22.04,presale-only,0.0,8.82,,,,,,seat-regression-v31-evidence-integrity,presales,8.82,Thursday-Sunday,1
-2026-10-09T04:18:23Z,2026-10-09,Other Mommy,21.04,10.52,52.61,presale-only,0.0,21.04,,,,,,seat-regression-v31-evidence-integrity,presales,21.04,Thursday-Sunday,1
-2026-10-09T04:18:24Z,2026-10-09,The Social Reckoning,9.6,4.8,24.01,presale-only,0.0,9.6,,,,,,seat-regression-v31-evidence-integrity,presales,9.6,Thursday-Sunday,1
-2026-10-09T07:58:45Z,2026-10-09,Other Mommy,19.32,10.69,43.68,stage-daily-evidence,30.15,19.39,0.301,,Thursday,0.955,,seat-regression-v31-evidence-integrity,after-previews,19.32,Thursday-Sunday,1
-2026-10-09T07:58:45Z,2026-10-09,The Social Reckoning,6.1,3.38,13.79,stage-daily-evidence,6.94,6.08,0.35,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.1,Thursday-Sunday,1
-2026-10-09T16:12:14Z,2026-10-09,Other Mommy,20.77,11.5,46.96,stage-daily-evidence,31.7,20.84,0.2858,,Thursday,0.955,,seat-regression-v31-evidence-integrity,after-previews,20.77,Thursday-Sunday,1
-2026-10-09T16:12:15Z,2026-10-09,The Social Reckoning,6.32,3.5,14.28,stage-daily-evidence,6.98,6.3,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.32,Thursday-Sunday,1
-2026-10-09T19:56:33Z,2026-10-09,Other Mommy,15.84,8.77,35.81,stage-daily-evidence,29.85,15.9,0.284,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.84,Thursday-Sunday,1
-2026-10-09T19:56:33Z,2026-10-09,The Social Reckoning,6.28,3.48,14.21,stage-daily-evidence,6.98,6.27,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.28,Thursday-Sunday,1
-2026-10-10T00:18:56Z,2026-10-09,Other Mommy,18.3,10.13,41.38,stage-daily-evidence,29.85,18.36,0.2774,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,18.3,Thursday-Sunday,1
-2026-10-10T00:18:57Z,2026-10-09,The Social Reckoning,6.23,3.45,14.08,stage-daily-evidence,6.98,6.21,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.23,Thursday-Sunday,1
-2026-10-10T04:30:54Z,2026-10-09,Other Mommy,17.52,9.7,39.62,stage-daily-evidence,29.85,17.59,0.2773,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,17.52,Thursday-Sunday,1
-2026-10-10T04:30:55Z,2026-10-09,The Social Reckoning,6.16,3.41,13.93,stage-daily-evidence,6.98,6.15,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.16,Thursday-Sunday,1
-2026-10-10T08:13:50Z,2026-10-09,Other Mommy,22.75,12.59,56.7,stage-daily-evidence,31.39,22.83,0.2424,,Thursday+Friday,0.991,,seat-regression-v31-evidence-integrity,after-friday,25.08,Thursday-Sunday,1
-2026-10-10T08:13:51Z,2026-10-09,The Social Reckoning,5.89,3.19,13.31,stage-daily-evidence,5.28,5.87,0.349,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.77,Thursday-Sunday,1
-2026-10-10T21:50:10Z,2026-10-09,Other Mommy,22.08,12.6,54.49,stage-daily-evidence,33.21,22.16,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,24.1,Thursday-Sunday,1
-2026-10-10T21:50:11Z,2026-10-09,The Social Reckoning,5.49,2.95,12.42,stage-daily-evidence,4.69,5.48,0.3462,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.32,Thursday-Sunday,1
-2026-10-11T00:40:27Z,2026-10-09,Other Mommy,19.75,12.6,50.45,stage-daily-evidence,33.21,19.95,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,22.31,Thursday-Sunday,1
-2026-10-11T00:40:28Z,2026-10-09,The Social Reckoning,4.32,2.39,10.05,stage-daily-evidence,4.69,4.31,0.3462,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,4.45,Thursday-Sunday,1
-2026-10-11T04:06:02Z,2026-10-09,Other Mommy,23.13,12.8,56.16,stage-daily-evidence,33.21,23.35,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,24.84,Thursday-Sunday,1
-2026-10-11T04:06:03Z,2026-10-09,The Social Reckoning,5.94,3.13,13.44,stage-daily-evidence,4.69,5.93,0.3461,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.66,Thursday-Sunday,1
-2026-10-11T08:35:40Z,2026-10-09,Other Mommy,24.77,13.71,58.96,stage-daily-evidence,28.42,25.01,0.2899,,Thursday+Friday+Saturday,0.994,,seat-regression-v31-evidence-integrity,after-saturday,26.07,Thursday-Sunday,1
-2026-10-11T08:35:41Z,2026-10-09,The Social Reckoning,5.25,2.84,11.88,stage-daily-evidence,4.86,5.24,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.14,Thursday-Sunday,1
-2026-10-11T15:37:05Z,2026-10-09,Other Mommy,25.22,21.55,59.72,stage-daily-evidence,31.81,25.46,0.3003,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,26.41,Thursday-Sunday,1
-2026-10-11T15:37:05Z,2026-10-09,The Social Reckoning,5.54,3.07,12.68,stage-daily-evidence,5.41,5.53,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.61,Thursday-Sunday,1
-2026-10-11T19:37:12Z,2026-10-09,Other Mommy,26.55,21.55,61.97,stage-daily-evidence,31.81,26.81,0.3004,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,27.41,Thursday-Sunday,1
-2026-10-11T19:37:13Z,2026-10-09,The Social Reckoning,5.74,3.18,13.02,stage-daily-evidence,5.41,5.73,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.76,Thursday-Sunday,1
-2026-10-11T23:53:31Z,2026-10-09,Other Mommy,27.37,21.55,63.35,stage-daily-evidence,31.81,27.63,0.302,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,28.02,Thursday-Sunday,1
-2026-10-11T23:53:32Z,2026-10-09,The Social Reckoning,5.81,3.22,13.14,stage-daily-evidence,5.41,5.8,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.81,Thursday-Sunday,1
-2026-10-12T08:50:29Z,2026-10-09,Other Mommy,28.55,21.55,64.55,seat-snapshot-regression,28.43,,0.2898,,Thursday+Friday+Saturday+Sunday,0.999,,seat-regression-v31-evidence-integrity,complete,28.55,Thursday-Sunday,1
-2026-10-12T08:50:30Z,2026-10-09,The Social Reckoning,5.24,2.9,11.85,seat-snapshot-regression,5.13,,0.3685,,Thursday+Friday+Saturday+Sunday,0.944,,seat-regression-v31-evidence-integrity,complete,5.24,Thursday-Sunday,1
-2026-10-14T18:36:29Z,2026-10-16,Street Fighter,24.41,12.2,61.02,presale-only,0.0,24.41,,,,,,seat-regression-v31-evidence-integrity,presales,24.41,Thursday-Sunday,1
-2026-10-14T18:36:29Z,2026-10-16,Whalefall,5.6,2.8,14.0,presale-only,0.0,5.6,,,,,,seat-regression-v31-evidence-integrity,presales,5.6,Thursday-Sunday,1
-2026-10-15T02:51:43Z,2026-10-16,Street Fighter,27.75,13.88,69.38,presale-only,0.0,27.75,,,,,,seat-regression-v31-evidence-integrity,presales,27.75,Thursday-Sunday,1
-2026-10-15T02:51:43Z,2026-10-16,Whalefall,6.55,3.28,16.39,presale-only,0.0,6.55,,,,,,seat-regression-v31-evidence-integrity,presales,6.55,Thursday-Sunday,1
-2026-10-15T02:51:43Z,2026-10-16,You Can See Everything,28.77,14.39,71.93,presale-only,0.0,28.77,,,,,,seat-regression-v31-evidence-integrity,presales,28.77,Thursday-Sunday,1
-2026-10-15T05:24:51Z,2026-10-16,Street Fighter,26.49,13.25,66.23,presale-only,0.0,26.49,,,,,,seat-regression-v31-evidence-integrity,presales,26.49,Thursday-Sunday,1
-2026-10-15T05:24:51Z,2026-10-16,Whalefall,6.12,3.06,15.29,presale-only,0.0,6.12,,,,,,seat-regression-v31-evidence-integrity,presales,6.12,Thursday-Sunday,1
-2026-10-15T05:24:51Z,2026-10-16,You Can See Everything,27.5,13.75,68.74,presale-only,0.0,27.5,,,,,,seat-regression-v31-evidence-integrity,presales,27.5,Thursday-Sunday,1
-2026-10-15T18:30:48Z,2026-10-16,Street Fighter,33.49,16.75,83.73,presale-only,0.0,33.49,,,,,,seat-regression-v31-evidence-integrity,presales,33.49,Thursday-Sunday,1
-2026-10-15T18:30:48Z,2026-10-16,Whalefall,8.21,4.1,20.52,presale-only,0.0,8.21,,,,,,seat-regression-v31-evidence-integrity,presales,8.21,Thursday-Sunday,1
-2026-10-15T18:30:48Z,2026-10-16,You Can See Everything,33.92,16.96,84.81,presale-only,0.0,33.92,,,,,,seat-regression-v31-evidence-integrity,presales,33.92,Thursday-Sunday,1
-2026-10-15T21:34:55Z,2026-10-16,Street Fighter,34.42,17.21,86.06,presale-only,0.0,34.42,,,,,,seat-regression-v31-evidence-integrity,presales,34.42,Thursday-Sunday,1
-2026-10-15T21:34:56Z,2026-10-16,Whalefall,8.34,4.17,20.85,presale-only,0.0,8.34,,,,,,seat-regression-v31-evidence-integrity,presales,8.34,Thursday-Sunday,1
-2026-10-15T21:34:56Z,2026-10-16,You Can See Everything,34.78,17.39,86.95,presale-only,0.0,34.78,,,,,,seat-regression-v31-evidence-integrity,presales,34.78,Thursday-Sunday,1
-2026-10-16T02:02:41Z,2026-10-16,Street Fighter,34.84,17.42,87.11,presale-only,0.0,34.84,,,,,,seat-regression-v31-evidence-integrity,presales,34.84,Thursday-Sunday,1
-2026-10-16T02:02:41Z,2026-10-16,Whalefall,8.5,4.25,21.24,presale-only,0.0,8.5,,,,,,seat-regression-v31-evidence-integrity,presales,8.5,Thursday-Sunday,1
-2026-10-16T02:02:41Z,2026-10-16,You Can See Everything,35.53,17.77,88.84,presale-only,0.0,35.53,,,,,,seat-regression-v31-evidence-integrity,presales,35.53,Thursday-Sunday,1
-2026-10-16T06:18:49Z,2026-10-16,Street Fighter,35.29,17.65,88.23,presale-only,0.0,35.29,,,,,,seat-regression-v31-evidence-integrity,presales,35.29,Thursday-Sunday,1
-2026-10-16T06:18:49Z,2026-10-16,Whalefall,8.69,4.34,21.72,presale-only,0.0,8.69,,,,,,seat-regression-v31-evidence-integrity,presales,8.69,Thursday-Sunday,1
-2026-10-16T06:18:50Z,2026-10-16,You Can See Everything,36.49,18.25,91.24,presale-only,0.0,36.49,,,,,,seat-regression-v31-evidence-integrity,presales,36.49,Thursday-Sunday,1
-2026-10-16T08:32:48Z,2026-10-16,Street Fighter,29.04,16.07,65.66,stage-daily-evidence,45.55,29.18,0.2744,,Thursday,0.998,,seat-regression-v31-evidence-integrity,after-previews,29.04,Thursday-Sunday,1
-2026-10-16T08:32:49Z,2026-10-16,Whalefall,5.42,3.0,12.26,stage-daily-evidence,7.93,5.42,0.3616,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,5.42,Thursday-Sunday,1
-2026-10-16T08:32:49Z,2026-10-16,You Can See Everything,34.26,17.13,85.66,presale-only,0.0,33.74,,,,,,seat-regression-v31-evidence-integrity,presales,34.26,Thursday-Sunday,1
-2026-10-16T16:56:53Z,2026-10-16,Street Fighter,24.11,13.34,54.51,stage-daily-evidence,33.28,24.22,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.11,Thursday-Sunday,1
-2026-10-16T16:56:54Z,2026-10-16,Whalefall,5.5,3.04,12.44,stage-daily-evidence,7.49,5.49,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.5,Thursday-Sunday,1
-2026-10-16T16:56:54Z,2026-10-16,You Can See Everything,14.93,8.26,33.75,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,14.93,Thursday-Sunday,1
-2026-10-16T20:45:52Z,2026-10-16,Street Fighter,24.96,13.82,56.43,stage-daily-evidence,33.28,25.08,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.96,Thursday-Sunday,1
-2026-10-16T20:45:52Z,2026-10-16,Whalefall,5.75,3.19,13.01,stage-daily-evidence,7.49,5.75,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.75,Thursday-Sunday,1
-2026-10-16T20:45:52Z,2026-10-16,You Can See Everything,14.93,8.26,33.75,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,14.93,Thursday-Sunday,1
-2026-10-17T01:52:29Z,2026-10-16,Street Fighter,24.62,13.63,55.68,stage-daily-evidence,33.28,24.71,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.62,Thursday-Sunday,1
-2026-10-17T01:52:29Z,2026-10-16,Whalefall,5.86,3.24,13.24,stage-daily-evidence,7.49,5.84,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.86,Thursday-Sunday,1
-2026-10-17T01:52:30Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1
-2026-10-17T06:25:11Z,2026-10-16,Street Fighter,24.81,13.74,56.11,stage-daily-evidence,33.28,24.9,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.81,Thursday-Sunday,1
-2026-10-17T06:25:11Z,2026-10-16,Whalefall,5.93,3.28,13.4,stage-daily-evidence,7.49,5.91,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.93,Thursday-Sunday,1
-2026-10-17T06:25:12Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1
-2026-10-17T08:36:07Z,2026-10-16,Sense and Sensibility,9.66,2.37,39.3,seat-snapshot-regression,9.57,4.59,,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.66,Thursday-Sunday,1
-2026-10-17T08:36:09Z,2026-10-16,Street Fighter,25.18,13.94,59.49,stage-daily-evidence,29.14,25.27,0.2593,,Thursday+Friday,0.999,,seat-regression-v31-evidence-integrity,after-friday,26.31,Thursday-Sunday,1
-2026-10-17T08:36:10Z,2026-10-16,Whalefall,5.52,3.06,12.9,stage-daily-evidence,6.07,5.5,0.3437,,Thursday+Friday,0.982,,seat-regression-v31-evidence-integrity,after-friday,5.71,Thursday-Sunday,1
-2026-10-17T08:36:10Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1
-2026-10-17T17:17:09Z,2026-10-16,Sense and Sensibility,5.31,3.31,13.61,stage-daily-evidence,8.72,5.26,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.02,Thursday-Sunday,1
-2026-10-17T17:17:11Z,2026-10-16,Street Fighter,27.57,15.26,64.51,stage-daily-evidence,34.25,27.67,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,28.53,Thursday-Sunday,1
-2026-10-17T17:17:12Z,2026-10-16,Whalefall,6.39,3.54,14.98,stage-daily-evidence,7.9,6.37,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.62,Thursday-Sunday,1
-2026-10-17T17:17:12Z,2026-10-16,You Can See Everything,14.91,8.12,33.72,stage-daily-evidence,14.59,14.43,0.2478,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,14.67,Thursday-Sunday,1
-2026-10-17T21:04:03Z,2026-10-16,Sense and Sensibility,6.47,3.58,15.56,stage-daily-evidence,8.72,6.41,0.268,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.88,Thursday-Sunday,1
-2026-10-17T21:04:04Z,2026-10-16,Street Fighter,29.49,16.32,67.77,stage-daily-evidence,34.25,29.6,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,29.97,Thursday-Sunday,1
-2026-10-17T21:04:05Z,2026-10-16,Whalefall,6.77,3.75,15.62,stage-daily-evidence,7.9,6.74,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.91,Thursday-Sunday,1
-2026-10-17T21:04:05Z,2026-10-16,You Can See Everything,10.19,5.64,25.15,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.12,Thursday-Sunday,1
-2026-10-18T01:04:42Z,2026-10-16,Sense and Sensibility,6.9,3.82,16.3,stage-daily-evidence,8.72,6.84,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.21,Thursday-Sunday,1
-2026-10-18T01:04:44Z,2026-10-16,Street Fighter,30.26,16.75,69.08,stage-daily-evidence,34.25,30.37,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,30.55,Thursday-Sunday,1
-2026-10-18T01:04:45Z,2026-10-16,Whalefall,7.08,3.92,16.14,stage-daily-evidence,7.9,7.05,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.14,Thursday-Sunday,1
-2026-10-18T01:04:45Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1
-2026-10-18T04:19:25Z,2026-10-16,Sense and Sensibility,6.99,3.87,16.45,stage-daily-evidence,8.72,6.92,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.27,Thursday-Sunday,1
-2026-10-18T04:19:27Z,2026-10-16,Street Fighter,30.56,16.91,69.58,stage-daily-evidence,34.25,30.67,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,30.77,Thursday-Sunday,1
-2026-10-18T04:19:28Z,2026-10-16,Whalefall,7.2,3.98,16.35,stage-daily-evidence,7.9,7.17,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.23,Thursday-Sunday,1
-2026-10-18T04:19:29Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1
-2026-10-18T08:58:59Z,2026-10-16,Sense and Sensibility,7.77,4.3,17.77,stage-daily-evidence,8.38,7.7,0.3684,,Thursday+Friday+Saturday,0.973,,seat-regression-v31-evidence-integrity,after-saturday,7.86,Thursday-Sunday,1
-2026-10-18T08:59:01Z,2026-10-16,Street Fighter,29.43,16.29,67.67,stage-daily-evidence,31.29,29.53,0.2744,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,29.93,Thursday-Sunday,1
-2026-10-18T08:59:01Z,2026-10-16,Whalefall,6.75,3.73,15.58,stage-daily-evidence,7.18,6.72,0.3616,,Thursday+Friday+Saturday,0.989,,seat-regression-v31-evidence-integrity,after-saturday,6.89,Thursday-Sunday,1
-2026-10-18T08:59:02Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1
-2026-10-18T15:41:30Z,2026-10-16,Sense and Sensibility,7.61,5.55,17.5,stage-daily-evidence,8.2,7.54,0.3926,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.74,Thursday-Sunday,1
-2026-10-18T15:41:32Z,2026-10-16,Street Fighter,30.14,23.8,68.87,stage-daily-evidence,35.16,30.24,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,30.46,Thursday-Sunday,1
-2026-10-18T15:41:33Z,2026-10-16,Whalefall,7.65,5.9,17.31,stage-daily-evidence,8.72,7.63,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.63,Thursday-Sunday,1
-2026-10-18T15:41:34Z,2026-10-16,You Can See Everything,13.14,10.75,30.16,stage-daily-evidence,15.88,12.72,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.34,Thursday-Sunday,1
-2026-10-18T19:49:40Z,2026-10-16,Sense and Sensibility,7.17,7.01,7.49,sunday-ratio,8.2,7.67,0.3927,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.84,Thursday-Sunday,1
-2026-10-18T19:49:42Z,2026-10-16,Street Fighter,31.7,30.9,33.24,sunday-ratio,35.16,31.19,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,31.16,Thursday-Sunday,1
-2026-10-18T19:49:43Z,2026-10-16,Whalefall,7.93,7.72,8.33,sunday-ratio,8.72,7.88,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.82,Thursday-Sunday,1
-2026-10-18T19:49:44Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,15.88,13.64,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,15.79,Thursday-Sunday,1
-2026-10-18T23:49:32Z,2026-10-16,Sense and Sensibility,7.17,7.01,7.49,sunday-ratio,8.2,7.68,0.3939,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.85,Thursday-Sunday,1
-2026-10-18T23:49:34Z,2026-10-16,Street Fighter,31.7,30.9,33.24,sunday-ratio,35.16,31.64,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,31.5,Thursday-Sunday,1
-2026-10-18T23:49:35Z,2026-10-16,Whalefall,7.93,7.72,8.33,sunday-ratio,8.72,8.08,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.97,Thursday-Sunday,1
-2026-10-18T23:49:36Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,15.88,13.53,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.97,Thursday-Sunday,1
-2026-10-19T09:09:35Z,2026-10-16,Sense and Sensibility,7.28,7.14,7.42,sunday-seats,7.79,,0.3338,,Thursday+Friday+Saturday+Sunday,0.979,,seat-regression-v31-evidence-integrity,complete,7.93,Thursday-Sunday,1
-2026-10-19T09:09:37Z,2026-10-16,Street Fighter,30.57,30.03,31.11,sunday-seats,30.6,,0.2885,,Thursday+Friday+Saturday+Sunday,0.999,,seat-regression-v31-evidence-integrity,complete,30.76,Thursday-Sunday,1
-2026-10-19T09:09:38Z,2026-10-16,Whalefall,7.81,7.66,7.97,sunday-seats,7.77,,0.376,,Thursday+Friday+Saturday+Sunday,0.991,,seat-regression-v31-evidence-integrity,complete,7.74,Thursday-Sunday,1
-2026-10-19T09:09:39Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,14.96,,0.3737,,Thursday+Friday+Saturday+Sunday,0.995,,seat-regression-v31-evidence-integrity,complete,15.09,Thursday-Sunday,1
-2026-10-22T07:15:21Z,2026-10-23,A Talent for Murder,0.48,0.14,1.25,presale-only,0.0,0.48,,,,,,seat-regression-v31-evidence-integrity,presales,0.48,Thursday-Sunday,1
-2026-10-22T07:15:21Z,2026-10-23,Clayface,25.67,7.49,67.7,presale-only,0.0,25.67,,,,,,seat-regression-v31-evidence-integrity,presales,25.67,Thursday-Sunday,1
-2026-10-22T07:15:22Z,2026-10-23,Klara and the Sun,1.48,0.43,3.91,presale-only,0.0,1.48,,,,,,seat-regression-v31-evidence-integrity,presales,1.48,Thursday-Sunday,1
-2026-10-22T07:15:22Z,2026-10-23,Wicker,8.34,2.43,21.99,presale-only,0.0,8.34,,,,,,seat-regression-v31-evidence-integrity,presales,8.34,Thursday-Sunday,1
-2026-10-22T07:15:22Z,2026-10-23,Wildwood,13.77,4.02,36.3,presale-only,0.0,13.77,,,,,,seat-regression-v31-evidence-integrity,presales,13.77,Thursday-Sunday,1
-2026-10-22T17:25:08Z,2026-10-23,A Talent for Murder,0.49,0.14,1.29,presale-only,0.0,0.49,,,,,,seat-regression-v31-evidence-integrity,presales,0.49,Thursday-Sunday,1
-2026-10-22T17:25:09Z,2026-10-23,Clayface,26.64,7.78,70.25,presale-only,0.0,26.64,,,,,,seat-regression-v31-evidence-integrity,presales,26.64,Thursday-Sunday,1
-2026-10-22T17:25:09Z,2026-10-23,Klara and the Sun,1.44,0.42,3.79,presale-only,0.0,1.44,,,,,,seat-regression-v31-evidence-integrity,presales,1.44,Thursday-Sunday,1
-2026-10-22T17:25:09Z,2026-10-23,Wicker,8.57,2.5,22.59,presale-only,0.0,8.57,,,,,,seat-regression-v31-evidence-integrity,presales,8.57,Thursday-Sunday,1
-2026-10-22T17:25:10Z,2026-10-23,Wildwood,14.18,4.14,37.39,presale-only,0.0,14.18,,,,,,seat-regression-v31-evidence-integrity,presales,14.18,Thursday-Sunday,1
-2026-10-22T23:06:33Z,2026-10-23,A Talent for Murder,0.54,0.16,1.43,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1
-2026-10-22T23:06:34Z,2026-10-23,Clayface,28.3,8.26,74.64,presale-only,0.0,28.3,,,,,,seat-regression-v31-evidence-integrity,presales,28.3,Thursday-Sunday,1
-2026-10-22T23:06:35Z,2026-10-23,Klara and the Sun,1.49,0.43,3.93,presale-only,0.0,1.49,,,,,,seat-regression-v31-evidence-integrity,presales,1.49,Thursday-Sunday,1
-2026-10-22T23:06:35Z,2026-10-23,Wicker,9.17,2.68,24.18,presale-only,0.0,9.17,,,,,,seat-regression-v31-evidence-integrity,presales,9.17,Thursday-Sunday,1
-2026-10-22T23:06:35Z,2026-10-23,Wildwood,15.07,4.4,39.74,presale-only,0.0,15.07,,,,,,seat-regression-v31-evidence-integrity,presales,15.07,Thursday-Sunday,1
-2026-10-23T02:03:32Z,2026-10-23,A Talent for Murder,0.54,0.16,1.42,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1
-2026-10-23T02:03:33Z,2026-10-23,Clayface,26.77,7.82,70.61,presale-only,0.0,26.77,,,,,,seat-regression-v31-evidence-integrity,presales,26.77,Thursday-Sunday,1
-2026-10-23T02:03:33Z,2026-10-23,Klara and the Sun,1.43,0.42,3.78,presale-only,0.0,1.43,,,,,,seat-regression-v31-evidence-integrity,presales,1.43,Thursday-Sunday,1
-2026-10-23T02:03:34Z,2026-10-23,Wicker,9.03,2.64,23.81,presale-only,0.0,9.03,,,,,,seat-regression-v31-evidence-integrity,presales,9.03,Thursday-Sunday,1
-2026-10-23T02:03:34Z,2026-10-23,Wildwood,14.3,4.17,37.7,presale-only,0.0,14.3,,,,,,seat-regression-v31-evidence-integrity,presales,14.3,Thursday-Sunday,1
-2026-10-23T07:25:58Z,2026-10-23,A Talent for Murder,0.54,0.16,1.43,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1
-2026-10-23T07:25:59Z,2026-10-23,Clayface,28.06,8.19,74.0,presale-only,0.0,28.06,,,,,,seat-regression-v31-evidence-integrity,presales,28.06,Thursday-Sunday,1
-2026-10-23T07:26:00Z,2026-10-23,Klara and the Sun,1.44,0.42,3.79,presale-only,0.0,1.44,,,,,,seat-regression-v31-evidence-integrity,presales,1.44,Thursday-Sunday,1
-2026-10-23T07:26:00Z,2026-10-23,Wicker,9.09,2.65,23.98,presale-only,0.0,9.09,,,,,,seat-regression-v31-evidence-integrity,presales,9.09,Thursday-Sunday,1
-2026-10-23T07:26:00Z,2026-10-23,Wildwood,15.52,4.53,40.92,presale-only,0.0,15.52,,,,,,seat-regression-v31-evidence-integrity,presales,15.52,Thursday-Sunday,1
-2026-10-23T08:59:06Z,2026-10-23,A Talent for Murder,0.4,0.27,1.3,stage-daily-evidence,0.4,0.4,0.5,,Thursday,0.978,,seat-regression-v31-evidence-integrity,after-previews,0.4,Thursday-Sunday,1
-2026-10-23T08:59:07Z,2026-10-23,Clayface,23.34,15.61,75.61,stage-daily-evidence,35.66,23.06,0.2939,,Thursday,0.993,,seat-regression-v31-evidence-integrity,after-previews,23.34,Thursday-Sunday,1
-2026-10-23T08:59:07Z,2026-10-23,Klara and the Sun,0.92,0.62,2.99,stage-daily-evidence,0.94,0.93,0.5,,Thursday,0.983,,seat-regression-v31-evidence-integrity,after-previews,0.92,Thursday-Sunday,1
-2026-10-23T08:59:07Z,2026-10-23,Wicker,9.11,6.1,29.52,stage-daily-evidence,9.24,9.03,0.238,,Thursday,0.985,,seat-regression-v31-evidence-integrity,after-previews,9.11,Thursday-Sunday,1
-2026-10-23T08:59:08Z,2026-10-23,Wildwood,13.83,9.25,44.81,stage-daily-evidence,12.05,13.48,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,13.83,Thursday-Sunday,1
-2026-10-23T16:43:12Z,2026-10-23,Clayface,23.76,15.89,76.97,stage-daily-evidence,29.68,21.29,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.54,Thursday-Sunday,1
-2026-10-23T16:43:13Z,2026-10-23,Wicker,9.77,6.53,31.64,stage-daily-evidence,9.24,9.67,0.238,,Thursday,0.985,,seat-regression-v31-evidence-integrity,after-previews,9.77,Thursday-Sunday,1
-2026-10-23T16:43:13Z,2026-10-23,Wildwood,14.69,9.83,47.6,stage-daily-evidence,12.05,14.32,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,14.69,Thursday-Sunday,1
-2026-10-23T21:29:40Z,2026-10-23,Clayface,24.0,16.05,77.74,stage-daily-evidence,29.68,21.72,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.98,Thursday-Sunday,1
-2026-10-23T21:29:40Z,2026-10-23,Wicker,5.84,3.91,18.92,stage-daily-evidence,5.26,7.66,0.238,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.74,Thursday-Sunday,1
-2026-10-23T21:29:41Z,2026-10-23,Wildwood,15.01,10.04,48.64,stage-daily-evidence,12.05,14.63,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.01,Thursday-Sunday,1
-2026-10-24T00:36:30Z,2026-10-23,Clayface,24.21,16.19,78.42,stage-daily-evidence,29.68,22.1,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,22.37,Thursday-Sunday,1
-2026-10-24T00:36:31Z,2026-10-23,Wicker,5.84,3.91,18.93,stage-daily-evidence,5.26,7.66,0.238,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.74,Thursday-Sunday,1
-2026-10-24T00:36:32Z,2026-10-23,Wildwood,15.31,10.24,49.59,stage-daily-evidence,12.05,14.91,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.31,Thursday-Sunday,1
-2026-10-24T05:35:14Z,2026-10-23,Clayface,23.97,16.04,77.66,stage-daily-evidence,29.68,21.68,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.94,Thursday-Sunday,1
-2026-10-24T05:35:15Z,2026-10-23,Wicker,5.72,3.83,18.53,stage-daily-evidence,5.26,7.35,0.2387,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.42,Thursday-Sunday,1
-2026-10-24T05:35:15Z,2026-10-23,Wildwood,15.27,10.21,49.46,stage-daily-evidence,12.05,14.88,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.27,Thursday-Sunday,1
-2026-10-24T08:36:07Z,2026-10-23,Ali G: Who Iz I?,1.08,0.86,2.22,stage-daily-evidence,1.34,1.1,0.3079,,Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,1.32,Thursday-Sunday,1
-2026-10-24T08:36:08Z,2026-10-23,Clayface,22.48,17.95,40.12,stage-daily-evidence,23.08,19.06,0.2954,,Thursday+Friday,0.996,,seat-regression-v31-evidence-integrity,after-friday,20.37,Thursday-Sunday,1
-2026-10-24T08:36:09Z,2026-10-23,Wicker,5.72,4.45,9.68,stage-daily-evidence,6.4,7.36,0.2376,,Thursday+Friday,0.997,,seat-regression-v31-evidence-integrity,after-friday,7.23,Thursday-Sunday,1
-2026-10-24T08:36:09Z,2026-10-23,Wildwood,13.34,10.65,22.68,stage-daily-evidence,12.3,13.0,0.225,,Thursday+Friday,0.966,,seat-regression-v31-evidence-integrity,after-friday,13.42,Thursday-Sunday,1
+logged_at,weekend_of,movie,headline_mid_m,headline_low_m,headline_high_m,source,seat_only_m,snapshot_mid_m,amc_share_used,poly_ev_m,seat_days,coverage_ratio,data_outage,model_version,forecast_stage,baseline_mid_m,model_gross_window,market_window_compatible,poly_logged_at,poly_event,poly_bracket,poly_bracket_prob,poly_favorite,poly_favorite_prob,poly_implied_mid_m
+2026-09-18T16:57:11Z,2026-09-18,Resident Evil,48.5,35.89,55.77,snapshot-daily-evidence,85.13,47.7,0.2753,66.64,Thursday,0.991,,,,,,,,,,,,,
+2026-09-18T20:21:12Z,2026-09-18,Resident Evil,47.54,35.18,54.67,snapshot-daily-evidence,84.16,46.76,0.2786,66.64,Thursday,0.991,,,,,,,,,,,,,
+2026-09-19T01:09:39Z,2026-09-18,Resident Evil,46.92,34.73,53.96,snapshot-daily-evidence,86.24,46.15,0.2716,56.78,Thursday,0.991,,,,,,,,,,,,,
+2026-09-19T04:54:15Z,2026-09-18,Resident Evil,49.57,36.68,57.0,snapshot-daily-evidence,86.2,48.75,0.2717,57.56,Thursday,0.991,,,,,,,,,,,,,
+2026-09-19T08:11:17Z,2026-09-18,Resident Evil,63.37,46.9,72.96,snapshot-daily-evidence,68.72,59.95,0.2281,57.56,Thursday+Friday,0.992,,,,,,,,,,,,,
+2026-09-19T15:46:49Z,2026-09-18,Resident Evil,70.24,51.98,81.35,snapshot-daily-evidence,68.36,69.09,0.2197,57.56,Thursday+Friday,0.992,,,,,,,,,,,,,
+2026-09-19T19:40:19Z,2026-09-18,Resident Evil,71.74,53.09,83.09,snapshot-daily-evidence,69.7,70.6,0.2197,57.56,Thursday+Friday,0.992,,,,,,,,,,,,,
+2026-09-20T00:20:29Z,2026-09-18,Resident Evil,68.16,50.44,78.94,snapshot-daily-evidence,72.44,65.09,0.2197,61.72,Thursday+Friday,0.992,,,,,,,,,,,,,
+2026-09-20T04:09:49Z,2026-09-18,Resident Evil,68.69,50.84,79.55,snapshot-daily-evidence,72.44,65.78,0.2197,61.72,Thursday+Friday,0.992,,,,,,,,,,,,,
+2026-09-20T08:45:58Z,2026-09-18,Resident Evil,68.66,50.81,79.38,snapshot-daily-evidence,68.78,66.01,0.2222,55.47,Thursday+Friday+Saturday,0.992,,,,,,,,,,,,,
+2026-09-20T15:16:07Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,,,,,,,,
+2026-09-20T18:35:54Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,,,,,,,,
+2026-09-20T22:44:53Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,55.47,Thursday+Friday+Saturday,0.995,,,,,,,,,,,,,
+2026-09-21T02:16:34Z,2026-09-18,Resident Evil,67.57,50.01,77.7,snapshot-daily-evidence,67.18,64.57,0.2222,61.67,Thursday+Friday+Saturday,0.995,,,,,,,,,,,,,
+2026-09-21T08:59:41Z,2026-09-18,Resident Evil,63.96,47.33,73.55,seat-snapshot-regression,62.09,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.994,,,,,,,,,,,,,
+2026-09-21T17:48:39Z,2026-09-18,Resident Evil,63.1,46.7,72.57,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-21T19:41:05Z,2026-09-18,Resident Evil,63.1,46.7,72.57,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-22T01:12:04Z,2026-09-18,Resident Evil,63.03,46.65,72.48,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-22T05:36:26Z,2026-09-18,Resident Evil,63.03,46.65,72.48,seat-snapshot-regression,61.23,,0.2458,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-22T16:40:56Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-22T20:52:07Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-23T02:26:11Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-23T08:42:21Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-23T09:28:08Z,2026-09-18,Resident Evil,62.48,46.24,71.85,seat-snapshot-regression,60.83,,0.2474,61.67,Thursday+Friday+Saturday+Sunday,0.996,,,,,,,,,,,,,
+2026-09-24T17:06:07Z,2026-09-25,Forgotten Island,11.29,5.65,28.23,presale-only,0.0,11.29,,18.17,,,,seat-regression-v31-evidence-integrity,presales,11.29,Thursday-Sunday,1,,,,,,,
+2026-09-24T17:06:08Z,2026-09-25,Heart of the Beast,8.72,4.36,21.79,presale-only,0.0,8.72,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.72,Thursday-Sunday,1,,,,,,,
+2026-09-24T17:06:09Z,2026-09-25,Primetime,29.95,14.98,74.88,presale-only,0.0,29.95,,21.31,,,,seat-regression-v31-evidence-integrity,presales,29.95,Thursday-Sunday,1,,,,,,,
+2026-09-24T20:38:48Z,2026-09-25,Forgotten Island,13.54,6.77,33.85,presale-only,0.0,13.54,,18.17,,,,seat-regression-v31-evidence-integrity,presales,13.54,Thursday-Sunday,1,,,,,,,
+2026-09-24T20:38:49Z,2026-09-25,Heart of the Beast,9.16,4.58,22.91,presale-only,0.0,9.16,,16.67,,,,seat-regression-v31-evidence-integrity,presales,9.16,Thursday-Sunday,1,,,,,,,
+2026-09-24T20:38:49Z,2026-09-25,Primetime,30.54,15.27,76.34,presale-only,0.0,30.54,,21.31,,,,seat-regression-v31-evidence-integrity,presales,30.54,Thursday-Sunday,1,,,,,,,
+2026-09-25T01:36:52Z,2026-09-25,Forgotten Island,13.53,6.76,33.82,presale-only,0.0,13.53,,18.17,,,,seat-regression-v31-evidence-integrity,presales,13.53,Thursday-Sunday,1,,,,,,,
+2026-09-25T01:36:53Z,2026-09-25,Heart of the Beast,8.22,4.11,20.55,presale-only,0.0,8.22,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.22,Thursday-Sunday,1,,,,,,,
+2026-09-25T01:36:53Z,2026-09-25,Primetime,28.92,14.46,72.3,presale-only,0.0,28.92,,21.31,,,,seat-regression-v31-evidence-integrity,presales,28.92,Thursday-Sunday,1,,,,,,,
+2026-09-25T05:19:06Z,2026-09-25,Forgotten Island,14.07,7.04,35.18,presale-only,0.0,14.07,,18.17,,,,seat-regression-v31-evidence-integrity,presales,14.07,Thursday-Sunday,1,,,,,,,
+2026-09-25T05:19:06Z,2026-09-25,Heart of the Beast,8.87,4.44,22.18,presale-only,0.0,8.87,,16.67,,,,seat-regression-v31-evidence-integrity,presales,8.87,Thursday-Sunday,1,,,,,,,
+2026-09-25T05:19:07Z,2026-09-25,Primetime,29.46,14.73,73.66,presale-only,0.0,29.46,,21.31,,,,seat-regression-v31-evidence-integrity,presales,29.46,Thursday-Sunday,1,,,,,,,
+2026-09-25T08:14:00Z,2026-09-25,Forgotten Island,10.51,5.82,23.77,stage-daily-evidence,8.41,10.37,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.51,Thursday-Sunday,1,,,,,,,
+2026-09-25T08:14:01Z,2026-09-25,Heart of the Beast,7.99,4.42,18.06,stage-daily-evidence,7.06,7.92,0.2654,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.99,Thursday-Sunday,1,,,,,,,
+2026-09-25T08:14:02Z,2026-09-25,Primetime,19.06,10.55,43.1,stage-daily-evidence,24.42,18.95,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.06,Thursday-Sunday,1,,,,,,,
+2026-09-25T17:04:15Z,2026-09-25,Forgotten Island,10.88,6.02,24.61,stage-daily-evidence,8.41,10.74,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.88,Thursday-Sunday,1,,,,,,,
+2026-09-25T17:04:15Z,2026-09-25,Heart of the Beast,8.51,4.71,19.24,stage-daily-evidence,7.24,8.44,0.2581,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,8.51,Thursday-Sunday,1,,,,,,,
+2026-09-25T17:04:16Z,2026-09-25,Primetime,19.34,10.71,43.74,stage-daily-evidence,24.42,19.23,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.34,Thursday-Sunday,1,,,,,,,
+2026-09-25T20:16:28Z,2026-09-25,Forgotten Island,10.88,6.02,24.61,stage-daily-evidence,8.41,10.74,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.88,Thursday-Sunday,1,,,,,,,
+2026-09-25T20:16:29Z,2026-09-25,Heart of the Beast,8.54,4.73,19.32,stage-daily-evidence,7.27,8.47,0.2568,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,8.54,Thursday-Sunday,1,,,,,,,
+2026-09-25T20:16:30Z,2026-09-25,Primetime,19.34,10.71,43.74,stage-daily-evidence,24.42,19.23,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.34,Thursday-Sunday,1,,,,,,,
+2026-09-26T01:11:28Z,2026-09-25,Forgotten Island,10.89,6.03,24.63,stage-daily-evidence,8.41,10.75,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.89,Thursday-Sunday,1,,,,,,,
+2026-09-26T01:11:29Z,2026-09-25,Heart of the Beast,7.25,4.01,16.39,stage-daily-evidence,7.4,7.19,0.2521,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.25,Thursday-Sunday,1,,,,,,,
+2026-09-26T01:11:30Z,2026-09-25,Primetime,19.35,10.71,43.76,stage-daily-evidence,24.45,19.26,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.35,Thursday-Sunday,1,,,,,,,
+2026-09-26T05:04:09Z,2026-09-25,Forgotten Island,10.89,6.03,24.63,stage-daily-evidence,8.41,10.75,0.2808,18.17,Thursday,0.953,,seat-regression-v31-evidence-integrity,after-previews,10.89,Thursday-Sunday,1,,,,,,,
+2026-09-26T05:04:10Z,2026-09-25,Heart of the Beast,7.36,4.07,16.64,stage-daily-evidence,7.51,7.3,0.248,16.67,Thursday,0.96,,seat-regression-v31-evidence-integrity,after-previews,7.36,Thursday-Sunday,1,,,,,,,
+2026-09-26T05:04:11Z,2026-09-25,Primetime,19.35,10.71,43.76,stage-daily-evidence,24.45,19.26,0.331,21.31,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,19.35,Thursday-Sunday,1,,,,,,,
+2026-09-26T08:02:40Z,2026-09-25,Forgotten Island,11.8,6.43,26.68,stage-daily-evidence,10.01,11.65,0.2125,18.17,Thursday+Friday,0.961,,seat-regression-v31-evidence-integrity,after-friday,11.61,Thursday-Sunday,1,,,,,,,
+2026-09-26T08:02:41Z,2026-09-25,Heart of the Beast,7.84,4.34,17.72,stage-daily-evidence,7.42,7.77,0.3141,16.67,Thursday+Friday,0.959,,seat-regression-v31-evidence-integrity,after-friday,7.83,Thursday-Sunday,1,,,,,,,
+2026-09-26T08:02:42Z,2026-09-25,Primetime,20.59,11.4,47.49,stage-daily-evidence,21.51,20.5,0.3087,21.31,Thursday+Friday,0.989,,seat-regression-v31-evidence-integrity,after-friday,21.0,Thursday-Sunday,1,,,,,,,
+2026-09-26T16:11:07Z,2026-09-25,Forgotten Island,11.8,6.43,26.68,stage-daily-evidence,10.01,11.65,0.2125,18.17,Thursday+Friday,0.961,,seat-regression-v31-evidence-integrity,after-friday,11.61,Thursday-Sunday,1,,,,,,,
+2026-09-26T16:11:07Z,2026-09-25,Heart of the Beast,7.65,4.24,17.3,seat-snapshot-regression,7.5,10.86,0.31,16.67,Thursday+Friday,0.959,,seat-regression-v31-evidence-integrity,after-friday,7.65,Thursday-Sunday,1,,,,,,,
+2026-09-26T16:11:08Z,2026-09-25,Primetime,20.59,11.4,47.49,stage-daily-evidence,21.51,20.5,0.3087,21.31,Thursday+Friday,0.989,,seat-regression-v31-evidence-integrity,after-friday,21.0,Thursday-Sunday,1,,,,,,,
+2026-09-26T19:47:16Z,2026-09-25,Forgotten Island,12.58,6.8,28.45,stage-daily-evidence,13.92,12.42,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.29,Thursday-Sunday,1,,,,,,,
+2026-09-26T19:47:16Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,15.68,0.3074,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1,,,,,,,
+2026-09-26T19:47:17Z,2026-09-25,Primetime,20.13,11.14,45.87,stage-daily-evidence,25.37,20.03,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.28,Thursday-Sunday,1,,,,,,,
+2026-09-27T00:06:55Z,2026-09-25,Forgotten Island,12.49,6.77,28.25,stage-daily-evidence,13.92,12.33,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.23,Thursday-Sunday,1,,,,,,,
+2026-09-27T00:06:55Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,18.16,0.2531,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1,,,,,,,
+2026-09-27T00:06:56Z,2026-09-25,Primetime,20.26,11.21,46.14,stage-daily-evidence,25.37,20.06,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.41,Thursday-Sunday,1,,,,,,,
+2026-09-27T04:15:56Z,2026-09-25,Forgotten Island,12.5,6.77,28.26,stage-daily-evidence,13.92,12.34,0.2125,18.17,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,12.23,Thursday-Sunday,1,,,,,,,
+2026-09-27T04:15:56Z,2026-09-25,Heart of the Beast,21.64,8.34,56.15,seat-snapshot-regression,22.48,12.64,0.2531,16.67,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,21.64,Thursday-Sunday,1,,,,,,,
+2026-09-27T04:15:57Z,2026-09-25,Primetime,20.26,11.22,46.15,stage-daily-evidence,25.37,20.07,0.3087,21.31,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,20.41,Thursday-Sunday,1,,,,,,,
+2026-09-27T08:59:07Z,2026-09-25,Forgotten Island,15.44,7.99,34.92,stage-daily-evidence,16.13,15.24,0.2125,18.17,Thursday+Friday+Saturday,0.989,,seat-regression-v31-evidence-integrity,after-saturday,14.44,Thursday-Sunday,1,,,,,,,
+2026-09-27T08:59:07Z,2026-09-25,Heart of the Beast,19.43,10.64,43.93,stage-daily-evidence,22.47,19.27,0.2605,16.67,Thursday+Friday+Saturday,0.992,,seat-regression-v31-evidence-integrity,after-saturday,19.21,Thursday-Sunday,1,,,,,,,
+2026-09-27T08:59:08Z,2026-09-25,Primetime,20.96,11.59,47.39,stage-daily-evidence,20.7,20.76,0.2824,21.31,Thursday+Friday+Saturday,0.998,,seat-regression-v31-evidence-integrity,after-saturday,20.93,Thursday-Sunday,1,,,,,,,
+2026-09-27T15:18:24Z,2026-09-25,Forgotten Island,12.89,9.34,29.14,stage-daily-evidence,16.06,12.72,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,12.52,Thursday-Sunday,1,,,,,,,
+2026-09-27T15:18:24Z,2026-09-25,Heart of the Beast,19.43,10.64,43.93,stage-daily-evidence,22.47,19.27,0.2605,16.67,Thursday+Friday+Saturday,0.992,,seat-regression-v31-evidence-integrity,after-saturday,19.21,Thursday-Sunday,1,,,,,,,
+2026-09-27T15:18:25Z,2026-09-25,Primetime,20.03,14.61,45.76,stage-daily-evidence,24.23,19.84,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.24,Thursday-Sunday,1,,,,,,,
+2026-09-27T18:38:19Z,2026-09-25,Forgotten Island,12.89,9.34,29.14,stage-daily-evidence,16.06,12.72,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,12.52,Thursday-Sunday,1,,,,,,,
+2026-09-27T18:38:20Z,2026-09-25,Heart of the Beast,18.21,14.75,41.38,stage-daily-evidence,24.33,18.06,0.2605,16.67,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,18.3,Thursday-Sunday,1,,,,,,,
+2026-09-27T18:38:21Z,2026-09-25,Primetime,20.03,14.61,45.76,stage-daily-evidence,24.23,19.84,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.24,Thursday-Sunday,1,,,,,,,
+2026-09-27T22:43:47Z,2026-09-25,Forgotten Island,13.53,9.34,30.58,stage-daily-evidence,16.06,13.35,0.2125,18.17,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.0,Thursday-Sunday,1,,,,,,,
+2026-09-27T22:43:48Z,2026-09-25,Heart of the Beast,19.05,14.75,43.08,stage-daily-evidence,24.33,18.9,0.2605,16.67,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,18.93,Thursday-Sunday,1,,,,,,,
+2026-09-27T22:43:49Z,2026-09-25,Primetime,20.35,14.61,46.29,stage-daily-evidence,24.23,20.15,0.2824,21.31,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,20.47,Thursday-Sunday,1,,,,,,,
+2026-09-28T09:03:47Z,2026-09-25,Forgotten Island,14.26,9.34,32.25,seat-snapshot-regression,14.99,,0.2125,18.17,Thursday+Friday+Saturday+Sunday,0.997,,seat-regression-v31-evidence-integrity,complete,14.26,Thursday-Sunday,1,,,,,,,
+2026-09-28T09:03:48Z,2026-09-25,Heart of the Beast,20.53,14.75,46.41,seat-snapshot-regression,20.97,,0.3005,16.67,Thursday+Friday+Saturday+Sunday,0.998,,seat-regression-v31-evidence-integrity,complete,20.53,Thursday-Sunday,1,,,,,,,
+2026-09-28T09:03:49Z,2026-09-25,Primetime,20.3,14.61,45.89,seat-snapshot-regression,19.92,,0.2945,21.31,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,20.3,Thursday-Sunday,1,,,,,,,
+2026-09-28T14:43:43Z,2026-09-25,Forgotten Island,12.81,12.81,12.81,reported-actuals,16.48,,0.2125,18.17,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,15.4,Thursday-Sunday,1,,,,,,,
+2026-09-28T14:43:44Z,2026-09-25,Heart of the Beast,19.95,19.95,19.95,reported-actuals,24.65,,0.3005,16.67,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,23.32,Thursday-Sunday,1,,,,,,,
+2026-09-28T14:43:45Z,2026-09-25,Primetime,19.2,19.2,19.2,reported-actuals,23.9,,0.2947,21.31,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,23.31,Thursday-Sunday,1,,,,,,,
+2026-09-30T17:04:13Z,2026-10-02,Digger,13.64,6.82,34.09,presale-only,0.0,13.64,,,,,,seat-regression-v31-evidence-integrity,presales,13.64,Thursday-Sunday,1,,,,,,,
+2026-09-30T17:04:13Z,2026-10-02,Verity,21.93,10.96,54.82,presale-only,0.0,21.93,,,,,,seat-regression-v31-evidence-integrity,presales,21.93,Thursday-Sunday,1,,,,,,,
+2026-10-01T01:12:00Z,2026-10-02,Digger,14.62,7.31,36.54,presale-only,0.0,14.62,,,,,,seat-regression-v31-evidence-integrity,presales,14.62,Thursday-Sunday,1,,,,,,,
+2026-10-01T01:12:01Z,2026-10-02,Verity,25.9,12.95,64.75,presale-only,0.0,25.9,,,,,,seat-regression-v31-evidence-integrity,presales,25.9,Thursday-Sunday,1,,,,,,,
+2026-10-01T05:30:56Z,2026-10-02,Digger,14.95,7.48,37.38,presale-only,0.0,14.95,,,,,,seat-regression-v31-evidence-integrity,presales,14.95,Thursday-Sunday,1,,,,,,,
+2026-10-01T05:30:56Z,2026-10-02,Verity,26.31,13.16,65.78,presale-only,0.0,26.31,,,,,,seat-regression-v31-evidence-integrity,presales,26.31,Thursday-Sunday,1,,,,,,,
+2026-10-01T16:41:43Z,2026-10-02,Digger,15.52,7.76,38.81,presale-only,0.0,15.52,,,,,,seat-regression-v31-evidence-integrity,presales,15.52,Thursday-Sunday,1,,,,,,,
+2026-10-01T16:41:43Z,2026-10-02,Verity,25.45,12.73,63.63,presale-only,0.0,25.45,,,,,,seat-regression-v31-evidence-integrity,presales,25.45,Thursday-Sunday,1,,,,,,,
+2026-10-01T20:56:31Z,2026-10-02,Digger,15.55,7.77,38.86,presale-only,0.0,15.55,,,,,,seat-regression-v31-evidence-integrity,presales,15.55,Thursday-Sunday,1,,,,,,,
+2026-10-01T20:56:31Z,2026-10-02,Verity,26.88,13.44,67.21,presale-only,0.0,26.88,,,,,,seat-regression-v31-evidence-integrity,presales,26.88,Thursday-Sunday,1,,,,,,,
+2026-10-02T00:58:14Z,2026-10-02,Digger,15.42,7.71,38.55,presale-only,0.0,15.42,,,,,,seat-regression-v31-evidence-integrity,presales,15.42,Thursday-Sunday,1,,,,,,,
+2026-10-02T00:58:15Z,2026-10-02,Verity,27.78,13.89,69.46,presale-only,0.0,27.78,,,,,,seat-regression-v31-evidence-integrity,presales,27.78,Thursday-Sunday,1,,,,,,,
+2026-10-02T05:31:02Z,2026-10-02,Digger,15.21,7.61,38.03,presale-only,0.0,15.21,,,,,,seat-regression-v31-evidence-integrity,presales,15.21,Thursday-Sunday,1,,,,,,,
+2026-10-02T05:31:03Z,2026-10-02,Verity,27.86,13.93,69.66,presale-only,0.0,27.86,,,,,,seat-regression-v31-evidence-integrity,presales,27.86,Thursday-Sunday,1,,,,,,,
+2026-10-02T07:58:49Z,2026-10-02,Digger,9.65,5.34,21.83,stage-daily-evidence,11.38,9.65,0.3463,,Thursday,0.995,,seat-regression-v31-evidence-integrity,after-previews,9.65,Thursday-Sunday,1,,,,,,,
+2026-10-02T07:58:50Z,2026-10-02,Verity,36.68,20.3,82.93,stage-daily-evidence,34.71,36.68,0.183,,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,36.68,Thursday-Sunday,1,,,,,,,
+2026-10-02T16:36:56Z,2026-10-02,Digger,9.23,5.11,20.86,stage-daily-evidence,10.28,9.16,0.3323,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.23,Thursday-Sunday,1,,,,,,,
+2026-10-02T16:36:57Z,2026-10-02,Verity,38.54,21.34,87.16,stage-daily-evidence,35.67,38.73,0.178,,Thursday,0.988,,seat-regression-v31-evidence-integrity,after-previews,38.54,Thursday-Sunday,1,,,,,,,
+2026-10-02T20:21:15Z,2026-10-02,Digger,9.21,5.1,20.82,stage-daily-evidence,10.28,9.14,0.3244,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.21,Thursday-Sunday,1,,,,,,,
+2026-10-02T20:21:16Z,2026-10-02,Verity,38.74,21.45,87.6,stage-daily-evidence,38.56,38.93,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.74,Thursday-Sunday,1,,,,,,,
+2026-10-03T01:05:07Z,2026-10-02,Digger,9.06,5.02,20.49,stage-daily-evidence,10.28,8.99,0.324,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.06,Thursday-Sunday,1,,,,,,,
+2026-10-03T01:05:08Z,2026-10-02,Verity,38.58,21.35,87.23,stage-daily-evidence,38.56,38.76,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.58,Thursday-Sunday,1,,,,,,,
+2026-10-03T04:41:24Z,2026-10-02,Digger,8.78,4.86,19.85,stage-daily-evidence,10.28,8.71,0.324,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,8.78,Thursday-Sunday,1,,,,,,,
+2026-10-03T04:41:25Z,2026-10-02,Verity,38.07,21.07,86.08,stage-daily-evidence,38.56,38.25,0.178,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,38.07,Thursday-Sunday,1,,,,,,,
+2026-10-03T08:09:23Z,2026-10-02,Digger,8.33,4.47,18.83,stage-daily-evidence,7.13,8.26,0.3377,,Thursday+Friday,0.998,,seat-regression-v31-evidence-integrity,after-friday,8.08,Thursday-Sunday,1,,,,,,,
+2026-10-03T08:09:24Z,2026-10-02,Verity,36.56,20.24,85.22,stage-daily-evidence,40.49,36.73,0.2104,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,37.69,Thursday-Sunday,1,,,,,,,
+2026-10-03T15:44:26Z,2026-10-02,Digger,9.41,5.07,21.27,stage-daily-evidence,9.25,9.33,0.337,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.15,Thursday-Sunday,1,,,,,,,
+2026-10-03T15:44:27Z,2026-10-02,Verity,34.79,19.26,79.68,stage-daily-evidence,41.1,34.96,0.2162,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.24,Thursday-Sunday,1,,,,,,,
+2026-10-03T19:35:35Z,2026-10-02,Digger,9.43,5.08,21.32,stage-daily-evidence,9.25,9.35,0.3369,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.17,Thursday-Sunday,1,,,,,,,
+2026-10-03T19:35:36Z,2026-10-02,Verity,34.74,19.23,79.59,stage-daily-evidence,41.1,34.91,0.2164,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.2,Thursday-Sunday,1,,,,,,,
+2026-10-03T23:51:25Z,2026-10-02,Digger,9.31,5.03,21.06,stage-daily-evidence,9.25,9.24,0.3325,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.08,Thursday-Sunday,1,,,,,,,
+2026-10-03T23:51:26Z,2026-10-02,Verity,34.43,19.06,79.06,stage-daily-evidence,41.1,34.6,0.2169,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,34.96,Thursday-Sunday,1,,,,,,,
+2026-10-04T03:45:52Z,2026-10-02,Digger,9.35,5.05,21.15,stage-daily-evidence,9.25,9.27,0.3326,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,9.12,Thursday-Sunday,1,,,,,,,
+2026-10-04T03:45:52Z,2026-10-02,Verity,34.5,19.1,79.18,stage-daily-evidence,41.1,34.67,0.217,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,35.02,Thursday-Sunday,1,,,,,,,
+2026-10-04T09:02:12Z,2026-10-02,Digger,9.36,5.05,21.16,stage-daily-evidence,8.76,9.27,0.3277,,Thursday+Friday+Saturday,0.997,,seat-regression-v31-evidence-integrity,after-saturday,9.12,Thursday-Sunday,1,,,,,,,
+2026-10-04T09:02:14Z,2026-10-02,Verity,36.35,20.12,82.32,stage-daily-evidence,37.76,36.53,0.2115,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,36.41,Thursday-Sunday,1,,,,,,,
+2026-10-04T14:44:05Z,2026-10-02,Digger,9.33,5.03,21.09,stage-daily-evidence,8.76,9.24,0.3313,,Thursday+Friday+Saturday,0.997,,seat-regression-v31-evidence-integrity,after-saturday,9.09,Thursday-Sunday,1,,,,,,,
+2026-10-04T14:44:06Z,2026-10-02,Verity,36.11,19.99,81.91,stage-daily-evidence,37.71,36.28,0.2174,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,36.22,Thursday-Sunday,1,,,,,,,
+2026-10-04T18:39:05Z,2026-10-02,Digger,8.82,6.0,19.94,stage-daily-evidence,9.12,8.74,0.3334,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,8.71,Thursday-Sunday,1,,,,,,,
+2026-10-04T18:39:06Z,2026-10-02,Verity,33.62,25.11,77.68,stage-daily-evidence,38.16,33.78,0.221,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,34.35,Thursday-Sunday,1,,,,,,,
+2026-10-04T22:44:23Z,2026-10-02,Digger,8.82,6.0,19.94,stage-daily-evidence,9.12,8.74,0.334,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,8.71,Thursday-Sunday,1,,,,,,,
+2026-10-04T22:44:24Z,2026-10-02,Verity,33.59,25.11,77.63,stage-daily-evidence,38.16,33.75,0.224,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,34.33,Thursday-Sunday,1,,,,,,,
+2026-10-05T08:55:49Z,2026-10-02,Digger,8.4,6.0,19.0,seat-snapshot-regression,8.33,,0.3446,,Thursday+Friday+Saturday+Sunday,0.998,,seat-regression-v31-evidence-integrity,complete,8.4,Thursday-Sunday,1,,,,,,,
+2026-10-05T08:55:50Z,2026-10-02,Verity,34.78,25.11,78.63,seat-snapshot-regression,34.34,,0.2152,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,34.78,Thursday-Sunday,1,,,,,,,
+2026-10-05T14:44:01Z,2026-10-02,Digger,8.0,8.0,8.0,reported-actuals,9.12,,0.3446,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,9.01,Thursday-Sunday,1,,,,,,,
+2026-10-05T14:44:02Z,2026-10-02,Verity,32.62,32.62,32.62,reported-actuals,37.2,,0.2152,,Thursday+Friday+Saturday+Sunday,1.0,,seat-regression-v31-evidence-integrity,complete,36.91,Thursday-Sunday,1,,,,,,,
+2026-10-07T16:03:06Z,2026-10-09,The Social Reckoning,7.75,3.87,19.36,presale-only,0.0,7.75,,,,,,seat-regression-v31-evidence-integrity,presales,7.75,Thursday-Sunday,1,,,,,,,
+2026-10-07T23:58:45Z,2026-10-09,Other Mommy,20.42,10.21,51.04,presale-only,0.0,20.42,,,,,,seat-regression-v31-evidence-integrity,presales,20.42,Thursday-Sunday,1,,,,,,,
+2026-10-07T23:58:45Z,2026-10-09,The Social Reckoning,8.46,4.23,21.14,presale-only,0.0,8.46,,,,,,seat-regression-v31-evidence-integrity,presales,8.46,Thursday-Sunday,1,,,,,,,
+2026-10-08T04:12:10Z,2026-10-09,Other Mommy,22.2,11.1,55.5,presale-only,0.0,22.2,,,,,,seat-regression-v31-evidence-integrity,presales,22.2,Thursday-Sunday,1,,,,,,,
+2026-10-08T04:12:11Z,2026-10-09,The Social Reckoning,8.76,4.38,21.91,presale-only,0.0,8.76,,,,,,seat-regression-v31-evidence-integrity,presales,8.76,Thursday-Sunday,1,,,,,,,
+2026-10-08T16:29:30Z,2026-10-09,Other Mommy,19.35,9.67,48.37,presale-only,0.0,19.35,,,,,,seat-regression-v31-evidence-integrity,presales,19.35,Thursday-Sunday,1,,,,,,,
+2026-10-08T16:29:31Z,2026-10-09,The Social Reckoning,9.3,4.65,23.24,presale-only,0.0,9.3,,,,,,seat-regression-v31-evidence-integrity,presales,9.3,Thursday-Sunday,1,,,,,,,
+2026-10-08T20:32:26Z,2026-10-09,Other Mommy,20.17,10.08,50.41,presale-only,0.0,20.17,,,,,,seat-regression-v31-evidence-integrity,presales,20.17,Thursday-Sunday,1,,,,,,,
+2026-10-08T20:32:26Z,2026-10-09,The Social Reckoning,9.49,4.74,23.72,presale-only,0.0,9.49,,,,,,seat-regression-v31-evidence-integrity,presales,9.49,Thursday-Sunday,1,,,,,,,
+2026-10-09T00:45:35Z,2026-10-09,Other Mommy,19.25,9.62,48.12,presale-only,0.0,19.25,,,,,,seat-regression-v31-evidence-integrity,presales,19.25,Thursday-Sunday,1,,,,,,,
+2026-10-09T00:45:35Z,2026-10-09,The Social Reckoning,8.82,4.41,22.04,presale-only,0.0,8.82,,,,,,seat-regression-v31-evidence-integrity,presales,8.82,Thursday-Sunday,1,,,,,,,
+2026-10-09T04:18:23Z,2026-10-09,Other Mommy,21.04,10.52,52.61,presale-only,0.0,21.04,,,,,,seat-regression-v31-evidence-integrity,presales,21.04,Thursday-Sunday,1,,,,,,,
+2026-10-09T04:18:24Z,2026-10-09,The Social Reckoning,9.6,4.8,24.01,presale-only,0.0,9.6,,,,,,seat-regression-v31-evidence-integrity,presales,9.6,Thursday-Sunday,1,,,,,,,
+2026-10-09T07:58:45Z,2026-10-09,Other Mommy,19.32,10.69,43.68,stage-daily-evidence,30.15,19.39,0.301,,Thursday,0.955,,seat-regression-v31-evidence-integrity,after-previews,19.32,Thursday-Sunday,1,,,,,,,
+2026-10-09T07:58:45Z,2026-10-09,The Social Reckoning,6.1,3.38,13.79,stage-daily-evidence,6.94,6.08,0.35,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.1,Thursday-Sunday,1,,,,,,,
+2026-10-09T16:12:14Z,2026-10-09,Other Mommy,20.77,11.5,46.96,stage-daily-evidence,31.7,20.84,0.2858,,Thursday,0.955,,seat-regression-v31-evidence-integrity,after-previews,20.77,Thursday-Sunday,1,,,,,,,
+2026-10-09T16:12:15Z,2026-10-09,The Social Reckoning,6.32,3.5,14.28,stage-daily-evidence,6.98,6.3,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.32,Thursday-Sunday,1,,,,,,,
+2026-10-09T19:56:33Z,2026-10-09,Other Mommy,15.84,8.77,35.81,stage-daily-evidence,29.85,15.9,0.284,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.84,Thursday-Sunday,1,,,,,,,
+2026-10-09T19:56:33Z,2026-10-09,The Social Reckoning,6.28,3.48,14.21,stage-daily-evidence,6.98,6.27,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.28,Thursday-Sunday,1,,,,,,,
+2026-10-10T00:18:56Z,2026-10-09,Other Mommy,18.3,10.13,41.38,stage-daily-evidence,29.85,18.36,0.2774,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,18.3,Thursday-Sunday,1,,,,,,,
+2026-10-10T00:18:57Z,2026-10-09,The Social Reckoning,6.23,3.45,14.08,stage-daily-evidence,6.98,6.21,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.23,Thursday-Sunday,1,,,,,,,
+2026-10-10T04:30:54Z,2026-10-09,Other Mommy,17.52,9.7,39.62,stage-daily-evidence,29.85,17.59,0.2773,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,17.52,Thursday-Sunday,1,,,,,,,
+2026-10-10T04:30:55Z,2026-10-09,The Social Reckoning,6.16,3.41,13.93,stage-daily-evidence,6.98,6.15,0.3477,,Thursday,0.936,,seat-regression-v31-evidence-integrity,after-previews,6.16,Thursday-Sunday,1,,,,,,,
+2026-10-10T08:13:50Z,2026-10-09,Other Mommy,22.75,12.59,56.7,stage-daily-evidence,31.39,22.83,0.2424,,Thursday+Friday,0.991,,seat-regression-v31-evidence-integrity,after-friday,25.08,Thursday-Sunday,1,,,,,,,
+2026-10-10T08:13:51Z,2026-10-09,The Social Reckoning,5.89,3.19,13.31,stage-daily-evidence,5.28,5.87,0.349,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.77,Thursday-Sunday,1,,,,,,,
+2026-10-10T21:50:10Z,2026-10-09,Other Mommy,22.08,12.6,54.49,stage-daily-evidence,33.21,22.16,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,24.1,Thursday-Sunday,1,,,,,,,
+2026-10-10T21:50:11Z,2026-10-09,The Social Reckoning,5.49,2.95,12.42,stage-daily-evidence,4.69,5.48,0.3462,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.32,Thursday-Sunday,1,,,,,,,
+2026-10-11T00:40:27Z,2026-10-09,Other Mommy,19.75,12.6,50.45,stage-daily-evidence,33.21,19.95,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,22.31,Thursday-Sunday,1,,,,,,,
+2026-10-11T00:40:28Z,2026-10-09,The Social Reckoning,4.32,2.39,10.05,stage-daily-evidence,4.69,4.31,0.3462,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,4.45,Thursday-Sunday,1,,,,,,,
+2026-10-11T04:06:02Z,2026-10-09,Other Mommy,23.13,12.8,56.16,stage-daily-evidence,33.21,23.35,0.2424,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,24.84,Thursday-Sunday,1,,,,,,,
+2026-10-11T04:06:03Z,2026-10-09,The Social Reckoning,5.94,3.13,13.44,stage-daily-evidence,4.69,5.93,0.3461,,Thursday+Friday,0.94,,seat-regression-v31-evidence-integrity,after-friday,5.66,Thursday-Sunday,1,,,,,,,
+2026-10-11T08:35:40Z,2026-10-09,Other Mommy,24.77,13.71,58.96,stage-daily-evidence,28.42,25.01,0.2899,,Thursday+Friday+Saturday,0.994,,seat-regression-v31-evidence-integrity,after-saturday,26.07,Thursday-Sunday,1,,,,,,,
+2026-10-11T08:35:41Z,2026-10-09,The Social Reckoning,5.25,2.84,11.88,stage-daily-evidence,4.86,5.24,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.14,Thursday-Sunday,1,,,,,,,
+2026-10-11T15:37:05Z,2026-10-09,Other Mommy,25.22,21.55,59.72,stage-daily-evidence,31.81,25.46,0.3003,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,26.41,Thursday-Sunday,1,,,,,,,
+2026-10-11T15:37:05Z,2026-10-09,The Social Reckoning,5.54,3.07,12.68,stage-daily-evidence,5.41,5.53,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.61,Thursday-Sunday,1,,,,,,,
+2026-10-11T19:37:12Z,2026-10-09,Other Mommy,26.55,21.55,61.97,stage-daily-evidence,31.81,26.81,0.3004,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,27.41,Thursday-Sunday,1,,,,,,,
+2026-10-11T19:37:13Z,2026-10-09,The Social Reckoning,5.74,3.18,13.02,stage-daily-evidence,5.41,5.73,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.76,Thursday-Sunday,1,,,,,,,
+2026-10-11T23:53:31Z,2026-10-09,Other Mommy,27.37,21.55,63.35,stage-daily-evidence,31.81,27.63,0.302,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,28.02,Thursday-Sunday,1,,,,,,,
+2026-10-11T23:53:32Z,2026-10-09,The Social Reckoning,5.81,3.22,13.14,stage-daily-evidence,5.41,5.8,0.3477,,Thursday+Friday+Saturday,0.941,,seat-regression-v31-evidence-integrity,after-saturday,5.81,Thursday-Sunday,1,,,,,,,
+2026-10-12T08:50:29Z,2026-10-09,Other Mommy,28.55,21.55,64.55,seat-snapshot-regression,28.43,,0.2898,,Thursday+Friday+Saturday+Sunday,0.999,,seat-regression-v31-evidence-integrity,complete,28.55,Thursday-Sunday,1,,,,,,,
+2026-10-12T08:50:30Z,2026-10-09,The Social Reckoning,5.24,2.9,11.85,seat-snapshot-regression,5.13,,0.3685,,Thursday+Friday+Saturday+Sunday,0.944,,seat-regression-v31-evidence-integrity,complete,5.24,Thursday-Sunday,1,,,,,,,
+2026-10-14T18:36:29Z,2026-10-16,Street Fighter,24.41,12.2,61.02,presale-only,0.0,24.41,,,,,,seat-regression-v31-evidence-integrity,presales,24.41,Thursday-Sunday,1,,,,,,,
+2026-10-14T18:36:29Z,2026-10-16,Whalefall,5.6,2.8,14.0,presale-only,0.0,5.6,,,,,,seat-regression-v31-evidence-integrity,presales,5.6,Thursday-Sunday,1,,,,,,,
+2026-10-15T02:51:43Z,2026-10-16,Street Fighter,27.75,13.88,69.38,presale-only,0.0,27.75,,,,,,seat-regression-v31-evidence-integrity,presales,27.75,Thursday-Sunday,1,,,,,,,
+2026-10-15T02:51:43Z,2026-10-16,Whalefall,6.55,3.28,16.39,presale-only,0.0,6.55,,,,,,seat-regression-v31-evidence-integrity,presales,6.55,Thursday-Sunday,1,,,,,,,
+2026-10-15T02:51:43Z,2026-10-16,You Can See Everything,28.77,14.39,71.93,presale-only,0.0,28.77,,,,,,seat-regression-v31-evidence-integrity,presales,28.77,Thursday-Sunday,1,,,,,,,
+2026-10-15T05:24:51Z,2026-10-16,Street Fighter,26.49,13.25,66.23,presale-only,0.0,26.49,,,,,,seat-regression-v31-evidence-integrity,presales,26.49,Thursday-Sunday,1,,,,,,,
+2026-10-15T05:24:51Z,2026-10-16,Whalefall,6.12,3.06,15.29,presale-only,0.0,6.12,,,,,,seat-regression-v31-evidence-integrity,presales,6.12,Thursday-Sunday,1,,,,,,,
+2026-10-15T05:24:51Z,2026-10-16,You Can See Everything,27.5,13.75,68.74,presale-only,0.0,27.5,,,,,,seat-regression-v31-evidence-integrity,presales,27.5,Thursday-Sunday,1,,,,,,,
+2026-10-15T18:30:48Z,2026-10-16,Street Fighter,33.49,16.75,83.73,presale-only,0.0,33.49,,,,,,seat-regression-v31-evidence-integrity,presales,33.49,Thursday-Sunday,1,,,,,,,
+2026-10-15T18:30:48Z,2026-10-16,Whalefall,8.21,4.1,20.52,presale-only,0.0,8.21,,,,,,seat-regression-v31-evidence-integrity,presales,8.21,Thursday-Sunday,1,,,,,,,
+2026-10-15T18:30:48Z,2026-10-16,You Can See Everything,33.92,16.96,84.81,presale-only,0.0,33.92,,,,,,seat-regression-v31-evidence-integrity,presales,33.92,Thursday-Sunday,1,,,,,,,
+2026-10-15T21:34:55Z,2026-10-16,Street Fighter,34.42,17.21,86.06,presale-only,0.0,34.42,,,,,,seat-regression-v31-evidence-integrity,presales,34.42,Thursday-Sunday,1,,,,,,,
+2026-10-15T21:34:56Z,2026-10-16,Whalefall,8.34,4.17,20.85,presale-only,0.0,8.34,,,,,,seat-regression-v31-evidence-integrity,presales,8.34,Thursday-Sunday,1,,,,,,,
+2026-10-15T21:34:56Z,2026-10-16,You Can See Everything,34.78,17.39,86.95,presale-only,0.0,34.78,,,,,,seat-regression-v31-evidence-integrity,presales,34.78,Thursday-Sunday,1,,,,,,,
+2026-10-16T02:02:41Z,2026-10-16,Street Fighter,34.84,17.42,87.11,presale-only,0.0,34.84,,,,,,seat-regression-v31-evidence-integrity,presales,34.84,Thursday-Sunday,1,,,,,,,
+2026-10-16T02:02:41Z,2026-10-16,Whalefall,8.5,4.25,21.24,presale-only,0.0,8.5,,,,,,seat-regression-v31-evidence-integrity,presales,8.5,Thursday-Sunday,1,,,,,,,
+2026-10-16T02:02:41Z,2026-10-16,You Can See Everything,35.53,17.77,88.84,presale-only,0.0,35.53,,,,,,seat-regression-v31-evidence-integrity,presales,35.53,Thursday-Sunday,1,,,,,,,
+2026-10-16T06:18:49Z,2026-10-16,Street Fighter,35.29,17.65,88.23,presale-only,0.0,35.29,,,,,,seat-regression-v31-evidence-integrity,presales,35.29,Thursday-Sunday,1,,,,,,,
+2026-10-16T06:18:49Z,2026-10-16,Whalefall,8.69,4.34,21.72,presale-only,0.0,8.69,,,,,,seat-regression-v31-evidence-integrity,presales,8.69,Thursday-Sunday,1,,,,,,,
+2026-10-16T06:18:50Z,2026-10-16,You Can See Everything,36.49,18.25,91.24,presale-only,0.0,36.49,,,,,,seat-regression-v31-evidence-integrity,presales,36.49,Thursday-Sunday,1,,,,,,,
+2026-10-16T08:32:48Z,2026-10-16,Street Fighter,29.04,16.07,65.66,stage-daily-evidence,45.55,29.18,0.2744,,Thursday,0.998,,seat-regression-v31-evidence-integrity,after-previews,29.04,Thursday-Sunday,1,,,,,,,
+2026-10-16T08:32:49Z,2026-10-16,Whalefall,5.42,3.0,12.26,stage-daily-evidence,7.93,5.42,0.3616,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,5.42,Thursday-Sunday,1,,,,,,,
+2026-10-16T08:32:49Z,2026-10-16,You Can See Everything,34.26,17.13,85.66,presale-only,0.0,33.74,,,,,,seat-regression-v31-evidence-integrity,presales,34.26,Thursday-Sunday,1,,,,,,,
+2026-10-16T16:56:53Z,2026-10-16,Street Fighter,24.11,13.34,54.51,stage-daily-evidence,33.28,24.22,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.11,Thursday-Sunday,1,,,,,,,
+2026-10-16T16:56:54Z,2026-10-16,Whalefall,5.5,3.04,12.44,stage-daily-evidence,7.49,5.49,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.5,Thursday-Sunday,1,,,,,,,
+2026-10-16T16:56:54Z,2026-10-16,You Can See Everything,14.93,8.26,33.75,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,14.93,Thursday-Sunday,1,,,,,,,
+2026-10-16T20:45:52Z,2026-10-16,Street Fighter,24.96,13.82,56.43,stage-daily-evidence,33.28,25.08,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.96,Thursday-Sunday,1,,,,,,,
+2026-10-16T20:45:52Z,2026-10-16,Whalefall,5.75,3.19,13.01,stage-daily-evidence,7.49,5.75,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.75,Thursday-Sunday,1,,,,,,,
+2026-10-16T20:45:52Z,2026-10-16,You Can See Everything,14.93,8.26,33.75,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,14.93,Thursday-Sunday,1,,,,,,,
+2026-10-17T01:52:29Z,2026-10-16,Street Fighter,24.62,13.63,55.68,stage-daily-evidence,33.28,24.71,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.62,Thursday-Sunday,1,,,,,,,
+2026-10-17T01:52:29Z,2026-10-16,Whalefall,5.86,3.24,13.24,stage-daily-evidence,7.49,5.84,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.86,Thursday-Sunday,1,,,,,,,
+2026-10-17T01:52:30Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1,,,,,,,
+2026-10-17T06:25:11Z,2026-10-16,Street Fighter,24.81,13.74,56.11,stage-daily-evidence,33.28,24.9,0.2744,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,24.81,Thursday-Sunday,1,,,,,,,
+2026-10-17T06:25:11Z,2026-10-16,Whalefall,5.93,3.28,13.4,stage-daily-evidence,7.49,5.91,0.3616,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,5.93,Thursday-Sunday,1,,,,,,,
+2026-10-17T06:25:12Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1,,,,,,,
+2026-10-17T08:36:07Z,2026-10-16,Sense and Sensibility,9.66,2.37,39.3,seat-snapshot-regression,9.57,4.59,,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,9.66,Thursday-Sunday,1,,,,,,,
+2026-10-17T08:36:09Z,2026-10-16,Street Fighter,25.18,13.94,59.49,stage-daily-evidence,29.14,25.27,0.2593,,Thursday+Friday,0.999,,seat-regression-v31-evidence-integrity,after-friday,26.31,Thursday-Sunday,1,,,,,,,
+2026-10-17T08:36:10Z,2026-10-16,Whalefall,5.52,3.06,12.9,stage-daily-evidence,6.07,5.5,0.3437,,Thursday+Friday,0.982,,seat-regression-v31-evidence-integrity,after-friday,5.71,Thursday-Sunday,1,,,,,,,
+2026-10-17T08:36:10Z,2026-10-16,You Can See Everything,15.19,8.41,34.35,stage-daily-evidence,14.56,14.7,0.2478,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,15.19,Thursday-Sunday,1,,,,,,,
+2026-10-17T17:17:09Z,2026-10-16,Sense and Sensibility,5.31,3.31,13.61,stage-daily-evidence,8.72,5.26,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.02,Thursday-Sunday,1,,,,,,,
+2026-10-17T17:17:11Z,2026-10-16,Street Fighter,27.57,15.26,64.51,stage-daily-evidence,34.25,27.67,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,28.53,Thursday-Sunday,1,,,,,,,
+2026-10-17T17:17:12Z,2026-10-16,Whalefall,6.39,3.54,14.98,stage-daily-evidence,7.9,6.37,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.62,Thursday-Sunday,1,,,,,,,
+2026-10-17T17:17:12Z,2026-10-16,You Can See Everything,14.91,8.12,33.72,stage-daily-evidence,14.59,14.43,0.2478,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,14.67,Thursday-Sunday,1,,,,,,,
+2026-10-17T21:04:03Z,2026-10-16,Sense and Sensibility,6.47,3.58,15.56,stage-daily-evidence,8.72,6.41,0.268,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.88,Thursday-Sunday,1,,,,,,,
+2026-10-17T21:04:04Z,2026-10-16,Street Fighter,29.49,16.32,67.77,stage-daily-evidence,34.25,29.6,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,29.97,Thursday-Sunday,1,,,,,,,
+2026-10-17T21:04:05Z,2026-10-16,Whalefall,6.77,3.75,15.62,stage-daily-evidence,7.9,6.74,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,6.91,Thursday-Sunday,1,,,,,,,
+2026-10-17T21:04:05Z,2026-10-16,You Can See Everything,10.19,5.64,25.15,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.12,Thursday-Sunday,1,,,,,,,
+2026-10-18T01:04:42Z,2026-10-16,Sense and Sensibility,6.9,3.82,16.3,stage-daily-evidence,8.72,6.84,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.21,Thursday-Sunday,1,,,,,,,
+2026-10-18T01:04:44Z,2026-10-16,Street Fighter,30.26,16.75,69.08,stage-daily-evidence,34.25,30.37,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,30.55,Thursday-Sunday,1,,,,,,,
+2026-10-18T01:04:45Z,2026-10-16,Whalefall,7.08,3.92,16.14,stage-daily-evidence,7.9,7.05,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.14,Thursday-Sunday,1,,,,,,,
+2026-10-18T01:04:45Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1,,,,,,,
+2026-10-18T04:19:25Z,2026-10-16,Sense and Sensibility,6.99,3.87,16.45,stage-daily-evidence,8.72,6.92,0.4,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.27,Thursday-Sunday,1,,,,,,,
+2026-10-18T04:19:27Z,2026-10-16,Street Fighter,30.56,16.91,69.58,stage-daily-evidence,34.25,30.67,0.2593,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,30.77,Thursday-Sunday,1,,,,,,,
+2026-10-18T04:19:28Z,2026-10-16,Whalefall,7.2,3.98,16.35,stage-daily-evidence,7.9,7.17,0.3437,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,7.23,Thursday-Sunday,1,,,,,,,
+2026-10-18T04:19:29Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1,,,,,,,
+2026-10-18T08:58:59Z,2026-10-16,Sense and Sensibility,7.77,4.3,17.77,stage-daily-evidence,8.38,7.7,0.3684,,Thursday+Friday+Saturday,0.973,,seat-regression-v31-evidence-integrity,after-saturday,7.86,Thursday-Sunday,1,,,,,,,
+2026-10-18T08:59:01Z,2026-10-16,Street Fighter,29.43,16.29,67.67,stage-daily-evidence,31.29,29.53,0.2744,,Thursday+Friday+Saturday,0.999,,seat-regression-v31-evidence-integrity,after-saturday,29.93,Thursday-Sunday,1,,,,,,,
+2026-10-18T08:59:01Z,2026-10-16,Whalefall,6.75,3.73,15.58,stage-daily-evidence,7.18,6.72,0.3616,,Thursday+Friday+Saturday,0.989,,seat-regression-v31-evidence-integrity,after-saturday,6.89,Thursday-Sunday,1,,,,,,,
+2026-10-18T08:59:02Z,2026-10-16,You Can See Everything,10.19,5.64,25.16,stage-daily-evidence,14.59,9.86,0.3244,,Thursday+Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,11.13,Thursday-Sunday,1,,,,,,,
+2026-10-18T15:41:30Z,2026-10-16,Sense and Sensibility,7.61,5.55,17.5,stage-daily-evidence,8.2,7.54,0.3926,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.74,Thursday-Sunday,1,,,,,,,
+2026-10-18T15:41:32Z,2026-10-16,Street Fighter,30.14,23.8,68.87,stage-daily-evidence,35.16,30.24,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,30.46,Thursday-Sunday,1,,,,,,,
+2026-10-18T15:41:33Z,2026-10-16,Whalefall,7.65,5.9,17.31,stage-daily-evidence,8.72,7.63,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.63,Thursday-Sunday,1,,,,,,,
+2026-10-18T15:41:34Z,2026-10-16,You Can See Everything,13.14,10.75,30.16,stage-daily-evidence,15.88,12.72,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.34,Thursday-Sunday,1,,,,,,,
+2026-10-18T19:49:40Z,2026-10-16,Sense and Sensibility,7.17,7.01,7.49,sunday-ratio,8.2,7.67,0.3927,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.84,Thursday-Sunday,1,,,,,,,
+2026-10-18T19:49:42Z,2026-10-16,Street Fighter,31.7,30.9,33.24,sunday-ratio,35.16,31.19,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,31.16,Thursday-Sunday,1,,,,,,,
+2026-10-18T19:49:43Z,2026-10-16,Whalefall,7.93,7.72,8.33,sunday-ratio,8.72,7.88,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.82,Thursday-Sunday,1,,,,,,,
+2026-10-18T19:49:44Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,15.88,13.64,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,15.79,Thursday-Sunday,1,,,,,,,
+2026-10-18T23:49:32Z,2026-10-16,Sense and Sensibility,7.17,7.01,7.49,sunday-ratio,8.2,7.68,0.3939,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.85,Thursday-Sunday,1,,,,,,,
+2026-10-18T23:49:34Z,2026-10-16,Street Fighter,31.7,30.9,33.24,sunday-ratio,35.16,31.64,0.2744,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,31.5,Thursday-Sunday,1,,,,,,,
+2026-10-18T23:49:35Z,2026-10-16,Whalefall,7.93,7.72,8.33,sunday-ratio,8.72,8.08,0.3616,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,7.97,Thursday-Sunday,1,,,,,,,
+2026-10-18T23:49:36Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,15.88,13.53,0.3244,,Thursday+Friday+Saturday,1.0,,seat-regression-v31-evidence-integrity,after-saturday,13.97,Thursday-Sunday,1,,,,,,,
+2026-10-19T09:09:35Z,2026-10-16,Sense and Sensibility,7.28,7.14,7.42,sunday-seats,7.79,,0.3338,,Thursday+Friday+Saturday+Sunday,0.979,,seat-regression-v31-evidence-integrity,complete,7.93,Thursday-Sunday,1,,,,,,,
+2026-10-19T09:09:37Z,2026-10-16,Street Fighter,30.57,30.03,31.11,sunday-seats,30.6,,0.2885,,Thursday+Friday+Saturday+Sunday,0.999,,seat-regression-v31-evidence-integrity,complete,30.76,Thursday-Sunday,1,,,,,,,
+2026-10-19T09:09:38Z,2026-10-16,Whalefall,7.81,7.66,7.97,sunday-seats,7.77,,0.376,,Thursday+Friday+Saturday+Sunday,0.991,,seat-regression-v31-evidence-integrity,complete,7.74,Thursday-Sunday,1,,,,,,,
+2026-10-19T09:09:39Z,2026-10-16,You Can See Everything,14.53,14.15,15.27,sunday-ratio,14.96,,0.3737,,Thursday+Friday+Saturday+Sunday,0.995,,seat-regression-v31-evidence-integrity,complete,15.09,Thursday-Sunday,1,,,,,,,
+2026-10-22T07:15:21Z,2026-10-23,A Talent for Murder,0.48,0.14,1.25,presale-only,0.0,0.48,,,,,,seat-regression-v31-evidence-integrity,presales,0.48,Thursday-Sunday,1,,,,,,,
+2026-10-22T07:15:21Z,2026-10-23,Clayface,25.67,7.49,67.7,presale-only,0.0,25.67,,,,,,seat-regression-v31-evidence-integrity,presales,25.67,Thursday-Sunday,1,2026-10-22T07:15:21Z,clayface-opening-weekend-box-office,25m-28m,0.065,<22m,0.645,21.3
+2026-10-22T07:15:22Z,2026-10-23,Klara and the Sun,1.48,0.43,3.91,presale-only,0.0,1.48,,,,,,seat-regression-v31-evidence-integrity,presales,1.48,Thursday-Sunday,1,2026-10-22T07:15:22Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.775,<2M,0.775,1.7
+2026-10-22T07:15:22Z,2026-10-23,Wicker,8.34,2.43,21.99,presale-only,0.0,8.34,,,,,,seat-regression-v31-evidence-integrity,presales,8.34,Thursday-Sunday,1,,,,,,,
+2026-10-22T07:15:22Z,2026-10-23,Wildwood,13.77,4.02,36.3,presale-only,0.0,13.77,,,,,,seat-regression-v31-evidence-integrity,presales,13.77,Thursday-Sunday,1,2026-10-22T07:15:22Z,wildwood-opening-weekend-box-office,12m-14m,0.233,14m-16m,0.39,14.51
+2026-10-22T17:25:08Z,2026-10-23,A Talent for Murder,0.49,0.14,1.29,presale-only,0.0,0.49,,,,,,seat-regression-v31-evidence-integrity,presales,0.49,Thursday-Sunday,1,,,,,,,
+2026-10-22T17:25:09Z,2026-10-23,Clayface,26.64,7.78,70.25,presale-only,0.0,26.64,,,,,,seat-regression-v31-evidence-integrity,presales,26.64,Thursday-Sunday,1,2026-10-22T17:25:09Z,clayface-opening-weekend-box-office,25m-28m,0.0595,<22m,0.495,22.23
+2026-10-22T17:25:09Z,2026-10-23,Klara and the Sun,1.44,0.42,3.79,presale-only,0.0,1.44,,,,,,seat-regression-v31-evidence-integrity,presales,1.44,Thursday-Sunday,1,2026-10-22T17:25:09Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.82,<2M,0.82,1.63
+2026-10-22T17:25:09Z,2026-10-23,Wicker,8.57,2.5,22.59,presale-only,0.0,8.57,,,,,,seat-regression-v31-evidence-integrity,presales,8.57,Thursday-Sunday,1,,,,,,,
+2026-10-22T17:25:10Z,2026-10-23,Wildwood,14.18,4.14,37.39,presale-only,0.0,14.18,,,,,,seat-regression-v31-evidence-integrity,presales,14.18,Thursday-Sunday,1,2026-10-22T17:25:10Z,wildwood-opening-weekend-box-office,14m-16m,0.4,14m-16m,0.4,14.78
+2026-10-22T23:06:33Z,2026-10-23,A Talent for Murder,0.54,0.16,1.43,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1,,,,,,,
+2026-10-22T23:06:34Z,2026-10-23,Clayface,28.3,8.26,74.64,presale-only,0.0,28.3,,,,,,seat-regression-v31-evidence-integrity,presales,28.3,Thursday-Sunday,1,2026-10-22T23:06:34Z,clayface-opening-weekend-box-office,28m-31m,0.008,<22m,0.6,21.59
+2026-10-22T23:06:35Z,2026-10-23,Klara and the Sun,1.49,0.43,3.93,presale-only,0.0,1.49,,,,,,seat-regression-v31-evidence-integrity,presales,1.49,Thursday-Sunday,1,2026-10-22T23:06:35Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.925,<2M,0.925,1.54
+2026-10-22T23:06:35Z,2026-10-23,Wicker,9.17,2.68,24.18,presale-only,0.0,9.17,,,,,,seat-regression-v31-evidence-integrity,presales,9.17,Thursday-Sunday,1,,,,,,,
+2026-10-22T23:06:35Z,2026-10-23,Wildwood,15.07,4.4,39.74,presale-only,0.0,15.07,,,,,,seat-regression-v31-evidence-integrity,presales,15.07,Thursday-Sunday,1,2026-10-22T23:06:35Z,wildwood-opening-weekend-box-office,14m-16m,0.375,14m-16m,0.375,14.54
+2026-10-23T02:03:32Z,2026-10-23,A Talent for Murder,0.54,0.16,1.42,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1,,,,,,,
+2026-10-23T02:03:33Z,2026-10-23,Clayface,26.77,7.82,70.61,presale-only,0.0,26.77,,,,,,seat-regression-v31-evidence-integrity,presales,26.77,Thursday-Sunday,1,2026-10-23T02:03:33Z,clayface-opening-weekend-box-office,25m-28m,0.062,<22m,0.475,22.4
+2026-10-23T02:03:33Z,2026-10-23,Klara and the Sun,1.43,0.42,3.78,presale-only,0.0,1.43,,,,,,seat-regression-v31-evidence-integrity,presales,1.43,Thursday-Sunday,1,2026-10-23T02:03:33Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.945,<2M,0.945,1.55
+2026-10-23T02:03:34Z,2026-10-23,Wicker,9.03,2.64,23.81,presale-only,0.0,9.03,,,,,,seat-regression-v31-evidence-integrity,presales,9.03,Thursday-Sunday,1,,,,,,,
+2026-10-23T02:03:34Z,2026-10-23,Wildwood,14.3,4.17,37.7,presale-only,0.0,14.3,,,,,,seat-regression-v31-evidence-integrity,presales,14.3,Thursday-Sunday,1,2026-10-23T02:03:34Z,wildwood-opening-weekend-box-office,14m-16m,0.355,14m-16m,0.355,14.09
+2026-10-23T07:25:58Z,2026-10-23,A Talent for Murder,0.54,0.16,1.43,presale-only,0.0,0.54,,,,,,seat-regression-v31-evidence-integrity,presales,0.54,Thursday-Sunday,1,,,,,,,
+2026-10-23T07:25:59Z,2026-10-23,Clayface,28.06,8.19,74.0,presale-only,0.0,28.06,,,,,,seat-regression-v31-evidence-integrity,presales,28.06,Thursday-Sunday,1,2026-10-23T07:25:59Z,clayface-opening-weekend-box-office,28m-31m,0.0545,22m-25m,0.45,22.75
+2026-10-23T07:26:00Z,2026-10-23,Klara and the Sun,1.44,0.42,3.79,presale-only,0.0,1.44,,,,,,seat-regression-v31-evidence-integrity,presales,1.44,Thursday-Sunday,1,2026-10-23T07:26:00Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.9755,<2M,0.9755,1.51
+2026-10-23T07:26:00Z,2026-10-23,Wicker,9.09,2.65,23.98,presale-only,0.0,9.09,,,,,,seat-regression-v31-evidence-integrity,presales,9.09,Thursday-Sunday,1,,,,,,,
+2026-10-23T07:26:00Z,2026-10-23,Wildwood,15.52,4.53,40.92,presale-only,0.0,15.52,,,,,,seat-regression-v31-evidence-integrity,presales,15.52,Thursday-Sunday,1,2026-10-23T07:26:00Z,wildwood-opening-weekend-box-office,14m-16m,0.385,14m-16m,0.385,14.08
+2026-10-23T08:59:06Z,2026-10-23,A Talent for Murder,0.4,0.27,1.3,stage-daily-evidence,0.4,0.4,0.5,,Thursday,0.978,,seat-regression-v31-evidence-integrity,after-previews,0.4,Thursday-Sunday,1,,,,,,,
+2026-10-23T08:59:07Z,2026-10-23,Clayface,23.34,15.61,75.61,stage-daily-evidence,35.66,23.06,0.2939,,Thursday,0.993,,seat-regression-v31-evidence-integrity,after-previews,23.34,Thursday-Sunday,1,2026-10-23T08:59:07Z,clayface-opening-weekend-box-office,22m-25m,0.49,22m-25m,0.49,23.36
+2026-10-23T08:59:07Z,2026-10-23,Klara and the Sun,0.92,0.62,2.99,stage-daily-evidence,0.94,0.93,0.5,,Thursday,0.983,,seat-regression-v31-evidence-integrity,after-previews,0.92,Thursday-Sunday,1,2026-10-23T08:59:07Z,klara-and-the-sun-opening-weekend-box-office-20261025,<2M,0.9745,<2M,0.9745,1.51
+2026-10-23T08:59:07Z,2026-10-23,Wicker,9.11,6.1,29.52,stage-daily-evidence,9.24,9.03,0.238,,Thursday,0.985,,seat-regression-v31-evidence-integrity,after-previews,9.11,Thursday-Sunday,1,,,,,,,
+2026-10-23T08:59:08Z,2026-10-23,Wildwood,13.83,9.25,44.81,stage-daily-evidence,12.05,13.48,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,13.83,Thursday-Sunday,1,2026-10-23T08:59:08Z,wildwood-opening-weekend-box-office,12m-14m,0.4125,12m-14m,0.4125,13.65
+2026-10-23T16:43:12Z,2026-10-23,Clayface,23.76,15.89,76.97,stage-daily-evidence,29.68,21.29,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.54,Thursday-Sunday,1,2026-10-23T16:43:12Z,clayface-opening-weekend-box-office,22m-25m,0.425,<22m,0.565,21.91
+2026-10-23T16:43:13Z,2026-10-23,Wicker,9.77,6.53,31.64,stage-daily-evidence,9.24,9.67,0.238,,Thursday,0.985,,seat-regression-v31-evidence-integrity,after-previews,9.77,Thursday-Sunday,1,,,,,,,
+2026-10-23T16:43:13Z,2026-10-23,Wildwood,14.69,9.83,47.6,stage-daily-evidence,12.05,14.32,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,14.69,Thursday-Sunday,1,2026-10-23T16:43:13Z,wildwood-opening-weekend-box-office,14m-16m,0.075,12m-14m,0.4795,12.25
+2026-10-23T21:29:40Z,2026-10-23,Clayface,24.0,16.05,77.74,stage-daily-evidence,29.68,21.72,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.98,Thursday-Sunday,1,2026-10-23T21:29:40Z,clayface-opening-weekend-box-office,22m-25m,0.445,<22m,0.555,21.87
+2026-10-23T21:29:40Z,2026-10-23,Wicker,5.84,3.91,18.92,stage-daily-evidence,5.26,7.66,0.238,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.74,Thursday-Sunday,1,,,,,,,
+2026-10-23T21:29:41Z,2026-10-23,Wildwood,15.01,10.04,48.64,stage-daily-evidence,12.05,14.63,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.01,Thursday-Sunday,1,2026-10-23T21:29:41Z,wildwood-opening-weekend-box-office,14m-16m,0.125,12m-14m,0.39,12.57
+2026-10-24T00:36:30Z,2026-10-23,Clayface,24.21,16.19,78.42,stage-daily-evidence,29.68,22.1,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,22.37,Thursday-Sunday,1,2026-10-24T00:36:30Z,clayface-opening-weekend-box-office,22m-25m,0.41,<22m,0.555,21.72
+2026-10-24T00:36:31Z,2026-10-23,Wicker,5.84,3.91,18.93,stage-daily-evidence,5.26,7.66,0.238,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.74,Thursday-Sunday,1,,,,,,,
+2026-10-24T00:36:32Z,2026-10-23,Wildwood,15.31,10.24,49.59,stage-daily-evidence,12.05,14.91,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.31,Thursday-Sunday,1,2026-10-24T00:36:32Z,wildwood-opening-weekend-box-office,14m-16m,0.075,12m-14m,0.4105,12.12
+2026-10-24T05:35:14Z,2026-10-23,Clayface,23.97,16.04,77.66,stage-daily-evidence,29.68,21.68,0.2939,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,21.94,Thursday-Sunday,1,2026-10-24T05:35:14Z,clayface-opening-weekend-box-office,22m-25m,0.495,22m-25m,0.495,22.19
+2026-10-24T05:35:15Z,2026-10-23,Wicker,5.72,3.83,18.53,stage-daily-evidence,5.26,7.35,0.2387,,Thursday,1.0,,seat-regression-v31-evidence-integrity,after-previews,7.42,Thursday-Sunday,1,,,,,,,
+2026-10-24T05:35:15Z,2026-10-23,Wildwood,15.27,10.21,49.46,stage-daily-evidence,12.05,14.88,0.267,,Thursday,0.965,,seat-regression-v31-evidence-integrity,after-previews,15.27,Thursday-Sunday,1,2026-10-24T05:35:15Z,wildwood-opening-weekend-box-office,14m-16m,0.0345,10m-12m,0.525,11.77
+2026-10-24T08:36:07Z,2026-10-23,Ali G: Who Iz I?,1.08,0.86,2.22,stage-daily-evidence,1.34,1.1,0.3079,,Friday,1.0,,seat-regression-v31-evidence-integrity,after-friday,1.32,Thursday-Sunday,1,2026-10-24T08:36:07Z,ali-g-who-iz-i-opening-weekend-box-office-20261025,<2M,0.9885,<2M,0.9885,1.52
+2026-10-24T08:36:08Z,2026-10-23,Clayface,22.48,17.95,40.12,stage-daily-evidence,23.08,19.06,0.2954,,Thursday+Friday,0.996,,seat-regression-v31-evidence-integrity,after-friday,20.37,Thursday-Sunday,1,2026-10-24T08:36:08Z,clayface-opening-weekend-box-office,22m-25m,0.555,22m-25m,0.555,22.53
+2026-10-24T08:36:09Z,2026-10-23,Wicker,5.72,4.45,9.68,stage-daily-evidence,6.4,7.36,0.2376,,Thursday+Friday,0.997,,seat-regression-v31-evidence-integrity,after-friday,7.23,Thursday-Sunday,1,,,,,,,
+2026-10-24T08:36:09Z,2026-10-23,Wildwood,13.34,10.65,22.68,stage-daily-evidence,12.3,13.0,0.225,,Thursday+Friday,0.966,,seat-regression-v31-evidence-integrity,after-friday,13.42,Thursday-Sunday,1,2026-10-24T08:36:09Z,wildwood-opening-weekend-box-office,12m-14m,0.5155,12m-14m,0.5155,12.23

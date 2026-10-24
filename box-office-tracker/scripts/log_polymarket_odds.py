@@ -11,7 +11,14 @@ forecast has the market odds of the same moment next to it.
 Standalone (stdlib only): finalize does not install playwright, which
 scraper.py imports. Advisory: any error prints a ::warning:: and exits 0.
 
-    python3 scripts/log_polymarket_odds.py
+It then fills the poly_* columns of the prediction-log rows written within
+ODDS_MATCH_MINUTES of a logged snapshot: which bracket our headline lands in
+and the market's probability for it, the market favourite, and the market's
+implied median (2026-10-24: "predictions should also have equivalent poly odds
+recorded"). Films without a market keep the columns blank.
+
+    python3 scripts/log_polymarket_odds.py               # snapshot + annotate
+    python3 scripts/log_polymarket_odds.py --annotate-only
 """
 import csv
 import json
@@ -24,6 +31,10 @@ from datetime import datetime, timedelta, timezone
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 ODDS_LOG = os.path.join(DATA_DIR, "polymarket-odds-log.csv")
+PREDICTION_LOG = os.path.join(DATA_DIR, "prediction-log.csv")
+ODDS_MATCH_MINUTES = 90
+POLY_FIELDS = ["poly_logged_at", "poly_event", "poly_bracket", "poly_bracket_prob",
+               "poly_favorite", "poly_favorite_prob", "poly_implied_mid_m"]
 SEARCH_URL = "https://gamma-api.polymarket.com/public-search"
 FIELDS = ["logged_at", "weekend_of", "movie", "event_slug", "bracket", "yes_price",
           "best_bid", "best_ask", "last_trade", "volume", "market_id"]
@@ -114,19 +125,144 @@ def append(rows, path=ODDS_LOG):
         w.writerows(rows)
 
 
-def main():
-    now = datetime.now(timezone.utc)
+def title_key(title):
+    text = re.sub(r"[^a-z0-9 ]", " ", (title or "").lower())
+    text = re.sub(r"^(the|a|an)\s+", "", text.strip())
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def bracket_range(label):
+    """'<22m' -> (None, 22), '22m-25m' / '2-3M' -> (22, 25), '37m+' -> (37, None)."""
+    text = (label or "").lower().replace("$", "").replace(" ", "")
+    num = r"(\d+(?:\.\d+)?)m?"
+    m = re.fullmatch(r"<" + num, text)
+    if m:
+        return None, float(m.group(1))
+    m = re.fullmatch(num + r"-" + num, text)
+    if m:
+        return float(m.group(1)), float(m.group(2))
+    m = re.fullmatch(num + r"\+", text)
+    if m:
+        return float(m.group(1)), None
+    return None
+
+
+def market_summary(brackets, mid_m):
+    """brackets: [(label, yes_price)] for one event at one moment."""
+    parsed = []
+    for label, price in brackets:
+        rng = bracket_range(label)
+        if rng is None or price in ("", None):
+            continue
+        parsed.append((rng[0] if rng[0] is not None else float("-inf"), rng, label, float(price)))
+    if not parsed:
+        return {}
+    parsed.sort()
+    total = sum(p for *_, p in parsed) or 1.0
+    fav = max(parsed, key=lambda b: b[3])
+    out = {"poly_favorite": fav[2], "poly_favorite_prob": round(fav[3], 4)}
+    for _, (lo, hi), label, price in parsed:
+        if (lo is None or mid_m >= lo) and (hi is None or mid_m < hi):
+            out.update(poly_bracket=label, poly_bracket_prob=round(price, 4))
+    # Implied median: walk the normalised CDF, interpolate inside the bracket;
+    # open-ended ends borrow the width of their neighbour.
+    widths = [hi - lo for _, (lo, hi), _, _ in parsed if lo is not None and hi is not None]
+    width = widths[0] if widths else 1.0
+    cum = 0.0
+    for _, (lo, hi), _, price in parsed:
+        share = price / total
+        lo = max(0.0, hi - width) if lo is None else lo
+        hi = lo + width if hi is None else hi
+        if cum + share >= 0.5 and share > 0:
+            out["poly_implied_mid_m"] = round(lo + (0.5 - cum) / share * (hi - lo), 2)
+            break
+        cum += share
+    return out
+
+
+def _ts(text):
     try:
-        rows = odds_rows(fetch_events(), now)
+        return datetime.fromisoformat(str(text).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def annotate_prediction_log(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG):
+    """Fill blank poly_* columns from the nearest odds snapshot (same film and
+    weekend, within ODDS_MATCH_MINUTES). Returns the number of rows filled."""
+    if not (os.path.exists(pred_path) and os.path.exists(odds_path)):
+        return 0
+    snaps = {}  # (weekend, film key) -> {logged_at: {slug: [(bracket, price, volume)]}}
+    with open(odds_path, newline="") as f:
+        for r in csv.DictReader(f):
+            snaps.setdefault((r["weekend_of"], title_key(r["movie"])), {}) \
+                 .setdefault(r["logged_at"], {}).setdefault(r["event_slug"], []) \
+                 .append((r["bracket"], r["yes_price"], r.get("volume") or ""))
+    with open(pred_path, newline="") as f:
+        reader = csv.DictReader(f)
+        fields = list(reader.fieldnames or [])
+        rows = list(reader)
+    fields += [c for c in POLY_FIELDS if c not in fields]
+    filled = 0
+    for row in rows:
+        if row.get("poly_logged_at"):
+            continue
+        by_time = snaps.get((row.get("weekend_of", ""), title_key(row.get("movie"))))
+        when = _ts(row.get("logged_at"))
+        try:
+            mid = float(row.get("headline_mid_m") or 0)
+        except ValueError:
+            mid = 0
+        if not by_time or when is None or mid <= 0:
+            continue
+        near = [(abs((_ts(t) - when).total_seconds()), t) for t in by_time if _ts(t)]
+        near = [x for x in near if x[0] <= ODDS_MATCH_MINUTES * 60]
+        if not near:
+            continue
+        at = min(near)[1]
+        events = by_time[at]
+
+        def weight(item):
+            slug, brackets = item
+            vol = sum(float(v) for _, _, v in brackets if v not in ("", None))
+            return (vol, -len(slug))  # main event: most volume, else shortest slug
+        slug, brackets = max(events.items(), key=weight)
+        summary = market_summary([(b, p) for b, p, _ in brackets], mid)
+        if not summary:
+            continue
+        row.update({k: "" for k in POLY_FIELDS})
+        row.update(summary, poly_logged_at=at, poly_event=slug)
+        filled += 1
+    if filled:
+        tmp = pred_path + ".tmp"
+        with open(tmp, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            w.writerows(rows)
+        os.replace(tmp, pred_path)
+    return filled
+
+
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    now = datetime.now(timezone.utc)
+    if "--annotate-only" not in argv:
+        try:
+            rows = odds_rows(fetch_events(), now)
+        except Exception as exc:  # advisory
+            print(f"::warning::Polymarket odds snapshot failed: {type(exc).__name__}: {exc}")
+            rows = []
+        if rows:
+            append(rows)
+            films = sorted({r["movie"] for r in rows})
+            print(f"Polymarket odds: logged {len(rows)} brackets for {len(films)} film(s): {', '.join(films)}")
+        else:
+            print("Polymarket odds: no live opening-weekend brackets")
+    try:
+        n = annotate_prediction_log()
+        print(f"Polymarket odds: filled poly_* on {n} prediction-log row(s)")
     except Exception as exc:  # advisory
-        print(f"::warning::Polymarket odds snapshot failed: {type(exc).__name__}: {exc}")
-        return 0
-    if not rows:
-        print("Polymarket odds: no live opening-weekend brackets")
-        return 0
-    append(rows)
-    films = sorted({r["movie"] for r in rows})
-    print(f"Polymarket odds: logged {len(rows)} brackets for {len(films)} film(s): {', '.join(films)}")
+        print(f"::warning::prediction-log poly annotation failed: {type(exc).__name__}: {exc}")
     return 0
 
 
