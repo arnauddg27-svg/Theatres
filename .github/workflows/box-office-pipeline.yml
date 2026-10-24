@@ -881,6 +881,13 @@ jobs:
           if [ "$HAS_PROXY" = "true" ]; then export SNAPSHOT_TOP_THEATRE_CAP=1000; else export SNAPSHOT_TOP_THEATRE_CAP=120; fi
           python predict.py
 
+      - name: Log Polymarket odds next to the forecasts
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Advisory (exits 0): a timestamped bracket snapshot per finalize, so
+        # every prediction-log row has the market odds of the same moment.
+        run: python3 scripts/log_polymarket_odds.py
+
       - name: Refresh Excel workbook
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker

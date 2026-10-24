@@ -1704,9 +1704,12 @@ def _fetch_polymarket_events_feed():
 
 def _fetch_polymarket_public_search_events():
     url = "https://gamma-api.polymarket.com/public-search"
+    # limit_per_type, not limit: `limit` alone returns 5 events, and on
+    # 2026-10-24 that missed the live Ali G and Klara and the Sun markets.
     params = {
         "q": "box office",
-        "limit": 50,
+        "limit_per_type": 50,
+        "events_status": "active",
     }
     resp = requests.get(url, params=params, timeout=15)
     resp.raise_for_status()

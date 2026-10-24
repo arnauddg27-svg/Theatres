@@ -23,6 +23,7 @@ OUTPUT_FILES = [
     "box-office-tracker/data/movie-metadata.csv",
     "box-office-tracker/data/census-coverage.csv",
     "box-office-tracker/data/prediction-log.csv",
+    "box-office-tracker/data/polymarket-odds-log.csv",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"

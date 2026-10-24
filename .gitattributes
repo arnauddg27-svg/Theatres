@@ -14,3 +14,4 @@
 box-office-tracker/data/seat-counts.csv         merge=union
 box-office-tracker/data/pre-reservation-snapshots.csv merge=union
 box-office-tracker/data/polymarket-markets.csv  merge=union
+box-office-tracker/data/polymarket-odds-log.csv  merge=union
