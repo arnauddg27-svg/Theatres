@@ -24,6 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fandango_collect import filter_unchanged  # noqa: E402
 from fandango_collect import append_unique_fandango_rows, slugify_title  # noqa: E402
+import small_film_gate  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 HARKINS_CSV = DATA_DIR / "harkins-pre-reservation-snapshots.csv"
@@ -237,9 +238,11 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if mode == "post":
         by_id = {int(t["id"]): t for t in theatres}
         sessions_by_theatre = stored_sessions_by_theatre(weekend_of)
+        # Stored performances predate any small-film drop; honour it here too.
+        gated = small_film_gate.dropped_titles(weekend_of)
         for tid, perf, title in stored_post_performances(weekend_of, now_utc):
             th = by_id.get(tid)
-            if not th:
+            if not th or small_film_gate.title_key(title) in gated:
                 continue
             totals["matched"] += 1
             try:

@@ -30,6 +30,7 @@ from zoneinfo import ZoneInfo
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fandango_collect import (  # noqa: E402
     FANDANGO_PRE_RESERVATION_FIELDS, append_unique_fandango_rows, filter_unchanged, slugify_title)
+import small_film_gate  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 ALAMO_CSV = DATA_DIR / "alamo-pre-reservation-snapshots.csv"
@@ -215,7 +216,10 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     run_id = f"alamo-{now_utc.strftime('%Y-%m-%dT%H:%MZ')}"
     print(f"Alamo collect [{mode}] • weekend_of={weekend_of} • titles={titles}", flush=True)
     if mode == "post":
-        picks = stored_post_sessions(weekend_of, now_utc)
+        # Stored sessions predate any small-film drop; honour it here too.
+        gated = small_film_gate.dropped_titles(weekend_of)
+        picks = [p for p in stored_post_sessions(weekend_of, now_utc)
+                 if small_film_gate.title_key(p[2]) not in gated]
     else:
         picks = []
         markets = _get("/v1/page/cclamp?useUnifiedSchedule=true")["data"]["marketSummaries"]

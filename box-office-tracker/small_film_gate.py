@@ -25,7 +25,7 @@ PREDICTION_LOG = Path(__file__).resolve().parent / "data" / "prediction-log.csv"
 _REPORTED = set()
 
 
-def _key(title):
+def title_key(title):
     text = re.sub(r"[^a-z0-9 ]", " ", (title or "").lower())
     text = re.sub(r"^(the|a|an)\s+", "", text.strip())
     return re.sub(r"\s+", " ", text).strip()
@@ -64,7 +64,7 @@ def dropped_titles(weekend_of, path=None):
                 except ValueError:
                     continue
                 if mid > 0:
-                    mids.setdefault(_key(row.get("movie")), []).append(((row.get("logged_at") or ""), mid))
+                    mids.setdefault(title_key(row.get("movie")), []).append(((row.get("logged_at") or ""), mid))
     except OSError:
         return {}
     floor, need = min_forecast_m(), consecutive()
@@ -77,7 +77,7 @@ def dropped_titles(weekend_of, path=None):
 
 
 def is_dropped(title, weekend_of, path=None):
-    return _key(title) in dropped_titles(weekend_of, path=path)
+    return title_key(title) in dropped_titles(weekend_of, path=path)
 
 
 def filter_titles(titles, weekend_of, label="", path=None):
@@ -88,10 +88,10 @@ def filter_titles(titles, weekend_of, label="", path=None):
         return titles
     kept, gone = [], []
     for t in titles:
-        (gone if _key(t) in dropped else kept).append(t)
-    fresh = [t for t in gone if (weekend_of, _key(t)) not in _REPORTED]
+        (gone if title_key(t) in dropped else kept).append(t)
+    fresh = [t for t in gone if (weekend_of, title_key(t)) not in _REPORTED]
     if fresh:
-        _REPORTED.update((weekend_of, _key(t)) for t in fresh)
-        print(f"  ✂️  {label or 'slate'}: not collecting {', '.join(f'{t} (${dropped[_key(t)]:.2f}M)' for t in fresh)}"
+        _REPORTED.update((weekend_of, title_key(t)) for t in fresh)
+        print(f"  ✂️  {label or 'slate'}: not collecting {', '.join(f'{t} (${dropped[title_key(t)]:.2f}M)' for t in fresh)}"
               f" — forecast under ${min_forecast_m():.1f}M on the last {consecutive()} calls (SMALL_FILM_GATE)")
     return kept
