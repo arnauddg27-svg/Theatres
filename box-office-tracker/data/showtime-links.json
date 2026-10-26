@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-26",
-  "collected_at": "2026-10-26T18:49:57.403673+00:00",
+  "collected_at": "2026-10-26T19:19:21.597287+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -21599,7 +21599,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004802+00:00",
+          "collected_at": "2026-10-26T19:19:21.572067+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -21644,7 +21644,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004806+00:00",
+          "collected_at": "2026-10-26T19:19:21.572080+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -21689,7 +21689,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004797+00:00",
+          "collected_at": "2026-10-26T19:19:21.572054+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -21826,7 +21826,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005084+00:00",
+          "collected_at": "2026-10-26T19:19:21.571731+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -21875,7 +21875,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004923+00:00",
+          "collected_at": "2026-10-26T19:19:21.571745+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -21924,7 +21924,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005015+00:00",
+          "collected_at": "2026-10-26T19:19:21.571711+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22095,7 +22095,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005134+00:00",
+          "collected_at": "2026-10-26T19:19:21.572544+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -22144,7 +22144,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005190+00:00",
+          "collected_at": "2026-10-26T19:19:21.572564+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22198,7 +22198,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005167+00:00",
+          "collected_at": "2026-10-26T19:03:00.576831+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22345,7 +22345,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005066+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22392,7 +22392,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004970+00:00",
+          "collected_at": "2026-10-26T19:19:21.571810+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -22439,41 +22439,51 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004991+00:00",
+          "collected_at": "2026-10-26T19:19:21.571820+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147747150",
+            "showtime": "5:15pm",
+            "showtime_id": "147747151",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147760676",
+            "showtime": "12:30pm",
+            "showtime_id": "147760668",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147760677",
+            "showtime": "3:30pm",
+            "showtime_id": "147760669",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147760763",
+            "showtime": "7:30pm",
+            "showtime_id": "147760722",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147760723",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147747139",
+            "showtime": "7:00pm",
+            "showtime_id": "147747144",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147747140",
             "format": "Laser at AMC"
           }
         ]
@@ -22516,7 +22526,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004840+00:00",
+          "collected_at": "2026-10-26T19:19:21.572128+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -22534,7 +22544,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004844+00:00",
+          "collected_at": "2026-10-26T19:19:21.572157+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22552,7 +22562,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004848+00:00",
+          "collected_at": "2026-10-26T19:19:21.572142+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22612,7 +22622,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005158+00:00",
+          "collected_at": "2026-10-26T19:19:21.572559+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -22637,7 +22647,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005571+00:00",
+          "collected_at": "2026-10-26T19:19:21.572436+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22667,7 +22677,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005125+00:00",
+          "collected_at": "2026-10-26T19:19:21.572467+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22710,7 +22720,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004951+00:00",
+          "collected_at": "2026-10-26T19:03:00.576915+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22723,7 +22733,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005061+00:00",
+          "collected_at": "2026-10-26T19:19:21.572209+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -22736,7 +22746,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005038+00:00",
+          "collected_at": "2026-10-26T19:19:21.572195+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22799,7 +22809,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005208+00:00",
+          "collected_at": "2026-10-26T19:19:21.572517+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -22822,7 +22832,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005444+00:00",
+          "collected_at": "2026-10-26T19:19:21.571962+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -22845,7 +22855,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005217+00:00",
+          "collected_at": "2026-10-26T19:19:21.571569+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -22946,7 +22956,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005258+00:00",
+          "collected_at": "2026-10-26T19:19:21.572347+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -22978,7 +22988,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005234+00:00",
+          "collected_at": "2026-10-26T19:19:21.572315+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -23010,7 +23020,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005491+00:00",
+          "collected_at": "2026-10-26T19:19:21.572330+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -23189,7 +23199,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004918+00:00",
+          "collected_at": "2026-10-26T19:19:21.571909+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -23253,7 +23263,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004928+00:00",
+          "collected_at": "2026-10-26T19:19:21.571915+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -23312,7 +23322,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004937+00:00",
+          "collected_at": "2026-10-26T19:19:21.571925+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -23436,7 +23446,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005280+00:00",
+          "collected_at": "2026-10-26T19:19:21.572370+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -23464,7 +23474,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005505+00:00",
+          "collected_at": "2026-10-26T19:19:21.572356+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -23492,7 +23502,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005328+00:00",
+          "collected_at": "2026-10-26T19:19:21.572388+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -23569,7 +23579,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004946+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -23594,7 +23604,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004960+00:00",
+          "collected_at": "2026-10-26T19:19:21.571949+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -23619,29 +23629,29 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004974+00:00",
+          "collected_at": "2026-10-26T19:19:21.571955+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147623236",
+            "showtime": "4:30pm",
+            "showtime_id": "147623151",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147623157",
+            "showtime": "7:00pm",
+            "showtime_id": "147623174",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:25pm",
-            "showtime_id": "147623158",
+            "showtime": "10:25pm",
+            "showtime_id": "147623175",
             "format": "Laser at AMC"
           }
         ]
@@ -23781,7 +23791,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004982+00:00",
+          "collected_at": "2026-10-26T19:03:00.576219+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -23835,7 +23845,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004996+00:00",
+          "collected_at": "2026-10-26T19:19:21.571966+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -23889,7 +23899,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005005+00:00",
+          "collected_at": "2026-10-26T19:19:21.571995+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -24085,7 +24095,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005033+00:00",
+          "collected_at": "2026-10-26T19:19:21.572023+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -24139,7 +24149,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005047+00:00",
+          "collected_at": "2026-10-26T19:19:21.572045+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -24183,7 +24193,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005057+00:00",
+          "collected_at": "2026-10-26T19:19:21.572062+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -24335,7 +24345,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005479+00:00",
+          "collected_at": "2026-10-26T19:19:21.571684+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -24382,7 +24392,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005248+00:00",
+          "collected_at": "2026-10-26T19:19:21.571665+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -24429,7 +24439,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005243+00:00",
+          "collected_at": "2026-10-26T19:19:21.571706+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -24554,7 +24564,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005267+00:00",
+          "collected_at": "2026-10-26T19:19:21.571771+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -24586,7 +24596,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005345+00:00",
+          "collected_at": "2026-10-26T19:19:21.571796+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -24618,7 +24628,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005496+00:00",
+          "collected_at": "2026-10-26T19:19:21.571786+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -24705,7 +24715,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004788+00:00",
+          "collected_at": "2026-10-26T19:19:21.571756+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -24718,7 +24728,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004881+00:00",
+          "collected_at": "2026-10-26T19:19:21.571892+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -24731,7 +24741,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005182+00:00",
+          "collected_at": "2026-10-26T19:19:21.571740+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -24818,7 +24828,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005120+00:00",
+          "collected_at": "2026-10-26T19:19:21.572152+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -24858,7 +24868,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005129+00:00",
+          "collected_at": "2026-10-26T19:19:21.572162+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -24898,7 +24908,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005142+00:00",
+          "collected_at": "2026-10-26T19:03:00.576335+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -25095,7 +25105,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004904+00:00",
+          "collected_at": "2026-10-26T19:19:21.571842+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -25174,7 +25184,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004754+00:00",
+          "collected_at": "2026-10-26T19:19:21.571814+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -25263,7 +25273,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004721+00:00",
+          "collected_at": "2026-10-26T19:19:21.571848+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -25467,7 +25477,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005535+00:00",
+          "collected_at": "2026-10-26T19:19:21.571827+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -25514,7 +25524,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005369+00:00",
+          "collected_at": "2026-10-26T19:19:21.571831+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -25561,7 +25571,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005549+00:00",
+          "collected_at": "2026-10-26T19:19:21.571836+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -25674,7 +25684,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004858+00:00",
+          "collected_at": "2026-10-26T19:19:21.572341+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -25694,7 +25704,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005138+00:00",
+          "collected_at": "2026-10-26T19:03:00.576602+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -25714,7 +25724,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004704+00:00",
+          "collected_at": "2026-10-26T19:19:21.572049+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -25798,7 +25808,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005204+00:00",
+          "collected_at": "2026-10-26T19:19:21.572249+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -25818,7 +25828,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005212+00:00",
+          "collected_at": "2026-10-26T19:19:21.572262+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -25838,7 +25848,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005221+00:00",
+          "collected_at": "2026-10-26T19:19:21.572275+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -25915,7 +25925,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005319+00:00",
+          "collected_at": "2026-10-26T19:19:21.571854+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -25940,7 +25950,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005391+00:00",
+          "collected_at": "2026-10-26T19:19:21.571858+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -25960,7 +25970,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005522+00:00",
+          "collected_at": "2026-10-26T19:03:00.577080+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -26087,7 +26097,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004987+00:00",
+          "collected_at": "2026-10-26T19:19:21.571638+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -26136,7 +26146,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004868+00:00",
+          "collected_at": "2026-10-26T19:19:21.571583+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -26185,7 +26195,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005019+00:00",
+          "collected_at": "2026-10-26T19:19:21.571575+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -26264,7 +26274,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005518+00:00",
+          "collected_at": "2026-10-26T19:19:21.571869+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -26277,7 +26287,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005286+00:00",
+          "collected_at": "2026-10-26T19:19:21.571882+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -26290,7 +26300,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005510+00:00",
+          "collected_at": "2026-10-26T19:19:21.571897+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -26369,7 +26379,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004889+00:00",
+          "collected_at": "2026-10-26T19:19:21.572092+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -26416,7 +26426,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004965+00:00",
+          "collected_at": "2026-10-26T19:19:21.572076+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -26463,7 +26473,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004731+00:00",
+          "collected_at": "2026-10-26T19:19:21.571725+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -26581,7 +26591,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005195+00:00",
+          "collected_at": "2026-10-26T19:19:21.572294+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -26633,7 +26643,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004777+00:00",
+          "collected_at": "2026-10-26T19:19:21.572138+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -26675,46 +26685,46 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005080+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147752483",
+            "showtime": "4:30pm",
+            "showtime_id": "147752486",
             "format": "AMC Artisan Films"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147935893",
+            "showtime": "10:00am",
+            "showtime_id": "147935900",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "147935894",
+            "showtime": "1:00pm",
+            "showtime_id": "147935901",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147935946",
+            "showtime": "4:00pm",
+            "showtime_id": "147935906",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "147935907",
             "format": "undefined"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147752496",
-            "format": "undefined"
-          },
-          {
             "showtime": "7:15pm",
-            "showtime_id": "147752513",
+            "showtime_id": "147752509",
             "format": "undefined"
           }
         ]
@@ -26819,7 +26829,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005340+00:00",
+          "collected_at": "2026-10-26T19:19:21.572478+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -26868,7 +26878,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005350+00:00",
+          "collected_at": "2026-10-26T19:19:21.572498+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -26917,7 +26927,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005355+00:00",
+          "collected_at": "2026-10-26T19:19:21.572511+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27011,7 +27021,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005545+00:00",
+          "collected_at": "2026-10-26T19:19:21.572011+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27024,7 +27034,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005436+00:00",
+          "collected_at": "2026-10-26T19:19:21.572030+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -27037,32 +27047,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005580+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148134720",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "148134722",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "148134724",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "148134663",
+            "showtime": "6:45pm",
+            "showtime_id": "148134708",
             "format": "Laser at AMC"
           }
         ]
@@ -27172,7 +27167,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005365+00:00",
+          "collected_at": "2026-10-26T19:19:21.571597+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27226,7 +27221,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005374+00:00",
+          "collected_at": "2026-10-26T19:19:21.571622+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -27275,7 +27270,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005360+00:00",
+          "collected_at": "2026-10-26T19:19:21.572530+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27384,7 +27379,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005440+00:00",
+          "collected_at": "2026-10-26T19:19:21.572041+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -27407,7 +27402,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005432+00:00",
+          "collected_at": "2026-10-26T19:19:21.572058+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27430,7 +27425,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005428+00:00",
+          "collected_at": "2026-10-26T19:19:21.572071+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27507,7 +27502,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004814+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -27527,7 +27522,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004853+00:00",
+          "collected_at": "2026-10-26T19:19:21.572179+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27547,34 +27542,24 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004782+00:00",
+          "collected_at": "2026-10-26T19:19:21.571608+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148211499",
-            "format": "undefined"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "148211494",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "148211495",
+            "showtime": "7:30pm",
+            "showtime_id": "148211497",
             "format": "undefined"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148210371",
+            "showtime": "4:00pm",
+            "showtime_id": "148210373",
             "format": "AMC Artisan Films"
           }
         ]
@@ -27607,7 +27592,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005378+00:00",
+          "collected_at": "2026-10-26T19:19:21.571632+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -27620,7 +27605,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005382+00:00",
+          "collected_at": "2026-10-26T19:19:21.571658+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27633,7 +27618,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005387+00:00",
+          "collected_at": "2026-10-26T19:19:21.571675+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27686,7 +27671,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005395+00:00",
+          "collected_at": "2026-10-26T19:19:21.571694+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -27709,7 +27694,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005400+00:00",
+          "collected_at": "2026-10-26T19:19:21.571716+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27732,7 +27717,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005404+00:00",
+          "collected_at": "2026-10-26T19:19:21.571736+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27795,7 +27780,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004827+00:00",
+          "collected_at": "2026-10-26T19:19:21.571702+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -27818,7 +27803,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005150+00:00",
+          "collected_at": "2026-10-26T19:19:21.571680+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27841,7 +27826,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004710+00:00",
+          "collected_at": "2026-10-26T19:03:00.576708+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -27924,7 +27909,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005593+00:00",
+          "collected_at": "2026-10-26T19:19:21.572124+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -27952,7 +27937,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005335+00:00",
+          "collected_at": "2026-10-26T19:19:21.572133+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -27980,7 +27965,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:16:41.864809+00:00",
+          "collected_at": "2026-10-26T19:19:21.572147+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -28101,7 +28086,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005553+00:00",
+          "collected_at": "2026-10-26T19:19:21.572184+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -28148,7 +28133,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005531+00:00",
+          "collected_at": "2026-10-26T19:19:21.572199+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -28195,7 +28180,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005527+00:00",
+          "collected_at": "2026-10-26T19:19:21.572213+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -28321,7 +28306,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005146+00:00",
+          "collected_at": "2026-10-26T19:19:21.572553+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -28361,7 +28346,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005116+00:00",
+          "collected_at": "2026-10-26T19:03:00.576778+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -28401,7 +28386,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005111+00:00",
+          "collected_at": "2026-10-26T19:19:21.572537+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -28510,7 +28495,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005423+00:00",
+          "collected_at": "2026-10-26T19:19:21.572225+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -28540,7 +28525,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005449+00:00",
+          "collected_at": "2026-10-26T19:19:21.572243+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -28570,7 +28555,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005540+00:00",
+          "collected_at": "2026-10-26T19:19:21.572234+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -28707,7 +28692,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005487+00:00",
+          "collected_at": "2026-10-26T19:19:21.572256+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -28751,7 +28736,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005474+00:00",
+          "collected_at": "2026-10-26T19:19:21.572281+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -28795,7 +28780,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005500+00:00",
+          "collected_at": "2026-10-26T19:19:21.572269+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -28908,7 +28893,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005463+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -28928,7 +28913,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005513+00:00",
+          "collected_at": "2026-10-26T19:19:21.572320+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -28948,39 +28933,24 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005588+00:00",
+          "collected_at": "2026-10-26T19:19:21.572335+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148008974",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "148008976",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "148008978",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148009015",
+            "showtime": "8:15pm",
+            "showtime_id": "148008628",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147704771",
+            "showtime": "5:15pm",
+            "showtime_id": "147704772",
             "format": "Laser at AMC"
           }
         ]
@@ -29063,7 +29033,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005565+00:00",
+          "collected_at": "2026-10-26T19:03:00.576486+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -29095,7 +29065,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005584+00:00",
+          "collected_at": "2026-10-26T19:19:21.572363+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -29127,7 +29097,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005469+00:00",
+          "collected_at": "2026-10-26T19:19:21.572375+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -29240,7 +29210,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004746+00:00",
+          "collected_at": "2026-10-26T19:19:21.571902+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -29282,7 +29252,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004736+00:00",
+          "collected_at": "2026-10-26T19:19:21.571878+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -29324,7 +29294,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004741+00:00",
+          "collected_at": "2026-10-26T19:03:00.576806+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -29449,7 +29419,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004913+00:00",
+          "collected_at": "2026-10-26T19:19:21.572423+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -29481,7 +29451,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005029+00:00",
+          "collected_at": "2026-10-26T19:19:21.572429+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -29513,7 +29483,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004942+00:00",
+          "collected_at": "2026-10-26T19:19:21.572444+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -29595,7 +29565,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004763+00:00",
+          "collected_at": "2026-10-26T19:19:21.571929+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -29608,7 +29578,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004768+00:00",
+          "collected_at": "2026-10-26T19:19:21.571945+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -29621,7 +29591,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004759+00:00",
+          "collected_at": "2026-10-26T19:19:21.571920+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -29732,7 +29702,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004933+00:00",
+          "collected_at": "2026-10-26T19:19:21.572454+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -29779,7 +29749,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005102+00:00",
+          "collected_at": "2026-10-26T19:19:21.572473+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -29826,7 +29796,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004978+00:00",
+          "collected_at": "2026-10-26T19:19:21.572460+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -29990,7 +29960,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005010+00:00",
+          "collected_at": "2026-10-26T19:19:21.572492+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30044,7 +30014,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005025+00:00",
+          "collected_at": "2026-10-26T19:19:21.572505+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -30098,7 +30068,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004863+00:00",
+          "collected_at": "2026-10-26T19:19:21.572523+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -30202,7 +30172,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004956+00:00",
+          "collected_at": "2026-10-26T19:19:21.571653+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30225,7 +30195,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005075+00:00",
+          "collected_at": "2026-10-26T19:19:21.571671+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -30248,7 +30218,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004909+00:00",
+          "collected_at": "2026-10-26T19:19:21.571689+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -30305,7 +30275,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005633+00:00",
+          "collected_at": "2026-10-26T19:19:21.572610+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30325,7 +30295,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005646+00:00",
+          "collected_at": "2026-10-26T19:19:21.572637+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -30345,7 +30315,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005660+00:00",
+          "collected_at": "2026-10-26T19:19:21.572656+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -30456,7 +30426,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005620+00:00",
+          "collected_at": "2026-10-26T19:19:21.572616+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -30491,7 +30461,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005597+00:00",
+          "collected_at": "2026-10-26T19:03:00.577175+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30526,51 +30496,39 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005605+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "147999781",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "147999777",
+            "showtime": "7:15pm",
+            "showtime_id": "147999778",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147793708",
+            "showtime": "1:00pm",
+            "showtime_id": "147793831",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147793833",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147793840",
+            "showtime": "7:00pm",
+            "showtime_id": "147793832",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147793709",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Fjord": [
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "147680458",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "147680258",
+            "showtime": "10:15pm",
+            "showtime_id": "147793699",
             "format": "Laser at AMC"
           }
         ]
@@ -30661,7 +30619,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005675+00:00",
+          "collected_at": "2026-10-26T19:19:21.572668+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -30703,7 +30661,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005684+00:00",
+          "collected_at": "2026-10-26T19:19:21.572691+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30745,7 +30703,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005680+00:00",
+          "collected_at": "2026-10-26T19:19:21.572683+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -30817,7 +30775,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005670+00:00",
+          "collected_at": "2026-10-26T19:19:21.572675+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -30830,7 +30788,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005666+00:00",
+          "collected_at": "2026-10-26T19:19:21.572662+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -30843,7 +30801,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005650+00:00",
+          "collected_at": "2026-10-26T19:19:21.572643+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -30949,7 +30907,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005654+00:00",
+          "collected_at": "2026-10-26T19:19:21.572649+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -30996,7 +30954,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005628+00:00",
+          "collected_at": "2026-10-26T19:19:21.572623+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -31043,7 +31001,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005637+00:00",
+          "collected_at": "2026-10-26T19:19:21.572630+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -31136,7 +31094,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004836+00:00",
+          "collected_at": "2026-10-26T19:19:21.572120+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -31183,7 +31141,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004823+00:00",
+          "collected_at": "2026-10-26T19:19:21.572103+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -31230,7 +31188,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004831+00:00",
+          "collected_at": "2026-10-26T19:19:21.572114+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -31392,7 +31350,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005253+00:00",
+          "collected_at": "2026-10-26T19:19:21.571643+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -31456,7 +31414,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005483+00:00",
+          "collected_at": "2026-10-26T19:03:00.577001+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -31520,7 +31478,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005458+00:00",
+          "collected_at": "2026-10-26T19:19:21.571612+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -31672,7 +31630,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005575+00:00",
+          "collected_at": "2026-10-26T19:19:21.572393+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -31702,7 +31660,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005561+00:00",
+          "collected_at": "2026-10-26T19:19:21.572405+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -31732,7 +31690,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004873+00:00",
+          "collected_at": "2026-10-26T19:19:21.572417+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -31802,7 +31760,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004810+00:00",
+          "collected_at": "2026-10-26T19:19:21.572016+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -31822,7 +31780,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004726+00:00",
+          "collected_at": "2026-10-26T19:19:21.572449+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -31842,7 +31800,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004819+00:00",
+          "collected_at": "2026-10-26T19:19:21.571940+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -31924,7 +31882,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005453+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -31942,7 +31900,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-26T19:19:21.572172+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -31960,22 +31918,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005557+00:00",
+          "collected_at": "2026-10-26T19:03:00.577043+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Everest: The Other Side": [
           {
             "showtime": "1:15pm",
-            "showtime_id": "147755781",
+            "showtime_id": "147755777",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "147755783",
+            "showtime_id": "147755779",
             "format": "IMAX at AMC"
           }
         ]
@@ -32014,7 +31972,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004894+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -32046,7 +32004,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005071+00:00",
+          "collected_at": "2026-10-26T19:19:21.571618+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -32078,7 +32036,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005001+00:00",
+          "collected_at": "2026-10-26T19:19:21.571627+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -32125,41 +32083,31 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148169445",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:20pm",
-            "showtime_id": "148169461",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:05pm",
-            "showtime_id": "148169462",
-            "format": "Laser at AMC"
+            "showtime": "8:10pm",
+            "showtime_id": "148169396",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147714974",
+            "showtime": "4:10pm",
+            "showtime_id": "147714998",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147715026",
+            "showtime": "6:40pm",
+            "showtime_id": "147714988",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147714987",
+            "showtime": "10:10pm",
+            "showtime_id": "147714994",
             "format": "Laser at AMC"
           }
         ]
@@ -32220,7 +32168,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005042+00:00",
+          "collected_at": "2026-10-26T19:19:21.571761+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -32274,7 +32222,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005051+00:00",
+          "collected_at": "2026-10-26T19:19:21.571776+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -32328,7 +32276,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005093+00:00",
+          "collected_at": "2026-10-26T19:19:21.571790+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -32460,7 +32408,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004716+00:00",
+          "collected_at": "2026-10-26T19:19:21.572166+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -32480,7 +32428,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004750+00:00",
+          "collected_at": "2026-10-26T19:03:00.576510+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -32500,7 +32448,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004773+00:00",
+          "collected_at": "2026-10-26T19:19:21.572487+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -32567,7 +32515,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004877+00:00",
+          "collected_at": "2026-10-26T19:19:21.571864+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -32600,7 +32548,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004885+00:00",
+          "collected_at": "2026-10-26T19:19:21.571873+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -32633,7 +32581,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.004899+00:00",
+          "collected_at": "2026-10-26T19:19:21.571887+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -32777,7 +32725,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005162+00:00",
+          "collected_at": "2026-10-26T19:19:21.572190+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -32824,7 +32772,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005172+00:00",
+          "collected_at": "2026-10-26T19:19:21.572203+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -32969,7 +32917,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005200+00:00",
+          "collected_at": "2026-10-26T19:19:21.572238+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33068,7 +33016,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005177+00:00",
+          "collected_at": "2026-10-26T19:19:21.572219+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -33115,7 +33063,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005186+00:00",
+          "collected_at": "2026-10-26T19:19:21.572229+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -33203,7 +33151,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005225+00:00",
+          "collected_at": "2026-10-26T19:19:21.572287+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -33235,7 +33183,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005230+00:00",
+          "collected_at": "2026-10-26T19:19:21.572307+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -33267,7 +33215,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005238+00:00",
+          "collected_at": "2026-10-26T19:19:21.572325+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33375,7 +33323,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005271+00:00",
+          "collected_at": "2026-10-26T19:19:21.572398+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -33395,7 +33343,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005275+00:00",
+          "collected_at": "2026-10-26T19:19:21.572410+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -33415,7 +33363,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005262+00:00",
+          "collected_at": "2026-10-26T19:19:21.572382+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33523,7 +33471,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005409+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -33558,7 +33506,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005413+00:00",
+          "collected_at": "2026-10-26T19:19:21.571766+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33623,34 +33571,44 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005418+00:00",
+          "collected_at": "2026-10-26T19:19:21.571781+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
+            "showtime": "3:00pm",
+            "showtime_id": "147741776",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:15pm",
-            "showtime_id": "147741775",
+            "showtime_id": "147741777",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147922633",
+            "showtime": "1:20pm",
+            "showtime_id": "147922470",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:20pm",
-            "showtime_id": "147922631",
+            "showtime": "4:10pm",
+            "showtime_id": "147922471",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147922632",
+            "showtime": "7:10pm",
+            "showtime_id": "147922472",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147922473",
             "format": "Laser at AMC"
           }
         ]
@@ -33677,7 +33635,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005690+00:00",
+          "collected_at": "2026-10-26T19:19:21.572700+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -33697,7 +33655,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005602+00:00",
+          "collected_at": "2026-10-26T19:19:21.572574+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -33717,7 +33675,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005615+00:00",
+          "collected_at": "2026-10-26T19:19:21.572588+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33826,7 +33784,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005611+00:00",
+          "collected_at": "2026-10-26T19:19:21.572708+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -33861,7 +33819,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005624+00:00",
+          "collected_at": "2026-10-26T19:19:21.572581+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -33919,7 +33877,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005642+00:00",
+          "collected_at": "2026-10-26T19:19:21.572604+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -33993,7 +33951,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005106+00:00",
+          "collected_at": "2026-10-26T19:19:21.572108+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -34040,7 +33998,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005089+00:00",
+          "collected_at": "2026-10-26T19:19:21.572087+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -34087,7 +34045,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:29:38.005098+00:00",
+          "collected_at": "2026-10-26T19:19:21.572098+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -43027,12 +42985,101 @@
           }
         ]
       }
+    },
+    "AMC Edwardsville 12": {
+      "tz": "CT",
+      "cohort": "core",
+      "dates": {
+        "2026-10-29": {
+          "movies": {
+            "Christmas at the Kringles": [
+              {
+                "showtime": "2:05pm",
+                "showtime_id": "148223553",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148223554",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148223555",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-30": {
+          "movies": {
+            "Christmas at the Kringles": [
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148223556",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T19:19:21.571805+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-01": {
+          "movies": {
+            "Christmas at the Kringles": [
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148223558",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T19:19:21.571698+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-31": {
+          "movies": {
+            "Christmas at the Kringles": [
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148223557",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T19:19:21.571720+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-29",
+      "movies": {
+        "Christmas at the Kringles": [
+          {
+            "showtime": "2:05pm",
+            "showtime_id": "148223553",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148223554",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148223555",
+            "format": "undefined"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.1538,
-    "fresh": 8,
-    "expected": 52,
+    "ratio": 0.5543,
+    "fresh": 255,
+    "expected": 460,
     "min_ratio": 0.9,
     "degraded": true
   }
