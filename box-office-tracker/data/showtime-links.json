@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-26",
-  "collected_at": "2026-10-26T17:29:38.026957+00:00",
+  "collected_at": "2026-10-26T17:37:08.037194+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -34263,12 +34263,200 @@
           }
         ]
       }
+    },
+    "AMC Shiloh 14": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-29": {
+          "movies": {
+            "Everest: The Other Side": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147942541",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147942542",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147942543",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-01": {
+          "movies": {
+            "Everest: The Other Side": [
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147942513",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147942536",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "147942515",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030391+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-31": {
+          "movies": {
+            "Everest: The Other Side": [
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147942534",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147942535",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "147942511",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030419+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-30": {
+          "movies": {
+            "Everest: The Other Side": [
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "147942509",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147942540",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "147942531",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030411+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-29",
+      "movies": {
+        "Everest: The Other Side": [
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "147942541",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:10pm",
+            "showtime_id": "147942542",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147942543",
+            "format": "undefined"
+          }
+        ]
+      }
+    },
+    "AMC West Jordan 12": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-10-29": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148214210",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-01": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148214212",
+                "format": "Open Caption (On-screen Subtitles)"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030381+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-31": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148214211",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030371+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-30": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148214214",
+                "format": "AMC Artisan Films"
+              }
+            ]
+          },
+          "collected_at": "2026-10-26T17:37:08.030400+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-29",
+      "movies": {
+        "The Only Living Pickpocket in New York": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148214210",
+            "format": "AMC Artisan Films"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.5457,
-    "fresh": 251,
-    "expected": 460,
+    "ratio": 0.1538,
+    "fresh": 8,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": true
   }
