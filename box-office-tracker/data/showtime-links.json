@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-26",
-  "collected_at": "2026-10-26T17:59:56.243944+00:00",
+  "collected_at": "2026-10-26T18:07:50.818133+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -34311,7 +34311,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030391+00:00",
+          "collected_at": "2026-10-26T18:07:50.809811+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -34334,7 +34334,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030419+00:00",
+          "collected_at": "2026-10-26T18:07:50.809816+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -34357,7 +34357,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030411+00:00",
+          "collected_at": "2026-10-26T18:07:50.809826+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -34410,7 +34410,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030381+00:00",
+          "collected_at": "2026-10-26T18:07:50.809796+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -34423,7 +34423,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030371+00:00",
+          "collected_at": "2026-10-26T18:07:50.809839+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -34436,7 +34436,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T17:37:08.030400+00:00",
+          "collected_at": "2026-10-26T18:07:50.809805+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -43025,9 +43025,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.5317,
-    "fresh": 151,
-    "expected": 284,
+    "ratio": 0.1538,
+    "fresh": 8,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": true
   }
