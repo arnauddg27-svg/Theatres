@@ -888,6 +888,13 @@ jobs:
         # every prediction-log row has the market odds of the same moment.
         run: python3 scripts/log_polymarket_odds.py
 
+      - name: Paper-trade the forecasts against Polymarket
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Advisory (exits 0): bracket probabilities for every priced forecast,
+        # $1 paper bets where our edge is >= 10 pts, settled on final actuals.
+        run: python3 scripts/paper_trade.py
+
       - name: Refresh Excel workbook
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
