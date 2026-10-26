@@ -35,12 +35,15 @@ FIELDS = ["movie", "weekend_of", "genre", "audience_type", "franchise_type", "ra
 # Romance beats Drama/Thriller (Sense and Sensibility, 84% female, was
 # adult_drama). Sci-Fi is fan_driven only alongside Action/Adventure — see
 # map_genre (Klara and the Sun, a literary drama listed only as Sci-Fi).
+# 2026-10-26 audit: Documentary added (Everest: The Other Side, "Documentary /
+# Sport", matched nothing and was left with a blank audience_type).
 GENRE_MAP = [
     ("Animation", ("animation", "broad_family")),
     ("Horror", ("horror", "horror_fan")),
     ("Superhero", ("superhero", "fan_driven")),
     ("Musical", ("music_biopic", "female_skewing")),
     ("Music", ("music_biopic", "adult_drama")),
+    ("Documentary", ("drama", "adult_drama")),
     ("Biography", ("drama", "adult_drama")),
     ("Comedy", ("comedy", "broad_legacy")),
     ("Sci-Fi", ("action", "fan_driven")),

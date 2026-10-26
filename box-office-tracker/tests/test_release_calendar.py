@@ -150,3 +150,5 @@ class GenreMapPriorityTest(unittest.TestCase):
         self.assertEqual("fan_driven", F.map_genre(["Sci-Fi", "Action"])[1])
         self.assertEqual("female_skewing", F.map_genre(["Drama", "Romance"])[1])
         self.assertEqual("horror_fan", F.map_genre(["Horror", "Sci-Fi", "Thriller"])[1])
+        self.assertEqual(("drama", "adult_drama"), F.map_genre(["Documentary", "·", "Sport"]))
+        self.assertEqual("music_biopic", F.map_genre(["Documentary", "Music"])[0])
