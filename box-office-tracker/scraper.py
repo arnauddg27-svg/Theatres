@@ -2479,6 +2479,24 @@ def phase1_result(collected=None, reason="ok"):
     return out
 
 
+def phase1_saved_date_entry(collected, now_iso=None):
+    """The per-date payload to store for a Phase 1 outcome, or None when the
+    read settled nothing (blocked, challenge, queue, timeout, aborted...).
+    An authoritative empty listing is stored as movies={} with empty=True so
+    the coverage gate counts the theatre-date as read (phase1_date_entry)."""
+    reason = getattr(collected, "reason", "empty") if not collected else "ok"
+    if not collected and reason != "empty":
+        return None
+    payload = {
+        "movies": dict(collected or {}),
+        "collected_at": now_iso or datetime.now(timezone.utc).isoformat(),
+        "showtime_window_version": SHOWTIME_WINDOW_VERSION,
+    }
+    if not collected:
+        payload["empty"] = True
+    return payload
+
+
 PHASE1_TRANSIENT_REASONS = frozenset({"nav_error", "nav_timeout", "timeout"})
 # The subset that means the egress HUNG. A plain nav_error also covers a
 # crashed browser (TargetClosedError), which says nothing about the proxy.
@@ -3917,13 +3935,20 @@ def phase1_groups(tz_group):
 
 
 def phase1_date_entry(entry, expected_date):
-    """Return the link payload for expected_date from old or multi-date schema."""
+    """Return the link payload for expected_date from old or multi-date schema.
+
+    A date read cleanly whose listing had NO showtimes for any tracked film is
+    saved with movies={} and empty=True (see phase1_saved_date_entry) and
+    counts as fresh: on a weak slate (2026-10-26: five small openers, ~45% of
+    AMC theatres booking none of them) those theatres can never produce a
+    link, and treating them as stale held every leg at 52-68% coverage all
+    day, failing 23 collect-links runs on a market fact."""
     if not entry:
         return None
     dates = entry.get("dates") or {}
     if expected_date and isinstance(dates, dict):
         date_entry = dates.get(expected_date)
-        if date_entry and date_entry.get("movies"):
+        if date_entry and (date_entry.get("movies") or date_entry.get("empty")):
             return date_entry
     if expected_date and entry.get("show_date") != expected_date:
         return None
@@ -4049,6 +4074,8 @@ def merge_phase1_date_entries(old_date_entry, new_date_entry):
     )
     merged.update({k: v for k, v in new_date_entry.items() if k != "movies"})
     merged["movies"] = movies
+    if "empty" in merged:
+        merged["empty"] = not movies
     merged["showtime_window_version"] = new_date_entry.get(
         "showtime_window_version",
         old_date_entry.get("showtime_window_version", SHOWTIME_WINDOW_VERSION),
@@ -5752,7 +5779,8 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
         if isinstance(outcome, Exception):
             continue
         name, tz, show_date, collected = outcome
-        if collected:
+        payload = phase1_saved_date_entry(collected)
+        if payload is not None:
             theatre = theatre_by_key.get((name, tz, show_date), {})
             entry = links["theatres"].setdefault(name, {
                 "tz": tz,
@@ -5762,15 +5790,11 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
             entry["tz"] = tz
             entry["cohort"] = _theatre_cohort(theatre)
             entry["showtime_window_version"] = SHOWTIME_WINDOW_VERSION
-            entry.setdefault("dates", {})[show_date] = {
-                "movies": collected,
-                "collected_at": datetime.now(timezone.utc).isoformat(),
-                "showtime_window_version": SHOWTIME_WINDOW_VERSION,
-            }
-            if show_date == expected_dates.get(tz) or not entry.get("movies"):
+            entry.setdefault("dates", {})[show_date] = payload
+            if collected and (show_date == expected_dates.get(tz) or not entry.get("movies")):
                 entry["show_date"] = show_date
-                entry["movies"] = collected
-            total_links += sum(len(v) for v in collected.values())
+                entry["movies"] = dict(collected)
+            total_links += sum(len(v) for v in (collected or {}).values())
 
     existing = {}
     if LINKS_JSON.exists():
