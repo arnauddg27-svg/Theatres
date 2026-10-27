@@ -50,9 +50,10 @@ WEBEDIA_EST_SEATS = float(os.environ.get("WEBEDIA_EST_SEATS", "120"))
 MIN_SHOWINGS = {"AMC": 50, "CNMK": 50, "ALMO": 10, "HARK": 10, "REGL": 50}   # below: not "present"
 # REGAL (2026-10-27): Fandango's seat throttle allows ~2% of Regal showings, so
 # Regal is a SAMPLE, not a census: near-showtime reads (sample=census, or a
-# random read <= REGAL_MAX_LEAD_MIN before start) give mean $ per showing by
-# daypart, regal_inventory.py gives every showing; dollars = sum over dayparts
-# of mean x count. Pooled only once regal_pool_ok() says its graded record
+# random read <= REGAL_MAX_LEAD_MIN before start; after-start reads, which
+# include walk-ups, win where they exist) give mean $ per showing by stratum =
+# theatre size tier x daypart; regal_inventory.py gives every showing; dollars
+# = sum over strata of mean x count. Pooled only once regal_pool_ok() says its graded record
 # beats the pool without it.
 REGAL_MAX_LEAD_MIN = 60
 REGAL_MIN_READS = 30
@@ -277,24 +278,44 @@ def regal_day_dollars(weekend_of, dates, through_date=None):
         k = (r.get("movie_title"), r.get("show_date"), r.get("theatre_name"), r.get("showtime_id"))
         if k not in reads or (r.get("snapshot_time") or "") > (reads[k][0].get("snapshot_time") or ""):
             reads[k] = (r, sold)
+    # Strata = theatre size tier x daypart. The census visits the biggest
+    # theatres first, so the sample over-represents them; each stratum's mean
+    # is scaled by that stratum's own showing count from the inventory.
+    tier_of = {}
+    for k, perfs in inv.items():
+        per_theatre = {}
+        for th, _sid in perfs:
+            per_theatre[th] = per_theatre.get(th, 0) + 1
+        ranked = sorted(per_theatre, key=lambda th: -per_theatre[th])
+        n = len(ranked)
+        for i, th in enumerate(ranked):
+            tier_of[(k, th)] = 0 if i < n / 3 else 1 if i < 2 * n / 3 else 2
     by = {}
-    for (movie, date, _th, _sid), (r, sold) in reads.items():
+    for (movie, date, th, _sid), (r, sold) in reads.items():
         if (movie, date) not in inv:
             continue
-        part = _daypart(_hour(r.get("showtime")))
+        stratum = (tier_of.get(((movie, date), th), 2), _daypart(_hour(r.get("showtime"))))
         cell = by.setdefault((movie, date), {})
-        cell.setdefault(part, []).append((sold, sold * _price(r, weekend_of)))
+        full = "started_min=" in (r.get("notes") or "")
+        cell.setdefault(stratum, []).append((sold, sold * _price(r, weekend_of), full))
     out = {}
     for k, perfs in inv.items():
         sample = by.get(k) or {}
+        # Within a stratum, after-start (full) counts replace pre-start reads
+        # once there are enough of them to stand alone.
+        for st_key, xs in sample.items():
+            if sum(1 for _, _, f in xs if f) >= 3:
+                sample[st_key] = [x for x in xs if x[2]]
+        sample = {st_key: [(a, b) for a, b, _ in xs] for st_key, xs in sample.items()}
         allr = [x for xs in sample.values() for x in xs]
         if not allr:
             continue
         mean_all_s = sum(a for a, _ in allr) / len(allr)
         mean_all_d = sum(b for _, b in allr) / len(allr)
         counts = {}
-        for part in perfs.values():
-            counts[part] = counts.get(part, 0) + 1
+        for (th, _sid), part in perfs.items():
+            st_key = (tier_of.get((k, th), 2), part)
+            counts[st_key] = counts.get(st_key, 0) + 1
         seats = dollars = 0.0
         for part, n in counts.items():
             xs = sample.get(part) or []

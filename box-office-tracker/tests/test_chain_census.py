@@ -112,20 +112,27 @@ class RegalEstimatorTest(unittest.TestCase):
 
     def rows(self):
         inv, reads = [], []
-        # 10 matinee + 20 evening showings at 3 theatres on Saturday
-        for i in range(30):
-            inv.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": f"T{i % 3}",
-                        "showtime_id": str(i), "showtime": "13:00" if i < 10 else "19:30", "chain": "REGL",
-                        "row_kind": "regal-inventory"})
-        # sample: 4 matinee reads at 10 seats, 6 evening reads at 40 seats
-        for i in range(4):
-            reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": "T0",
-                          "showtime_id": f"m{i}", "showtime": "13:00", "chain": "REGL", "reserved_seats": "10",
-                          "minutes_until_showtime": "20", "notes": "sample=census", "snapshot_time": "t"})
-        for i in range(6):
-            reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": "T1",
-                          "showtime_id": f"e{i}", "showtime": "19:30", "chain": "REGL", "reserved_seats": "40",
-                          "minutes_until_showtime": "30", "notes": "sample=census", "snapshot_time": "t"})
+        # theatre A has 12 showings (tier 0), B 6 (tier 1), C 3 (tier 2); half matinee
+        sizes = {"A": 12, "B": 6, "C": 3}
+        for th, n in sizes.items():
+            for i in range(n):
+                inv.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": th,
+                            "showtime_id": f"{th}{i}", "showtime": "13:00" if i % 2 == 0 else "19:30",
+                            "chain": "REGL", "row_kind": "regal-inventory"})
+        seats = {("A", "13:00"): 20, ("A", "19:30"): 60, ("B", "13:00"): 10, ("B", "19:30"): 30,
+                 ("C", "13:00"): 4, ("C", "19:30"): 12}
+        for (th, t), v in seats.items():
+            for i in range(3):
+                reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": th,
+                              "showtime_id": f"r{th}{t}{i}", "showtime": t, "chain": "REGL",
+                              "reserved_seats": str(v), "minutes_until_showtime": "20",
+                              "notes": "sample=census", "snapshot_time": "t"})
+        # three full (after-start) counts in A-evening replace the pre-start reads there
+        for i in range(3):
+            reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": "A",
+                          "showtime_id": f"post{i}", "showtime": "19:30", "chain": "REGL", "reserved_seats": "90",
+                          "minutes_until_showtime": "0", "notes": "sample=census; started_min=6",
+                          "snapshot_time": "t"})
         # ignored: a priority read and a long-lead random read
         reads.append(dict(reads[0], showtime_id="p", reserved_seats="500", notes="sample=priority"))
         reads.append(dict(reads[0], showtime_id="far", reserved_seats="500", minutes_until_showtime="600",
@@ -140,9 +147,11 @@ class RegalEstimatorTest(unittest.TestCase):
              mock.patch.object(CC, "_price", return_value=10.0):
             est = CC.regal_day_dollars(W, CC.weekend_dates(W))
         cell = est[("Clayface", "2026-10-24")]
-        self.assertEqual((cell["showings"], cell["theatres"], cell["sampled"]), (30, 3, 10))
-        self.assertAlmostEqual(cell["seats"], 10 * 10 + 20 * 40)
-        self.assertAlmostEqual(cell["dollars"], (10 * 10 + 20 * 40) * 10.0)
+        self.assertEqual((cell["showings"], cell["theatres"], cell["sampled"]), (21, 3, 18))
+        # A: 6 matinee x 20 + 6 evening x 90 (full count wins); B: 3x10 + 3x30; C: 2x4 + 1x12
+        expected = 6 * 20 + 6 * 90 + 3 * 10 + 3 * 30 + 2 * 4 + 1 * 12
+        self.assertAlmostEqual(cell["seats"], expected)
+        self.assertAlmostEqual(cell["dollars"], expected * 10.0)
 
     def test_presence_needs_reads_and_inventory(self):
         self.assertFalse(CC.present("REGL", {"showings": 300, "sampled": 5, "dollars": 1}))

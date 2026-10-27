@@ -178,10 +178,18 @@ FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest | 
 # count as Regal gets. Rows are tagged sample=census and kept out of the
 # pre-sale cross-chain share.
 FANDANGO_CENSUS_MAX_LEAD_MIN = _env_int("FANDANGO_CENSUS_MAX_LEAD_MIN", 60)
-# POST-START reads (probe 2026-10-27): census picks may include showings that
-# started up to FANDANGO_POST_START_MIN minutes ago, if Fandango still lists and
-# renders them — a count taken after the start includes the walk-ups.
-FANDANGO_POST_START_MIN = _env_int("FANDANGO_POST_START_MIN", 0)
+# POST-START reads (probe 2026-10-27, run 40523357939): Fandango still lists a
+# Regal showing and renders its seat map after the start (4/4 read 1-11 min in,
+# 0 failures). A count taken after the start includes the walk-ups — the full
+# count — so census picks include showings that started up to
+# FANDANGO_POST_START_MIN minutes ago, ahead of any pre-start one.
+FANDANGO_POST_START_MIN = _env_int("FANDANGO_POST_START_MIN", 10)
+# Census theatre order: the biggest Regal theatres first (mean seats per read
+# from history), the rest random. Big theatres carry most of the chain's seats
+# and their counts are the least noisy, so a fixed core of them read every
+# show day is the best-correlated panel; chain_census stratifies by theatre
+# size, so favouring them does not bias the chain total.
+FANDANGO_CENSUS_PRIORITY_SHARE = float(os.environ.get("FANDANGO_CENSUS_PRIORITY_SHARE") or 0.75)
 FANDANGO_NUM_SHARDS = _env_int("FANDANGO_NUM_SHARDS", 0)      # 0/1 = no sharding (whole pool)
 FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard index
 
@@ -408,6 +416,9 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         lead = FANDANGO_CENSUS_MAX_LEAD_MIN
         wanted = [w for w in wanted if w["minutes_until"] <= lead]
         random.shuffle(wanted)
+        # A showing that has already started is a full count (walk-ups in):
+        # take it before any pre-start one.
+        wanted.sort(key=lambda w: 0 if (w.get("minutes_after") or 0) > 0 else 1)
     elif order == "nearest":
         wanted.sort(key=lambda w: (w["minutes_until"], w["_prime"]))
     else:
@@ -1219,9 +1230,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     # now ALTERNATES a random theatre (unbiased sample, the only rows the
     # model's cross-chain share uses) with a demand-ranked one (census volume).
     if census:
-        pool = list(theatres)
-        random.shuffle(pool)
-        theatres = [dict(t, _pick_mode="census") for t in pool]
+        theatres = [dict(t, _pick_mode="census") for t in priority_order(
+            list(theatres), FANDANGO_CENSUS_PRIORITY_SHARE, regal_demand_scores())]
         max_theatres = 0   # bounded by the render budget and the deadline, not a page cap
     else:
         theatres = [dict(t, _pick_mode="bridge") for t in head] + priority_order(
