@@ -178,12 +178,14 @@ FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest | 
 # count as Regal gets. Rows are tagged sample=census and kept out of the
 # pre-sale cross-chain share.
 FANDANGO_CENSUS_MAX_LEAD_MIN = _env_int("FANDANGO_CENSUS_MAX_LEAD_MIN", 60)
-# POST-START reads (probe 2026-10-27, run 40523357939): Fandango still lists a
-# Regal showing and renders its seat map after the start (4/4 read 1-11 min in,
-# 0 failures). A count taken after the start includes the walk-ups — the full
-# count — so census picks include showings that started up to
-# FANDANGO_POST_START_MIN minutes ago, ahead of any pre-start one.
-FANDANGO_POST_START_MIN = _env_int("FANDANGO_POST_START_MIN", 10)
+# POST-START reads (probes 2026-10-27, runs 40523357939 + 40541946956):
+# Fandango still lists a Regal showing and renders its seat map for ~20 min
+# after the start — 21 reads 1-19 min in (24/30 captured at 12:30 ET with a
+# 120-min window allowed, nothing older listed). A count taken after the start
+# includes the walk-ups — the full count — so census picks include showings
+# that started up to FANDANGO_POST_START_MIN minutes ago, ahead of any
+# pre-start one; 18 leaves margin for the render queue.
+FANDANGO_POST_START_MIN = _env_int("FANDANGO_POST_START_MIN", 18)
 # Census theatre order: the biggest Regal theatres first (mean seats per read
 # from history), the rest random. Big theatres carry most of the chain's seats
 # and their counts are the least noisy, so a fixed core of them read every
