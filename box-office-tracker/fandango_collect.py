@@ -928,9 +928,12 @@ def _capture_theatre(page, th, shared):
                 return [], stats
             break
 
+    # Census timing is per theatre visit (a full-pool sweep takes ~12 min and
+    # the post-start window is minutes wide); other orders keep the run clock.
+    pick_now = datetime.now(timezone.utc) if shared.get("order") == "census" else shared["now_utc"]
     wanted = select_wanted_showtimes(entries, shared["target_slugs"],
                                      shared["window_dates"], tz_name,
-                                     shared["now_utc"], shared["per_theatre_cap"],
+                                     pick_now, shared["per_theatre_cap"],
                                      order=shared.get("order", "prime"))
     stats["matched"] = len(wanted)
     rows = []
@@ -1011,8 +1014,12 @@ def _capture_theatre(page, th, shared):
             stats["incompletes"] += 1
             continue
         note = f"discovered_showtimes={w.get('discovered', '')}; sample={th.get('_pick_mode', 'random')}"
-        if (w.get("minutes_after") or 0) > 0:
-            note += f"; started_min={w['minutes_after']}"
+        if (w.get("minutes_after") or 0) > 0 or shared.get("order") == "census":
+            show_utc = _local_to_utc(parse_show_datetime(w["sdate"]), tz_name) if parse_show_datetime(w["sdate"]) else None
+            if show_utc is not None:
+                at_render = int((datetime.now(timezone.utc) - show_utc).total_seconds() // 60)
+                if at_render > 0:
+                    note += f"; started_min={at_render}"
         if params.get("chain") == AMC_BRIDGE_CHAIN:
             note = f"{AMC_BRIDGE_NOTE}; {note}"
         rows.append(build_fandango_row(
