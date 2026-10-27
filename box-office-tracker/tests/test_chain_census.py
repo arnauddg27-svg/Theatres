@@ -105,3 +105,56 @@ class BlendTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RegalEstimatorTest(unittest.TestCase):
+    """Regal = near-showtime sample x full showing inventory, by daypart."""
+
+    def rows(self):
+        inv, reads = [], []
+        # 10 matinee + 20 evening showings at 3 theatres on Saturday
+        for i in range(30):
+            inv.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": f"T{i % 3}",
+                        "showtime_id": str(i), "showtime": "13:00" if i < 10 else "19:30", "chain": "REGL",
+                        "row_kind": "regal-inventory"})
+        # sample: 4 matinee reads at 10 seats, 6 evening reads at 40 seats
+        for i in range(4):
+            reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": "T0",
+                          "showtime_id": f"m{i}", "showtime": "13:00", "chain": "REGL", "reserved_seats": "10",
+                          "minutes_until_showtime": "20", "notes": "sample=census", "snapshot_time": "t"})
+        for i in range(6):
+            reads.append({"show_date": "2026-10-24", "movie_title": "Clayface", "theatre_name": "T1",
+                          "showtime_id": f"e{i}", "showtime": "19:30", "chain": "REGL", "reserved_seats": "40",
+                          "minutes_until_showtime": "30", "notes": "sample=census", "snapshot_time": "t"})
+        # ignored: a priority read and a long-lead random read
+        reads.append(dict(reads[0], showtime_id="p", reserved_seats="500", notes="sample=priority"))
+        reads.append(dict(reads[0], showtime_id="far", reserved_seats="500", minutes_until_showtime="600",
+                          notes="sample=random"))
+        return inv, reads
+
+    def test_dayparts_scale_to_inventory(self):
+        inv, reads = self.rows()
+        def lane(chain, w):
+            return iter(inv if chain == "RINV" else reads)
+        with mock.patch.object(CC, "_lane_rows", side_effect=lane), \
+             mock.patch.object(CC, "_price", return_value=10.0):
+            est = CC.regal_day_dollars(W, CC.weekend_dates(W))
+        cell = est[("Clayface", "2026-10-24")]
+        self.assertEqual((cell["showings"], cell["theatres"], cell["sampled"]), (30, 3, 10))
+        self.assertAlmostEqual(cell["seats"], 10 * 10 + 20 * 40)
+        self.assertAlmostEqual(cell["dollars"], (10 * 10 + 20 * 40) * 10.0)
+
+    def test_presence_needs_reads_and_inventory(self):
+        self.assertFalse(CC.present("REGL", {"showings": 300, "sampled": 5, "dollars": 1}))
+        self.assertFalse(CC.present("REGL", {"showings": 300, "sampled": 99, "lower_bound": True}))
+        self.assertTrue(CC.present("REGL", {"showings": 300, "sampled": 40, "dollars": 1}))
+
+    def test_regal_pooled_only_when_gate_passes(self):
+        shares = {"AMC": {"Saturday": 0.25}, "REGL": {"Saturday": 0.15}}
+        chains = {"AMC": cell(0, 2.5e6, 200), "REGL": {"seats": 0, "dollars": 1.8e6, "showings": 400,
+                                                         "theatres": 300, "sampled": 60}}
+        no = CC.estimates(chains, "Saturday", shares)
+        yes = CC.estimates(chains, "Saturday", shares, pooled=CC.POOLED_CHAINS + ("REGL",))
+        self.assertEqual(no["pooled_chains"], ["AMC"])
+        self.assertEqual(yes["pooled_chains"], ["AMC", "REGL"])
+        self.assertAlmostEqual(yes["pooled_m"], 4.3 / 0.40)

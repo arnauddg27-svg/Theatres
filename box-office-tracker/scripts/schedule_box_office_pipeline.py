@@ -139,6 +139,11 @@ def webedia_slot_inputs() -> dict[str, str]:
     return pipeline_inputs("scrape-webedia", "ALL", "false", "true", "true")
 
 
+def regal_inventory_slot_inputs() -> dict[str, str]:
+    """Inputs for the Regal showing-inventory lane (regal_inventory.py)."""
+    return pipeline_inputs("scrape-regal", "ALL", "false", "true", "true")
+
+
 def harkins_slot_inputs(mode: str = "") -> dict[str, str]:
     """Inputs for a Harkins API lane slot (mode via the cinemark_mode input)."""
     inputs = pipeline_inputs("scrape-harkins", "ALL", "false", "true", "true")
@@ -192,6 +197,26 @@ def amc_bridge_slot(hour: int, shard: int, order: str | None = None,
     days = cron_days if cron_days is not None else frozenset({0, 1, 2, 3, 4, 5, 6})
     return Slot(f"{AMC_BRIDGE_SLOT_PREFIX} {hour:02d}Z", "box office scrape-fandango ALL",
                 days, hour, 0, fandango_slot_inputs(shard, 6, order=order))
+
+
+# REGAL CENSUS (2026-10-27). On show days (local Thursday evening through
+# Sunday night) the evening Fandango slots read only showings starting within
+# the next hour, at random theatres from the whole pool (fandango_collect
+# order="census"): a near-final count of a random sample of Regal showings,
+# scaled to the chain by regal_inventory.py's full showing list. Before this,
+# ~90% of Regal reads were overnight pre-sales days out and only ~10% landed
+# within an hour of a show. Same hours and per-slot render budget as the
+# near/bridge slots they replace, so Fandango's sustained-rate limit sees the
+# same load. Show-day UTC days: Fri/Sat/Sun/Mon 00-05Z = Thu-Sun US evenings;
+# Thu-Sun 15-23Z = US afternoons/evenings.
+SHOW_EVENING_UTC_DAYS = frozenset({5, 6, 0, 1})     # UTC 00-05Z = Thu-Sun evenings
+SHOW_DAYTIME_UTC_DAYS = frozenset({4, 5, 6, 0})     # UTC 15-23Z = Thu-Sun daytime/evening
+NON_SHOW_EVENING_UTC_DAYS = frozenset({2, 3, 4})    # UTC Tue-Thu 00-05Z = Mon-Wed evenings
+
+
+def fandango_census_slot(hour: int, cron_days: frozenset[int]) -> "Slot":
+    return Slot(f"snapshot fandango census {hour:02d}Z", "box office scrape-fandango ALL",
+                cron_days, hour, 0, fandango_slot_inputs(0, 6, order="census"))
 
 
 @dataclass(frozen=True)
@@ -328,11 +353,14 @@ SLOTS: tuple[Slot, ...] = (
     # night) stays excluded. Isolated lane; gated out of the model until
     # Phase C.
     Slot("snapshot fandango 03Z", "box office scrape-fandango ALL",
-         frozenset({0, 2, 3, 4, 5, 6}), 3, 0, fandango_slot_inputs(0, 6)),
+         NON_SHOW_EVENING_UTC_DAYS, 3, 0, fandango_slot_inputs(0, 6)),
+    fandango_census_slot(3, SHOW_EVENING_UTC_DAYS),
     Slot("snapshot fandango 04Z", "box office scrape-fandango ALL",
-         frozenset({0, 2, 3, 4, 5, 6}), 4, 0, fandango_slot_inputs(1, 6)),
+         NON_SHOW_EVENING_UTC_DAYS, 4, 0, fandango_slot_inputs(1, 6)),
+    fandango_census_slot(4, SHOW_EVENING_UTC_DAYS),
     Slot("snapshot fandango 05Z", "box office scrape-fandango ALL",
-         frozenset({0, 2, 3, 4, 5, 6}), 5, 0, fandango_slot_inputs(2, 6)),
+         NON_SHOW_EVENING_UTC_DAYS, 5, 0, fandango_slot_inputs(2, 6)),
+    fandango_census_slot(5, SHOW_EVENING_UTC_DAYS),
     Slot("snapshot fandango 06Z", "box office scrape-fandango ALL",
          frozenset({0, 2, 3, 4, 5, 6}), 6, 0, fandango_slot_inputs(3, 6)),
     Slot("snapshot fandango 07Z", "box office scrape-fandango ALL",
@@ -363,12 +391,9 @@ SLOTS: tuple[Slot, ...] = (
          frozenset({0, 2, 3, 4, 5, 6}), 13, 0, fandango_slot_inputs(4, 6)),
     Slot("snapshot fandango core 14Z", "box office scrape-fandango ALL",
          frozenset({0, 2, 3, 4, 5, 6}), 14, 0, fandango_slot_inputs(5, 6)),
-    Slot("snapshot fandango near 21Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 21, 0, fandango_slot_inputs(3, 6, order="nearest")),
-    Slot("snapshot fandango near 22Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 22, 0, fandango_slot_inputs(4, 6, order="nearest")),
-    Slot("snapshot fandango near 23Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 23, 0, fandango_slot_inputs(5, 6, order="nearest")),
+    fandango_census_slot(21, SHOW_DAYTIME_UTC_DAYS),
+    fandango_census_slot(22, SHOW_DAYTIME_UTC_DAYS),
+    fandango_census_slot(23, SHOW_DAYTIME_UTC_DAYS),
     # NEAR-SHOWTIME afternoon pass over the core theatres, nearest-show-first:
     # the overnight slots capture at a median 13-16h lead (advance sales only),
     # which is why family-film occupancy reads near zero and the cross-chain
@@ -377,21 +402,30 @@ SLOTS: tuple[Slot, ...] = (
     # accumulating the like-for-like data that eventually lifts the family gate.
     # Weekend-only by design: pre-opening days have no shows within hours, so a
     # near-showtime pass is meaningless there.
-    Slot("snapshot fandango near 16Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 16, 0, fandango_slot_inputs(0, 6, order="nearest")),
-    Slot("snapshot fandango near 18Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 18, 0, fandango_slot_inputs(1, 6, order="nearest")),
-    Slot("snapshot fandango near 20Z", "box office scrape-fandango ALL",
-         frozenset({0, 4, 5, 6}), 20, 0, fandango_slot_inputs(2, 6, order="nearest")),
+    fandango_census_slot(16, SHOW_DAYTIME_UTC_DAYS),
+    fandango_census_slot(18, SHOW_DAYTIME_UTC_DAYS),
+    fandango_census_slot(20, SHOW_DAYTIME_UTC_DAYS),
     # AMC bridge (see amc_bridge_slot): Regal's free hours only. Overnight
     # slots mirror the AMC 02:30Z snapshot's days (no UTC Monday = Sunday
     # night); the afternoon/evening ones run every day like AMC's 14:30Z/22:30Z.
-    amc_bridge_slot(0, 0, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
-    amc_bridge_slot(1, 1, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
-    amc_bridge_slot(2, 2, cron_days=frozenset({0, 2, 3, 4, 5, 6})),
-    amc_bridge_slot(15, 3, order="nearest"),
-    amc_bridge_slot(17, 4, order="nearest", cron_days=WEEKDAYS_ONLY),
-    amc_bridge_slot(19, 5, order="nearest", cron_days=WEEKDAYS_ONLY),
+    # On show days these hours are Regal census slots (above the bridge's
+    # spill already read Regal there, since the native AMC lane recovered).
+    amc_bridge_slot(0, 0, cron_days=NON_SHOW_EVENING_UTC_DAYS),
+    amc_bridge_slot(1, 1, cron_days=NON_SHOW_EVENING_UTC_DAYS),
+    amc_bridge_slot(2, 2, cron_days=NON_SHOW_EVENING_UTC_DAYS),
+    fandango_census_slot(0, SHOW_EVENING_UTC_DAYS),
+    fandango_census_slot(1, SHOW_EVENING_UTC_DAYS),
+    fandango_census_slot(2, SHOW_EVENING_UTC_DAYS),
+    amc_bridge_slot(15, 3, order="nearest", cron_days=frozenset({1, 2, 3, 4})),
+    fandango_census_slot(15, frozenset({5, 6, 0})),
+    amc_bridge_slot(17, 4, order="nearest", cron_days=frozenset({1, 2, 3, 4})),
+    amc_bridge_slot(19, 5, order="nearest", cron_days=frozenset({1, 2, 3, 4})),
+    fandango_census_slot(17, frozenset({5})),
+    fandango_census_slot(19, frozenset({5})),
+    # Regal showing inventory: once each show-day morning (12:10Z = 8am ET /
+    # 5am PT, every theatre still on its local "today"), Thu-Sun.
+    Slot("regal inventory 12:10Z", "box office scrape-regal ALL",
+         SHOW_DAYTIME_UTC_DAYS, 12, 10, regal_inventory_slot_inputs()),
     # Cinemark DIRECT lane (cinemark_collect.py; scale-validated 2026-08-31;
     # pre passes 3-way sharded since 2026-09-04). Read structure per design:
     #   pre passes EVERY day, covering today + all remaining/upcoming window

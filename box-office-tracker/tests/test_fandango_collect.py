@@ -430,3 +430,21 @@ class FandangoChainSplitTest(unittest.TestCase):
         if pool:  # data file present in the repo
             self.assertTrue(all(t["chain"] == "REGL" for t in pool))
             self.assertGreater(len(pool), 150)
+
+
+class CensusOrderTest(unittest.TestCase):
+    """order='census' (2026-10-27): only showings starting within the hour."""
+
+    def test_census_keeps_only_near_showings(self):
+        import fandango_collect as F
+        from datetime import datetime, timezone
+        now = datetime(2026, 10, 31, 0, 0, tzinfo=timezone.utc)   # 8:00pm ET Friday
+        entries = [
+            {"movieOverview": "/clayface-2026-1/movie-overview", "href": "/jump.aspx?sdate=2026-10-30+20:30&mid=1"},
+            {"movieOverview": "/clayface-2026-1/movie-overview", "href": "/jump.aspx?sdate=2026-10-30+22:30&mid=1"},
+            {"movieOverview": "/clayface-2026-1/movie-overview", "href": "/jump.aspx?sdate=2026-10-30+19:00&mid=1"},
+        ]
+        got = F.select_wanted_showtimes(entries, {"clayface": "Clayface"}, {"2026-10-30"},
+                                        "America/New_York", now, cap=1, order="census")
+        self.assertEqual([w["sdate"] for w in got], ["2026-10-30 20:30"])
+        self.assertLessEqual(got[0]["minutes_until"], F.FANDANGO_CENSUS_MAX_LEAD_MIN)

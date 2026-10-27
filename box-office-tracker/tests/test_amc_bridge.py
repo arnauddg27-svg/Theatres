@@ -186,31 +186,26 @@ class BridgeSchedulingTest(unittest.TestCase):
         m = self._sched()
         fan = [s for s in m.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
         bridge = [s for s in fan if s.name.startswith(m.AMC_BRIDGE_SLOT_PREFIX)]
-        regal = [s for s in fan if not s.name.startswith(m.AMC_BRIDGE_SLOT_PREFIX)]
         self.assertEqual(6, len(bridge))
-        self.assertEqual(18, len(regal))
-        # Same Azure-range seat budget (~30 renders/hour): the bridge must not
-        # share an hour with a Regal slot, and all fandango hours stay unique.
-        self.assertFalse({s.hour for s in bridge} & {s.hour for s in regal})
-        hours = [s.hour for s in fan]
-        self.assertEqual(len(hours), len(set(hours)))
         self.assertEqual({0, 1, 2, 15, 17, 19}, {s.hour for s in bridge})
-        # 2026-10-04: 17Z/19Z are weekdays-only so weekend evenings are not a
-        # 30-render Fandango slot every hour (near-slot yields degraded).
-        for s in bridge:
-            if s.hour in (17, 19):
-                self.assertEqual(frozenset({1, 2, 3, 4, 5}), s.cron_days, s.name)
-        # every shard once a day; shard inputs are the same 6-way split
-        self.assertEqual({"0", "1", "2", "3", "4", "5"}, {s.inputs["fandango_shard"] for s in bridge})
-        self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in bridge))
+        # Same seat budget (~30 renders/hour): no two Fandango slots in one
+        # hour of one UTC day.
+        seen = set()
+        for s in fan:
+            for d in s.cron_days:
+                self.assertNotIn((d, s.hour), seen, s.name)
+                seen.add((d, s.hour))
+        # 2026-10-27: on show days these hours are Regal census slots, so the
+        # bridge runs only on the pre-opening days.
         for s in bridge:
             if s.hour in (0, 1, 2):
-                self.assertEqual(frozenset({0, 2, 3, 4, 5, 6}), s.cron_days, s.name)  # = AMC 02:30Z
+                self.assertEqual(frozenset({2, 3, 4}), s.cron_days, s.name)
                 self.assertNotIn("fandango_order", s.inputs)
             else:
-                expected = frozenset({1, 2, 3, 4, 5}) if s.hour in (17, 19) else frozenset(range(7))
-                self.assertEqual(expected, s.cron_days, s.name)   # = AMC 14:30Z/22:30Z; 17/19Z weekdays (2026-10-04)
+                self.assertEqual(frozenset({1, 2, 3, 4}), s.cron_days, s.name)
                 self.assertEqual("nearest", s.inputs["fandango_order"])
+        self.assertEqual({"0", "1", "2", "3", "4", "5"}, {s.inputs["fandango_shard"] for s in bridge})
+        self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in bridge))
 
     def test_workflow_keys_the_chain_off_the_slot_name(self):
         yml = (ROOT / ".github" / "workflows" / "box-office-pipeline.yml").read_text()

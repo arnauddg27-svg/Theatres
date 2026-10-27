@@ -31,61 +31,49 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
 
         # The late-night slots inside this lookback window: the AMC snapshot
         # at 02:30Z, the Alamo walk-in loop at 02:40Z (UTC Sunday = a
-        # Saturday show night) and the Fandango lane at 03:00Z (sorted by
-        # scheduled_at).
+        # Saturday show night) and the Fandango lane at 03:00Z — a Regal
+        # census slot on a show night since 2026-10-27 (sorted by scheduled_at).
         self.assertEqual(
             ["webedia 02:15Z", "snapshot 02:30Z", "alamo post loop 02:40Z", "harkins post 02:55Z",
-             "snapshot fandango 03Z"],
+             "snapshot fandango census 03Z"],
             [slot.name for _, slot in due],
         )
 
     def test_fandango_slot_dispatches_isolated_phase(self):
         slot = next(s for s in schedule.SLOTS if s.name == "snapshot fandango 03Z")
         self.assertEqual(slot.inputs["phase"], "scrape-fandango")
-        self.assertEqual(slot.cron_days, frozenset({0, 2, 3, 4, 5, 6}))
         self.assertEqual((slot.hour, slot.minute), (3, 0))
-        # It runs the same nights as the AMC 02:30Z snapshot, including the
-        # Mon-Wed pre-opening nights and excluding UTC Monday (Sunday night).
-        amc = next(s for s in schedule.SLOTS if s.name == "snapshot 02:30Z")
-        self.assertEqual(slot.cron_days, amc.cron_days)
+        # Pre-sale pass on the pre-opening (Mon-Wed) nights only; on show nights
+        # the same hour is a Regal census slot (2026-10-27).
+        self.assertEqual(slot.cron_days, frozenset({2, 3, 4}))
+        census = next(s for s in schedule.SLOTS if s.name == "snapshot fandango census 03Z")
+        self.assertEqual(census.cron_days, frozenset({5, 6, 0, 1}))
+        self.assertEqual(census.inputs["fandango_order"], "census")
 
     def test_fandango_full_pool_plus_core_second_pass(self):
-        fslots = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"
-                  and not s.name.startswith(schedule.AMC_BRIDGE_SLOT_PREFIX)]
-        # (AMC-bridge slots share the phase but read AMC; pinned separately in
-        # test_amc_bridge.) 18 since the 2026-08-31 second-pass symmetry: with the expanded
-        # 331-theatre Regal-only pool, EVERY shard gets three daily reads —
-        # overnight long-lead, a velocity re-read, and a near-showtime pass.
-        self.assertEqual(len(fslots), 18)
-        self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fslots))
-        near_hours = (16, 18, 20, 21, 22, 23)
-        # Overnight + velocity passes cover Mon-Wed pre-opening nights too; the
-        # near-showtime passes are weekend-only (no shows within hours exist
-        # pre-opening). No fandango slot fires on UTC Monday (Sun night).
-        for s in fslots:
-            expected = (frozenset({0, 4, 5, 6}) if s.hour in near_hours
-                        else frozenset({0, 2, 3, 4, 5, 6}))
-            self.assertEqual(expected, s.cron_days, s.name)
-        by_hour = {s.hour: int(s.inputs["fandango_shard"]) for s in fslots}
-        # 03-08Z cover all 6 shards once → the full pool per night
-        self.assertEqual({h: by_hour[h] for h in range(3, 9)},
-                         {3: 0, 4: 1, 5: 2, 6: 3, 7: 4, 8: 5})
-        # 09-14Z velocity re-reads: every shard's 2nd reading
-        self.assertEqual({h: by_hour[h] for h in range(9, 15)},
-                         {9: 0, 10: 1, 11: 2, 12: 3, 13: 4, 14: 5})
-        # near-showtime passes, nearest-show-first, all shards
-        self.assertEqual({h: by_hour[h] for h in near_hours},
-                         {16: 0, 18: 1, 20: 2, 21: 3, 22: 4, 23: 5})
-        near = [s for s in fslots if s.hour in near_hours]
-        self.assertTrue(all(s.inputs.get("fandango_order") == "nearest" for s in near))
-        others = [s for s in fslots if s.hour not in near_hours]
-        self.assertTrue(all("fandango_order" not in s.inputs for s in others))
-        # every shard has exactly 3 daily reads, all slots >=1h apart
-        from collections import Counter
-        self.assertEqual({"0": 3, "1": 3, "2": 3, "3": 3, "4": 3, "5": 3},
-                         dict(Counter(s.inputs["fandango_shard"] for s in fslots)))
-        hours = sorted(s.hour for s in fslots)
-        self.assertEqual(len(hours), len(set(hours)))
+        fan = [s for s in schedule.SLOTS if s.inputs.get("phase") == "scrape-fandango"]
+        pre = [s for s in fan if not s.name.startswith(schedule.AMC_BRIDGE_SLOT_PREFIX)
+               and "census" not in s.name]
+        census = [s for s in fan if "census" in s.name]
+        self.assertTrue(all(s.inputs["fandango_num_shards"] == "6" for s in fan))
+        # Pre-sale passes: 03-05Z pre-opening nights, 06-14Z every night but UTC Monday.
+        by_hour = {s.hour: (int(s.inputs["fandango_shard"]), s.cron_days) for s in pre}
+        self.assertEqual(sorted(by_hour), list(range(3, 15)))
+        for h in range(3, 6):
+            self.assertEqual(by_hour[h], (h - 3, frozenset({2, 3, 4})))
+        for h in range(6, 15):
+            self.assertEqual(by_hour[h][1], frozenset({0, 2, 3, 4, 5, 6}))
+        self.assertTrue(all("fandango_order" not in s.inputs for s in pre))
+        # Census slots: show evenings 00-05Z (UTC Fri-Mon) and show days 15-23Z.
+        self.assertTrue(all(s.inputs["fandango_order"] == "census" for s in census))
+        self.assertEqual(sorted({s.hour for s in census}), [0, 1, 2, 3, 4, 5, 15, 16, 17, 18, 19, 20, 21, 22, 23])
+        # Fandango's sustained-rate limit: never two Fandango slots in the same
+        # hour of the same UTC day.
+        seen = {}
+        for s in fan:
+            for d in s.cron_days:
+                self.assertNotIn((d, s.hour), seen, f"{s.name} vs {seen.get((d, s.hour))}")
+                seen[(d, s.hour)] = s.name
 
     def test_snapshot_does_not_run_sunday_night_local_time(self):
         due = schedule.candidate_due_slots(
@@ -136,17 +124,17 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             [slot.name for _, slot in monday_night],
         )
 
-        # Sunday night local = UTC Monday: no fandango slot fires.
+        # Sunday night local = UTC Monday: only the Regal census slots fire
+        # (Sunday evening shows); no pre-sale pass.
         sunday_night = schedule.candidate_due_slots(
             now=schedule.parse_utc("2026-05-04T11:30:00Z"),  # Monday UTC
             lookback_minutes=720,
             mode="primary",
             fallback_grace_minutes=90,
         )
-        self.assertEqual(
-            [],
-            [s.name for _, s in sunday_night if "fandango" in s.name],
-        )
+        names = [s.name for _, s in sunday_night if "fandango" in s.name]
+        self.assertTrue(names)
+        self.assertTrue(all("census" in n for n in names), names)
 
         # Tuesday afternoon UTC: the near-showtime pass stays weekend-only.
         tuesday_pm = schedule.candidate_due_slots(
@@ -157,7 +145,7 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
         )
         self.assertEqual(
             [],
-            [s.name for _, s in tuesday_pm if "fandango near" in s.name],
+            [s.name for _, s in tuesday_pm if "fandango census" in s.name],
         )
 
     def test_weekly_phase1_schedule_has_all_monday_slots(self):

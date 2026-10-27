@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), scrape-harkins (Harkins API lane), scrape-webedia (Landmark/Showcase/MJR/Flix/Epic/Marquee occupancy lane), probe-chains (read-only feasibility probe), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), scrape-harkins (Harkins API lane), scrape-webedia (Landmark/Showcase/MJR/Flix/Epic/Marquee occupancy lane), scrape-regal (Regal showing inventory), probe-chains (read-only feasibility probe), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -87,7 +87,7 @@ on:
         required: false
         default: ''
       fandango_order:
-        description: 'Fandango showtime pick order: prime (default) or nearest (near-showtime afternoon slots).'
+        description: 'Fandango showtime pick order: prime (default), nearest (near-showtime slots) or census (shows starting within the hour, show days).'
         required: false
         default: ''
       cinemark_discover:
@@ -1304,6 +1304,39 @@ jobs:
         if: always()
         run: |
           bash box-office-tracker/scripts/commit_lane.sh harkins box-office-tracker/data/harkins-pre-reservation-snapshots.csv "data: box office harkins lane"
+
+  scrape-regal:
+    # Regal showing inventory (2026-10-27, regal_inventory.py): every theatre's
+    # server-rendered list of TODAY's showings of the tracked films — the
+    # denominator that scales the Fandango census sample to the whole chain.
+    # Direct first; residential proxy only if direct is refused. Stops on
+    # walls, never solves them.
+    if: github.event.inputs.phase == 'scrape-regal'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: pip install -r requirements.txt
+      - name: Regal inventory collect
+        working-directory: box-office-tracker
+        timeout-minutes: 30
+        env:
+          REGAL_HTTP_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+        run: python -u regal_inventory.py
+      - name: Commit Regal inventory
+        if: always()
+        run: |
+          bash box-office-tracker/scripts/commit_lane.sh regal box-office-tracker/data/regal-showings.csv "data: box office regal inventory"
 
   scrape-webedia:
     # Webedia chains (2026-09-27): Landmark, Showcase, MJR, Flix Brewhouse,

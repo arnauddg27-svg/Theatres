@@ -6150,7 +6150,9 @@ def load_cross_chain_occupancy(weekend_of=None, through_date=None):
                     continue
                 # Demand-ranked Regal reads (2026-09-27) are census volume, not a
                 # representative sample: the occupancy RATIO keeps random reads.
-                if "sample=priority" in note:
+                # Near-showtime census reads (2026-10-27) are near-FINAL counts;
+                # the ratio and CROSS_CHAIN_WALKUP_K are pre-sale quantities.
+                if "sample=priority" in note or "sample=census" in note:
                     continue
                 occ = _occ_pct(row)
                 if occ is None:

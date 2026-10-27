@@ -36,7 +36,7 @@ import sys
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs, unquote
 
@@ -168,7 +168,16 @@ FANDANGO_MAX_RESUMES = _env_int("FANDANGO_MAX_RESUMES", 2)    # pause/resume cyc
 # parallel GitHub jobs (one fresh IP each). A leg scrapes theatres[shard::N] —
 # a deterministic, geographically-mixed, disjoint slice — staying under the
 # per-IP budget; a merge step recombines the shard outputs.
-FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest
+FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest | census
+# CENSUS order (2026-10-27): on show days the evening slots read only showings
+# that START within the next FANDANGO_CENSUS_MAX_LEAD_MIN minutes, at theatres
+# taken in random order from the WHOLE pool (no shard, no demand ranking). Each
+# read is then a near-final seat count of a random showing — a sample that
+# regal_inventory.py's full showing list scales to the whole chain (Phase C).
+# Fandango cannot see a show once it starts, so this is as close to a post-show
+# count as Regal gets. Rows are tagged sample=census and kept out of the
+# pre-sale cross-chain share.
+FANDANGO_CENSUS_MAX_LEAD_MIN = _env_int("FANDANGO_CENSUS_MAX_LEAD_MIN", 60)
 FANDANGO_NUM_SHARDS = _env_int("FANDANGO_NUM_SHARDS", 0)      # 0/1 = no sharding (whole pool)
 FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard index
 
@@ -387,7 +396,13 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         counts[key] = counts.get(key, 0) + 1
     for w in wanted:
         w["discovered"] = counts[(w["title"], w["show_date"])]
-    if order == "nearest":
+    if order == "census":
+        # A random showing of each film starting within the next hour; nothing
+        # else. A theatre with no such showing costs a page view, no render.
+        lead = FANDANGO_CENSUS_MAX_LEAD_MIN
+        wanted = [w for w in wanted if w["minutes_until"] <= lead]
+        random.shuffle(wanted)
+    elif order == "nearest":
         wanted.sort(key=lambda w: (w["minutes_until"], w["_prime"]))
     else:
         # Prime-time evening shows first (highest occupancy signal), then by date.
@@ -1099,6 +1114,12 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     # opening_weekend_friday. Runner-local time is UTC on GitHub-hosted jobs,
     # matching the UTC slot table.
     ref_now = datetime.now()
+    census = FANDANGO_ORDER == "census"
+    if census and not weekend_of:
+        # Census reads TODAY's shows. UTC Monday 00-05Z is Sunday evening in
+        # the US, and phase1_weekend_anchor would already point at next week.
+        from scraper import opening_weekend_friday
+        weekend_of = opening_weekend_friday(ref_now - timedelta(hours=8))
     weekend_of = weekend_of or phase1_weekend_anchor(ref_now, full_weekend=True)
     titles = titles or tracked_movie_titles_from_state(weekend_of)
     if not titles:
@@ -1147,6 +1168,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
 
     num_shards = num_shards if num_shards is not None else FANDANGO_NUM_SHARDS
     shard = shard if shard is not None else FANDANGO_SHARD
+    if census:
+        num_shards = 0   # the whole pool, every census run: it samples SHOWINGS, not theatres
     if num_shards and num_shards > 1:
         theatres = shard_theatres(theatres, shard, num_shards)
         print(f"  shard {shard % num_shards}/{num_shards}: {len(theatres)} theatres of the pool")
@@ -1180,8 +1203,14 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     # average 31 seats sold per read vs 7.8 for the bottom half, so the order
     # now ALTERNATES a random theatre (unbiased sample, the only rows the
     # model's cross-chain share uses) with a demand-ranked one (census volume).
-    theatres = [dict(t, _pick_mode="bridge") for t in head] + priority_order(
-        list(theatres), FANDANGO_PRIORITY_SHARE, regal_demand_scores())
+    if census:
+        pool = list(theatres)
+        random.shuffle(pool)
+        theatres = [dict(t, _pick_mode="census") for t in pool]
+        max_theatres = 0   # bounded by the render budget and the deadline, not a page cap
+    else:
+        theatres = [dict(t, _pick_mode="bridge") for t in head] + priority_order(
+            list(theatres), FANDANGO_PRIORITY_SHARE, regal_demand_scores())
     if max_theatres and max_theatres > 0:
         theatres = theatres[:max_theatres]
 
@@ -1190,7 +1219,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     run_id = run_id or f"fandango-{snapshot_bucket(check_time)}"
     concurrency = max(1, min(concurrency, len(theatres)))
 
-    page_dates = page_visit_dates(window_dates, show_dates, ref_now)
+    page_dates = [None] if census else page_visit_dates(window_dates, show_dates, ref_now)
     print(f"Fandango collect • chains={','.join(sorted(FANDANGO_CHAINS))} "
           f"• egress_ip={_egress_ip()} • weekend_of={weekend_of} "
           f"• {len(theatres)} theatres • {concurrency} workers "
@@ -1419,6 +1448,16 @@ def main():
                 and totals.get("blocks", 0) == 0):
             print("\u21b7 Pre-opening dated visits found no matching showtimes "
                   "yet (schedule not posted) — nothing to capture (clean skip).")
+            return
+        # Census exception: a census pass reads only showings starting within
+        # the hour. Zero matched and zero blocks (e.g. Thursday afternoon,
+        # before the previews) is a quiet hour, not a failure.
+        if (FANDANGO_ORDER == "census"
+                and totals.get("matched", 0) == 0
+                and totals.get("blocks", 0) == 0
+                and totals.get("visited", 0) > 0):
+            print("\u21b7 Census pass: no tracked showing starts within the hour "
+                  "at the visited theatres — nothing to capture (clean skip).")
             return
         print("\u274c Titles were tracked but zero Fandango rows were written "
               "— failing loudly instead of green-zero.")
