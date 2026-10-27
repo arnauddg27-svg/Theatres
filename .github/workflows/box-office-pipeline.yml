@@ -1332,6 +1332,9 @@ jobs:
         timeout-minutes: 30
         env:
           REGAL_HTTP_PROXY_URL: ${{ secrets.AMC_SEAT_PROXY_URL }}
+          # "regal inventory test" slot: today's showings, throwaway (no commit)
+          REGAL_TEST_TODAY: ${{ contains(github.event.inputs.schedule_slot, 'test') && '1' || '' }}
+          REGAL_TEST_TITLES: ${{ contains(github.event.inputs.schedule_slot, 'test') && 'Clayface|Wildwood|Wicker|Street Fighter' || '' }}
         run: python -u regal_inventory.py
       - name: Commit Regal inventory
         if: always()

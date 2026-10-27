@@ -18,8 +18,12 @@ that scales that sample to the whole chain (chain_census.regal_day_dollars).
 
 Polite by construction: REGAL_INVENTORY_WORKERS (3) threads, a small delay,
 REGAL_MAX_MB byte ceiling through the residential proxy (REGAL_HTTP_PROXY_URL;
-direct if unset), and it STOPS after REGAL_WALL_STOP consecutive challenge or
-403 pages — a wall is never solved or worked around.
+direct first — GitHub's addresses get a 403). Through the rotating pool a
+challenge page is a bad exit draw (~40% of draws on the 2026-10-27 test, the
+same pattern as the AMC listings lane), so a walled page is re-requested on a
+fresh tunnel up to REGAL_WALL_RETRIES times; the run STOPS after
+REGAL_WALL_STOP consecutive theatres that stayed walled. A challenge is never
+solved.
 
 Rows (Fandango superset schema, chain=REGL, row_kind=regal-inventory, seat
 fields blank) go to data/regal-showings.csv; one row per performance.
@@ -49,6 +53,7 @@ SEED_THEATRE = "regal-aviation-mall-1731"
 WORKERS = int(os.environ.get("REGAL_INVENTORY_WORKERS") or 3)
 MAX_MB = float(os.environ.get("REGAL_MAX_MB") or 120)
 WALL_STOP = int(os.environ.get("REGAL_WALL_STOP") or 5)
+WALL_RETRIES = int(os.environ.get("REGAL_WALL_RETRIES") or 2)
 DEADLINE_SEC = int(os.environ.get("REGAL_DEADLINE_SEC") or 1500)
 NEXT_DATA_RE = re.compile(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', re.S)
 
@@ -137,6 +142,12 @@ class Fetcher:
         self.bytes = 0
         self.lock = threading.Lock()
 
+    def fresh_tunnel(self):
+        try:
+            self.sfh.drop_thread_connection(self.session)
+        except Exception:
+            pass
+
     def get(self, url):
         kw = {"stream": True, "timeout": 30,
               "headers": {"Accept": "text/html,application/xhtml+xml,*/*;q=0.8", "Accept-Language": "en-US,en;q=0.9"}}
@@ -158,6 +169,14 @@ def collect(max_theatres=0, dry_run=False):
     from scraper import tracked_movie_titles_from_state
     weekend_of, dates = weekend_window()
     titles = tracked_movie_titles_from_state(weekend_of)
+    test = bool(os.environ.get("REGAL_TEST_TODAY"))
+    if test:
+        # Ad-hoc yield test: today's showings of last weekend's films (still
+        # playing mid-week), written to a throwaway file, never canonical.
+        from zoneinfo import ZoneInfo
+        dates = {datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d")}
+        titles = sorted(set(titles) | set(os.environ.get("REGAL_TEST_TITLES", "").split("|")) - {""})
+        dry_run = True
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {"theatres": 0, "rows": 0}
@@ -182,7 +201,7 @@ def collect(max_theatres=0, dry_run=False):
     print(f"Regal inventory • weekend_of={weekend_of} • dates={sorted(dates)} • {len(theatres)} theatres "
           f"• titles={titles} • proxy={'ON' if f.proxy else 'off'} • ceiling {MAX_MB:.0f} MB", flush=True)
     stop = threading.Event()
-    walls = {"streak": 0, "total": 0}
+    walls = {"streak": 0, "total": 0, "draws": 0}
     totals = {"theatres": 0, "errors": 0, "rows": 0, "skipped_budget": 0}
     rows, lock = [], threading.Lock()
     deadline = time.monotonic() + DEADLINE_SEC
@@ -192,14 +211,21 @@ def collect(max_theatres=0, dry_run=False):
             with lock:
                 totals["skipped_budget"] += 1
             return
-        time.sleep(random.uniform(0.3, 0.9))
-        try:
-            status, page = f.get(f"{BASE}/theatres/{t['path_name']}")
-        except Exception as exc:
+        status, page = None, ""
+        for attempt in range(1 + (WALL_RETRIES if f.proxy else 0)):
+            time.sleep(random.uniform(0.3, 0.9))
+            try:
+                status, page = f.get(f"{BASE}/theatres/{t['path_name']}")
+            except Exception as exc:
+                with lock:
+                    totals["errors"] += 1
+                print(f"  {t['path_name']}: {type(exc).__name__}", flush=True)
+                return
+            if not looks_walled(status, page):
+                break
             with lock:
-                totals["errors"] += 1
-            print(f"  {t['path_name']}: {type(exc).__name__}", flush=True)
-            return
+                walls["draws"] += 1
+            f.fresh_tunnel()      # next draw leaves from another exit
         if looks_walled(status, page):
             with lock:
                 walls["streak"] += 1
@@ -223,6 +249,7 @@ def collect(max_theatres=0, dry_run=False):
         list(ex.map(one, theatres))
     totals["rows"] = len(rows)
     totals["walls"] = walls["total"]
+    totals["walled_draws"] = walls["draws"]
     totals["mb"] = round(f.bytes / 1048576, 1)
     by = {}
     for r in rows:
