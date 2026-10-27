@@ -33,6 +33,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import predict as P
+import chain_census as _CC
 # Leave-one-weekend-out fitted pickup table (SNAPSHOT_PICKUP_CACHE=path to the
 # per-weekend sums written by scripts/fit_snapshot_pickup.py --cache).
 _PICKUP_CACHE = None
@@ -111,6 +112,7 @@ def main():
                 showtime_link_profiles=P.movie_mapping_get(slp, movie, {}),
                 cross_chain_data=ccd,
                 census_daypart_data=P.load_census_daypart_seats(weekend_of=w, through_date=friday),
+                chain_census_data=_CC.dollars_for(w, friday) if P.CHAIN_CENSUS_MODE == 'on' else None,
             )
         except Exception as e:
             rows.append((movie, w, actual, None, None, f"err:{str(e)[:36]}", freeze_n))

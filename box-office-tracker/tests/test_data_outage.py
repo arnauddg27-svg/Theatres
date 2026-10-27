@@ -179,7 +179,7 @@ class DisagreementAnnotationTests(unittest.TestCase):
         # feed the multiplier back into any forecast number
         import predict as P
         import inspect
-        src = inspect.getsource(P.predict_movie)
+        src = inspect.getsource(P._predict_movie_inner)
         i = src.index("select_regression_prediction(result, cal")
         after = src[i:]
         self.assertIn("model_component_disagreement_profile(result)", after)

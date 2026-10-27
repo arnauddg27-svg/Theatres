@@ -57,14 +57,29 @@ def counted(weekend_of):
     date_day = {(fri + timedelta(days=o)).strftime("%Y-%m-%d"): d for d, o in DAYS.items()}
     seats = defaultdict(lambda: defaultdict(int))
     latest = {}
-    for r in csv.DictReader(open(os.path.join(DATA, "seat-counts.csv"), errors="replace")):
-        day = date_day.get(r.get("date"))
-        if not day:
+    # AMC finals: live file plus the weekend's rotated archive (2026-10-27:
+    # the scorecard showed AMC = 0 for every rotated weekend).
+    import gzip as _gz
+    amc_paths = [os.path.join(DATA, "seat-archive", f"seat-counts-{weekend_of}.csv.gz"),
+                 os.path.join(DATA, "seat-counts.csv")]
+    seen_amc = set()
+    for path in amc_paths:
+        if not os.path.exists(path):
             continue
-        try:
-            seats[(r["movie_title"], day)]["AMC"] += int(float(r["seats_sold"]))
-        except (KeyError, ValueError):
-            pass
+        opener = _gz.open if path.endswith(".gz") else open
+        with opener(path, "rt", errors="replace", newline="") as f:
+            for r in csv.DictReader(f):
+                day = date_day.get(r.get("date"))
+                if not day or r.get("weekend_of") not in (weekend_of, None, ""):
+                    continue
+                k = (r.get("theatre_name"), r.get("showtime"), r.get("movie_title"), r.get("date"), r.get("auditorium_type"))
+                if k in seen_amc:
+                    continue
+                seen_amc.add(k)
+                try:
+                    seats[(r["movie_title"], day)]["AMC"] += int(float(r["seats_sold"]))
+                except (KeyError, ValueError):
+                    pass
     for chain, fn in LANES.items():
         for r in _lane_rows(fn, weekend_of):
             day = date_day.get(r.get("show_date"))

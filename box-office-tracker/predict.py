@@ -1726,6 +1726,20 @@ def daypart_profile_from_rows(rows, *, source=None):
 # weekend error from 6.6% to 1.5% MAE (max 15.7% -> 3.2%).
 # SUNDAY_RATIO_MODE=off restores the snapshot Sunday.
 SUNDAY_RATIO_MODE = (os.environ.get("SUNDAY_RATIO_MODE") or "on").strip().lower()
+# CHAIN CENSUS (Phase C, 2026-10-27, chain_census.py): every chain's counted
+# post-show seats priced and pooled. On a played, unreported day the pooled
+# estimate pulls the day's domestic mid toward it (CHAIN_CENSUS_WEIGHT of the
+# log move) and, with CHAIN_CENSUS_CARRY on, the same factor scales the
+# still-projected days — the film's chain mix on Friday is its mix all
+# weekend. Backtest (shares fit on earlier weekends only): after-Friday
+# weekend MAE 18.9 -> 11.5% (n=9 census-era films; full-history mature
+# 16.7 -> 14.1%, only the 6 census-era films move, all closer); after-
+# Saturday 7.1 -> 4.5% (n=10). CHAIN_CENSUS_MODE=off restores the AMC-only
+# assembly.
+CHAIN_CENSUS_MODE = (os.environ.get("CHAIN_CENSUS_MODE") or "on").strip().lower()
+CHAIN_CENSUS_WEIGHT = float(os.environ.get("CHAIN_CENSUS_WEIGHT") or 0.5)
+CHAIN_CENSUS_CARRY = (os.environ.get("CHAIN_CENSUS_CARRY") or "on").strip().lower() == "on"
+_CHAIN_CENSUS_DATA = None
 SUNDAY_RATIO_SHRINK = 8.0
 SUNDAY_RATIO_MIN_FILMS = 10
 
@@ -5661,6 +5675,35 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
         basis = "Provisional pre-release forecast; limited validation; " + basis
         pred["forecast_provisional"] = True
 
+    # Only when the caller handed in chain data (main / the stage harnesses):
+    # calibration's history replays and sanitize refits never see it, so the
+    # fitted factors are untouched by the overlay.
+    if CHAIN_CENSUS_MODE == "on" and mid and mid > 0 and _CHAIN_CENSUS_DATA is not None:
+        try:
+            import chain_census as _cc
+            weekend = pred.get("weekend_of") or _cc.weekend_from_dates(
+                v.get("date") for v in (pred.get("daily_details") or {}).values())
+            layer = _cc.layer_for_movie(pred.get("movie", ""), weekend, _CHAIN_CENSUS_DATA) if weekend else {}
+            if layer:
+                detail_total = sum(_detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
+                                   if d in OPENING_WEEKEND_DAYS)
+                delta, carry_f, info = _cc.apply_to_prediction(
+                    pred, layer, CHAIN_CENSUS_WEIGHT, CHAIN_CENSUS_CARRY)
+                if info:
+                    remainder = max(0.0, mid - detail_total)
+                    new_mid = mid + delta + remainder * (carry_f - 1.0)
+                    scale = new_mid / mid if mid else 1.0
+                    mid, low, high = new_mid, low * scale, high * scale
+                    pred["chain_census"] = {"days": info, "carry_factor": carry_f,
+                                            "remainder_m": remainder, "weight": CHAIN_CENSUS_WEIGHT,
+                                            "mid_before_m": mid / scale, "mid_after_m": new_mid}
+                    pred.pop("chain_census_error", None)
+                    basis += ("; chain census " + ", ".join(
+                        f"{d[:3]} x{v['factor']:.2f} ({'+'.join(v['pooled_chains'])})" for d, v in info.items())
+                        + (f", carried x{carry_f:.2f} to ${remainder:.1f}M projected" if remainder > 0 and CHAIN_CENSUS_CARRY else ""))
+        except Exception as exc:  # the census is an overlay; never break a forecast
+            pred["chain_census_error"] = f"{type(exc).__name__}: {exc}"
+
     reported = {d: _detail_mid_m(v) for d, v in (pred.get("daily_details") or {}).items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     reported_total = sum(reported.values())
@@ -8430,8 +8473,34 @@ def predict_movie(movie, seat_data, poly_data, cal, verbose=False,
                   showtime_link_profiles=None,
                   apply_empirical_regression=True, reviews_data=None,
                   cross_chain_data=None, apply_stage_model=True,
-                  census_daypart_data=None):
+                  census_daypart_data=None, chain_census_data=None):
     """Run full prediction pipeline for a single movie."""
+    # The Phase C overlay reads the chain data through a module global because
+    # the assembly runs deep inside helpers. predict_movie re-enters itself
+    # (calibration refits replay history on first use), so the value is
+    # restored on exit — a nested replay must not blank the outer film's data.
+    global _CHAIN_CENSUS_DATA
+    _outer_chain_census = _CHAIN_CENSUS_DATA
+    _CHAIN_CENSUS_DATA = chain_census_data
+    try:
+        return _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=verbose,
+                                    national_theatre_count=national_theatre_count, snapshot_data=snapshot_data,
+                                    social_data=social_data, daily_actual_overrides=daily_actual_overrides,
+                                    showtime_link_profiles=showtime_link_profiles,
+                                    apply_empirical_regression=apply_empirical_regression, reviews_data=reviews_data,
+                                    cross_chain_data=cross_chain_data, apply_stage_model=apply_stage_model,
+                                    census_daypart_data=census_daypart_data)
+    finally:
+        _CHAIN_CENSUS_DATA = _outer_chain_census
+
+
+def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
+                         national_theatre_count=None, snapshot_data=None,
+                         social_data=None, daily_actual_overrides=None,
+                         showtime_link_profiles=None,
+                         apply_empirical_regression=True, reviews_data=None,
+                         cross_chain_data=None, apply_stage_model=True,
+                         census_daypart_data=None):
     # Identify opening weekend dates. The scraper may continue collecting
     # Mon-Wed rows for calibration research, but Polymarket brackets settle on
     # the opening weekend only, so prediction totals must stay Thu-Sun.
@@ -10047,6 +10116,23 @@ def print_prediction(pred, verbose=False):
         print(f"  Cross-chain share: INACTIVE (using fleet prior) — "
               f"{pred['cross_chain_inactive_reason']}")
 
+    cc = pred.get("chain_census")
+    if cc:
+        print(f"  Chain census (every chain's counted seats, pooled; weight {cc['weight']:.0%}"
+              f"{', carried x%.2f to projected days' % cc['carry_factor'] if cc.get('carry_factor', 1.0) != 1.0 else ''}):")
+        for day, v in cc["days"].items():
+            parts = []
+            for ch in ("AMC", "CNMK", "REGL", "ALMO", "HARK", "WEBD"):
+                c = (v.get("chains") or {}).get(ch)
+                if c:
+                    flag = "" if c.get("present") else "*"
+                    parts.append(f"{ch} ${c['dollars_m']:.2f}M->${c['national_m']:.1f}M{flag}")
+            print(f"    {day[:3]}: pooled ${v['pooled_m']:.2f}M (share {v['pooled_share']:.0%}) vs model "
+                  f"${v['model_m']:.2f}M -> x{v['factor']:.2f}  | " + "; ".join(parts))
+        print("    (* = partial read, reported only, not pooled)")
+    elif pred.get("chain_census_error"):
+        print(f"  Chain census: unavailable ({pred['chain_census_error']})")
+
     # Seat-based
     days_str = ", ".join(
         day for day in OPENING_WEEKEND_DAYS
@@ -10723,6 +10809,41 @@ def append_prediction_log(pred, path=None, weekend_of=None):
         return False
 
 
+CHAIN_CENSUS_LOG_CSV = os.path.join(DATA_DIR, "chain-census-log.csv")
+CHAIN_CENSUS_LOG_FIELDS = ["logged_at", "weekend_of", "movie", "day", "chain", "seats", "dollars_m",
+                           "share", "national_m", "present", "pooled_m", "pooled_share", "model_day_m",
+                           "factor", "forecast_stage"]
+
+
+def append_chain_census_log(pred, path=None, weekend_of=None):
+    """One row per chain per played day: the chain's own national read beside
+    the pooled one and the model's (best effort, live runs only)."""
+    cc = pred.get("chain_census")
+    if not cc or (path is None and not prediction_log_append_enabled()):
+        return False
+    path = path or CHAIN_CENSUS_LOG_CSV
+    try:
+        logged_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        new = not os.path.exists(path) or os.path.getsize(path) == 0
+        with open(path, "a", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=CHAIN_CENSUS_LOG_FIELDS)
+            if new:
+                w.writeheader()
+            for day, v in cc["days"].items():
+                for chain, c in (v.get("chains") or {}).items():
+                    w.writerow({"logged_at": logged_at, "weekend_of": weekend_of or pred.get("weekend_of"),
+                                "movie": pred.get("movie"), "day": day, "chain": chain, "seats": c.get("seats"),
+                                "dollars_m": round(c["dollars_m"], 4), "share": round(c["share"], 4),
+                                "national_m": round(c["national_m"], 3), "present": int(bool(c.get("present"))),
+                                "pooled_m": round(v["pooled_m"], 3), "pooled_share": round(v["pooled_share"], 4),
+                                "model_day_m": round(v["model_m"], 3), "factor": round(v["factor"], 4),
+                                "forecast_stage": pred.get("forecast_stage", "")})
+        return True
+    except Exception as exc:
+        print(f"  (chain census log not written: {type(exc).__name__})")
+        return False
+
+
 def select_live_headline(rows, weekend_of):
     """Pure: from prediction-log rows for one film, the headline to GRADE.
     'final' is the last row logged before the weekend closed (Monday 12:00Z,
@@ -11126,6 +11247,13 @@ def main():
         movie for movie in prediction_movie_names(seat_data, snapshot_data)
         if not movie_filter or movie_filter in movie.lower()
     ]
+    chain_census_data = None
+    if CHAIN_CENSUS_MODE == "on" and replay_weekend:
+        try:
+            import chain_census as _cc
+            chain_census_data = _cc.dollars_for(replay_weekend, through_date)
+        except Exception as exc:
+            print(f"  (chain census unavailable: {type(exc).__name__}: {exc})")
     if not through_date and not calibration_freeze_weekend:
         # Live runs skip films the collectors stopped reading (forecast clearly
         # under $3M, small_film_gate): their evidence is frozen mid-weekend.
@@ -11164,11 +11292,13 @@ def main():
                             daily_actual_overrides=daily_actual_overrides,
                             showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
                             reviews_data=reviews_data,
-                            cross_chain_data=cross_chain_data)
+                            cross_chain_data=cross_chain_data,
+                            chain_census_data=chain_census_data)
         if pred:
             print_prediction(pred, verbose=verbose)
             if not through_date:            # live runs only, never replays
                 append_prediction_log(pred, weekend_of=pred.get("weekend_of") or replay_weekend)
+                append_chain_census_log(pred, weekend_of=pred.get("weekend_of") or replay_weekend)
         else:
             print(f"\n  {movie.upper()}: no forecast — insufficient usable seat or reservation evidence.")
 
