@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-26",
-  "collected_at": "2026-10-27T01:44:17.750748+00:00",
+  "collected_at": "2026-10-27T01:56:52.321562+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -37610,7 +37610,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-27T01:56:52.315282+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -37656,27 +37656,27 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T18:49:57.397629+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-30",
       "movies": {
         "Everest: The Other Side": [
           {
             "showtime": "2:10pm",
-            "showtime_id": "147942513",
+            "showtime_id": "147942509",
             "format": "undefined"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147942536",
+            "showtime_id": "147942540",
             "format": "undefined"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "147942515",
+            "showtime_id": "147942531",
             "format": "undefined"
           }
         ]
@@ -37722,7 +37722,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-26T18:49:57.397607+00:00",
+          "collected_at": "2026-10-27T01:56:52.315268+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -37735,17 +37735,17 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-27T01:51:37.106541+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-10-29",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148214214",
+            "showtime": "3:00pm",
+            "showtime_id": "148214210",
             "format": "AMC Artisan Films"
           }
         ]
@@ -51609,39 +51609,71 @@
           },
           "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-01": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148258037",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148258038",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "Christmas at the Kringles": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "148258039",
+                "format": "undefined"
+              }
+            ],
+            "The Mongoose": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148257951",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "148257953",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-10-27T01:56:52.315248+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-10-29",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148258026",
+            "showtime": "5:20pm",
+            "showtime_id": "148257963",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148258027",
+            "showtime": "7:45pm",
+            "showtime_id": "148257962",
             "format": "AMC Artisan Films"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "1:55pm",
-            "showtime_id": "148258028",
+            "showtime": "7:30pm",
+            "showtime_id": "148257894",
             "format": "undefined"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148257944",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:50pm",
-            "showtime_id": "148257946",
+            "showtime": "7:00pm",
+            "showtime_id": "148257964",
             "format": "undefined"
           }
         ]
@@ -51661,7 +51693,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-27T01:39:22.463796+00:00",
+          "collected_at": "2026-10-27T01:56:52.315287+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -51681,15 +51713,28 @@
           },
           "collected_at": "2026-10-27T01:39:22.463855+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-31": {
+          "movies": {
+            "Christmas at the Kringles": [
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148237886",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148237876",
+            "showtime": "7:10pm",
+            "showtime_id": "148237886",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -51757,25 +51802,28 @@
           },
           "collected_at": "2026-10-27T01:44:17.740977+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-10-31": {
+          "movies": {
+            "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148237323",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148237380",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:30pm",
-            "showtime_id": "148237384",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148237374",
+            "showtime_id": "148237323",
             "format": "Laser at AMC"
           }
         ]
@@ -51783,8 +51831,8 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.3269,
-    "fresh": 17,
+    "ratio": 0.3846,
+    "fresh": 20,
     "expected": 52,
     "min_ratio": 0.9,
     "degraded": true
