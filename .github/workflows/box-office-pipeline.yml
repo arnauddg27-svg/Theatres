@@ -1037,6 +1037,10 @@ jobs:
           # post-recovery batch. False-positive odds at a 15% background
           # fail rate: 0.15^8 ≈ 3e-7.
           FANDANGO_STOP_AFTER: '8'
+          # "… poststart" slot (probe 2026-10-27): census reads of showings that
+          # STARTED up to 120 min ago only — does Fandango still serve them?
+          FANDANGO_POST_START_MIN: ${{ contains(github.event.inputs.schedule_slot, 'poststart') && '120' || '' }}
+          FANDANGO_CENSUS_MAX_LEAD_MIN: ${{ contains(github.event.inputs.schedule_slot, 'poststart') && '0' || '' }}
           # Seat-map wait A/B (2026-09-27 -> 10-04): a 25 s wait on "near"
           # slots changed nothing (Sat 10-03 evening 18/12/16/24 of 30 vs
           # 29/16/11/25 untreated) — the evening losses are a sustained-rate

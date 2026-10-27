@@ -178,6 +178,10 @@ FANDANGO_ORDER = os.environ.get("FANDANGO_ORDER", "prime")  # prime | nearest | 
 # count as Regal gets. Rows are tagged sample=census and kept out of the
 # pre-sale cross-chain share.
 FANDANGO_CENSUS_MAX_LEAD_MIN = _env_int("FANDANGO_CENSUS_MAX_LEAD_MIN", 60)
+# POST-START reads (probe 2026-10-27): census picks may include showings that
+# started up to FANDANGO_POST_START_MIN minutes ago, if Fandango still lists and
+# renders them — a count taken after the start includes the walk-ups.
+FANDANGO_POST_START_MIN = _env_int("FANDANGO_POST_START_MIN", 0)
 FANDANGO_NUM_SHARDS = _env_int("FANDANGO_NUM_SHARDS", 0)      # 0/1 = no sharding (whole pool)
 FANDANGO_SHARD = _env_int("FANDANGO_SHARD", 0)               # this leg's shard index
 
@@ -377,13 +381,15 @@ def select_wanted_showtimes(entries, target_slugs, window_dates, tz_name,
         m_after, m_until, show_date, dow = showtime_timing(sdate, tz_name, now_utc)
         if m_after is None or show_date not in window_dates:
             continue
-        if not should_record_pre_reservation_snapshot(m_after):
+        started_ok = order == "census" and 0 < m_after <= FANDANGO_POST_START_MIN
+        if not should_record_pre_reservation_snapshot(m_after) and not started_ok:
             continue
         show_dt = parse_show_datetime(sdate)
         hour = show_dt.hour if show_dt else 12
         wanted.append({
             "title": title, "sdate": sdate, "href": e.get("href", ""),
-            "minutes_until": m_until, "show_date": show_date, "day_of_week": dow,
+            "minutes_until": m_until, "minutes_after": m_after,
+            "show_date": show_date, "day_of_week": dow,
             "_prime": abs(hour - 19),  # distance from 7pm
         })
     # Attach the PRE-CAP discovered showtime count per (title, show_date): the
@@ -1005,6 +1011,8 @@ def _capture_theatre(page, th, shared):
             stats["incompletes"] += 1
             continue
         note = f"discovered_showtimes={w.get('discovered', '')}; sample={th.get('_pick_mode', 'random')}"
+        if (w.get("minutes_after") or 0) > 0:
+            note += f"; started_min={w['minutes_after']}"
         if params.get("chain") == AMC_BRIDGE_CHAIN:
             note = f"{AMC_BRIDGE_NOTE}; {note}"
         rows.append(build_fandango_row(
