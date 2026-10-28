@@ -69,5 +69,36 @@ class SlugTests(unittest.TestCase):
         self.assertTrue(T.slug_candidates("Other Mommy", 2026)[0].endswith("/Other-Mommy-(2026)"))
 
 
+class ChartResolvedSlugTests(unittest.TestCase):
+    def test_country_suffixed_page_found_via_friday_chart(self):
+        # 2026-10-28 audit: Fjord lives at Fjord-(2026-Norway); every guessed
+        # slug 404s, so live daily actuals were never fetched for it.
+        from unittest import mock
+        good = "https://www.the-numbers.com/movie/Fjord-(2026-Norway)"
+        page = ("<h2>Daily Box Office Performance</h2><table>"
+                "<tr><td>Oct 30, 2026</td><td>9</td><td>$1,234,567</td></tr></table>")
+        seen = []
+
+        def fake_get(url):
+            seen.append(url)
+            if url != good:
+                raise OSError("404")
+            return page
+
+        with mock.patch.object(T.C, "numbers_chart_movie_urls", return_value=[good]) as chart, \
+                mock.patch.object(T, "_get", side_effect=fake_get):
+            out = T.fetch_daily_table("Fjord", 2026, weekend_of="2026-10-30")
+        chart.assert_called_once_with("Fjord", "2026-10-30")
+        self.assertEqual(seen, [good])
+        self.assertAlmostEqual(out[date(2026, 10, 30)][1], 1.234567)
+
+    def test_without_weekend_only_guessed_slugs(self):
+        from unittest import mock
+        with mock.patch.object(T.C, "numbers_chart_movie_urls") as chart, \
+                mock.patch.object(T, "_get", side_effect=OSError("404")):
+            self.assertIsNone(T.fetch_daily_table("Fjord", 2026))
+        chart.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()

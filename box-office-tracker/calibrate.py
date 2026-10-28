@@ -460,12 +460,9 @@ def fetch_opening_weekend_daily(movie_title, friday_date):
     return None
 
 
-def numbers_movie_urls(movie_title, friday_date):
-    """Resolve canonical chart links before trying conventional title slugs.
-
-    Country/director suffixes and leading articles make guessed URLs unreliable.
-    Only an unambiguous title match from the requested day's chart is accepted.
-    """
+def numbers_chart_movie_urls(movie_title, friday_date):
+    """Canonical /movie/ links for an unambiguous title match on the Friday
+    daily chart (country/director suffixes like 'Fjord-(2026-Norway)')."""
     def title_key(value):
         words = re.sub(r'[^a-z0-9 ]', ' ', html.unescape(value).lower()).split()
         return tuple(w for w in words if w not in {"the", "a", "an", "and"})
@@ -488,6 +485,16 @@ def numbers_movie_urls(movie_title, friday_date):
                     candidates.extend(matches)
         except Exception:
             pass
+    return candidates
+
+
+def numbers_movie_urls(movie_title, friday_date):
+    """Resolve canonical chart links before trying conventional title slugs.
+
+    Country/director suffixes and leading articles make guessed URLs unreliable.
+    Only an unambiguous title match from the requested day's chart is accepted.
+    """
+    candidates = numbers_chart_movie_urls(movie_title, friday_date)
     slug_title = re.sub(r'\s*\((?:19|20)\d{2}\)\s*$', '', movie_title).replace('&', 'and')
     slug = re.sub(r'\s+', '-', re.sub(r'[^a-zA-Z0-9\s-]', '', slug_title).strip())
     article = re.match(r'^(The|A|An)-(.+)$', slug)

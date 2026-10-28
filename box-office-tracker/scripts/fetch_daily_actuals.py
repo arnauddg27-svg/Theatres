@@ -115,7 +115,7 @@ def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
     Friday is dropped unless Thursday is known (otherwise it may still carry
     the previews)."""
     import import_thenumbers_daily as N
-    fetch_table = fetch_table or N.fetch_daily_table
+    fetch_table = fetch_table or (lambda t, y: N.fetch_daily_table(t, y, weekend_of=weekend_of))
     year = int(str(weekend_of)[:4])
     daily = fetch_table(movie, year) or {}
     days = N.opening_days(daily, weekend_of) if daily else {}

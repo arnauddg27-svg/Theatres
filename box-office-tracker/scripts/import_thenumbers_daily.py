@@ -70,10 +70,17 @@ def slug_candidates(title, year):
     return out
 
 
-def fetch_daily_table(title, year):
-    """Return {date_obj: gross_m} from the Daily Box Office Performance table."""
+def fetch_daily_table(title, year, weekend_of=None):
+    """Return {date_obj: gross_m} from the Daily Box Office Performance table.
+
+    With weekend_of, the opening Friday's chart link is tried first: the-numbers
+    suffixes some titles with a country ('Fjord-(2026-Norway)', 2026-10-28
+    audit) that no guessed slug reaches."""
     page = None
-    for url in slug_candidates(title, year):
+    urls = slug_candidates(title, year)
+    if weekend_of:
+        urls = list(dict.fromkeys(C.numbers_chart_movie_urls(title, str(weekend_of)) + urls))
+    for url in urls:
         try:
             page = _get(url)
             break
