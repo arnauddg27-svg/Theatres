@@ -8572,6 +8572,18 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
         getattr(movie_metadata, "audience_type", "") or "").strip()
     if not national_theatre_count and movie_metadata and movie_metadata.national_theatre_count:
         national_theatre_count = movie_metadata.national_theatre_count
+    # A national count below the film's own AMC theatre count is impossible —
+    # a stale pre-release BOM "widest" (2026-10-29: Pickpocket 6 vs 196 AMC
+    # theatres, Fjord 107 vs 158). Kept, it pinned coverage to the 425-theatre
+    # fleet (0.46 / 0.36 < the 0.50 presale gate) and both films got no
+    # forecast. Treat it as unknown. Replays carry no link profiles: unchanged.
+    if (national_theatre_count and amc_footprint
+            and int(national_theatre_count) < amc_footprint):
+        print(f"  ({movie}: national theatre count {int(national_theatre_count):,} < "
+              f"{amc_footprint:,} AMC theatres playing it — ignored as stale)")
+        national_theatre_count = None
+        if movie_metadata:
+            movie_metadata = replace(movie_metadata, national_theatre_count=0)
     if (
         national_theatre_count
         and movie_metadata

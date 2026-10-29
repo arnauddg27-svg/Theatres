@@ -493,6 +493,33 @@ class PredictionNormalizationTest(unittest.TestCase):
             0.90,
         )
 
+    def test_national_count_below_amc_footprint_is_ignored_as_stale(self):
+        # 2026-10-29: Pickpocket carried a pre-release BOM count of 6 while
+        # playing ~200 AMC theatres; the impossible count pinned coverage to
+        # the full fleet and the film got no forecast.
+        cal = {
+            "history": [],
+            "calibration_factors": {
+                "amc_market_share": 0.25,
+                "overall_scale_factor": 1.0,
+                "day_weights": {"Thursday": 1.0},
+                "day_scale_factors": {"Thursday": 1.0},
+                "reference_amc_theatres": 2,
+                "reference_amc_theatres_by_cohort": {"core,expansion": 2},
+            },
+        }
+        rows = [self._row("AMC One"), self._row("AMC Two")]
+        profiles = {"2026-05-07": {"n_theatres": 50}}
+        no_count = predict_movie("Sample Movie", {"2026-05-07": rows}, [], cal,
+                                 showtime_link_profiles=profiles)
+        stale = predict_movie("Sample Movie", {"2026-05-07": rows}, [], cal,
+                              national_theatre_count=6, showtime_link_profiles=profiles)
+        self.assertIsNone(stale["national_theatre_count"])
+        self.assertAlmostEqual(no_count["seat_mid_m"], stale["seat_mid_m"], places=9)
+        plausible = predict_movie("Sample Movie", {"2026-05-07": rows}, [], cal,
+                                  national_theatre_count=2615, showtime_link_profiles=profiles)
+        self.assertEqual(2615, plausible["national_theatre_count"])
+
     def test_comp_prior_theatre_count_drag_is_chain_adjusted(self):
         target = TargetMetadata(
             movie="Sample Movie",
