@@ -105,3 +105,49 @@ class FilterUnchangedTest(unittest.TestCase):
             kept = filter_unchanged(rows, p)
             self.assertEqual([(12, "harkins-api"), (12, "post-show-census"), (0, "harkins-api")],
                              [(r["reserved_seats"], r["row_kind"]) for r in kept])
+
+
+class HarkinsStallTest(unittest.TestCase):
+    """Pre 12:50Z 2026-10-28 hung on one request until the 45-min step kill."""
+
+    def test_stalled_request_is_cut_off(self):
+        import time
+        from unittest import mock
+        with mock.patch.object(H, "_fetch", side_effect=lambda url, timeout: time.sleep(5)):
+            t0 = time.monotonic()
+            with self.assertRaises(TimeoutError):
+                H._get("https://example.invalid/x", max_sec=0.2)
+            self.assertLess(time.monotonic() - t0, 2)
+
+    def test_deadline_saves_rows_already_read(self):
+        from unittest import mock
+        theatres = {"data": {"regions": [{"theatres": [{"id": 1, "name": "A"}, {"id": 2, "name": "B"}]}]}}
+        now = datetime(2026, 9, 26, 12, 0, tzinfo=timezone.utc)
+        perf = {"sessionId": "573969", "showtimeUtc": "2026-09-27T02:35:00Z"}
+        calls = []
+
+        def fake_get(url, *a, **k):
+            calls.append(url)
+            if url.endswith("/theatres"):
+                return theatres
+            if "/schedules/" in url:
+                return {"data": {"movies": []}}
+            if "GetTheatreShowtime" in url:
+                return {"data": {"theatre": {"value": [{"id": "V1"}]}}}
+            return {"data": {}}
+
+        written = {}
+        with mock.patch.object(H, "_get", side_effect=fake_get), \
+             mock.patch.object(H, "DEADLINE_SEC", 10.0), \
+             mock.patch.object(H.time, "monotonic", side_effect=[0.0, 0.0] + [100.0] * 10), \
+             mock.patch.object(H, "SLEEP", 0.0), \
+             mock.patch.object(H, "seat_counts", return_value={"total": 100, "sold": 5}), \
+             mock.patch.object(H, "build_row", return_value={"showtime_id": "1:573969"}), \
+             mock.patch.object(H, "pick_performances", return_value=[(perf, "Heart of the Beast")]), \
+             mock.patch.object(H, "append_unique_fandango_rows",
+                               side_effect=lambda rows, csv_path: (written.setdefault("n", len(rows)), 0)), \
+             mock.patch.object(H, "filter_unchanged", side_effect=lambda rows, p: rows):
+            t = H.collect(weekend_of="2026-09-25", titles=["Heart of the Beast"], now_utc=now)
+        self.assertEqual(1, t["deadline_skipped"])     # theatre B left unread
+        self.assertEqual(1, t["theatres"])
+        self.assertEqual(3, written["n"])               # theatre A rows (3 dates) still saved

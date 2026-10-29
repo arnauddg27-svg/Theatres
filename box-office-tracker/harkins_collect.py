@@ -15,6 +15,7 @@ alamo_collect (chain=HARK). Not wired into the model yet.
 import json
 import os
 import sys
+import threading
 import time
 import urllib.request
 from collections import Counter
@@ -37,11 +38,37 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
            "Referer": "https://www.harkins.com/"}
 SLEEP = float(os.environ.get("HARKINS_SLEEP_SEC", "0.25"))
 POST_WINDOW_MIN = int(os.environ.get("HARKINS_POST_WINDOW_MIN", "90"))
+# The step is killed at 45 min, losing every row read so far (pre 12:50Z
+# 2026-10-28: one request stalled for 45 min with no output). urlopen's
+# timeout is per socket read, so a trickling reply never trips it: cap each
+# request's total time, and stop the walk at a deadline so partial rows land.
+REQUEST_MAX_SEC = float(os.environ.get("HARKINS_REQUEST_MAX_SEC", "60"))
+DEADLINE_SEC = float(os.environ.get("HARKINS_DEADLINE_SEC", "2100"))
 
 
-def _get(url, timeout=30):
+def _fetch(url, timeout):
     with urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS), timeout=timeout) as r:
         return json.load(r)
+
+
+def _get(url, timeout=30, max_sec=None):
+    max_sec = REQUEST_MAX_SEC if max_sec is None else max_sec
+    box = {}
+
+    def run():
+        try:
+            box["value"] = _fetch(url, timeout)
+        except BaseException as exc:     # noqa: BLE001 — re-raised in the caller
+            box["error"] = exc
+
+    worker = threading.Thread(target=run, daemon=True)
+    worker.start()
+    worker.join(max_sec)
+    if worker.is_alive():
+        raise TimeoutError(f"Harkins request exceeded {max_sec:.0f}s: {url}")
+    if "error" in box:
+        raise box["error"]
+    return box["value"]
 
 
 WINDOWS_TZ = {"US Mountain Standard Time": "America/Phoenix", "Mountain Standard Time": "America/Denver",
@@ -232,6 +259,7 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if mode == "post":
         dates = [d for d in dates if d <= today]
     run_id = f"harkins-{now_utc.strftime('%Y-%m-%dT%H:%MZ')}"
+    deadline = time.monotonic() + DEADLINE_SEC
     print(f"Harkins collect [{mode}] • weekend_of={weekend_of} • dates={dates} • titles={titles}", flush=True)
     theatres = [t for r in _get(f"{WEB}/theatres")["data"]["regions"] for t in (r.get("theatres") or [])]
     titles_by_id, vista_ids, rows = {}, {}, []
@@ -264,7 +292,12 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                 totals["captured"] += 1
             time.sleep(SLEEP)
         theatres = []          # the schedule walk below is the pre pass only
-    for th in theatres:
+    for i, th in enumerate(theatres, 1):
+        if time.monotonic() > deadline:
+            totals["deadline_skipped"] = len(theatres) - i + 1
+            print(f"⏱️  Harkins deadline ({DEADLINE_SEC:.0f}s) hit — saving rows read so far, "
+                  f"{totals['deadline_skipped']} theatre(s) left unread.", flush=True)
+            break
         totals["theatres"] += 1
         for d in dates:
             try:
@@ -299,6 +332,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                 totals["captured"] += 1
                 time.sleep(SLEEP)
             time.sleep(SLEEP)
+        print(f"  [{i}/{len(theatres)}] {th.get('name', th['id'])}: captured={totals['captured']} "
+              f"errors={totals['errors']}", flush=True)
     before = len(rows)
     rows = filter_unchanged(rows, HARKINS_CSV)          # changed readings only (2026-10-02)
     totals["unchanged"] = before - len(rows)
