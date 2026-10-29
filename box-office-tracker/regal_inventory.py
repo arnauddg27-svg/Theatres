@@ -187,7 +187,14 @@ def collect(max_theatres=0, dry_run=False):
     if looks_walled(status, html) and proxy:
         print(f"  direct egress refused (status {status}); using the residential proxy", flush=True)
         f.proxy = proxy
-        status, html = f.get(f"{BASE}/theatres/{SEED_THEATRE}")
+        # The seed page is one draw from a rotating pool, ~40% of which are
+        # walled: retry it on fresh exits like every other page (2026-10-29:
+        # the first scheduled run died here on a single walled draw).
+        for attempt in range(1 + 2 * WALL_RETRIES):
+            status, html = f.get(f"{BASE}/theatres/{SEED_THEATRE}")
+            if not looks_walled(status, html):
+                break
+            f.fresh_tunnel()
     nd = next_data(html)
     if looks_walled(status, html) or not nd:
         print(f"::error::Regal seed page unreadable (status {status}); stopping — never solving a wall")
