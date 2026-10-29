@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-29",
-  "collected_at": "2026-10-29T15:19:46.745925+00:00",
+  "collected_at": "2026-10-29T16:08:19.858935+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -61919,7 +61919,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280098+00:00",
+          "collected_at": "2026-10-29T16:08:19.837324+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -62032,7 +62032,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280089+00:00",
+          "collected_at": "2026-10-29T16:08:19.837269+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -62164,7 +62164,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280124+00:00",
+          "collected_at": "2026-10-29T16:08:19.837460+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -62211,7 +62211,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280040+00:00",
+          "collected_at": "2026-10-29T16:08:19.837346+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -62253,7 +62253,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280183+00:00",
+          "collected_at": "2026-10-29T16:08:19.837486+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -83135,7 +83135,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280023+00:00",
+          "collected_at": "2026-10-29T16:08:19.837374+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -83176,7 +83176,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280172+00:00",
+          "collected_at": "2026-10-29T16:08:19.837290+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -83212,7 +83212,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280035+00:00",
+          "collected_at": "2026-10-29T16:08:19.837387+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -83336,7 +83336,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-29T16:08:19.837303+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -83378,7 +83378,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280146+00:00",
+          "collected_at": "2026-10-29T16:08:19.837333+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -83420,46 +83420,36 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280067+00:00",
+          "collected_at": "2026-10-29T16:08:19.837506+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-10-29",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148258029",
+            "showtime": "5:20pm",
+            "showtime_id": "148257963",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148258030",
+            "showtime": "7:45pm",
+            "showtime_id": "148257962",
             "format": "AMC Artisan Films"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "1:55pm",
-            "showtime_id": "148258031",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:05pm",
-            "showtime_id": "148364083",
+            "showtime": "7:30pm",
+            "showtime_id": "148257894",
             "format": "undefined"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148257941",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:55pm",
-            "showtime_id": "148257943",
+            "showtime": "7:00pm",
+            "showtime_id": "148257964",
             "format": "undefined"
           }
         ]
@@ -83479,8 +83469,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280132+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837276+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-30": {
           "movies": {
@@ -83497,8 +83488,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280128+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837434+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-31": {
           "movies": {
@@ -83510,8 +83502,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280093+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837448+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-29": {
           "movies": {
@@ -83533,8 +83526,9 @@
               }
             ]
           },
-          "collected_at": null,
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837260+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -83578,7 +83572,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280165+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -83619,12 +83613,17 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280142+00:00",
+          "collected_at": "2026-10-29T16:08:19.837473+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
           "movies": {
             "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148397944",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "7:30pm",
                 "showtime_id": "148237323",
@@ -83632,27 +83631,22 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280057+00:00",
+          "collected_at": "2026-10-29T16:08:19.837441+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148237380",
+            "showtime": "4:45pm",
+            "showtime_id": "148237396",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148237384",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148237374",
+            "showtime": "7:15pm",
+            "showtime_id": "148237394",
             "format": "Laser at AMC"
           }
         ]
@@ -98335,7 +98329,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280176+00:00",
+          "collected_at": "2026-10-29T16:08:19.837415+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -98376,7 +98370,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280161+00:00",
+          "collected_at": "2026-10-29T16:08:19.837500+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -98417,7 +98411,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280139+00:00",
+          "collected_at": "2026-10-29T16:08:19.837296+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -98501,7 +98495,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280115+00:00",
+          "collected_at": "2026-10-29T16:08:19.837422+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -98529,7 +98523,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280009+00:00",
+          "collected_at": "2026-10-29T16:08:19.837368+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -98557,7 +98551,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280136+00:00",
+          "collected_at": "2026-10-29T16:08:19.837428+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -98607,6 +98601,11 @@
               }
             ],
             "The Only Living Pickpocket in New York": [
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "148267203",
+                "format": "AMC Artisan Films"
+              },
               {
                 "showtime": "5:30pm",
                 "showtime_id": "148267204",
@@ -98663,7 +98662,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280046+00:00",
+          "collected_at": "2026-10-29T16:08:19.837400+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -98737,7 +98736,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280078+00:00",
+          "collected_at": "2026-10-29T16:08:19.837408+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -98757,6 +98756,11 @@
           }
         ],
         "The Only Living Pickpocket in New York": [
+          {
+            "showtime": "3:50pm",
+            "showtime_id": "148267203",
+            "format": "AMC Artisan Films"
+          },
           {
             "showtime": "5:30pm",
             "showtime_id": "148267204",
@@ -98853,7 +98857,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280029+00:00",
+          "collected_at": "2026-10-29T16:08:19.837340+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -98893,7 +98897,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280104+00:00",
+          "collected_at": "2026-10-29T16:08:19.837394+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -98923,7 +98927,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280052+00:00",
+          "collected_at": "2026-10-29T16:08:19.837309+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -99029,7 +99033,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280062+00:00",
+          "collected_at": "2026-10-29T16:08:19.837283+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -99055,7 +99059,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280083+00:00",
+          "collected_at": "2026-10-29T16:08:19.837493+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -99131,7 +99135,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T16:10:37.364724+00:00",
+          "collected_at": "2026-10-29T16:08:19.837381+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -99162,7 +99166,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280157+00:00",
+          "collected_at": "2026-10-29T16:08:19.837454+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -99193,7 +99197,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280109+00:00",
+          "collected_at": "2026-10-29T16:08:19.837479+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -99223,7 +99227,7 @@
       "dates": {
         "2026-10-29": {
           "movies": {},
-          "collected_at": "2026-10-28T22:09:19.279989+00:00",
+          "collected_at": "2026-10-29T16:08:19.837253+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": true
         },
@@ -99237,8 +99241,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280150+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837467+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-30": {
           "movies": {
@@ -99250,8 +99255,9 @@
               }
             ]
           },
-          "collected_at": null,
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837317+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-31": {
           "movies": {
@@ -99263,8 +99269,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-28T22:09:19.280179+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-29T16:08:19.837361+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -100503,8 +100510,8 @@
   },
   "link_coverage": {
     "ratio": 1.0,
-    "fresh": 460,
-    "expected": 460,
+    "fresh": 52,
+    "expected": 52,
     "min_ratio": 0.9,
     "degraded": false
   }
