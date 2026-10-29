@@ -52,8 +52,12 @@ BASE = "https://www.regmovies.com"
 SEED_THEATRE = "regal-aviation-mall-1731"
 WORKERS = int(os.environ.get("REGAL_INVENTORY_WORKERS") or 3)
 MAX_MB = float(os.environ.get("REGAL_MAX_MB") or 120)
-WALL_STOP = int(os.environ.get("REGAL_WALL_STOP") or 5)
-WALL_RETRIES = int(os.environ.get("REGAL_WALL_RETRIES") or 2)
+# 2026-10-29 12:20Z: ~70% of exit draws were walled; with 2 retries and a
+# 5-in-a-row stop the run ended after 139/402 theatres. Wider tolerance plus a
+# second sweep over the walled theatres after a pause.
+WALL_STOP = int(os.environ.get("REGAL_WALL_STOP") or 25)
+WALL_RETRIES = int(os.environ.get("REGAL_WALL_RETRIES") or 4)
+SECOND_SWEEP_PAUSE_SEC = int(os.environ.get("REGAL_SECOND_SWEEP_PAUSE_SEC") or 120)
 DEADLINE_SEC = int(os.environ.get("REGAL_DEADLINE_SEC") or 1500)
 NEXT_DATA_RE = re.compile(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', re.S)
 
@@ -237,6 +241,7 @@ def collect(max_theatres=0, dry_run=False):
             with lock:
                 walls["streak"] += 1
                 walls["total"] += 1
+                walled.append(t)
                 if walls["streak"] >= WALL_STOP:
                     stop.set()
                     print(f"⛔ {WALL_STOP} walled pages in a row — stopping (walls are never solved)", flush=True)
@@ -252,8 +257,23 @@ def collect(max_theatres=0, dry_run=False):
             totals["theatres"] += 1
             rows.extend(got)
 
+    walled = []
     with ThreadPoolExecutor(max_workers=max(1, WORKERS)) as ex:
         list(ex.map(one, theatres))
+    # Second sweep: theatres that stayed walled (and the ones a stop skipped)
+    # get one more pass after a pause — the pool's bad draws are transient.
+    retry = list({t["path_name"]: t for t in walled}.values())
+    if stop.is_set():
+        seen = {r["theatre_name"] for r in rows}
+        retry += [t for t in theatres if t.get("name") not in seen and t not in retry]
+    if retry and time.monotonic() + SECOND_SWEEP_PAUSE_SEC < deadline and f.bytes < MAX_MB * 1048576:
+        print(f"  second sweep: {len(retry)} theatre(s) after a {SECOND_SWEEP_PAUSE_SEC}s pause", flush=True)
+        time.sleep(SECOND_SWEEP_PAUSE_SEC)
+        stop.clear()
+        walls["streak"] = 0
+        walled.clear()
+        with ThreadPoolExecutor(max_workers=max(1, WORKERS)) as ex:
+            list(ex.map(one, retry))
     totals["rows"] = len(rows)
     totals["walls"] = walls["total"]
     totals["walled_draws"] = walls["draws"]
