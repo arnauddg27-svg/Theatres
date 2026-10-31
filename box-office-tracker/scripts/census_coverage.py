@@ -42,13 +42,25 @@ def _lane_rows(fn, weekend_of):
                     yield r
 
 
-def reported(weekend_of):
+def reported(weekend_of, registry=None):
+    """{(movie, day): gross_m}; a 2nd/3rd-weekend film's days before it was
+    registered (holdover.py first_seen) are left out — nothing was meant to
+    count them (2026-10-31: Clayface Thu/Fri printed 0.0%)."""
+    import holdover
     out = {}
     path = os.path.join(DATA, "daily-actual-overrides.csv")
+    first_seen = {holdover.title_key(r["movie"]): (r.get("first_seen") or "")[:10]
+                  for r in holdover.entries(weekend_of, registry)}
+    friday = datetime.strptime(weekend_of, "%Y-%m-%d")
     if os.path.exists(path):
         for r in csv.DictReader(open(path)):
-            if r.get("weekend_of") == weekend_of:
-                out[(r["movie_title"], r["day_of_week"])] = float(r["gross_m"])
+            if r.get("weekend_of") != weekend_of:
+                continue
+            seen = first_seen.get(holdover.title_key(r["movie_title"]))
+            day_date = (friday + timedelta(days=DAYS.get(r["day_of_week"], 0))).strftime("%Y-%m-%d")
+            if seen and day_date < seen:
+                continue
+            out[(r["movie_title"], r["day_of_week"])] = float(r["gross_m"])
     return out
 
 

@@ -114,6 +114,24 @@ class DedupGuardTest(unittest.TestCase):
             self.assertEqual(active, ["Everest", "Clayface", "Wildwood", "You Can See Everything"])
 
 
+class CensusCoverageTest(unittest.TestCase):
+    def test_holdover_days_before_registration_are_skipped(self):
+        import census_coverage as CC
+        with tempfile.TemporaryDirectory() as td:
+            reg = os.path.join(td, "holdover-titles.csv")
+            H.register(H.entries_from_events(EVENTS, NOW), reg)          # first_seen 2026-10-31
+            with open(os.path.join(td, "daily-actual-overrides.csv"), "w", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["weekend_of", "movie_title", "day_of_week", "gross_m"])
+                for day in ("Thursday", "Friday", "Saturday"):
+                    w.writerow(["2026-10-30", "Clayface", day, "3.0"])
+                    w.writerow(["2026-10-30", "Everest", day, "0.5"])
+            with mock.patch.object(CC, "DATA", td):
+                rep = CC.reported("2026-10-30", registry=reg)
+        self.assertEqual(sorted(d for (m, d) in rep if m == "Clayface"), ["Saturday"])
+        self.assertEqual(sorted(d for (m, d) in rep if m == "Everest"), ["Friday", "Saturday", "Thursday"])
+
+
 class ForecastTest(unittest.TestCase):
     O = {"Thursday": 1.32, "Friday": 3.03, "Saturday": 4.2, "Sunday": 3.71}
 
