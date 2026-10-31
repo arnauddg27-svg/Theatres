@@ -155,7 +155,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   collect-links:
     if: github.event.inputs.phase == 'collect-links'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
 
     steps:
@@ -373,7 +373,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   scrape:
     if: github.event.inputs.phase == 'scrape'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false   # one TZ's Queue-It or timeout shouldn't cancel the others
@@ -580,7 +580,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   probe-chains:
     if: github.event.inputs.phase == 'probe-chains'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
 
     steps:
@@ -682,7 +682,7 @@ jobs:
       always() &&
       github.event.inputs.phase == 'scrape' &&
       (needs.scrape.result == 'success' || needs.scrape.result == 'failure')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     steps:
@@ -950,7 +950,7 @@ jobs:
   # ──────────────────────────────────────────────────────────────────────────
   scrape-fandango:
     if: github.event.inputs.phase == 'scrape-fandango'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 50
 
     steps:
@@ -1247,7 +1247,7 @@ jobs:
     # showings that started 0-90 min ago, from stored session ids — the
     # at-showtime read that includes walk-ins.
     if: github.event.inputs.phase == 'scrape-alamo'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ contains(github.event.inputs.schedule_slot, 'loop') && 360 || 40 }}
     steps:
       - name: Checkout repo
@@ -1283,7 +1283,7 @@ jobs:
     # showing at 32 theatres (677 showings in 14 min on the first test).
     # Same pre/post design as Alamo; sold = capacity - open seats.
     if: github.event.inputs.phase == 'scrape-harkins'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
       - name: Checkout repo
@@ -1316,7 +1316,7 @@ jobs:
     # Direct first; residential proxy only if direct is refused. Stops on
     # walls, never solves them.
     if: github.event.inputs.phase == 'scrape-regal'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
       - name: Checkout repo
@@ -1351,7 +1351,7 @@ jobs:
     # schedule JSON (no login/bot wall/token). One request per theatre;
     # started showings are written as post-show-census (final % of the day).
     if: github.event.inputs.phase == 'scrape-webedia'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Checkout repo
@@ -1377,7 +1377,7 @@ jobs:
 
   scrape-cinemark:
     if: github.event.inputs.phase == 'scrape-cinemark'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 115
 
     steps:

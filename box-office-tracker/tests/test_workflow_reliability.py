@@ -47,14 +47,14 @@ class WorkflowReliabilityTest(unittest.TestCase):
         `calibrate` job (runs-on: [self-hosted, vps]). If that droplet is
         offline the live CSVs grow ~25MB/weekend until they cross GitHub's
         100MB push limit — the failure that bricked the snapshot lane on
-        2026-07-12. finalize runs on ubuntu-latest and carries a size-gated
+        2026-07-12. finalize runs on a GitHub-hosted runner and carries a size-gated
         fallback so the cliff cannot return while the VPS is down.
         """
         start = self.workflow.index("  finalize:")
         end = self.workflow.index("\n  calibrate:", start)
         block = self.workflow[start:end]
         self.assertIn("rotate_pre_reservation_snapshots.py", block)
-        self.assertIn("ubuntu-latest", block)
+        self.assertIn("ubuntu-24.04", block)
 
     def test_scrape_matrix_stays_sequential_for_the_lock_self_break(self):
         """amc_lock breaks a lock whose holder run id equals the CURRENT run.
@@ -270,12 +270,19 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertNotIn("git log --since", block)
         self.assertNotIn("pattern=\"data: box office", block)
 
+    def test_pipeline_pins_hosted_runner_image(self):
+        """ubuntu-latest moved to 26.04 on 2026-10-31 and Playwright 1.58 cannot
+        install Chromium there, failing every Cinemark/Fandango scrape. Keep
+        hosted jobs pinned to an image Playwright supports."""
+        self.assertNotIn("runs-on: ubuntu-latest", self.workflow)
+        self.assertIn("runs-on: ubuntu-24.04", self.workflow)
+
     def test_collect_links_runs_on_github_hosted_runner(self):
         collect_start = self.workflow.index("  collect-links:")
         scrape_start = self.workflow.index("  scrape:")
         collect_block = self.workflow[collect_start:scrape_start]
 
-        self.assertIn("runs-on: ubuntu-latest", collect_block)
+        self.assertIn("runs-on: ubuntu-24.04", collect_block)
         self.assertNotIn("runs-on: [self-hosted, vps]", collect_block)
         self.assertNotIn("/home/gha/actions-runner", collect_block)
 

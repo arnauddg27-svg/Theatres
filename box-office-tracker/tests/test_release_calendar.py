@@ -1,5 +1,6 @@
 """Release-calendar seeding (2026-10-18)."""
 import json
+from datetime import datetime, timezone
 import os
 import sys
 import tempfile
@@ -65,12 +66,17 @@ class ReleaseCalendarParseTest(unittest.TestCase):
         self.assertEqual({RC._key("You Can See Everything")}, keys)
 
 
+# Fresh relative to the wall clock: a fixed date ages past
+# RELEASE_CALENDAR_MAX_AGE_DAYS and the tests start failing on their own.
+_FRESH = datetime.now(timezone.utc).isoformat()
+
+
 class ScraperCalendarMergeTest(unittest.TestCase):
     def test_merge_adds_missing_calendar_titles(self):
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "release-calendar.json")
             with open(path, "w") as f:
-                json.dump({"weekend_of": "2026-10-23", "fetched_at": "2026-10-19T12:00:00+00:00",
+                json.dump({"weekend_of": "2026-10-23", "fetched_at": _FRESH,
                            "titles": [{"title": "Clayface"}, {"title": "Wildwood"}]}, f)
             with mock.patch.object(scraper, "RELEASE_CALENDAR_JSON", scraper.Path(path)), \
                  mock.patch.object(scraper, "latest_market_urls_from_csv", return_value={}):
@@ -92,7 +98,7 @@ class TrackedStateIncludesCalendarTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "release-calendar.json")
             with open(path, "w") as f:
-                json.dump({"weekend_of": "2026-10-23", "fetched_at": "2026-10-19T12:00:00+00:00",
+                json.dump({"weekend_of": "2026-10-23", "fetched_at": _FRESH,
                            "titles": [{"title": "Clayface"}, {"title": "The Clayface"}]}, f)
             with mock.patch.object(scraper, "RELEASE_CALENDAR_JSON", scraper.Path(path)), \
                  mock.patch.object(scraper, "LINKS_JSON", scraper.Path(os.path.join(td, "none.json"))), \
