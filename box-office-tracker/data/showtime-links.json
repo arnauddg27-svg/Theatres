@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-30",
-  "collected_at": "2026-10-30T23:29:27.427611+00:00",
+  "collected_at": "2026-10-31T01:32:46.529251+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -63521,7 +63521,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666017+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -63590,53 +63590,63 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666035+00:00",
+          "collected_at": "2026-10-31T01:32:46.506307+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147924832",
+            "showtime": "12:00pm",
+            "showtime_id": "147924821",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147924872",
+            "showtime": "3:00pm",
+            "showtime_id": "147924822",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148356255",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147924873",
+            "showtime": "8:15pm",
+            "showtime_id": "147924698",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147924697",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148356062",
+            "showtime": "2:45pm",
+            "showtime_id": "148356074",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148356110",
+            "showtime": "11:00pm",
+            "showtime_id": "148356080",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148356098",
+            "showtime": "2:30pm",
+            "showtime_id": "148356126",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148356299",
+            "showtime": "8:15pm",
+            "showtime_id": "148356116",
             "format": "Laser at AMC"
           }
         ]
@@ -63886,7 +63896,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665945+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -63977,85 +63987,90 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665962+00:00",
+          "collected_at": "2026-10-31T01:32:46.506225+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-10-30",
       "movies": {
         "Everest: The Other Side": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147920817",
+            "showtime_id": "147920813",
             "format": "undefined"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147920818",
+            "showtime_id": "147920814",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147920819",
+            "showtime_id": "147920815",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147920820",
+            "showtime_id": "147920816",
             "format": "undefined"
           }
         ],
         "Christmas at the Kringles": [
           {
             "showtime": "4:15pm",
-            "showtime_id": "148284524",
+            "showtime_id": "148284520",
             "format": "undefined"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "148284821",
+            "showtime_id": "148284825",
             "format": "undefined"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "6:30pm",
-            "showtime_id": "148284601",
+            "showtime": "1:00pm",
+            "showtime_id": "148284605",
             "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148284604",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "The Mongoose": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "148284932",
+            "showtime_id": "148284928",
             "format": "undefined"
           }
         ],
         "Fjord": [
           {
             "showtime": "4:15pm",
-            "showtime_id": "148284930",
+            "showtime_id": "148284925",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148284523",
-            "format": "undefined"
+            "showtime": "7:30pm",
+            "showtime_id": "148284566",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148284816",
+            "showtime": "7:30pm",
+            "showtime_id": "148284921",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "148284484",
             "format": "undefined"
           },
           {
             "showtime": "9:50pm",
-            "showtime_id": "148284485",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "148284742",
+            "showtime_id": "148284746",
             "format": "undefined"
           }
         ]
@@ -64254,7 +64269,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665791+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -64471,115 +64486,120 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-31T01:32:46.506167+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "12:35pm",
-            "showtime_id": "148292201",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:15pm",
-            "showtime_id": "148292184",
+            "showtime": "2:10pm",
+            "showtime_id": "148237482",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148292183",
+            "showtime": "4:55pm",
+            "showtime_id": "148237481",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148139908",
+            "showtime_id": "148139907",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:20pm",
-            "showtime_id": "148292186",
+            "showtime_id": "148292185",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147729002",
+            "showtime": "12:55pm",
+            "showtime_id": "148237483",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148292463",
+            "showtime": "4:40pm",
+            "showtime_id": "148237484",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:05pm",
+            "showtime_id": "147728999",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148237485",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148237486",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:25pm",
-            "showtime_id": "148292443",
+            "showtime_id": "148292241",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147863600",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "1:10pm",
+            "showtime_id": "147863592",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "147863599",
+            "showtime_id": "147863590",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147863598",
+            "showtime": "7:25pm",
+            "showtime_id": "147863588",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147863594",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "148292468",
+            "showtime": "9:55pm",
+            "showtime_id": "147863586",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "12:50pm",
-            "showtime_id": "148292462",
+            "showtime": "1:00pm",
+            "showtime_id": "148237595",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:25pm",
-            "showtime_id": "148292441",
+            "showtime_id": "148237594",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147729068",
+            "showtime_id": "147729070",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:35pm",
-            "showtime_id": "147729071",
+            "showtime": "10:00pm",
+            "showtime_id": "147729073",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "1:25pm",
-            "showtime_id": "148292205",
+            "showtime": "12:40pm",
+            "showtime_id": "148237591",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "148292239",
+            "showtime": "4:30pm",
+            "showtime_id": "148237590",
             "format": "Laser at AMC"
           }
         ]
@@ -64873,7 +64893,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666156+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -64968,44 +64988,44 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147931644",
+            "showtime": "12:55pm",
+            "showtime_id": "147931652",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147931643",
+            "showtime": "3:45pm",
+            "showtime_id": "147931651",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:35pm",
+            "showtime_id": "147931650",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147931642",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147931645",
+            "showtime": "9:30pm",
+            "showtime_id": "147931653",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "2:50pm",
-            "showtime_id": "148285651",
+            "showtime": "10:20am",
+            "showtime_id": "148285557",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "148285607",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148285566",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:40pm",
-            "showtime_id": "148285567",
+            "showtime": "10:20pm",
+            "showtime_id": "148285559",
             "format": "Laser at AMC"
           }
         ]
@@ -65310,78 +65330,41 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148124171",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "148124297",
+            "showtime": "7:15pm",
+            "showtime_id": "148123963",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147707469",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148365477",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "148365504",
+            "showtime": "4:45pm",
+            "showtime_id": "147707470",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147897570",
+            "showtime": "1:00pm",
+            "showtime_id": "147897583",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147897572",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "147897574",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147897707",
+            "showtime": "4:15pm",
+            "showtime_id": "147897709",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147897577",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:50pm",
-            "showtime_id": "148365609",
-            "format": "IMAX with Laser at AMC"
-          }
-        ],
-        "Fjord": [
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "148365521",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:50pm",
-            "showtime_id": "148396046",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148365691",
+            "showtime_id": "147897288",
             "format": "Laser at AMC"
           }
         ]
@@ -65507,8 +65490,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203558+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506208+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-30": {
           "movies": {
@@ -65845,7 +65829,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203673+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -65988,68 +65972,68 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148177976",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:25pm",
-            "showtime_id": "148178022",
+            "showtime": "6:20pm",
+            "showtime_id": "148177813",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147726190",
+            "showtime": "11:45am",
+            "showtime_id": "148370555",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:05pm",
-            "showtime_id": "148376580",
+            "showtime": "2:10pm",
+            "showtime_id": "148370554",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148376590",
+            "showtime": "4:35pm",
+            "showtime_id": "147726283",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:05pm",
+            "showtime_id": "148370530",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "148376579",
+            "showtime_id": "148370531",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147932493",
+            "showtime": "1:15pm",
+            "showtime_id": "147932507",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "147932494",
+            "showtime": "4:10pm",
+            "showtime_id": "147932506",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147932495",
+            "showtime": "7:00pm",
+            "showtime_id": "147932512",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148376591",
+            "showtime": "9:45pm",
+            "showtime_id": "147932505",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148376577",
+            "showtime": "9:45pm",
+            "showtime_id": "148370536",
             "format": "Laser at AMC"
           }
         ]
@@ -66183,7 +66167,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666131+00:00",
+          "collected_at": "2026-10-31T01:32:46.506149+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -66249,7 +66233,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203421+00:00",
+          "collected_at": "2026-10-31T01:32:46.506334+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -66315,60 +66299,70 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665756+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147960074",
+            "showtime": "7:45pm",
+            "showtime_id": "147960075",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148251918",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147586737",
+            "showtime": "4:15pm",
+            "showtime_id": "147586766",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148251951",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148251790",
+            "showtime": "1:30pm",
+            "showtime_id": "148251805",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "148251964",
+            "showtime_id": "148251804",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147928738",
+            "showtime": "6:45pm",
+            "showtime_id": "147928739",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148251903",
+            "showtime": "10:00pm",
+            "showtime_id": "148251806",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148251929",
-            "format": "Laser at AMC"
+            "showtime": "7:00pm",
+            "showtime_id": "148251732",
+            "format": "Open Caption (On-screen Subtitles)"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "148251787",
+            "showtime": "5:45pm",
+            "showtime_id": "148251764",
             "format": "Laser at AMC"
           }
         ]
@@ -66522,8 +66516,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203385+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506339+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-11-01": {
           "movies": {
@@ -66747,7 +66742,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666040+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -66870,58 +66865,73 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147941964",
+            "showtime": "12:30pm",
+            "showtime_id": "147941973",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147941965",
+            "showtime": "1:40pm",
+            "showtime_id": "148245669",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147941974",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147941955",
+            "showtime_id": "147941957",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:05pm",
-            "showtime_id": "147941956",
+            "showtime_id": "147941958",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "2:05pm",
-            "showtime_id": "148245598",
+            "showtime": "12:55pm",
+            "showtime_id": "148245614",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "2:10pm",
+            "showtime_id": "148245452",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148245597",
+            "showtime": "4:35pm",
+            "showtime_id": "148245451",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148245596",
+            "showtime": "7:40pm",
+            "showtime_id": "148245463",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "148245464",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "3:50pm",
-            "showtime_id": "148245670",
+            "showtime": "10:10pm",
+            "showtime_id": "148245650",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "2:10pm",
-            "showtime_id": "148245647",
+            "showtime": "4:25pm",
+            "showtime_id": "148245629",
             "format": "Laser at AMC"
           }
         ]
@@ -67031,8 +67041,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203612+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506235+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-30": {
           "movies": {
@@ -67149,8 +67160,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-27T18:16:35.103570+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506239+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -67683,7 +67695,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-27T18:16:35.103605+00:00",
+          "collected_at": "2026-10-31T01:32:46.506286+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -67764,7 +67776,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665985+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -67840,85 +67852,85 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665371+00:00",
+          "collected_at": "2026-10-31T01:32:46.506360+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148213020",
+            "showtime": "3:40pm",
+            "showtime_id": "148263639",
             "format": "undefined"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "148263713",
-            "format": "undefined"
+            "showtime": "7:35pm",
+            "showtime_id": "148213021",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "8:10pm",
-            "showtime_id": "148263714",
+            "showtime": "10:20pm",
+            "showtime_id": "148263699",
             "format": "undefined"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147624372",
+            "showtime": "4:40pm",
+            "showtime_id": "147624379",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "148263579",
+            "showtime": "6:25pm",
+            "showtime_id": "148263637",
             "format": "AMC Artisan Films"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147792082",
+            "showtime": "1:15pm",
+            "showtime_id": "147792132",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147792465",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147792464",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147792083",
+            "showtime": "3:45pm",
+            "showtime_id": "147792069",
             "format": "undefined"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148263846",
+            "showtime": "6:30pm",
+            "showtime_id": "147792466",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "147792084",
             "format": "undefined"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147624084",
+            "showtime": "4:45pm",
+            "showtime_id": "147624087",
             "format": "undefined"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147624085",
+            "showtime": "8:20pm",
+            "showtime_id": "148263606",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "147624086",
             "format": "undefined"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:10pm",
-            "showtime_id": "148263598",
+            "showtime": "1:40pm",
+            "showtime_id": "148263698",
             "format": "undefined"
           }
         ]
@@ -68076,8 +68088,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665380+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506348+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-11-01": {
           "movies": {
@@ -68353,7 +68366,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203736+00:00",
+          "collected_at": "2026-10-31T01:32:46.506247+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -68556,78 +68569,98 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203634+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147734995",
+            "showtime": "12:20pm",
+            "showtime_id": "148379655",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "147734989",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148379244",
+            "showtime": "8:15pm",
+            "showtime_id": "148379216",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148379238",
+            "showtime": "10:45pm",
+            "showtime_id": "148379217",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147923785",
+            "showtime": "12:45pm",
+            "showtime_id": "147923780",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "3:40pm",
-            "showtime_id": "148379826",
+            "showtime": "1:45pm",
+            "showtime_id": "148379611",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "147923748",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "147923786",
+            "showtime": "6:15pm",
+            "showtime_id": "148379853",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147923777",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "147923828",
+            "showtime": "10:30pm",
+            "showtime_id": "147923830",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147923829",
+            "showtime": "10:30pm",
+            "showtime_id": "148379699",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147746079",
+            "showtime": "12:00pm",
+            "showtime_id": "148379843",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "147746080",
+            "showtime": "3:00pm",
+            "showtime_id": "148379651",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147746067",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "148379771",
+            "showtime": "10:00pm",
+            "showtime_id": "147746068",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148379297",
+            "showtime": "3:30pm",
+            "showtime_id": "148379854",
             "format": "Laser at AMC"
           }
         ]
@@ -69380,7 +69413,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665760+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -69501,105 +69534,98 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
+            "showtime": "11:55am",
+            "showtime_id": "148288018",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "3:35pm",
-            "showtime_id": "147736814",
+            "showtime_id": "147736816",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "148288012",
+            "showtime_id": "148288020",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "148287520",
+            "showtime_id": "148287535",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "148288108",
+            "showtime_id": "147925406",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "148288107",
+            "showtime_id": "148288115",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147925391",
+            "showtime_id": "147925395",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:25pm",
-            "showtime_id": "148288109",
+            "showtime_id": "148288113",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147925392",
+            "showtime_id": "147925396",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "147925402",
+            "showtime": "9:45pm",
+            "showtime_id": "147925403",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148287830",
-            "format": "IMAX with Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
             "showtime": "12:55pm",
-            "showtime_id": "148287538",
+            "showtime_id": "148287532",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "148288139",
+            "showtime_id": "148288164",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:50pm",
-            "showtime_id": "148288135",
+            "showtime_id": "148288121",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:35pm",
-            "showtime_id": "148288137",
+            "showtime": "7:40pm",
+            "showtime_id": "148288120",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:35pm",
-            "showtime_id": "148288076",
+            "showtime_id": "148288085",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
             "showtime": "1:50pm",
-            "showtime_id": "148287466",
+            "showtime_id": "148287446",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "148287464",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Fjord": [
-          {
-            "showtime": "4:10pm",
-            "showtime_id": "148288032",
+            "showtime": "7:50pm",
+            "showtime_id": "148287444",
             "format": "Laser at AMC"
           }
         ]
@@ -69729,7 +69755,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665597+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -69847,68 +69873,63 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203626+00:00",
+          "collected_at": "2026-10-31T01:32:46.506158+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147994240",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "7:15pm",
+            "showtime_id": "147994247",
+            "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
             "showtime": "5:30pm",
-            "showtime_id": "147724354",
+            "showtime_id": "147724348",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147800765",
+            "showtime_id": "147800758",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147800766",
+            "showtime_id": "147800759",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147800712",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "4:15pm",
-            "showtime_id": "148240059",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "147800714",
+            "showtime_id": "148240050",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:55pm",
-            "showtime_id": "147800716",
+            "showtime": "8:00pm",
+            "showtime_id": "147800655",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:55pm",
+            "showtime_id": "147800657",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "148240062",
+            "showtime_id": "148240051",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "148240060",
+            "showtime": "10:00pm",
+            "showtime_id": "148240049",
             "format": "Laser at AMC"
           }
         ]
@@ -70054,7 +70075,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665508+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -70188,61 +70209,71 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-11-01",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148357336",
+            "showtime": "10:45am",
+            "showtime_id": "148357392",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "148357381",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147710904",
-            "format": "Laser at AMC"
+            "showtime_id": "147710906",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148357136",
+            "showtime": "8:15pm",
+            "showtime_id": "148357141",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "12:20pm",
-            "showtime_id": "147881412",
+            "showtime": "11:15am",
+            "showtime_id": "148357329",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147881436",
+            "showtime": "1:45pm",
+            "showtime_id": "147881419",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147881119",
+            "showtime": "4:00pm",
+            "showtime_id": "147881125",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:05pm",
-            "showtime_id": "147881435",
+            "showtime": "4:45pm",
+            "showtime_id": "147881420",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147881118",
+            "showtime": "7:00pm",
+            "showtime_id": "147881124",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147881437",
+            "showtime": "7:35pm",
+            "showtime_id": "147881421",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147881450",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148357366",
+            "showtime": "10:45am",
+            "showtime_id": "148357226",
             "format": "Laser at AMC"
           }
         ]
@@ -70364,22 +70395,27 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147895547",
+            "showtime": "12:15pm",
+            "showtime_id": "147895559",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147895548",
+            "showtime": "3:00pm",
+            "showtime_id": "147895558",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "147895560",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "147895549",
+            "showtime": "8:30pm",
+            "showtime_id": "147895561",
             "format": "Laser at AMC"
           }
         ]
@@ -70480,7 +70516,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203532+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -70589,46 +70625,56 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203548+00:00",
+          "collected_at": "2026-10-31T01:32:46.506133+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147747293",
-            "format": "Laser at AMC"
+            "showtime": "5:30pm",
+            "showtime_id": "147747291",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148377135",
+            "showtime": "10:45pm",
+            "showtime_id": "148377098",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "147904325",
-            "format": "Laser at AMC"
+            "showtime": "2:30pm",
+            "showtime_id": "147904307",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147904306",
+            "showtime": "4:30pm",
+            "showtime_id": "148377142",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147904354",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "147904542",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147747300",
+            "showtime": "6:00pm",
+            "showtime_id": "147747283",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147747329",
+            "showtime": "9:30pm",
+            "showtime_id": "147747284",
             "format": "Laser at AMC"
           }
         ]
@@ -71014,90 +71060,95 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666143+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148139861",
+            "showtime": "7:45pm",
+            "showtime_id": "148139862",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147622419",
+            "showtime": "12:00pm",
+            "showtime_id": "148345336",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148345565",
+            "showtime": "5:30pm",
+            "showtime_id": "147622398",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148345566",
+            "showtime": "8:00pm",
+            "showtime_id": "148345334",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148345335",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
+            "showtime": "12:30pm",
+            "showtime_id": "147807084",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "2:00pm",
-            "showtime_id": "147807080",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "148345512",
+            "showtime_id": "148345561",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147807082",
+            "showtime": "3:30pm",
+            "showtime_id": "147807086",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147807393",
+            "showtime": "4:30pm",
+            "showtime_id": "148345909",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148345657",
-            "format": "IMAX with Laser at AMC"
+            "showtime": "6:00pm",
+            "showtime_id": "147806719",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147807395",
+            "showtime": "9:00pm",
+            "showtime_id": "147806722",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148345880",
+            "showtime": "3:15pm",
+            "showtime_id": "148345804",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148215523",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148215521",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148215522",
+            "showtime": "9:45pm",
+            "showtime_id": "148215524",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "148345879",
+            "showtime": "2:30pm",
+            "showtime_id": "148345860",
             "format": "Laser at AMC"
           }
         ]
@@ -71381,7 +71432,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665898+00:00",
+          "collected_at": "2026-10-31T01:32:46.506085+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -71431,7 +71482,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666161+00:00",
+          "collected_at": "2026-10-31T01:32:46.506105+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -71486,61 +71537,59 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666101+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147742105",
+            "showtime": "11:45am",
+            "showtime_id": "148360279",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147742104",
+            "showtime": "2:50pm",
+            "showtime_id": "148377045",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "147735819",
+            "showtime": "5:00pm",
+            "showtime_id": "147735820",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:25pm",
-            "showtime_id": "147742103",
+            "showtime": "7:05pm",
+            "showtime_id": "148360404",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147742106",
+            "showtime": "10:05pm",
+            "showtime_id": "148360502",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147919323",
+            "showtime": "12:00pm",
+            "showtime_id": "147919346",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147919341",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147919322",
+            "showtime": "6:45pm",
+            "showtime_id": "147919340",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147919383",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Fjord": [
-          {
-            "showtime": "12:10pm",
-            "showtime_id": "148360403",
+            "showtime": "9:20pm",
+            "showtime_id": "147919350",
             "format": "Laser at AMC"
           }
         ]
@@ -71668,7 +71717,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665786+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -71811,56 +71860,73 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665488+00:00",
+          "collected_at": "2026-10-31T01:32:46.506276+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147938829",
+            "showtime": "12:30pm",
+            "showtime_id": "147938816",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "3:25pm",
+            "showtime_id": "147938815",
             "format": "undefined"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "147938830",
+            "showtime": "6:15pm",
+            "showtime_id": "147938813",
             "format": "undefined"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "147938831",
+            "showtime": "9:45pm",
+            "showtime_id": "147938814",
             "format": "undefined"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148238262",
+            "showtime": "4:40pm",
+            "showtime_id": "148238202",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148238264",
+            "showtime": "8:15pm",
+            "showtime_id": "148238112",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "148238113",
             "format": "AMC Artisan Films"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148238131",
+            "showtime": "11:55am",
+            "showtime_id": "148238092",
             "format": "undefined"
           },
           {
-            "showtime": "4:35pm",
-            "showtime_id": "148238132",
-            "format": "undefined"
+            "showtime": "1:20pm",
+            "showtime_id": "148238150",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "148238133",
+            "showtime": "7:05pm",
+            "showtime_id": "148238198",
+            "format": "undefined"
+          }
+        ],
+        "The Mongoose": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148238246",
             "format": "undefined"
           }
         ]
@@ -72145,7 +72211,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665833+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -72241,100 +72307,85 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148142457",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "5:15pm",
-            "showtime_id": "148142463",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "148142464",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:45pm",
-            "showtime_id": "148142465",
+            "showtime": "7:45pm",
+            "showtime_id": "148142459",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148352420",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147717790",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148352366",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148352924",
-            "format": "Cantonese Spoken with Chinese and English Subtitles"
-          }
-        ],
-        "Everest: The Other Side": [
-          {
-            "showtime": "2:00pm",
-            "showtime_id": "147891631",
+            "showtime": "11:30am",
+            "showtime_id": "148352734",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147891628",
+            "showtime_id": "147717792",
+            "format": "Open Caption (On-screen Subtitles)"
+          }
+        ],
+        "Everest: The Other Side": [
+          {
+            "showtime": "11:00am",
+            "showtime_id": "148352660",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147891622",
+            "showtime": "1:00pm",
+            "showtime_id": "147891604",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148352924",
-            "format": "Cantonese Spoken with Chinese and English Subtitles"
+            "showtime": "2:00pm",
+            "showtime_id": "148352659",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147891637",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "147891600",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148352953",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "147891626",
+            "showtime_id": "147891639",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147717713",
+            "showtime": "12:30pm",
+            "showtime_id": "148352308",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147717608",
+            "showtime_id": "147717615",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "148352336",
+            "showtime_id": "147717617",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148352921",
+            "showtime": "8:10pm",
+            "showtime_id": "148352563",
             "format": "Laser at AMC"
           }
         ]
@@ -72984,44 +73035,44 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203603+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "147906465",
+            "showtime_id": "147906491",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147906467",
+            "showtime_id": "147906494",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147906563",
+            "showtime_id": "147906532",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147906564",
+            "showtime": "8:45pm",
+            "showtime_id": "148268648",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:55pm",
+            "showtime_id": "147906533",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
             "showtime": "8:15pm",
-            "showtime_id": "148268605",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "11:00pm",
-            "showtime_id": "148268607",
+            "showtime_id": "148268585",
             "format": "Laser at AMC"
           }
         ]
@@ -74653,8 +74704,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203572+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506270+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -74841,7 +74893,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666113+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -74989,73 +75041,68 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-11-01",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
             "showtime": "11:55am",
-            "showtime_id": "148353249",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "148353291",
+            "showtime_id": "148353288",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147745604",
+            "showtime_id": "147745605",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:45pm",
-            "showtime_id": "148353286",
+            "showtime_id": "148353289",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147945687",
+            "showtime_id": "147945694",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147945740",
+            "showtime": "1:15pm",
+            "showtime_id": "147945731",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147945739",
+            "showtime": "4:10pm",
+            "showtime_id": "147945730",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147945688",
+            "showtime_id": "147945691",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:40pm",
-            "showtime_id": "147945741",
+            "showtime_id": "147945750",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147945738",
+            "showtime_id": "147945751",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "10:30pm",
-            "showtime_id": "148353317",
+            "showtime": "10:45pm",
+            "showtime_id": "148353314",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "3:10pm",
-            "showtime_id": "148353338",
+            "showtime": "3:05pm",
+            "showtime_id": "148353342",
             "format": "Laser at AMC"
           }
         ]
@@ -75270,7 +75317,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203765+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -75341,70 +75388,65 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148268631",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:20pm",
-            "showtime_id": "147999838",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148268633",
+            "showtime_id": "147999840",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
             "showtime": "1:15pm",
-            "showtime_id": "148268637",
+            "showtime_id": "148268626",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147735081",
+            "showtime_id": "147735082",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147902905",
+            "showtime_id": "147902911",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147902939",
+            "showtime_id": "147902927",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:55pm",
-            "showtime_id": "147902940",
+            "showtime_id": "147902928",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "147902906",
+            "showtime_id": "147902912",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
             "showtime": "11:30am",
-            "showtime_id": "148268774",
+            "showtime_id": "148268768",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
+            "showtime": "10:30am",
+            "showtime_id": "148268737",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "3:45pm",
-            "showtime_id": "148268635",
+            "showtime_id": "148268622",
             "format": "Laser at AMC"
           }
         ]
@@ -75482,7 +75524,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666274+00:00",
+          "collected_at": "2026-10-31T01:32:46.506426+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -75558,37 +75600,42 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203847+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147919943",
+            "showtime": "12:00pm",
+            "showtime_id": "147919885",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "148267545",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "147919875",
+            "showtime_id": "147919884",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:05pm",
-            "showtime_id": "148267582",
+            "showtime": "4:10pm",
+            "showtime_id": "148267565",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147919917",
+            "showtime": "7:30pm",
+            "showtime_id": "147919911",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "147919918",
+            "showtime": "9:40pm",
+            "showtime_id": "147919912",
             "format": "Laser at AMC"
           }
         ]
@@ -75748,7 +75795,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203937+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -75911,78 +75958,78 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
             "showtime": "2:15pm",
-            "showtime_id": "148276777",
+            "showtime_id": "148276675",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148147667",
+            "showtime_id": "148147666",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "148276747",
+            "showtime": "12:15pm",
+            "showtime_id": "148276730",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "148276723",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "148276729",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147576848",
+            "showtime_id": "147576847",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148276775",
+            "showtime": "7:30pm",
+            "showtime_id": "148276769",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:25pm",
-            "showtime_id": "148276724",
+            "showtime": "10:30pm",
+            "showtime_id": "148276731",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147940470",
+            "showtime_id": "147940463",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147940464",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147940467",
+            "showtime": "7:00pm",
+            "showtime_id": "147940465",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147940468",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "147940469",
+            "showtime": "10:00pm",
+            "showtime_id": "147940466",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "148276778",
+            "showtime": "12:15pm",
+            "showtime_id": "148276740",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148276746",
+            "showtime": "5:30pm",
+            "showtime_id": "148276782",
             "format": "Laser at AMC"
           }
         ]
@@ -76386,7 +76433,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203885+00:00",
+          "collected_at": "2026-10-31T01:32:46.506417+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -76447,65 +76494,65 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203912+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147931616",
+            "showtime": "1:05pm",
+            "showtime_id": "148244872",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147931617",
+            "showtime": "4:00pm",
+            "showtime_id": "147931619",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "147931620",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147931618",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147931614",
+            "showtime": "9:45pm",
+            "showtime_id": "147931621",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148244827",
+            "showtime": "4:15pm",
+            "showtime_id": "148244850",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148244787",
+            "showtime": "2:35pm",
+            "showtime_id": "148244914",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:40pm",
-            "showtime_id": "148244788",
+            "showtime": "5:20pm",
+            "showtime_id": "148244913",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "9:50pm",
-            "showtime_id": "148244826",
+            "showtime": "5:30pm",
+            "showtime_id": "148244930",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148244867",
+            "showtime": "6:45pm",
+            "showtime_id": "148244849",
             "format": "Laser at AMC"
           }
         ]
@@ -77162,7 +77209,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666240+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -77248,7 +77295,7 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-31T01:32:46.506421+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -77339,85 +77386,85 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-10-30",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "12:05pm",
-            "showtime_id": "148247587",
+            "showtime": "1:15pm",
+            "showtime_id": "148247542",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:25pm",
+            "showtime_id": "148247584",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147748860",
+            "showtime_id": "147748859",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148247582",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148247583",
+            "showtime": "9:50pm",
+            "showtime_id": "148247585",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147930730",
+            "showtime": "12:15pm",
+            "showtime_id": "147930728",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "148247611",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "148247613",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147930729",
+            "showtime": "3:05pm",
+            "showtime_id": "147930727",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "148247610",
+            "showtime_id": "148247612",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147930873",
+            "showtime_id": "147930869",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:40pm",
-            "showtime_id": "147930874",
+            "showtime_id": "147930871",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
             "showtime": "3:35pm",
-            "showtime_id": "148247603",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "148247599",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "148247597",
+            "showtime_id": "148247602",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
             "showtime": "4:25pm",
-            "showtime_id": "148247522",
+            "showtime_id": "148247524",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
             "showtime": "5:20pm",
-            "showtime_id": "148247529",
+            "showtime_id": "148247527",
             "format": "Laser at AMC"
           }
         ]
@@ -77566,7 +77613,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666344+00:00",
+          "collected_at": "2026-10-31T01:32:46.506447+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -77642,7 +77689,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203932+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -77718,80 +77765,80 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-31T01:32:46.506437+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148201409",
+            "showtime": "7:15pm",
+            "showtime_id": "148201407",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
             "showtime": "11:45am",
-            "showtime_id": "147737011",
+            "showtime_id": "148384499",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148384548",
+            "showtime": "4:00pm",
+            "showtime_id": "147737009",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147737056",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148384538",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "147737058",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148384547",
+            "showtime": "10:00pm",
+            "showtime_id": "148384412",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "147809025",
+            "showtime_id": "147809032",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147809473",
-            "format": "Laser at AMC"
+            "showtime": "4:15pm",
+            "showtime_id": "147809320",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147809024",
+            "showtime_id": "147809031",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "147809273",
+            "showtime": "9:15pm",
+            "showtime_id": "147809472",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "148384466",
+            "showtime": "2:00pm",
+            "showtime_id": "148384526",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148384101",
+            "showtime": "12:15pm",
+            "showtime_id": "148384098",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148384546",
             "format": "Laser at AMC"
           }
         ]
@@ -78081,7 +78128,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203875+00:00",
+          "collected_at": "2026-10-31T01:32:46.506412+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -78362,8 +78409,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666257+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506442+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-30": {
           "movies": {
@@ -78948,7 +78996,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203928+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -79044,100 +79092,100 @@
               }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-10-31T01:32:46.506383+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-10-30",
       "movies": {
         "Christmas at the Kringles": [
           {
             "showtime": "10:00am",
-            "showtime_id": "148273703",
+            "showtime_id": "148273708",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:35pm",
-            "showtime_id": "148273706",
+            "showtime_id": "148273710",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "148078154",
+            "showtime_id": "148078111",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "148208800",
+            "showtime": "10:30pm",
+            "showtime_id": "148208799",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
             "showtime": "10:35am",
-            "showtime_id": "148273926",
+            "showtime_id": "148273977",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "148273982",
+            "showtime_id": "148273978",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "147577771",
+            "showtime_id": "147577770",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "148273980",
+            "showtime_id": "148273975",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "148273981",
+            "showtime": "9:15pm",
+            "showtime_id": "148273976",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "10:15am",
-            "showtime_id": "147925183",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "147925178",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "1:10pm",
-            "showtime_id": "147925184",
+            "showtime_id": "147925179",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:05pm",
-            "showtime_id": "147925185",
+            "showtime_id": "147925180",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147925186",
+            "showtime_id": "147925181",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "147925187",
+            "showtime_id": "147925182",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
             "showtime": "4:05pm",
-            "showtime_id": "148273761",
+            "showtime_id": "148273763",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
             "showtime": "5:05pm",
-            "showtime_id": "148273965",
+            "showtime_id": "148273970",
             "format": "Laser at AMC"
           }
         ]
@@ -79308,7 +79356,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203682+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -79332,66 +79380,34 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
             "showtime": "12:30pm",
-            "showtime_id": "148323853",
+            "showtime_id": "148323857",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "147908973",
+            "showtime_id": "147908981",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147908971",
+            "showtime_id": "147908979",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "148323891",
-            "format": "Laser at AMC"
-          }
-        ],
-        "The Only Living Pickpocket in New York": [
-          {
-            "showtime": "12:00pm",
-            "showtime_id": "148339791",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "12:30pm",
-            "showtime_id": "148323861",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:15pm",
-            "showtime_id": "148323941",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "148323843",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148323960",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148324016",
+            "showtime": "9:45pm",
+            "showtime_id": "148323886",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "12:40pm",
-            "showtime_id": "148323959",
+            "showtime": "12:00pm",
+            "showtime_id": "148323962",
             "format": "Laser at AMC"
           }
         ]
@@ -82582,8 +82598,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203568+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.505905+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-31": {
           "movies": {
@@ -82928,7 +82945,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666078+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-29": {
@@ -82974,22 +82991,22 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-30",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148239339",
+            "showtime": "1:10pm",
+            "showtime_id": "148239359",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "148239340",
+            "showtime": "4:10pm",
+            "showtime_id": "148239358",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "148239335",
+            "showtime": "10:50pm",
+            "showtime_id": "148239273",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -83052,7 +83069,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666313+00:00",
+          "collected_at": "2026-10-31T01:32:46.506389+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -83071,7 +83088,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203949+00:00",
+          "collected_at": "2026-10-31T01:32:46.506393+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -83217,8 +83234,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665362+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.505876+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-10-31": {
           "movies": {
@@ -87327,7 +87345,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.202718+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -87385,7 +87403,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665868+00:00",
+          "collected_at": "2026-10-31T01:32:46.506281+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -87644,7 +87662,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.202891+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -87700,8 +87718,9 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665795+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-10-31T01:32:46.506301+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -87758,7 +87777,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665467+00:00",
+          "collected_at": "2026-10-31T01:32:46.505914+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -87777,7 +87796,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.202726+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -103174,7 +103193,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665292+00:00",
+          "collected_at": "2026-10-31T01:32:46.505864+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -103960,7 +103979,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665726+00:00",
+          "collected_at": "2026-10-31T01:32:46.506296+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -104034,7 +104053,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203498+00:00",
+          "collected_at": "2026-10-31T01:32:46.506072+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -104283,7 +104302,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665539+00:00",
+          "collected_at": "2026-10-31T01:32:46.506191+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -104377,7 +104396,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203659+00:00",
+          "collected_at": "2026-10-31T01:32:46.506365+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -104410,7 +104429,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.202648+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -104569,7 +104588,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203704+00:00",
+          "collected_at": "2026-10-31T01:32:46.506291+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -104749,7 +104768,7 @@
       "dates": {
         "2026-10-30": {
           "movies": {},
-          "collected_at": "2026-10-29T17:13:42.666317+00:00",
+          "collected_at": "2026-10-31T01:32:46.506031+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": true
         },
@@ -104761,7 +104780,7 @@
         },
         "2026-11-01": {
           "movies": {},
-          "collected_at": "2026-10-29T17:13:42.666287+00:00",
+          "collected_at": "2026-10-31T01:32:46.506403+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": true
         },
@@ -104856,7 +104875,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203811+00:00",
+          "collected_at": "2026-10-31T01:32:46.505925+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -105019,7 +105038,7 @@
               }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203656+00:00",
+          "collected_at": "2026-10-31T01:32:46.506216+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -105171,9 +105190,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 1.0,
-    "fresh": 345,
-    "expected": 345,
+    "ratio": 0.9953,
+    "fresh": 212,
+    "expected": 213,
     "min_ratio": 0.9,
     "degraded": false
   }
