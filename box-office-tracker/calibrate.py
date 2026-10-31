@@ -27,6 +27,7 @@ try:
 except ModuleNotFoundError:
     requests = None
 import seat_regression
+import holdover
 import small_film_gate
 from forecast_evaluation import grade_forecast_checkpoints
 from calibration_freeze import (calibration_has_weekend,
@@ -940,6 +941,8 @@ def auto_calibrate():
     # A film the collectors stopped reading mid-weekend (small_film_gate) has
     # partial evidence; grading it would bias the stage bands (2026-10-23).
     kept = set(small_film_gate.filter_titles(list(seat_data), last_fri, "calibrate"))
+    # A 2nd/3rd-weekend film is not an opening (holdover.py, 2026-10-31).
+    kept &= set(holdover.without_holdovers(list(seat_data), last_fri, "calibrate"))
     seat_data = {m: rows for m, rows in seat_data.items() if m in kept}
     poly_data = load_polymarket_data(weekend_of=last_fri)
     snapshot_data = load_pre_reservation_data(weekend_of=last_fri)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Append a timestamped snapshot of every live opening-weekend Polymarket
-bracket to data/polymarket-odds-log.csv.
+"""Append a timestamped snapshot of every live opening-weekend (and 2nd/3rd-
+weekend holdover) Polymarket bracket to data/polymarket-odds-log.csv.
 
 2026-10-24: polymarket-markets.csv keeps one row per bracket per DAY (the first
 observation), so intraday moves were lost — Wildwood's $12-14M favourite at
@@ -32,6 +32,7 @@ from datetime import datetime, timedelta, timezone
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data")
 ODDS_LOG = os.path.join(DATA_DIR, "polymarket-odds-log.csv")
 PREDICTION_LOG = os.path.join(DATA_DIR, "prediction-log.csv")
+HOLDOVER_PREDICTION_LOG = os.path.join(DATA_DIR, "holdover-prediction-log.csv")
 ODDS_MATCH_MINUTES = 90
 POLY_FIELDS = ["poly_logged_at", "poly_event", "poly_bracket", "poly_bracket_prob",
                "poly_favorite", "poly_favorite_prob", "poly_implied_mid_m"]
@@ -66,10 +67,24 @@ def _get(url, params):
 
 def fetch_events():
     # limit_per_type, not limit: the plain `limit` param returns 5 events, which
-    # missed Ali G and Klara and the Sun on 2026-10-24.
-    data = _get(SEARCH_URL, {"q": "opening weekend box office", "limit_per_type": 50,
-                             "events_status": "active"})
-    return data.get("events", []) if isinstance(data, dict) else (data or [])
+    # missed Ali G and Klara and the Sun on 2026-10-24. The second query adds
+    # the 2nd/3rd-weekend (holdover) markets, 2026-10-31.
+    events, seen = [], set()
+    for q in ("opening weekend box office", "weekend box office"):
+        data = _get(SEARCH_URL, {"q": q, "limit_per_type": 50, "events_status": "active"})
+        for ev in (data.get("events", []) if isinstance(data, dict) else (data or [])):
+            key = ev.get("slug") or ev.get("id")
+            if key not in seen:
+                seen.add(key)
+                events.append(ev)
+    return events
+
+
+def holdover_week(title):
+    """2 for '"X" 2nd Weekend Box Office', None for anything else."""
+    m = re.match(r'^\s*"[^"]+"\s+(\d+)(?:st|nd|rd|th)\s+weekend\s+box\s+office\s*$',
+                 (title or "").replace("\u201c", '"').replace("\u201d", '"'), re.I)
+    return int(m.group(1)) if m and int(m.group(1)) >= 2 else None
 
 
 def movie_name(title):
@@ -91,7 +106,9 @@ def odds_rows(events, now):
     for ev in events:
         title = str(ev.get("title") or "")
         tl = title.lower()
-        if ev.get("closed") or "opening weekend" not in tl or "box office" not in tl:
+        if ev.get("closed") or "box office" not in tl:
+            continue
+        if "opening weekend" not in tl and not holdover_week(title):
             continue
         movie = movie_name(title)
         if not movie:
@@ -258,11 +275,13 @@ def main(argv=None):
             print(f"Polymarket odds: logged {len(rows)} brackets for {len(films)} film(s): {', '.join(films)}")
         else:
             print("Polymarket odds: no live opening-weekend brackets")
-    try:
-        n = annotate_prediction_log()
-        print(f"Polymarket odds: filled poly_* on {n} prediction-log row(s)")
-    except Exception as exc:  # advisory
-        print(f"::warning::prediction-log poly annotation failed: {type(exc).__name__}: {exc}")
+    for path in (PREDICTION_LOG, HOLDOVER_PREDICTION_LOG):
+        name = os.path.basename(path)
+        try:
+            n = annotate_prediction_log(pred_path=path)
+            print(f"Polymarket odds: filled poly_* on {n} {name} row(s)")
+        except Exception as exc:  # advisory
+            print(f"::warning::{name} poly annotation failed: {type(exc).__name__}: {exc}")
     return 0
 
 

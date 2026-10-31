@@ -777,6 +777,13 @@ jobs:
             fi
           done
 
+      - name: Refresh 2nd/3rd-weekend (holdover) markets
+        # data/holdover-titles.csv: films in their 2nd/3rd weekend with a live
+        # Polymarket market (holdover.py, 2026-10-31). Before the dailies
+        # fetch so their reported days are recorded too. Best effort.
+        working-directory: box-office-tracker
+        run: python3 holdover.py --refresh || echo "::warning::holdover market refresh crashed — registry unchanged"
+
       - name: Auto-fetch reported daily actuals (every finalize, all four days)
         # Runs BEFORE the finalize guard on every AMC run (14:30Z and 22:30Z
         # every day), so a newly published number alone forces a fresh
@@ -880,6 +887,13 @@ jobs:
         run: |
           if [ "$HAS_PROXY" = "true" ]; then export SNAPSHOT_TOP_THEATRE_CAP=1000; else export SNAPSHOT_TOP_THEATRE_CAP=120; fi
           python predict.py
+
+      - name: Forecast the 2nd/3rd-weekend (holdover) films
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Advisory: data/holdover-prediction-log.csv, before the odds logger so
+        # its rows get poly_* columns too (holdover_forecast.py).
+        run: python3 holdover_forecast.py || echo "::warning::holdover forecast crashed — no holdover rows this run"
 
       - name: Log Polymarket odds next to the forecasts
         if: steps.finalize_guard.outputs.needs_finalize == 'true'

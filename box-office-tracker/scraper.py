@@ -30,6 +30,7 @@ import uuid
 import requests
 from playwright.async_api import async_playwright
 
+import holdover
 import small_film_gate
 
 # ─── Configuration ───────────────────────────────────────────────────────────
@@ -2008,7 +2009,17 @@ def tracked_movie_titles_from_state(weekend_of):
             seen.add(key)
             deduped.append(title)
     # Films forecast clearly under $3M are not collected (2026-10-23).
-    return small_film_gate.filter_titles(deduped, weekend_of, "tracked titles")
+    kept = small_film_gate.filter_titles(deduped, weekend_of, "tracked titles")
+    # 2nd/3rd-weekend films with a live Polymarket market, while the slate
+    # has room (2026-10-31, holdover.py).
+    extra = holdover.collection_titles(weekend_of, kept)
+    if extra and (weekend_of, tuple(extra)) not in _HOLDOVER_REPORTED:
+        _HOLDOVER_REPORTED.add((weekend_of, tuple(extra)))
+        print(f"  🎟️  tracked titles: adding holdover film(s) for weekend {weekend_of}: {', '.join(extra)}")
+    return kept + extra
+
+
+_HOLDOVER_REPORTED = set()
 
 
 def movie_titles_missing_metadata(movie_titles, metadata_csv=None):

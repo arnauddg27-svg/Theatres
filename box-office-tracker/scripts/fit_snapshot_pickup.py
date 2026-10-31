@@ -25,6 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import holdover  # noqa: E402
 import predict as P  # noqa: E402
 
 LEAD_BUCKETS = P.SNAPSHOT_PICKUP_LEAD_BUCKETS
@@ -41,6 +42,8 @@ def weekend_pairs(weekend_of):
     snaps = P.load_pre_reservation_data(weekend_of=weekend_of)
     seats = P.load_seat_data(weekend_of=weekend_of)
     for movie, by_date in snaps.items():
+        if holdover.is_holdover(movie, weekend_of):
+            continue                     # an opening-weekend pickup curve
         seat_by_date = P.movie_mapping_get(seats, movie, None) or {}
         for date_str, rows in by_date.items():
             finals = P._latest_seat_showtime_rows(seat_by_date.get(date_str) or [])

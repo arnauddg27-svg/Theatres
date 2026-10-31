@@ -32,12 +32,20 @@ EVENTS = [
 
 
 class OddsLogTest(unittest.TestCase):
-    def test_rows_only_live_opening_weekend_brackets(self):
+    def test_rows_only_live_opening_and_holdover_brackets(self):
         rows = L.odds_rows(EVENTS, NOW)
         self.assertEqual([(r["movie"], r["bracket"]) for r in rows],
-                         [("Wildwood", "10m-12m"), ("Wildwood", "12m-14m"), ("Clayface", "22m-25m")])
+                         [("Wildwood", "10m-12m"), ("Wildwood", "12m-14m"), ("Clayface", "22m-25m"),
+                          ("Street Fighter", "x")])
+        self.assertEqual(rows[-1]["event_slug"], "sf-2nd")
         self.assertTrue(all(r["logged_at"] == "2026-10-24T15:23:00Z" for r in rows))
         self.assertAlmostEqual(rows[0]["yes_price"], 0.745)
+
+    def test_holdover_week(self):
+        self.assertEqual(L.holdover_week('"Wildwood" 2nd Weekend Box Office'), 2)
+        self.assertEqual(L.holdover_week("\u201cX\u201d 3rd Weekend Box Office"), 3)
+        self.assertIsNone(L.holdover_week('"X" Opening Weekend Box Office'))
+        self.assertIsNone(L.holdover_week('"X" 1st Weekend Box Office'))
 
     def test_weekend_from_market_end_date(self):
         self.assertEqual({r["weekend_of"] for r in L.odds_rows(EVENTS, NOW)}, {"2026-10-23"})

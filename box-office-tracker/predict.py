@@ -28,6 +28,7 @@ from forecast_windows import window_profile
 import gzip
 import json, csv, os, sys, re, statistics
 import seat_regression
+import holdover
 import small_film_gate
 from actuals_quality import independent_daily_actuals, independent_daily_override
 from forecast_evaluation import select_forecast_checkpoints, utc_timestamp
@@ -11273,6 +11274,9 @@ def main():
         # under $3M, small_film_gate): their evidence is frozen mid-weekend.
         movies_to_predict = small_film_gate.filter_titles(
             movies_to_predict, replay_weekend, "forecast")
+    # 2nd/3rd-weekend films are forecast by holdover_forecast.py, never as an
+    # opening (2026-10-31).
+    movies_to_predict = holdover.without_holdovers(movies_to_predict, replay_weekend, "forecast")
 
     print(f"\n{'='*70}")
     print(f"  Opening Weekend Box Office Predictions")

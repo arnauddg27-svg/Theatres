@@ -32,6 +32,7 @@ import statistics
 from collections import defaultdict
 from datetime import datetime, timedelta
 
+import holdover
 import predict as P
 
 DATA_DIR = P.DATA_DIR
@@ -383,6 +384,8 @@ def share_samples(weekends, dollars_by_weekend=None, actuals=None):
         cd = (dollars_by_weekend or {}).get(w) or chain_day_dollars(w)
         dates = weekend_dates(w)
         for movie, by_date in cd.items():
+            if holdover.is_holdover(movie, w):
+                continue                 # shares are fitted on openings only
             mk = movie_key(movie)
             for date, chains in by_date.items():
                 day = dates[date]
@@ -485,6 +488,8 @@ def regal_pool_ok(weekend_of):
     for w in weekends:
         dates = weekend_dates(w)
         for movie, by_date in dollars_for(w).items():
+            if holdover.is_holdover(movie, w):
+                continue
             mk = movie_key(movie)
             shares = fit_shares(samples, exclude={(w, mk)})
             for date, chains in by_date.items():

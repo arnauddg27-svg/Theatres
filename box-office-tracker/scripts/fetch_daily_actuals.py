@@ -137,6 +137,12 @@ def main():
 
     seat = load_seat_data(weekend_of=weekend_of)
     movies = sorted(seat or {})
+    # 2nd/3rd-weekend films with a market: holdover_forecast.py anchors on
+    # their reported days the same way (2026-10-31).
+    import holdover
+    have = {holdover.title_key(m) for m in movies}
+    movies += [r["movie"] for r in holdover.entries(weekend_of)
+               if holdover.title_key(r["movie"]) not in have]
     if not movies:
         print(f"daily-actuals fetch: no tracked films with seat data for {weekend_of}")
         return 0
