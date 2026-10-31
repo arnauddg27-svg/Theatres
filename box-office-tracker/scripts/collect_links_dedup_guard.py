@@ -20,10 +20,12 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import holdover  # noqa: E402
 import small_film_gate  # noqa: E402
 
 
 SHOWTIME_LINKS_PATH = "box-office-tracker/data/showtime-links.json"
+HOLDOVER_TITLES_PATH = "box-office-tracker/data/holdover-titles.csv"
 POLYMARKET_MARKETS_PATH = "box-office-tracker/data/polymarket-markets.csv"
 THEATRES_ALL_PATH = "box-office-tracker/data/theatres-all.json"
 THEATRE_COUNTS_PATH = "box-office-tracker/data/theatre-counts.json"
@@ -359,6 +361,9 @@ def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: s
     active = small_film_gate.filter_titles(
         _unique_titles(titles), expected_weekend, "dedup guard",
         path=repo_root / PREDICTION_LOG_PATH)
+    # 2nd/3rd-weekend films with a market need Phase 1 links too (2026-10-31).
+    active += holdover.collection_titles(expected_weekend, active,
+                                         path=repo_root / HOLDOVER_TITLES_PATH)
     if not active:
         print(f"No active movie state found for weekend {expected_weekend}; running")
     return active

@@ -99,6 +99,21 @@ class TrackedTitlesTest(unittest.TestCase):
             ct.assert_called_with("2026-10-30", ["Everest"])
 
 
+class DedupGuardTest(unittest.TestCase):
+    def test_guard_demands_holdover_links(self):
+        import collect_links_dedup_guard as G
+        with tempfile.TemporaryDirectory() as td:
+            root = os.path.join(td, "repo")
+            os.makedirs(os.path.join(root, "box-office-tracker", "data"))
+            H.register(H.entries_from_events(EVENTS, NOW), os.path.join(root, G.HOLDOVER_TITLES_PATH))
+            with mock.patch.dict(os.environ, {"HOLDOVER_COLLECTION": "1"}), \
+                    mock.patch.object(H, "refresh", return_value=[]), \
+                    mock.patch.object(G, "_calendar_titles_to_demand", return_value=["Everest"]), \
+                    mock.patch.object(G, "_csv_market_titles", return_value=[]):
+                active = G._active_movie_titles(G.Path(root), "2026-10-30", "2026-10-27")
+            self.assertEqual(active, ["Everest", "Clayface", "Wildwood", "You Can See Everything"])
+
+
 class ForecastTest(unittest.TestCase):
     O = {"Thursday": 1.32, "Friday": 3.03, "Saturday": 4.2, "Sunday": 3.71}
 
