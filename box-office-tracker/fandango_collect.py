@@ -138,6 +138,11 @@ def _env_int(name, default):
 # runner; the workflow can override via env.
 FANDANGO_CONCURRENCY = _env_int("FANDANGO_CONCURRENCY", 3)        # parallel browsers
 FANDANGO_DEADLINE_SEC = _env_int("FANDANGO_DEADLINE_SEC", 4200)   # stop launching new theatres after this
+# Hard exit this long past the deadline: the deadline only stops NEW theatres,
+# and a frozen browser call (shard 3 12Z 2026-10-30: silent from 12:10 until
+# the 40-min step kill) holds the run past it. Rows are flushed per theatre,
+# so exiting keeps them and the step ends cleanly instead of timing out.
+FANDANGO_HARD_EXIT_GRACE_SEC = _env_int("FANDANGO_HARD_EXIT_GRACE_SEC", 180)
 FANDANGO_PER_THEATRE_CAP = _env_int("FANDANGO_PER_THEATRE_CAP", 3)  # showtimes captured PER FILM per theatre
 FANDANGO_MAX_THEATRES = _env_int("FANDANGO_MAX_THEATRES", 0)      # 0 = whole pool
 # Hard seat-render budget per run (0 = unlimited). Scheduled runs set 30:
@@ -1109,6 +1114,20 @@ def _worker(slice_theatres, shared):
     return agg
 
 
+def start_hard_exit_watchdog(after_sec, exit_fn=None):
+    """Daemon timer that ends the process `after_sec` from now if the run is
+    still going. Cancel it with the returned timer's .cancel()."""
+    def fire():
+        print(f"⏱️  Fandango run still going {after_sec:.0f}s in (a browser call is stuck) — "
+              "exiting; rows already flushed per theatre are kept.", flush=True)
+        sys.stderr.flush()
+        (exit_fn or os._exit)(0)
+    timer = threading.Timer(after_sec, fire)
+    timer.daemon = True
+    timer.start()
+    return timer
+
+
 def _egress_ip():
     """Best-effort outbound IP — lets us tell whether parallel GitHub jobs get
     distinct IPs (per-IP rate limit → fan-out works) vs share one (range limit)."""
@@ -1281,6 +1300,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
         "max_resumes": FANDANGO_MAX_RESUMES, "pause_sec": float(FANDANGO_PAUSE_SEC),
     }
 
+    watchdog = start_hard_exit_watchdog(deadline_sec + FANDANGO_HARD_EXIT_GRACE_SEC)
     # Round-robin slices so each worker's slice is geographically mixed.
     slices = [theatres[i::concurrency] for i in range(concurrency)]
     totals = {"matched": 0, "renders": 0, "incompletes": 0, "blocks": 0,
@@ -1290,6 +1310,7 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     else:
         with ThreadPoolExecutor(max_workers=concurrency) as ex:
             aggs = list(ex.map(lambda s: _worker(s, shared), slices))
+    watchdog.cancel()
     for agg in aggs:
         for k in totals:
             totals[k] += agg.get(k, 0)

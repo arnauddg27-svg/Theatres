@@ -448,3 +448,23 @@ class CensusOrderTest(unittest.TestCase):
                                         "America/New_York", now, cap=1, order="census")
         self.assertEqual([w["sdate"] for w in got], ["2026-10-30 20:30"])
         self.assertLessEqual(got[0]["minutes_until"], F.FANDANGO_CENSUS_MAX_LEAD_MIN)
+
+
+class HardExitWatchdogTest(unittest.TestCase):
+    """Shard 3 12Z 2026-10-30 froze past its deadline until the step kill."""
+
+    def test_fires_when_run_overruns(self):
+        import threading
+        import fandango_collect as F
+        fired = threading.Event()
+        F.start_hard_exit_watchdog(0.05, exit_fn=lambda code: fired.set())
+        self.assertTrue(fired.wait(2))
+
+    def test_cancelled_watchdog_does_not_fire(self):
+        import threading, time
+        import fandango_collect as F
+        fired = threading.Event()
+        t = F.start_hard_exit_watchdog(0.1, exit_fn=lambda code: fired.set())
+        t.cancel()
+        time.sleep(0.2)
+        self.assertFalse(fired.is_set())
