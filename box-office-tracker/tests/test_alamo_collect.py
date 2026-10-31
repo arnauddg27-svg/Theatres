@@ -71,6 +71,24 @@ class AlamoLaneTest(unittest.TestCase):
             self.assertEqual([], A.stored_post_sessions("2026-09-25", datetime(2026, 9, 26, 23, 0, tzinfo=timezone.utc), path=path))  # not started
             self.assertEqual([], A.stored_post_sessions("2026-09-25", datetime(2026, 9, 27, 3, 0, tzinfo=timezone.utc), path=path))   # window passed
 
+    def test_loop_pass_also_reads_sessions_from_origin_main_copy(self):
+        """2026-10-31: the 15:10Z loop's checkout predated the holdover pre rows
+        on main, so it found no session for 5.5 h. The main copy is merged in,
+        deduped by session id, and a missing copy changes nothing."""
+        s, cinema, title = A.select_sessions(SCHEDULE, {"primetime": "Primetime"}, A.window_dates("2026-09-25"), NOW)[0]
+        counts = {"total": 10, "sold": 5, "available": 5, "broken": 0, "price_cents": None}
+        at = datetime(2026, 9, 27, 0, 30, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as td:
+            on_main = Path(td) / "main.csv"
+            F.append_unique_fandango_rows([A.build_row(s, cinema, title, counts, "2026-09-25", "r", NOW)], csv_path=on_main)
+            text = on_main.read_text()
+            missing = Path(td) / "checkout.csv"                       # loop checkout: no pre rows at all
+            got = A.stored_post_sessions("2026-09-25", at, path=missing, extra_text=text)
+            self.assertEqual(["1"], [x[0]["sessionId"] for x in got])
+            got = A.stored_post_sessions("2026-09-25", at, path=on_main, extra_text=text)   # same rows twice
+            self.assertEqual(["1"], [x[0]["sessionId"] for x in got])
+            self.assertEqual([], A.stored_post_sessions("2026-09-25", at, path=missing, extra_text=None))
+
 
 if __name__ == "__main__":
     unittest.main()

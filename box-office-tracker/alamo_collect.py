@@ -153,35 +153,63 @@ def build_row(session, cinema, title, counts, weekend_of, run_id, now_utc, post=
     }
 
 
-def stored_post_sessions(weekend_of, now_utc, path=ALAMO_CSV):
-    """Sessions from stored pre rows that started 0..window minutes ago."""
-    if not Path(path).exists():
+def main_csv_text(path=ALAMO_CSV):
+    """origin/main's copy of the lane CSV, or None. A loop job's checkout is
+    hours old and it only resets to main when a pass commits: on 2026-10-31
+    the 15:10Z loop started 16:25Z, the holdover titles' pre rows landed on
+    main at 16:55Z, and the loop found no stored session for 5.5 h."""
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    rel = Path(path).resolve().relative_to(root).as_posix() if Path(path).is_absolute() else str(path)
+    try:
+        subprocess.run(["git", "fetch", "-q", "origin", "main"], cwd=root, check=True,
+                       timeout=120, capture_output=True)
+        r = subprocess.run(["git", "show", f"origin/main:{rel}"], cwd=root, check=True,
+                           timeout=120, capture_output=True, text=True)
+    except Exception as exc:
+        print(f"  ⚠️  origin/main copy of {rel} unavailable ({type(exc).__name__}); "
+              f"stored sessions come from this checkout only", flush=True)
+        return None
+    return r.stdout
+
+
+def stored_post_sessions(weekend_of, now_utc, path=ALAMO_CSV, extra_text=None):
+    """Sessions from stored pre rows that started 0..window minutes ago; the
+    local CSV plus `extra_text` (origin/main's copy, loop jobs)."""
+    import io
+    readers = []
+    if Path(path).exists():
+        readers.append(open(path, newline=""))
+    if extra_text:
+        readers.append(io.StringIO(extra_text))
+    if not readers:
         return []
     seen, out = set(), []
-    with open(path, newline="") as f:
-        for r in csv.DictReader(f):
-            if r.get("weekend_of") != weekend_of or r.get("row_kind") == "post-show-census":
-                continue
-            sid = r.get("showtime_id") or ""
-            if sid in seen or ":" not in sid:
-                continue
-            seen.add(sid)
-            tz = ZoneInfo(r.get("timezone") or "America/Chicago")
-            local = datetime.strptime(f"{r['show_date']} {r['showtime']}", "%Y-%m-%d %H:%M").replace(tzinfo=tz)
-            start = local.astimezone(timezone.utc)
-            # a show after midnight belongs to the previous business date
-            if start > now_utc + timedelta(hours=12):
-                start -= timedelta(days=1)
-            mins = (now_utc - start).total_seconds() / 60
-            if 0 <= mins <= ALAMO_POST_WINDOW_MIN:
-                cid, sess = sid.split(":", 1)
-                out.append(({"cinemaId": cid, "sessionId": sess, "businessDateClt": r["show_date"],
-                             "showTimeClt": local.replace(tzinfo=None).isoformat(),
-                             "showTimeUtc": start.replace(tzinfo=None).isoformat(),
-                             "cinemaTimeZoneName": r.get("timezone"), "screenNumber": (r.get("auditorium_name") or "").replace("Screen ", ""),
-                             "formatSlug": r.get("auditorium_type", "")},
-                            {"name": r["theatre_name"].replace("Alamo Drafthouse ", ""), "city": r.get("theatre_city", "")},
-                            r["movie_title"]))
+    for f in readers:
+        with f:
+            for r in csv.DictReader(f):
+                if r.get("weekend_of") != weekend_of or r.get("row_kind") == "post-show-census":
+                    continue
+                sid = r.get("showtime_id") or ""
+                if sid in seen or ":" not in sid:
+                    continue
+                seen.add(sid)
+                tz = ZoneInfo(r.get("timezone") or "America/Chicago")
+                local = datetime.strptime(f"{r['show_date']} {r['showtime']}", "%Y-%m-%d %H:%M").replace(tzinfo=tz)
+                start = local.astimezone(timezone.utc)
+                # a show after midnight belongs to the previous business date
+                if start > now_utc + timedelta(hours=12):
+                    start -= timedelta(days=1)
+                mins = (now_utc - start).total_seconds() / 60
+                if 0 <= mins <= ALAMO_POST_WINDOW_MIN:
+                    cid, sess = sid.split(":", 1)
+                    out.append(({"cinemaId": cid, "sessionId": sess, "businessDateClt": r["show_date"],
+                                 "showTimeClt": local.replace(tzinfo=None).isoformat(),
+                                 "showTimeUtc": start.replace(tzinfo=None).isoformat(),
+                                 "cinemaTimeZoneName": r.get("timezone"), "screenNumber": (r.get("auditorium_name") or "").replace("Screen ", ""),
+                                 "formatSlug": r.get("auditorium_type", "")},
+                                {"name": r["theatre_name"].replace("Alamo Drafthouse ", ""), "city": r.get("theatre_city", "")},
+                                r["movie_title"]))
     return out
 
 
@@ -218,7 +246,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if mode == "post":
         # Stored sessions predate any small-film drop; honour it here too.
         gated = small_film_gate.dropped_titles(weekend_of)
-        picks = [p for p in stored_post_sessions(weekend_of, now_utc)
+        extra = main_csv_text() if ALAMO_LOOP_MIN > 0 else None
+        picks = [p for p in stored_post_sessions(weekend_of, now_utc, extra_text=extra)
                  if small_film_gate.title_key(p[2]) not in gated]
     else:
         picks = []
