@@ -1,5 +1,6 @@
 """2nd/3rd-weekend (holdover) collection + forecast (2026-10-31)."""
 import csv
+import io
 import os
 import sys
 import tempfile
@@ -269,3 +270,48 @@ class CensusBaseTest(unittest.TestCase):
             self.assertEqual(F.theatre_counts("film", "2026-10-16", meta, counts), (855.0, 3243.0))
             self.assertIsNone(F.theatre_counts("film", "2026-10-23", meta, counts))
             self.assertIsNone(F.theatre_counts("other", "2026-10-16", meta, counts))
+
+
+class GradeLogTest(unittest.TestCase):
+    def test_bracket_bounds(self):
+        self.assertEqual(F.bracket_bounds("10m-12m"), (10.0, 12.0))
+        self.assertEqual(F.bracket_bounds("7-9M"), (7.0, 9.0))
+        self.assertEqual(F.bracket_bounds("<5M"), (0.0, 5.0))
+        self.assertEqual(F.bracket_bounds("20M+"), (20.0, float("inf")))
+        self.assertIsNone(F.bracket_bounds(""))
+
+    def test_grades_last_row_per_stage_once_the_weekend_is_reported(self):
+        with tempfile.TemporaryDirectory() as td:
+            log = os.path.join(td, "log.csv")
+            fields = F.LOG_FIELDS + ["poly_favorite", "poly_favorite_prob"]
+            base = {k: "" for k in fields}
+            base.update(weekend_of="2026-10-30", movie="Clayface", weekend_num="2", model_version="holdover-v1",
+                        poly_favorite="10m-12m", poly_favorite_prob="0.6")
+            rows = [dict(base, logged_at="t1", forecast_stage="fri_known", headline_mid_m="10.6", headline_low_m="9.2", headline_high_m="12.2"),
+                    dict(base, logged_at="t2", forecast_stage="fri_sat_known", days_census="Saturday", headline_mid_m="9.0", headline_low_m="8.5", headline_high_m="11.3"),
+                    dict(base, logged_at="t3", forecast_stage="fri_sat_known", days_census="Saturday", headline_mid_m="9.85", headline_low_m="8.54", headline_high_m="11.34"),
+                    dict(base, logged_at="t1", movie="Wildwood", forecast_stage="fri_known", headline_mid_m="9.8", headline_low_m="8.5", headline_high_m="11.3")]
+            with open(log, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=fields)
+                w.writeheader()
+                w.writerows(rows)
+            actuals = os.path.join(td, "actuals.csv")
+            with open(actuals, "w") as f:
+                f.write("weekend_of,movie_title,day_of_week,gross_m,source,status,as_of_date,notes\n")
+                for day, g in (("Friday", 3.25), ("Saturday", 4.0), ("Sunday", 2.75)):
+                    f.write(f"2026-10-30,Clayface,{day},{g},x,reported,2026-11-03,\n")
+                f.write("2026-10-30,Wildwood,Friday,2.39,x,reported,2026-11-01,\n")
+            out = os.path.join(td, "grades.csv")
+            with mock.patch("sys.stdout", new=io.StringIO()):
+                graded = F.grade_log(log, actuals, out, now=datetime(2026, 11, 3, tzinfo=timezone.utc))
+            self.assertEqual([(g["movie"], g["forecast_stage"], g["forecast_m"], g["actual_m"]) for g in graded],
+                             [("Clayface", "fri_known", 10.6, 10.0), ("Clayface", "fri_sat_known", 9.85, 10.0)])
+            self.assertEqual((graded[0]["error_pct"], graded[0]["in_band"], graded[0]["poly_favorite_hit"]), (6.0, "yes", "yes"))
+            self.assertEqual((graded[1]["error_pct"], graded[1]["days_census"], graded[1]["logged_at"]), (-1.5, "Saturday", "t3"))
+            with open(out) as f:
+                self.assertEqual(len(list(csv.DictReader(f))), 2)
+            # re-running regenerates, never appends
+            with mock.patch("sys.stdout", new=io.StringIO()):
+                F.grade_log(log, actuals, out)
+            with open(out) as f:
+                self.assertEqual(len(list(csv.DictReader(f))), 2)

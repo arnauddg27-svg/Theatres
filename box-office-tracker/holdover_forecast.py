@@ -63,6 +63,10 @@ MIN_CENSUS_THEATRES = 100
 MAX_CENSUS_THEATRE_GROWTH = 1.15
 METADATA_CSV = os.path.join(DATA_DIR, "movie-metadata.csv")
 THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
+GRADES_CSV = os.path.join(DATA_DIR, "holdover-grades.csv")
+GRADE_FIELDS = ["weekend_of", "movie", "weekend_num", "forecast_stage", "days_census", "logged_at",
+                "forecast_m", "low_m", "high_m", "actual_m", "error_pct", "in_band",
+                "poly_favorite", "poly_favorite_prob", "poly_favorite_hit", "model_version", "graded_at"]
 LOG_FIELDS = ["logged_at", "weekend_of", "movie", "weekend_num", "opening_weekend_of",
               "opening_m", "base", "base_m", "headline_mid_m", "headline_low_m", "headline_high_m",
               "forecast_stage", "days_actual", "days_census", "day_m", "latest_ratio",
@@ -332,11 +336,85 @@ def append_log(rows, path=LOG_CSV):
     return len(rows)
 
 
+def bracket_bounds(label):
+    """('10m-12m' | '10-12M' | '<5M' | '20M+') -> (low, high) in $M, or None."""
+    import re
+    text = (label or "").strip().lower()
+    nums = [float(n) for n in re.findall(r"\d+(?:\.\d+)?", text)]
+    if not nums:
+        return None
+    if text.startswith("<") or "under" in text or "less" in text:
+        return (0.0, nums[0])
+    if text.startswith(">") or text.endswith("+") or "over" in text or "more" in text:
+        return (nums[0], float("inf"))
+    return (nums[0], nums[1]) if len(nums) >= 2 else None
+
+
+def grade_log(log_path=LOG_CSV, actuals_path=DAILY_CSV, out_path=GRADES_CSV, now=None):
+    """Rewrite data/holdover-grades.csv: for every film-weekend in the log
+    whose three days are reported, the LAST forecast of each stage against the
+    actual 3-day. Idempotent (the file is regenerated); returns the rows."""
+    try:
+        with open(log_path, newline="") as f:
+            log = list(csv.DictReader(f))
+    except OSError:
+        return []
+    last = {}
+    for r in sorted(log, key=lambda r: r.get("logged_at") or ""):
+        last[(r.get("weekend_of"), holdover.title_key(r.get("movie")),
+              r.get("forecast_stage"), r.get("days_census") or "")] = r
+    stamp = (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    actual_cache, rows = {}, []
+    for (weekend, key, stage, census), r in sorted(last.items()):
+        if (weekend, key) not in actual_cache:
+            days = reported_days(weekend, r.get("movie"), actuals_path)
+            actual_cache[(weekend, key)] = sum(days[d] for d in DAYS) if all(days.get(d) for d in DAYS) else None
+        actual = actual_cache[(weekend, key)]
+        if actual is None:
+            continue
+        try:
+            mid, low, high = (float(r.get(k)) for k in ("headline_mid_m", "headline_low_m", "headline_high_m"))
+        except (TypeError, ValueError):
+            continue
+        fav = bracket_bounds(r.get("poly_favorite"))
+        rows.append({
+            "weekend_of": weekend, "movie": r.get("movie"), "weekend_num": r.get("weekend_num"),
+            "forecast_stage": stage, "days_census": census, "logged_at": r.get("logged_at"),
+            "forecast_m": round(mid, 3), "low_m": round(low, 3), "high_m": round(high, 3),
+            "actual_m": round(actual, 3), "error_pct": round((mid / actual - 1) * 100, 1),
+            "in_band": "yes" if low <= actual <= high else "no",
+            "poly_favorite": r.get("poly_favorite") or "",
+            "poly_favorite_prob": r.get("poly_favorite_prob") or "",
+            "poly_favorite_hit": ("" if not fav else "yes" if fav[0] <= actual < fav[1] else "no"),
+            "model_version": r.get("model_version") or "", "graded_at": stamp,
+        })
+    if rows:
+        with open(out_path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=GRADE_FIELDS)
+            w.writeheader()
+            w.writerows(rows)
+        by_stage = defaultdict(list)
+        for g in rows:
+            by_stage[(g["forecast_stage"], g["days_census"])].append(abs(g["error_pct"]))
+        print(f"holdover grades: {len(rows)} stage rows over "
+              f"{len({(g['weekend_of'], g['movie']) for g in rows})} film-weekend(s) → {os.path.relpath(out_path)}")
+        for (stage, census), errs in sorted(by_stage.items()):
+            print(f"  {stage:14s} census={census or '-':9s} mean |err| {sum(errs) / len(errs):5.1f}%  n={len(errs)}")
+    else:
+        print("holdover grades: no film-weekend with a reported Fri-Sun yet")
+    return rows
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--weekend", help="Friday of the holdover weekend (default: this weekend)")
     ap.add_argument("--no-log", action="store_true")
+    ap.add_argument("--grade", action="store_true",
+                    help="grade the log against reported weekends into data/holdover-grades.csv and exit")
     args = ap.parse_args(argv)
+    if args.grade:
+        grade_log()
+        return 0
     now = datetime.now(timezone.utc)
     weekend = args.weekend or (now - timedelta(hours=8) - timedelta(
         days=((now - timedelta(hours=8)).weekday() - 4) % 7)).strftime("%Y-%m-%d")

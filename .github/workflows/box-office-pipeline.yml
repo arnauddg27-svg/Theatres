@@ -902,6 +902,14 @@ jobs:
         # its rows get poly_* columns too (holdover_forecast.py).
         run: python3 holdover_forecast.py || echo "::warning::holdover forecast crashed — no holdover rows this run"
 
+      - name: Grade settled holdover forecasts
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Regenerates data/holdover-grades.csv from the log once a film-weekend's
+        # Fri-Sun are reported (the holdover lane is graded automatically, not
+        # by hand — holdover_forecast.py --grade).
+        run: python3 holdover_forecast.py --grade || echo "::warning::holdover grading crashed — data/holdover-grades.csv not refreshed"
+
       - name: Log Polymarket odds next to the forecasts
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
