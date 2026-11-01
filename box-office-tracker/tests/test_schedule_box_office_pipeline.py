@@ -261,6 +261,18 @@ class ScheduleBoxOfficePipelineTest(unittest.TestCase):
             with self.subTest(conclusion=ok):
                 self.assertTrue(self._run_exists_with(dict(base, conclusion=ok)))
 
+    def test_future_stamped_run_still_services_slot(self):
+        # 2026-11-01 DST fall-back: GitHub reported created_at ~1 h ahead of
+        # real time; the watchdog ignored those runs and re-dispatched each tick.
+        run = {"display_title": "box office scrape snapshot",
+               "created_at": "2026-05-24T05:00:00Z",  # now is 04:00Z
+               "html_url": "https://example.test/run",
+               "status": "completed", "conclusion": "success"}
+        self.assertTrue(self._run_exists_with(run))
+        failed = [dict(run, conclusion="failure", html_url=f"https://example.test/{i}")
+                  for i in range(schedule.MAX_SLOT_RETRIES)]
+        self.assertTrue(self._run_exists_with_many(failed))
+
     def _run_exists_with_many(self, runs):
         class FakeClient:
             repo = "owner/repo"

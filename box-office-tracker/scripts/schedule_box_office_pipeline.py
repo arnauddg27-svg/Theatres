@@ -638,7 +638,12 @@ def recent_pipeline_run_exists(
     now: dt.datetime,
 ) -> bool:
     lower_bound = scheduled_at - dt.timedelta(minutes=5)
-    upper_bound = now + dt.timedelta(minutes=5)
+    # No tight upper bound: during the US DST fall-back (2026-11-01 08:00-09:00Z)
+    # GitHub stamped runs' created_at ~1 h in the FUTURE. The old `<= now + 5 min`
+    # bound hid them, so the watchdog re-dispatched fandango 08Z / webedia 08:15Z /
+    # regular 07Z every 5 min (successes ignored, circuit breaker never tripped).
+    # A run of this slot cannot really be created after `now`; allow skew.
+    upper_bound = now + dt.timedelta(hours=3)
     runs = list_recent_dispatch_runs(client=client, workflow=workflow, since=lower_bound)
     failed: list[dict] = []
     for run in runs:
