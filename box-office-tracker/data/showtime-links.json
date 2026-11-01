@@ -2,7 +2,7 @@
   "date": "2026-10-30",
   "weekend_of": "2026-10-30",
   "collected_local_date": "2026-10-31",
-  "collected_at": "2026-10-31T23:12:38.553453+00:00",
+  "collected_at": "2026-11-01T01:09:09.110759+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -93075,9 +93075,100 @@
                 "showtime_id": "148285559",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148317373",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148285531",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148285534",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148285530",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148285529",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147547751",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148285528",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148430575",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148285584",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148430574",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148285586",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "148285622",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148285582",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148285621",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "148285583",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148285536",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148285609",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-11-01T01:09:09.083769+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-31": {
@@ -93120,9 +93211,45 @@
                 "showtime_id": "148285632",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "8:10pm",
+                "showtime_id": "147547670",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148285560",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148285592",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148285538",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148285579",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:20pm",
+                "showtime_id": "148285591",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665972+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -93172,44 +93299,80 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "12:55pm",
-            "showtime_id": "147931652",
+            "showtime": "12:30pm",
+            "showtime_id": "147931648",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "147931651",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "3:30pm",
+            "showtime_id": "147931647",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "6:35pm",
-            "showtime_id": "147931650",
+            "showtime": "6:30pm",
+            "showtime_id": "147931646",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "147931653",
+            "showtime_id": "147931649",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "10:20am",
-            "showtime_id": "148285557",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "3:20pm",
-            "showtime_id": "148285607",
+            "showtime": "2:15pm",
+            "showtime_id": "148285608",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "148285559",
+            "showtime": "7:00pm",
+            "showtime_id": "148285537",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "148285632",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "147547670",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148285560",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148285592",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "148285538",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148285579",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "148285591",
             "format": "Laser at AMC"
           }
         ]
@@ -93507,48 +93670,294 @@
                 "showtime_id": "148365532",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148365442",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148365441",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148365440",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148365595",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148365439",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148365596",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "148365438",
+                "format": "XL at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148365582",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:45am",
+                "showtime_id": "148365758",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "1:10pm",
+                "showtime_id": "148365598",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148365544",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "148365597",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148365759",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148365488",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148365490",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148365712",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148365710",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148365661",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148365514",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666126+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-11-01",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148123963",
+            "showtime": "6:30pm",
+            "showtime_id": "148123965",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147707470",
+            "showtime": "10:00am",
+            "showtime_id": "148365709",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "148365466",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147707472",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148365534",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
+            "showtime": "10:00am",
+            "showtime_id": "148365611",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
             "showtime": "1:00pm",
-            "showtime_id": "147897583",
+            "showtime_id": "147897599",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147897709",
-            "format": "Laser at AMC"
+            "showtime_id": "147897727",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "147897577",
+            "showtime_id": "147897593",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "10:50pm",
-            "showtime_id": "147897288",
+            "showtime": "10:20pm",
+            "showtime_id": "147897290",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Mongoose": [
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "148365617",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Fjord": [
+          {
+            "showtime": "11:15am",
+            "showtime_id": "148365533",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "12:50pm",
+            "showtime_id": "148365569",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148365532",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148365442",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "148365441",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "148365440",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148365595",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "148365439",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148365596",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "148365438",
+            "format": "XL at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "10:00am",
+            "showtime_id": "148365582",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:45am",
+            "showtime_id": "148365758",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "1:10pm",
+            "showtime_id": "148365598",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "148365544",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "148365597",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "148365759",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "148365488",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148365490",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148365712",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148365710",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148365661",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "148365514",
             "format": "Laser at AMC"
           }
         ]
@@ -94983,6 +95392,107 @@
                 "showtime_id": "148245647",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:25pm",
+                "showtime_id": "148378371",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148245468",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148245467",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148245725",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147491567",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148245728",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148245727",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148245543",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148245726",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148245545",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148245544",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "148245599",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148245448",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148245564",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148245576",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148245447",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148245563",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148245577",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148245406",
+                "format": "Laser at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -95049,73 +95559,159 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-11-01",
       "movies": {
         "Everest: The Other Side": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147941973",
+            "showtime": "1:00pm",
+            "showtime_id": "147941964",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "1:40pm",
-            "showtime_id": "148245669",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "147941974",
+            "showtime": "4:00pm",
+            "showtime_id": "147941965",
             "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147941957",
+            "showtime_id": "147941955",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:05pm",
-            "showtime_id": "147941958",
+            "showtime_id": "147941956",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "12:55pm",
-            "showtime_id": "148245614",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "2:10pm",
-            "showtime_id": "148245452",
+            "showtime": "2:05pm",
+            "showtime_id": "148245598",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:35pm",
-            "showtime_id": "148245451",
+            "showtime": "4:30pm",
+            "showtime_id": "148245597",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "148245463",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148245464",
+            "showtime": "7:00pm",
+            "showtime_id": "148245596",
             "format": "Laser at AMC"
           }
         ],
         "Christmas at the Kringles": [
           {
-            "showtime": "10:10pm",
-            "showtime_id": "148245650",
+            "showtime": "3:50pm",
+            "showtime_id": "148245670",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "4:25pm",
-            "showtime_id": "148245629",
+            "showtime": "2:10pm",
+            "showtime_id": "148245647",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:25pm",
+            "showtime_id": "148378371",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148245468",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148245467",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148245725",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147491567",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148245728",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "148245727",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "148245543",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148245726",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "148245545",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148245544",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "148245599",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148245448",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "148245564",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148245576",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "148245447",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148245563",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "148245577",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148245406",
             "format": "Laser at AMC"
           }
         ]
@@ -97015,9 +97611,95 @@
                 "showtime_id": "148389785",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148248918",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148248893",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148248939",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148248892",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148248916",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147553120",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148248937",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148248891",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148389719",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148389718",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148389949",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148389720",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148389898",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148389897",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148389899",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148389900",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665994+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -97195,86 +97877,164 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148199318",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "148199337",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148199325",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:05pm",
-            "showtime_id": "148199326",
+            "showtime": "6:15pm",
+            "showtime_id": "148199329",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147726778",
+            "showtime": "2:10pm",
+            "showtime_id": "148390002",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147726781",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "148389994",
+            "showtime_id": "148389783",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "148390049",
+            "showtime": "9:15pm",
+            "showtime_id": "148389964",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147908348",
+            "showtime": "11:30am",
+            "showtime_id": "148389990",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "148389911",
+            "showtime_id": "147908336",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147908380",
+            "showtime": "3:45pm",
+            "showtime_id": "147908386",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148389912",
+            "showtime": "5:30pm",
+            "showtime_id": "148389998",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "147908387",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "147908338",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Mongoose": [
+          {
+            "showtime": "11:30am",
+            "showtime_id": "148399528",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "148389785",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "148248918",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148248893",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "148248939",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "148248892",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148248916",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147553120",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148248937",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148248891",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148389719",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148389718",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148389949",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148389720",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "11:30am",
+            "showtime_id": "148389898",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148389897",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147908381",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "148389913",
+            "showtime_id": "148389899",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147908350",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148389957",
+            "showtime": "9:30pm",
+            "showtime_id": "148389900",
             "format": "Laser at AMC"
           }
         ]
@@ -99664,9 +100424,75 @@
                 "showtime_id": "147919348",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148360521",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148360355",
+                "format": "SCREENX at AMC"
+              },
+              {
+                "showtime": "10:40pm",
+                "showtime_id": "148360549",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "5:35pm",
+                "showtime_id": "148360491",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148360551",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:35pm",
+                "showtime_id": "148360286",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148360524",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148190701",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "6:50pm",
+                "showtime_id": "148360376",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148360492",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148190700",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "148360377",
+                "format": "XL at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-31T01:32:46.506105+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -99726,55 +100552,116 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-10-31",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "148360279",
+            "showtime": "11:30am",
+            "showtime_id": "148360233",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:50pm",
-            "showtime_id": "148377045",
+            "showtime_id": "148360313",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147735820",
+            "showtime": "5:20pm",
+            "showtime_id": "147735821",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:05pm",
-            "showtime_id": "148360404",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:05pm",
-            "showtime_id": "148360502",
+            "showtime": "7:40pm",
+            "showtime_id": "148360311",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147919346",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147919341",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147919340",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "147919350",
+            "showtime_id": "147919347",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147919325",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147919324",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "147919348",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148360521",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "148360355",
+            "format": "SCREENX at AMC"
+          },
+          {
+            "showtime": "10:40pm",
+            "showtime_id": "148360549",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "5:35pm",
+            "showtime_id": "148360491",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148360551",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:35pm",
+            "showtime_id": "148360286",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148360524",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148190701",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "6:50pm",
+            "showtime_id": "148360376",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "148360492",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148190700",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "148360377",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -102533,9 +103420,105 @@
                 "showtime_id": "148280901",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148280768",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148280300",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "148280298",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148280786",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147429839",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148280734",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148280809",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148280274",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148280856",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148280855",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148280456",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "148280828",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148280184",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148280278",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148280186",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148280276",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148280181",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148280302",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203563+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -102609,68 +103592,159 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148020852",
+            "showtime": "1:30pm",
+            "showtime_id": "148280453",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "148280929",
+            "showtime_id": "148280720",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:25pm",
-            "showtime_id": "148280925",
-            "format": "Laser at AMC"
+            "showtime": "7:30pm",
+            "showtime_id": "148020778",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "148280926",
+            "showtime": "10:10pm",
+            "showtime_id": "148280865",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147622059",
+            "showtime": "1:15pm",
+            "showtime_id": "148280665",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148280874",
+            "showtime": "3:00pm",
+            "showtime_id": "147622062",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148280711",
+            "showtime_id": "148280915",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "148280799",
+            "showtime": "10:10pm",
+            "showtime_id": "148280944",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148280683",
+            "showtime": "3:30pm",
+            "showtime_id": "148280898",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148280876",
+            "showtime": "12:00pm",
+            "showtime_id": "148280901",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148280768",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "148280843",
+            "showtime": "12:50pm",
+            "showtime_id": "148280300",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:40pm",
+            "showtime_id": "148280298",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "148280786",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147429839",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "148280734",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148280809",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148280274",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148280856",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148280855",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148280456",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "148280828",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148280184",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148280278",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148280186",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148280276",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148280181",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148280302",
             "format": "Laser at AMC"
           }
         ]
@@ -102773,9 +103847,80 @@
                 "showtime_id": "148259625",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148259575",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "148259540",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148259800",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148259697",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148259801",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148259538",
+                "format": "XL at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148259682",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148259717",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148259699",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148259715",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148259557",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148259576",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148259559",
+                "format": "XL at AMC"
+              }
             ]
           },
-          "collected_at": null,
+          "collected_at": "2026-11-01T01:09:09.083741+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -102886,56 +104031,118 @@
                 "showtime_id": "148259742",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148259535",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148259708",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148259798",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148259574",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-31T01:32:46.506270+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-01",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148259608",
+            "showtime": "1:45pm",
+            "showtime_id": "148259597",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148183766",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "148183609",
+            "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148259824",
+            "showtime": "4:00pm",
+            "showtime_id": "147589633",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147589601",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime_id": "148259595",
+            "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
-            "showtime": "3:35pm",
-            "showtime_id": "148259624",
+            "showtime": "2:00pm",
+            "showtime_id": "148259643",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147589604",
+            "showtime": "5:45pm",
+            "showtime_id": "148259627",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147589638",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147589649",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148259625",
+            "showtime": "7:15pm",
+            "showtime_id": "148259742",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148259535",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148259708",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148259798",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148259574",
             "format": "Laser at AMC"
           }
         ]
@@ -104056,6 +105263,92 @@
                 "showtime_id": "148276746",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148276709",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148276744",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148276688",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148276748",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147565866",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148276749",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148276817",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148276814",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148276815",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148276686",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148276687",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148276692",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148276635",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148276693",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148276711",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148276710",
+                "format": "XL at AMC"
+              }
             ]
           },
           "collected_at": null,
@@ -104142,79 +105435,165 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-31",
+      "show_date": "2026-11-01",
       "movies": {
         "Christmas at the Kringles": [
           {
             "showtime": "2:15pm",
-            "showtime_id": "148276675",
+            "showtime_id": "148276777",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148147666",
+            "showtime_id": "148147667",
             "format": "Laser at AMC"
           }
         ],
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "148276730",
+            "showtime": "11:30am",
+            "showtime_id": "148276747",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "148276729",
-            "format": "Laser at AMC"
+            "showtime_id": "148276723",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "147576847",
+            "showtime_id": "147576848",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148276769",
+            "showtime": "8:00pm",
+            "showtime_id": "148276775",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "148276731",
+            "showtime": "10:25pm",
+            "showtime_id": "148276724",
             "format": "Laser at AMC"
           }
         ],
         "Everest: The Other Side": [
           {
             "showtime": "1:00pm",
-            "showtime_id": "147940463",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147940464",
+            "showtime_id": "147940470",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147940465",
+            "showtime": "4:30pm",
+            "showtime_id": "147940467",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147940466",
+            "showtime": "7:30pm",
+            "showtime_id": "147940468",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147940469",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "148276740",
+            "showtime": "11:30am",
+            "showtime_id": "148276778",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148276782",
+            "showtime": "4:45pm",
+            "showtime_id": "148276746",
             "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "148276709",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148276744",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148276688",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148276748",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147565866",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148276749",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148276817",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "148276814",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148276815",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148276686",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148276687",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "11:30am",
+            "showtime_id": "148276692",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148276635",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148276693",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148276711",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148276710",
+            "format": "XL at AMC"
           }
         ]
       }
@@ -104344,9 +105723,33 @@
                 "showtime_id": "148239118",
                 "format": "undefined"
               }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148239145",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148239146",
+                "format": "AMC Artisan Films"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148239071",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148239077",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.666305+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-10-30": {
@@ -104388,47 +105791,61 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148209530",
+            "showtime": "7:45pm",
+            "showtime_id": "148209535",
             "format": "undefined"
           },
           {
-            "showtime": "4:40pm",
-            "showtime_id": "148209531",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "148209532",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148209533",
+            "showtime": "10:25pm",
+            "showtime_id": "148239117",
             "format": "undefined"
           }
         ],
         "Everest: The Other Side": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148239055",
+            "showtime": "6:45pm",
+            "showtime_id": "148239042",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148239091",
+            "showtime": "9:40pm",
+            "showtime_id": "148239040",
             "format": "undefined"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148239130",
+            "showtime": "4:20pm",
+            "showtime_id": "148239118",
             "format": "undefined"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148239145",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148239146",
+            "format": "AMC Artisan Films"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148239071",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148239077",
+            "format": "AMC Artisan Films"
           }
         ]
       }
@@ -119931,36 +121348,208 @@
                 "showtime_id": "148248984",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148249136",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148249135",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147411479",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "148249134",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148249140",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148249139",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "148249138",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148249137",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148249197",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148249033",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148257419",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148249034",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148249200",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148249035",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148249199",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665696+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
         "The Only Living Pickpocket in New York": [
           {
-            "showtime": "3:45pm",
-            "showtime_id": "148248959",
+            "showtime": "12:30pm",
+            "showtime_id": "148248981",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:10pm",
-            "showtime_id": "148248960",
+            "showtime": "3:00pm",
+            "showtime_id": "148248979",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "148249002",
+            "showtime": "5:30pm",
+            "showtime_id": "148248980",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "148248982",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148248977",
             "format": "Laser at AMC"
           }
         ],
         "Fjord": [
           {
+            "showtime": "4:00pm",
+            "showtime_id": "148248984",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "148249136",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "148249135",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147411479",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "11:00pm",
+            "showtime_id": "148249134",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "148249140",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "148249139",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "148249138",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148249137",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "148249197",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148249033",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:15pm",
-            "showtime_id": "148249000",
+            "showtime_id": "148257419",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148249034",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148249200",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148249035",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148249199",
             "format": "Laser at AMC"
           }
         ]
@@ -120021,9 +121610,33 @@
                 "showtime_id": "148275264",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148275299",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148275298",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148275251",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148275293",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665773+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -120047,17 +121660,41 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-10-31",
       "movies": {
         "Fjord": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148261906",
+            "showtime": "5:30pm",
+            "showtime_id": "148275265",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148261905",
+            "showtime": "8:45pm",
+            "showtime_id": "148275264",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148275299",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148275298",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148275251",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "148275293",
             "format": "Laser at AMC"
           }
         ]
@@ -148631,9 +150268,110 @@
                 "showtime_id": "148367134",
                 "format": "undefined"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148367219",
+                "format": "GXL"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148367220",
+                "format": "GXL"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148367272",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148367221",
+                "format": "GXL"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148367273",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148367222",
+                "format": "GXL"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148367200",
+                "format": "GXL"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148367236",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148367309",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148367201",
+                "format": "GXL"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148367237",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148367308",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148367202",
+                "format": "GXL"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148367238",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148367203",
+                "format": "GXL"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148367254",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148367293",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148367256",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148367305",
+                "format": "AMC Artisan Films"
+              }
             ]
           },
-          "collected_at": "2026-10-30T01:16:38.203741+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -148652,59 +150390,158 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-29",
+      "show_date": "2026-11-01",
       "movies": {
-        "Christmas at the Kringles": [
+        "The Only Living Pickpocket in New York": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148289372",
-            "format": "undefined"
+            "showtime": "2:45pm",
+            "showtime_id": "148367326",
+            "format": "AMC Artisan Films"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "148289373",
-            "format": "undefined"
+            "showtime_id": "148367327",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148289374",
-            "format": "undefined"
-          }
-        ],
-        "The Only Living Pickpocket in New York": [
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "148289345",
+            "showtime": "6:30pm",
+            "showtime_id": "148367133",
             "format": "AMC Artisan Films"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148289346",
-            "format": "AMC Artisan Films"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "148289347",
+            "showtime": "9:30pm",
+            "showtime_id": "148367344",
             "format": "AMC Artisan Films"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148289348",
+            "showtime": "12:00pm",
+            "showtime_id": "148367271",
             "format": "undefined"
           }
         ],
         "Fjord": [
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148289342",
+            "showtime": "12:30pm",
+            "showtime_id": "148367185",
             "format": "undefined"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148289371",
+            "showtime": "3:00pm",
+            "showtime_id": "148367135",
             "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148367343",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148367134",
+            "format": "undefined"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "148367219",
+            "format": "GXL"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148367220",
+            "format": "GXL"
+          },
+          {
+            "showtime": "5:30pm",
+            "showtime_id": "148367272",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148367221",
+            "format": "GXL"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148367273",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148367222",
+            "format": "GXL"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148367200",
+            "format": "GXL"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148367236",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "148367309",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148367201",
+            "format": "GXL"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148367237",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "5:45pm",
+            "showtime_id": "148367308",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148367202",
+            "format": "GXL"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148367238",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148367203",
+            "format": "GXL"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "12:15pm",
+            "showtime_id": "148367254",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148367293",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148367256",
+            "format": "AMC Artisan Films"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148367305",
+            "format": "AMC Artisan Films"
           }
         ]
       }
@@ -149192,10 +151029,62 @@
           "empty": true
         },
         "2026-10-31": {
-          "movies": {},
-          "collected_at": "2026-10-29T17:13:42.665553+00:00",
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148265382",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148265325",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148265415",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148265417",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148265241",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148265314",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "148265428",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148265350",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148265242",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
-          "empty": true
+          "empty": false
         },
         "2026-10-30": {
           "movies": {},
@@ -149204,7 +151093,61 @@
           "empty": true
         }
       },
-      "showtime_window_version": "sat-sun-10-23-v1"
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-10-31",
+      "movies": {
+        "Clayface": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148265382",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148265325",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148265415",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148265417",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148265241",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148265314",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:20pm",
+            "showtime_id": "148265428",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148265350",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148265242",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     },
     "AMC The Grove 14": {
       "tz": "PT",
@@ -149566,9 +151509,65 @@
                 "showtime_id": "148281987",
                 "format": "Laser at AMC"
               }
+            ],
+            "Clayface": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148282036",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148282068",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148282023",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148282162",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "148426938",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148282161",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148426939",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148282112",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148282214",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148426940",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-10-29T17:13:42.665570+00:00",
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-01": {
@@ -149613,19 +151612,75 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-10-30",
+      "show_date": "2026-10-31",
       "movies": {
         "Christmas at the Kringles": [
           {
-            "showtime": "8:30pm",
-            "showtime_id": "148282125",
+            "showtime": "4:50pm",
+            "showtime_id": "148282018",
             "format": "Laser at AMC"
           }
         ],
         "The Mongoose": [
           {
-            "showtime": "5:45pm",
-            "showtime_id": "148282138",
+            "showtime": "7:45pm",
+            "showtime_id": "148281987",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Clayface": [
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148282036",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "148282068",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148282023",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148282162",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "148426938",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148282161",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148426939",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148282112",
+            "format": "PRIME at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148282214",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148426940",
             "format": "Laser at AMC"
           }
         ]
@@ -149736,10 +151791,77 @@
           "empty": true
         },
         "2026-11-01": {
-          "movies": {},
-          "collected_at": "2026-10-30T01:16:38.203577+00:00",
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148289288",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148289266",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147464997",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148289290",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148289232",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148289287",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148289230",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148289252",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148289267",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148289210",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148289289",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148289229",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
-          "empty": true
+          "empty": false
         },
         "2026-10-31": {
           "movies": {},
@@ -149748,7 +151870,76 @@
           "empty": true
         }
       },
-      "showtime_window_version": "sat-sun-10-23-v1"
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-11-01",
+      "movies": {
+        "Clayface": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "148289288",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148289266",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147464997",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148289290",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "148289232",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148289287",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148289230",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148289252",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "148289267",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148289210",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148289289",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148289229",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     },
     "AMC Kitsap 8": {
       "tz": "PT",
@@ -149804,13 +151995,199 @@
           "empty": true
         },
         "2026-11-01": {
-          "movies": {},
-          "collected_at": "2026-10-29T17:13:42.665384+00:00",
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "10:40am",
+                "showtime_id": "148258493",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:40pm",
+                "showtime_id": "148258492",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148258430",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148258427",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148258428",
+                "format": "Dolby Cinema at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "10:15am",
+                "showtime_id": "148258431",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148024013",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148258429",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148024012",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148024011",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148258490",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148024014",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148024083",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148024086",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148258527",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "148024087",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148023938",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
-          "empty": true
+          "empty": false
         }
       },
-      "showtime_window_version": "sat-sun-10-23-v1"
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-11-01",
+      "movies": {
+        "Clayface": [
+          {
+            "showtime": "10:40am",
+            "showtime_id": "148258493",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "148258492",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:40pm",
+            "showtime_id": "148258430",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148258427",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148258428",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "10:15am",
+            "showtime_id": "148258431",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148024013",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148258429",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148024012",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148024011",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "148258490",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "148024014",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "11:30am",
+            "showtime_id": "148024083",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148024086",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148258527",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "148024087",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "148023938",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     },
     "AMC Sunnyvale 12": {
       "tz": "PT",
@@ -149897,13 +152274,139 @@
           "empty": true
         },
         "2026-11-01": {
-          "movies": {},
-          "collected_at": "2026-10-29T17:13:42.665976+00:00",
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148335662",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148335661",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147498301",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148335492",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148335636",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148335495",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148335513",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148335542",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148335561",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148335558",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148335683",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
-          "empty": true
+          "empty": false
         }
       },
-      "showtime_window_version": "sat-sun-10-23-v1"
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-11-01",
+      "movies": {
+        "Clayface": [
+          {
+            "showtime": "2:30pm",
+            "showtime_id": "148335662",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "5:15pm",
+            "showtime_id": "148335661",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147498301",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148335492",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148335636",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148335495",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148335513",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148335542",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148335561",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148335558",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148335683",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     },
     "AMC Burbank Town Center 6": {
       "tz": "PT",
@@ -149922,13 +152425,189 @@
           "empty": true
         },
         "2026-11-01": {
-          "movies": {},
-          "collected_at": "2026-10-29T17:13:42.666473+00:00",
+          "movies": {
+            "Clayface": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148361494",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:10pm",
+                "showtime_id": "148361430",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148361429",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148361428",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148361487",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Wildwood": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148361460",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148361464",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148361463",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148361461",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148361462",
+                "format": "Laser at AMC"
+              }
+            ],
+            "You Can See Everything": [
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148361446",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:40am",
+                "showtime_id": "148361503",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148361491",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148361568",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148361490",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148361432",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": null,
           "showtime_window_version": "sat-sun-10-23-v1",
-          "empty": true
+          "empty": false
         }
       },
-      "showtime_window_version": "sat-sun-10-23-v1"
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-11-01",
+      "movies": {
+        "Clayface": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148361494",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:10pm",
+            "showtime_id": "148361430",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "148361429",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148361428",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148361487",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Wildwood": [
+          {
+            "showtime": "10:00am",
+            "showtime_id": "148361460",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "148361464",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148361463",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148361461",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148361462",
+            "format": "Laser at AMC"
+          }
+        ],
+        "You Can See Everything": [
+          {
+            "showtime": "10:10am",
+            "showtime_id": "148361446",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:40am",
+            "showtime_id": "148361503",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:45pm",
+            "showtime_id": "148361491",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148361568",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148361490",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "148361432",
+            "format": "Laser at AMC"
+          }
+        ]
+      }
     },
     "AMC Burbank Town Center 8": {
       "tz": "PT",
@@ -150271,9 +152950,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 1.0,
-    "fresh": 230,
-    "expected": 230,
+    "ratio": 0.993,
+    "fresh": 141,
+    "expected": 142,
     "min_ratio": 0.9,
     "degraded": false
   }
