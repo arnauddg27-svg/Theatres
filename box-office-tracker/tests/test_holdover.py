@@ -207,3 +207,65 @@ class BacktestShapeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CensusBaseTest(unittest.TestCase):
+    """2026-11-01: You Can See Everything (wk 3, 855 -> 3,243 theatres) was
+    census-read against its OPENING weekend: $7.0M vs a $10-12M market."""
+
+    def _actuals(self, td):
+        path = os.path.join(td, "actuals.csv")
+        with open(path, "w") as f:
+            f.write("weekend_of,movie_title,day,gross_m\n")
+        return path
+
+    def test_census_is_read_against_the_base_weekend(self):
+        from unittest.mock import patch
+        daily = {date(2026, 10, 15): ("P", 1.75), date(2026, 10, 16): ("1", 5.54),
+                 date(2026, 10, 17): ("1", 5.21), date(2026, 10, 18): ("1", 4.85),
+                 date(2026, 10, 23): ("1", 5.5), date(2026, 10, 24): ("1", 7.0),
+                 date(2026, 10, 25): ("1", 6.2), date(2026, 10, 30): ("2", 3.57)}
+        calls = []
+
+        def census(weekend_of, movie):
+            calls.append(weekend_of)
+            per = {"2026-10-23": 100.0, "2026-10-30": 60.0}.get(weekend_of, 300.0)
+            return {"Saturday": {("CNMK", f"t{i}"): per for i in range(150)}}
+
+        entry = {"weekend_of": "2026-10-30", "movie": "Film", "weekend_num": "3",
+                 "opening_weekend_of": "2026-10-16"}
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(F, "fetch_daily", return_value=daily), \
+                patch.object(F, "census_by_theatre", census), \
+                patch.object(F, "theatre_counts", return_value=None):
+            row = F.film_forecast(entry, {"1-3": SHAPE, "2-3": SHAPE}, actuals_path=self._actuals(td))
+        self.assertEqual((row["base"], row["days_census"]), ("wk2", "Saturday"))
+        self.assertIn("Sat=4.200", row["day_m"])          # weekend-2 Saturday 7.0 x 0.6
+        self.assertEqual(sorted(set(calls)), ["2026-10-23", "2026-10-30"])
+
+    def test_expansion_voids_the_census(self):
+        from unittest.mock import patch
+        daily = {date(2026, 10, 22): ("P", 1.0), date(2026, 10, 23): ("1", 5.0),
+                 date(2026, 10, 24): ("1", 6.0), date(2026, 10, 25): ("1", 4.0),
+                 date(2026, 10, 30): ("2", 3.0)}
+        entry = {"weekend_of": "2026-10-30", "movie": "Film", "weekend_num": "2",
+                 "opening_weekend_of": "2026-10-23"}
+        with tempfile.TemporaryDirectory() as td, \
+                patch.object(F, "fetch_daily", return_value=daily), \
+                patch.object(F, "census_by_theatre", side_effect=AssertionError("must not read")), \
+                patch.object(F, "theatre_counts", return_value=(855.0, 3243.0)):
+            row = F.film_forecast(entry, {"1-2": SHAPE}, actuals_path=self._actuals(td))
+        self.assertEqual((row["base"], row["days_census"], row["forecast_stage"]), ("opening", "", "fri_known"))
+
+    def test_theatre_counts_reads_metadata_and_counts_file(self):
+        import json
+        with tempfile.TemporaryDirectory() as td:
+            meta = os.path.join(td, "meta.csv")
+            with open(meta, "w") as f:
+                f.write("movie,weekend_of,national_theatre_count\nThe Film,2026-10-16,855\nThe Film,2026-10-23,\n")
+            counts = os.path.join(td, "counts.json")
+            with open(counts, "w") as f:
+                json.dump({"Film": 3243, "_updated": "x"}, f)
+            self.assertEqual(F.theatre_counts("film", "2026-10-16", meta, counts), (855.0, 3243.0))
+            self.assertIsNone(F.theatre_counts("film", "2026-10-23", meta, counts))
+            self.assertIsNone(F.theatre_counts("other", "2026-10-16", meta, counts))

@@ -9,9 +9,15 @@ $10-12M), else the opening with Friday excluding previews.
 
   known day      the reported gross (The Numbers daily table, falling back to
                  daily-actual-overrides.csv); otherwise our post-show seat
-                 census: opening-day gross x (this weekend's counted dollars /
-                 the opening day's) over the SAME theatres (AMC finals,
-                 Cinemark/Alamo/Harkins/Webedia post census).
+                 census: BASE-day gross x (this weekend's counted dollars /
+                 the base day's) over the SAME theatres (AMC finals,
+                 Cinemark/Alamo/Harkins/Webedia post census). The census is
+                 only read against the base weekend, and not at all when the
+                 film's theatre count grew since then (You Can See Everything
+                 went 855 -> 3,243 theatres after opening: its weekend-3
+                 Saturday at the original theatres was 0.36x the opening while
+                 the national Friday was 0.94x — a $7.0M call against a
+                 $10-12M market, 2026-11-01).
   unknown day    base day x the latest known day's ratio x the fitted day
                  shape (data/holdover-day-shape.json, scripts/holdover_
                  backtest.py, 185 films leave-one-out: Friday known -> 3-day
@@ -51,6 +57,12 @@ CENSUS_CHAINS = ("AMC", "CNMK", "ALMO", "HARK", "WEBD")
 # on average, and the 20-104-theatre films (Klara, Sense and Sensibility) were
 # off by 47-99%; the 600+ theatre films since 10-16 by 3-15%.
 MIN_CENSUS_THEATRES = 100
+# A per-theatre census ratio scales a national day only while the film plays
+# in (about) the same theatres as the base weekend. Growth beyond this since
+# the base weekend (an expansion) voids the census for that film.
+MAX_CENSUS_THEATRE_GROWTH = 1.15
+METADATA_CSV = os.path.join(DATA_DIR, "movie-metadata.csv")
+THEATRE_COUNTS_JSON = os.path.join(DATA_DIR, "theatre-counts.json")
 LOG_FIELDS = ["logged_at", "weekend_of", "movie", "weekend_num", "opening_weekend_of",
               "opening_m", "base", "base_m", "headline_mid_m", "headline_low_m", "headline_high_m",
               "forecast_stage", "days_actual", "days_census", "day_m", "latest_ratio",
@@ -168,6 +180,36 @@ def census_ratios(opening, current):
     return out
 
 
+def theatre_counts(movie, base_weekend, metadata_path=METADATA_CSV, counts_path=THEATRE_COUNTS_JSON):
+    """(base-weekend count, current count) or None. The base count is the
+    opening-weekend national_theatre_count in movie-metadata.csv, so it is
+    only known when the base IS the opening; the current count is the AMC
+    movie-page count the lanes save to theatre-counts.json."""
+    key = holdover.title_key(movie)
+    base = current = None
+    try:
+        with open(metadata_path, newline="") as f:
+            for r in csv.DictReader(f):
+                if r.get("weekend_of") == base_weekend and holdover.title_key(r.get("movie")) == key:
+                    base = float(r.get("national_theatre_count") or 0) or None
+        with open(counts_path) as f:
+            for name, n in (json.load(f) or {}).items():
+                if not str(name).startswith("_") and holdover.title_key(name) == key:
+                    current = float(n or 0) or None
+    except (OSError, ValueError, TypeError):
+        return None
+    return (base, current) if base and current else None
+
+
+def census_void_reason(movie, base_weekend):
+    """Why the census must not be read for this film, or None."""
+    counts = theatre_counts(movie, base_weekend)
+    if counts and counts[1] / counts[0] > MAX_CENSUS_THEATRE_GROWTH:
+        return (f"theatre count grew {counts[0]:,.0f} -> {counts[1]:,.0f} since {base_weekend}; "
+                "per-theatre ratios do not scale an expansion")
+    return None
+
+
 def _stage(days):
     return ("all_known" if all(d in days for d in DAYS)
             else "fri_sat_known" if "Saturday" in days
@@ -225,17 +267,23 @@ def film_forecast(entry, shape_by_pair, actuals_path=DAILY_CSV, census=True, fet
         base, shape, base_label = o, shape_by_pair.get(f"1-{n}"), "opening"
     if not shape:
         return None
+    # The census is read against the BASE weekend (the one whose days it
+    # scales): a weekend-3 film with a weekend-2 base needs a weekend-2 census.
+    base_weekend = opening if base_label == "opening" else prev
     ratios = {}
-    if census:
+    void = census_void_reason(movie, base_weekend) if census else None
+    if void:
+        print(f"  ↷ {movie}: census not read — {void}")
+    elif census:
         try:
-            ratios = census_ratios(census_by_theatre(opening, movie), census_by_theatre(weekend, movie))
+            ratios = census_ratios(census_by_theatre(base_weekend, movie), census_by_theatre(weekend, movie))
         except Exception as exc:
             print(f"  ⚠️  {movie}: census read failed ({type(exc).__name__}: {exc})")
     known = dict(actual)
     via_census = []
     for d, (ratio, _chains, _n) in ratios.items():
-        if d not in known and o.get(d):
-            known[d] = o[d] * ratio
+        if d not in known and base.get(d):
+            known[d] = base[d] * ratio
             via_census.append(d)
     res = forecast(base, known, shape, band_days=actual)
     if not res:
