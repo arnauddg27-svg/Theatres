@@ -1563,6 +1563,15 @@ def phase1_target_date_is_repairable(tz_group, target_date):
     return target_day >= local_now(tz_group).date()
 
 
+def phase1_links_unrecoverable(groups, expected_dates):
+    """True when every group's expected show date has rolled off AMC, so a
+    missing-links state is final: no retry or repair can change it."""
+    groups = [g for g in (groups or []) if g in (expected_dates or {})]
+    return bool(groups) and all(
+        not phase1_target_date_is_repairable(group, expected_dates[group]) for group in groups
+    )
+
+
 def phase1_target_date_is_within_theatre_day(tz_group, target_date):
     """Looser window for a LAST-RESORT repair when no cached links exist.
 
@@ -6530,7 +6539,19 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             expected_dates=expected_dates,
         )
     if not poly_markets:
-        log_run(tz_group, [], [], ["No active Polymarket markets have current Phase 1 links"])
+        issue = "No active Polymarket markets have current Phase 1 links"
+        if not snapshots_only and phase1_links_unrecoverable(groups_to_check, expected_dates):
+            # The show date has rolled off AMC, so no retry can rebuild the
+            # links: this leg simply has nothing left to read. Failing here
+            # made the scheduler re-dispatch the whole 07Z slot three times
+            # (2026-11-01, MT: 13 theatres, holdover links never collected),
+            # each re-running every leg and finalize for nothing.
+            issue += " and the show date has rolled off AMC — nothing to read for this timezone"
+            log_run(tz_group, [], [], [issue])
+            print(f"\n↷ {issue}; leaving this leg empty (a retry cannot rebuild rolled-off links)")
+            print(f"::warning::{tz_group}: {issue}")
+            return
+        log_run(tz_group, [], [], [issue])
         fail_phase("\n❌ No active box office markets have current AMC Phase 1 links.")
     save_polymarket_data(poly_markets, weekend_of=weekend)
 

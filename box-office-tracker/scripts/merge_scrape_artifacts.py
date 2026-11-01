@@ -22,6 +22,7 @@ DATA_DIR = BASE_DIR / "data"
 SEAT_CSV = "seat-counts.csv"
 PRE_RESERVATION_CSV = "pre-reservation-snapshots.csv"
 POLY_CSV = "polymarket-markets.csv"
+SHOWTIME_LINKS_JSON = "showtime-links.json"
 RUN_LOG_DIR = "run-logs"
 
 SEAT_FIELDS = [
@@ -118,6 +119,7 @@ class MergeSummary:
     pre_reservation_duplicates: int = 0
     run_logs_copied: int = 0
     run_logs_skipped: int = 0
+    showtime_link_dates_updated: int = 0
     markers: set[str] = field(default_factory=set)
     snapshot_markers: set[str] = field(default_factory=set)
 
@@ -136,6 +138,7 @@ class MergeSummary:
             "pre_reservation_duplicates": self.pre_reservation_duplicates,
             "run_logs_copied": self.run_logs_copied,
             "run_logs_skipped": self.run_logs_skipped,
+            "showtime_link_dates_updated": self.showtime_link_dates_updated,
             "markers": sorted(self.markers),
             "snapshot_markers": sorted(self.snapshot_markers),
         }
@@ -500,6 +503,67 @@ def _copy_run_logs(artifact_root: Path, data_dir: Path) -> tuple[int, int]:
     return copied, skipped
 
 
+def _merge_showtime_links(target: Path, sources: list[Path]) -> int:
+    """Fold the per-theatre, per-date link entries that scrape legs repaired
+    into the canonical showtime-links.json; returns the entries replaced.
+
+    The snapshot lane rebuilds missing link slices inside the leg (targeted
+    repair) and uploads its showtime-links.json, but until 2026-11-01 nothing
+    carried those entries back to main: the 02:30Z MT leg repaired the three
+    holdover films' Saturday and Sunday links, the 07Z regular MT leg (which
+    skips repair once the date rolled off) still saw none, filtered every
+    film and failed the whole slot. An entry wins when the canonical copy
+    lacks that theatre-date or holds an older `collected_at`; the root
+    metadata (collected_at, link_coverage) stays the last full collection's.
+    A source for a different weekend is ignored — weekend rollover is
+    collect-links' job."""
+    if not sources or not target.exists():
+        return 0
+    try:
+        main = json.loads(target.read_text())
+    except (OSError, ValueError):
+        return 0
+    theatres = main.get("theatres") if isinstance(main, dict) else None
+    if not isinstance(theatres, dict):
+        return 0
+    weekend = main.get("weekend_of") or main.get("date")
+    updated = 0
+    for source in sources:
+        try:
+            data = json.loads(source.read_text())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(data, dict) or (data.get("weekend_of") or data.get("date")) != weekend:
+            continue
+        for name, entry in (data.get("theatres") or {}).items():
+            dates = entry.get("dates") if isinstance(entry, dict) else None
+            if not isinstance(dates, dict):
+                continue
+            current = theatres.get(name)
+            if not isinstance(current, dict):
+                theatres[name] = entry
+                updated += len(dates)
+                continue
+            current_dates = current.setdefault("dates", {})
+            if not isinstance(current_dates, dict):
+                continue
+            for date_str, new in dates.items():
+                if not isinstance(new, dict):
+                    continue
+                old = current_dates.get(date_str)
+                if isinstance(old, dict) and (old.get("collected_at") or "") >= (new.get("collected_at") or ""):
+                    continue
+                current_dates[date_str] = new
+                updated += 1
+                if current.get("show_date") == date_str:
+                    current["movies"] = dict(new.get("movies") or {})
+    if updated:
+        tmp = target.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(main, indent=2))
+        tmp.replace(target)
+    return updated
+
+
 def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSummary:
     artifact_root = artifact_root.resolve()
     data_dir = data_dir.resolve()
@@ -553,6 +617,10 @@ def merge_artifacts(artifact_root: Path, data_dir: Path = DATA_DIR) -> MergeSumm
     logs_copied, logs_skipped = _copy_run_logs(artifact_root, data_dir)
     summary.run_logs_copied = logs_copied
     summary.run_logs_skipped = logs_skipped
+    summary.showtime_link_dates_updated = _merge_showtime_links(
+        data_dir / SHOWTIME_LINKS_JSON,
+        _csv_sources(artifact_root, SHOWTIME_LINKS_JSON),
+    )
     return summary
 
 
@@ -614,6 +682,7 @@ def main() -> int:
     print(f"Pre-reservation duplicates skipped: {summary.pre_reservation_duplicates}")
     print(f"Run logs copied: {summary.run_logs_copied}")
     print(f"Run logs skipped: {summary.run_logs_skipped}")
+    print(f"Showtime link theatre-dates updated: {summary.showtime_link_dates_updated}")
     print(f"Scrape markers: {', '.join(sorted(summary.markers)) or 'none'}")
     report_archived_weekend_drops()
     return 0

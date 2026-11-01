@@ -1,4 +1,5 @@
 import csv
+import json
 import sys
 import tempfile
 import contextlib
@@ -485,3 +486,67 @@ class PartialArchiveGuardTest(unittest.TestCase):
             self.assertFalse(f({**row, "show_date": "2026-09-24"}))   # archived (played) date
             self.assertTrue(f({**row, "show_date": "2026-09-27"}))    # live date of the same weekend
             self.assertFalse(f(row))                                  # undated -> conservative refuse
+
+
+class ShowtimeLinkMergeTest(unittest.TestCase):
+    """2026-11-01: the 02:30Z MT leg repaired the holdovers' links inside the
+    run; nothing carried them to main and the 07Z MT leg failed the slot."""
+
+    def _links(self, weekend, theatres):
+        return {"date": weekend, "weekend_of": weekend, "collected_at": "2026-11-01T01:09:00+00:00",
+                "theatres": theatres}
+
+    def _theatre(self, tz, dates, show_date=None):
+        entry = {"tz": tz, "cohort": "core", "dates": dates}
+        if show_date:
+            entry["show_date"] = show_date
+            entry["movies"] = dict(dates.get(show_date, {}).get("movies") or {})
+        return entry
+
+    def test_newer_leg_entries_replace_canonical_ones(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            data = root / "data"
+            data.mkdir()
+            old = {"movies": {}, "collected_at": "2026-10-29T16:00:00+00:00", "empty": True}
+            main = self._links("2026-10-30", {
+                "AMC Shiloh 14": self._theatre("MT", {"2026-10-31": old, "2026-11-01": dict(old)}, "2026-10-31"),
+                "AMC Empire 25": self._theatre("ET", {"2026-10-31": {"movies": {"Clayface": [{"showtime_id": "e1"}]},
+                                                                    "collected_at": "2026-10-31T21:00:00+00:00"}}),
+            })
+            (data / M.SHOWTIME_LINKS_JSON).write_text(json.dumps(main))
+            repaired = {"movies": {"Clayface": [{"showtime_id": "m1"}]}, "collected_at": "2026-11-01T03:00:00+00:00"}
+            stale = {"movies": {"Clayface": [{"showtime_id": "old"}]}, "collected_at": "2026-10-30T21:00:00+00:00"}
+            leg = root / "artifacts" / "scrape-MT-1-1"
+            leg.mkdir(parents=True)
+            (leg / M.SHOWTIME_LINKS_JSON).write_text(json.dumps(self._links("2026-10-30", {
+                "AMC Shiloh 14": self._theatre("MT", {"2026-10-31": repaired, "2026-11-01": dict(repaired)}),
+                "AMC Empire 25": self._theatre("ET", {"2026-10-31": stale}),
+                "AMC Brand New 8": self._theatre("MT", {"2026-11-01": dict(repaired)}),
+            })))
+            other = root / "artifacts" / "scrape-PT-1-1"
+            other.mkdir(parents=True)
+            (other / M.SHOWTIME_LINKS_JSON).write_text(json.dumps(self._links("2026-11-06", {
+                "AMC Shiloh 14": self._theatre("MT", {"2026-11-07": dict(repaired, collected_at="2026-11-02T00:00:00+00:00")}),
+            })))
+            with contextlib.redirect_stdout(io.StringIO()):
+                summary = merge_artifacts(root / "artifacts", data)
+            self.assertEqual(summary.showtime_link_dates_updated, 3)
+            merged = json.loads((data / M.SHOWTIME_LINKS_JSON).read_text())["theatres"]
+            self.assertEqual(merged["AMC Shiloh 14"]["dates"]["2026-10-31"], repaired)
+            self.assertEqual(merged["AMC Shiloh 14"]["movies"], repaired["movies"])   # legacy mirror of show_date
+            self.assertNotIn("2026-11-07", merged["AMC Shiloh 14"]["dates"])          # other weekend ignored
+            self.assertEqual(merged["AMC Empire 25"]["dates"]["2026-10-31"]["movies"]["Clayface"][0]["showtime_id"], "e1")
+            self.assertIn("AMC Brand New 8", merged)
+            self.assertEqual(json.loads((data / M.SHOWTIME_LINKS_JSON).read_text())["collected_at"],
+                             "2026-11-01T01:09:00+00:00")
+
+    def test_no_sources_or_no_canonical_file_is_a_no_op(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            (root / "artifacts").mkdir()
+            (root / "data").mkdir()
+            with contextlib.redirect_stdout(io.StringIO()):
+                summary = merge_artifacts(root / "artifacts", root / "data")
+            self.assertEqual(summary.showtime_link_dates_updated, 0)
+            self.assertFalse((root / "data" / M.SHOWTIME_LINKS_JSON).exists())

@@ -186,6 +186,12 @@ jobs:
       - name: Install dependencies
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
+        # 2026-11-01: a hung `playwright install --with-deps` (apt) on the
+        # 22:30Z CT leg ate the whole 360-minute job budget; the job timed out
+        # as "cancelled", finalize skipped, and the ET snapshot rows plus the
+        # MT link repairs of that run were discarded. A bounded install fails
+        # the leg in minutes instead, and finalize still merges the others.
+        timeout-minutes: 20
         run: |
           pip3 install -r requirements.txt
           python3 -m playwright install chromium --with-deps || python3 -m playwright install chromium
@@ -409,6 +415,7 @@ jobs:
       - name: Install dependencies
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
+        timeout-minutes: 20   # see the collect-links install step (2026-11-01)
         run: |
           pip install -r requirements.txt
           python -m playwright install chromium --with-deps

@@ -719,3 +719,20 @@ jobs:
         self.assertTrue(any("duplicate step id 'finalize_guard'" in x for x in v), v)
         self.assertTrue(any("duplicate step name 'Guard'" in x for x in v), v)
         self.assertTrue(any("references steps.later before" in x for x in v), v)
+
+
+class InstallStepTimeoutTest(unittest.TestCase):
+    """2026-11-01: `playwright install --with-deps` hung for 6 h on the 22:30Z
+    CT leg; the job timed out as cancelled, finalize skipped, the run's
+    other legs were discarded."""
+
+    def test_long_jobs_bound_their_dependency_install(self):
+        workflow = WORKFLOW.read_text()
+        for job, nxt in (("  collect-links:", "  scrape:"), ("  scrape:", "  finalize:")):
+            start = workflow.index(job)
+            block = workflow[start:workflow.index(nxt, start + 1)]
+            install = block.index("      - name: Install dependencies")
+            step = block[install:block.index("      - name:", install + 1)]
+            m = re.search(r"timeout-minutes: (\d+)", step)
+            self.assertIsNotNone(m, f"{job.strip()} install step has no timeout")
+            self.assertLessEqual(int(m.group(1)), 30, job)

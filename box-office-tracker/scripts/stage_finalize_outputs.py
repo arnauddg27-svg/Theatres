@@ -29,6 +29,8 @@ OUTPUT_FILES = [
     "box-office-tracker/data/chain-census-log.csv",
     "box-office-tracker/data/holdover-titles.csv",
     "box-office-tracker/data/holdover-prediction-log.csv",
+    # Link slices the scrape legs repaired (merge_scrape_artifacts, 2026-11-01).
+    "box-office-tracker/data/showtime-links.json",
 ]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"
