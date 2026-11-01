@@ -503,6 +503,33 @@ def _copy_run_logs(artifact_root: Path, data_dir: Path) -> tuple[int, int]:
     return copied, skipped
 
 
+def _merge_link_date_entry(old: dict, new: dict) -> tuple[dict, bool]:
+    """Union one theatre-date's links: films the canonical entry lacks are
+    added, a film present in both keeps the newer collection's showtimes,
+    and `collected_at` becomes the newest stamp. Returns (merged, changed).
+
+    Timestamp-only replacement was not enough: the 2026-11-01 14:30Z MT leg
+    repaired the holdovers' links but its entries carried collected_at=None
+    (a merge bug in the leg, fixed the same day), so finalize read them as
+    older than main's and merged nothing — the Sunday MT holdover reads
+    never reached the 07Z regular lane."""
+    old_stamp = old.get("collected_at") or ""
+    new_stamp = new.get("collected_at") or ""
+    new_is_newer = bool(new_stamp) and new_stamp > old_stamp
+    movies = {movie: links for movie, links in (old.get("movies") or {}).items()}
+    for movie, links in (new.get("movies") or {}).items():
+        if movie not in movies or (new_is_newer and links != movies[movie]):
+            movies[movie] = links
+    merged = dict(new) if new_is_newer else dict(old)
+    merged["movies"] = movies
+    if "empty" in old or "empty" in new:
+        merged["empty"] = not movies
+    stamp = max(old_stamp, new_stamp)
+    if stamp:
+        merged["collected_at"] = stamp
+    return merged, merged != old
+
+
 def _merge_showtime_links(target: Path, sources: list[Path]) -> int:
     """Fold the per-theatre, per-date link entries that scrape legs repaired
     into the canonical showtime-links.json; returns the entries replaced.
@@ -512,9 +539,10 @@ def _merge_showtime_links(target: Path, sources: list[Path]) -> int:
     carried those entries back to main: the 02:30Z MT leg repaired the three
     holdover films' Saturday and Sunday links, the 07Z regular MT leg (which
     skips repair once the date rolled off) still saw none, filtered every
-    film and failed the whole slot. An entry wins when the canonical copy
-    lacks that theatre-date or holds an older `collected_at`; the root
-    metadata (collected_at, link_coverage) stays the last full collection's.
+    film and failed the whole slot. A theatre-date the canonical copy lacks
+    is taken whole; one it has is unioned film by film (see
+    _merge_link_date_entry); the root metadata (collected_at,
+    link_coverage) stays the last full collection's.
     A source for a different weekend is ignored — weekend rollover is
     collect-links' job."""
     if not sources or not target.exists():
@@ -551,8 +579,11 @@ def _merge_showtime_links(target: Path, sources: list[Path]) -> int:
                 if not isinstance(new, dict):
                     continue
                 old = current_dates.get(date_str)
-                if isinstance(old, dict) and (old.get("collected_at") or "") >= (new.get("collected_at") or ""):
-                    continue
+                if isinstance(old, dict):
+                    merged, changed = _merge_link_date_entry(old, new)
+                    if not changed:
+                        continue
+                    new = merged
                 current_dates[date_str] = new
                 updated += 1
                 if current.get("show_date") == date_str:

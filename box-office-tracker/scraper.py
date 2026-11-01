@@ -4071,14 +4071,16 @@ def _phase1_entry_has_any_movies(entry):
 def _phase1_date_entry_from_top_level(entry):
     if not entry or not entry.get("show_date") or not entry.get("movies"):
         return None
-    return {
-        "collected_at": entry.get("collected_at"),
+    date_entry = {
         "showtime_window_version": entry.get(
             "showtime_window_version",
             SHOWTIME_WINDOW_VERSION,
         ),
         "movies": entry.get("movies", {}),
     }
+    if entry.get("collected_at"):
+        date_entry["collected_at"] = entry["collected_at"]
+    return date_entry
 
 
 def merge_phase1_date_entries(old_date_entry, new_date_entry):
@@ -4092,7 +4094,14 @@ def merge_phase1_date_entries(old_date_entry, new_date_entry):
         old_date_entry.get("movies") or {},
         new_date_entry.get("movies") or {},
     )
-    merged.update({k: v for k, v in new_date_entry.items() if k != "movies"})
+    # A None never overwrites a value: the legacy top-level mirror of a freshly
+    # collected entry has no collected_at, and until 2026-11-01 it erased the
+    # timestamp the dated payload had just been stamped with. Finalize's link
+    # merge then read the repaired MT entries as "older" and dropped them.
+    merged.update({k: v for k, v in new_date_entry.items() if k != "movies" and v is not None})
+    stamps = [t for t in (old_date_entry.get("collected_at"), new_date_entry.get("collected_at")) if t]
+    if stamps:
+        merged["collected_at"] = max(stamps)
     merged["movies"] = movies
     if "empty" in merged:
         merged["empty"] = not movies

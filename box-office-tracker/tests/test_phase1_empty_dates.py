@@ -65,6 +65,29 @@ class FreshnessTest(unittest.TestCase):
         self.assertFalse(merged["empty"])
         self.assertEqual(scraper.merge_phase1_date_entries(None, new)["empty"], True)
 
+    def test_merge_never_erases_collected_at(self):
+        """2026-11-01: the legacy top-level mirror of a freshly repaired entry
+        has no collected_at; merging it wiped the dated payload's stamp, and
+        finalize then dropped the whole repaired MT slice as 'older'."""
+        old = {"movies": {"Fjord": [LINK]}, "collected_at": "2026-11-01T14:58:00+00:00", "showtime_window_version": V}
+        mirror = {"movies": {"Fjord": [LINK], "Clayface": [LINK]}, "collected_at": None, "showtime_window_version": V}
+        merged = scraper.merge_phase1_date_entries(old, mirror)
+        self.assertEqual(merged["collected_at"], "2026-11-01T14:58:00+00:00")
+        self.assertEqual(sorted(merged["movies"]), ["Clayface", "Fjord"])
+        newer = dict(mirror, collected_at="2026-11-01T15:00:00+00:00")
+        self.assertEqual(scraper.merge_phase1_date_entries(old, newer)["collected_at"], "2026-11-01T15:00:00+00:00")
+        older = dict(mirror, collected_at="2026-10-29T16:08:00+00:00")
+        self.assertEqual(scraper.merge_phase1_date_entries(old, older)["collected_at"], "2026-11-01T14:58:00+00:00")
+        # The whole-entry path: a fresh entry with the legacy mirror set keeps the dated stamp.
+        fresh = {"tz": "MT", "show_date": "2026-11-01", "movies": {"Clayface": [LINK]},
+                 "dates": {"2026-11-01": {"movies": {"Clayface": [LINK]}, "collected_at": "2026-11-01T14:58:00+00:00",
+                                          "showtime_window_version": V}}}
+        existing = {"tz": "MT", "dates": {"2026-11-01": {"movies": {"Fjord": [LINK]}, "collected_at": "2026-10-29T16:08:00+00:00",
+                                                          "showtime_window_version": V}}}
+        out = scraper.merge_phase1_entries(existing, fresh)
+        self.assertEqual(out["dates"]["2026-11-01"]["collected_at"], "2026-11-01T14:58:00+00:00")
+        self.assertEqual(sorted(out["dates"]["2026-11-01"]["movies"]), ["Clayface", "Fjord"])
+
 
 if __name__ == "__main__":
     unittest.main()

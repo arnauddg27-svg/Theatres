@@ -533,13 +533,50 @@ class ShowtimeLinkMergeTest(unittest.TestCase):
                 summary = merge_artifacts(root / "artifacts", data)
             self.assertEqual(summary.showtime_link_dates_updated, 3)
             merged = json.loads((data / M.SHOWTIME_LINKS_JSON).read_text())["theatres"]
-            self.assertEqual(merged["AMC Shiloh 14"]["dates"]["2026-10-31"], repaired)
+            self.assertEqual(merged["AMC Shiloh 14"]["dates"]["2026-10-31"], dict(repaired, empty=False))
             self.assertEqual(merged["AMC Shiloh 14"]["movies"], repaired["movies"])   # legacy mirror of show_date
             self.assertNotIn("2026-11-07", merged["AMC Shiloh 14"]["dates"])          # other weekend ignored
             self.assertEqual(merged["AMC Empire 25"]["dates"]["2026-10-31"]["movies"]["Clayface"][0]["showtime_id"], "e1")
             self.assertIn("AMC Brand New 8", merged)
             self.assertEqual(json.loads((data / M.SHOWTIME_LINKS_JSON).read_text())["collected_at"],
                              "2026-11-01T01:09:00+00:00")
+
+    def test_unstamped_repaired_entry_still_adds_its_new_films(self):
+        """2026-11-01 14:30Z: the MT leg's repaired entries had collected_at=None;
+        timestamp-only replacement merged 0 of them and the Sunday MT holdover
+        links never reached main."""
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            data = root / "data"
+            data.mkdir()
+            opener = {"The Mongoose": [{"showtime_id": "o1"}]}
+            canonical = {"movies": dict(opener), "collected_at": "2026-10-29T16:08:19+00:00"}
+            main = self._links("2026-10-30", {
+                "AMC West Jordan 12": self._theatre("MT", {"2026-11-01": canonical}, "2026-11-01"),
+            })
+            (data / M.SHOWTIME_LINKS_JSON).write_text(json.dumps(main))
+            repaired = {"movies": {"The Mongoose": [{"showtime_id": "stale"}],
+                                   "Clayface": [{"showtime_id": "c1"}],
+                                   "You Can See Everything": [{"showtime_id": "y1"}]},
+                        "collected_at": None}
+            leg = root / "artifacts" / "scrape-MT-1-1"
+            leg.mkdir(parents=True)
+            (leg / M.SHOWTIME_LINKS_JSON).write_text(json.dumps(self._links("2026-10-30", {
+                "AMC West Jordan 12": self._theatre("MT", {"2026-11-01": repaired}, "2026-11-01"),
+            })))
+            with contextlib.redirect_stdout(io.StringIO()):
+                summary = merge_artifacts(root / "artifacts", data)
+            self.assertEqual(summary.showtime_link_dates_updated, 1)
+            entry = json.loads((data / M.SHOWTIME_LINKS_JSON).read_text())["theatres"]["AMC West Jordan 12"]
+            got = entry["dates"]["2026-11-01"]
+            self.assertEqual(sorted(got["movies"]), ["Clayface", "The Mongoose", "You Can See Everything"])
+            self.assertEqual(got["movies"]["The Mongoose"][0]["showtime_id"], "o1")   # canonical is newer: keeps its list
+            self.assertEqual(got["collected_at"], "2026-10-29T16:08:19+00:00")
+            self.assertEqual(sorted(entry["movies"]), sorted(got["movies"]))           # legacy mirror follows
+            # A second pass with the same artifact is a no-op.
+            with contextlib.redirect_stdout(io.StringIO()):
+                again = merge_artifacts(root / "artifacts", data)
+            self.assertEqual(again.showtime_link_dates_updated, 0)
 
     def test_no_sources_or_no_canonical_file_is_a_no_op(self):
         with tempfile.TemporaryDirectory() as td:
