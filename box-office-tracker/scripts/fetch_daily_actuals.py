@@ -110,16 +110,35 @@ def merge_override_rows(existing_rows, weekend_of, movie, day_gross, as_of_date)
     return new_rows
 
 
+PREDICTION_LOG_CSV = os.path.join(os.path.dirname(OVERRIDES_CSV), "prediction-log.csv")
+
+
+def logged_movies(weekend_of, path=PREDICTION_LOG_CSV):
+    """Distinct films with a logged forecast for weekend_of, in log order."""
+    if not os.path.exists(path):
+        return []
+    out = []
+    with open(path, newline="") as f:
+        for r in csv.DictReader(f):
+            m = (r.get("movie") or "").strip()
+            if r.get("weekend_of") == str(weekend_of) and m and m not in out:
+                out.append(m)
+    return out
+
+
 def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
     """{day: gross_m} for the opening Thu-Sun, previews split out of Friday.
     Friday is dropped unless Thursday is known (otherwise it may still carry
-    the previews)."""
+    the previews) -- or unless Saturday is already published with still no
+    Thursday row: by then the film simply had no previews (2026-11-03 audit:
+    Everest: The Other Side / Christmas at the Kringles, no-preview openers,
+    never got a Friday row)."""
     import import_thenumbers_daily as N
     fetch_table = fetch_table or (lambda t, y: N.fetch_daily_table(t, y, weekend_of=weekend_of))
     year = int(str(weekend_of)[:4])
     daily = fetch_table(movie, year) or {}
     days = N.opening_days(daily, weekend_of) if daily else {}
-    if "Friday" in days and "Thursday" not in days:
+    if "Friday" in days and "Thursday" not in days and "Saturday" not in days:
         days.pop("Friday")
     return {d: g for d, g in days.items() if MIN_GROSS_M <= g <= MAX_GROSS_M}
 
@@ -143,6 +162,11 @@ def main():
     have = {holdover.title_key(m) for m in movies}
     movies += [r["movie"] for r in holdover.entries(weekend_of)
                if holdover.title_key(r["movie"]) not in have]
+    # Films forecast from presales/comps without seat rows (2026-11-03 audit:
+    # Fjord, Christmas at the Kringles, The Only Living Pickpocket were in the
+    # prediction log but never got actuals).
+    have = {holdover.title_key(m) for m in movies}
+    movies += [m for m in logged_movies(weekend_of) if holdover.title_key(m) not in have]
     if not movies:
         print(f"daily-actuals fetch: no tracked films with seat data for {weekend_of}")
         return 0

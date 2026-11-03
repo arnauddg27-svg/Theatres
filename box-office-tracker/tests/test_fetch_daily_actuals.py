@@ -100,6 +100,23 @@ class SafeAnchorDaysTest(unittest.TestCase):
         self.assertEqual({}, mod.fetch_split_opening_days("X", "2026-09-25", fetch_table=lambda t, y: table))
 
 
+    def test_friday_kept_for_no_preview_opener_once_saturday_is_out(self):
+        from datetime import date
+        table = {date(2026, 10, 30): ("-", 0.394526), date(2026, 10, 31): ("-", 0.305167)}
+        days = mod.fetch_split_opening_days("Everest: The Other Side", "2026-10-30", fetch_table=lambda t, y: table)
+        self.assertEqual({"Friday": 0.39, "Saturday": 0.31}, days)
+
+    def test_logged_movies_reads_prediction_log_for_the_weekend(self):
+        import tempfile, os
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "log.csv")
+            with open(p, "w") as f:
+                f.write("logged_at,weekend_of,movie\n1,2026-10-30,Fjord\n2,2026-10-30,Fjord\n"
+                        "3,2026-10-23,Wicker\n4,2026-10-30,Christmas at the Kringles\n")
+            self.assertEqual(["Fjord", "Christmas at the Kringles"], mod.logged_movies("2026-10-30", path=p))
+            self.assertEqual([], mod.logged_movies("2026-10-30", path=os.path.join(d, "missing.csv")))
+
+
 class StageGatedOverridesTest(unittest.TestCase):
     def test_thursday_friday_wait_for_friday_seats(self):
         import predict as P
