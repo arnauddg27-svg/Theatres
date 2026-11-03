@@ -22,6 +22,11 @@ import re
 from pathlib import Path
 
 PREDICTION_LOG = Path(__file__).resolve().parent / "data" / "prediction-log.csv"
+METADATA_CSV = Path(__file__).resolve().parent / "data" / "movie-metadata.csv"
+LINKS_JSON = Path(__file__).resolve().parent / "data" / "showtime-links.json"
+# A links file for the weekend with at least this many theatres counts as
+# collect-links evidence that a title really is not booked anywhere on AMC.
+MIN_LINKED_THEATRES_FOR_EVIDENCE = 50
 _REPORTED = set()
 
 
@@ -49,10 +54,69 @@ def consecutive():
         return 2
 
 
-def dropped_titles(weekend_of, path=None):
-    """{title key: last mid $M} for films gated out of `weekend_of`."""
+def min_theatres():
+    try:
+        return int(os.environ.get("SMALL_FILM_MIN_THEATRES") or 100)
+    except ValueError:
+        return 100
+
+
+def tiny_release_titles(weekend_of, metadata_path=None, links_path=None):
+    """{title key: reason} for films whose metadata theatre count is under
+    min_theatres() AND that no AMC theatre lists in the weekend's links file.
+
+    2026-11-03: Queen at Sea (BOM widest release: 1 theatre) was calendar-
+    seeded, so every snapshot leg spent its 900 s repair budget rebuilding
+    links that cannot exist. A $3M opening needs hundreds of theatres. The
+    links file must cover the same weekend with ≥ MIN_LINKED_THEATRES_FOR_
+    EVIDENCE theatres: a placeholder count on a real wide release is
+    contradicted by the AMC listings and the film is kept."""
     if not enabled() or not weekend_of:
         return {}
+    floor = min_theatres()
+    candidates = {}
+    try:
+        with open(metadata_path or METADATA_CSV, newline="") as f:
+            for row in csv.DictReader(f):
+                if (row.get("weekend_of") or "").strip() != weekend_of:
+                    continue
+                try:
+                    count = int(float(row.get("national_theatre_count") or ""))
+                except ValueError:
+                    continue
+                if 0 < count < floor:
+                    candidates[title_key(row.get("movie"))] = count
+    except OSError:
+        return {}
+    if not candidates:
+        return {}
+    try:
+        import json
+        with open(links_path or LINKS_JSON) as f:
+            links = json.load(f)
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(links, dict) or (links.get("weekend_of") or links.get("date")) != weekend_of:
+        return {}
+    theatres = links.get("theatres") or {}
+    if len(theatres) < MIN_LINKED_THEATRES_FOR_EVIDENCE:
+        return {}
+    linked = set()
+    for entry in theatres.values():
+        if not isinstance(entry, dict):
+            continue
+        for date_entry in (entry.get("dates") or {}).values():
+            linked.update(title_key(m) for m in ((date_entry or {}).get("movies") or {}))
+        linked.update(title_key(m) for m in (entry.get("movies") or {}))
+    return {key: f"{count} theatre(s) per metadata, no AMC listings"
+            for key, count in candidates.items() if key not in linked}
+
+
+def dropped_titles(weekend_of, path=None, metadata_path=None, links_path=None):
+    """{title key: last mid $M, or a reason string} for films gated out of `weekend_of`."""
+    if not enabled() or not weekend_of:
+        return {}
+    out = tiny_release_titles(weekend_of, metadata_path=metadata_path, links_path=links_path)
     mids = {}
     try:
         with open(path or PREDICTION_LOG, newline="") as f:
@@ -66,9 +130,8 @@ def dropped_titles(weekend_of, path=None):
                 if mid > 0:
                     mids.setdefault(title_key(row.get("movie")), []).append(((row.get("logged_at") or ""), mid))
     except OSError:
-        return {}
+        return out
     floor, need = min_forecast_m(), consecutive()
-    out = {}
     for key, series in mids.items():
         last = [m for _, m in sorted(series)[-need:]]
         if len(last) >= need and all(m < floor for m in last):
@@ -92,6 +155,12 @@ def filter_titles(titles, weekend_of, label="", path=None):
     fresh = [t for t in gone if (weekend_of, title_key(t)) not in _REPORTED]
     if fresh:
         _REPORTED.update((weekend_of, title_key(t)) for t in fresh)
-        print(f"  ✂️  {label or 'slate'}: not collecting {', '.join(f'{t} (${dropped[title_key(t)]:.2f}M)' for t in fresh)}"
-              f" — forecast under ${min_forecast_m():.1f}M on the last {consecutive()} calls (SMALL_FILM_GATE)")
+
+        def why(t):
+            v = dropped[title_key(t)]
+            if isinstance(v, str):
+                return v
+            return f"${v:.2f}M — forecast under ${min_forecast_m():.1f}M on the last {consecutive()} calls"
+        print(f"  ✂️  {label or 'slate'}: not collecting "
+              f"{'; '.join(f'{t} ({why(t)})' for t in fresh)} (SMALL_FILM_GATE)")
     return kept
