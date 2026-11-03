@@ -562,6 +562,13 @@ class PredictionNormalizationTest(unittest.TestCase):
             national_theatre_count_for_movie("Sample Movie", {}, metadata=metadata),
         )
 
+    def test_theatre_count_lookup_is_exact_key_only(self):
+        """2026-11-03: no substring matches — the counts file is keyed by our own titles."""
+        counts = {"Jimmy and Me": 400, "Godzilla Minus One": 2308, "The Cat in the Hat": 1112}
+        self.assertIsNone(national_theatre_count_for_movie("Jimmy", counts))
+        self.assertIsNone(national_theatre_count_for_movie("Godzilla Minus Zero", counts))
+        self.assertEqual(1112, national_theatre_count_for_movie("the cat in the hat!", counts))
+
     def test_prediction_keeps_polymarket_ev_out_of_forecast_math(self):
         cal = {
             "history": [],

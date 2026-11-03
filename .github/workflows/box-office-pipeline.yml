@@ -894,6 +894,16 @@ jobs:
         working-directory: box-office-tracker
         run: python3 scripts/fill_movie_metadata.py --tracked --write || echo "::warning::movie metadata fill failed — predictions run on defaults for unfilled films"
 
+      - name: Sync opening-weekend theatre counts into metadata
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        # 2026-11-03 audit: BOM's pre-release "widest release" is a placeholder
+        # (Sense and Sensibility 705 vs 2,545 opened; Pickpocket 6 vs 1,112) and
+        # the footprint factor + calibrate replays ran on it for ever. Once the
+        # weekend chart includes Friday, its count replaces a blank or >15%-off
+        # metadata value. Never fails the run.
+        working-directory: box-office-tracker
+        run: python3 scripts/sync_opening_theatre_counts.py --write || echo "::warning::opening theatre-count sync failed — metadata keeps the pre-release count"
+
       - name: Generate predictions
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker

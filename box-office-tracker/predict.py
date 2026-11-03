@@ -2439,13 +2439,16 @@ def load_theatre_counts():
 
 
 def national_theatre_count_for_movie(movie, theatre_counts, metadata=None):
-    """Find the BOM theatre count for a movie, allowing simple fuzzy matches."""
+    """BOM theatre count for a movie: theatre-counts.json (keyed by our own
+    tracked titles, punctuation/case-tolerant) else the metadata row.
+
+    The substring fallback ("Jimmy" ⊂ "Jimmy and Me") went 2026-11-03: the
+    counts file is written under our titles, so an exact key is the only
+    legitimate hit, and the chart-side matcher had just handed The Cat in the
+    Hat another film's 1,112 theatres (footprint 0.77 instead of ~0.98)."""
     nat_count = movie_mapping_get(theatre_counts, movie)
     if nat_count:
         return nat_count
-    for tc_movie, count in theatre_counts.items():
-        if tc_movie.lower() in movie.lower() or movie.lower() in tc_movie.lower():
-            return count
     if metadata:
         target = metadata_for_movie(movie, metadata)
         if target and target.national_theatre_count:
