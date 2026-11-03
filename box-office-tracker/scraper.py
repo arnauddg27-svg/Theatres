@@ -2371,6 +2371,42 @@ def _parse_bom_chart_theatre_counts(html):
     return counts
 
 
+BOM_TITLE_STOPWORDS = frozenset({"the", "a", "an", "of", "in", "and", "to", "at", "on", "for", "&", "part"})
+BOM_TITLE_MIN_JACCARD = 0.6
+
+
+def _bom_title_words(title):
+    words = re.sub(r"[^a-z0-9 ]", " ", (title or "").lower()).split()
+    content = [w for w in words if w not in BOM_TITLE_STOPWORDS]
+    return set(content or words)
+
+
+def match_bom_chart_title(movie, parsed):
+    """(bom_title, count) for `movie` from a parsed BOM chart, or None.
+
+    Content words only, scored by Jaccard: the old overlap counted stopwords,
+    so on 2026-11-03 'The Cat in the Hat' ({the, in} shared) took the 1,112
+    theatres of a film already on the chart and the footprint factor would
+    have scaled a 3,000+ theatre family opener as a 1,100-theatre one. An
+    exact normalised title always wins; otherwise the best Jaccard >= 0.6.
+    'Godzilla Minus Zero' vs 'Godzilla Minus One' is 0.5 — no match."""
+    m_words = _bom_title_words(movie)
+    if not m_words:
+        return None
+    m_norm = " ".join(sorted(m_words))
+    best, best_score = None, 0.0
+    for bom_title, count in parsed.items():
+        b_words = _bom_title_words(bom_title)
+        if not b_words:
+            continue
+        if " ".join(sorted(b_words)) == m_norm:
+            return (bom_title, count)
+        score = len(m_words & b_words) / len(m_words | b_words)
+        if score > best_score and score >= BOM_TITLE_MIN_JACCARD:
+            best, best_score = (bom_title, count), score
+    return best
+
+
 def fetch_bom_theatre_counts(movie_titles):
     """
     Scrape Box Office Mojo for national theatre counts of the requested movies.
@@ -2411,19 +2447,8 @@ def fetch_bom_theatre_counts(movie_titles):
             print(f"  ⚠️  BOM chart fetch failed ({url}): {e}")
 
     if parsed:
-        # Match our movie titles to BOM titles (fuzzy)
         for movie in movie_titles:
-            movie_lower = movie.lower().strip()
-            best_match = None
-            best_score = 0
-            for bom_title, count in parsed.items():
-                # Simple word overlap score
-                m_words = set(movie_lower.split())
-                b_words = set(bom_title.split())
-                overlap = len(m_words & b_words) / max(len(m_words), 1)
-                if overlap > best_score and overlap >= 0.5:
-                    best_score = overlap
-                    best_match = (bom_title, count)
+            best_match = match_bom_chart_title(movie, parsed)
             if best_match:
                 counts[movie] = best_match[1]
                 print(f"  ✅ {movie}: {best_match[1]:,} theatres (matched '{best_match[0]}')")
