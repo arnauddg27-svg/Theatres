@@ -339,9 +339,20 @@ jobs:
             exit 0
           fi
           git commit -m "data: box office ${{ github.event.inputs.tz_group }} collect-links"
+          # finalize also rewrites showtime-links.json (it unions leg-repaired
+          # links since 2026-11-01); git cannot merge the JSON, so a concurrent
+          # push conflicts (2026-11-03 17Z PT: three failed attempts, data not
+          # committed). Keep our copy and re-unite it with main's on conflict.
+          cp box-office-tracker/data/showtime-links.json /tmp/our-showtime-links.json
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
             git pull --rebase --autostash origin main && git push && break
+            if git diff --name-only --diff-filter=U | grep -qx box-office-tracker/data/showtime-links.json; then
+              git checkout --ours -- box-office-tracker/data/showtime-links.json
+              python3 box-office-tracker/scripts/merge_links_file.py box-office-tracker/data/showtime-links.json /tmp/our-showtime-links.json \
+                && git add box-office-tracker/data/showtime-links.json \
+                && GIT_EDITOR=true git rebase --continue && git push && break
+            fi
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — data not committed."
@@ -949,9 +960,18 @@ jobs:
             cat /tmp/box-office-scrape-markers.txt >> "$commit_msg"
           fi
           git commit -F "$commit_msg"
+          # Mirror of the collect-links loop: both lanes rewrite
+          # showtime-links.json whole, so re-unite on conflict instead of failing.
+          cp box-office-tracker/data/showtime-links.json /tmp/our-showtime-links.json
           for i in 1 2 3; do
             git rebase --abort 2>/dev/null || true
             git pull --rebase --autostash origin main && git push && break
+            if git diff --name-only --diff-filter=U | grep -qx box-office-tracker/data/showtime-links.json; then
+              git checkout --ours -- box-office-tracker/data/showtime-links.json
+              python3 box-office-tracker/scripts/merge_links_file.py box-office-tracker/data/showtime-links.json /tmp/our-showtime-links.json \
+                && git add box-office-tracker/data/showtime-links.json \
+                && GIT_EDITOR=true git rebase --continue && git push && break
+            fi
             echo "Push attempt $i failed, retrying..."
             if [ "$i" = "3" ]; then
               echo "All 3 push attempts failed — derived artifacts not committed."

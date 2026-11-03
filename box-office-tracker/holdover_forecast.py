@@ -382,7 +382,8 @@ def grade_log(log_path=LOG_CSV, actuals_path=DAILY_CSV, out_path=GRADES_CSV, now
             "forecast_stage": stage, "days_census": census, "logged_at": r.get("logged_at"),
             "forecast_m": round(mid, 3), "low_m": round(low, 3), "high_m": round(high, 3),
             "actual_m": round(actual, 3), "error_pct": round((mid / actual - 1) * 100, 1),
-            "in_band": "yes" if low <= actual <= high else "no",
+            # all_known is the reported weekend itself, not a forecast: its band is a point.
+            "in_band": "" if stage == "all_known" else ("yes" if low <= actual <= high else "no"),
             "poly_favorite": r.get("poly_favorite") or "",
             "poly_favorite_prob": r.get("poly_favorite_prob") or "",
             "poly_favorite_hit": ("" if not fav else "yes" if fav[0] <= actual < fav[1] else "no"),
