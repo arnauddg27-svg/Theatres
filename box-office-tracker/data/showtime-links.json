@@ -2,7 +2,7 @@
   "date": "2026-11-06",
   "weekend_of": "2026-11-06",
   "collected_local_date": "2026-11-05",
-  "collected_at": "2026-11-05T15:54:35.438095+00:00",
+  "collected_at": "2026-11-05T16:34:50.229553+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -214156,7 +214156,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T16:14:35.318074+00:00",
+          "collected_at": "2026-11-05T16:34:50.174136+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -214174,8 +214174,18 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "5:45pm",
+                "showtime_id": "148545160",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147552251",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148545209",
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
@@ -214188,6 +214198,11 @@
               {
                 "showtime": "12:30pm",
                 "showtime_id": "148409692",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148545267",
                 "format": "Laser at AMC"
               },
               {
@@ -214225,6 +214240,11 @@
             ],
             "Jimmy": [
               {
+                "showtime": "1:15pm",
+                "showtime_id": "148545015",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:10pm",
                 "showtime_id": "146990219",
                 "format": "Laser at AMC"
@@ -214234,9 +214254,26 @@
                 "showtime_id": "146990218",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148545314",
+                "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148545051",
+                "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148545320",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.273924+00:00",
+          "collected_at": "2026-11-05T16:34:50.174191+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -214253,8 +214290,23 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "148585863",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148545034",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147552252",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148544969",
                 "format": "Japanese Spoken with English Subtitles"
               }
             ],
@@ -214262,6 +214314,16 @@
               {
                 "showtime": "11:10am",
                 "showtime_id": "148409691",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148545136",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "148545235",
                 "format": "Laser at AMC"
               },
               {
@@ -214290,12 +214352,27 @@
                 "showtime": "6:00pm",
                 "showtime_id": "147913649",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148545275",
+                "format": "RealD 3D"
               }
             ],
             "Jimmy": [
               {
+                "showtime": "11:40am",
+                "showtime_id": "148545301",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:10pm",
                 "showtime_id": "146990221",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148545215",
                 "format": "Laser at AMC"
               },
               {
@@ -214303,17 +214380,34 @@
                 "showtime_id": "146990220",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148545310",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576363+00:00",
+          "collected_at": "2026-11-05T16:34:50.174298+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
           "movies": {
             "Godzilla Minus Zero": [
               {
+                "showtime": "12:30pm",
+                "showtime_id": "148545322",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "1:15pm",
                 "showtime_id": "147552275",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148544960",
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
@@ -214324,6 +214418,11 @@
               {
                 "showtime": "7:00pm",
                 "showtime_id": "147552255",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148545078",
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
@@ -214339,13 +214438,28 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "2:30pm",
+                "showtime_id": "148545208",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "146952238",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:00pm",
+                "showtime_id": "148545263",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "148409682",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148545241",
                 "format": "Laser at AMC"
               }
             ],
@@ -214353,7 +214467,7 @@
               {
                 "showtime": "1:00pm",
                 "showtime_id": "147913712",
-                "format": "RealD 3D"
+                "format": "Spanish Language Dubbed with No Subtitles"
               },
               {
                 "showtime": "4:00pm",
@@ -214373,18 +214487,35 @@
             ],
             "Jimmy": [
               {
+                "showtime": "1:20pm",
+                "showtime_id": "148545012",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:10pm",
                 "showtime_id": "146990217",
-                "format": "Laser at AMC"
+                "format": "Open Caption (On-screen Subtitles)"
               },
               {
                 "showtime": "7:10pm",
                 "showtime_id": "146990216",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148545057",
+                "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148545325",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T00:01:57.712105+00:00",
+          "collected_at": "2026-11-05T16:34:50.174376+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -214615,7 +214746,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054027+00:00",
+          "collected_at": "2026-11-05T16:34:50.174145+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -214627,7 +214758,12 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
-                "showtime": "2:30pm",
+                "showtime": "1:45pm",
+                "showtime_id": "148532161",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:45pm",
                 "showtime_id": "147571476",
                 "format": "Japanese Spoken with English Subtitles"
               },
@@ -214635,6 +214771,11 @@
                 "showtime": "4:00pm",
                 "showtime_id": "147571430",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148532159",
+                "format": "Japanese Spoken with English Subtitles"
               },
               {
                 "showtime": "6:00pm",
@@ -214645,6 +214786,11 @@
                 "showtime": "7:15pm",
                 "showtime_id": "147571431",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148532158",
+                "format": "Japanese Spoken with English Subtitles"
               },
               {
                 "showtime": "9:15pm",
@@ -214659,8 +214805,18 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "1:30pm",
+                "showtime_id": "148532301",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:30pm",
                 "showtime_id": "146857970",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148532299",
                 "format": "Laser at AMC"
               }
             ],
@@ -214671,31 +214827,56 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "2:00pm",
+                "showtime": "1:45pm",
                 "showtime_id": "147912819",
                 "format": "PRIME 3D"
               },
               {
-                "showtime": "3:30pm",
+                "showtime": "3:45pm",
                 "showtime_id": "147912570",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148532315",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148532184",
                 "format": "Laser at AMC"
               },
               {
                 "showtime": "7:30pm",
                 "showtime_id": "147912661",
-                "format": "RealD 3D"
+                "format": "PRIME at AMC"
               },
               {
-                "showtime": "10:30pm",
+                "showtime": "10:45pm",
                 "showtime_id": "147912662",
-                "format": "Laser at AMC"
+                "format": "RealD 3D"
               }
             ],
             "Wild Horse Nine": [
               {
+                "showtime": "12:30pm",
+                "showtime_id": "148532214",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148532191",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:00pm",
                 "showtime_id": "147721119",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148532189",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "6:30pm",
@@ -214705,6 +214886,11 @@
               {
                 "showtime": "9:30pm",
                 "showtime_id": "147721195",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "148532310",
                 "format": "Laser at AMC"
               }
             ],
@@ -214731,7 +214917,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:47:43.148253+00:00",
+          "collected_at": "2026-11-05T16:34:50.174441+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -214743,7 +214929,12 @@
                 "format": "IMAX with Laser at AMC"
               },
               {
-                "showtime": "2:30pm",
+                "showtime": "1:45pm",
+                "showtime_id": "148543651",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "2:45pm",
                 "showtime_id": "147571478",
                 "format": "Japanese Spoken with English Subtitles"
               },
@@ -214751,6 +214942,11 @@
                 "showtime": "4:00pm",
                 "showtime_id": "147571438",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148543652",
+                "format": "Japanese Spoken with English Subtitles"
               },
               {
                 "showtime": "6:00pm",
@@ -214761,6 +214957,11 @@
                 "showtime": "7:15pm",
                 "showtime_id": "147571439",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148543653",
+                "format": "Japanese Spoken with English Subtitles"
               },
               {
                 "showtime": "9:15pm",
@@ -214774,6 +214975,11 @@
               }
             ],
             "Drummer Boy": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148543731",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "4:30pm",
                 "showtime_id": "146857972",
@@ -214792,7 +214998,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "2:00pm",
+                "showtime": "1:45pm",
                 "showtime_id": "147912814",
                 "format": "PRIME 3D"
               },
@@ -214802,9 +215008,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:45pm",
+                "showtime_id": "148543742",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148543658",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147912669",
-                "format": "RealD 3D"
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "10:30pm",
@@ -214814,9 +215030,19 @@
             ],
             "Wild Horse Nine": [
               {
+                "showtime": "12:45pm",
+                "showtime_id": "148543714",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:00pm",
                 "showtime_id": "147721123",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148543661",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "7:45pm",
@@ -214824,7 +215050,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:30pm",
+                "showtime": "10:30pm",
                 "showtime_id": "147721218",
                 "format": "Laser at AMC"
               }
@@ -214852,7 +215078,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576433+00:00",
+          "collected_at": "2026-11-05T16:34:50.174185+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -215033,7 +215259,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054160+00:00",
+          "collected_at": "2026-11-05T16:34:50.174381+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -215214,12 +215440,17 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "3:00pm",
+                "showtime_id": "148487633",
+                "format": "undefined"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "148443339",
                 "format": "undefined"
               },
               {
-                "showtime": "7:15pm",
+                "showtime": "7:45pm",
                 "showtime_id": "148443319",
                 "format": "undefined"
               },
@@ -215230,7 +215461,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:42:53.759925+00:00",
+          "collected_at": "2026-11-05T16:34:50.174163+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -215292,7 +215523,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576321+00:00",
+          "collected_at": "2026-11-05T16:34:50.174352+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -215374,7 +215605,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054366+00:00",
+          "collected_at": "2026-11-05T16:34:50.174201+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -215435,6 +215666,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "148487676",
+                "format": "undefined"
+              },
+              {
                 "showtime": "5:15pm",
                 "showtime_id": "148443304",
                 "format": "undefined"
@@ -215456,86 +215692,66 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:26.613338+00:00",
+          "collected_at": "2026-11-05T16:34:50.174206+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-07",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147726391",
+            "showtime": "4:45pm",
+            "showtime_id": "147726381",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147726392",
-            "format": "Japanese Spoken with English Subtitles"
+            "showtime": "7:00pm",
+            "showtime_id": "147941196",
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "147941202",
-            "format": "PRIME at AMC"
+            "showtime_id": "147726382",
+            "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147941200",
+            "showtime": "4:00pm",
+            "showtime_id": "147941195",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147941239",
-            "format": "RealD 3D"
-          },
-          {
             "showtime": "5:00pm",
-            "showtime_id": "147941201",
-            "format": "PRIME 3D"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147941240",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "147941241",
+            "showtime_id": "147941232",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "147941233",
+            "format": "undefined"
           }
         ],
         "Drummer Boy": [
           {
             "showtime": "3:00pm",
-            "showtime_id": "148443353",
+            "showtime_id": "148487633",
             "format": "undefined"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148487677",
+            "showtime": "5:00pm",
+            "showtime_id": "148443339",
             "format": "undefined"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148443307",
+            "showtime": "7:45pm",
+            "showtime_id": "148443319",
             "format": "undefined"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148443352",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148443308",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148443351",
+            "showtime": "8:15pm",
+            "showtime_id": "148443338",
             "format": "undefined"
           }
         ]
@@ -215616,7 +215832,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054068+00:00",
+          "collected_at": "2026-11-05T16:34:50.174118+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -215735,7 +215951,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054255+00:00",
+          "collected_at": "2026-11-05T16:34:50.174221+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -215978,7 +216194,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054284+00:00",
+          "collected_at": "2026-11-05T16:34:50.174517+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -216093,6 +216309,11 @@
                 "showtime": "4:00pm",
                 "showtime_id": "146910280",
                 "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148562424",
+                "format": "undefined"
               }
             ],
             "The Cat in the Hat": [
@@ -216114,13 +216335,18 @@
             ],
             "Jimmy": [
               {
-                "showtime": "7:00pm",
+                "showtime": "5:00pm",
                 "showtime_id": "146910206",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:55pm",
+                "showtime_id": "148562312",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-11-02T22:08:53.742743+00:00",
+          "collected_at": "2026-11-05T16:34:50.174127+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -216259,7 +216485,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054150+00:00",
+          "collected_at": "2026-11-05T16:34:50.174229+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -216286,6 +216512,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "148562280",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147533744",
                 "format": "IMAX at AMC"
@@ -216296,6 +216527,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "9:20pm",
+                "showtime_id": "148562394",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "10:20pm",
                 "showtime_id": "147533745",
                 "format": "IMAX at AMC"
@@ -216303,21 +216539,51 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:55pm",
+                "showtime_id": "148562420",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "146910283",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148562430",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148562431",
                 "format": "undefined"
               }
             ],
             "The Cat in the Hat": [
               {
+                "showtime": "12:15pm",
+                "showtime_id": "148562282",
+                "format": "undefined"
+              },
+              {
                 "showtime": "1:15pm",
                 "showtime_id": "147860619",
-                "format": "undefined"
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "148562281",
+                "format": "Spanish Language Dubbed with No Subtitles"
               },
               {
                 "showtime": "4:15pm",
                 "showtime_id": "147860618",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148562377",
+                "format": "undefined"
               },
               {
                 "showtime": "7:15pm",
@@ -216353,7 +216619,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:39:44.505583+00:00",
+          "collected_at": "2026-11-05T16:34:50.174391+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -216380,6 +216646,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "148562279",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "7:00pm",
                 "showtime_id": "147533748",
                 "format": "IMAX at AMC"
@@ -216390,6 +216661,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "9:20pm",
+                "showtime_id": "148562381",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "10:20pm",
                 "showtime_id": "147533749",
                 "format": "IMAX at AMC"
@@ -216397,21 +216673,51 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:50pm",
+                "showtime_id": "148562421",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "146910282",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148562428",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148562429",
                 "format": "undefined"
               }
             ],
             "The Cat in the Hat": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148562271",
+                "format": "RealD 3D"
+              },
               {
                 "showtime": "1:15pm",
                 "showtime_id": "147860615",
                 "format": "undefined"
               },
               {
+                "showtime": "3:10pm",
+                "showtime_id": "148562270",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147860614",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148562395",
+                "format": "Spanish Language Dubbed with No Subtitles"
               },
               {
                 "showtime": "7:15pm",
@@ -216441,149 +216747,89 @@
                 "format": "undefined"
               },
               {
+                "showtime": "7:10pm",
+                "showtime_id": "148562311",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:10pm",
                 "showtime_id": "147533765",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.273943+00:00",
+          "collected_at": "2026-11-05T16:34:50.174267+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-06",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147533754",
+            "showtime": "12:45pm",
+            "showtime_id": "147393427",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147533797",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "2:45pm",
-            "showtime_id": "148562435",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147533753",
+            "showtime": "4:10pm",
+            "showtime_id": "147533735",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147533798",
+            "showtime": "5:10pm",
+            "showtime_id": "147533756",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "148562434",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "147533737",
+            "showtime": "7:30pm",
+            "showtime_id": "147533736",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147533799",
+            "showtime": "8:30pm",
+            "showtime_id": "147533755",
             "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:20pm",
-            "showtime_id": "148562442",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "147533752",
-            "format": "IMAX at AMC"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "12:50pm",
-            "showtime_id": "148562422",
-            "format": "undefined"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "146910281",
+            "showtime_id": "146910280",
             "format": "undefined"
           },
           {
-            "showtime": "7:05pm",
-            "showtime_id": "148562427",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148562423",
+            "showtime": "7:15pm",
+            "showtime_id": "148562424",
             "format": "undefined"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "148562278",
+            "showtime": "2:00pm",
+            "showtime_id": "147860605",
             "format": "undefined"
           },
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147860611",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "148562277",
+            "showtime": "4:50pm",
+            "showtime_id": "147860606",
             "format": "RealD 3D"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147860610",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:15pm",
-            "showtime_id": "148562272",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147860608",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147860609",
+            "showtime": "7:45pm",
+            "showtime_id": "147860607",
             "format": "undefined"
           }
         ],
         "Jimmy": [
           {
-            "showtime": "1:10pm",
-            "showtime_id": "147533762",
+            "showtime": "5:00pm",
+            "showtime_id": "146910206",
             "format": "undefined"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "146910208",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "146910207",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "147533763",
+            "showtime": "7:55pm",
+            "showtime_id": "148562312",
             "format": "undefined"
           }
         ]
@@ -216681,7 +216927,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054076+00:00",
+          "collected_at": "2026-11-05T16:34:50.174173+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -216783,7 +217029,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576415+00:00",
+          "collected_at": "2026-11-05T16:34:50.174196+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -216894,7 +217140,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054328+00:00",
+          "collected_at": "2026-11-05T16:34:50.174495+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -217006,7 +217252,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.273877+00:00",
+          "collected_at": "2026-11-05T16:34:50.174547+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -217187,7 +217433,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054091+00:00",
+          "collected_at": "2026-11-05T16:34:50.174052+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -217309,13 +217555,18 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054168+00:00",
+          "collected_at": "2026-11-05T16:34:50.174367+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
         "2026-11-06": {
           "movies": {
             "Godzilla Minus Zero": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148517980",
+                "format": "Japanese Spoken with English Subtitles"
+              },
               {
                 "showtime": "3:45pm",
                 "showtime_id": "147512859",
@@ -217330,9 +217581,19 @@
                 "showtime": "9:00pm",
                 "showtime_id": "147512874",
                 "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148517635",
+                "format": "Japanese Spoken with English Subtitles"
               }
             ],
             "Drummer Boy": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148517784",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "2:00pm",
                 "showtime_id": "148396072",
@@ -217347,16 +217608,26 @@
                 "showtime": "7:30pm",
                 "showtime_id": "148396065",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148517976",
+                "format": "Laser at AMC"
               }
             ],
             "The Cat in the Hat": [
               {
-                "showtime": "3:00pm",
+                "showtime": "1:00pm",
+                "showtime_id": "148517634",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
                 "showtime_id": "147892358",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "6:00pm",
+                "showtime": "6:30pm",
                 "showtime_id": "147892356",
                 "format": "RealD 3D"
               },
@@ -217368,7 +217639,7 @@
             ],
             "Jimmy": [
               {
-                "showtime": "4:15pm",
+                "showtime": "4:00pm",
                 "showtime_id": "146991365",
                 "format": "Laser at AMC"
               },
@@ -217377,9 +217648,16 @@
                 "showtime_id": "146991366",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148517978",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:44:26.613294+00:00",
+          "collected_at": "2026-11-05T16:34:50.174363+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -217505,7 +217783,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054141+00:00",
+          "collected_at": "2026-11-05T16:34:50.174487+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
@@ -217707,7 +217985,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T16:14:35.318089+00:00",
+          "collected_at": "2026-11-05T16:34:50.174180+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -217757,8 +218035,23 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:15pm",
+                "showtime_id": "148522823",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148522848",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "146880795",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148522843",
                 "format": "undefined"
               }
             ],
@@ -217784,7 +218077,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "8:15pm",
+                "showtime": "8:45pm",
                 "showtime_id": "147895906",
                 "format": "undefined"
               }
@@ -217800,9 +218093,21 @@
                 "showtime_id": "146880790",
                 "format": "undefined"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148522813",
+                "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148522756",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576451+00:00",
+          "collected_at": "2026-11-05T16:34:50.174290+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -217928,7 +218233,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054232+00:00",
+          "collected_at": "2026-11-05T16:34:50.174321+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -218060,137 +218365,117 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054213+00:00",
+          "collected_at": "2026-11-05T16:34:50.174562+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-06",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147550195",
+            "showtime": "1:15pm",
+            "showtime_id": "147550173",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147550175",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:15pm",
-            "showtime_id": "147550196",
+            "showtime": "4:30pm",
+            "showtime_id": "148522881",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147550183",
+            "showtime": "5:30pm",
+            "showtime_id": "148522769",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147550221",
+            "showtime_id": "147550210",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147550209",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "147550190",
+            "showtime_id": "147550181",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
+            "showtime": "7:45pm",
+            "showtime_id": "148522882",
+            "format": "IMAX at AMC"
+          },
+          {
             "showtime": "9:30pm",
-            "showtime_id": "147550220",
+            "showtime_id": "147550211",
             "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148517018",
+            "showtime": "2:00pm",
+            "showtime_id": "148522808",
             "format": "undefined"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148585384",
+            "showtime": "4:30pm",
+            "showtime_id": "146880802",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "146880803",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148517012",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148517003",
-            "format": "undefined"
-          }
-        ],
-        "The Cat in the Hat": [
-          {
-            "showtime": "12:15pm",
-            "showtime_id": "147895958",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "1:15pm",
-            "showtime_id": "147895866",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:15pm",
-            "showtime_id": "147895957",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "5:30pm",
-            "showtime_id": "147895885",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147895929",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148517011",
-            "format": "undefined"
-          }
-        ],
-        "Jimmy": [
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "146880814",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "146880788",
+            "showtime": "8:45pm",
+            "showtime_id": "148522771",
             "format": "undefined"
           }
         ],
         "Ramayana: Rise of A Legend": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148517002",
+            "showtime": "4:30pm",
+            "showtime_id": "148421295",
             "format": "Hindi Spoken with English Subtitles"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "148517007",
+            "showtime": "7:45pm",
+            "showtime_id": "148421293",
             "format": "Hindi Spoken with English Subtitles"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "148522866",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "147895959",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147895884",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "147895872",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148522836",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147895930",
+            "format": "undefined"
+          }
+        ],
+        "Jimmy": [
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "146880787",
+            "format": "undefined"
           }
         ]
       }
@@ -218213,8 +218498,13 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "7:25pm",
+                "showtime": "7:10pm",
                 "showtime_id": "147575381",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "148573904",
                 "format": "Japanese Spoken with English Subtitles"
               }
             ],
@@ -218249,7 +218539,7 @@
             ],
             "The Cat in the Hat": [
               {
-                "showtime": "2:25pm",
+                "showtime": "2:00pm",
                 "showtime_id": "147920524",
                 "format": "RealD 3D"
               },
@@ -218259,9 +218549,9 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "5:15pm",
+                "showtime": "5:05pm",
                 "showtime_id": "147920525",
-                "format": "undefined"
+                "format": "RealD 3D"
               },
               {
                 "showtime": "8:05pm",
@@ -218277,14 +218567,14 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:42:53.759859+00:00",
+          "collected_at": "2026-11-05T16:34:50.174078+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
           "movies": {
             "Godzilla Minus Zero": [
               {
-                "showtime": "1:00pm",
+                "showtime": "12:40pm",
                 "showtime_id": "148573958",
                 "format": "Japanese Spoken with English Subtitles"
               },
@@ -218378,7 +218668,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054310+00:00",
+          "collected_at": "2026-11-05T16:34:50.174448+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -218483,7 +218773,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054292+00:00",
+          "collected_at": "2026-11-05T16:34:50.174532+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -218582,103 +218872,90 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054263+00:00",
+          "collected_at": "2026-11-05T16:34:50.174400+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-07",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "148573883",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "3:55pm",
-            "showtime_id": "148573881",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:05pm",
-            "showtime_id": "147575378",
+            "showtime": "4:00pm",
+            "showtime_id": "147575380",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "147575364",
+            "showtime_id": "147575362",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:10pm",
-            "showtime_id": "147575379",
+            "showtime_id": "147575381",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "148573937",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "7:50pm",
+            "showtime_id": "148573904",
+            "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "Drummer Boy": [
           {
             "showtime": "1:20pm",
-            "showtime_id": "148426020",
+            "showtime_id": "148426016",
             "format": "undefined"
           },
           {
             "showtime": "4:25pm",
-            "showtime_id": "148401754",
+            "showtime_id": "148401752",
             "format": "undefined"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "148426021",
+            "showtime_id": "148426017",
             "format": "undefined"
+          }
+        ],
+        "Ramayana: Rise of A Legend": [
+          {
+            "showtime": "3:40pm",
+            "showtime_id": "148430020",
+            "format": "Hindi Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:05pm",
+            "showtime_id": "148430021",
+            "format": "Hindi Spoken with English Subtitles"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "11:50am",
-            "showtime_id": "148573936",
-            "format": "Dolby Cinema at AMC"
+            "showtime": "2:00pm",
+            "showtime_id": "147920524",
+            "format": "RealD 3D"
           },
           {
             "showtime": "2:50pm",
-            "showtime_id": "147920533",
+            "showtime_id": "147920529",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "147920511",
+            "showtime": "5:05pm",
+            "showtime_id": "147920525",
             "format": "RealD 3D"
           },
           {
-            "showtime": "6:05pm",
-            "showtime_id": "148573903",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:05pm",
-            "showtime_id": "148573961",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "147920512",
+            "showtime": "8:05pm",
+            "showtime_id": "147920526",
             "format": "undefined"
           }
         ],
         "Jimmy": [
           {
-            "showtime": "4:10pm",
-            "showtime_id": "147228812",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "147228816",
+            "showtime": "7:15pm",
+            "showtime_id": "147228814",
             "format": "undefined"
           }
         ]
@@ -218742,7 +219019,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:46:32.446124+00:00",
+          "collected_at": "2026-11-05T16:34:50.174003+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -218819,7 +219096,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054185+00:00",
+          "collected_at": "2026-11-05T16:34:50.174462+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -218896,7 +219173,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:39:44.505832+00:00",
+          "collected_at": "2026-11-05T16:34:50.174409+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -218978,81 +219255,61 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054196+00:00",
+          "collected_at": "2026-11-05T16:34:50.174344+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-08",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147401576",
+            "showtime": "4:00pm",
+            "showtime_id": "147401555",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147401575",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "147401574",
+            "showtime_id": "147401556",
             "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148451765",
+            "showtime": "2:00pm",
+            "showtime_id": "148400846",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148400855",
+            "showtime": "4:45pm",
+            "showtime_id": "148451807",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:10pm",
-            "showtime_id": "148400856",
+            "showtime": "5:10pm",
+            "showtime_id": "148400847",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "148451751",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "5:35pm",
-            "showtime_id": "148451762",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "7:20pm",
-            "showtime_id": "148400857",
+            "showtime": "8:20pm",
+            "showtime_id": "148400848",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147837964",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "147837965",
+            "showtime": "2:00pm",
+            "showtime_id": "147837942",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147837967",
+            "showtime": "5:00pm",
+            "showtime_id": "147837944",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147837969",
+            "showtime": "8:00pm",
+            "showtime_id": "147837946",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -219170,7 +219427,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:46:32.446157+00:00",
+          "collected_at": "2026-11-05T16:34:50.174036+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -219281,7 +219538,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054175+00:00",
+          "collected_at": "2026-11-05T16:34:50.174372+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -219289,9 +219546,19 @@
           "movies": {
             "Godzilla Minus Zero": [
               {
+                "showtime": "1:20pm",
+                "showtime_id": "148448497",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "2:00pm",
                 "showtime_id": "147730978",
                 "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148448501",
+                "format": "IMAX at AMC"
               },
               {
                 "showtime": "5:15pm",
@@ -219299,8 +219566,23 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "6:25pm",
+                "showtime_id": "148448492",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148448502",
+                "format": "IMAX at AMC"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "147730980",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148448491",
                 "format": "Japanese Spoken with English Subtitles"
               }
             ],
@@ -219324,31 +219606,56 @@
                 "showtime": "7:30pm",
                 "showtime_id": "148398135",
                 "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148448485",
+                "format": "undefined"
               }
             ],
             "The Cat in the Hat": [
               {
-                "showtime": "3:30pm",
-                "showtime_id": "147774248",
-                "format": "RealD 3D"
-              },
-              {
-                "showtime": "1:45pm",
+                "showtime": "12:30pm",
                 "showtime_id": "147774320",
                 "format": "XL at AMC"
               },
               {
-                "showtime": "4:45pm",
+                "showtime": "1:05pm",
+                "showtime_id": "148448509",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147774248",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:30pm",
                 "showtime_id": "147774321",
                 "format": "XL at AMC"
               },
               {
-                "showtime": "6:30pm",
+                "showtime": "6:45pm",
                 "showtime_id": "147774249",
                 "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148448466",
+                "format": "RealD 3D"
               }
             ],
             "Jimmy": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148448482",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148448481",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
               {
                 "showtime": "4:00pm",
                 "showtime_id": "146861121",
@@ -219359,9 +219666,21 @@
                 "showtime_id": "146861122",
                 "format": "undefined"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "148448477",
+                "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "8:20pm",
+                "showtime_id": "148448522",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-02T16:10:18.287269+00:00",
+          "collected_at": "2026-11-05T16:34:50.174328+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -219517,116 +219836,116 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576374+00:00",
+          "collected_at": "2026-11-05T16:34:50.174260+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-06",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "147730975",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147727400",
+            "showtime": "12:45pm",
+            "showtime_id": "147393422",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147730976",
+            "showtime": "4:00pm",
+            "showtime_id": "147727396",
+            "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "5:40pm",
+            "showtime_id": "147730973",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147727398",
+            "showtime": "7:15pm",
+            "showtime_id": "147727397",
             "format": "IMAX at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "148448493",
+            "showtime_id": "148483900",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "10:05pm",
-            "showtime_id": "148448500",
-            "format": "IMAX at AMC"
+            "showtime": "9:00pm",
+            "showtime_id": "147730974",
+            "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148398127",
+            "showtime": "1:00pm",
+            "showtime_id": "148398129",
             "format": "undefined"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "148398120",
+            "showtime_id": "148398119",
             "format": "undefined"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "146861152",
+            "showtime_id": "146861151",
             "format": "undefined"
           },
           {
             "showtime": "7:35pm",
-            "showtime_id": "148398131",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148448535",
-            "format": "undefined"
-          }
-        ],
-        "The Cat in the Hat": [
-          {
-            "showtime": "1:45pm",
-            "showtime_id": "147774322",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "147774246",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147774323",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "147774247",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148448465",
-            "format": "RealD 3D"
-          }
-        ],
-        "Jimmy": [
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "146861128",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "146861129",
+            "showtime_id": "148398130",
             "format": "undefined"
           }
         ],
         "Ramayana: Rise of A Legend": [
           {
-            "showtime": "7:40pm",
-            "showtime_id": "148448488",
+            "showtime": "4:00pm",
+            "showtime_id": "148414165",
             "format": "Hindi Spoken with English Subtitles"
+          },
+          {
+            "showtime": "8:10pm",
+            "showtime_id": "148414166",
+            "format": "Hindi Spoken with English Subtitles"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "2:00pm",
+            "showtime_id": "147774308",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "2:40pm",
+            "showtime_id": "148484069",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147774244",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "148483901",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "147774245",
+            "format": "undefined"
+          }
+        ],
+        "Jimmy": [
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "148483889",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "146861127",
+            "format": "undefined"
           }
         ]
       }
@@ -219726,7 +220045,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054106+00:00",
+          "collected_at": "2026-11-05T16:34:50.174063+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -219855,7 +220174,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054203+00:00",
+          "collected_at": "2026-11-05T16:34:50.174525+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -219897,6 +220216,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "9:45pm",
+                "showtime_id": "148509141",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "147569506",
                 "format": "Dolby Cinema at AMC"
@@ -219904,8 +220228,23 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:45pm",
+                "showtime_id": "148509114",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "146855894",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148509134",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148509133",
                 "format": "Laser at AMC"
               }
             ],
@@ -219936,6 +220275,11 @@
                 "format": "RealD 3D"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "148509142",
+                "format": "PRIME at AMC"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "147900785",
                 "format": "Laser at AMC"
@@ -219954,7 +220298,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.273963+00:00",
+          "collected_at": "2026-11-05T16:34:50.174210+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -220078,7 +220422,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054319+00:00",
+          "collected_at": "2026-11-05T16:34:50.174306+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -220255,7 +220599,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054123+00:00",
+          "collected_at": "2026-11-05T16:34:50.174070+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -220339,7 +220683,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054346+00:00",
+          "collected_at": "2026-11-05T16:34:50.174313+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -220364,6 +220708,11 @@
                 "showtime": "10:00pm",
                 "showtime_id": "147395470",
                 "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148454747",
+                "format": "Japanese Spoken with English Subtitles"
               }
             ],
             "Drummer Boy": [
@@ -220380,6 +220729,16 @@
               {
                 "showtime": "7:15pm",
                 "showtime_id": "148395414",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148454721",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148454587",
                 "format": "undefined"
               }
             ],
@@ -220400,13 +220759,20 @@
                 "format": "undefined"
               },
               {
-                "showtime": "9:45pm",
+                "showtime": "10:05pm",
                 "showtime_id": "147853179",
                 "format": "RealD 3D"
               }
+            ],
+            "Jimmy": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148454774",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-02T22:08:53.744011+00:00",
+          "collected_at": "2026-11-05T16:34:50.174274+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -220428,7 +220794,7 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
-                "showtime": "9:55pm",
+                "showtime": "9:40pm",
                 "showtime_id": "147395479",
                 "format": "Japanese Spoken with English Subtitles"
               }
@@ -220477,7 +220843,7 @@
                 "format": "undefined"
               },
               {
-                "showtime": "9:45pm",
+                "showtime": "9:30pm",
                 "showtime_id": "147853169",
                 "format": "RealD 3D"
               }
@@ -220490,7 +220856,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:26.613332+00:00",
+          "collected_at": "2026-11-05T16:34:50.174246+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -220790,7 +221156,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054302+00:00",
+          "collected_at": "2026-11-05T16:34:50.174336+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -220892,7 +221258,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054335+00:00",
+          "collected_at": "2026-11-05T16:34:50.174252+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -220978,6 +221344,11 @@
                 "format": "RealD 3D"
               },
               {
+                "showtime": "1:05pm",
+                "showtime_id": "148586372",
+                "format": "undefined"
+              },
+              {
                 "showtime": "3:25pm",
                 "showtime_id": "148454625",
                 "format": "undefined"
@@ -220994,127 +221365,107 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054356+00:00",
+          "collected_at": "2026-11-05T16:34:50.174479+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-06",
+      "show_date": "2026-11-07",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "148454767",
+            "showtime": "1:00pm",
+            "showtime_id": "147395367",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147395374",
+            "showtime": "4:15pm",
+            "showtime_id": "147395368",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147395375",
+            "showtime": "7:30pm",
+            "showtime_id": "147395369",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147395366",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148454771",
+            "showtime": "10:00pm",
+            "showtime_id": "148454775",
             "format": "Japanese Spoken with English Subtitles"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148392407",
+            "showtime": "12:50pm",
+            "showtime_id": "148392406",
             "format": "undefined"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "148392395",
+            "showtime_id": "148392397",
             "format": "undefined"
           },
           {
-            "showtime": "3:10pm",
-            "showtime_id": "148454614",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "146937883",
+            "showtime_id": "146937884",
             "format": "undefined"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "148392396",
+            "showtime_id": "148392398",
             "format": "undefined"
           },
           {
             "showtime": "9:25pm",
-            "showtime_id": "148454616",
+            "showtime_id": "148454610",
             "format": "undefined"
-          }
-        ],
-        "The Cat in the Hat": [
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "148454488",
-            "format": "undefined"
-          },
-          {
-            "showtime": "2:25pm",
-            "showtime_id": "147774616",
-            "format": "undefined"
-          },
-          {
-            "showtime": "5:20pm",
-            "showtime_id": "147774617",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:05pm",
-            "showtime_id": "148454617",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:15pm",
-            "showtime_id": "147774618",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:55pm",
-            "showtime_id": "148454619",
-            "format": "RealD 3D"
           }
         ],
         "Jimmy": [
           {
-            "showtime": "4:10pm",
-            "showtime_id": "148454621",
+            "showtime": "12:55pm",
+            "showtime_id": "148454493",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "146837080",
+            "showtime_id": "146837081",
             "format": "undefined"
           }
         ],
         "Ramayana: Rise of A Legend": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148454559",
+            "showtime": "2:50pm",
+            "showtime_id": "148454550",
             "format": "Hindi Spoken with English Subtitles"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "148454665",
+            "showtime": "8:30pm",
+            "showtime_id": "148454730",
             "format": "Hindi Spoken with English Subtitles"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148454631",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "148454633",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148454635",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148454637",
+            "format": "RealD 3D"
           }
         ]
       }
@@ -221157,9 +221508,14 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "9:15pm",
+                "showtime": "9:45pm",
                 "showtime_id": "147554787",
                 "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "148548729",
+                "format": "IMAX with Laser at AMC"
               }
             ],
             "Drummer Boy": [
@@ -221169,13 +221525,28 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "2:15pm",
+                "showtime_id": "148548728",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "146858110",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "5:20pm",
+                "showtime_id": "148548727",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:05pm",
                 "showtime_id": "148399455",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148548737",
                 "format": "Laser at AMC"
               }
             ],
@@ -221189,6 +221560,11 @@
                 "showtime": "6:00pm",
                 "showtime_id": "148414161",
                 "format": "Hindi Spoken with English Subtitles"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148548734",
+                "format": "Hindi Spoken with English Subtitles"
               }
             ],
             "The Cat in the Hat": [
@@ -221198,7 +221574,7 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "3:00pm",
+                "showtime": "3:10pm",
                 "showtime_id": "147751599",
                 "format": "Laser at AMC"
               },
@@ -221243,7 +221619,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:42:53.759867+00:00",
+          "collected_at": "2026-11-05T16:34:50.174092+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -221295,6 +221671,11 @@
                 "format": "Japanese Spoken with English Subtitles"
               },
               {
+                "showtime": "9:45pm",
+                "showtime_id": "148577105",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "147554771",
                 "format": "IMAX with Laser at AMC"
@@ -221302,9 +221683,19 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:00pm",
+                "showtime_id": "148577155",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "12:50pm",
                 "showtime_id": "148399456",
                 "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "148577154",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "4:00pm",
@@ -221312,8 +221703,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:10pm",
+                "showtime_id": "148577156",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:05pm",
                 "showtime_id": "148399457",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "148577118",
                 "format": "Laser at AMC"
               }
             ],
@@ -221373,6 +221774,11 @@
             ],
             "Jimmy": [
               {
+                "showtime": "1:05pm",
+                "showtime_id": "148577120",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147204432",
                 "format": "Laser at AMC"
@@ -221382,9 +221788,16 @@
                 "showtime_id": "147204433",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148577211",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:44:26.613375+00:00",
+          "collected_at": "2026-11-05T16:34:50.174471+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -221443,9 +221856,19 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:00pm",
+                "showtime_id": "148577151",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "12:50pm",
                 "showtime_id": "148399460",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "148577150",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "4:00pm",
@@ -221453,8 +221876,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:10pm",
+                "showtime_id": "148577152",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:05pm",
                 "showtime_id": "148399461",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148577207",
                 "format": "Laser at AMC"
               }
             ],
@@ -221514,6 +221947,11 @@
             ],
             "Jimmy": [
               {
+                "showtime": "1:05pm",
+                "showtime_id": "148577116",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "147204436",
                 "format": "Laser at AMC"
@@ -221523,9 +221961,16 @@
                 "showtime_id": "147204440",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148577214",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T16:39:44.505841+00:00",
+          "collected_at": "2026-11-05T16:34:50.174358+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -221584,9 +222029,19 @@
             ],
             "Drummer Boy": [
               {
+                "showtime": "12:00pm",
+                "showtime_id": "148577159",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "12:50pm",
                 "showtime_id": "148399458",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:05pm",
+                "showtime_id": "148577158",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "4:00pm",
@@ -221594,8 +222049,18 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:10pm",
+                "showtime_id": "148577160",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "7:05pm",
                 "showtime_id": "148399459",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148577208",
                 "format": "Laser at AMC"
               }
             ],
@@ -221655,156 +222120,175 @@
             ],
             "Jimmy": [
               {
+                "showtime": "1:05pm",
+                "showtime_id": "148577119",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "147204434",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:15pm",
+                "showtime": "8:00pm",
                 "showtime_id": "147204435",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ramayana: Rise of A Legend": [
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148577104",
+                "format": "Hindi Spoken with English Subtitles"
+              }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.274000+00:00",
+          "collected_at": "2026-11-05T16:34:50.174417+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-08",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147554764",
+            "showtime": "12:45pm",
+            "showtime_id": "147393289",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147554798",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "147554763",
+            "showtime": "4:00pm",
+            "showtime_id": "147554754",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "147554797",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147554780",
+            "showtime": "5:00pm",
+            "showtime_id": "147554774",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147554762",
-            "format": "IMAX with Laser at AMC"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "147554796",
+            "showtime": "6:00pm",
+            "showtime_id": "147554786",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147554781",
+            "showtime": "7:15pm",
+            "showtime_id": "147554755",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147554775",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147554743",
+            "showtime_id": "147554787",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147554765",
+            "showtime": "10:25pm",
+            "showtime_id": "148548729",
             "format": "IMAX with Laser at AMC"
           }
         ],
         "Drummer Boy": [
           {
             "showtime": "12:50pm",
-            "showtime_id": "148399460",
+            "showtime_id": "148399454",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:15pm",
+            "showtime_id": "148548728",
+            "format": "XL at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "146858105",
+            "showtime_id": "146858110",
             "format": "Laser at AMC"
           },
           {
+            "showtime": "5:20pm",
+            "showtime_id": "148548727",
+            "format": "XL at AMC"
+          },
+          {
             "showtime": "7:05pm",
-            "showtime_id": "148399461",
+            "showtime_id": "148399455",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "148548737",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Ramayana: Rise of A Legend": [
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "148414162",
+            "format": "Hindi Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148414161",
+            "format": "Hindi Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "148548734",
+            "format": "Hindi Spoken with English Subtitles"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "12:15pm",
-            "showtime_id": "147751607",
+            "showtime": "2:00pm",
+            "showtime_id": "147751602",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "147751581",
-            "format": "Laser at AMC"
           },
           {
             "showtime": "3:10pm",
-            "showtime_id": "147751606",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "147751580",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "147751579",
+            "showtime_id": "147751599",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "147751582",
+            "showtime": "6:00pm",
+            "showtime_id": "147751600",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "147751601",
             "format": "Laser at AMC"
           }
         ],
         "Wild Horse Nine": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147723255",
+            "showtime": "2:00pm",
+            "showtime_id": "147723272",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147723254",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147723252",
+            "showtime": "5:00pm",
+            "showtime_id": "147723273",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147723253",
+            "showtime": "8:00pm",
+            "showtime_id": "147723274",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147723180",
             "format": "Laser at AMC"
           }
         ],
         "Jimmy": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147204436",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "7:00pm",
-            "showtime_id": "147204440",
+            "showtime_id": "147204431",
             "format": "Laser at AMC"
           }
         ]
@@ -221922,7 +222406,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T16:14:35.318044+00:00",
+          "collected_at": "2026-11-05T16:34:50.174110+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-06": {
@@ -222073,7 +222557,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054239+00:00",
+          "collected_at": "2026-11-05T16:34:50.174503+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -222156,7 +222640,7 @@
               {
                 "showtime": "12:50pm",
                 "showtime_id": "147765609",
-                "format": "undefined"
+                "format": "Open Caption (On-screen Subtitles)"
               },
               {
                 "showtime": "3:10pm",
@@ -222219,7 +222703,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576338+00:00",
+          "collected_at": "2026-11-05T16:34:50.174540+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -222365,155 +222849,115 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:49.273902+00:00",
+          "collected_at": "2026-11-05T16:34:50.174238+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-06",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:40pm",
-            "showtime_id": "147631049",
+            "showtime": "12:45pm",
+            "showtime_id": "147393404",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "1:35pm",
-            "showtime_id": "147631081",
+            "showtime": "4:00pm",
+            "showtime_id": "147631085",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "3:50pm",
-            "showtime_id": "147631048",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147631080",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "148445126",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "147631092",
+            "showtime": "4:00pm",
+            "showtime_id": "147631087",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147631046",
+            "showtime": "4:30pm",
+            "showtime_id": "147631044",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147631079",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:10pm",
-            "showtime_id": "147631093",
+            "showtime": "7:10pm",
+            "showtime_id": "147631088",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147631047",
+            "showtime": "7:40pm",
+            "showtime_id": "147631086",
+            "format": "Japanese Spoken with English Subtitles"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "147631045",
             "format": "IMAX at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "147631089",
+            "format": "PRIME at AMC"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "1:25pm",
-            "showtime_id": "148445142",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:30pm",
-            "showtime_id": "146851224",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:35pm",
-            "showtime_id": "148445143",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:35pm",
-            "showtime_id": "148445144",
+            "showtime_id": "146851223",
             "format": "undefined"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "12:20pm",
-            "showtime_id": "147765989",
-            "format": "PRIME at AMC"
-          },
-          {
-            "showtime": "12:50pm",
-            "showtime_id": "147765605",
+            "showtime": "2:00pm",
+            "showtime_id": "147765600",
             "format": "undefined"
           },
           {
-            "showtime": "3:10pm",
-            "showtime_id": "147765988",
-            "format": "PRIME 3D"
-          },
-          {
-            "showtime": "3:40pm",
-            "showtime_id": "147765604",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "147765627",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:25pm",
-            "showtime_id": "148445297",
+            "showtime": "3:00pm",
+            "showtime_id": "147765948",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:50pm",
+            "showtime_id": "147765601",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "147765602",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "147765603",
+            "format": "undefined"
           }
         ],
         "Wild Horse Nine": [
           {
-            "showtime": "1:10pm",
-            "showtime_id": "147586240",
+            "showtime": "2:00pm",
+            "showtime_id": "147586234",
             "format": "undefined"
           },
           {
-            "showtime": "4:05pm",
-            "showtime_id": "147586239",
+            "showtime": "4:55pm",
+            "showtime_id": "147586235",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147586237",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147586238",
+            "showtime": "7:50pm",
+            "showtime_id": "147586236",
             "format": "undefined"
           }
         ],
         "Jimmy": [
           {
-            "showtime": "1:25pm",
-            "showtime_id": "148445108",
+            "showtime": "7:00pm",
+            "showtime_id": "147028982",
             "format": "undefined"
           },
           {
-            "showtime": "4:20pm",
-            "showtime_id": "147028984",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:15pm",
-            "showtime_id": "147028983",
+            "showtime": "9:55pm",
+            "showtime_id": "148237946",
             "format": "undefined"
           }
         ]
@@ -222621,7 +223065,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:42:53.759876+00:00",
+          "collected_at": "2026-11-05T16:34:50.174101+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -222752,7 +223196,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054247+00:00",
+          "collected_at": "2026-11-05T16:34:50.174282+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -222889,7 +223333,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:44:26.613422+00:00",
+          "collected_at": "2026-11-05T16:34:50.174425+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -223020,136 +223464,106 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T05:45:09.576406+00:00",
+          "collected_at": "2026-11-05T16:34:50.174433+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-07",
+      "show_date": "2026-11-05",
       "movies": {
         "Godzilla Minus Zero": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147734067",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "1:10pm",
-            "showtime_id": "147399485",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "4:20pm",
-            "showtime_id": "147399486",
+            "showtime": "5:00pm",
+            "showtime_id": "147399465",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147399461",
+            "showtime_id": "147399453",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147399482",
-            "format": "Japanese Spoken with English Subtitles"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "147399495",
+            "showtime": "8:15pm",
+            "showtime_id": "147399466",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147399462",
+            "showtime_id": "147399454",
             "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "Ramayana: Rise of A Legend": [
+          {
+            "showtime": "4:20pm",
+            "showtime_id": "148406995",
+            "format": "Hindi Spoken with English Subtitles"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148406996",
+            "format": "Hindi Spoken with English Subtitles"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "10:15am",
-            "showtime_id": "147931747",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "11:10am",
-            "showtime_id": "147931827",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "1:05pm",
-            "showtime_id": "147931746",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
             "showtime": "2:00pm",
-            "showtime_id": "147931821",
+            "showtime_id": "148465422",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147931819",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:55pm",
-            "showtime_id": "147931745",
+            "showtime_id": "147931742",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "147931822",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "7:50pm",
-            "showtime_id": "147931823",
+            "showtime": "6:00pm",
+            "showtime_id": "147931818",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147931828",
+            "showtime": "8:50pm",
+            "showtime_id": "147931820",
             "format": "RealD 3D"
           }
         ],
         "Wild Horse Nine": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147734053",
+            "showtime": "2:00pm",
+            "showtime_id": "147735304",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147734052",
+            "showtime": "4:55pm",
+            "showtime_id": "147735305",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147734051",
+            "showtime": "7:50pm",
+            "showtime_id": "147735306",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147734050",
+            "showtime": "10:00pm",
+            "showtime_id": "147735307",
             "format": "Laser at AMC"
           }
         ],
         "Drummer Boy": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "148465529",
+            "showtime": "3:30pm",
+            "showtime_id": "148465536",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148465486",
+            "showtime": "6:45pm",
+            "showtime_id": "148465535",
             "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148465614",
-            "format": "Laser at AMC"
-          }
-        ],
-        "Ramayana: Rise of A Legend": [
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148465550",
-            "format": "Hindi Spoken with English Subtitles"
           }
         ]
       }
@@ -223254,7 +223668,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054275+00:00",
+          "collected_at": "2026-11-05T16:34:50.174554+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-07": {
@@ -223330,7 +223744,7 @@
             ],
             "The Cat in the Hat": [
               {
-                "showtime": "12:00pm",
+                "showtime": "1:00pm",
                 "showtime_id": "147909184",
                 "format": "RealD 3D"
               },
@@ -223383,7 +223797,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-03T16:39:44.505723+00:00",
+          "collected_at": "2026-11-05T16:34:50.174456+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-05": {
@@ -223477,7 +223891,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054056+00:00",
+          "collected_at": "2026-11-05T16:34:50.174153+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-08": {
@@ -223606,7 +224020,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-04T22:09:36.054223+00:00",
+          "collected_at": "2026-11-05T16:34:50.174510+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -277858,9 +278272,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9978,
-    "fresh": 459,
-    "expected": 460,
+    "ratio": 1.0,
+    "fresh": 72,
+    "expected": 72,
     "min_ratio": 0.9,
     "degraded": false
   }
