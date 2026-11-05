@@ -100,6 +100,22 @@ def _f(value):
         return ""
 
 
+def canonical_movie(movie, weekend):
+    """The tracked (release-calendar) title for a Polymarket film name:
+    'Ramayana' -> 'Ramayana: Rise of A Legend' (scraper title aliases,
+    2026-11-05), so the odds log, prediction log and paper trades share one
+    key. Falls back to the market's own name."""
+    try:
+        root = os.path.dirname(DATA_DIR)
+        if root not in sys.path:
+            sys.path.insert(0, root)
+        import scraper
+        known = scraper.calendar_titles_for_weekend(weekend) + list(scraper.load_title_aliases(weekend))
+        return scraper.canonical_title_map([movie] + known, weekend).get(movie, movie)
+    except Exception:
+        return movie
+
+
 def odds_rows(events, now):
     logged_at = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     rows = []
@@ -114,6 +130,7 @@ def odds_rows(events, now):
         if not movie:
             continue
         weekend = event_weekend(ev, now)
+        movie = canonical_movie(movie, weekend)
         for m in ev.get("markets") or []:
             if m.get("closed"):
                 continue

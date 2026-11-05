@@ -1197,7 +1197,8 @@ def collect(weekend_of=None, titles=None, zips=None, theatres=None,
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {}
-    target_slugs = {slugify_title(t): t for t in titles}
+    from scraper import title_match_targets
+    target_slugs = title_match_targets(titles, slugify_title, weekend_of)   # + recorded aliases
     window_dates = set(show_dates) if show_dates else set(opening_weekend_show_dates(weekend_of))
     theatres = theatres if theatres is not None else load_fandango_theatres(zips)
     if not theatres:

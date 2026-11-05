@@ -252,7 +252,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return totals
-    target = {slugify_title(t): t for t in titles}
+    from scraper import title_match_targets
+    target = title_match_targets(titles, slugify_title, weekend_of)   # + recorded aliases
     today = now_utc.strftime("%Y-%m-%d")
     dates = [d for d in window_dates(weekend_of)
              if d >= (now_utc - timedelta(days=1)).strftime("%Y-%m-%d")]

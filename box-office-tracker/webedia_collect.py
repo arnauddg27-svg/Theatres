@@ -244,7 +244,8 @@ def collect(weekend_of=None, titles=None, now_utc=None, session=None):
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         totals["no_titles"] = 1
         return totals
-    target = {slugify_title(t): t for t in titles}
+    from scraper import title_match_targets
+    target = title_match_targets(titles, slugify_title, weekend_of)   # + recorded aliases
     wdates = window_dates(weekend_of)
     run_id = f"webedia-{now_utc.strftime('%Y-%m-%dT%H:%MZ')}"
     s = session or _session()

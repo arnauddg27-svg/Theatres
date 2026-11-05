@@ -184,7 +184,8 @@ def collect(max_theatres=0, dry_run=False):
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {"theatres": 0, "rows": 0}
-    targets = {title_key(t): t for t in titles}
+    from scraper import title_match_targets
+    targets = title_match_targets(titles, title_key, weekend_of)   # + recorded aliases
     f = Fetcher()
     proxy, f.proxy = f.proxy, None      # direct first: the proxy is metered
     status, html = f.get(f"{BASE}/theatres/{SEED_THEATRE}")

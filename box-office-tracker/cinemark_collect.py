@@ -824,7 +824,8 @@ def collect(weekend_of=None, titles=None, headless=True, show_dates=None,
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return {}
-    target_slugs = {slugify_title(t): t for t in titles}
+    from scraper import title_match_targets
+    target_slugs = title_match_targets(titles, slugify_title, weekend_of)   # + recorded aliases
 
     if not THEATRES_JSON.exists():
         print("⚠️  data/theatres-cinemark.json missing — run --discover first.")

@@ -239,7 +239,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if not titles:
         print(f"⚠️  No tracked titles for weekend_of={weekend_of}; nothing to collect.")
         return totals
-    target = {slugify_title(t): t for t in titles}
+    from scraper import title_match_targets
+    target = title_match_targets(titles, slugify_title, weekend_of)   # + recorded aliases
     dates = window_dates(weekend_of)
     run_id = f"alamo-{now_utc.strftime('%Y-%m-%dT%H:%MZ')}"
     print(f"Alamo collect [{mode}] • weekend_of={weekend_of} • titles={titles}", flush=True)

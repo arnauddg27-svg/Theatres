@@ -1933,6 +1933,140 @@ def _title_key(title):
     return re.sub(r"\s+", " ", text).strip()
 
 
+# ── Title aliases (2026-11-05) ───────────────────────────────────────────────
+# Polymarket names a film by its short title ("Ramayana"); the Box Office Mojo
+# calendar, AMC/Cinemark listings and movie-metadata use the full one
+# ("Ramayana: Rise of A Legend"). Tracked side by side they were two films:
+# 5,094 AMC rows and the metadata under the full title, 35 rows plus the only
+# live market under the short one, every AMC theatre-date linked twice, and a
+# Thursday forecast that would have read the market's film from 35 rows. The
+# full (calendar) title is canonical; the short one is an alias, recorded in
+# data/title-aliases.json so every lane matches either spelling and stores the
+# canonical one, and so the odds logger files the market under it.
+TITLE_ALIASES_JSON = DATA_DIR / "title-aliases.json"
+TITLE_ALIAS_MIN_KEY = 4
+
+
+def _title_is_alias_prefix(short_key, long_key):
+    """'ramayana' names 'ramayana rise of a legend': a whole-word prefix of at
+    least TITLE_ALIAS_MIN_KEY characters, so 'it' never swallows 'it ends'."""
+    return (len(short_key) >= TITLE_ALIAS_MIN_KEY and short_key != long_key
+            and long_key.startswith(short_key + " "))
+
+
+def load_title_aliases(weekend_of=None, path=None):
+    """{canonical title: [alias, ...]} recorded for `weekend_of` (every weekend
+    when None)."""
+    path = Path(path) if path else TITLE_ALIASES_JSON
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    out = {}
+    for wk, entries in data.items():
+        if weekend_of and wk != weekend_of:
+            continue
+        for canonical, aliases in (entries or {}).items():
+            names = out.setdefault(canonical, [])
+            names.extend(a for a in (aliases or []) if a and a not in names)
+    return out
+
+
+def record_title_alias(weekend_of, canonical, alias, path=None):
+    """Persist alias -> canonical for the weekend; idempotent. True when written."""
+    path = Path(path) if path else TITLE_ALIASES_JSON
+    try:
+        data = json.loads(path.read_text())
+    except (OSError, ValueError):
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    aliases = data.setdefault(weekend_of, {}).setdefault(canonical, [])
+    if alias in aliases:
+        return False
+    aliases.append(alias)
+    tmp = path.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+    os.replace(tmp, path)
+    return True
+
+
+def canonical_title_map(titles, weekend_of=None, aliases=None):
+    """{title: canonical title} for every title in `titles` that is an alias of
+    another: a recorded alias, or a whole-word prefix of a longer title in the
+    set (the longest wins)."""
+    aliases = load_title_aliases(weekend_of) if aliases is None else aliases
+    alias_to_canonical = {}
+    for canonical, names in aliases.items():
+        for name in names:
+            alias_to_canonical[_title_key(name)] = canonical
+    keyed = [(t, _title_key(t)) for t in unique_preserving_order(t for t in titles if t)]
+    keyed = [(t, k) for t, k in keyed if k]
+    out = {}
+    for title, key in keyed:
+        canonical = alias_to_canonical.get(key)
+        if canonical and _title_key(canonical) != key:
+            out[title] = canonical
+            continue
+        longer = [t2 for t2, k2 in keyed if _title_is_alias_prefix(key, k2)]
+        if longer:
+            out[title] = max(longer, key=lambda t: len(_title_key(t)))
+    return out
+
+
+def dedupe_title_aliases(titles, weekend_of=None):
+    """Collapse alias titles onto their canonical form, order preserved."""
+    amap = canonical_title_map(titles, weekend_of)
+    return unique_preserving_order(amap.get(t, t) for t in titles)
+
+
+def title_aliases_for(title, weekend_of=None, aliases=None):
+    """Recorded aliases of a canonical title ([] when none)."""
+    aliases = load_title_aliases(weekend_of) if aliases is None else aliases
+    key = _title_key(title)
+    for canonical, names in aliases.items():
+        if _title_key(canonical) == key:
+            return list(names)
+    return []
+
+
+def title_match_targets(titles, keyfn=lambda t: t, weekend_of=None):
+    """{keyfn(name): canonical title} for every tracked title AND its recorded
+    aliases, so a lane that lists the film under either spelling matches it
+    and stores the canonical one (Regal/Fandango list 'Ramayana', AMC and
+    Cinemark 'Ramayana: Rise of A Legend'). Canonical names take precedence
+    on a key collision."""
+    aliases = load_title_aliases(weekend_of)
+    targets = {}
+    for title in titles:
+        targets.setdefault(keyfn(title), title)
+    for title in titles:
+        for alias in title_aliases_for(title, aliases=aliases):
+            targets.setdefault(keyfn(alias), title)
+    return targets
+
+
+def canonicalise_market_titles(markets, weekend, phase_label):
+    """Rename live markets for `weekend` whose title is an alias (recorded, or
+    a short prefix) of a release-calendar title, recording the alias."""
+    markets = list(markets or [])
+    titles = [m.get("movie_title") or "" for m in markets]
+    amap = canonical_title_map(titles + calendar_titles_for_weekend(weekend), weekend)
+    out = []
+    for m in markets:
+        title = m.get("movie_title") or ""
+        canonical = amap.get(title)
+        if canonical and canonical != title and market_matches_collection_weekend(m, weekend):
+            print(f"  🔗 {phase_label}: Polymarket lists '{title}'; tracking it as "
+                  f"'{canonical}' (release-calendar title) for weekend {weekend}")
+            record_title_alias(weekend, canonical, title)
+            m = dict(m, movie_title=canonical, market_title=title)
+        out.append(m)
+    return out
+
+
 def calendar_titles_for_weekend(weekend_of):
     """Wide releases for `weekend_of` from data/release-calendar.json
     (scripts/release_calendar.py, refreshed by every collect-links run).
@@ -1960,11 +2094,17 @@ def calendar_titles_for_weekend(weekend_of):
 
 
 def merge_calendar_titles(markets, weekend, phase_label):
-    """Append calendar titles missing from `markets` as tracked-title markets."""
-    present = {_title_key(m.get("movie_title")) for m in (markets or [])}
-    extra = [t for t in calendar_titles_for_weekend(weekend) if _title_key(t) not in present]
+    """Append calendar titles missing from `markets` as tracked-title markets.
+    A calendar title that is the full name of a market's short title (or the
+    other way round) is the same film, not a missing one."""
+    markets = list(markets or [])
+    calendar = calendar_titles_for_weekend(weekend)
+    market_titles = [m.get("movie_title") or "" for m in markets]
+    amap = canonical_title_map(market_titles + calendar, weekend)
+    present = {_title_key(amap.get(t, t)) for t in market_titles}
+    extra = [t for t in calendar if _title_key(amap.get(t, t)) not in present]
     if not extra:
-        return list(markets or [])
+        return markets
     print(f"  📅 {phase_label}: adding release-calendar title(s) for weekend {weekend}: "
           f"{', '.join(extra)}")
     return list(markets or []) + markets_for_tracked_titles(extra)
@@ -2017,6 +2157,9 @@ def tracked_movie_titles_from_state(weekend_of):
         if key and key not in seen:
             seen.add(key)
             deduped.append(title)
+    # A short Polymarket spelling and the full calendar title are one film
+    # (2026-11-05, title aliases above).
+    deduped = dedupe_title_aliases(deduped, weekend_of)
     # Films forecast clearly under $3M are not collected (2026-10-23).
     kept = small_film_gate.filter_titles(deduped, weekend_of, "tracked titles")
     # 2nd/3rd-weekend films with a live Polymarket market, while the slate
@@ -2143,6 +2286,7 @@ def select_collection_markets(live_markets, ref_dt, phase_label,
     Polymarket (live or tracked-from-links) first, then any wide release on the
     Box Office Mojo calendar for the weekend that nothing else listed."""
     weekend = weekend_override or opening_weekend_friday(ref_dt)
+    live_markets = canonicalise_market_titles(live_markets, weekend, phase_label)
     markets = _select_collection_markets_base(
         live_markets, ref_dt, phase_label,
         weekend_override=weekend_override, prefer_live_markets=prefer_live_markets)
@@ -5327,11 +5471,15 @@ def _phase1_collect(showtimes, movie_titles, date_str):
     """{movie_title: [{showtime, showtime_id, format}]} for the tracked films
     inside the collection window — the same selection for both listing paths."""
     collected = {}
+    aliases = load_title_aliases()
     for movie_title in movie_titles:
-        movie_lower = movie_title.lower().strip()
+        # The canonical title or any recorded alias ('Ramayana' for
+        # 'Ramayana: Rise of A Legend') names the film in a listing.
+        names = [n.lower().strip() for n in [movie_title] + title_aliases_for(movie_title, aliases=aliases)
+                 if n and n.strip()]
         matching = [s for s in showtimes
-                    if movie_lower in s.get("movie", "").lower()
-                    or s.get("movie", "").lower() in movie_lower]
+                    if any(name in s.get("movie", "").lower()
+                           or s.get("movie", "").lower() in name for name in names)]
         collection_window = filter_showtime_entries_for_collection_window(matching, date_str)
         if collection_window:
             collected[movie_title] = [
