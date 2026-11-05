@@ -10551,7 +10551,8 @@ def print_prediction(pred, verbose=False):
             print(
                 f"    Snapshot frontload: {frontload['classification']} "
                 f"(Fri/rest x{ratio:.2f} vs prior, confidence {confidence:.0%}"
-                f"{f'; mix {', '.join(share_bits)}' if share_bits else ''})"
+                + ("; mix " + ", ".join(share_bits) if share_bits else "")
+                + ")"
             )
         for day, details in sorted(
             pred.get("snapshot_daily_details", {}).items(),
