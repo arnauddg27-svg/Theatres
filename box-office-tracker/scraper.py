@@ -1867,10 +1867,10 @@ def load_movies_from_csv(weekend_of):
                 continue
             if is_comparison_box_office_market(question or title):
                 continue
-            stamped = ""
-            notes = row.get("notes", "") or ""
-            if notes.startswith("weekend_of="):
-                stamped = notes.split("=", 1)[1].strip()
+            # notes read "weekend_of=YYYY-MM-DD; settlement_rules=..." since
+            # 2026-09-23: match the date, never split on the first "=".
+            m = re.search(r"weekend_of=(\d{4}-\d{2}-\d{2})", row.get("notes", "") or "")
+            stamped = m.group(1) if m else ""
             if stamped:
                 row_weekend = stamped
             else:

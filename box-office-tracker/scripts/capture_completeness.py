@@ -229,9 +229,7 @@ def main():
         poly_titles = set()
         with open(os.path.join(P.DATA_DIR, "polymarket-markets.csv"), newline="") as f:
             for r in csv.DictReader(f):
-                notes = (r.get("notes") or "")
-                wk = (notes.split("=", 1)[1].strip()
-                      if notes.startswith("weekend_of=") else "")
+                wk = P.weekend_from_notes(r.get("notes"))
                 if wk == current or (not wk and (r.get("date") or "") >= current):
                     poly_rows += 1
                     if (r.get("movie_title") or "").strip():

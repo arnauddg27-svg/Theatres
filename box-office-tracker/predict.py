@@ -2062,6 +2062,20 @@ def filter_seat_data_through(seat_data, through_date=None):
     return filtered
 
 
+_NOTES_WEEKEND_RE = re.compile(r"weekend_of=(\d{4}-\d{2}-\d{2})")
+
+
+def weekend_from_notes(notes):
+    """The collection-weekend stamp in a polymarket-markets.csv notes field,
+    or "". Notes read "weekend_of=2026-11-06; settlement_rules=..." since
+    2026-09-23; taking everything after the first "=" (the reader until
+    2026-11-05) yielded "2026-11-06; settlement_rules=..." and matched no
+    weekend, so predict/calibrate/the backtests saw no market rows, the
+    Mon-Wed CSV fallback found no films, and the ghost-film guard was blind."""
+    m = _NOTES_WEEKEND_RE.search(notes or "")
+    return m.group(1) if m else ""
+
+
 def load_polymarket_data(weekend_of=None, through_date=None):
     """Load Polymarket bracket rows for one opening weekend, deduped by market.
 
@@ -2086,10 +2100,8 @@ def load_polymarket_data(weekend_of=None, through_date=None):
             # "weekend_of=YYYY-MM-DD", written since 2026-08-23): the legacy
             # observation-date mapping sends Mon-Wed rows for the UPCOMING
             # weekend to the PRIOR Friday (dependency audit D6).
-            notes = (row.get("notes") or "").strip()
-            if notes.startswith("weekend_of="):
-                row_weekend = notes.split("=", 1)[1].strip()
-            else:
+            row_weekend = weekend_from_notes(row.get("notes"))
+            if not row_weekend:
                 row_weekend = _opening_weekend_for_date(date_str) if date_str else ""
             rows.append((idx, row, row_weekend, date_str))
 
