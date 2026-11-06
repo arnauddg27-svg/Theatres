@@ -243,5 +243,118 @@ class LockStaleTest(unittest.TestCase):
         self.assertIsNone(self.mod._github_run_is_active(""))
 
 
+def _fresh_remote(root):
+    """bare origin + clone with one commit on main; returns the clone path."""
+    bare = root / "origin.git"
+    repo = root / "repo"
+    run(["git", "init", "--bare", str(bare)])
+    run(["git", "clone", str(bare), str(repo)])
+    run(["git", "config", "user.name", "Test"], cwd=repo)
+    run(["git", "config", "user.email", "test@example.com"], cwd=repo)
+    (repo / "README.md").write_text("test\n")
+    run(["git", "add", "README.md"], cwd=repo)
+    run(["git", "commit", "-m", "init"], cwd=repo)
+    run(["git", "push", "origin", "HEAD:main"], cwd=repo)
+    return repo
+
+
+def _remote_heads(repo, pattern):
+    return run(["git", "ls-remote", "--heads", "origin", pattern], cwd=repo).stdout
+
+
+class WaitTicketUnitTest(unittest.TestCase):
+    """2026-11-05: the 02:30Z snapshot's ET leg took the free lock between the
+    22:30Z run's MT and PT legs; PT burned its 7200 s wait and died. A newer
+    run must yield a free lock to an older run that is still active."""
+
+    def setUp(self):
+        self.mod = _load_amc_lock_module()
+
+    def test_should_yield_only_while_older_waiter_and_within_cap(self):
+        m = self.mod
+        self.assertTrue(m._should_yield("100", 1000.0, 1100.0, cap=900))
+        self.assertFalse(m._should_yield("100", 1000.0, 1901.0, cap=900))
+        self.assertFalse(m._should_yield(None, 1000.0, 1100.0, cap=900))
+        self.assertFalse(m._should_yield("100", None, 1100.0, cap=900))
+
+    def test_older_active_waiter_prunes_dead_runs_and_ignores_newer(self):
+        m = self.mod
+        m._list_wait_tickets = lambda root: [("a", "300"), ("b", "100"), ("c", "150")]
+        states = {"100": False, "150": True}
+        deleted = []
+        m._github_run_is_active = lambda rid: states[rid]
+        m._delete_lock = lambda root, branch, sha: deleted.append(branch) or True
+        self.assertEqual("150", m._older_active_waiter(Path("."), "200"))
+        self.assertEqual([m.WAIT_TICKET_PREFIX + "100"], deleted)   # dead ticket pruned
+        # The run newer than me (300) was never probed or touched.
+
+    def test_unknown_liveness_counts_as_active(self):
+        m = self.mod
+        m._list_wait_tickets = lambda root: [("b", "100")]
+        m._github_run_is_active = lambda rid: m.RUN_STATE_UNKNOWN
+        self.assertEqual("100", m._older_active_waiter(Path("."), "200"))
+
+    def test_non_numeric_run_id_never_yields(self):
+        m = self.mod
+        m._list_wait_tickets = lambda root: [("b", "100")]
+        self.assertIsNone(m._older_active_waiter(Path("."), ""))
+
+
+class WaitTicketIntegrationTest(unittest.TestCase):
+    def test_acquire_registers_ticket_and_release_ticket_drops_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = _fresh_remote(Path(tmp))
+            run([sys.executable, str(SCRIPT), "acquire", "--repo-root", str(repo),
+                 "--mode", "test", "--run-id", "123", "--wait-seconds", "1",
+                 "--poll-seconds", "1"])
+            self.assertIn("refs/heads/box-office-amc-wait/123",
+                          _remote_heads(repo, "refs/heads/box-office-amc-wait/*"))
+            # a second leg of the same run: ticket already there, acquire still fine
+            run([sys.executable, str(SCRIPT), "release-ticket", "--repo-root", str(repo),
+                 "--run-id", "123"])
+            self.assertEqual("", _remote_heads(repo, "refs/heads/box-office-amc-wait/*").strip())
+            # idempotent
+            out = run([sys.executable, str(SCRIPT), "release-ticket", "--repo-root", str(repo),
+                       "--run-id", "123"])
+            self.assertIn("none for run 123", out.stdout)
+
+    def test_newer_run_yields_free_lock_to_older_ticket(self):
+        import os
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = _fresh_remote(Path(tmp))
+            # Older run 100 left a ticket (its next leg is about to poll).
+            run(["git", "push", "origin", "HEAD:refs/heads/box-office-amc-wait/100"], cwd=repo)
+            env = dict(os.environ, PATH="/usr/bin:/bin",      # no `gh`: liveness UNKNOWN => active
+                       AMC_LOCK_PROBE_ATTEMPTS="1", AMC_LOCK_PROBE_BACKOFF_SEC="0")
+            res = subprocess.run(
+                [sys.executable, str(SCRIPT), "acquire", "--repo-root", str(repo),
+                 "--mode", "test", "--run-id", "200", "--wait-seconds", "2",
+                 "--poll-seconds", "1"],
+                text=True, capture_output=True, env=env)
+            self.assertEqual(1, res.returncode, res.stdout + res.stderr)
+            self.assertIn("yielding", res.stdout)
+            self.assertEqual("", _remote_heads(repo, "refs/heads/box-office-amc-lock").strip())
+            # Past the yield cap the newer run proceeds (older run never took it).
+            env["AMC_LOCK_YIELD_MAX_SEC"] = "0"
+            res = subprocess.run(
+                [sys.executable, str(SCRIPT), "acquire", "--repo-root", str(repo),
+                 "--mode", "test", "--run-id", "200", "--wait-seconds", "2",
+                 "--poll-seconds", "1"],
+                text=True, capture_output=True, env=env)
+            self.assertEqual(0, res.returncode, res.stdout + res.stderr)
+            self.assertIn("proceeding", res.stdout)
+            self.assertIn("refs/heads/box-office-amc-lock",
+                          _remote_heads(repo, "refs/heads/box-office-amc-lock"))
+
+    def test_older_ticket_of_finished_run_is_pruned_not_yielded_to(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = _fresh_remote(Path(tmp))
+            run(["git", "push", "origin", "HEAD:refs/heads/box-office-amc-wait/100"], cwd=repo)
+            m = _load_amc_lock_module()
+            m._github_run_is_active = lambda rid: False
+            self.assertIsNone(m._older_active_waiter(repo, "200"))
+            self.assertEqual("", _remote_heads(repo, "refs/heads/box-office-amc-wait/*").strip())
+
+
 if __name__ == "__main__":
     unittest.main()

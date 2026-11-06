@@ -25,6 +25,22 @@ from typing import Any
 LOCK_BRANCH = "box-office-amc-lock"
 LOCK_FILE = "amc-lock.json"
 
+# Run-order fairness (2026-11-06). Every run that goes through acquire() leaves a
+# "wait ticket" ref, refs/heads/box-office-amc-wait/<run_id>, for its whole
+# lifetime. When a waiter finds the lock FREE but an OLDER run (smaller run id)
+# still holds a live ticket, it yields the lock to that run instead of taking
+# it. Without this a newer run's first leg jumped the queue between two legs of
+# an older run (the gap is the ~1 min of checkout + install before the next
+# leg polls): on 2026-11-05 the 02:30Z snapshot's ET leg took the lock the
+# instant the 22:30Z run's MT leg released it, and the 22:30Z PT leg then
+# burned its whole 7200 s wait budget and died — the slot lost its PT reading.
+WAIT_TICKET_PREFIX = "box-office-amc-wait/"
+# Yield a free lock to an older active run for at most this long of CONTINUOUS
+# free-lock observation. The older run's next leg normally takes the lock
+# within a poll or two; a run whose next job is stuck waiting for a runner must
+# not hold everyone else off indefinitely.
+AMC_LOCK_YIELD_MAX_SEC = float(os.environ.get("AMC_LOCK_YIELD_MAX_SEC", "900"))
+
 # Distinct from None: the GitHub run-status probe could not reach the API at all
 # (rate limit / outage), so we genuinely do not know whether the lock holder is
 # still running. This must NOT be treated as "holder is dead" — see _lock_is_stale.
@@ -157,7 +173,11 @@ def _github_run_is_active(run_id: str | None) -> bool | None | str:
     if repo:
         cmd.extend(["--repo", repo])
     for attempt in range(max(1, AMC_LOCK_PROBE_ATTEMPTS)):
-        result = _run(cmd, capture=True)
+        try:
+            result = _run(cmd, capture=True)
+        except OSError:
+            # `gh` not installed (local test box): same as an unreachable API.
+            return RUN_STATE_UNKNOWN
         if result.returncode == 0:
             try:
                 payload = json.loads(result.stdout)
@@ -268,6 +288,74 @@ def _create_lock_commit(repo_root: Path, branch: str, metadata: dict[str, Any]) 
         return False, result.stderr.strip() or result.stdout.strip()
 
 
+def _ticket_branch(run_id: str) -> str:
+    return f"{WAIT_TICKET_PREFIX}{run_id}"
+
+
+def _register_wait_ticket(repo_root: Path, run_id: str, mode: str) -> bool:
+    """Create refs/heads/box-office-amc-wait/<run_id> (idempotent: a rejected
+    push means an earlier leg of this run already left it). False when the run
+    id is not numeric (local runs) or the push failed."""
+    if not str(run_id).isdigit():
+        return False
+    metadata = {
+        "ticket": True,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at_epoch": time.time(),
+        "mode": mode,
+        "run_id": str(run_id),
+    }
+    ok, _detail = _create_lock_commit(repo_root, _ticket_branch(run_id), metadata)
+    return ok
+
+
+def _list_wait_tickets(repo_root: Path) -> list[tuple[str, str]]:
+    """(sha, run_id) for every wait ticket on the remote; non-numeric ignored."""
+    result = _git(repo_root, "ls-remote", "--heads", "origin",
+                  f"refs/heads/{WAIT_TICKET_PREFIX}*")
+    if result.returncode != 0:
+        return []
+    out: list[tuple[str, str]] = []
+    for line in result.stdout.splitlines():
+        parts = line.split()
+        if len(parts) != 2:
+            continue
+        sha, ref = parts
+        run_id = ref.rsplit("/", 1)[-1]
+        if run_id.isdigit():
+            out.append((sha, run_id))
+    return out
+
+
+def _older_active_waiter(repo_root: Path, my_run_id: str) -> str | None:
+    """Smallest run id below mine whose wait ticket belongs to a run that is
+    still active (or whose liveness is unknown — conservative). Tickets of
+    runs confirmed finished are deleted on the way."""
+    if not str(my_run_id).isdigit():
+        return None
+    mine = int(my_run_id)
+    for sha, run_id in sorted(_list_wait_tickets(repo_root), key=lambda t: int(t[1])):
+        if int(run_id) >= mine:
+            continue
+        active = _github_run_is_active(run_id)
+        if active is False:
+            _delete_lock(repo_root, _ticket_branch(run_id), sha)
+            continue
+        return run_id
+    return None
+
+
+def _should_yield(older_run_id: str | None, free_since: float | None, now: float,
+                  cap: float | None = None) -> bool:
+    """Yield a FREE lock while an older run is waiting and the lock has not
+    sat free for longer than the cap."""
+    if older_run_id is None or free_since is None:
+        return False
+    if cap is None:
+        cap = AMC_LOCK_YIELD_MAX_SEC
+    return (now - free_since) < cap
+
+
 def _write_github_output(path: str | None, values: dict[str, str]) -> None:
     if not path:
         return
@@ -281,10 +369,14 @@ def acquire(args: argparse.Namespace) -> int:
     deadline = time.monotonic() + args.wait_seconds
     run_id = args.run_id or os.environ.get("GITHUB_RUN_ID", "")
     run_attempt = args.run_attempt or os.environ.get("GITHUB_RUN_ATTEMPT", "")
+    if _register_wait_ticket(repo_root, run_id, args.mode):
+        print(f"AMC lock: wait ticket registered for run {run_id}")
+    free_since: float | None = None   # when the current free-lock stretch began
 
     while True:
         existing = _read_lock_metadata(repo_root, args.lock_branch)
         if existing:
+            free_since = None
             sha, metadata = existing
             owner = metadata.get("run_id", "unknown")
             mode = metadata.get("mode", "unknown")
@@ -312,6 +404,23 @@ def acquire(args: argparse.Namespace) -> int:
                 )
                 time.sleep(min(args.poll_seconds, remaining))
             continue
+
+        now = time.monotonic()
+        if free_since is None:
+            free_since = now
+        older = _older_active_waiter(repo_root, run_id)
+        if _should_yield(older, free_since, now):
+            remaining = max(0, int(deadline - now))
+            if remaining <= 0:
+                print(f"AMC lock: timed out while yielding to older run {older}")
+                return 1
+            print(f"AMC lock: free, but older run {older} is still mid-run and next "
+                  f"in line — yielding {min(args.poll_seconds, remaining)}s")
+            time.sleep(min(args.poll_seconds, remaining))
+            continue
+        if older is not None:
+            print(f"AMC lock: older run {older} has left the lock free for "
+                  f"{now - free_since:.0f}s — proceeding")
 
         metadata = {
             "created_at": datetime.now(timezone.utc).isoformat(),
@@ -365,6 +474,31 @@ def release(args: argparse.Namespace) -> int:
     return 1
 
 
+def release_ticket(args: argparse.Namespace) -> int:
+    """Drop this run's wait ticket (finalize, or the end of a single-job run).
+    Never fails the job: a leftover ticket is pruned by the next waiter as soon
+    as this run is no longer active."""
+    repo_root = Path(args.repo_root).resolve()
+    run_id = args.run_id or os.environ.get("GITHUB_RUN_ID", "")
+    if not str(run_id).isdigit():
+        print("AMC wait ticket: no numeric run id; nothing to release")
+        return 0
+    branch = _ticket_branch(run_id)
+    try:
+        sha = _current_lock_sha(repo_root, branch)
+    except RuntimeError as exc:
+        print(f"AMC wait ticket: could not list remote refs ({exc}); leaving it")
+        return 0
+    if not sha:
+        print(f"AMC wait ticket: none for run {run_id}")
+        return 0
+    if _delete_lock(repo_root, branch, sha):
+        print(f"AMC wait ticket: released for run {run_id}")
+    else:
+        print(f"AMC wait ticket: release failed for run {run_id}; the next waiter prunes it")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -385,6 +519,11 @@ def build_parser() -> argparse.ArgumentParser:
     release_parser.add_argument("--repo-root", default=".")
     release_parser.add_argument("--lock-branch", default=LOCK_BRANCH)
     release_parser.add_argument("--lock-sha", default="")
+
+    ticket_parser = subparsers.add_parser("release-ticket")
+    ticket_parser.add_argument("--repo-root", default=".")
+    ticket_parser.add_argument("--run-id", default="")
+    ticket_parser.set_defaults(func=release_ticket)
     release_parser.set_defaults(func=release)
     return parser
 

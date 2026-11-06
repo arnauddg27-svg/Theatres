@@ -224,6 +224,8 @@ jobs:
         # wait, or it dies at 90 min while a full-universe snapshot slot holds
         # the lock ~2h50 — collect-links CT 15Z / PT 23Z would fail every
         # Mon-Wed. Budget: 130 + 190 (Phase 1 step) + buffers = 360.
+        # Run-order fairness: acquire leaves a wait ticket for this run and
+        # yields a free lock to any OLDER run still mid-run (amc_lock.py).
         timeout-minutes: 130
         env:
           GH_TOKEN: ${{ github.token }}
@@ -367,6 +369,12 @@ jobs:
         run: |
           python3 box-office-tracker/scripts/amc_lock.py release \
             --lock-sha "${{ steps.amc_lock.outputs.lock_sha }}"
+
+      - name: Release AMC wait ticket
+        # Single-job run: its place in the lock queue ends here (scrape runs
+        # keep theirs until finalize — legs are sequential, see amc_lock.py).
+        if: always() && steps.dedup.outputs.skip != 'true'
+        run: python3 box-office-tracker/scripts/amc_lock.py release-ticket
 
       - name: Upload Phase 1 logs
         if: always() && steps.dedup.outputs.skip != 'true'
@@ -716,6 +724,13 @@ jobs:
         run: |
           git fetch --deepen=50 origin main
           git reset --hard origin/main
+
+      - name: Release AMC wait ticket
+        # Every leg of this run has finished: let newer runs take the lock.
+        # (A newer run yields a FREE lock to an older run with a live ticket —
+        # amc_lock.py; 2026-11-05 the 02:30Z ET leg jumped the 22:30Z PT leg.)
+        if: always()
+        run: python3 box-office-tracker/scripts/amc_lock.py release-ticket
 
       - name: Download scrape artifacts
         id: download_scrape_artifacts
