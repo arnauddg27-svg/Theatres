@@ -158,3 +158,20 @@ class GenreMapPriorityTest(unittest.TestCase):
         self.assertEqual("horror_fan", F.map_genre(["Horror", "Sci-Fi", "Thriller"])[1])
         self.assertEqual(("drama", "adult_drama"), F.map_genre(["Documentary", "·", "Sport"]))
         self.assertEqual("music_biopic", F.map_genre(["Documentary", "Music"])[0])
+
+
+class PrereleaseTheatreCountTest(unittest.TestCase):
+    """Audit 2026-11-06: BOM's pre-release "Widest Release" (Cat in the Hat
+    216) pinned a wide release to the 0.55 footprint floor on opening day."""
+
+    def test_widest_skipped_before_opening_saturday(self):
+        from datetime import date
+        import fill_movie_metadata as F
+        info = {"rating": "PG", "genres": ["Adventure", "Animation"], "widest": 216,
+                "bom_title": "The Cat in the Hat", "url": "u"}
+        rows = []
+        F.fill(rows, "The Cat in the Hat", "2026-11-06", info, today=date(2026, 11, 6))
+        self.assertEqual("", rows[0]["national_theatre_count"])
+        self.assertEqual("broad_family", rows[0]["audience_type"])
+        F.fill(rows, "The Cat in the Hat", "2026-11-06", dict(info, widest=3800), today=date(2026, 11, 7))
+        self.assertEqual("3800", rows[0]["national_theatre_count"])

@@ -132,7 +132,23 @@ def history_films():
     return sorted({(h["movie"], h.get("weekend_of", "")) for h in cal.get("history", [])})
 
 
-def fill(rows, movie, weekend_of, info):
+def prerelease(weekend_of, today=None):
+    """True before the Saturday of the film's opening weekend.
+
+    Audit 2026-11-06: BOM's "Widest Release" is a placeholder pre-release
+    (The Cat in the Hat 216, Queen at Sea 1), and 216 pinned a ~3,800-theatre
+    wide release to the 0.55 footprint floor on its opening Friday. Before
+    the opening chart exists the count stays blank (footprint 1.0);
+    sync_opening_theatre_counts.py writes the real count from Saturday on."""
+    from datetime import date, timedelta
+    try:
+        friday = date.fromisoformat((weekend_of or "").strip()[:10])
+    except ValueError:
+        return False
+    return (today or date.today()) < friday + timedelta(days=1)
+
+
+def fill(rows, movie, weekend_of, info, today=None):
     key = movie.strip().lower()
     row = next((r for r in rows if r["movie"].strip().lower() == key), None)
     created = row is None
@@ -140,9 +156,10 @@ def fill(rows, movie, weekend_of, info):
         row = {k: "" for k in FIELDS}; row["movie"] = movie; row["weekend_of"] = weekend_of
         rows.append(row)
     genre, aud = map_genre(info["genres"]) if info else ("", "")
+    widest = info["widest"] if info and info["widest"] and not prerelease(row.get("weekend_of") or weekend_of, today) else None
     changes = []
     for k, v in (("genre", genre), ("audience_type", aud), ("rating", info["rating"] if info else ""),
-                 ("national_theatre_count", str(info["widest"]) if info and info["widest"] else "")):
+                 ("national_theatre_count", str(widest) if widest else "")):
         if v and not (row.get(k) or "").strip():
             row[k] = v; changes.append(f"{k}={v}")
     if changes and info:
