@@ -50,6 +50,11 @@ RUN_STATE_UNKNOWN = "unknown"
 # the normal TTL. A briefly-stuck lock is visible and self-heals at the hard
 # ceiling; breaking a still-active lock silently double-runs AMC (data corruption).
 AMC_LOCK_HARD_TTL_MULTIPLIER = float(os.environ.get("AMC_LOCK_HARD_TTL_MULTIPLIER", "3.0"))
+# Minimum lock age before an under-TTL lock may be broken because its holder
+# run is confirmed finished (avoids probing a lock that was just taken).
+AMC_LOCK_DEAD_HOLDER_MIN_AGE_SEC = float(os.environ.get("AMC_LOCK_DEAD_HOLDER_MIN_AGE_SEC", "300"))
+# Release attempts: one failed delete push left a lock behind for 6h (2026-11-06).
+AMC_LOCK_RELEASE_ATTEMPTS = int(os.environ.get("AMC_LOCK_RELEASE_ATTEMPTS", "4"))
 # Retry budget for the run-status probe before declaring UNKNOWN.
 AMC_LOCK_PROBE_ATTEMPTS = int(os.environ.get("AMC_LOCK_PROBE_ATTEMPTS", "3"))
 AMC_LOCK_PROBE_BACKOFF_SEC = float(os.environ.get("AMC_LOCK_PROBE_BACKOFF_SEC", "2.0"))
@@ -223,6 +228,19 @@ def _lock_is_stale(metadata: dict[str, Any], ttl_seconds: int,
     except (TypeError, ValueError):
         age = ttl_seconds + 1
     if age < ttl_seconds:
+        # Under TTL, break ONLY when the holder run is confirmed finished.
+        # 2026-11-06: run 42271260943's release push failed once, leaving its
+        # lock behind after the run ended; collect-links ET/CT/PT and the
+        # 22:30Z snapshot then each burned 2h waiting on a dead run and failed
+        # until the 6h TTL lapsed. A completed run cannot hold the lock, so
+        # this is safe; True/UNKNOWN/None keep the lock as before.
+        holder = str(metadata.get("run_id") or "")
+        if (age >= AMC_LOCK_DEAD_HOLDER_MIN_AGE_SEC and holder
+                and holder != str(current_run_id or "")
+                and _github_run_is_active(holder) is False):
+            print(f"AMC lock: holder run {holder} has finished but left its "
+                  f"lock ({age:.0f}s old) — breaking before TTL")
+            return True
         return False
 
     # A lock held by MY OWN workflow run was leaked by an earlier leg of this
@@ -467,9 +485,22 @@ def release(args: argparse.Namespace) -> int:
         )
         return 0
 
-    if _delete_lock(repo_root, args.lock_branch, current_sha):
-        print(f"AMC lock: released {current_sha[:12]} from run {metadata.get('run_id', 'unknown')}")
-        return 0
+    attempts = max(1, AMC_LOCK_RELEASE_ATTEMPTS)
+    for attempt in range(attempts):
+        if _delete_lock(repo_root, args.lock_branch, current_sha):
+            print(f"AMC lock: released {current_sha[:12]} from run {metadata.get('run_id', 'unknown')}")
+            return 0
+        if attempt == attempts - 1:
+            break
+        print(f"AMC lock: release push failed (attempt {attempt + 1}/{attempts}); retrying")
+        time.sleep(AMC_LOCK_PROBE_BACKOFF_SEC * (attempt + 1))
+        existing = _read_lock_metadata(repo_root, args.lock_branch)
+        if not existing:
+            print("AMC lock: branch already absent")
+            return 0
+        if existing[0] != expected_sha:
+            print("AMC lock: lock changed hands during release retry; leaving it in place")
+            return 0
     print("AMC lock: release failed")
     return 1
 

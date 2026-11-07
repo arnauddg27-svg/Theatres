@@ -220,6 +220,40 @@ class LockStaleTest(unittest.TestCase):
         self.assertFalse(
             self.mod._lock_is_stale(fresh, self.ttl, current_run_id="999"))
 
+    def test_under_ttl_finished_holder_is_broken(self):
+        # 2026-11-06: a finished run's leaked lock blocked 4 runs for 6h.
+        self._patch_probe(False)
+        t = __import__("time").time()
+        leaked = {"created_at_epoch": t - 400, "run_id": "999"}
+        self.assertTrue(self.mod._lock_is_stale(leaked, self.ttl, current_run_id="555"))
+        # too fresh to probe -> kept
+        fresh = {"created_at_epoch": t - 30, "run_id": "999"}
+        self.assertFalse(self.mod._lock_is_stale(fresh, self.ttl, current_run_id="555"))
+
+    def test_under_ttl_active_or_unknown_holder_is_kept(self):
+        t = __import__("time").time()
+        lock = {"created_at_epoch": t - 400, "run_id": "999"}
+        for state in (True, self.mod.RUN_STATE_UNKNOWN, None):
+            self._patch_probe(state)
+            self.assertFalse(self.mod._lock_is_stale(lock, self.ttl, current_run_id="555"))
+
+    def test_release_retries_failed_delete_push(self):
+        calls = {"n": 0}
+        def flaky_delete(repo_root, branch, sha):
+            calls["n"] += 1
+            return calls["n"] >= 2
+        orig = (self.mod._delete_lock, self.mod._read_lock_metadata, self.mod.AMC_LOCK_PROBE_BACKOFF_SEC)
+        self.mod._delete_lock = flaky_delete
+        self.mod._read_lock_metadata = lambda root, branch: ("abc", {"run_id": "1"})
+        self.mod.AMC_LOCK_PROBE_BACKOFF_SEC = 0
+        try:
+            import argparse
+            args = argparse.Namespace(repo_root=".", lock_branch="x", lock_sha="abc")
+            self.assertEqual(0, self.mod.release(args))
+            self.assertEqual(2, calls["n"])
+        finally:
+            self.mod._delete_lock, self.mod._read_lock_metadata, self.mod.AMC_LOCK_PROBE_BACKOFF_SEC = orig
+
     def test_under_ttl_never_stale(self):
         self._patch_probe(self.mod.RUN_STATE_UNKNOWN)
         fresh = {"created_at_epoch": __import__("time").time() - 10, "run_id": "999"}
