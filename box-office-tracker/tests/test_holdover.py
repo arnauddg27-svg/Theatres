@@ -222,6 +222,23 @@ class ForecastTest(unittest.TestCase):
         few = {"Saturday": {("CNMK", f"t{i}"): 40.0 for i in range(F.MIN_CENSUS_THEATRES - 1)}}
         self.assertEqual(F.census_ratios(base, few), {})
 
+    def test_census_is_shadow_not_headline_by_default(self):
+        self.assertFalse(F.census_headline())
+        with mock.patch.dict(os.environ, {"HOLDOVER_CENSUS_HEADLINE": "1"}):
+            self.assertTrue(F.census_headline())
+        # headline and census-shadow rows dedup independently in the log
+        with tempfile.TemporaryDirectory() as td:
+            log = os.path.join(td, "log.csv")
+            base = {"weekend_of": "2026-11-06", "movie": "Wildwood", "weekend_num": "3",
+                    "headline_mid_m": "6.0", "forecast_stage": "fri_known", "days_actual": "Friday",
+                    "days_census": "", "logged_at": "2026-11-08T07:00:00Z", "model_version": F.MODEL_VERSION}
+            shadow = {**base, "headline_mid_m": "3.6", "forecast_stage": "fri_sat_known",
+                      "days_census": "Saturday", "model_version": F.CENSUS_MODEL_VERSION}
+            self.assertEqual(F.append_log([base, shadow], log), 2)
+            self.assertEqual(F.append_log([base, shadow], log), 0)      # both unchanged
+            self.assertEqual(F.append_log([{**shadow, "headline_mid_m": "3.9"}], log), 1)
+            self.assertEqual(F.append_log([base], log), 0)              # headline still unchanged
+
     def test_log_skips_unchanged_rows(self):
         with tempfile.TemporaryDirectory() as td:
             path = os.path.join(td, "log.csv")

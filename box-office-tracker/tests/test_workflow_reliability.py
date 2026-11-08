@@ -491,6 +491,18 @@ class WorkflowReliabilityTest(unittest.TestCase):
             block,
         )
 
+    def test_every_pipeline_run_kicks_the_scheduler(self):
+        # 2026-11-08: GitHub dropped ~90% of the scheduler's cron ticks; the
+        # pipeline re-dispatches it from inside GitHub as a third heartbeat.
+        wf = self.workflow
+        start = wf.index("  kick-scheduler:")
+        block = wf[start: wf.index("  collect-links:", start)]
+        self.assertIn("actions: write", block)
+        self.assertIn("gh workflow run box-office-scheduler.yml", block)
+        self.assertIn("-lt 600", block)                      # no pile-up of pending ticks
+        self.assertIn("github.event_name == 'workflow_dispatch'", block)
+        self.assertNotIn("needs:", block)                    # fires at run start, not after 5h of legs
+
     def test_github_native_scheduler_dispatches_all_production_slots(self):
         scheduler = self.scheduler
         script = self.scheduler_script

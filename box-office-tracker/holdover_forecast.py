@@ -49,6 +49,15 @@ SHAPE_JSON = os.path.join(DATA_DIR, "holdover-day-shape.json")
 LOG_CSV = os.path.join(DATA_DIR, "holdover-prediction-log.csv")
 DAILY_CSV = os.path.join(DATA_DIR, "daily-actual-overrides.csv")
 MODEL_VERSION = "holdover-v1"
+# 2026-11-08: the Saturday seat census is NOT headlined until it grades well.
+# Graded 2026-10-30 (n=3): prior+Friday-actual 5.7% mean |err|, Friday actual
+# + Saturday census 23.5% (Wildwood +10 -> -21%, YCSE -3 -> -39%); 2026-11-06
+# Wildwood's Saturday census ratio was 0.74 against a Friday ratio of 1.82.
+# Holdover Saturdays are walk-up heavy and the census under-reads them. The
+# headline uses reported days only; the census variant is still logged as a
+# shadow row (model_version + "-census") so it keeps being graded.
+# HOLDOVER_CENSUS_HEADLINE=1 restores the census in the headline.
+CENSUS_MODEL_VERSION = MODEL_VERSION + "-census"
 DAYS = ("Friday", "Saturday", "Sunday")
 OFFSET = {"Thursday": -1, "Friday": 0, "Saturday": 1, "Sunday": 2}
 CENSUS_CHAINS = ("AMC", "CNMK", "ALMO", "HARK", "WEBD")
@@ -309,6 +318,16 @@ def film_forecast(entry, shape_by_pair, actuals_path=DAILY_CSV, census=True, fet
             "model_version": MODEL_VERSION}
 
 
+def census_headline():
+    return os.environ.get("HOLDOVER_CENSUS_HEADLINE", "0") == "1"
+
+
+def _log_key(r):
+    # Headline and census-shadow rows dedup independently.
+    return (r.get("weekend_of"), holdover.title_key(r.get("movie")),
+            r.get("model_version") or MODEL_VERSION)
+
+
 def append_log(rows, path=LOG_CSV):
     """Append, skipping a film whose last row has the same numbers (a settled
     weekend keeps being re-forecast by every finalize until the next one)."""
@@ -320,11 +339,11 @@ def append_log(rows, path=LOG_CSV):
             reader = csv.DictReader(f)
             fields = list(reader.fieldnames or LOG_FIELDS)
             for r in reader:
-                last[(r.get("weekend_of"), holdover.title_key(r.get("movie")))] = r
+                last[_log_key(r)] = r
         fields += [c for c in LOG_FIELDS if c not in fields]
     same = ("headline_mid_m", "forecast_stage", "days_actual", "days_census")
     rows = [r for r in rows
-            if not (prev := last.get((r["weekend_of"], holdover.title_key(r["movie"]))))
+            if not (prev := last.get(_log_key(r)))
             or any(str(prev.get(k, "")) != str(r.get(k, "")) for k in same)]
     if not rows:
         return 0
@@ -427,9 +446,11 @@ def main(argv=None):
     stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     rows = []
     print(f"\n{'=' * 70}\n  Holdover Weekend Forecasts — weekend of {weekend}\n{'=' * 70}")
+    headline_census = census_headline()
     for e in entries:
         try:
-            row = film_forecast(e, shape)
+            row = film_forecast(e, shape, census=headline_census)
+            shadow = None if headline_census else film_forecast(e, shape, census=True)
         except Exception as exc:
             print(f"  ⚠️  {e['movie']}: forecast failed ({type(exc).__name__}: {exc})")
             continue
@@ -442,6 +463,12 @@ def main(argv=None):
               f"${row['headline_mid_m']:.2f}M [{row['headline_low_m']:.2f}-{row['headline_high_m']:.2f}] "
               f"stage={row['forecast_stage']} actual={row['days_actual'] or '-'} "
               f"census={row['days_census'] or '-'} {row['day_m']}")
+        if shadow and shadow.get("days_census"):
+            shadow["logged_at"] = stamp
+            shadow["model_version"] = CENSUS_MODEL_VERSION
+            rows.append(shadow)
+            print(f"    census shadow (not headlined, graded only): ${shadow['headline_mid_m']:.2f}M "
+                  f"stage={shadow['forecast_stage']} census={shadow['days_census']} {shadow['day_m']}")
     if rows and not args.no_log:
         append_log(rows)
     return 0
