@@ -4,8 +4,17 @@ on:
   # Primary scheduler. This workflow does not touch AMC; it only dispatches the
   # Box Office Pipeline with explicit inputs. The VPS runs the same scheduler
   # code as a watchdog fallback after a grace window.
+  # GitHub drops most ticks of a `*/30` cron on this repo: 3-5 of the 48
+  # daily ticks actually ran on every day from 2026-10-26 to 2026-11-07 (the
+  # VPS watchdog quietly carried the rest until its token was revoked on
+  # 2026-11-06 and Saturday 11-07 lost every AMC snapshot slot). :00 and :30
+  # are GitHub's busiest cron minutes; off-peak minutes are serviced far
+  # more often, and several entries give each slot several chances. The
+  # scheduler dedups against existing runs and the concurrency group
+  # serialises the ticks, so extra ticks are free.
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '4,19,34,49 * * * *'
+    - cron: '11,26,41,56 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:

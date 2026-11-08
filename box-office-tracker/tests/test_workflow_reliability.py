@@ -496,7 +496,16 @@ class WorkflowReliabilityTest(unittest.TestCase):
         script = self.scheduler_script
 
         self.assertIn("name: Box Office Scheduler", scheduler)
-        self.assertIn("cron: '*/30 * * * *'", scheduler)
+        # 2026-11-08: GitHub serviced 3-5 of 48 daily `*/30` ticks for two
+        # weeks; off-peak minutes, several entries, and never :00/:30.
+        crons = re.findall(r"- cron: '([^']+)'", scheduler)
+        self.assertGreaterEqual(len(crons), 2, crons)
+        minutes = sorted({int(m) for c in crons for m in c.split()[0].split(",")})
+        self.assertGreaterEqual(len(minutes), 8, minutes)
+        self.assertFalse({0, 30} & set(minutes), minutes)
+        self.assertLessEqual(max(b - a for a, b in zip(minutes, minutes[1:] + [minutes[0] + 60])), 15, minutes)
+        for c in crons:
+            self.assertEqual(c.split()[1:], ["*", "*", "*", "*"], c)
         self.assertIn("actions: write", scheduler)
         self.assertIn("contents: read", scheduler)
         self.assertIn("box-office-scheduler", scheduler)
