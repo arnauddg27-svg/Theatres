@@ -95,9 +95,51 @@ class TrackedTitlesTest(unittest.TestCase):
                 mock.patch.object(scraper, "LINKS_JSON", scraper.Path(os.path.join(td, "x.json"))), \
                 mock.patch.object(scraper, "THEATRE_COUNTS_JSON", scraper.Path(os.path.join(td, "y.json"))), \
                 mock.patch.object(scraper, "calendar_titles_for_weekend", return_value=["Everest"]), \
-                mock.patch.object(scraper.holdover, "collection_titles", return_value=["Wildwood"]) as ct:
+                mock.patch.object(scraper.holdover, "slate", return_value=(["Everest"], ["Wildwood"])) as ct:
             self.assertEqual(scraper.tracked_movie_titles_from_state("2026-10-30"), ["Everest", "Wildwood"])
             ct.assert_called_with("2026-10-30", ["Everest"])
+
+    def test_market_holdover_displaces_small_marketless_opener(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        reg = os.path.join(tmp.name, "holdover-titles.csv")
+        H.register(H.entries_from_events(EVENTS, NOW), reg)
+        markets = os.path.join(tmp.name, "markets.csv")
+        with open(markets, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["date", "movie_title", "notes"])
+            w.writerow(["2026-10-29", "Big", "weekend_of=2026-10-30; settlement_rules=x"])
+            w.writerow(["2026-10-29", "Ramayana", "weekend_of=2026-10-30"])
+            w.writerow(["2026-10-22", "Tiny", "weekend_of=2026-10-23"])   # other weekend
+        log = os.path.join(tmp.name, "prediction-log.csv")
+        with open(log, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["logged_at", "weekend_of", "movie", "headline_mid_m"])
+            w.writerow(["2026-10-30T01:00:00Z", "2026-10-30", "Tiny", "4.0"])
+            w.writerow(["2026-10-30T02:00:00Z", "2026-10-30", "Tiny", "1.7"])     # latest < $3M
+            w.writerow(["2026-10-30T02:00:00Z", "2026-10-30", "Mid", "2.4"])      # < $3M too
+            w.writerow(["2026-10-30T02:00:00Z", "2026-10-30", "Big", "1.0"])      # has a market: protected
+            w.writerow(["2026-10-30T02:00:00Z", "2026-10-30", "Ramayana: Rise of A Legend", "0.9"])
+            w.writerow(["2026-10-30T02:00:00Z", "2026-10-30", "Unknown", "5.0"])
+        openers = ["Big", "Ramayana: Rise of A Legend", "Unknown", "Mid", "Tiny", "Fresh"]
+        kw = dict(path=reg, live=False, markets_path=markets, forecasts_path=log)
+        with mock.patch.dict(os.environ, {"HOLDOVER_COLLECTION": "1", "HOLDOVER_MAX_TRACKED_TITLES": "6"}):
+            kept, extra = H.slate("2026-10-30", openers, **kw)
+            # Three holdovers wait; two openers are displaceable (Tiny 1.7 first,
+            # then Mid 2.4). Big/Ramayana have markets, Unknown is $5M, Fresh
+            # has no forecast yet: all protected.
+            self.assertEqual(kept, ["Big", "Ramayana: Rise of A Legend", "Unknown", "Fresh"])
+            self.assertEqual(extra, ["Clayface", "Wildwood"])
+            # Room without displacement: nothing is displaced.
+            kept, extra = H.slate("2026-10-30", ["Tiny"], **kw)
+            self.assertEqual((kept, extra), (["Tiny"], ["Clayface", "Wildwood", "You Can See Everything"]))
+        with mock.patch.dict(os.environ, {"HOLDOVER_COLLECTION": "1", "HOLDOVER_MAX_TRACKED_TITLES": "6",
+                                          "HOLDOVER_DISPLACE_MIN_M": "0"}):
+            kept, extra = H.slate("2026-10-30", openers, **kw)
+            self.assertEqual((kept, extra), (openers, []))
+        self.assertEqual(H.market_title_keys("2026-10-30", markets), {"big", "ramayana"})
+        self.assertTrue(H._has_market(H.title_key("Ramayana: Rise of A Legend"), {"ramayana"}))
+        self.assertFalse(H._has_market("ramayana", {"ramayanas"}))
 
 
 class DedupGuardTest(unittest.TestCase):

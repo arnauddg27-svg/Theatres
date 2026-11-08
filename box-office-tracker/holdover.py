@@ -210,25 +210,109 @@ def without_holdovers(titles, weekend_of, label="", path=None, actuals_path=None
     return kept
 
 
-def collection_titles(weekend_of, openers, path=None, live=True):
-    """Holdover titles to collect on top of `openers` for `weekend_of`."""
+POLY_CSV = DATA_DIR / "polymarket-markets.csv"
+PREDICTION_LOG = DATA_DIR / "prediction-log.csv"
+_NOTES_WEEKEND_RE = re.compile(r"weekend_of=(\d{4}-\d{2}-\d{2})")
+
+
+def displace_min_m():
+    """Openers forecast under this (and without a market) yield their slot."""
+    try:
+        return float(os.environ.get("HOLDOVER_DISPLACE_MIN_M") or 3.0)
+    except ValueError:
+        return 3.0
+
+
+def market_title_keys(weekend_of, path=None):
+    """Title keys with an opening-weekend market row stamped for `weekend_of`."""
+    out = set()
+    try:
+        with open(path or POLY_CSV, newline="") as f:
+            for r in csv.DictReader(f):
+                m = _NOTES_WEEKEND_RE.search(r.get("notes") or "")
+                if m and m.group(1) == weekend_of:
+                    out.add(title_key(r.get("movie_title")))
+    except OSError:
+        pass
+    return out
+
+
+def _has_market(key, market_keys):
+    # "Ramayana" (market spelling) vs "Ramayana: Rise of A Legend" (calendar).
+    return any(key == k or key.startswith(k + " ") or k.startswith(key + " ") for k in market_keys)
+
+
+def latest_forecasts(weekend_of, path=None):
+    """{title key: latest positive headline mid $M} logged for `weekend_of`."""
+    series = {}
+    try:
+        with open(path or PREDICTION_LOG, newline="") as f:
+            for r in csv.DictReader(f):
+                if (r.get("weekend_of") or "").strip() != weekend_of:
+                    continue
+                try:
+                    mid = float(r.get("headline_mid_m") or 0)
+                except ValueError:
+                    continue
+                if mid > 0:
+                    series.setdefault(title_key(r.get("movie")), []).append((r.get("logged_at") or "", mid))
+    except OSError:
+        return {}
+    return {k: sorted(v)[-1][1] for k, v in series.items()}
+
+
+def slate(weekend_of, openers, path=None, live=True, markets_path=None, forecasts_path=None):
+    """(openers to keep, holdovers to add) for `weekend_of` under the cap.
+
+    Openers come first, holdovers fill the room by market volume. When
+    market-listed holdovers are left waiting, an opener with NO market whose
+    latest forecast is under displace_min_m() (the user's $3M floor; the
+    small-film gate itself stops at $1.5M) yields its slot, lowest forecast
+    first. 2026-11-06: six openers filled the cap and Wildwood/Clayface (live
+    wk-3 markets) were not collected while Jimmy ($1.7M, no market) was.
+    """
+    openers = list(openers or [])
     if not enabled() or not weekend_of:
-        return []
+        return openers, []
     if live and weekend_of not in _LIVE_DONE:
         _LIVE_DONE.add(weekend_of)
         refresh(path)
-    have = {title_key(t) for t in openers or []}
-    room = max(0, max_tracked_titles() - len(have))
+    opener_keys = {title_key(t) for t in openers}
+    waiting = [r["movie"] for r in entries(weekend_of, path) if title_key(r["movie"]) not in opener_keys]
+    room = max(0, max_tracked_titles() - len(openers))
+    if len(waiting) > room:
+        markets = market_title_keys(weekend_of, markets_path)
+        forecasts = latest_forecasts(weekend_of, forecasts_path)
+        floor = displace_min_m()
+        displaceable = sorted(
+            (t for t in openers
+             if not _has_market(title_key(t), markets)
+             and 0 < forecasts.get(title_key(t), 0.0) < floor),
+            key=lambda t: forecasts[title_key(t)])
+        yielded = displaceable[:len(waiting) - room]
+        if yielded:
+            print(f"  ↷ holdover: {', '.join(f'{t} (${forecasts[title_key(t)]:.1f}M, no market)' for t in yielded)} "
+                  f"yield the slot to market-listed holdover(s) (HOLDOVER_DISPLACE_MIN_M=${floor:.1f}M)")
+            gone = {title_key(t) for t in yielded}
+            openers = [t for t in openers if title_key(t) not in gone]
+            room = max(0, max_tracked_titles() - len(openers))
+    have = {title_key(t) for t in openers}
     picked, skipped = [], []
-    for r in entries(weekend_of, path):
-        if title_key(r["movie"]) in have:
+    for movie in waiting:
+        if title_key(movie) in have:
             continue
-        (picked if len(picked) < room else skipped).append(r["movie"])
-        have.add(title_key(r["movie"]))
+        (picked if len(picked) < room else skipped).append(movie)
+        have.add(title_key(movie))
     if skipped:
         print(f"  ↷ holdover: no room for {', '.join(skipped)} "
               f"(slate capped at {max_tracked_titles()} films, HOLDOVER_MAX_TRACKED_TITLES)")
-    return picked
+    return openers, picked
+
+
+def collection_titles(weekend_of, openers, path=None, live=True):
+    """Holdover titles to collect on top of `openers` for `weekend_of`
+    (callers that cannot drop an opener; see slate())."""
+    return slate(weekend_of, openers, path, live)[1]
 
 
 def main(argv=None):

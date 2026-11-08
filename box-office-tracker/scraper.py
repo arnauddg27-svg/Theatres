@@ -2164,7 +2164,9 @@ def tracked_movie_titles_from_state(weekend_of):
     kept = small_film_gate.filter_titles(deduped, weekend_of, "tracked titles")
     # 2nd/3rd-weekend films with a live Polymarket market, while the slate
     # has room (2026-10-31, holdover.py).
-    extra = holdover.collection_titles(weekend_of, kept)
+    # A market-listed holdover displaces a market-less opener forecast under
+    # $3M when the slate is full (2026-11-08, holdover.slate).
+    kept, extra = holdover.slate(weekend_of, kept)
     if extra and (weekend_of, tuple(extra)) not in _HOLDOVER_REPORTED:
         _HOLDOVER_REPORTED.add((weekend_of, tuple(extra)))
         print(f"  🎟️  tracked titles: adding holdover film(s) for weekend {weekend_of}: {', '.join(extra)}")

@@ -362,8 +362,9 @@ def _active_movie_titles(repo_root: Path, expected_weekend: str, market_since: s
         _unique_titles(titles), expected_weekend, "dedup guard",
         path=repo_root / PREDICTION_LOG_PATH)
     # 2nd/3rd-weekend films with a market need Phase 1 links too (2026-10-31).
-    active += holdover.collection_titles(expected_weekend, active,
-                                         path=repo_root / HOLDOVER_TITLES_PATH)
+    kept, extra = holdover.slate(expected_weekend, active,
+                                 path=repo_root / HOLDOVER_TITLES_PATH)
+    active = kept + extra
     if not active:
         print(f"No active movie state found for weekend {expected_weekend}; running")
     return active
