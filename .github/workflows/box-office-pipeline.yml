@@ -942,7 +942,7 @@ jobs:
         working-directory: box-office-tracker
         run: python3 scripts/fill_movie_metadata.py --tracked --write || echo "::warning::movie metadata fill failed — predictions run on defaults for unfilled films"
 
-      - name: Refresh Box Office Mojo theatre counts (Sat 18Z - Mon)
+      - name: Refresh Box Office Mojo theatre counts (Sat 18Z - Sun)
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         # 2026-11-08: theatre-counts.json was only written by Phase 1
         # collect-links (Mon-Thu) and by six legacy cron lines on a second

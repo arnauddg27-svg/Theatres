@@ -24,7 +24,11 @@ class WindowTest(unittest.TestCase):
         self.assertFalse(rtc.window_open(utc(2026, 11, 7, 17, 59)))  # Sat before 18Z
         self.assertTrue(rtc.window_open(utc(2026, 11, 7, 18, 0)))
         self.assertTrue(rtc.window_open(utc(2026, 11, 8, 2, 30)))    # Sunday
-        self.assertTrue(rtc.window_open(utc(2026, 11, 9, 23, 0)))    # Monday
+        self.assertTrue(rtc.window_open(utc(2026, 11, 8, 23, 59)))
+        # Monday is out: the tracked state has rolled to next weekend's films
+        # and collect-links owns the counts file (2026-11-09).
+        self.assertFalse(rtc.window_open(utc(2026, 11, 9, 0, 0)))
+        self.assertFalse(rtc.window_open(utc(2026, 11, 9, 16, 15)))
         self.assertFalse(rtc.window_open(utc(2026, 11, 10, 1, 0)))   # Tuesday
 
     def test_main_skips_outside_window_and_fetches_openers_inside(self):
@@ -39,6 +43,11 @@ class WindowTest(unittest.TestCase):
                 mock.patch.object(scraper, "fetch_bom_theatre_counts") as fetch:
             self.assertEqual(rtc.main([]), 0)
             fetch.assert_called_once_with(["Godzilla Minus Zero"])
+        # A weekend that has not opened yet is never fetched, even with --force.
+        with mock.patch.object(scraper, "opening_weekend_friday", return_value="2999-01-01"), \
+                mock.patch.object(scraper, "fetch_bom_theatre_counts") as fetch:
+            self.assertEqual(rtc.main(["--force"]), 0)
+            fetch.assert_not_called()
 
     def test_finalize_runs_refresh_before_sync(self):
         yml = (ROOT.parent / ".github" / "workflows" / "box-office-pipeline.yml").read_text()

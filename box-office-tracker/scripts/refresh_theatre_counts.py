@@ -13,9 +13,15 @@ post-Friday chart counts; nothing to do" on every weekend finalize.
 
 Runs in finalize before the sync. It fetches only from Saturday 18:00Z (BOM
 posts the Friday daily chart Saturday afternoon ET; an earlier fetch would
-stamp Thursday-preview counts as the opening count) through Monday, for the
+stamp Thursday-preview counts as the opening count) through Sunday, for the
 current collection weekend's tracked openers. Holdovers are left out: their
 opening count is already in metadata. Never fails the run.
+
+Not Monday (2026-11-09): by then the tracked state has rolled to NEXT
+weekend's calendar titles, so the Monday run looked up five unreleased films,
+matched none, and rewrote the file with no counts — the same file Monday's
+collect-links owns for the new weekend. A title list that still contains a
+film released after today is skipped for the same reason.
 """
 import sys
 from datetime import datetime, timezone
@@ -28,24 +34,27 @@ FETCH_FROM_UTC_HOUR_SATURDAY = 18
 
 
 def window_open(now=None):
-    """True from Saturday 18:00Z through Monday 23:59Z (UTC)."""
+    """True from Saturday 18:00Z through Sunday 23:59Z (UTC)."""
     now = now or datetime.now(timezone.utc)
     wd = now.weekday()  # Mon=0 ... Sat=5, Sun=6
     if wd == 5:
         return now.hour >= FETCH_FROM_UTC_HOUR_SATURDAY
-    return wd in (6, 0)
+    return wd == 6
 
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     force = "--force" in argv
     if not force and not window_open():
-        print("refresh_theatre_counts: outside the Sat 18Z-Mon window; nothing to do")
+        print("refresh_theatre_counts: outside the Sat 18Z-Sun window; nothing to do")
         return 0
     import holdover
     import scraper
 
     weekend = scraper.opening_weekend_friday(datetime.now())
+    if weekend > datetime.now(timezone.utc).strftime("%Y-%m-%d"):
+        print(f"refresh_theatre_counts: weekend {weekend} has not opened yet; nothing to do")
+        return 0
     titles = scraper.tracked_movie_titles_from_state(weekend)
     openers = holdover.without_holdovers(titles, weekend)
     if not openers:
