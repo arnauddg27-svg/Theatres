@@ -2,7 +2,7 @@
   "date": "2026-11-13",
   "weekend_of": "2026-11-13",
   "collected_local_date": "2026-11-09",
-  "collected_at": "2026-11-09T14:04:18.064918+00:00",
+  "collected_at": "2026-11-09T16:41:55.319240+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -109479,7 +109479,91 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417694+00:00",
+          "collected_at": "2026-11-09T16:41:55.297559+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148182661",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "148182662",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148185499",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148185500",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148180372",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148180370",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297630+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148182659",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "148182660",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148185497",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148185498",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148180369",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148180367",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297796+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -109604,7 +109688,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417723+00:00",
+          "collected_at": "2026-11-09T16:41:55.297540+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -109670,66 +109754,229 @@
           },
           "collected_at": "2026-11-09T15:43:22.502215+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148121389",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148121375",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148121374",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148121372",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148121284",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148121268",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148121265",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148121259",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148121318",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148121341",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148121339",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148121337",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148555216",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667363+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148121391",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148121387",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148121385",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148121382",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148121286",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148121276",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148121273",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148121270",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148121300",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148121307",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148121304",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148121303",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148555217",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297727+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "3:45pm",
-            "showtime_id": "148121370",
+            "showtime": "5:00pm",
+            "showtime_id": "148121362",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148121368",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148121366",
+            "showtime": "8:00pm",
+            "showtime_id": "148121364",
             "format": "Laser at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "148121255",
+            "showtime": "4:00pm",
+            "showtime_id": "148121237",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "148121252",
+            "showtime": "7:00pm",
+            "showtime_id": "148121240",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148121249",
+            "showtime": "10:00pm",
+            "showtime_id": "148121242",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148121336",
+            "showtime": "4:15pm",
+            "showtime_id": "148121356",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148121334",
+            "showtime": "6:45pm",
+            "showtime_id": "148121358",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148121333",
+            "showtime": "9:15pm",
+            "showtime_id": "148121360",
             "format": "Laser at AMC"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148555215",
+            "showtime": "4:00pm",
+            "showtime_id": "148555212",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148555213",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148555214",
             "format": "Laser at AMC"
           }
         ]
@@ -109798,7 +110045,223 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417733+00:00",
+          "collected_at": "2026-11-09T16:41:55.297565+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "147978454",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978453",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147978451",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147978452",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147978575",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147978574",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147978565",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147978566",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:55pm",
+                "showtime_id": "147978723",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978722",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147978720",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "147978721",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297817+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "147978458",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978457",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147978455",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147978456",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147978570",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147978569",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147978567",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147978568",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:55pm",
+                "showtime_id": "147978727",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978726",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147978724",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "147978725",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297807+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-13": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "147978450",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978449",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147978447",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147978448",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147978564",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147978563",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147978561",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147978562",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:55pm",
+                "showtime_id": "147978719",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147978718",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147978716",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147978717",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667399+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -109923,7 +110386,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417740+00:00",
+          "collected_at": "2026-11-09T16:36:31.667193+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -110004,81 +110467,209 @@
           },
           "collected_at": "2026-11-09T15:43:22.502281+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148170709",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148170710",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148170854",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148170853",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148170772",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148170771",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148170646",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148170647",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148170683",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148170684",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148170820",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148170821",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148529013",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667359+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "11:45am",
+                "showtime_id": "148170711",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148170712",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148170852",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "148170648",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148170649",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148170773",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148170686",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148170685",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148170819",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148529014",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297691+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-15",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148170707",
-            "format": "Laser at AMC"
+            "showtime": "11:45am",
+            "showtime_id": "148170711",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148170708",
-            "format": "English Spoken with Spanish Subtitles"
+            "showtime": "2:45pm",
+            "showtime_id": "148170712",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148170847",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148170846",
+            "showtime_id": "148170852",
             "format": "Laser at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148170774",
+            "showtime": "11:15am",
+            "showtime_id": "148170648",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148170775",
+            "showtime": "2:15pm",
+            "showtime_id": "148170649",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "148170644",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148170645",
+            "showtime_id": "148170773",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148170682",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "148170681",
+            "showtime": "12:00pm",
+            "showtime_id": "148170686",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "148170816",
+            "showtime": "2:30pm",
+            "showtime_id": "148170685",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148170817",
+            "showtime": "7:15pm",
+            "showtime_id": "148170819",
             "format": "Laser at AMC"
           }
         ],
         "Victorian Psycho": [
           {
             "showtime": "8:00pm",
-            "showtime_id": "148529012",
+            "showtime_id": "148529014",
             "format": "Laser at AMC"
           }
         ]
@@ -110132,7 +110723,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417745+00:00",
+          "collected_at": "2026-11-09T16:41:55.297581+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -110199,72 +110790,186 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502268+00:00",
+          "collected_at": "2026-11-09T16:41:55.297721+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148175042",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148175367",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "148175369",
+                "format": "PRIME at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175044",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148175043",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148175370",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148175368",
+                "format": "PRIME at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148175045",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175278",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148175276",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148175277",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667370+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148175046",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148175387",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148175389",
+                "format": "PRIME at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175048",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148175047",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148175390",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148175388",
+                "format": "PRIME at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148175049",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175281",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148175279",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148175280",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297747+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
             "showtime": "5:00pm",
-            "showtime_id": "148175371",
+            "showtime_id": "148175376",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148175038",
+            "showtime_id": "148175030",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "11:00pm",
-            "showtime_id": "148175373",
+            "showtime_id": "148175378",
             "format": "PRIME at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148175374",
-            "format": "PRIME at AMC"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "148175040",
+            "showtime_id": "148175034",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "148175372",
+            "showtime_id": "148175377",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "148175039",
+            "showtime_id": "148175032",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Ghost Soldier": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "148175041",
+            "showtime_id": "148175036",
             "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "148175286",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148175285",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148175287",
-            "format": "Laser at AMC"
           }
         ]
       }
@@ -110305,7 +111010,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417752+00:00",
+          "collected_at": "2026-11-09T16:41:55.297595+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -110350,49 +111055,124 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502226+00:00",
+          "collected_at": "2026-11-09T16:41:55.297758+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "How to Rob a Bank": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148091373",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148091370",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148091368",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148091458",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148091460",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148091462",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148091464",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297662+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "How to Rob a Bank": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148091379",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148091377",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148091375",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148091466",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148091470",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148091472",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297716+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "How to Rob a Bank": [
           {
-            "showtime": "3:15pm",
-            "showtime_id": "148091367",
+            "showtime": "4:30pm",
+            "showtime_id": "148091405",
             "format": "undefined"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148091364",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:15pm",
-            "showtime_id": "148091362",
+            "showtime": "7:30pm",
+            "showtime_id": "148091408",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148091451",
+            "showtime": "3:00pm",
+            "showtime_id": "148091525",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148091452",
+            "showtime": "5:30pm",
+            "showtime_id": "148091527",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148091454",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148091456",
+            "showtime": "8:00pm",
+            "showtime_id": "148091531",
             "format": "undefined"
           }
         ]
@@ -110439,7 +111219,223 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417758+00:00",
+          "collected_at": "2026-11-09T16:41:55.297575+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148192349",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148192348",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148192347",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148192346",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "148192472",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148192416",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "148192473",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148192415",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "148192396",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148192395",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148192393",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148192394",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297752+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148192353",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148192352",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148192351",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148192350",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "148192461",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148192418",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "148192471",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148192417",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "148192400",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148192399",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148192397",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148192398",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667324+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-13": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148192345",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148192344",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148192343",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148192342",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "148192474",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148192414",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:20pm",
+                "showtime_id": "148192475",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148192413",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:40pm",
+                "showtime_id": "148192392",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148192391",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148192389",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148192390",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297685+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -110530,7 +111526,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417764+00:00",
+          "collected_at": "2026-11-09T16:41:55.297602+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -110602,76 +111598,123 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502241+00:00",
+          "collected_at": "2026-11-09T16:36:31.667339+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148041505",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148041504",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148041503",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148041506",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148041096",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148041094",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148041091",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148041098",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148041385",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148041386",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148041388",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148041384",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297623+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148041501",
+            "showtime": "2:00pm",
+            "showtime_id": "148041495",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "148041497",
+            "showtime": "4:25pm",
+            "showtime_id": "148041499",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148041498",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:20pm",
-            "showtime_id": "148041502",
+            "showtime": "7:30pm",
+            "showtime_id": "148041500",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148041086",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "148041082",
+            "showtime_id": "148041074",
             "format": "undefined"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148041080",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148041088",
+            "showtime_id": "148041076",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148041390",
+            "showtime": "4:45pm",
+            "showtime_id": "148041394",
             "format": "undefined"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148041391",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:30pm",
-            "showtime_id": "148041387",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148041389",
+            "showtime": "7:15pm",
+            "showtime_id": "148041393",
             "format": "undefined"
           }
         ]
@@ -110730,56 +111773,262 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417770+00:00",
+          "collected_at": "2026-11-09T16:36:31.667098+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148073931",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148073927",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148073925",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148073922",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148073743",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148073745",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "148073746",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148073748",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148073684",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148073683",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148073681",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148073680",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297742+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148073936",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148073935",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148073933",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "148073749",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "148073751",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148073752",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148073655",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148073654",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148073653",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148073651",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297674+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-13": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148073914",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148073916",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148073919",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "148073739",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148073740",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148073741",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148073650",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148073648",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148073647",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148073645",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297764+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-15",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148073904",
+            "showtime": "1:00pm",
+            "showtime_id": "148073936",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148073908",
+            "showtime": "4:00pm",
+            "showtime_id": "148073935",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "148073911",
+            "showtime": "7:00pm",
+            "showtime_id": "148073933",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148073736",
+            "showtime": "1:50pm",
+            "showtime_id": "148073749",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "148073737",
+            "showtime": "5:10pm",
+            "showtime_id": "148073751",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148073752",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148073641",
+            "showtime": "1:15pm",
+            "showtime_id": "148073655",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148073642",
+            "showtime": "3:45pm",
+            "showtime_id": "148073654",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "148073644",
+            "showtime": "6:15pm",
+            "showtime_id": "148073653",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "148073651",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -110845,7 +112094,289 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417775+00:00",
+          "collected_at": "2026-11-09T16:41:55.297529+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148138893",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148138694",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148138693",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148138692",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148138885",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148138884",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148138883",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148138784",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148160136",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148160152",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148160153",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148160154",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148160155",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148584527",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148584528",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148584529",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "148584530",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297774+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148138698",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148138697",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148138696",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148138695",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148138876",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148138875",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148138874",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148138787",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148160137",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148160158",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148160159",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148160160",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148160161",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148584531",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148584532",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148584533",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "148584534",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667348+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-13": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148138691",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148138690",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148138689",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148138891",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148138890",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148138790",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148160135",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148160149",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148160150",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148160151",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148584525",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148584526",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148584523",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "148584524",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297705+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -110970,7 +112501,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417781+00:00",
+          "collected_at": "2026-11-09T16:41:55.297554+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -111047,81 +112578,220 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502233+00:00",
+          "collected_at": "2026-11-09T16:41:55.297791+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148207053",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "148207054",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "148207055",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148207056",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148206986",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148206987",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148206988",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148206989",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148207017",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:25pm",
+                "showtime_id": "148207018",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148207019",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148207020",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148207021",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297650+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148207057",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "148207058",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "148207059",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148207060",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148206990",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148206991",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148206992",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148206993",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148207012",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:25pm",
+                "showtime_id": "148207013",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148207014",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148207015",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148207016",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297680+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "148207049",
+            "showtime": "2:00pm",
+            "showtime_id": "148207046",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:40pm",
-            "showtime_id": "148207050",
+            "showtime": "4:55pm",
+            "showtime_id": "148207047",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:35pm",
-            "showtime_id": "148207051",
+            "showtime": "7:50pm",
+            "showtime_id": "148207048",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148207052",
+            "showtime": "10:00pm",
+            "showtime_id": "148207084",
             "format": "Laser at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148206982",
+            "showtime": "4:00pm",
+            "showtime_id": "148206980",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148206983",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148206984",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148206985",
+            "showtime": "7:00pm",
+            "showtime_id": "148206981",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148207022",
+            "showtime": "2:00pm",
+            "showtime_id": "148207042",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:25pm",
-            "showtime_id": "148207023",
+            "showtime": "4:25pm",
+            "showtime_id": "148207043",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "148207024",
+            "showtime": "6:50pm",
+            "showtime_id": "148207044",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148207025",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "148207026",
+            "showtime": "9:20pm",
+            "showtime_id": "148207045",
             "format": "Laser at AMC"
           }
         ]
@@ -111180,7 +112850,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417786+00:00",
+          "collected_at": "2026-11-09T16:41:55.297608+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -111237,61 +112907,180 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502254+00:00",
+          "collected_at": "2026-11-09T16:41:55.297769+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148120847",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148120868",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148120875",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148145122",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148145047",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148145071",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148120828",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148120863",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148120851",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148120889",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297801+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148120858",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148120841",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148120881",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148145121",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148145069",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148145109",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148120830",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148120849",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148120864",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148120888",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297780+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148120890",
+            "showtime": "2:00pm",
+            "showtime_id": "148120857",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148120874",
+            "showtime": "5:15pm",
+            "showtime_id": "148120812",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148120846",
+            "showtime": "8:00pm",
+            "showtime_id": "148120869",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148145051",
+            "showtime": "5:00pm",
+            "showtime_id": "148145107",
             "format": "undefined"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148145120",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148145108",
+            "showtime": "7:30pm",
+            "showtime_id": "148145050",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148120826",
+            "showtime": "2:15pm",
+            "showtime_id": "148120850",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148120867",
+            "showtime": "4:00pm",
+            "showtime_id": "148120823",
             "format": "undefined"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148120876",
+            "showtime_id": "148120877",
             "format": "undefined"
           }
         ]
@@ -111362,7 +113151,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417792+00:00",
+          "collected_at": "2026-11-09T16:41:55.297499+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -111426,68 +113215,196 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502275+00:00",
+          "collected_at": "2026-11-09T16:41:55.297643+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148200480",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148200486",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148200487",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "148200552",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:25pm",
+                "showtime_id": "148200553",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148200554",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148200506",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148200507",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148200508",
+                "format": "undefined"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148484021",
+                "format": "Thrills & Chills"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297786+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148200479",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:15pm",
+                "showtime_id": "148200484",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148200485",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "148200549",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:25pm",
+                "showtime_id": "148200550",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148200551",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148200503",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148200504",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148200505",
+                "format": "undefined"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148484020",
+                "format": "Thrills & Chills"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297827+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
             "showtime": "2:15pm",
-            "showtime_id": "148200476",
+            "showtime_id": "148200473",
             "format": "undefined"
           },
           {
             "showtime": "5:15pm",
-            "showtime_id": "148200477",
+            "showtime_id": "148200474",
             "format": "undefined"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "148200478",
+            "showtime_id": "148200475",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "2:20pm",
-            "showtime_id": "148200546",
+            "showtime": "4:00pm",
+            "showtime_id": "148200544",
             "format": "undefined"
           },
           {
-            "showtime": "5:25pm",
-            "showtime_id": "148200547",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148200548",
+            "showtime": "7:10pm",
+            "showtime_id": "148200545",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
             "showtime": "2:30pm",
-            "showtime_id": "148200500",
+            "showtime_id": "148200497",
             "format": "undefined"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "148200501",
+            "showtime_id": "148200498",
             "format": "undefined"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "148200502",
+            "showtime_id": "148200499",
             "format": "undefined"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148484019",
+            "showtime": "4:00pm",
+            "showtime_id": "148483988",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "148483989",
             "format": "Thrills & Chills"
           }
         ]
@@ -111556,7 +113473,151 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:42:44.417798+00:00",
+          "collected_at": "2026-11-09T16:41:55.297548+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147943868",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147943869",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147943870",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147943871",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147943889",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147943886",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147943887",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147943888",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147943794",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "147943812",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147943813",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147943814",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147943815",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297732+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-13": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147943873",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147943874",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147943875",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147943876",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147943883",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147943884",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "147943885",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "147943793",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:55pm",
+                "showtime_id": "147943816",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147943817",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "147943818",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667344+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -111694,76 +113755,282 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502188+00:00",
+          "collected_at": "2026-11-09T16:36:31.667402+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-12": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147974436",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147974437",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147974398",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147974356",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147974357",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147974438",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147974389",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147974388",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147974420",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667180+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147974443",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147974444",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147974421",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147974422",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147974362",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147974363",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147974364",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "147974365",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147974397",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "147974396",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "147974395",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147974394",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297667+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147974423",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147974424",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147974425",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147974426",
+                "format": "Laser at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147974366",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147974367",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147974368",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147974369",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147974380",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147974381",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147974333",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147974355",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "147974354",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297822+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-14",
       "movies": {
         "Ebenezer": [
           {
             "showtime": "12:45pm",
-            "showtime_id": "147974441",
+            "showtime_id": "147974443",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147974440",
+            "showtime_id": "147974444",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "147974442",
+            "showtime_id": "147974421",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "147974439",
+            "showtime_id": "147974422",
             "format": "Laser at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "147974379",
+            "showtime_id": "147974362",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "147974361",
+            "showtime_id": "147974363",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147974360",
+            "showtime_id": "147974364",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "147974359",
+            "showtime_id": "147974365",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "147974393",
+            "showtime": "1:45pm",
+            "showtime_id": "147974397",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147974392",
+            "showtime": "4:15pm",
+            "showtime_id": "147974396",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147974391",
+            "showtime": "6:45pm",
+            "showtime_id": "147974395",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "147974390",
+            "showtime": "9:15pm",
+            "showtime_id": "147974394",
             "format": "Laser at AMC"
           }
         ]
@@ -111849,83 +114116,350 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502248+00:00",
+          "collected_at": "2026-11-09T16:41:55.297710+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-12": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148151377",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148151374",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148151376",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148151510",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148151508",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148151512",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148151270",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148151262",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148151266",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148590386",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148590389",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148590391",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297588+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148151348",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148151349",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148151351",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148151503",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148151522",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148151521",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148151516",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148151518",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148151288",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148151285",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148151336",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148151334",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148151331",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148590410",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148590409",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148590407",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148590405",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297615+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148151378",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148151380",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148151382",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148151384",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148151527",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148151525",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148151523",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148151524",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148151294",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148151291",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148151280",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148151276",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148151434",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148590416",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148590415",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148590414",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148590413",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297737+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
             "showtime": "3:30pm",
-            "showtime_id": "148151661",
+            "showtime_id": "148151377",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148151341",
+            "showtime": "6:30pm",
+            "showtime_id": "148151374",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "148151342",
+            "showtime": "9:30pm",
+            "showtime_id": "148151376",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "4:15pm",
-            "showtime_id": "148151515",
+            "showtime": "4:00pm",
+            "showtime_id": "148151510",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148151513",
+            "showtime": "7:00pm",
+            "showtime_id": "148151508",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "148151719",
+            "showtime": "10:00pm",
+            "showtime_id": "148151512",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148151329",
+            "showtime": "4:30pm",
+            "showtime_id": "148151270",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148151327",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "8:00pm",
-            "showtime_id": "148151325",
+            "showtime": "7:00pm",
+            "showtime_id": "148151262",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "148151404",
+            "showtime_id": "148151266",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148590404",
+            "showtime": "4:00pm",
+            "showtime_id": "148590386",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148590396",
+            "showtime": "6:45pm",
+            "showtime_id": "148590389",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148590397",
+            "showtime": "9:15pm",
+            "showtime_id": "148590391",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -112006,7 +114540,259 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502261+00:00",
+          "collected_at": "2026-11-09T16:41:55.297636+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-12": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148015741",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148015742",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148015743",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148015744",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148015745",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148015837",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148015838",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148015839",
+                "format": "undefined"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148600004",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "148600005",
+                "format": "Thrills & Chills"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667149+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148017769",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148015725",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148015726",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148015727",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148015759",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148015760",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148015761",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148015841",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148015724",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148015843",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148015844",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148015808",
+                "format": "undefined"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148599987",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148599988",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148599989",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148599990",
+                "format": "Thrills & Chills"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667303+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148015729",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148015730",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148015731",
+                "format": "undefined"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148015756",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148015757",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148015758",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148015845",
+                "format": "undefined"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148015728",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148015846",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148015847",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148015848",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148015809",
+                "format": "undefined"
+              }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148599991",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148599992",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148599993",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148599994",
+                "format": "Thrills & Chills"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297656+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -112156,76 +114942,282 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T15:43:22.502287+00:00",
+          "collected_at": "2026-11-09T16:36:31.667235+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-12": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148159987",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148159988",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148159989",
+                "format": "XL at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148159939",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148159940",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148159941",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "148159952",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148159998",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148159999",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148160000",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:36:31.667163+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-14": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148159965",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148159964",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148159963",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148159966",
+                "format": "XL at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:55pm",
+                "showtime_id": "148159930",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148159929",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148159928",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148159931",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148159957",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148159896",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148159894",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148159895",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297812+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-15": {
+          "movies": {
+            "Ebenezer": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148159969",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148159968",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148159967",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148159970",
+                "format": "XL at AMC"
+              }
+            ],
+            "How to Rob a Bank": [
+              {
+                "showtime": "12:55pm",
+                "showtime_id": "148159934",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148159933",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148159932",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148159935",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ghost Soldier": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148159956",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148159899",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148159897",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148159898",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-09T16:41:55.297698+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-15",
       "movies": {
         "Ebenezer": [
           {
             "showtime": "1:15pm",
-            "showtime_id": "148159961",
+            "showtime_id": "148159969",
             "format": "XL at AMC"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "148159960",
+            "showtime_id": "148159968",
             "format": "XL at AMC"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "148159959",
+            "showtime_id": "148159967",
             "format": "XL at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "148159962",
+            "showtime_id": "148159970",
             "format": "XL at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
             "showtime": "12:55pm",
-            "showtime_id": "148159926",
+            "showtime_id": "148159934",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:00pm",
-            "showtime_id": "148159925",
-            "format": "Laser at AMC"
+            "showtime_id": "148159933",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148159924",
+            "showtime_id": "148159932",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "148159927",
+            "showtime_id": "148159935",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
             "showtime": "1:30pm",
-            "showtime_id": "148159958",
+            "showtime_id": "148159956",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "4:10pm",
-            "showtime_id": "148159893",
-            "format": "Laser at AMC"
+            "showtime_id": "148159899",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "148159891",
+            "showtime_id": "148159897",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "148159892",
+            "showtime_id": "148159898",
             "format": "Laser at AMC"
           }
         ]
@@ -135290,10 +138282,10 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.971,
-    "fresh": 769,
-    "expected": 792,
+    "ratio": 0.9583,
+    "fresh": 69,
+    "expected": 72,
     "min_ratio": 0.9,
-    "degraded": false
+    "degraded": true
   }
 }
