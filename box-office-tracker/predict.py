@@ -166,7 +166,18 @@ SNAPSHOT_SAME_WEEK_SCALE_MAX = 3.00
 SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MIN = 0.70
 SNAPSHOT_ACTUAL_RESIDUAL_SCALE_MAX = 1.65
 SNAPSHOT_ACTUAL_RESIDUAL_MAX_WEIGHT = 0.90
-SNAPSHOT_MAX_LEAD_MINUTES = 96 * 60
+# A show's freshest pre-sale read is used only when it was taken at most this
+# long before the showtime. 96h until 2026-11-10; then 7 days
+# (scripts/early_presales_backtest.py: every graded opening since 2026-09-18
+# replayed as of noon ET Mon-Thu, frozen calibrations, no seat days). On the 19
+# films that opened above $3M: the 4-day window cannot forecast before
+# Wednesday (7 films, 36.3% MAE); the 7-day window forecasts 12 films on
+# Tuesday at 25.2% MAE (median 18.9%) and 15 on Wednesday at 27.6%, against
+# 27.5% for Thursday's call; same film-checkpoints 30.2 -> 28.9% (closer 7,
+# same 12, worse 5). Reads beyond 96h take the fitted pickup table's gt_96h
+# multiplier. The lead-BUCKET boundary below stays at 96h.
+SNAPSHOT_MAX_LEAD_MINUTES = float(os.environ.get("SNAPSHOT_MAX_LEAD_HOURS") or 168) * 60
+SNAPSHOT_MULTI_DAY_LEAD_MINUTES = 96 * 60
 SNAPSHOT_DAY_SHAPE_MAX_SIGNAL_WEIGHT = 0.65
 SNAPSHOT_FRONTLOAD_MAX_PRIOR_SHIFT = 0.35
 SNAPSHOT_FRONTLOAD_MIN_CONFIDENCE = 0.10
@@ -2746,7 +2757,7 @@ def snapshot_lead_bucket(minutes_until_showtime):
         return "same_day"
     if minutes <= 48 * 60:
         return "next_day"
-    if minutes <= SNAPSHOT_MAX_LEAD_MINUTES:
+    if minutes <= SNAPSHOT_MULTI_DAY_LEAD_MINUTES:
         return "multi_day"
     return "long_lead"
 

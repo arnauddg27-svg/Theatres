@@ -108,6 +108,15 @@ class StageForecastTests(unittest.TestCase):
             got = P.comp_multiplier_estimate({}, reported)
             self.assertEqual(P.COMP_MULTIPLIER_WEIGHT, got["weight"])
 
+    def test_presales_reads_up_to_seven_days_out_without_moving_lead_buckets(self):
+        row = lambda h: {"minutes_until_showtime": str(h * 60)}
+        self.assertTrue(P.snapshot_within_remaining_weekend_window(row(150)))
+        self.assertFalse(P.snapshot_within_remaining_weekend_window(row(170)))
+        self.assertFalse(P.snapshot_within_remaining_weekend_window(row(-1)))
+        self.assertEqual("multi_day", P.snapshot_lead_bucket(90 * 60))
+        self.assertEqual("long_lead", P.snapshot_lead_bucket(120 * 60))
+        self.assertEqual("gt_96h", P.snapshot_pickup_lead_bucket(120 * 60))
+
     def test_gate_returns_a_new_mapping_only_when_it_withholds(self):
         ov = {"Example": {"Thursday": {"gross_m": 2.0}, "Friday": {"gross_m": 5.0}}}
         self.assertIs(ov, P.stage_gated_overrides("Example", ov, {"Thursday", "Friday"}))

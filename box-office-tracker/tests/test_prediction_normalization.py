@@ -1888,7 +1888,8 @@ class PredictionNormalizationTest(unittest.TestCase):
             "2026-05-09",
             timezone="PT",
         )
-        too_far_row["minutes_until_showtime"] = str(120 * 60)
+        # Beyond the 7-day window (96h until 2026-11-10).
+        too_far_row["minutes_until_showtime"] = str(200 * 60)
         stale_row = self._snapshot_row(
             "AMC Stale",
             "Saturday",
