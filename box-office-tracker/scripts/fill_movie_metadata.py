@@ -97,8 +97,14 @@ def bom_lookup(title, year_hint=None):
             "bom_title": bom_title, "url": "https://www.boxofficemojo.com" + (rel.group(1) if rel else pick)}
 
 
+def clean_genres(genres):
+    """BOM's Genres field carries "·" separators; drop them (audit 2026-11-10:
+    notes read "Comedy, ·, Drama" and lost the third real genre)."""
+    return [g for g in (genres or []) if g and g.strip() not in ("·", "-")]
+
+
 def map_genre(genres):
-    genres = [g for g in (genres or []) if g and g.strip() not in ("·", "-")]
+    genres = clean_genres(genres)
     has = lambda key: any(key.lower() in g.lower() for g in genres)
     for key, out in GENRE_MAP:
         if not has(key):
@@ -163,7 +169,7 @@ def fill(rows, movie, weekend_of, info, today=None):
         if v and not (row.get(k) or "").strip():
             row[k] = v; changes.append(f"{k}={v}")
     if changes and info:
-        tag = f"BOM auto-fill {time.strftime('%Y-%m-%d')}: {', '.join(info['genres'][:3])} ({info['url']})"
+        tag = f"BOM auto-fill {time.strftime('%Y-%m-%d')}: {', '.join(clean_genres(info['genres'])[:3])} ({info['url']})"
         row["notes"] = (row.get("notes") or "").strip()
         row["notes"] = f"{row['notes']}; {tag}" if row["notes"] else tag
     return created, changes

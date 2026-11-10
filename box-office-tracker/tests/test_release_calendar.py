@@ -175,3 +175,13 @@ class PrereleaseTheatreCountTest(unittest.TestCase):
         self.assertEqual("broad_family", rows[0]["audience_type"])
         F.fill(rows, "The Cat in the Hat", "2026-11-06", dict(info, widest=3800), today=date(2026, 11, 7))
         self.assertEqual("3800", rows[0]["national_theatre_count"])
+
+    def test_note_skips_bom_separator_dots(self):
+        from datetime import date
+        import fill_movie_metadata as F
+        info = {"rating": "", "genres": ["Comedy", "·", "Drama", "·", "Fantasy"],
+                "widest": None, "bom_title": "Ebenezer", "url": "u"}
+        rows = []
+        F.fill(rows, "Ebenezer", "2026-11-13", info, today=date(2026, 11, 10))
+        self.assertIn("Comedy, Drama, Fantasy (u)", rows[0]["notes"])
+        self.assertNotIn("·", rows[0]["notes"])
