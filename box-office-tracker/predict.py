@@ -5151,6 +5151,18 @@ CONFORMAL_MIN_HALF_WIDTH = 0.15
 
 COMP_MULTIPLIER_MODE = (os.environ.get("COMP_MULTIPLIER_MODE") or "on").strip().lower()
 COMP_MULTIPLIER_WEIGHT = float(os.environ.get("COMP_MULTIPLIER_WEIGHT") or 0.5)
+# AFTER-PREVIEWS, CLOSED-GATE ALTERNATIVE (2026-11-10 audit; NOT the default).
+# Only reachable with PREVIEWS_GATE_MODE=seats, where stage_gated_overrides
+# really withholds reported previews until Friday seats exist; they then enter
+# as a comp-multiplier second opinion at this weight instead of as an override.
+# Replay as of Thursday night over all 31 history films
+# (scripts/after_previews_headline_backtest.py, frozen calibrations):
+#   no previews                              18.5% MAE, median 11.2%, signed -5.4%
+#   gate open = production (override + 0.5)  15.2%,     median  8.9%, signed -2.5%
+#   gate closed, this weight 0.3 / 0.4 / 0.5 16.2 / 15.6 / 15.1%, median ~11%, signed -7%
+# The closed gate is no better (closer on 13 of 31 at 0.4), so production keeps
+# the open gate; the knob stays so the comparison can be re-run as films accrue.
+COMP_MULTIPLIER_PREVIEWS_WEIGHT = float(os.environ.get("COMP_MULTIPLIER_PREVIEWS_WEIGHT") or 0.4)
 COMP_MULTIPLIER_SHRINK = 4.0
 COMP_MULTIPLIER_MIN_FILMS = 10
 
@@ -5203,18 +5215,26 @@ def comp_multiplier_estimate(cal, pred):
     reported = {d: _detail_mid_m(v) for d, v in details.items()
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     thu = reported.get("Thursday")
+    weight = COMP_MULTIPLIER_WEIGHT
+    if (not thu or thu <= 0) and not reported and COMP_MULTIPLIER_PREVIEWS_WEIGHT > 0:
+        # Reported previews withheld from the seat scale by stage_gated_overrides:
+        # still a second opinion once Thursday's seats are in (after-previews).
+        withheld = _positive_float(pred.get("reported_previews_withheld_m"))
+        if withheld and forecast_stage(pred) == "after-previews":
+            thu, weight = withheld, COMP_MULTIPLIER_PREVIEWS_WEIGHT
     if not thu or thu <= 0 or "Saturday" in reported:
         return None
     fri = reported.get("Friday")
     basis = "thu_fri" if fri else "previews"
+    exclude = (pred.get("weekend_of"), pred.get("movie"))
     mult = class_opening_multiplier(
-        cal, pred.get("audience_type"), basis,
-        exclude=(pred.get("weekend_of"), pred.get("movie")), weekend_of=pred.get("weekend_of"))
+        cal, pred.get("audience_type"), basis, exclude=exclude, weekend_of=pred.get("weekend_of"))
     if not mult:
         return None
     base = thu + (fri or 0.0)
-    return {"estimate_m": base * mult["multiplier"], "multiplier": mult["multiplier"],
-            "basis": f"{'Thu+Fri' if fri else 'previews'} ${base:.1f}M x {mult['multiplier']:.2f} ({mult['basis']})"}
+    out = {"estimate_m": base * mult["multiplier"], "multiplier": mult["multiplier"], "weight": weight,
+           "basis": f"{'Thu+Fri' if fri else 'previews'} ${base:.1f}M x {mult['multiplier']:.2f} ({mult['basis']})"}
+    return out
 
 
 # STAGE BANDS (2026-10-18 audit). The conformal floor was fitted on the
@@ -5655,16 +5675,17 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     # Sunday ratio takes over after Saturday). COMP_MULTIPLIER_MODE=off.
     comp = comp_multiplier_estimate(cal, pred) if COMP_MULTIPLIER_MODE == "on" else None
     if comp and mid and mid > 0:
-        blended = exp(COMP_MULTIPLIER_WEIGHT * log(comp["estimate_m"])
-                      + (1.0 - COMP_MULTIPLIER_WEIGHT) * log(mid))
+        comp_weight = comp.get("weight", COMP_MULTIPLIER_WEIGHT)
+        blended = exp(comp_weight * log(comp["estimate_m"])
+                      + (1.0 - comp_weight) * log(mid))
         scale = blended / mid
         comp["model_mid_m"] = mid
         comp["blended_mid_m"] = blended
-        comp["weight"] = COMP_MULTIPLIER_WEIGHT
+        comp["weight"] = comp_weight
         mid, low, high = blended, low * scale, high * scale
         pred["comp_multiplier"] = comp
         basis += (f"; comp multiplier {comp['basis']}: ${comp['estimate_m']:.1f}M "
-                  f"blended {COMP_MULTIPLIER_WEIGHT:.0%}")
+                  f"blended {comp_weight:.0%}")
 
     # Conformal floor: the band must be at least as wide as the model's own
     # historical error distribution implies (audit: stated bands covered only
@@ -8440,6 +8461,7 @@ def opening_weekend_dates_by_day(weekend_of):
 # The old "Friday anchor hurts" result (2026-08-28, n=2) used Friday grosses
 # with previews still folded in.
 REPORTED_EARLY_DAYS = ("Thursday", "Friday")
+PREVIEWS_GATE_MODE = (os.environ.get("PREVIEWS_GATE_MODE") or "dates").strip().lower()
 
 
 def stage_gated_overrides(movie, overrides, observed_days):
@@ -8543,9 +8565,27 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
         daily_actual_overrides = load_daily_actual_overrides(
             weekend_of=seat_data_weekend_of(seat_data or snapshot_data)
         )
+    ungated_overrides = daily_actual_overrides
+    # "dates" (default): every opening date counts as observed, INCLUDING show
+    # dates that only have pre-sale snapshots. Friday always has snapshots, so
+    # in practice this gate never withholds: reported previews act as an
+    # override and feed the comp multiplier from the moment the daily table
+    # has them on opening Friday. The 2026-09-26 note said they were held back
+    # until Friday seats; the 2026-11-10 audit found they are not, and that
+    # this is the better behaviour (15.2% MAE vs 18.5% without them, n=31).
+    # "seats": only days with seat rows count — the gate as originally meant.
+    gate_dates = [d for d in opening_dates
+                  if PREVIEWS_GATE_MODE != "seats" or (seat_data or {}).get(d)]
     daily_actual_overrides = stage_gated_overrides(
         movie, daily_actual_overrides,
-        {datetime.strptime(d, "%Y-%m-%d").strftime("%A") for d in opening_dates})
+        {datetime.strptime(d, "%Y-%m-%d").strftime("%A") for d in gate_dates})
+    # Previews the gate just withheld: kept for the comp-multiplier second
+    # opinion at the after-previews stage (never for the seat scale).
+    reported_previews_withheld_m = None
+    if daily_actual_overrides is not ungated_overrides:
+        _thu = daily_actual_override_for(movie, "Thursday", ungated_overrides)
+        if isinstance(_thu, dict):
+            reported_previews_withheld_m = _positive_float(_thu.get("gross_m"))
 
     model_cohorts = active_model_cohorts()
     model_cohort_key = normalize_model_cohort_key(model_cohorts)
@@ -9376,6 +9416,7 @@ def _predict_movie_inner(movie, seat_data, poly_data, cal, verbose=False,
     attach_social_signal_prediction(result, social_data)
     attach_review_signal(result, reviews_data)
     result["audience_type"] = getattr(movie_metadata, "audience_type", "") or ""
+    result["reported_previews_withheld_m"] = reported_previews_withheld_m
     result["amc_chain_skew"] = chain_skew
     result["amc_footprint_theatres"] = amc_footprint or None
     result["coverage_reference_amc_theatres"] = coverage_reference_amc_theatres

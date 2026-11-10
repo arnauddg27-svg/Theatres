@@ -56,6 +56,68 @@ class StageForecastTests(unittest.TestCase):
         self.assertFalse(pred["stage_daily_evidence_applied"])
         self.assertEqual("complete", S.forecast_stage(pred))
 
+    def test_after_previews_accepts_thinner_snapshot_coverage(self):
+        # 2026-11-07: a snapshot run that lost two regions (coverage 42%) sent
+        # six after-previews headlines to the one-day seat regression.
+        pred = prediction()
+        pred["daily_details"] = {"Thursday": {"domestic_mid": 3e6}}
+        pred["snapshot_days"] = ["Friday", "Saturday"]
+        pred["snapshot_model_coverage_ratio"] = .42
+        self.assertEqual("after-previews", S.forecast_stage(pred))
+        self.assertIsNotNone(S.daily_evidence_candidate(pred))
+        pred["snapshot_model_coverage_ratio"] = .29
+        self.assertIsNone(S.daily_evidence_candidate(pred))
+        # Later stages keep the 0.50 floor: the regression has Friday to stand on.
+        later = prediction()
+        later["snapshot_model_coverage_ratio"] = .42
+        self.assertEqual("after-friday", S.forecast_stage(later))
+        self.assertIsNone(S.daily_evidence_candidate(later))
+
+    def test_withheld_previews_feed_the_comp_multiplier_after_previews_only(self):
+        mult = {"multiplier": 7.0, "n": 20, "basis": "test"}
+        pred = prediction()
+        pred["daily_details"] = {"Thursday": {"domestic_mid": 3e6}}
+        pred["snapshot_days"] = ["Friday", "Saturday"]
+        pred["reported_previews_withheld_m"] = 2.0
+        with patch.object(P, "class_opening_multiplier", return_value=mult):
+            comp = P.comp_multiplier_estimate({}, pred)
+            self.assertAlmostEqual(14.0, comp["estimate_m"])
+            self.assertEqual(P.COMP_MULTIPLIER_PREVIEWS_WEIGHT, comp["weight"])
+            self.assertIn("previews", comp["basis"])
+            base = copy.deepcopy(pred)
+            base["reported_previews_withheld_m"] = None
+            P.select_regression_prediction(base)
+            P.select_regression_prediction(pred)
+            w = P.COMP_MULTIPLIER_PREVIEWS_WEIGHT
+            self.assertAlmostEqual(14.0 ** w * base["regression_mid_m"] ** (1 - w),
+                                   pred["regression_mid_m"], places=2)
+            # Not before Thursday's seats, not once Friday's seats are observed
+            # (the Thu+Fri override path takes over there), not when switched off.
+            presales = copy.deepcopy(pred)
+            presales["daily_details"] = {}
+            self.assertIsNone(P.comp_multiplier_estimate({}, presales))
+            friday = copy.deepcopy(pred)
+            friday["daily_details"]["Friday"] = {"domestic_mid": 7e6}
+            friday.pop("forecast_stage", None)
+            self.assertIsNone(P.comp_multiplier_estimate({}, friday))
+            with patch.object(P, "COMP_MULTIPLIER_PREVIEWS_WEIGHT", 0.0):
+                self.assertIsNone(P.comp_multiplier_estimate({}, pred))
+            # A reported (ungated) Thursday keeps the established 0.5 weight.
+            reported = copy.deepcopy(friday)
+            reported["daily_details"]["Thursday"] = {"domestic_mid": 2e6, "actual_override": True, "actual_override_m": 2.0}
+            got = P.comp_multiplier_estimate({}, reported)
+            self.assertEqual(P.COMP_MULTIPLIER_WEIGHT, got["weight"])
+
+    def test_gate_returns_a_new_mapping_only_when_it_withholds(self):
+        ov = {"Example": {"Thursday": {"gross_m": 2.0}, "Friday": {"gross_m": 5.0}}}
+        self.assertIs(ov, P.stage_gated_overrides("Example", ov, {"Thursday", "Friday"}))
+        # Production keeps the open gate (2026-11-10 backtest: 15.2% vs 15.6% closed).
+        self.assertEqual("dates", P.PREVIEWS_GATE_MODE)
+        gated = P.stage_gated_overrides("Example", ov, {"Thursday"})
+        self.assertIsNot(ov, gated)
+        self.assertEqual({}, gated["Example"])
+        self.assertEqual(2.0, P.daily_actual_override_for("Example", "Thursday", ov)["gross_m"])
+
     def test_sparse_or_unsupported_snapshots_preserve_fallback(self):
         for field, value in (("snapshot_model_coverage_ratio", .49),
                              ("snapshot_calibration_support_factor", .19),

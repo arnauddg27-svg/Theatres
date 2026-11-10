@@ -134,10 +134,19 @@ def kelly(p, cost):
     return max(0.0, (p * b - (1 - p)) / b) if b > 0 else 0.0
 
 
-def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios=None):
+def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios=None, row_ratios=None):
     trades = {} if trades is None else trades
     snaps = load_snapshots(odds_path)
-    ratios = B.graded_log_ratios() if ratios is None else ratios
+    # 2026-11-10: sigma from every graded headline of the stage and source path
+    # (bracket_model.fit_headline), not the last headline per stage — the bet
+    # goes on the FIRST headline with an edge and the last-row sigma rated 19
+    # bets at 95-100% that won 68% of the time. `ratios` (the last-row table)
+    # is still honoured when a caller passes one, or with BRACKET_ROW_FIT_MODE=off.
+    use_rows = B.ROW_FIT_MODE == "on" and ratios is None
+    if use_rows:
+        row_ratios = B.graded_row_ratios() if row_ratios is None else row_ratios
+    else:
+        ratios = B.graded_log_ratios() if ratios is None else ratios
     if not os.path.exists(pred_path):
         return trades, []
     with open(pred_path, newline="") as f:
@@ -151,9 +160,10 @@ def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios
         stage = r.get("forecast_stage") or ""
         if not snapshot or stage not in STAGES:
             continue
-        fk = (stage, r["weekend_of"], key[1])
+        fk = (stage, (r.get("source") or "") if use_rows else "", r["weekend_of"], key[1])
         if fk not in fits:
-            fits[fk] = B.fit_stage(stage, r["weekend_of"], r["movie"], ratios=ratios)
+            fits[fk] = (B.fit_headline(stage, r.get("source"), r["weekend_of"], r["movie"], rows=row_ratios)
+                        if use_rows else B.fit_stage(stage, r["weekend_of"], r["movie"], ratios=ratios))
         bias, sigma, n = fits[fk]
         if n < B.MIN_FIT_N:
             continue
@@ -281,6 +291,54 @@ def settle(trades, snaps=None, finals=None, provisionals=None, now=None):
     return changed
 
 
+def market_scorecard(prob_rows, snaps=None, finals=None, provisionals=None):
+    """Lines comparing our bracket probabilities with the market's on graded
+    films: mean log loss per listed bracket, by stage. Added 2026-11-10: on the
+    first two weekends with odds (7 films) the market out-scored the model
+    before Saturday (0.19-0.25 vs 0.37-0.43) and matched it after (0.26 vs
+    0.27), which is also where the paper P&L sits. The table makes that
+    visible as weekends accumulate; it changes no bet."""
+    import math
+    snaps = load_snapshots() if snaps is None else snaps
+    finals = final_actuals() if finals is None else finals
+    provisionals = provisional_actuals() if provisionals is None else provisionals
+    labels = defaultdict(set)
+    for (w, mk, _, slug), rows in snaps.items():
+        labels[(w, mk, slug)].update(r["bracket"] for r in rows)
+    by_snapshot = defaultdict(list)
+    for r in prob_rows or []:
+        if r.get("market_price") in ("", None):
+            continue
+        by_snapshot[(r["weekend_of"], B.movie_key(r["movie"]), r["event_slug"],
+                     r["forecast_stage"], r["logged_at"])].append(r)
+
+    def loss(p, y):
+        q = min(max(p, 1e-4), 1 - 1e-4)
+        return -(y * math.log(q) + (1 - y) * math.log(1 - q))
+
+    ours, market, films = defaultdict(list), defaultdict(list), defaultdict(set)
+    for (w, mk, slug, stage, _), rows in by_snapshot.items():
+        actual = finals.get((w, mk), provisionals.get((w, mk)))
+        won = outcome_bracket(actual, labels.get((w, mk, slug), ())) if actual is not None else None
+        total = sum(float(r["market_price"]) for r in rows)
+        if won is None or total <= 0:
+            continue
+        films[stage].add((w, mk))
+        for r in rows:
+            y = 1.0 if r["bracket"] == won else 0.0
+            ours[stage].append(loss(float(r["our_prob"]), y))
+            market[stage].append(loss(float(r["market_price"]) / total, y))
+    if not ours:
+        return []
+    lines = ["\nModel vs market, bracket log loss on graded films (lower is better):",
+             f"  {'stage':15} {'films':>5} {'ours':>7} {'market':>7}"]
+    for stage in STAGES:
+        if ours.get(stage):
+            o, m = sum(ours[stage]) / len(ours[stage]), sum(market[stage]) / len(market[stage])
+            lines.append(f"  {stage:15} {len(films[stage]):5d} {o:7.3f} {m:7.3f}  {'model ahead' if o < m else 'market ahead'}")
+    return lines
+
+
 def report(trades, new=()):
     lines = []
     if new:
@@ -312,7 +370,7 @@ def main(argv=None):
     ap.add_argument("--report", action="store_true", help="print the scorecard without placing or settling")
     args = ap.parse_args(argv)
     trades = load_trades()
-    new = []
+    new, prob_rows = [], []
     try:
         if not args.report:
             trades, new, prob_rows = place_bets(trades=trades)
@@ -323,6 +381,11 @@ def main(argv=None):
         print(f"::warning::paper_trade failed: {type(exc).__name__}: {exc}")
         return 0
     print(report(trades, new))
+    try:
+        if not args.report:
+            print("\n".join(market_scorecard(prob_rows)))
+    except Exception as exc:  # advisory
+        print(f"::warning::market scorecard failed: {type(exc).__name__}: {exc}")
     return 0
 
 

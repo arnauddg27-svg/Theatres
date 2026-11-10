@@ -86,6 +86,82 @@ def fit_stage(stage, weekend_of=None, exclude_movie=None, ratios=None):
     return bias, max(sigma, 0.5 * prior), n
 
 
+# ── EVERY-ROW FIT (2026-11-10 audit) ────────────────────────────────────────
+# fit_stage() above measures the LAST headline of a stage, but a bet is placed
+# on the FIRST headline of a stage that shows an edge — e.g. Sunday 07Z, before
+# Saturday's reported gross arrives and the Sunday ratio takes over. Within a
+# stage the early headlines err far more than the last one (after-Saturday
+# 9.3% vs 4.5% MAE, after-Friday 17.7% vs 10.9%). Standardised by the last-row
+# sigma, the 311 graded headlines since 2026-10-02 had sd(z) 1.59 after Friday,
+# 1.33 after Saturday, 1.47 complete; 11% of after-Friday headlines fell beyond
+# the stated 1% tail, and the 19 paper bets rated 95-100% won 68% of the time.
+# fit_headline() uses every graded headline of the stage (one second moment per
+# film, so a film logged 9 times counts once), and only headlines served by the
+# same source path when at least MIN_FIT_N films have one — "sunday-ratio" and
+# "stage-daily-evidence" are different instruments. Same data: sd(z) 0.92 /
+# 1.07 / 1.00, tails 7% beyond the 10% mark and 1% beyond the 1% mark.
+ROW_FIT_MODE = (os.environ.get("BRACKET_ROW_FIT_MODE") or "on").strip().lower()
+
+
+def graded_row_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON, extra_actuals=None):
+    """{stage: {(weekend_of, movie_key): [(source, ln(actual/mid)), ...]}} for
+    every positive headline row of a graded film."""
+    actual = {}
+    try:
+        with open(cal_path) as f:
+            for e in json.load(f).get("history", []) or []:
+                if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
+                    actual[(e["weekend_of"], movie_key(e["movie"]))] = float(e["actual_total"])
+    except (OSError, ValueError):
+        return {}
+    actual.update(extra_actuals or {})
+    out = {}
+    try:
+        with open(pred_path, newline="") as f:
+            for r in csv.DictReader(f):
+                try:
+                    mid = float(r.get("headline_mid_m") or 0)
+                except ValueError:
+                    continue
+                k = (r.get("weekend_of"), movie_key(r.get("movie")))
+                if mid > 0 and k in actual:
+                    out.setdefault(r.get("forecast_stage"), {}).setdefault(k, []).append(
+                        (r.get("source") or "", math.log(actual[k] / mid)))
+    except OSError:
+        return {}
+    return out
+
+
+def fit_headline(stage, source=None, weekend_of=None, exclude_movie=None, rows=None):
+    """(bias, sigma, n) for one headline at `stage` served by `source`, from
+    every graded headline row of weekends before `weekend_of` (never the film
+    itself). Bias is 0: the spread is measured about the headline, so a stage's
+    systematic lean widens sigma instead of moving the centre on n ~ 20."""
+    prior = PRIOR_SIGMA.get(stage, 0.30)
+    if rows is None:
+        rows = graded_row_ratios()
+    ex = movie_key(exclude_movie) if exclude_movie else None
+    films = {k: v for k, v in (rows.get(stage) or {}).items()
+             if (not weekend_of or not k[0] or k[0] < weekend_of) and k[1] != ex}
+
+    def moments(pick):
+        out = []
+        for v in films.values():
+            xs = [x for src, x in v if pick(src)]
+            if xs:
+                out.append(sum(x * x for x in xs) / len(xs))
+        return out
+
+    ms = moments(lambda src: src == source) if source else []
+    if len(ms) < MIN_FIT_N:
+        ms = moments(lambda src: True)
+    n = len(ms)
+    if n < MIN_FIT_N:
+        return 0.0, prior, n
+    sigma = math.sqrt((sum(ms) + SIGMA_SHRINK_K * prior ** 2) / (n + SIGMA_SHRINK_K))
+    return 0.0, max(sigma, 0.5 * prior), n
+
+
 def _norm_cdf(z):
     return 0.5 * (1.0 + math.erf(z / math.sqrt(2.0)))
 

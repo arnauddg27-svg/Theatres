@@ -73,6 +73,22 @@ class PaperTradeTest(unittest.TestCase):
         self.assertAlmostEqual(float(no["pnl"]), 1 / float(no["cost"]) - 1, places=3)
         self.assertEqual(T.settle(trades, snaps=snaps, finals={(W, "clayface"): 23.1}, provisionals={}), 0)
 
+    def test_every_row_fit_is_the_default_and_widens_early_headlines(self):
+        # Eight earlier films whose after-Friday headlines were 30% off early in
+        # the stage: with that sigma the model no longer "knows" <22m is wrong.
+        row_ratios = {"after-friday": {("2026-09-%02d" % d, "m%d" % d): [("", 0.30), ("", 0.02)]
+                                       for d in range(1, 9)}}
+        tight, _, _ = T.place_bets(self.pred, self.odds, ratios=RATIOS)
+        wide, _, probs = T.place_bets(self.pred, self.odds, row_ratios=row_ratios)
+        no_tight = float(tight[next(k for k in tight if "<22m|NO" in k)]["our_prob"])
+        p_wide = next(float(r["our_prob"]) for r in probs if r["bracket"] == "<22m")
+        self.assertLess(1 - p_wide, no_tight)
+        self.assertGreater(float(next(r["fit_sigma"] for r in probs)), 0.15)
+        lines = T.market_scorecard(probs, snaps=T.load_snapshots(self.odds),
+                                   finals={(W, "clayface"): 23.0}, provisionals={})
+        self.assertTrue(any("after-friday" in line and ("model ahead" in line or "market ahead" in line) for line in lines))
+        self.assertEqual([], T.market_scorecard(probs, snaps=T.load_snapshots(self.odds), finals={}, provisionals={}))
+
     def test_provisional_then_final(self):
         trades, _, _ = T.place_bets(self.pred, self.odds, trades={}, ratios=RATIOS)
         snaps = T.load_snapshots(self.odds)

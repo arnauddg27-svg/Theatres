@@ -1499,6 +1499,10 @@ class PredictionNormalizationTest(unittest.TestCase):
 
     # Isolate normalization on tiny synthetic samples; admission is tested separately.
     @patch.object(predict.seat_regression, "COVERAGE_FLOOR", 0.0)
+    # The synthetic sample sits between the after-previews 0.30 coverage floor
+    # (2026-11-10) and the general 0.50; this test is about the regression
+    # path's normalization, so hold the floor at 0.50 here.
+    @patch.dict("stage_forecasting.MIN_SNAPSHOT_COVERAGE_BY_STAGE", {"after-previews": 0.50})
     def test_snapshot_layer_estimates_missing_future_days_only(self):
         cal = {
             "history": [],
