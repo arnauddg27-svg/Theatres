@@ -2,7 +2,7 @@
   "date": "2026-11-13",
   "weekend_of": "2026-11-13",
   "collected_local_date": "2026-11-10",
-  "collected_at": "2026-11-10T13:46:43.581760+00:00",
+  "collected_at": "2026-11-10T17:09:49.647754+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -126594,7 +126594,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347364+00:00",
+          "collected_at": "2026-11-10T17:09:49.614355+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -126636,7 +126636,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782204+00:00",
+          "collected_at": "2026-11-10T17:09:49.614615+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -126678,7 +126678,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317669+00:00",
+          "collected_at": "2026-11-10T17:09:49.614663+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -126720,7 +126720,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118874+00:00",
+          "collected_at": "2026-11-10T17:09:49.614680+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -126783,14 +126783,29 @@
           "movies": {
             "Ebenezer": [
               {
+                "showtime": "3:30pm",
+                "showtime_id": "148664888",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "148121362",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "6:30pm",
+                "showtime_id": "148664889",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "8:00pm",
                 "showtime_id": "148121364",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148664890",
+                "format": "Dolby Cinema at AMC"
               }
             ],
             "How to Rob a Bank": [
@@ -126845,7 +126860,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347344+00:00",
+          "collected_at": "2026-11-10T17:09:49.614333+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -126909,7 +126924,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:02:06.281123+00:00",
+          "collected_at": "2026-11-10T17:09:49.614640+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -126988,7 +127003,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317692+00:00",
+          "collected_at": "2026-11-10T17:09:49.614705+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -127067,83 +127082,88 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782221+00:00",
+          "collected_at": "2026-11-10T17:09:49.614470+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-14",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "148121389",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "148121375",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "148121374",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148121372",
-            "format": "Laser at AMC"
-          }
-        ],
-        "How to Rob a Bank": [
-          {
-            "showtime": "12:30pm",
-            "showtime_id": "148121284",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "3:30pm",
-            "showtime_id": "148121268",
+            "showtime_id": "148664888",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "5:00pm",
+            "showtime_id": "148121362",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "148121265",
+            "showtime_id": "148664889",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148121364",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:30pm",
-            "showtime_id": "148121259",
+            "showtime_id": "148664890",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "How to Rob a Bank": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148121237",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148121240",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148121242",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148121318",
+            "showtime": "4:15pm",
+            "showtime_id": "148121356",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148121341",
+            "showtime": "6:45pm",
+            "showtime_id": "148121358",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148121339",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148121337",
+            "showtime": "9:15pm",
+            "showtime_id": "148121360",
             "format": "Laser at AMC"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148555216",
+            "showtime": "4:00pm",
+            "showtime_id": "148555212",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148555213",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148555214",
             "format": "Laser at AMC"
           }
         ]
@@ -127212,7 +127232,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347382+00:00",
+          "collected_at": "2026-11-10T17:09:49.614373+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -127284,7 +127304,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:46:43.655338+00:00",
+          "collected_at": "2026-11-10T17:09:49.614476+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -127356,7 +127376,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:46:43.655237+00:00",
+          "collected_at": "2026-11-10T17:09:49.614609+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -127428,7 +127448,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118814+00:00",
+          "collected_at": "2026-11-10T17:09:49.614516+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -127553,7 +127573,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347400+00:00",
+          "collected_at": "2026-11-10T17:09:49.614395+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -127632,7 +127652,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118833+00:00",
+          "collected_at": "2026-11-10T17:09:49.614634+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -127711,7 +127731,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317686+00:00",
+          "collected_at": "2026-11-10T17:09:49.614691+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -127775,7 +127795,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782246+00:00",
+          "collected_at": "2026-11-10T17:09:49.614457+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -127885,7 +127905,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347406+00:00",
+          "collected_at": "2026-11-10T17:09:49.614403+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -128019,7 +128039,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317663+00:00",
+          "collected_at": "2026-11-10T17:09:49.614502+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -128179,7 +128199,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347411+00:00",
+          "collected_at": "2026-11-10T17:09:49.614411+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -128241,7 +128261,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118862+00:00",
+          "collected_at": "2026-11-10T17:09:49.614710+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -128303,7 +128323,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317716+00:00",
+          "collected_at": "2026-11-10T17:09:49.614452+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -128360,7 +128380,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782191+00:00",
+          "collected_at": "2026-11-10T17:09:49.614440+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -128470,7 +128490,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347323+00:00",
+          "collected_at": "2026-11-10T17:09:49.614388+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -128489,6 +128509,11 @@
               {
                 "showtime": "7:05pm",
                 "showtime_id": "148192347",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148656127",
                 "format": "undefined"
               },
               {
@@ -128521,12 +128546,17 @@
             ],
             "Ghost Soldier": [
               {
-                "showtime": "2:50pm",
+                "showtime": "12:30pm",
+                "showtime_id": "148656050",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:00pm",
                 "showtime_id": "148192396",
                 "format": "undefined"
               },
               {
-                "showtime": "5:15pm",
+                "showtime": "5:20pm",
                 "showtime_id": "148192395",
                 "format": "undefined"
               },
@@ -128540,9 +128570,31 @@
                 "showtime_id": "148192394",
                 "format": "undefined"
               }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148656006",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148656007",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "6:05pm",
+                "showtime_id": "148656008",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148656046",
+                "format": "Thrills & Chills"
+              }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317701+00:00",
+          "collected_at": "2026-11-10T17:09:49.614567+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -128718,7 +128770,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118808+00:00",
+          "collected_at": "2026-11-10T17:09:49.614482+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -128850,7 +128902,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347417+00:00",
+          "collected_at": "2026-11-10T17:09:49.614418+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -128939,14 +128991,14 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118851+00:00",
+          "collected_at": "2026-11-10T17:09:49.614727+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
           "movies": {
             "Ebenezer": [
               {
-                "showtime": "1:15pm",
+                "showtime": "1:10pm",
                 "showtime_id": "148041505",
                 "format": "undefined"
               },
@@ -129009,9 +129061,26 @@
                 "showtime_id": "148041384",
                 "format": "undefined"
               }
+            ],
+            "Victorian Psycho": [
+              {
+                "showtime": "2:40pm",
+                "showtime_id": "148642017",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148642018",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148642020",
+                "format": "Thrills & Chills"
+              }
             ]
           },
-          "collected_at": "2026-11-09T16:46:43.655333+00:00",
+          "collected_at": "2026-11-10T17:09:49.614621+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -129100,7 +129169,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782240+00:00",
+          "collected_at": "2026-11-10T17:09:49.614697+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -129292,7 +129361,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317678+00:00",
+          "collected_at": "2026-11-10T17:09:49.614579+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -129354,7 +129423,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782228+00:00",
+          "collected_at": "2026-11-10T17:09:49.614487+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -129416,56 +129485,66 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118761+00:00",
+          "collected_at": "2026-11-10T17:09:49.614463+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-13",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148073904",
+            "showtime": "2:45pm",
+            "showtime_id": "148073914",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148073908",
+            "showtime": "5:45pm",
+            "showtime_id": "148073916",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "148073911",
+            "showtime": "8:45pm",
+            "showtime_id": "148073919",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148073736",
+            "showtime": "2:50pm",
+            "showtime_id": "148073739",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "148073737",
+            "showtime": "6:10pm",
+            "showtime_id": "148073740",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148073741",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148073641",
+            "showtime": "2:30pm",
+            "showtime_id": "148073650",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "148073642",
+            "showtime": "5:00pm",
+            "showtime_id": "148073648",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "148073644",
+            "showtime": "7:30pm",
+            "showtime_id": "148073647",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148073645",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -129536,7 +129615,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347284+00:00",
+          "collected_at": "2026-11-10T17:09:49.614321+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -129645,7 +129724,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317729+00:00",
+          "collected_at": "2026-11-10T17:09:49.614590+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -129654,6 +129733,11 @@
               {
                 "showtime": "12:30pm",
                 "showtime_id": "148138698",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148638124",
                 "format": "Laser at AMC"
               },
               {
@@ -129667,14 +129751,14 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:30pm",
+                "showtime": "9:15pm",
                 "showtime_id": "148138695",
                 "format": "Laser at AMC"
               }
             ],
             "How to Rob a Bank": [
               {
-                "showtime": "1:00pm",
+                "showtime": "1:15pm",
                 "showtime_id": "148138876",
                 "format": "Open Caption (On-screen Subtitles)"
               },
@@ -129689,7 +129773,7 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:15pm",
+                "showtime": "9:20pm",
                 "showtime_id": "148138787",
                 "format": "Laser at AMC"
               }
@@ -129716,14 +129800,14 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:45pm",
+                "showtime": "9:30pm",
                 "showtime_id": "148160161",
                 "format": "Laser at AMC"
               }
             ],
             "Victorian Psycho": [
               {
-                "showtime": "1:30pm",
+                "showtime": "3:00pm",
                 "showtime_id": "148584531",
                 "format": "Laser at AMC"
               },
@@ -129733,18 +129817,23 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "7:00pm",
+                "showtime": "5:45pm",
+                "showtime_id": "148638225",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:00pm",
                 "showtime_id": "148584533",
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "9:35pm",
+                "showtime": "9:05pm",
                 "showtime_id": "148584534",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-09T16:36:31.667348+00:00",
+          "collected_at": "2026-11-10T17:09:49.614601+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -129983,7 +130072,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347376+00:00",
+          "collected_at": "2026-11-10T17:09:49.614363+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -130080,7 +130169,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118845+00:00",
+          "collected_at": "2026-11-10T17:09:49.614721+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -130274,101 +130363,76 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782253+00:00",
+          "collected_at": "2026-11-10T17:09:49.614572+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "148207049",
+            "showtime": "2:00pm",
+            "showtime_id": "148207046",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148628853",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "3:40pm",
-            "showtime_id": "148207050",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "148628852",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:35pm",
-            "showtime_id": "148207051",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148628851",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148207052",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148628850",
-            "format": "Dolby Cinema at AMC"
-          }
-        ],
-        "How to Rob a Bank": [
-          {
-            "showtime": "12:00pm",
-            "showtime_id": "148206982",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:00pm",
-            "showtime_id": "148206983",
+            "showtime": "4:55pm",
+            "showtime_id": "148207047",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "148206984",
+            "showtime_id": "148628848",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:50pm",
+            "showtime_id": "148207048",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "148206985",
+            "showtime_id": "148628847",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148207084",
+            "format": "Laser at AMC"
+          }
+        ],
+        "How to Rob a Bank": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148206980",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148206981",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148207022",
+            "showtime": "2:00pm",
+            "showtime_id": "148207042",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:25pm",
-            "showtime_id": "148207023",
+            "showtime": "4:25pm",
+            "showtime_id": "148207043",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:50pm",
-            "showtime_id": "148207024",
+            "showtime": "6:50pm",
+            "showtime_id": "148207044",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148207025",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:40pm",
-            "showtime_id": "148207026",
+            "showtime": "9:20pm",
+            "showtime_id": "148207045",
             "format": "Laser at AMC"
           }
         ]
@@ -130427,7 +130491,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347315+00:00",
+          "collected_at": "2026-11-10T17:09:49.614425+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -130484,7 +130548,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118838+00:00",
+          "collected_at": "2026-11-10T17:09:49.614716+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -130546,7 +130610,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:41:55.297801+00:00",
+          "collected_at": "2026-11-10T17:09:49.614540+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -130608,61 +130672,56 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782233+00:00",
+          "collected_at": "2026-11-10T17:09:49.614646+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148120890",
+            "showtime": "2:00pm",
+            "showtime_id": "148120857",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148120874",
+            "showtime": "5:15pm",
+            "showtime_id": "148120812",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148120846",
+            "showtime": "8:00pm",
+            "showtime_id": "148120869",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148145051",
+            "showtime": "5:00pm",
+            "showtime_id": "148145107",
             "format": "undefined"
           },
           {
-            "showtime": "5:30pm",
-            "showtime_id": "148145120",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148145108",
+            "showtime": "7:30pm",
+            "showtime_id": "148145050",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148120826",
+            "showtime": "2:15pm",
+            "showtime_id": "148120850",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148120867",
+            "showtime": "4:00pm",
+            "showtime_id": "148120823",
             "format": "undefined"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148120876",
+            "showtime_id": "148120877",
             "format": "undefined"
           }
         ]
@@ -130748,7 +130807,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347338+00:00",
+          "collected_at": "2026-11-10T17:09:49.614287+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -130862,16 +130921,26 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118789+00:00",
+          "collected_at": "2026-11-10T17:09:49.614446+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
           "movies": {
             "Ebenezer": [
               {
+                "showtime": "12:25pm",
+                "showtime_id": "148636806",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "2:15pm",
                 "showtime_id": "148200480",
                 "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148636807",
+                "format": "XL at AMC"
               },
               {
                 "showtime": "5:15pm",
@@ -130879,32 +130948,67 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:40pm",
+                "showtime_id": "148636809",
+                "format": "XL at AMC"
+              },
+              {
                 "showtime": "8:15pm",
                 "showtime_id": "148200487",
                 "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148636900",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148636804",
+                "format": "XL at AMC"
               }
             ],
             "How to Rob a Bank": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148636782",
+                "format": "undefined"
+              },
               {
                 "showtime": "2:20pm",
                 "showtime_id": "148200552",
                 "format": "Open Caption (On-screen Subtitles)"
               },
               {
-                "showtime": "5:25pm",
+                "showtime": "5:20pm",
                 "showtime_id": "148200553",
                 "format": "undefined"
               },
               {
-                "showtime": "8:30pm",
+                "showtime": "8:20pm",
                 "showtime_id": "148200554",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148636690",
                 "format": "undefined"
               }
             ],
             "Ghost Soldier": [
               {
+                "showtime": "12:00pm",
+                "showtime_id": "148636750",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:30pm",
                 "showtime_id": "148200506",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148636746",
                 "format": "undefined"
               },
               {
@@ -130913,20 +131017,50 @@
                 "format": "undefined"
               },
               {
+                "showtime": "5:00pm",
+                "showtime_id": "148636748",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:25pm",
+                "showtime_id": "148636749",
+                "format": "undefined"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "148200508",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148636747",
                 "format": "undefined"
               }
             ],
             "Victorian Psycho": [
               {
-                "showtime": "7:15pm",
+                "showtime": "12:00pm",
+                "showtime_id": "148636720",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148636856",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "7:00pm",
                 "showtime_id": "148484021",
+                "format": "Thrills & Chills"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148636882",
                 "format": "Thrills & Chills"
               }
             ]
           },
-          "collected_at": "2026-11-09T16:41:55.297786+00:00",
+          "collected_at": "2026-11-10T17:09:49.614596+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -131060,7 +131194,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317723+00:00",
+          "collected_at": "2026-11-10T17:09:49.614587+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -131205,7 +131339,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347351+00:00",
+          "collected_at": "2026-11-10T17:09:49.614341+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -131282,7 +131416,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317708+00:00",
+          "collected_at": "2026-11-10T17:09:49.614686+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -131349,7 +131483,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118880+00:00",
+          "collected_at": "2026-11-10T17:09:49.614495+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -131426,7 +131560,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782162+00:00",
+          "collected_at": "2026-11-10T17:09:49.614509+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -131579,7 +131713,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118826+00:00",
+          "collected_at": "2026-11-10T17:09:49.614627+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -131641,7 +131775,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347389+00:00",
+          "collected_at": "2026-11-10T17:09:49.614381+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -131743,7 +131877,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317748+00:00",
+          "collected_at": "2026-11-10T17:09:49.614675+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -131845,86 +131979,61 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147974441",
+            "showtime": "3:15pm",
+            "showtime_id": "147974436",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148617932",
+            "showtime": "4:15pm",
+            "showtime_id": "148616013",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "147974440",
+            "showtime": "6:15pm",
+            "showtime_id": "147974437",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "147974439",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "6:45pm",
-            "showtime_id": "147974442",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:45pm",
-            "showtime_id": "148617931",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148617941",
+            "showtime": "9:15pm",
+            "showtime_id": "147974398",
             "format": "Laser at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147974379",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "4:30pm",
-            "showtime_id": "147974361",
+            "showtime_id": "147974356",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "147974360",
+            "showtime_id": "147974357",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "147974359",
+            "showtime": "9:15pm",
+            "showtime_id": "147974438",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "147974393",
+            "showtime": "4:00pm",
+            "showtime_id": "147974389",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147974392",
+            "showtime": "7:00pm",
+            "showtime_id": "147974388",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "147974391",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:15pm",
-            "showtime_id": "147974390",
+            "showtime": "9:45pm",
+            "showtime_id": "147974420",
             "format": "Laser at AMC"
           }
         ]
@@ -132010,7 +132119,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118800+00:00",
+          "collected_at": "2026-11-10T17:09:49.614669+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -132183,7 +132292,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317743+00:00",
+          "collected_at": "2026-11-10T17:09:49.614652+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -132282,78 +132391,103 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:41:55.297737+00:00",
+          "collected_at": "2026-11-10T17:09:49.614432+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-15",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "148151377",
+            "showtime": "12:15pm",
+            "showtime_id": "148151378",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "148151374",
+            "showtime": "3:15pm",
+            "showtime_id": "148151380",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148151376",
+            "showtime": "6:15pm",
+            "showtime_id": "148151382",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148151384",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "How to Rob a Bank": [
           {
+            "showtime": "1:00pm",
+            "showtime_id": "148151527",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "148151510",
+            "showtime_id": "148151525",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148151508",
+            "showtime_id": "148151523",
             "format": "Dine-In Delivery to Seat"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "148151512",
+            "showtime_id": "148151524",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148151270",
+            "showtime": "12:30pm",
+            "showtime_id": "148151294",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148151262",
+            "showtime": "3:00pm",
+            "showtime_id": "148151291",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148151266",
+            "showtime": "5:30pm",
+            "showtime_id": "148151280",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148151276",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148151434",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148590386",
+            "showtime": "1:45pm",
+            "showtime_id": "148590416",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148590389",
+            "showtime": "4:30pm",
+            "showtime_id": "148590415",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "148590391",
+            "showtime": "7:15pm",
+            "showtime_id": "148590414",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148590413",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -132498,7 +132632,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T15:59:55.347357+00:00",
+          "collected_at": "2026-11-10T17:09:49.614349+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -132592,7 +132726,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:04:14.317736+00:00",
+          "collected_at": "2026-11-10T17:09:49.614547+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -132686,98 +132820,68 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T05:06:15.782209+00:00",
+          "collected_at": "2026-11-10T17:09:49.614560+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-15",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "3:30pm",
-            "showtime_id": "148015729",
+            "showtime": "2:00pm",
+            "showtime_id": "148015741",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "148015730",
+            "showtime": "5:00pm",
+            "showtime_id": "148015742",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148015731",
+            "showtime": "8:00pm",
+            "showtime_id": "148015743",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148015756",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "148015757",
+            "showtime": "4:00pm",
+            "showtime_id": "148015744",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148015758",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148015845",
+            "showtime": "7:00pm",
+            "showtime_id": "148015745",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148015728",
+            "showtime": "2:15pm",
+            "showtime_id": "148015837",
             "format": "undefined"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148015846",
+            "showtime": "4:45pm",
+            "showtime_id": "148015838",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148015847",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148015848",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:30pm",
-            "showtime_id": "148015809",
+            "showtime": "7:15pm",
+            "showtime_id": "148015839",
             "format": "undefined"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148599991",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "148599992",
+            "showtime_id": "148600004",
             "format": "Thrills & Chills"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148599993",
-            "format": "Thrills & Chills"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148599994",
+            "showtime": "6:40pm",
+            "showtime_id": "148600005",
             "format": "Thrills & Chills"
           }
         ]
@@ -132856,7 +132960,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-10T16:01:01.118820+00:00",
+          "collected_at": "2026-11-10T17:09:49.614657+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -132990,7 +133094,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:46:43.655375+00:00",
+          "collected_at": "2026-11-10T17:09:49.614583+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -133062,66 +133166,76 @@
               }
             ]
           },
-          "collected_at": "2026-11-09T16:41:55.297698+00:00",
+          "collected_at": "2026-11-10T17:09:49.614553+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-15",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148159987",
+            "showtime": "1:15pm",
+            "showtime_id": "148159969",
             "format": "XL at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148159988",
+            "showtime": "4:15pm",
+            "showtime_id": "148159968",
             "format": "XL at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148159989",
+            "showtime": "7:15pm",
+            "showtime_id": "148159967",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148159970",
             "format": "XL at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
+            "showtime": "12:55pm",
+            "showtime_id": "148159934",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "4:00pm",
-            "showtime_id": "148159939",
+            "showtime_id": "148159933",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148159932",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "148159940",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148159941",
+            "showtime": "10:00pm",
+            "showtime_id": "148159935",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "1:50pm",
-            "showtime_id": "148159952",
+            "showtime": "1:30pm",
+            "showtime_id": "148159956",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148159998",
+            "showtime": "4:10pm",
+            "showtime_id": "148159899",
+            "format": "Open Caption (On-screen Subtitles)"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148159897",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148159999",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148160000",
+            "showtime": "9:15pm",
+            "showtime_id": "148159898",
             "format": "Laser at AMC"
           }
         ]
@@ -175399,9 +175513,9 @@
     }
   },
   "link_coverage": {
-    "ratio": 0.9987,
-    "fresh": 791,
-    "expected": 792,
+    "ratio": 1.0,
+    "fresh": 72,
+    "expected": 72,
     "min_ratio": 0.9,
     "degraded": false
   }
