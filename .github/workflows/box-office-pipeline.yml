@@ -1257,7 +1257,11 @@ jobs:
   calibrate:
     if: github.event.inputs.phase == 'calibrate'
     runs-on: [self-hosted, vps]
-    timeout-minutes: 30
+    # 2026-11-11: the job grew from ~13 min (Oct 14) to >30 min (Auto-calibrate
+    # 1 -> 11 min, Sync-to-main ~10 min) and was cancelled mid pickup-fit, so
+    # calibration, the pickup table and snapshot rotation did not land. It is
+    # the only job on the VPS runner, so a longer cap blocks nothing else.
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repo

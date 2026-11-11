@@ -56,6 +56,20 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIn("rotate_pre_reservation_snapshots.py", block)
         self.assertIn("ubuntu-24.04", block)
 
+    def test_calibrate_timeout_leaves_headroom(self):
+        """The weekly calibrate job must not be cut off mid-run.
+
+        On 2026-11-11 it outgrew its 30-minute cap and was cancelled during the
+        pickup-table fit, so calibration.json, the pickup table and snapshot
+        rotation never landed. Keep the cap at >= 60 minutes.
+        """
+        import re
+        start = self.workflow.index("\n  calibrate:")
+        block = self.workflow[start:start + 1200]
+        m = re.search(r"timeout-minutes:\s*(\d+)", block)
+        self.assertIsNotNone(m)
+        self.assertGreaterEqual(int(m.group(1)), 60)
+
     def test_scrape_matrix_stays_sequential_for_the_lock_self_break(self):
         """amc_lock breaks a lock whose holder run id equals the CURRENT run.
 

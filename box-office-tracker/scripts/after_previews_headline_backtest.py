@@ -128,11 +128,11 @@ def main():
         f5, f3 = r["floor0.5"], r["floor0.3"]
         e5, e3 = err(f5[0], r["actual"]), err(f3[0], r["actual"])
         print(f"{r['movie'][:26]:26} {r['weekend']} {r['actual']:6.1f} "
-              f"{(f'{r['coverage']:.2f}' if r['coverage'] is not None else '-'):>5} | "
+              f"{(format(r['coverage'], '.2f') if r['coverage'] is not None else '-'):>5} | "
               f"{(f'{e5:+.0f}% {str(f5[1])[:11]}' if e5 is not None else '-'):>18} "
               f"{(f'{e3:+.0f}% {str(f3[1])[:11]}' if e3 is not None else '-'):>18} | "
-              + " ".join(f"{(f'{err(r[f'w{w}'], r['actual']):+.0f}%' if r[f'w{w}'] else '-'):>7}" for w in WEIGHTS)
-              + f" | open gate {(f'{err(r['open_gate'], r['actual']):+.0f}%' if r.get('open_gate') else '-'):>6}")
+              + " ".join(format(format(err(r["w%s" % w], r["actual"]), "+.0f") + "%" if r["w%s" % w] else "-", ">7") for w in WEIGHTS)
+              + " | open gate " + format(format(err(r["open_gate"], r["actual"]), "+.0f") + "%" if r.get("open_gate") else "-", ">6"))
 
     def stats(label, errs):
         errs = [e for e in errs if e is not None]
