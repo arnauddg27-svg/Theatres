@@ -70,6 +70,17 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIsNotNone(m)
         self.assertGreaterEqual(int(m.group(1)), 60)
 
+    def test_calibrate_prunes_the_persistent_runner_clone(self):
+        """The VPS runner keeps its clone between runs (clean: false); without a
+        prune it reached 27 GB and 88% disk on 2026-11-11."""
+        start = self.workflow.index("\n  calibrate:")
+        block = self.workflow[start:self.workflow.index("\n  scrape-alamo:", start)]
+        self.assertIn("clean: false", block)
+        self.assertIn("git gc --prune=now", block)
+        prune = block[block.index("Prune the runner's clone"):]
+        self.assertIn("if: always()", prune)
+        self.assertGreater(block.index("Prune the runner's clone"), block.index("Commit calibration"))
+
     def test_scrape_matrix_stays_sequential_for_the_lock_self_break(self):
         """amc_lock breaks a lock whose holder run id equals the CURRENT run.
 

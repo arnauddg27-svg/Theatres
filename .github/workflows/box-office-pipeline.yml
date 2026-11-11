@@ -1352,6 +1352,23 @@ jobs:
             sleep $((i * 15))
           done
 
+      - name: Prune the runner's clone
+        # 2026-11-11: this is the one job on the persistent VPS runner
+        # (clean: false). Each run fetches fresh history and the superseded
+        # commits were never pruned: .git reached 27 GB in 320 packs, the disk
+        # 88%, and "Sync to latest main" took ten of the job's thirty minutes.
+        # Pruning the same clone by hand took under three minutes and freed
+        # 27 GB. Never fails the run.
+        if: always()
+        timeout-minutes: 10
+        run: |
+          rm -f .git/shallow.lock .git/index.lock
+          git rebase --abort 2>/dev/null || true
+          git reflog expire --expire=now --all
+          git gc --prune=now --quiet || echo "::warning::runner clone prune failed — check disk on the VPS"
+          git count-objects -vH | grep -E "size-pack|packs"
+          df -h / | tail -1
+
   # ──────────────────────────────────────────────────────────────────────────
   # scrape-cinemark — Cinemark DIRECT pre-reservation lane (split-lane Phase C
   # scaling; see cinemark_collect.py docstring). SCHEDULED since 0801d96:
