@@ -7619,146 +7619,987 @@
         "Sunday",
         "Thursday"
       ]
+    },
+    {
+      "movie": "Ramayana: Rise of A Legend",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 15.43,
+      "predicted_low": 13.11,
+      "predicted_high": 17.74,
+      "actual_total": 12.45,
+      "daily_actuals": {
+        "Thursday": 3.51,
+        "Friday": 2.42,
+        "Saturday": 3.83,
+        "Sunday": 2.7
+      },
+      "daily_predictions": {
+        "Thursday": 1.35,
+        "Friday": 3.85,
+        "Saturday": 6.19,
+        "Sunday": 4.48
+      },
+      "error_pct": 23.9,
+      "n_theatres": 325,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 12.35,
+        "low_m": 12.15,
+        "high_m": 12.56,
+        "logged_at": "2026-11-09T09:46:30Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 14,
+        "checkpoints": {
+          "friday_noon_et": {
+            "mid_m": 8.84,
+            "logged_at": "2026-11-06T10:44:59Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 10.63,
+            "low_m": 5.91,
+            "high_m": 28.64,
+            "error_pct": -28.97,
+            "baseline_error_pct": -14.59,
+            "absolute_error_improvement_pp": -14.38,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 8.96,
+            "logged_at": "2026-11-07T09:32:02Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 11.32,
+            "low_m": 7.16,
+            "high_m": 15.26,
+            "error_pct": -28.0,
+            "baseline_error_pct": -9.04,
+            "absolute_error_improvement_pp": -18.96,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 12.03,
+            "logged_at": "2026-11-08T16:14:36Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 15.63,
+            "low_m": 9.7,
+            "high_m": 13.83,
+            "error_pct": -3.34,
+            "baseline_error_pct": 25.59,
+            "absolute_error_improvement_pp": 22.25,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 8.8,
+        "thursday_logged_at": "2026-11-07T05:18:41Z"
+      },
+      "live_error_pct": -0.8,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Ramayana-Part-1-(2026-India)",
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue.",
+      "raw_daily_predictions": {
+        "Thursday": 1.3,
+        "Friday": 3.97,
+        "Saturday": 6.06,
+        "Sunday": 4.47
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0012,
+        "Friday": 0.0033,
+        "Saturday": 0.0178,
+        "Sunday": 0.0082
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 1.02,
+        "Friday": 2.28,
+        "Saturday": 11.49,
+        "Sunday": 2.54
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.696,
+        "Friday": 0.138,
+        "Saturday": 0.073,
+        "Sunday": 0.696
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.02338,
+        "adjustment_pct": 2.34,
+        "sentiment_score": 0.0,
+        "buzz_score": 1.0,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.4677,
+        "reach": 867.37,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 310,
+        "Friday": 296,
+        "Saturday": 304,
+        "Sunday": 303
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.729,
+        "Friday": 0.696,
+        "Saturday": 0.715,
+        "Sunday": 0.713
+      },
+      "coverage_ratio": 0.713,
+      "calibration_excluded_days": [
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Thursday"
+      ]
+    },
+    {
+      "movie": "Godzilla Minus Zero",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 25.85,
+      "predicted_low": 21.97,
+      "predicted_high": 29.72,
+      "actual_total": 30.61,
+      "daily_actuals": {
+        "Thursday": 6.7,
+        "Friday": 7.91,
+        "Saturday": 9.47,
+        "Sunday": 6.54
+      },
+      "daily_predictions": {
+        "Thursday": 4.43,
+        "Friday": 6.59,
+        "Saturday": 8.42,
+        "Sunday": 6.0
+      },
+      "error_pct": -15.6,
+      "n_theatres": 421,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 30.35,
+        "low_m": 29.83,
+        "high_m": 30.86,
+        "logged_at": "2026-11-09T09:46:29Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 15,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 36.61,
+            "logged_at": "2026-11-05T07:20:17Z",
+            "cutoff": "2026-11-05T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 36.61,
+            "low_m": 10.69,
+            "high_m": 96.55,
+            "error_pct": 19.59,
+            "baseline_error_pct": 19.59,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 31.59,
+            "logged_at": "2026-11-06T10:44:58Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 41.13,
+            "low_m": 21.13,
+            "high_m": 102.33,
+            "error_pct": 3.19,
+            "baseline_error_pct": 34.36,
+            "absolute_error_improvement_pp": 31.17,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 36.73,
+            "logged_at": "2026-11-07T09:32:01Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 38.71,
+            "low_m": 28.36,
+            "high_m": 62.08,
+            "error_pct": 19.98,
+            "baseline_error_pct": 26.45,
+            "absolute_error_improvement_pp": 6.47,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 31.09,
+            "logged_at": "2026-11-08T16:14:35Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 33.29,
+            "low_m": 30.37,
+            "high_m": 32.53,
+            "error_pct": 1.56,
+            "baseline_error_pct": 8.75,
+            "absolute_error_improvement_pp": 7.19,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 38.24,
+        "thursday_logged_at": "2026-11-07T05:18:40Z"
+      },
+      "live_error_pct": -0.9,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Godzilla-Minus-Zero-(2026-Japan)",
+      "raw_daily_predictions": {
+        "Thursday": 4.1,
+        "Friday": 6.31,
+        "Saturday": 7.85,
+        "Sunday": 5.73
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.001,
+        "Saturday": 0.0003,
+        "Sunday": 0.0003
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 4.47,
+        "Friday": 9.52,
+        "Saturday": 11.25,
+        "Sunday": 7.03
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.974,
+        "Friday": 0.198,
+        "Saturday": 0.527,
+        "Sunday": 0.988
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.01189,
+        "adjustment_pct": 1.19,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.6257,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.38,
+        "reach": 242.98,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 420,
+        "Friday": 421,
+        "Saturday": 420,
+        "Sunday": 421
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.988,
+        "Friday": 0.991,
+        "Saturday": 0.988,
+        "Sunday": 0.991
+      },
+      "coverage_ratio": 0.99
+    },
+    {
+      "movie": "The Cat in the Hat",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 16.74,
+      "predicted_low": 14.23,
+      "predicted_high": 19.29,
+      "actual_total": 20.0,
+      "daily_actuals": {
+        "Thursday": 1.0,
+        "Friday": 5.05,
+        "Saturday": 8.55,
+        "Sunday": 5.4
+      },
+      "daily_predictions": {
+        "Thursday": 1.28,
+        "Friday": 4.29,
+        "Saturday": 7.25,
+        "Sunday": 4.74
+      },
+      "error_pct": -16.3,
+      "n_theatres": 421,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 21.21,
+        "low_m": 20.53,
+        "high_m": 22.56,
+        "logged_at": "2026-11-09T09:46:31Z",
+        "source": "sunday-ratio",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 15,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 10.59,
+            "logged_at": "2026-11-05T07:20:18Z",
+            "cutoff": "2026-11-05T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 10.59,
+            "low_m": 3.09,
+            "high_m": 27.93,
+            "error_pct": -47.06,
+            "baseline_error_pct": -47.06,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 9.83,
+            "logged_at": "2026-11-06T10:45:00Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 10.29,
+            "low_m": 6.58,
+            "high_m": 31.84,
+            "error_pct": -50.86,
+            "baseline_error_pct": -48.56,
+            "absolute_error_improvement_pp": -2.3,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 9.19,
+            "logged_at": "2026-11-07T09:32:03Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 12.08,
+            "low_m": 7.34,
+            "high_m": 16.17,
+            "error_pct": -54.06,
+            "baseline_error_pct": -39.61,
+            "absolute_error_improvement_pp": -14.45,
+            "in_range": false
+          },
+          "sunday_noon_et": {
+            "mid_m": 21.21,
+            "logged_at": "2026-11-08T16:14:38Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 17.66,
+            "low_m": 20.53,
+            "high_m": 22.56,
+            "error_pct": 6.04,
+            "baseline_error_pct": -11.71,
+            "absolute_error_improvement_pp": 5.67,
+            "in_range": false
+          }
+        },
+        "thursday_mid_m": 8.63,
+        "thursday_logged_at": "2026-11-07T05:18:42Z"
+      },
+      "live_error_pct": 6.0,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Cat-in-the-Hat-The-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 1.13,
+        "Friday": 4.03,
+        "Saturday": 6.71,
+        "Sunday": 4.46
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.005,
+        "Saturday": 0.009,
+        "Sunday": 0.0028
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.84,
+        "Friday": 3.2,
+        "Saturday": 5.75,
+        "Sunday": 3.59
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.972,
+        "Friday": 0.197,
+        "Saturday": 0.233,
+        "Sunday": 0.988
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99663,
+        "adjustment_pct": -0.34,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.2257,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.299,
+        "reach": 74.65,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 418,
+        "Friday": 421,
+        "Saturday": 420,
+        "Sunday": 421
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.984,
+        "Friday": 0.991,
+        "Saturday": 0.988,
+        "Sunday": 0.991
+      },
+      "coverage_ratio": 0.988
+    },
+    {
+      "movie": "Drummer Boy",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 7.52,
+      "predicted_low": 6.39,
+      "predicted_high": 8.65,
+      "actual_total": 9.42,
+      "daily_actuals": {
+        "Friday": 3.53,
+        "Saturday": 3.03,
+        "Sunday": 2.86
+      },
+      "daily_predictions": {
+        "Thursday": 0.69,
+        "Friday": 1.98,
+        "Saturday": 2.63,
+        "Sunday": 2.57
+      },
+      "error_pct": -20.2,
+      "n_theatres": 393,
+      "n_days": 4,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 8.79,
+        "low_m": 8.56,
+        "high_m": 9.24,
+        "logged_at": "2026-11-09T09:46:27Z",
+        "source": "sunday-ratio",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 15,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 10.35,
+            "logged_at": "2026-11-05T07:20:16Z",
+            "cutoff": "2026-11-05T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 10.35,
+            "low_m": 3.02,
+            "high_m": 27.31,
+            "error_pct": 9.85,
+            "baseline_error_pct": 9.85,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 10.24,
+            "logged_at": "2026-11-06T10:44:57Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 11.84,
+            "low_m": 6.85,
+            "high_m": 33.16,
+            "error_pct": 8.68,
+            "baseline_error_pct": 25.67,
+            "absolute_error_improvement_pp": 16.99,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 9.09,
+            "logged_at": "2026-11-07T09:32:01Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 10.31,
+            "low_m": 6.81,
+            "high_m": 15.36,
+            "error_pct": -3.52,
+            "baseline_error_pct": 9.43,
+            "absolute_error_improvement_pp": 5.91,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 8.79,
+            "logged_at": "2026-11-08T16:14:34Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 11.46,
+            "low_m": 8.56,
+            "high_m": 9.24,
+            "error_pct": -6.71,
+            "baseline_error_pct": 21.63,
+            "absolute_error_improvement_pp": 14.92,
+            "in_range": false
+          }
+        },
+        "thursday_mid_m": 6.08,
+        "thursday_logged_at": "2026-11-07T05:18:39Z"
+      },
+      "live_error_pct": -6.7,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "previews_folded_into_friday": true,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Drummer-Boy-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 0.63,
+        "Friday": 1.88,
+        "Saturday": 2.42,
+        "Sunday": 2.44
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0068,
+        "Saturday": 0.0134,
+        "Sunday": 0.0077
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.59,
+        "Friday": 1.84,
+        "Saturday": 3.02,
+        "Sunday": 3.05
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.819,
+        "Friday": 0.176,
+        "Saturday": 0.207,
+        "Sunday": 0.866
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99229,
+        "adjustment_pct": -0.77,
+        "sentiment_score": 0.0,
+        "buzz_score": -1.0,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.1542,
+        "reach": 8.31,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 374,
+        "Friday": 389,
+        "Saturday": 390,
+        "Sunday": 392
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.88,
+        "Friday": 0.915,
+        "Saturday": 0.918,
+        "Sunday": 0.922
+      },
+      "coverage_ratio": 0.909
+    },
+    {
+      "movie": "Wild Horse Nine",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 6.85,
+      "predicted_low": 2.0,
+      "predicted_high": 18.06,
+      "actual_total": 5.91,
+      "daily_actuals": {
+        "Thursday": 0.9,
+        "Friday": 1.65,
+        "Saturday": 2.02,
+        "Sunday": 1.34
+      },
+      "daily_predictions": {},
+      "error_pct": 16.0,
+      "n_theatres": 234,
+      "n_days": 0,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 5.89,
+        "low_m": 5.77,
+        "high_m": 6.0,
+        "logged_at": "2026-11-09T09:46:32Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 15,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 5.1,
+            "logged_at": "2026-11-05T07:20:18Z",
+            "cutoff": "2026-11-05T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.1,
+            "low_m": 1.49,
+            "high_m": 13.44,
+            "error_pct": -13.65,
+            "baseline_error_pct": -13.65,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 4.06,
+            "logged_at": "2026-11-06T10:45:00Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 3.78,
+            "low_m": 2.71,
+            "high_m": 13.14,
+            "error_pct": -31.26,
+            "baseline_error_pct": -36.0,
+            "absolute_error_improvement_pp": 4.74,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 5.26,
+            "logged_at": "2026-11-07T09:32:03Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 4.32,
+            "low_m": 4.18,
+            "high_m": 8.89,
+            "error_pct": -10.94,
+            "baseline_error_pct": -26.86,
+            "absolute_error_improvement_pp": 15.92,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 5.95,
+            "logged_at": "2026-11-08T16:14:38Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.74,
+            "low_m": 5.8,
+            "high_m": 6.24,
+            "error_pct": 0.74,
+            "baseline_error_pct": -2.82,
+            "absolute_error_improvement_pp": 2.08,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 4.96,
+        "thursday_logged_at": "2026-11-07T05:18:42Z"
+      },
+      "live_error_pct": -0.3,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Wild-Horse-Nine-(2026-United-Kingdom)",
+      "snapshot_daily_predictions": {
+        "Thursday": 0.87,
+        "Friday": 1.08,
+        "Saturday": 2.26,
+        "Sunday": 1.74
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.532,
+        "Friday": 0.126,
+        "Saturday": 0.226,
+        "Sunday": 0.536
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.0,
+        "adjustment_pct": 0.0,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.0,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.3204,
+        "reach": 102.07,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      }
+    },
+    {
+      "movie": "Jimmy",
+      "weekend_of": "2026-11-06",
+      "date": "2026-11-11",
+      "predicted_mid": 2.16,
+      "predicted_low": 1.7,
+      "predicted_high": 3.66,
+      "actual_total": 2.08,
+      "daily_actuals": {
+        "Friday": 0.84,
+        "Saturday": 0.7,
+        "Sunday": 0.55
+      },
+      "daily_predictions": {
+        "Thursday": 0.16,
+        "Friday": 0.67
+      },
+      "error_pct": 3.9,
+      "n_theatres": 336,
+      "n_days": 2,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 1.95,
+        "low_m": 1.91,
+        "high_m": 2.05,
+        "logged_at": "2026-11-09T09:46:30Z",
+        "source": "sunday-ratio",
+        "seat_days": "Thursday+Friday+Saturday",
+        "rows": 15,
+        "checkpoints": {
+          "thursday_noon_et": {
+            "mid_m": 1.44,
+            "logged_at": "2026-11-05T07:20:17Z",
+            "cutoff": "2026-11-05T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 1.44,
+            "low_m": 0.42,
+            "high_m": 3.79,
+            "error_pct": -30.88,
+            "baseline_error_pct": -30.88,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 1.67,
+            "logged_at": "2026-11-06T10:44:59Z",
+            "cutoff": "2026-11-06T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 1.41,
+            "low_m": 1.12,
+            "high_m": 5.4,
+            "error_pct": -19.83,
+            "baseline_error_pct": -32.32,
+            "absolute_error_improvement_pp": 12.49,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 1.84,
+            "logged_at": "2026-11-07T09:32:02Z",
+            "cutoff": "2026-11-07T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 1.47,
+            "low_m": 1.42,
+            "high_m": 3.11,
+            "error_pct": -11.67,
+            "baseline_error_pct": -29.44,
+            "absolute_error_improvement_pp": 17.77,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 1.66,
+            "logged_at": "2026-11-08T16:14:36Z",
+            "cutoff": "2026-11-08T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 1.36,
+            "low_m": 1.3,
+            "high_m": 2.8,
+            "error_pct": -20.31,
+            "baseline_error_pct": -34.72,
+            "absolute_error_improvement_pp": 14.41,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 0.89,
+        "thursday_logged_at": "2026-11-07T05:18:40Z"
+      },
+      "live_error_pct": -6.4,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "previews_folded_into_friday": true,
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Jimmy-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 0.15,
+        "Friday": 0.64
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Friday": 0.0
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.11,
+        "Friday": 0.46,
+        "Saturday": 0.53,
+        "Sunday": 0.49
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.706,
+        "Friday": 0.146,
+        "Saturday": 0.391,
+        "Sunday": 0.704
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99124,
+        "adjustment_pct": -0.88,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.6853,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.2558,
+        "reach": 39.48,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 318,
+        "Friday": 329
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.748,
+        "Friday": 0.774
+      },
+      "coverage_ratio": 0.761,
+      "calibration_excluded_days": [
+        "Friday",
+        "Thursday"
+      ]
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2274,
+    "amc_market_share": 0.2236,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.13219570635134115,
-      "Friday": 0.2870098507014691,
-      "Saturday": 0.3311992861582983,
-      "Sunday": 0.2495951567888914
+      "Thursday": 0.13275271497390095,
+      "Friday": 0.285395899688339,
+      "Saturday": 0.33313043832684097,
+      "Sunday": 0.24872094701091915
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "The Dog Stars",
-        "weekend_of": "2026-08-28",
-        "abs_error_pct": 85.4,
-        "n_theatres": 414,
-        "n_days": 4,
-        "coverage_ratio": 0.971,
-        "daily_coverage_ratios": {
-          "Thursday": 0.967,
-          "Friday": 0.972,
-          "Saturday": 0.974,
-          "Sunday": 0.972
-        },
-        "daily_errors": {
-          "Thursday": 200.0,
-          "Friday": 73.2,
-          "Saturday": 59.5,
-          "Sunday": 70.7
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Coyote vs. Acme",
-        "weekend_of": "2026-08-28",
-        "abs_error_pct": 36.3,
-        "n_theatres": 421,
-        "n_days": 3,
-        "coverage_ratio": 0.988,
-        "daily_coverage_ratios": {
-          "Friday": 0.984,
-          "Saturday": 0.991,
-          "Sunday": 0.988
-        },
-        "daily_errors": {
-          "Friday": 28.3,
-          "Saturday": 29.8,
-          "Sunday": 40.3
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Practical Magic 2",
-        "weekend_of": "2026-09-11",
-        "abs_error_pct": 23.3,
-        "n_theatres": 423,
-        "n_days": 4,
-        "coverage_ratio": 0.583,
-        "daily_coverage_ratios": {
-          "Thursday": 0.991,
-          "Friday": 0.993,
-          "Saturday": 0.096,
-          "Sunday": 0.251
-        },
-        "daily_errors": {
-          "Thursday": 13.4,
-          "Friday": 19.2,
-          "Saturday": 61.6,
-          "Sunday": 29.1
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Runner",
-        "weekend_of": "2026-09-11",
-        "abs_error_pct": 45.4,
-        "n_theatres": 179,
-        "n_days": 2,
-        "coverage_ratio": 0.175,
-        "daily_coverage_ratios": {
-          "Thursday": 0.299,
-          "Saturday": 0.051
-        },
-        "daily_errors": {
-          "Saturday": 62.6
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Hope",
-        "weekend_of": "2026-09-11",
-        "abs_error_pct": 5.1,
-        "n_theatres": 179,
-        "n_days": 3,
-        "coverage_ratio": 0.129,
-        "daily_coverage_ratios": {
-          "Thursday": 0.007,
-          "Friday": 0.322,
-          "Sunday": 0.057
-        },
-        "daily_errors": {
-          "Thursday": 47.9,
-          "Friday": 65.0,
-          "Sunday": 34.8
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Resident Evil",
-        "weekend_of": "2026-09-18",
-        "abs_error_pct": 3.2,
-        "n_theatres": 423,
-        "n_days": 4,
-        "coverage_ratio": 0.992,
-        "daily_coverage_ratios": {
-          "Thursday": 0.991,
-          "Friday": 0.993,
-          "Saturday": 0.993,
-          "Sunday": 0.993
-        },
-        "daily_errors": {
-          "Thursday": 11.0,
-          "Friday": 1.1,
-          "Saturday": 3.8,
-          "Sunday": 2.3
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Primetime",
         "weekend_of": "2026-09-25",
@@ -8001,10 +8842,10 @@
           "Sunday": 0.965
         },
         "daily_errors": {
-          "Thursday": 33.2,
-          "Friday": 2.5,
+          "Thursday": 33.3,
+          "Friday": 2.3,
           "Saturday": 5.9,
-          "Sunday": 9.3
+          "Sunday": 9.2
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -8023,10 +8864,10 @@
           "Sunday": 0.993
         },
         "daily_errors": {
-          "Thursday": 23.0,
-          "Friday": 15.9,
-          "Saturday": 11.8,
-          "Sunday": 5.3
+          "Thursday": 22.9,
+          "Friday": 15.8,
+          "Saturday": 11.7,
+          "Sunday": 5.2
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -8034,7 +8875,7 @@
       {
         "movie": "Wicker",
         "weekend_of": "2026-10-23",
-        "abs_error_pct": 41.7,
+        "abs_error_pct": 41.6,
         "n_theatres": 327,
         "n_days": 4,
         "coverage_ratio": 0.763,
@@ -8045,44 +8886,160 @@
           "Sunday": 0.767
         },
         "daily_errors": {
-          "Thursday": 81.4,
-          "Friday": 20.8,
-          "Saturday": 38.4,
+          "Thursday": 80.6,
+          "Friday": 20.6,
+          "Saturday": 38.0,
           "Sunday": 51.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Ramayana: Rise of A Legend",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 23.9,
+        "n_theatres": 325,
+        "n_days": 4,
+        "coverage_ratio": 0.713,
+        "daily_coverage_ratios": {
+          "Thursday": 0.729,
+          "Friday": 0.696,
+          "Saturday": 0.715,
+          "Sunday": 0.713
+        },
+        "daily_errors": {
+          "Thursday": 61.4,
+          "Friday": 59.4,
+          "Saturday": 61.9,
+          "Sunday": 66.1
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Godzilla Minus Zero",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 15.6,
+        "n_theatres": 421,
+        "n_days": 4,
+        "coverage_ratio": 0.99,
+        "daily_coverage_ratios": {
+          "Thursday": 0.988,
+          "Friday": 0.991,
+          "Saturday": 0.988,
+          "Sunday": 0.991
+        },
+        "daily_errors": {
+          "Thursday": 33.9,
+          "Friday": 16.7,
+          "Saturday": 11.1,
+          "Sunday": 8.3
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The Cat in the Hat",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 16.3,
+        "n_theatres": 421,
+        "n_days": 4,
+        "coverage_ratio": 0.988,
+        "daily_coverage_ratios": {
+          "Thursday": 0.984,
+          "Friday": 0.991,
+          "Saturday": 0.988,
+          "Sunday": 0.991
+        },
+        "daily_errors": {
+          "Thursday": 28.0,
+          "Friday": 15.0,
+          "Saturday": 15.2,
+          "Sunday": 12.2
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Drummer Boy",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 20.2,
+        "n_theatres": 393,
+        "n_days": 4,
+        "coverage_ratio": 0.909,
+        "daily_coverage_ratios": {
+          "Thursday": 0.88,
+          "Friday": 0.915,
+          "Saturday": 0.918,
+          "Sunday": 0.922
+        },
+        "daily_errors": {
+          "Friday": 44.1,
+          "Saturday": 13.2,
+          "Sunday": 10.3
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Wild Horse Nine",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 16.0,
+        "n_theatres": 234,
+        "n_days": 0,
+        "coverage_ratio": null,
+        "daily_coverage_ratios": {},
+        "daily_errors": {},
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Jimmy",
+        "weekend_of": "2026-11-06",
+        "abs_error_pct": 3.9,
+        "n_theatres": 336,
+        "n_days": 2,
+        "coverage_ratio": 0.761,
+        "daily_coverage_ratios": {
+          "Thursday": 0.748,
+          "Friday": 0.774
+        },
+        "daily_errors": {
+          "Friday": 20.5
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-10-27",
+    "last_updated": "2026-11-11",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 12,
-          "support": 10.368
+          "n": 14,
+          "support": 12.378
         },
         "Friday": {
           "n": 15,
-          "support": 12.817
+          "support": 11.406
         },
         "Saturday": {
           "n": 19,
-          "support": 16.228
+          "support": 14.092
         },
         "Sunday": {
           "n": 20,
-          "support": 16.81
+          "support": 18.009
         }
       },
       "leads": {
         "same_day": {
-          "n": 61,
-          "support": 52.299
+          "n": 64,
+          "support": 52.432
         },
         "next_day": {
-          "n": 5,
-          "support": 3.924
+          "n": 4,
+          "support": 3.453
         },
         "multi_day": {
           "n": 0,
@@ -8098,10 +9055,10 @@
       "version": 1,
       "active_tier": "identity",
       "day_shares": {
-        "Thursday": 0.13219570635134115,
-        "Friday": 0.2870098507014691,
-        "Saturday": 0.3311992861582983,
-        "Sunday": 0.2495951567888914
+        "Thursday": 0.13275271497390095,
+        "Friday": 0.285395899688339,
+        "Saturday": 0.33313043832684097,
+        "Sunday": 0.24872094701091915
       },
       "trained_on": [
         "Michael",
@@ -8144,14 +9101,17 @@
         "Sense and Sensibility",
         "Wildwood",
         "Clayface",
-        "Wicker"
+        "Wicker",
+        "Godzilla Minus Zero",
+        "The Cat in the Hat",
+        "Drummer Boy"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.14238959522896888,
-        "resid_scale": 0.32496171509364974
+        "log_ratio_mean": 0.14604196618393536,
+        "resid_scale": 0.3161443047185422
       },
       "identity": {
-        "seat_sd": 0.35478854703340684
+        "seat_sd": 0.34824628826857607
       },
       "seat": {
         "features": [
@@ -8164,13 +9124,13 @@
           "sellout_frac"
         ],
         "coef": [
-          0.26164857828395766,
-          0.914535523708166,
-          -0.030950867663511683,
-          0.04068744557522638,
-          0.035881278772829546,
-          0.003897985775277974,
-          0.01044678032991898
+          0.2582036907038553,
+          0.9181696141999558,
+          -0.03044061719905184,
+          0.041321531498628696,
+          0.037040318970893736,
+          0.0032415522614977783,
+          0.009890325510254358
         ],
         "prior": [
           0.0,
@@ -8182,7 +9142,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.32563777753286505
+        "daily_resid_sd": 0.3169946180253581
       },
       "snapshot": {
         "features": [
@@ -8196,12 +9156,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.5496179068832103,
-          0.7342814255220452,
-          -0.11549461694749871,
-          0.20721926462075135,
-          0.10296989229376564,
-          -0.024138226184660876,
+          0.4786808503979542,
+          0.7461973153005126,
+          -0.09458141121961693,
+          0.2779842914505054,
+          0.13670802340636345,
+          -0.018499177675772017,
           0.0,
           0.0
         ],
@@ -8215,18 +9175,18 @@
           0.0,
           0.0
         ],
-        "lambda": 10.0,
-        "daily_resid_sd": 0.5029704005620667
+        "lambda": 3.0,
+        "daily_resid_sd": 0.4910071553849873
       },
       "weekend": {
-        "log_half_width": 0.5187,
-        "resid_mean": 0.101928582907999,
-        "df": 39,
-        "loo_hit_rate": 0.925,
+        "log_half_width": 0.4797,
+        "resid_mean": 0.12546874520117202,
+        "df": 42,
+        "loo_hit_rate": 0.9302,
         "loo_hit_rate_basis": "calibration-set coverage; validate on later weekends",
-        "loo_mae_pct": 21.84,
-        "loo_median_ae_pct": 13.41,
-        "n_movies": 40
+        "loo_mae_pct": 20.32,
+        "loo_median_ae_pct": 11.61,
+        "n_movies": 43
       },
       "loo_detail": [
         {
@@ -8237,7 +9197,7 @@
         },
         {
           "movie": "The Devil Wears Prada 2",
-          "pred_m": 74.72,
+          "pred_m": 74.78,
           "actual_m": 76.75,
           "observed_share": 0.382
         },
@@ -8249,15 +9209,15 @@
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 23.78,
+          "pred_m": 23.8,
           "actual_m": 15.09,
-          "observed_share": 0.868
+          "observed_share": 0.867
         },
         {
           "movie": "Obsession",
-          "pred_m": 15.23,
+          "pred_m": 15.28,
           "actual_m": 17.2,
-          "observed_share": 0.668
+          "observed_share": 0.666
         },
         {
           "movie": "The Mandalorian and Grogu",
@@ -8291,9 +9251,9 @@
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 37.38,
+          "pred_m": 37.31,
           "actual_m": 44.53,
-          "observed_share": 0.581
+          "observed_share": 0.582
         },
         {
           "movie": "Toy Story 5",
@@ -8315,33 +9275,33 @@
         },
         {
           "movie": "Young Washington",
-          "pred_m": 12.43,
+          "pred_m": 12.44,
           "actual_m": 19.37,
-          "observed_share": 0.868
+          "observed_share": 0.867
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 31.2,
+          "pred_m": 31.16,
           "actual_m": 43.14,
-          "observed_share": 0.751
+          "observed_share": 0.752
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 18.9,
+          "pred_m": 18.87,
           "actual_m": 13.7,
-          "observed_share": 0.75
+          "observed_share": 0.751
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 123.51,
+          "pred_m": 123.36,
           "actual_m": 123.5,
-          "observed_share": 0.75
+          "observed_share": 0.751
         },
         {
           "movie": "One Night Only",
           "pred_m": 3.46,
           "actual_m": 5.51,
-          "observed_share": 0.871
+          "observed_share": 0.87
         },
         {
           "movie": "The End of Oak Street",
@@ -8357,13 +9317,13 @@
         },
         {
           "movie": "Insidious: Out of the Further",
-          "pred_m": 21.12,
+          "pred_m": 21.11,
           "actual_m": 25.11,
-          "observed_share": 0.617
+          "observed_share": 0.618
         },
         {
           "movie": "Mutiny",
-          "pred_m": 4.23,
+          "pred_m": 4.22,
           "actual_m": 7.71,
           "observed_share": 0.618
         },
@@ -8375,15 +9335,15 @@
         },
         {
           "movie": "Coyote vs. Acme",
-          "pred_m": 18.77,
+          "pred_m": 18.79,
           "actual_m": 15.91,
           "observed_share": 0.867
         },
         {
           "movie": "Practical Magic 2",
-          "pred_m": 27.63,
+          "pred_m": 27.7,
           "actual_m": 30.0,
-          "observed_share": 0.419
+          "observed_share": 0.418
         },
         {
           "movie": "Resident Evil",
@@ -8447,9 +9407,9 @@
         },
         {
           "movie": "Sense and Sensibility",
-          "pred_m": 2.87,
+          "pred_m": 2.86,
           "actual_m": 7.2,
-          "observed_share": 0.582
+          "observed_share": 0.583
         },
         {
           "movie": "Wildwood",
@@ -8468,12 +9428,30 @@
           "pred_m": 7.45,
           "actual_m": 5.75,
           "observed_share": 1.0
+        },
+        {
+          "movie": "Godzilla Minus Zero",
+          "pred_m": 23.99,
+          "actual_m": 30.61,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "The Cat in the Hat",
+          "pred_m": 16.33,
+          "actual_m": 20.0,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "Drummer Boy",
+          "pred_m": 7.37,
+          "actual_m": 9.42,
+          "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 21.84,
-        "global_ratio": 22.47,
-        "regression": 22.77
+        "identity": 20.32,
+        "global_ratio": 20.7,
+        "regression": 20.87
       },
       "bakeoff_winner": "identity",
       "meets_mae_target": false
