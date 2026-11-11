@@ -5178,6 +5178,16 @@ COMP_MULTIPLIER_SHRINK = 4.0
 COMP_MULTIPLIER_MIN_FILMS = 10
 
 
+FAMILY_SEASON_MODE = (os.environ.get("FAMILY_SEASON_MODE") or "on").strip().lower()
+FAMILY_SEASON_MIN_N = 3
+SCHOOL_BREAK_MMDD = ("06-10", "08-20")   # US K-12 summer break, opening Friday
+
+
+def school_break(weekend_of):
+    """True when the opening Friday falls in the US summer school break."""
+    return SCHOOL_BREAK_MMDD[0] <= str(weekend_of)[5:10] <= SCHOOL_BREAK_MMDD[1]
+
+
 def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of=None):
     """Median opening-weekend / reported-day multiplier from recorded dailies.
 
@@ -5203,12 +5213,13 @@ def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of
             continue
         denom = thu if basis == "previews" else thu + fri
         meta = metadata_for_movie(entry.get("movie", ""), metadata)
-        rows.append((total / denom, (getattr(meta, "audience_type", "") or "").strip()))
+        rows.append((total / denom, (getattr(meta, "audience_type", "") or "").strip(),
+                     entry.get("weekend_of") or ""))
     if len(rows) < COMP_MULTIPLIER_MIN_FILMS:
         return None
-    global_median = statistics.median(m for m, _ in rows)
+    global_median = statistics.median(m for m, _, _ in rows)
     aud = (audience_type or "").strip()
-    cls = [m for m, a in rows if aud and a == aud]
+    cls = [m for m, a, _ in rows if aud and a == aud]
     if cls:
         n = len(cls)
         mult = (n * statistics.median(cls) + COMP_MULTIPLIER_SHRINK * global_median) / (
@@ -5217,6 +5228,27 @@ def class_opening_multiplier(cal, audience_type, basis, exclude=None, weekend_of
     else:
         mult = global_median
         label = f"median of {len(rows)} openings"
+    # FAMILY x SCHOOL SEASON (2026-11-11). With school in session a family
+    # film's Friday is weak and its Saturday strong: Saturday/Friday ran 1.29-
+    # 1.74 on the seven school-season family openings (Cat in the Hat 1.69)
+    # against 0.58-0.96 in the summer break and 1.12 for every other class, so
+    # weekend/(Thu+Fri) is 2.6-3.8 vs 1.8-2.3. One family multiplier mixes the
+    # two. Family films only, same-season comps when at least
+    # FAMILY_SEASON_MIN_N exist, shrunk toward the class value. Earlier
+    # weekends only, 8 family films: (Thu+Fri) x multiplier 17.5% -> 14.6% MAE,
+    # all four school-season films closer; previews basis 24.9 -> 23.8%.
+    # Served headline, replay as of Saturday night on the 19 census-era films
+    # (friday_stage_day_backtest, THROUGH_OFFSET=1): Forgotten Island -2 -> +1%,
+    # Wildwood -6 -> -2%, The Cat in the Hat -24 -> -21%, weekend MAE 5.6 ->
+    # 5.2%, every non-family film unchanged. FAMILY_SEASON_MODE=off disables.
+    if (FAMILY_SEASON_MODE == "on" and aud == FAMILY_WALKUP_AUDIENCE and weekend_of
+            and re.match(r"\d{4}-\d{2}-\d{2}$", str(weekend_of))):
+        season = school_break(weekend_of)
+        same = [m for m, a, w in rows if a == aud and w and school_break(w) == season]
+        if len(same) >= FAMILY_SEASON_MIN_N:
+            k = len(same)
+            mult = (k * statistics.median(same) + COMP_MULTIPLIER_SHRINK * mult) / (k + COMP_MULTIPLIER_SHRINK)
+            label += f"; {'summer-break' if season else 'school-season'} n={k}"
     return {"multiplier": mult, "n": len(rows), "basis": label}
 
 

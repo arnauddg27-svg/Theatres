@@ -73,6 +73,39 @@ class StageForecastTests(unittest.TestCase):
         self.assertEqual("after-friday", S.forecast_stage(later))
         self.assertIsNone(S.daily_evidence_candidate(later))
 
+    def test_family_multiplier_uses_same_school_season_comps(self):
+        # weekend / (Thu + Fri): school-season family 3.0, summer family 2.0,
+        # everything else 2.4.
+        def film(i, weekend, mult, aud):
+            return {"movie": f"{aud}-{i}", "weekend_of": weekend, "actual_total": mult * 10.0,
+                    "daily_actuals": {"Thursday": 2.0, "Friday": 8.0}}
+        history = ([film(i, f"2026-0{3 + i}-0{1 + i}", 3.0, "fam") for i in range(3)]        # Mar-May
+                   + [film(i, f"2026-07-{10 + i}", 2.0, "fam") for i in range(3, 6)]          # July
+                   + [film(i, f"2026-02-{10 + i}", 2.4, "other") for i in range(6, 12)])
+        meta = lambda movie, _md: type("M", (), {"audience_type": "broad_family" if movie.startswith("fam") else "adult_drama"})()
+        cal = {"history": history}
+        with patch.object(P, "load_movie_metadata", return_value={}), patch.object(P, "metadata_for_movie", side_effect=meta):
+            school = P.class_opening_multiplier(cal, "broad_family", "thu_fri", weekend_of="2026-11-06")
+            summer = P.class_opening_multiplier(cal, "broad_family", "thu_fri", weekend_of="2026-07-31")
+            other = P.class_opening_multiplier(cal, "adult_drama", "thu_fri", weekend_of="2026-11-06")
+            with patch.object(P, "FAMILY_SEASON_MODE", "off"):
+                flat = P.class_opening_multiplier(cal, "broad_family", "thu_fri", weekend_of="2026-11-06")
+            # a season with fewer than FAMILY_SEASON_MIN_N comps keeps the class value
+            thin = P.class_opening_multiplier({"history": history[:2] + history[3:]}, "broad_family", "thu_fri",
+                                              weekend_of="2026-11-06")
+        self.assertGreater(school["multiplier"], flat["multiplier"])
+        self.assertLess(summer["multiplier"], flat["multiplier"])
+        self.assertIn("school-season n=3", school["basis"])
+        self.assertIn("summer-break n=3", summer["basis"])
+        self.assertNotIn("season", other["basis"])
+        self.assertNotIn("season", flat["basis"])
+        self.assertNotIn("season", thin["basis"])
+        k = P.COMP_MULTIPLIER_SHRINK
+        self.assertAlmostEqual((3 * 3.0 + k * flat["multiplier"]) / (3 + k), school["multiplier"])
+        self.assertTrue(P.school_break("2026-07-03"))
+        self.assertFalse(P.school_break("2026-11-06"))
+        self.assertFalse(P.school_break("2026-05-29"))
+
     def test_withheld_previews_feed_the_comp_multiplier_after_previews_only(self):
         mult = {"multiplier": 7.0, "n": 20, "basis": "test"}
         pred = prediction()
