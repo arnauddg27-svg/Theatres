@@ -2,7 +2,7 @@
   "date": "2026-11-13",
   "weekend_of": "2026-11-13",
   "collected_local_date": "2026-11-12",
-  "collected_at": "2026-11-12T17:03:01.035159+00:00",
+  "collected_at": "2026-11-12T17:13:14.158001+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -219257,7 +219257,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223015+00:00",
+          "collected_at": "2026-11-12T17:13:14.095821+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -219398,7 +219398,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351814+00:00",
+          "collected_at": "2026-11-12T17:13:14.095795+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -219524,110 +219524,130 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367602+00:00",
+          "collected_at": "2026-11-12T17:13:14.095784+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-13",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:10pm",
-            "showtime_id": "148182654",
-            "format": "undefined"
-          },
-          {
-            "showtime": "3:25pm",
-            "showtime_id": "148730408",
+            "showtime": "12:45pm",
+            "showtime_id": "148730429",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "148182655",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148730409",
+            "showtime": "3:50pm",
+            "showtime_id": "148730427",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "148182656",
+            "showtime": "4:30pm",
+            "showtime_id": "148182657",
             "format": "undefined"
+          },
+          {
+            "showtime": "6:55pm",
+            "showtime_id": "148730426",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "7:40pm",
+            "showtime_id": "148182658",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148730428",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "4:10pm",
-            "showtime_id": "148185493",
+            "showtime": "1:10pm",
+            "showtime_id": "148730445",
             "format": "undefined"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "148185494",
+            "showtime": "4:10pm",
+            "showtime_id": "148185495",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:10pm",
+            "showtime_id": "148185496",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "148730347",
             "format": "undefined"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "12:10pm",
-            "showtime_id": "148730367",
+            "showtime": "2:25pm",
+            "showtime_id": "148730388",
             "format": "undefined"
           },
           {
-            "showtime": "2:35pm",
-            "showtime_id": "148180356",
+            "showtime": "4:50pm",
+            "showtime_id": "148180364",
             "format": "undefined"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148180358",
+            "showtime": "7:30pm",
+            "showtime_id": "148180362",
             "format": "undefined"
           },
           {
-            "showtime": "7:25pm",
-            "showtime_id": "148180360",
+            "showtime": "10:35pm",
+            "showtime_id": "148730450",
             "format": "undefined"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148730386",
+            "showtime": "12:40pm",
+            "showtime_id": "148730348",
             "format": "undefined"
           },
           {
-            "showtime": "4:20pm",
-            "showtime_id": "147920522",
+            "showtime": "4:15pm",
+            "showtime_id": "148730306",
             "format": "undefined"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147920523",
-            "format": "RealD 3D"
+            "showtime": "7:05pm",
+            "showtime_id": "148730305",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:55pm",
+            "showtime_id": "148730304",
+            "format": "undefined"
           }
         ],
         "Godzilla Minus Zero": [
           {
-            "showtime": "12:05pm",
-            "showtime_id": "148730410",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "12:50pm",
-            "showtime_id": "148730324",
+            "showtime": "12:55pm",
+            "showtime_id": "148730349",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147575370",
+            "showtime": "3:30pm",
+            "showtime_id": "148730346",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148730325",
+            "showtime": "6:40pm",
+            "showtime_id": "148730345",
+            "format": "Japanese Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "148730385",
             "format": "Japanese Spoken with English Subtitles"
           }
         ]
@@ -219767,7 +219787,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943045+00:00",
+          "collected_at": "2026-11-12T17:13:14.095516+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -219955,7 +219975,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367593+00:00",
+          "collected_at": "2026-11-12T17:13:14.095826+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -220133,7 +220153,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351307+00:00",
+          "collected_at": "2026-11-12T17:13:14.095688+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -220306,7 +220326,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223027+00:00",
+          "collected_at": "2026-11-12T17:13:14.095729+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -220564,7 +220584,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943054+00:00",
+          "collected_at": "2026-11-12T17:13:14.095553+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -220720,7 +220740,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351366+00:00",
+          "collected_at": "2026-11-12T17:13:14.095654+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -220876,7 +220896,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223081+00:00",
+          "collected_at": "2026-11-12T17:13:14.095698+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -221054,7 +221074,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367573+00:00",
+          "collected_at": "2026-11-12T17:13:14.095839+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -221297,7 +221317,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943036+00:00",
+          "collected_at": "2026-11-12T17:13:14.095443+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -221435,7 +221455,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367555+00:00",
+          "collected_at": "2026-11-12T17:13:14.095603+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -221583,7 +221603,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351320+00:00",
+          "collected_at": "2026-11-12T17:13:14.095725+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -221711,7 +221731,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223036+00:00",
+          "collected_at": "2026-11-12T17:13:14.095799+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -222011,7 +222031,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943070+00:00",
+          "collected_at": "2026-11-12T17:13:14.095570+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -222189,7 +222209,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367647+00:00",
+          "collected_at": "2026-11-12T17:13:14.095669+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -222380,7 +222400,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351375+00:00",
+          "collected_at": "2026-11-12T17:13:14.095618+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -222566,7 +222586,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223115+00:00",
+          "collected_at": "2026-11-12T17:13:14.095678+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -222824,7 +222844,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942979+00:00",
+          "collected_at": "2026-11-12T17:13:14.095406+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -222996,7 +223016,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351314+00:00",
+          "collected_at": "2026-11-12T17:13:14.095817+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -223065,7 +223085,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223134+00:00",
+          "collected_at": "2026-11-12T17:13:14.095586+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -223426,7 +223446,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351277+00:00",
+          "collected_at": "2026-11-12T17:13:14.095711+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -223572,7 +223592,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223125+00:00",
+          "collected_at": "2026-11-12T17:13:14.095733+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -223740,118 +223760,173 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367629+00:00",
+          "collected_at": "2026-11-12T17:13:14.095632+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-13",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148192339",
+            "showtime": "12:50pm",
+            "showtime_id": "148192345",
             "format": "undefined"
           },
           {
-            "showtime": "5:10pm",
-            "showtime_id": "148192340",
+            "showtime": "4:00pm",
+            "showtime_id": "148192344",
             "format": "undefined"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148656151",
+            "showtime": "7:05pm",
+            "showtime_id": "148192343",
             "format": "undefined"
           },
           {
-            "showtime": "8:15pm",
-            "showtime_id": "148192341",
-            "format": "undefined"
-          }
-        ],
-        "Ghost Soldier": [
-          {
-            "showtime": "1:45pm",
-            "showtime_id": "148192386",
+            "showtime": "8:45pm",
+            "showtime_id": "148655987",
             "format": "undefined"
           },
           {
-            "showtime": "4:25pm",
-            "showtime_id": "148192387",
-            "format": "undefined"
-          },
-          {
-            "showtime": "7:10pm",
-            "showtime_id": "148192388",
+            "showtime": "10:10pm",
+            "showtime_id": "148192342",
             "format": "undefined"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148655978",
+            "showtime": "12:40pm",
+            "showtime_id": "148192474",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148655979",
+            "showtime": "4:30pm",
+            "showtime_id": "148192414",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "148192475",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "148192413",
+            "format": "undefined"
+          }
+        ],
+        "Ghost Soldier": [
+          {
+            "showtime": "12:30pm",
+            "showtime_id": "148656147",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148192392",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:20pm",
+            "showtime_id": "148192391",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148192389",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "148192390",
             "format": "undefined"
           }
         ],
         "Victorian Psycho": [
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148656010",
+            "showtime": "1:10pm",
+            "showtime_id": "148656011",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "148656012",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "148656013",
+            "format": "Thrills & Chills"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "148656014",
             "format": "Thrills & Chills"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "147860631",
+            "showtime": "12:30pm",
+            "showtime_id": "148655988",
             "format": "undefined"
           },
           {
-            "showtime": "2:40pm",
-            "showtime_id": "148656133",
+            "showtime": "1:15pm",
+            "showtime_id": "147860212",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148655989",
             "format": "undefined"
           },
           {
             "showtime": "4:15pm",
-            "showtime_id": "147860630",
-            "format": "RealD 3D"
+            "showtime_id": "147860214",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148655990",
+            "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147860629",
+            "showtime_id": "147860216",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:15pm",
+            "showtime_id": "147860219",
             "format": "undefined"
           }
         ],
         "Godzilla Minus Zero": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148655970",
-            "format": "IMAX at AMC"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "147533780",
+            "showtime": "12:45pm",
+            "showtime_id": "148656017",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148655971",
+            "showtime": "2:30pm",
+            "showtime_id": "148655973",
             "format": "IMAX at AMC"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147533784",
+            "showtime": "4:10pm",
+            "showtime_id": "148656016",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148655972",
-            "format": "IMAX at AMC"
+            "showtime": "7:30pm",
+            "showtime_id": "148656015",
+            "format": "Japanese Spoken with English Subtitles"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148656047",
+            "format": "Japanese Spoken with English Subtitles"
           }
         ]
       }
@@ -223955,7 +224030,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942909+00:00",
+          "collected_at": "2026-11-12T17:13:14.095460+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -224088,7 +224163,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367621+00:00",
+          "collected_at": "2026-11-12T17:13:14.095830+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -224221,7 +224296,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351332+00:00",
+          "collected_at": "2026-11-12T17:13:14.095790+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -224349,7 +224424,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223089+00:00",
+          "collected_at": "2026-11-12T17:13:14.095610+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -224537,7 +224612,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942968+00:00",
+          "collected_at": "2026-11-12T17:13:14.095495+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -224653,7 +224728,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351356+00:00",
+          "collected_at": "2026-11-12T17:13:14.095649+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -224759,7 +224834,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223072+00:00",
+          "collected_at": "2026-11-12T17:13:14.095673+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -224875,120 +224950,90 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367612+00:00",
+          "collected_at": "2026-11-12T17:13:14.095721+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-13",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148073914",
+            "showtime": "2:15pm",
+            "showtime_id": "148073904",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:45pm",
-            "showtime_id": "148073916",
+            "showtime": "5:15pm",
+            "showtime_id": "148073908",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "148073919",
+            "showtime": "8:15pm",
+            "showtime_id": "148073911",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "2:50pm",
-            "showtime_id": "148073739",
+            "showtime": "4:00pm",
+            "showtime_id": "148073736",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "2:55pm",
-            "showtime_id": "148692224",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148692223",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "6:10pm",
-            "showtime_id": "148073740",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:05pm",
-            "showtime_id": "148692226",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "9:30pm",
-            "showtime_id": "148073741",
+            "showtime": "7:20pm",
+            "showtime_id": "148073737",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:30pm",
-            "showtime_id": "148073650",
+            "showtime": "2:45pm",
+            "showtime_id": "148073641",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148073648",
+            "showtime": "5:15pm",
+            "showtime_id": "148073642",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148073647",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148073645",
+            "showtime": "7:45pm",
+            "showtime_id": "148073644",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147837706",
+            "showtime": "2:00pm",
+            "showtime_id": "147837703",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147837707",
+            "showtime": "5:00pm",
+            "showtime_id": "147837704",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147837708",
+            "showtime": "8:00pm",
+            "showtime_id": "147837705",
             "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147837709",
-            "format": "RealD 3D"
           }
         ],
         "Godzilla Minus Zero": [
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148692188",
+            "showtime": "2:15pm",
+            "showtime_id": "147401565",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "148692189",
+            "showtime": "5:30pm",
+            "showtime_id": "147401564",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "148692190",
+            "showtime": "9:00pm",
+            "showtime_id": "147401563",
             "format": "Japanese Spoken with English Subtitles"
           }
         ]
@@ -225088,7 +225133,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942950+00:00",
+          "collected_at": "2026-11-12T17:13:14.095471+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -225241,7 +225286,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351393+00:00",
+          "collected_at": "2026-11-12T17:13:14.095707+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -225399,7 +225444,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.222987+00:00",
+          "collected_at": "2026-11-12T17:13:14.095693+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -225537,7 +225582,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367657+00:00",
+          "collected_at": "2026-11-12T17:13:14.095808+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -225896,7 +225941,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367561+00:00",
+          "collected_at": "2026-11-12T17:13:14.095751+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -226037,7 +226082,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351384+00:00",
+          "collected_at": "2026-11-12T17:13:14.095843+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -226178,125 +226223,145 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223055+00:00",
+          "collected_at": "2026-11-12T17:13:14.095766+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-12",
+      "show_date": "2026-11-13",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148207046",
+            "showtime": "12:45pm",
+            "showtime_id": "148207049",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:55pm",
-            "showtime_id": "148207047",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148628848",
+            "showtime": "1:00pm",
+            "showtime_id": "148628853",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "7:50pm",
-            "showtime_id": "148207048",
+            "showtime": "3:40pm",
+            "showtime_id": "148207050",
             "format": "Laser at AMC"
           },
-          {
-            "showtime": "9:00pm",
-            "showtime_id": "148628847",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148207084",
-            "format": "Laser at AMC"
-          }
-        ],
-        "How to Rob a Bank": [
           {
             "showtime": "4:00pm",
-            "showtime_id": "148206980",
+            "showtime_id": "148628852",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "6:35pm",
+            "showtime_id": "148207051",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148206981",
+            "showtime_id": "148628851",
+            "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148207052",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148628850",
+            "format": "Dolby Cinema at AMC"
+          }
+        ],
+        "How to Rob a Bank": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "148206982",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148206983",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "148206984",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148206985",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148207042",
+            "showtime": "12:00pm",
+            "showtime_id": "148207022",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:25pm",
-            "showtime_id": "148207043",
+            "showtime": "2:25pm",
+            "showtime_id": "148207023",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:50pm",
-            "showtime_id": "148207044",
+            "showtime": "4:50pm",
+            "showtime_id": "148207024",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:20pm",
-            "showtime_id": "148207045",
+            "showtime": "7:15pm",
+            "showtime_id": "148207025",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:40pm",
+            "showtime_id": "148207026",
             "format": "Laser at AMC"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "2:20pm",
-            "showtime_id": "147931806",
+            "showtime": "12:00pm",
+            "showtime_id": "148628888",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148628849",
-            "format": "Dolby Cinema at AMC"
-          },
-          {
-            "showtime": "5:10pm",
-            "showtime_id": "147931807",
+            "showtime": "3:45pm",
+            "showtime_id": "148628929",
             "format": "RealD 3D"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "147931808",
+            "showtime": "7:10pm",
+            "showtime_id": "148628891",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147931832",
+            "showtime_id": "148629001",
             "format": "Laser at AMC"
           }
         ],
         "Godzilla Minus Zero": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147399468",
+            "showtime": "12:10pm",
+            "showtime_id": "148628890",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "5:15pm",
-            "showtime_id": "147399469",
+            "showtime": "2:50pm",
+            "showtime_id": "148628887",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147399470",
+            "showtime": "6:35pm",
+            "showtime_id": "148628928",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147399491",
+            "showtime_id": "148628894",
             "format": "Japanese Spoken with English Subtitles"
           }
         ]
@@ -226424,7 +226489,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942942+00:00",
+          "collected_at": "2026-11-12T17:13:14.095486+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -226567,7 +226632,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367583+00:00",
+          "collected_at": "2026-11-12T17:13:14.095702+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -226733,7 +226798,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351299+00:00",
+          "collected_at": "2026-11-12T17:13:14.095659+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -226899,7 +226964,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223064+00:00",
+          "collected_at": "2026-11-12T17:13:14.095835+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -227142,7 +227207,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942988+00:00",
+          "collected_at": "2026-11-12T17:13:14.095504+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -227305,7 +227370,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367675+00:00",
+          "collected_at": "2026-11-12T17:13:14.095743+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -227483,7 +227548,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223151+00:00",
+          "collected_at": "2026-11-12T17:13:14.095848+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -227615,9 +227680,58 @@
                 "showtime_id": "148636879",
                 "format": "Thrills & Chills"
               }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148636784",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "148636847",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:10pm",
+                "showtime_id": "147774348",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "147774349",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148636787",
+                "format": "undefined"
+              }
+            ],
+            "Godzilla Minus Zero": [
+              {
+                "showtime": "12:35pm",
+                "showtime_id": "148636684",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "3:55pm",
+                "showtime_id": "148636685",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148636686",
+                "format": "Japanese Spoken with English Subtitles"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148636832",
+                "format": "IMAX at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-11T05:03:33.607492+00:00",
+          "collected_at": "2026-11-12T17:13:14.095757+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -227850,7 +227964,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.942998+00:00",
+          "collected_at": "2026-11-12T17:13:14.095525+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -227976,7 +228090,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351791+00:00",
+          "collected_at": "2026-11-12T17:13:14.095775+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-13": {
@@ -228097,7 +228211,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367638+00:00",
+          "collected_at": "2026-11-12T17:13:14.095578+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -228218,7 +228332,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223106+00:00",
+          "collected_at": "2026-11-12T17:13:14.095716+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -228469,7 +228583,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367534+00:00",
+          "collected_at": "2026-11-12T17:13:14.095625+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -228570,7 +228684,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943062+00:00",
+          "collected_at": "2026-11-12T17:13:14.095561+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -228726,7 +228840,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351805+00:00",
+          "collected_at": "2026-11-12T17:13:14.095747+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -228877,7 +228991,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223160+00:00",
+          "collected_at": "2026-11-12T17:13:14.095761+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -229115,7 +229229,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367548+00:00",
+          "collected_at": "2026-11-12T17:13:14.095770+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -229386,7 +229500,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351339+00:00",
+          "collected_at": "2026-11-12T17:13:14.095738+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -229539,7 +229653,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223046+00:00",
+          "collected_at": "2026-11-12T17:13:14.095682+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -229834,7 +229948,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367666+00:00",
+          "collected_at": "2026-11-12T17:13:14.095780+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -229932,7 +230046,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943007+00:00",
+          "collected_at": "2026-11-12T17:13:14.095534+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -230070,7 +230184,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351821+00:00",
+          "collected_at": "2026-11-12T17:13:14.095642+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -230213,7 +230327,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223143+00:00",
+          "collected_at": "2026-11-12T17:13:14.095595+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -230483,7 +230597,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:18:17.367508+00:00",
+          "collected_at": "2026-11-12T17:13:14.095663+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-12": {
@@ -230641,7 +230755,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:17:57.943028+00:00",
+          "collected_at": "2026-11-12T17:13:14.095545+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-14": {
@@ -230782,7 +230896,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:19:37.351326+00:00",
+          "collected_at": "2026-11-12T17:13:14.095813+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-15": {
@@ -230928,150 +231042,162 @@
               }
             ]
           },
-          "collected_at": "2026-11-12T05:20:17.223098+00:00",
+          "collected_at": "2026-11-12T17:13:14.095804+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-15",
+      "show_date": "2026-11-12",
       "movies": {
         "Ebenezer": [
           {
-            "showtime": "1:15pm",
-            "showtime_id": "148159969",
+            "showtime": "2:00pm",
+            "showtime_id": "148159987",
             "format": "XL at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148723364",
+            "showtime": "4:20pm",
+            "showtime_id": "148688274",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "4:25pm",
-            "showtime_id": "148159968",
+            "showtime": "5:00pm",
+            "showtime_id": "148159988",
             "format": "XL at AMC"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148723363",
-            "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:20pm",
-            "showtime_id": "148159967",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "148723351",
+            "showtime_id": "148688275",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148159970",
+            "showtime": "8:00pm",
+            "showtime_id": "148159989",
             "format": "XL at AMC"
+          },
+          {
+            "showtime": "10:20pm",
+            "showtime_id": "148688276",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "How to Rob a Bank": [
           {
-            "showtime": "12:55pm",
-            "showtime_id": "148159934",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "148159933",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "7:00pm",
-            "showtime_id": "148159932",
+            "showtime_id": "148159939",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148159935",
+            "showtime": "7:10pm",
+            "showtime_id": "148159940",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "148159941",
             "format": "Laser at AMC"
           }
         ],
         "Ghost Soldier": [
           {
-            "showtime": "12:30pm",
-            "showtime_id": "148723296",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:30pm",
-            "showtime_id": "148159956",
+            "showtime": "1:50pm",
+            "showtime_id": "148159952",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "2:55pm",
-            "showtime_id": "148723297",
+            "showtime": "2:35pm",
+            "showtime_id": "148688281",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "5:20pm",
-            "showtime_id": "148159899",
-            "format": "Open Caption (On-screen Subtitles)"
-          },
-          {
-            "showtime": "7:45pm",
-            "showtime_id": "148159897",
+            "showtime": "5:00pm",
+            "showtime_id": "148159998",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "148159898",
+            "showtime": "7:30pm",
+            "showtime_id": "148159999",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148160000",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Victorian Psycho": [
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148688262",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "148688263",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:20pm",
+            "showtime_id": "148688264",
             "format": "Laser at AMC"
           }
         ],
         "The Cat in the Hat": [
           {
-            "showtime": "11:20am",
-            "showtime_id": "148723318",
+            "showtime": "12:45pm",
+            "showtime_id": "147751597",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:30pm",
-            "showtime_id": "147751639",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "147751638",
+            "showtime": "3:40pm",
+            "showtime_id": "147751596",
             "format": "RealD 3D"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147751637",
+            "showtime_id": "147751595",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:50pm",
-            "showtime_id": "147751640",
+            "showtime": "9:30pm",
+            "showtime_id": "147751598",
             "format": "Laser at AMC"
           }
         ],
         "Godzilla Minus Zero": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "148723345",
+            "showtime": "12:00pm",
+            "showtime_id": "148688272",
             "format": "IMAX with Laser at AMC"
           },
           {
-            "showtime": "1:05pm",
-            "showtime_id": "148723279",
+            "showtime": "12:35pm",
+            "showtime_id": "147554806",
             "format": "Japanese Spoken with English Subtitles"
+          },
+          {
+            "showtime": "3:15pm",
+            "showtime_id": "148688271",
+            "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "147554789",
+            "format": "Japanese Spoken with English Subtitles"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "148688270",
+            "format": "IMAX with Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148723276",
+            "showtime_id": "147554788",
             "format": "Japanese Spoken with English Subtitles"
           },
           {
-            "showtime": "10:20pm",
-            "showtime_id": "148723344",
+            "showtime": "9:45pm",
+            "showtime_id": "148688273",
             "format": "IMAX with Laser at AMC"
           }
         ]
@@ -307768,8 +307894,8 @@
   },
   "link_coverage": {
     "ratio": 1.0,
-    "fresh": 460,
-    "expected": 460,
+    "fresh": 72,
+    "expected": 72,
     "min_ratio": 0.9,
     "degraded": false
   }
