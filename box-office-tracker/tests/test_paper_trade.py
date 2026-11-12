@@ -92,13 +92,24 @@ class PaperTradeTest(unittest.TestCase):
     def test_provisional_then_final(self):
         trades, _, _ = T.place_bets(self.pred, self.odds, trades={}, ratios=RATIOS)
         snaps = T.load_snapshots(self.odds)
-        T.settle(trades, snaps=snaps, finals={}, provisionals={(W, "clayface"): 21.0})
+        T.settle(trades, snaps=snaps, finals={}, provisionals={(W, "clayface"): 21.0}, now="2026-10-26T12:00:00Z")
         self.assertTrue(all(t["status"] == "provisional" and t["settled_at"] == "" for t in trades.values()))
         yes = next(t for t in trades.values() if t["side"] == "YES")
         self.assertEqual(float(yes["pnl"]), -1.0)
         T.settle(trades, snaps=snaps, finals={(W, "clayface"): 23.1}, provisionals={}, now="x")
         self.assertTrue(all(t["status"] == "settled" for t in trades.values()))
         self.assertGreater(float(yes["pnl"]), 0)
+
+    def test_old_provisional_dailies_settle_without_a_calibration_actual(self):
+        # A gated small film never reaches calibration.json (Klara and the Sun).
+        trades, _, _ = T.place_bets(self.pred, self.odds, trades={}, ratios=RATIOS)
+        snaps = T.load_snapshots(self.odds)
+        prov = {(W, "clayface"): 21.0}
+        T.settle(trades, snaps=snaps, finals={}, provisionals=prov, now="2026-11-01T00:00:00Z")     # 9 days
+        self.assertTrue(all(t["status"] == "provisional" for t in trades.values()))
+        T.settle(trades, snaps=snaps, finals={}, provisionals=prov, now="2026-11-02T00:00:00Z")     # 10 days
+        self.assertTrue(all(t["status"] == "settled" and t["settled_at"] == "2026-11-02T00:00:00Z"
+                            for t in trades.values()))
 
     def test_unfitted_stage_places_nothing(self):
         trades, new, probs = T.place_bets(self.pred, self.odds, trades={}, ratios={})

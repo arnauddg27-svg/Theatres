@@ -262,6 +262,22 @@ def pnl(side, cost, won):
     return STAKE * (1.0 / cost - 1.0) * (1 - fee)
 
 
+# A film the small-film gate dropped never reaches calibration.json, so its
+# bets had no final actual and stayed "provisional" for good (Klara and the
+# Sun, 2026-10-23: two bets still open on 2026-11-12). The Numbers dailies
+# stop being revised within days: past this age they are the final actual.
+PROVISIONAL_FINAL_DAYS = 10
+
+
+def _dailies_final(weekend_of, now):
+    try:
+        friday = datetime.strptime(weekend_of, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        at = datetime.strptime(now, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return False
+    return (at - friday).days >= PROVISIONAL_FINAL_DAYS
+
+
 def settle(trades, snaps=None, finals=None, provisionals=None, now=None):
     snaps = load_snapshots() if snaps is None else snaps
     finals = final_actuals() if finals is None else finals
@@ -278,6 +294,8 @@ def settle(trades, snaps=None, finals=None, provisionals=None, now=None):
         actual, status = (finals.get(k), "settled") if k in finals else (provisionals.get(k), "provisional")
         if actual is None:
             continue
+        if status == "provisional" and _dailies_final(k[0], now):
+            status = "settled"
         ob = outcome_bracket(actual, labels.get((k[0], k[1], t["event_slug"]), ()))
         if ob is None:
             continue

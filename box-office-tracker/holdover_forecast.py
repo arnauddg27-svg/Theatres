@@ -436,17 +436,37 @@ def main(argv=None):
         grade_log()
         return 0
     now = datetime.now(timezone.utc)
-    weekend = args.weekend or (now - timedelta(hours=8) - timedelta(
-        days=((now - timedelta(hours=8)).weekday() - 4) % 7)).strftime("%Y-%m-%d")
-    entries = holdover.entries(weekend)
-    if not entries:
-        print(f"holdover forecast: no holdover markets for weekend {weekend}")
+    weekends = [args.weekend] if args.weekend else default_weekends(now)
+    by_weekend = {w: holdover.entries(w) for w in weekends}
+    if not any(by_weekend.values()):
+        print(f"holdover forecast: no holdover markets for weekend {' or '.join(weekends)}")
         return 0
     shape = load_shape()
     stamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
     rows = []
-    print(f"\n{'=' * 70}\n  Holdover Weekend Forecasts — weekend of {weekend}\n{'=' * 70}")
     headline_census = census_headline()
+    for weekend, entries in by_weekend.items():
+        if entries:
+            print(f"\n{'=' * 70}\n  Holdover Weekend Forecasts — weekend of {weekend}\n{'=' * 70}")
+            rows += weekend_rows(entries, shape, stamp, headline_census)
+    if rows and not args.no_log:
+        append_log(rows)
+    return 0
+
+
+def default_weekends(now):
+    """The weekend in play (its Friday, from Friday 08Z) and the next one.
+    Polymarket lists a holdover market on the Wednesday/Thursday before its
+    weekend; forecasting only the weekend in play left the film without a
+    'prior' call until Friday 08Z (The Cat in the Hat / Godzilla Minus Zero,
+    markets listed 2026-11-12 00:34Z, audit 2026-11-12)."""
+    t = now - timedelta(hours=8)
+    friday = t - timedelta(days=(t.weekday() - 4) % 7)
+    return [friday.strftime("%Y-%m-%d"), (friday + timedelta(days=7)).strftime("%Y-%m-%d")]
+
+
+def weekend_rows(entries, shape, stamp, headline_census):
+    rows = []
     for e in entries:
         try:
             row = film_forecast(e, shape, census=headline_census)
@@ -469,9 +489,7 @@ def main(argv=None):
             rows.append(shadow)
             print(f"    census shadow (not headlined, graded only): ${shadow['headline_mid_m']:.2f}M "
                   f"stage={shadow['forecast_stage']} census={shadow['days_census']} {shadow['day_m']}")
-    if rows and not args.no_log:
-        append_log(rows)
-    return 0
+    return rows
 
 
 if __name__ == "__main__":

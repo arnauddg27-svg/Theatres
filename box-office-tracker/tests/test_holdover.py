@@ -374,3 +374,33 @@ class GradeLogTest(unittest.TestCase):
                 F.grade_log(log, actuals, out)
             with open(out) as f:
                 self.assertEqual(len(list(csv.DictReader(f))), 2)
+
+
+class UpcomingWeekendForecastTest(unittest.TestCase):
+    """A holdover market is listed the Wednesday/Thursday before its weekend:
+    the 'prior' call must not wait for Friday (audit 2026-11-12)."""
+
+    def test_default_weekends_are_the_one_in_play_and_the_next(self):
+        for now, want in ((datetime(2026, 11, 12, 6, 0, tzinfo=timezone.utc), ["2026-11-06", "2026-11-13"]),   # Thursday
+                          (datetime(2026, 11, 13, 7, 59, tzinfo=timezone.utc), ["2026-11-06", "2026-11-13"]),  # Fri before 08Z
+                          (datetime(2026, 11, 13, 8, 0, tzinfo=timezone.utc), ["2026-11-13", "2026-11-20"]),
+                          (datetime(2026, 11, 16, 12, 0, tzinfo=timezone.utc), ["2026-11-13", "2026-11-20"])):  # Monday
+            self.assertEqual(want, F.default_weekends(now), now)
+
+    def test_main_forecasts_the_upcoming_weekend_too(self):
+        entry = {"weekend_of": "2026-11-13", "movie": "The Cat in the Hat", "weekend_num": "2",
+                 "opening_weekend_of": "2026-11-06"}
+        row = {"weekend_of": "2026-11-13", "movie": "The Cat in the Hat", "weekend_num": 2, "base": "opening",
+               "base_m": 20.0, "headline_mid_m": 9.1, "headline_low_m": 6.5, "headline_high_m": 12.3,
+               "forecast_stage": "prior", "days_actual": "", "days_census": "", "day_m": ""}
+        logged = []
+        with mock.patch.object(F, "default_weekends", return_value=["2026-11-06", "2026-11-13"]), \
+                mock.patch.object(F.holdover, "entries", side_effect=lambda w: [entry] if w == "2026-11-13" else []), \
+                mock.patch.object(F, "load_shape", return_value={}), \
+                mock.patch.object(F, "film_forecast", side_effect=lambda e, shape, census=True: dict(row)), \
+                mock.patch.object(F, "append_log", side_effect=logged.extend), \
+                mock.patch("sys.stdout", new_callable=io.StringIO):
+            self.assertEqual(0, F.main([]))
+        self.assertEqual([("2026-11-13", "The Cat in the Hat", "prior")],
+                         [(r["weekend_of"], r["movie"], r["forecast_stage"]) for r in logged])
+
