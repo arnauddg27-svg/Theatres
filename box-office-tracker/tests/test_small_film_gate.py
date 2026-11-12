@@ -67,6 +67,42 @@ class SmallFilmGateTest(unittest.TestCase):
         os.environ["SMALL_FILM_MIN_M"] = "0.5"
         self.assertEqual(set(G.dropped_titles("2026-10-23", path=self.log)), set())
 
+    def _tiny_fixture(self, counts):
+        import json
+        meta = os.path.join(self.tmp.name, "meta.csv")
+        with open(meta, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["movie", "weekend_of", "national_theatre_count"])
+            for movie, count in counts.items():
+                w.writerow([movie, "2026-11-13", count])
+        links = os.path.join(self.tmp.name, "links.json")
+        theatres = {f"AMC {i}": {"movies": {"Ebenezer": []}, "dates": {"2026-11-13": {"movies": {"Ghost Soldier": []}}}}
+                    for i in range(60)}
+        with open(links, "w") as f:
+            json.dump({"weekend_of": "2026-11-13", "theatres": theatres}, f)
+        return meta, links
+
+    def test_unlisted_film_without_a_count_is_gated_from_opening_thursday(self):
+        from datetime import date
+        # Soul Patrol 2026-11-12: blank count (pre-release placeholders are
+        # cleared), no AMC theatre lists it, six other films fully linked.
+        meta, links = self._tiny_fixture({"Soul Patrol": "", "Ebenezer": "", "Ghost Soldier": "", "Tiny Doc": "4"})
+        wed = G.tiny_release_titles("2026-11-13", meta, links, today=date(2026, 11, 11))
+        thu = G.tiny_release_titles("2026-11-13", meta, links, today=date(2026, 11, 12))
+        # Before Thursday only the counted tiny release goes; AMC may not have
+        # posted an uncounted film's showtimes yet.
+        self.assertEqual({"tiny doc"}, set(wed))
+        self.assertEqual({"tiny doc", "soul patrol"}, set(thu))
+        self.assertIn("no AMC listings by opening Thursday", thu["soul patrol"])
+        # Films AMC lists are kept whatever their count says.
+        self.assertNotIn("ebenezer", thu)
+        self.assertNotIn("ghost soldier", thu)
+        # A thin links file is no evidence of absence.
+        import json
+        with open(links, "w") as f:
+            json.dump({"weekend_of": "2026-11-13", "theatres": {"AMC 1": {"movies": {"Ebenezer": []}}}}, f)
+        self.assertEqual({}, G.tiny_release_titles("2026-11-13", meta, links, today=date(2026, 11, 12)))
+
     def test_missing_log_keeps_everything(self):
         self.assertEqual(G.filter_titles(["A"], "2026-10-23", path=self.log + ".nope"), ["A"])
 

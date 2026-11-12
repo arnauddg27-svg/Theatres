@@ -61,7 +61,17 @@ def min_theatres():
         return 100
 
 
-def tiny_release_titles(weekend_of, metadata_path=None, links_path=None):
+def _opening_thursday_reached(weekend_of, today=None):
+    from datetime import date, datetime, timedelta, timezone
+    try:
+        friday = date.fromisoformat(weekend_of)
+    except ValueError:
+        return False
+    today = today or datetime.now(timezone.utc).date()
+    return today >= friday - timedelta(days=1)
+
+
+def tiny_release_titles(weekend_of, metadata_path=None, links_path=None, today=None):
     """{title key: reason} for films whose metadata theatre count is under
     min_theatres() AND that no AMC theatre lists in the weekend's links file.
 
@@ -70,19 +80,32 @@ def tiny_release_titles(weekend_of, metadata_path=None, links_path=None):
     links that cannot exist. A $3M opening needs hundreds of theatres. The
     links file must cover the same weekend with ≥ MIN_LINKED_THEATRES_FOR_
     EVIDENCE theatres: a placeholder count on a real wide release is
-    contradicted by the AMC listings and the film is kept."""
+    contradicted by the AMC listings and the film is kept.
+
+    2026-11-12: Soul Patrol. Pre-release theatre counts are no longer trusted
+    (cleared 2026-11-06), so its count was BLANK and the rule above could not
+    fire: by opening Thursday no AMC theatre listed it while six other films
+    had 279-442 theatres each, yet it kept a slate slot and every leg kept
+    looking for its links. A film with no count and no AMC listing is gated
+    too, but only from opening Thursday on — by then AMC has posted showtimes
+    for every real wide release, and a title with no links yields no seats
+    whether it is tracked or not."""
     if not enabled() or not weekend_of:
         return {}
     floor = min_theatres()
     candidates = {}
+    unlisted_ok = _opening_thursday_reached(weekend_of, today)
     try:
         with open(metadata_path or METADATA_CSV, newline="") as f:
             for row in csv.DictReader(f):
                 if (row.get("weekend_of") or "").strip() != weekend_of:
                     continue
+                raw = (row.get("national_theatre_count") or "").strip()
                 try:
-                    count = int(float(row.get("national_theatre_count") or ""))
+                    count = int(float(raw))
                 except ValueError:
+                    if not raw and unlisted_ok:
+                        candidates[title_key(row.get("movie"))] = None
                     continue
                 if 0 < count < floor:
                     candidates[title_key(row.get("movie"))] = count
@@ -108,7 +131,8 @@ def tiny_release_titles(weekend_of, metadata_path=None, links_path=None):
         for date_entry in (entry.get("dates") or {}).values():
             linked.update(title_key(m) for m in ((date_entry or {}).get("movies") or {}))
         linked.update(title_key(m) for m in (entry.get("movies") or {}))
-    return {key: f"{count} theatre(s) per metadata, no AMC listings"
+    return {key: (f"{count} theatre(s) per metadata, no AMC listings" if count is not None
+                  else "no theatre count and no AMC listings by opening Thursday")
             for key, count in candidates.items() if key not in linked}
 
 

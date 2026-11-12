@@ -113,6 +113,25 @@ def settled_weekends(current, n=BASELINE_WEEKENDS):
     return wks[-n:]
 
 
+# Lanes whose volume is set by a fixed read budget, not by the slate: the
+# Fandango lane renders ~30 seat maps per slot however many films are tracked.
+# 2026-11-12: its rows per weekend were steady (2,150-2,650 for ten weekends)
+# while the slate grew from 2-4 films to 6-8 (calendar seeding, holdovers), so
+# rows per FILM halved (682 -> 299) and the drift guard cried bleed. For these
+# lanes drift is judged on rows per weekend.
+BUDGET_CAPPED_LANES = ("fandango",)
+
+
+def drift_medians(lane, recent_counts, recent_films, prior_counts, prior_films):
+    """(recent median, prior median, unit) for the drift guard. counts are the
+    per-weekend {day offset: rows} dicts, films the per-weekend film counts."""
+    if lane in BUDGET_CAPPED_LANES:
+        return (median([sum(c.values()) for c in recent_counts]),
+                median([sum(c.values()) for c in prior_counts]), "rows/weekend")
+    return (median([sum(c.values()) / max(1, n) for c, n in zip(recent_counts, recent_films)]),
+            median([sum(c.values()) / max(1, n) for c, n in zip(prior_counts, prior_films)]), "rows/film")
+
+
 def median(xs):
     s = sorted(xs)
     n = len(s)
@@ -210,13 +229,12 @@ def main():
             counts, film_set = lane_counts(wk)
             prior[wk], prior_films[wk] = counts, max(1, len(film_set))
         for lane in ("amc_seat", "amc_snapshot", "fandango", "cinemark"):
-            recent_med = median([sum(baselines[wk][lane].values()) / base_films[wk]
-                                 for wk in base_wks])
-            prior_med = median([sum(prior[wk][lane].values()) / prior_films[wk]
-                                for wk in prior_wks])
+            recent_med, prior_med, unit = drift_medians(
+                lane, [baselines[wk][lane] for wk in base_wks], [base_films[wk] for wk in base_wks],
+                [prior[wk][lane] for wk in prior_wks], [prior_films[wk] for wk in prior_wks])
             if prior_med > 0 and recent_med < 0.5 * prior_med:
                 print(f"::warning::capture DRIFT — {lane}: trailing-4-weekend "
-                      f"median {recent_med:.0f} rows/film is under half the "
+                      f"median {recent_med:.0f} {unit} is under half the "
                       f"prior window's {prior_med:.0f}; a gradual bleed "
                       f"normalizes into the baseline and never trips the "
                       f"per-day floor")
