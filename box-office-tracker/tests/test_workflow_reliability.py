@@ -782,3 +782,20 @@ class InstallStepTimeoutTest(unittest.TestCase):
             m = re.search(r"timeout-minutes: (\d+)", step)
             self.assertIsNotNone(m, f"{job.strip()} install step has no timeout")
             self.assertLessEqual(int(m.group(1)), 30, job)
+
+
+class PlaywrightAptFallbackTest(unittest.TestCase):
+    """2026-11-11 14:07-16:23Z: the runner's Ubuntu mirror stopped resolving
+    (apt exit 100), so every `playwright install --with-deps` step failed and
+    the fandango 14Z, cinemark 14:20Z, snapshot 14:30Z and amc bridge 15Z
+    slots were lost. Runner images already carry Chrome's libraries, so a
+    browser-only install must be the fallback on every install step."""
+
+    def test_every_with_deps_install_falls_back_to_browser_only(self):
+        for line in WORKFLOW.read_text().splitlines():
+            s = line.strip()
+            if not re.match(r"python3? -m playwright install chromium --with-deps", s):
+                continue
+            if s.endswith("2>&1;") or ">/dev/null 2>&1;" in s:
+                continue  # probe-chains diagnostics: failure is already ignored
+            self.assertRegex(s, r"--with-deps \|\| python3? -m playwright install chromium$", s)

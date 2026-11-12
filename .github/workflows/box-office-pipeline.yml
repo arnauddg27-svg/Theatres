@@ -470,7 +470,7 @@ jobs:
         timeout-minutes: 20   # see the collect-links install step (2026-11-01)
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps
+          python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Proxy preflight — fail fast on a runner that cannot reach the proxy
         if: steps.dedup.outputs.skip != 'true'
@@ -650,7 +650,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install requests playwright
-          python -m playwright install chromium --with-deps
+          python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Probe chain sites
         working-directory: box-office-tracker
@@ -1085,7 +1085,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps
+          python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Fandango snapshot — collect shard ${{ github.event.inputs.fandango_shard || '0' }}
         working-directory: box-office-tracker
@@ -1533,7 +1533,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps
+          python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Cinemark collect
         working-directory: box-office-tracker
