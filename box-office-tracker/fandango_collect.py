@@ -256,6 +256,43 @@ def _slug_tokens(slug):
     return frozenset(_NUMERAL_TOKENS.get(t, t) for t in (slug or "").split("-") if t)
 
 
+# A chain lists a film's foreign-language or subtitled showings as a separate
+# title: Cinemark 'godzilla-minus-zero-japanese-with-english-subtitles' and
+# 'en-espanol-ebenezer', Harkins 'Godzilla Minus Zero [Japanese, subtitled]'.
+# An exact match dropped them: Harkins never read Godzilla Minus Zero at all
+# (opening 2026-11-06) and Cinemark read none of it in weekend 2 (audit
+# 2026-11-12). They are the same film's seats.
+_VARIANT_LANGUAGE_TOKENS = frozenset({
+    "espanol", "spanish", "japanese", "korean", "hindi", "telugu", "tamil",
+    "malayalam", "kannada", "punjabi", "mandarin", "cantonese", "chinese",
+    "french", "german", "italian", "subtitled", "subtitles", "subbed",
+    "dubbed", "dub"})
+_VARIANT_FILLER_TOKENS = frozenset({"en", "in", "with", "english", "language", "version", "original", "sub"})
+
+
+def language_variant_title(slug, target_slugs):
+    """Tracked title whose words are all in ``slug`` and whose EXTRA words are
+    only language/subtitle qualifiers (at least one of them a language word,
+    so 'in-the-dark' never matches a tracked 'The Dark'), else None. None too
+    when two tracked titles fit."""
+    tokens = _slug_tokens(slug)
+    allowed = _VARIANT_LANGUAGE_TOKENS | _VARIANT_FILLER_TOKENS
+    hits = set()
+    for target, title in target_slugs.items():
+        want = _slug_tokens(target)
+        extra = tokens - want
+        if want and want <= tokens and extra & _VARIANT_LANGUAGE_TOKENS and extra <= allowed:
+            hits.add(title)
+    return hits.pop() if len(hits) == 1 else None
+
+
+def resolve_target_title(title, target_slugs):
+    """Tracked title for a chain's film title: exact slug, else a language
+    variant of one."""
+    slug = slugify_title(title)
+    return target_slugs.get(slug) or language_variant_title(slug, target_slugs)
+
+
 def match_target_title(overview_href, target_slugs):
     """Return the canonical tracked title for a movie-overview link, or None.
 

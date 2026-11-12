@@ -24,7 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fandango_collect import filter_unchanged  # noqa: E402
-from fandango_collect import append_unique_fandango_rows, slugify_title  # noqa: E402
+from fandango_collect import append_unique_fandango_rows, resolve_target_title, slugify_title  # noqa: E402
 import small_film_gate  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -119,7 +119,8 @@ def pick_performances(day, titles_by_id, target_slugs, now_utc, mode="pre"):
     out = []
     for mv in day.get("movies") or []:
         title = titles_by_id.get(int(mv.get("movieId") or mv.get("id") or 0))
-        if not title or slugify_title(title) not in target_slugs:
+        canonical = resolve_target_title(title, target_slugs) if title else None
+        if not canonical:
             continue
         for p in mv.get("performances") or []:
             p = normalize_performance(p)
@@ -131,7 +132,7 @@ def pick_performances(day, titles_by_id, target_slugs, now_utc, mode="pre"):
                 continue
             if mode == "post" and not (0 <= mins_after <= POST_WINDOW_MIN):
                 continue
-            out.append((p, target_slugs[slugify_title(title)]))
+            out.append((p, canonical))
     return out
 
 

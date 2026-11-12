@@ -53,6 +53,7 @@ from scraper import (
 from fandango_collect import (
     slugify_title,
     _slug_tokens,
+    language_variant_title,
     FANDANGO_PRE_RESERVATION_FIELDS,
     FANDANGO_PRE_RESERVATION_DEDUPE_FIELDS,
     migrate_header,
@@ -186,6 +187,9 @@ def match_movie_slug(movie_href, target_slugs):
     for slug, title in target_slugs.items():
         if _slug_tokens(slug) == tokens:
             return title
+    variant = language_variant_title(core, target_slugs)
+    if variant:
+        return variant
     # Near-miss visibility (the Fandango lane's lesson, paid for twice): a
     # variant slug that silently zeroes a tracked film must show up in logs.
     for slug, title in target_slugs.items():

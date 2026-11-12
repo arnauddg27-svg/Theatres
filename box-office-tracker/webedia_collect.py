@@ -44,7 +44,7 @@ from urllib.parse import urlencode
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fandango_collect import append_unique_fandango_rows, slugify_title  # noqa: E402
+from fandango_collect import append_unique_fandango_rows, resolve_target_title, slugify_title  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 WEBEDIA_CSV = DATA_DIR / "webedia-pre-reservation-snapshots.csv"
@@ -285,7 +285,7 @@ def collect(weekend_of=None, titles=None, now_utc=None, session=None):
             time.sleep(SLEEP)
         names = movie_titles(s, base, movie_ids)
         for th, mid, day, st in pending:
-            title = target.get(slugify_title(names.get(mid, "")))
+            title = resolve_target_title(names.get(mid, ""), target)
             if not title:
                 continue
             totals["matched"] += 1

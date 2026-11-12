@@ -29,7 +29,8 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fandango_collect import (  # noqa: E402
-    FANDANGO_PRE_RESERVATION_FIELDS, append_unique_fandango_rows, filter_unchanged, slugify_title)
+    FANDANGO_PRE_RESERVATION_FIELDS, append_unique_fandango_rows, filter_unchanged,
+    resolve_target_title, slugify_title)
 import small_film_gate  # noqa: E402
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
@@ -109,9 +110,9 @@ def select_sessions(schedule, target_slugs, dates, now_utc, mode="pre"):
     titles = {}
     for p in schedule.get("presentations") or []:
         show = p.get("show") or {}
-        slug = slugify_title(show.get("title") or p.get("slug") or "")
-        if slug in target_slugs:
-            titles[p["slug"]] = target_slugs[slug]
+        canonical = resolve_target_title(show.get("title") or p.get("slug") or "", target_slugs)
+        if canonical:
+            titles[p["slug"]] = canonical
     out = []
     for s in schedule.get("sessions") or []:
         title = titles.get(s.get("presentationSlug"))
