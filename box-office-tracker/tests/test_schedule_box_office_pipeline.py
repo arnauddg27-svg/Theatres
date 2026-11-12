@@ -541,6 +541,54 @@ class SlotLedgerTests(unittest.TestCase):
         ]
         self.assertEqual([], schedule.missing_slots(expected, runs))
 
+    def test_dispatched_but_never_succeeded_is_reported(self):
+        # 2026-11-11: three failed attempts at the 14:30Z snapshot read as
+        # "64 dispatched, 0 missing".
+        sat = dt.date(2026, 8, 22)
+        expected = schedule.expected_slots_for_date(sat)[:4]
+        stamp = lambda t, m=0: (t + dt.timedelta(minutes=m)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        (t0, s0), (t1, s1), (t2, s2), (t3, s3) = expected
+        runs = [
+            # slot 0: failed three times
+            *[{"display_title": schedule.scheduled_display_title(s0), "created_at": stamp(t0, m),
+               "status": "completed", "conclusion": "failure"} for m in (3, 50, 100)],
+            # slot 1: failed, then a retry succeeded
+            {"display_title": schedule.scheduled_display_title(s1), "created_at": stamp(t1, 3),
+             "status": "completed", "conclusion": "failure"},
+            {"display_title": schedule.scheduled_display_title(s1), "created_at": stamp(t1, 20),
+             "status": "completed", "conclusion": "success"},
+            # slot 2: cancelled, with a retry still running
+            {"display_title": schedule.scheduled_display_title(s2), "created_at": stamp(t2, 3),
+             "status": "completed", "conclusion": "cancelled"},
+            {"display_title": schedule.scheduled_display_title(s2), "created_at": stamp(t2, 30),
+             "status": "in_progress", "conclusion": None},
+            # slot 3: never dispatched -> "missing", not "never succeeded"
+        ]
+        lost = schedule.never_succeeded_slots(expected, runs)
+        self.assertEqual([s0.name], [slot.name for _, slot, _ in lost])
+        self.assertEqual(3, len(lost[0][2]))
+        self.assertEqual([s3.name], [slot.name for _, slot in schedule.missing_slots(expected, runs)])
+
+    def test_reconcile_prints_never_succeeded(self):
+        sat = dt.date(2026, 8, 22)
+        t0, s0 = schedule.expected_slots_for_date(sat)[0]
+
+        class FailClient:
+            repo = "o/r"
+
+            def request_json(self, method, path, body=None):
+                return {"workflow_runs": [{"display_title": schedule.scheduled_display_title(s0),
+                                           "created_at": t0.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                           "status": "completed", "conclusion": "failure"}]}
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            self.assertEqual(0, schedule.reconcile_date(client=FailClient(), workflow="w.yml", date=sat))
+        text = buf.getvalue()
+        self.assertIn("1 never succeeded", text)
+        self.assertIn(f"slot NEVER SUCCEEDED — {s0.name}", text)
+
     def test_late_watchdog_dispatch_counts(self):
         sat = dt.date(2026, 8, 22)
         expected = schedule.expected_slots_for_date(sat)

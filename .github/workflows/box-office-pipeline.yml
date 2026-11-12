@@ -411,6 +411,7 @@ jobs:
 
       - name: Upload Phase 1 logs
         if: always() && steps.dedup.outputs.skip != 'true'
+        continue-on-error: true   # logs only (2026-11-11: a failed log upload failed two Cinemark shards)
         uses: actions/upload-artifact@v4
         with:
           name: phase1-logs-${{ github.event.inputs.tz_group }}-${{ github.run_id }}
@@ -468,9 +469,17 @@ jobs:
         if: steps.dedup.outputs.skip != 'true'
         working-directory: box-office-tracker
         timeout-minutes: 20   # see the collect-links install step (2026-11-01)
+        # 2026-11-11 14:07-16:15Z: GitHub's runners could not resolve the Ubuntu
+        # mirrors. pip and the Chromium download both worked; only the apt half
+        # of `--with-deps` (fonts) failed, and with no fallback it failed every
+        # AMC leg, Cinemark shard, Fandango and bridge run for two hours (30
+        # runs; the 14:30Z snapshot and the 14:20Z Cinemark pass were lost).
+        # collect-links already fell back to the browser alone and did not
+        # fail. Same here and in the other lanes: a bounded --with-deps try,
+        # then Chromium without the system packages (the image ships them).
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps || python -m playwright install chromium
+          timeout 420 python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Proxy preflight — fail fast on a runner that cannot reach the proxy
         if: steps.dedup.outputs.skip != 'true'
@@ -650,7 +659,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install requests playwright
-          python -m playwright install chromium --with-deps || python -m playwright install chromium
+          timeout 420 python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Probe chain sites
         working-directory: box-office-tracker
@@ -719,6 +728,7 @@ jobs:
 
       - name: Upload probe report
         if: always()
+        continue-on-error: true   # logs only (2026-11-11: a failed log upload failed two Cinemark shards)
         uses: actions/upload-artifact@v4
         with:
           name: chain-probe-${{ github.run_id }}
@@ -1085,7 +1095,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps || python -m playwright install chromium
+          timeout 420 python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Fandango snapshot — collect shard ${{ github.event.inputs.fandango_shard || '0' }}
         working-directory: box-office-tracker
@@ -1243,6 +1253,7 @@ jobs:
 
       - name: Upload Fandango logs
         if: always()
+        continue-on-error: true   # logs only (2026-11-11: a failed log upload failed two Cinemark shards)
         uses: actions/upload-artifact@v4
         with:
           name: fandango-logs-${{ github.run_id }}
@@ -1533,7 +1544,7 @@ jobs:
         working-directory: box-office-tracker
         run: |
           pip install -r requirements.txt
-          python -m playwright install chromium --with-deps || python -m playwright install chromium
+          timeout 420 python -m playwright install chromium --with-deps || python -m playwright install chromium
 
       - name: Cinemark collect
         working-directory: box-office-tracker
@@ -1666,6 +1677,7 @@ jobs:
 
       - name: Upload log
         if: always()
+        continue-on-error: true   # logs only (2026-11-11: a failed log upload failed two Cinemark shards)
         uses: actions/upload-artifact@v4
         with:
           name: cinemark-${{ github.run_id }}

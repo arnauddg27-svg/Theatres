@@ -740,6 +740,35 @@ def missing_slots(
     return missing
 
 
+SERVICED_CONCLUSIONS = ("success", "skipped", "neutral")
+
+
+def never_succeeded_slots(
+    expected: list[tuple[dt.datetime, Slot]],
+    runs: list[dict],
+    grace_minutes: int = RECONCILE_GRACE_MINUTES,
+) -> list[tuple[dt.datetime, Slot, list[dict]]]:
+    """Expected slots that WERE dispatched but have no successful (or still
+    running) run near their time: (scheduled_at, slot, their runs).
+
+    2026-11-11: GitHub's runners lost DNS for two hours; the 14:30Z AMC
+    snapshot failed three times and five Cinemark shards exhausted their
+    retries, and the ledger printed "64 expected, 64 dispatched, 0 missing".
+    A slot that fired and failed is as lost as one that never fired."""
+    out = []
+    for scheduled_at, slot in expected:
+        titles = (scheduled_display_title(slot), slot.title)
+        lower = scheduled_at - dt.timedelta(minutes=5)
+        upper = scheduled_at + dt.timedelta(minutes=grace_minutes)
+        mine = [r for r in runs
+                if r.get("display_title") in titles and r.get("created_at")
+                and lower <= parse_github_time(r["created_at"]) <= upper]
+        if mine and not any(r.get("status") != "completed" or r.get("conclusion") in SERVICED_CONCLUSIONS
+                            for r in mine):
+            out.append((scheduled_at, slot, mine))
+    return out
+
+
 RECONCILE_MAX_PAGES = 10
 
 
@@ -770,13 +799,22 @@ def reconcile_date(*, client: GitHubClient, workflow: str, date: dt.date) -> int
         if len(batch) < 100:
             break
     gone = missing_slots(expected, runs)
+    lost = never_succeeded_slots(expected, runs)
     print(f"slot ledger for {date}: {len(expected)} expected, "
-          f"{len(expected) - len(gone)} dispatched, {len(gone)} missing")
+          f"{len(expected) - len(gone)} dispatched, {len(gone)} missing, "
+          f"{len(lost)} never succeeded")
     for scheduled_at, slot in gone:
         print(
             f"::warning::slot NEVER DISPATCHED — {slot.name} expected at "
             f"{scheduled_at.strftime('%H:%MZ')} on {date} has no run at all; "
             f"both dispatch layers (GitHub cron + VPS watchdog) missed it"
+        )
+    for scheduled_at, slot, mine in lost:
+        ends = sorted({str(r.get("conclusion")) for r in mine})
+        print(
+            f"::warning::slot NEVER SUCCEEDED — {slot.name} expected at "
+            f"{scheduled_at.strftime('%H:%MZ')} on {date}: {len(mine)} run(s), "
+            f"all {'/'.join(ends)}"
         )
     return 0
 

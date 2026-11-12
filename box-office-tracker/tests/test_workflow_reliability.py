@@ -70,6 +70,27 @@ class WorkflowReliabilityTest(unittest.TestCase):
         self.assertIsNotNone(m)
         self.assertGreaterEqual(int(m.group(1)), 60)
 
+    def test_browser_install_survives_an_apt_outage(self):
+        """2026-11-11: runners could not resolve the Ubuntu mirrors for two
+        hours; every lane whose install was a bare `--with-deps` failed (30
+        runs). Each browser install must fall back to Chromium alone."""
+        lines = [ln.strip() for ln in self.workflow.splitlines()
+                 if "playwright install chromium --with-deps" in ln and not ln.strip().startswith("#")]
+        steps = [ln for ln in lines if ln.startswith(("python", "timeout"))]   # the install steps
+        self.assertGreaterEqual(len(steps), 5)
+        for ln in steps:
+            self.assertRegex(ln, r"\|\| python3? -m playwright install chromium$", ln)
+
+    def test_only_log_uploads_are_best_effort(self):
+        """A failed LOG upload must not fail a lane whose data is committed
+        (two Cinemark shards, 2026-11-11); the scrape artifact that feeds
+        finalize must still fail loudly."""
+        import re
+        steps = re.findall(r"      - name: ([^\n]+)\n((?:        [^\n]*\n)*?)        uses: actions/upload-artifact@v4", self.workflow)
+        soft = {name for name, body in steps if "continue-on-error: true" in body}
+        self.assertEqual({"Upload Phase 1 logs", "Upload probe report", "Upload Fandango logs", "Upload log"}, soft)
+        self.assertEqual(len(steps), len(soft) + 1)      # the scrape data artifact is the one hard upload
+
     def test_calibrate_prunes_the_persistent_runner_clone(self):
         """The VPS runner keeps its clone between runs (clean: false); without a
         prune it reached 27 GB and 88% disk on 2026-11-11."""
@@ -344,7 +365,9 @@ class WorkflowReliabilityTest(unittest.TestCase):
 
     def test_finalize_downloads_merges_and_commits_once(self):
         start = self.workflow.index("  finalize:")
-        end = self.workflow.index("  calibrate:", start)
+        # The finalize JOB only. The slice used to run on to `calibrate:` and so
+        # swept in scrape-fandango, whose log-only upload is now best-effort.
+        end = self.workflow.index("\n  scrape-fandango:", start)
         block = self.workflow[start:end]
 
         self.assertIn("Download scrape artifacts", block)
