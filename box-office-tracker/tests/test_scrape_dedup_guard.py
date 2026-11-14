@@ -8,7 +8,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from datetime import datetime, timezone
 
-from scripts.scrape_dedup_guard import should_skip, slot_since
+from scripts.scrape_dedup_guard import (
+    find_succeeded_twin,
+    should_skip,
+    slot_since,
+    twin_already_succeeded,
+)
 
 
 def run(cmd, cwd, check=True):
@@ -84,6 +89,64 @@ class ScrapeDedupGuardTest(unittest.TestCase):
             run(["git", "commit", "-m", "data: box office CT pre-reservation snapshot"], repo)
             self.assertFalse(should_skip(repo, "CT", False, True, "2000-01-01",
                                          schedule_slot="snapshot 22:30Z"))
+
+
+class TwinRunGuardTest(unittest.TestCase):
+    """2026-11-14: watchdog + scheduler both dispatched snapshot 02:30Z 4 s
+    apart; the force=true twin re-scraped for 3 h and starved the 07Z ET
+    post-show leg."""
+
+    TITLE = "box office scheduled snapshot 02:30Z"
+
+    def _run(self, rid, created, conclusion="success", title=TITLE, status="completed"):
+        return {"id": rid, "display_title": title, "created_at": created,
+                "status": status, "conclusion": conclusion, "workflow_id": 7}
+
+    def test_twin_of_successful_run_is_found(self):
+        me = self._run(2, "2026-11-14T02:37:38Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T02:37:34Z")
+        self.assertEqual(first, find_succeeded_twin(me, [me, first]))
+
+    def test_failed_twin_leaves_this_run_as_retry(self):
+        me = self._run(2, "2026-11-14T02:50:00Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T02:37:34Z", "failure")
+        self.assertIsNone(find_succeeded_twin(me, [me, first]))
+
+    def test_other_slots_old_runs_and_manual_runs_ignored(self):
+        me = self._run(5, "2026-11-14T02:37:38Z", None, status="in_progress")
+        self.assertIsNone(find_succeeded_twin(me, [
+            self._run(1, "2026-11-14T02:37:34Z", title="box office scheduled snapshot 22:30Z"),
+            self._run(2, "2026-11-14T01:00:00Z"),          # outside window
+            self._run(9, "2026-11-14T02:37:30Z"),          # newer id
+        ]))
+        manual = self._run(5, "2026-11-14T02:37:38Z", None, title="box office scrape snapshot")
+        self.assertIsNone(find_succeeded_twin(manual, [self._run(1, "2026-11-14T02:37:34Z",
+                                                                  title="box office scrape snapshot")]))
+
+    def test_api_lookup_and_fail_open(self):
+        me = self._run(2, "2026-11-14T02:37:38Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T02:37:34Z")
+        env = {"GH_TOKEN": "t", "GITHUB_REPOSITORY": "o/r", "GITHUB_RUN_ID": "2"}
+
+        def fetch(url, token):
+            return me if url.endswith("/runs/2") else {"workflow_runs": [me, first]}
+
+        self.assertEqual(first, twin_already_succeeded(env, fetch))
+        self.assertIsNone(twin_already_succeeded({}, fetch))
+
+        def boom(url, token):
+            raise OSError("api down")
+
+        self.assertIsNone(twin_already_succeeded(env, boom))
+
+    def test_twin_skips_even_forced_snapshot_run(self):
+        twin = self._run(1, "2026-11-14T02:37:34Z")
+        self.assertTrue(should_skip(Path("."), "ET", force=True, snapshots_only=True,
+                                    since="2000-01-01", schedule_slot="snapshot 02:30Z",
+                                    twin_check=lambda: twin))
+        self.assertFalse(should_skip(Path("."), "ET", force=True, snapshots_only=True,
+                                     since="2000-01-01", schedule_slot="snapshot 02:30Z",
+                                     twin_check=lambda: None))
 
 
 if __name__ == "__main__":

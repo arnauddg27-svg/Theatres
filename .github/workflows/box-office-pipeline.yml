@@ -457,6 +457,10 @@ jobs:
 
       - name: Dedup guard — skip if ${{ matrix.tz }} already scraped today
         id: dedup
+        env:
+          # Twin-run check (2026-11-14): skip when a same-slot duplicate
+          # dispatch already succeeded. Needs actions: read.
+          GH_TOKEN: ${{ github.token }}
         run: |
           python3 box-office-tracker/scripts/scrape_dedup_guard.py \
             --tz "${{ matrix.tz }}" \

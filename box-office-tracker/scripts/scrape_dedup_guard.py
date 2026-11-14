@@ -10,9 +10,11 @@ also contains the canonical data file.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -73,8 +75,81 @@ def _commit_changed_path(repo_root: Path, commit: str, path: str) -> bool:
     return path in {line.strip() for line in result.stdout.splitlines() if line.strip()}
 
 
+# 2026-11-14: the VPS watchdog and the GitHub scheduler both dispatched
+# "snapshot 02:30Z" 4 s apart (neither saw the other's run yet). Scheduled
+# snapshots pass force=true, so nothing stopped the twin: it queued behind the
+# first run, then re-scraped every zone for 3 h holding the AMC lock, and the
+# 07Z regular ET post-show leg timed out waiting -> Friday ET finals lost.
+# A scheduled run whose same-titled twin was dispatched just before it and
+# already SUCCEEDED is a duplicate; a twin that failed leaves this run as the
+# legitimate retry.
+TWIN_WINDOW = timedelta(minutes=20)
+SCHEDULED_PREFIX = "box office scheduled "
+
+
+def _parse_time(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def find_succeeded_twin(this_run: dict, runs: list[dict]) -> dict | None:
+    """The older, successful run with the same scheduled display title that
+    was created within TWIN_WINDOW before this one, or None."""
+    title = this_run.get("display_title") or ""
+    if not title.startswith(SCHEDULED_PREFIX):
+        return None
+    created = _parse_time(this_run["created_at"])
+    for run in runs:
+        if run.get("id") == this_run.get("id") or run.get("display_title") != title:
+            continue
+        if int(run.get("id", 0)) >= int(this_run.get("id", 0)):
+            continue
+        if not (created - TWIN_WINDOW <= _parse_time(run["created_at"]) <= created):
+            continue
+        if run.get("status") == "completed" and run.get("conclusion") == "success":
+            return run
+    return None
+
+
+def _github_get(url: str, token: str) -> dict:
+    req = urllib.request.Request(url, headers={
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+    })
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.load(resp)
+
+
+def twin_already_succeeded(env: dict | None = None, fetch=_github_get) -> dict | None:
+    """Look up this workflow run and its recent siblings via the API. Fails
+    OPEN (returns None, i.e. run) on any missing env or API error."""
+    env = os.environ if env is None else env
+    token, repo, run_id = env.get("GH_TOKEN"), env.get("GITHUB_REPOSITORY"), env.get("GITHUB_RUN_ID")
+    if not (token and repo and run_id):
+        return None
+    api = env.get("GITHUB_API_URL", "https://api.github.com")
+    try:
+        this_run = fetch(f"{api}/repos/{repo}/actions/runs/{run_id}", token)
+        if not (this_run.get("display_title") or "").startswith(SCHEDULED_PREFIX):
+            return None
+        since = (_parse_time(this_run["created_at"]) - TWIN_WINDOW).strftime("%Y-%m-%dT%H:%M:%SZ")
+        listing = fetch(
+            f"{api}/repos/{repo}/actions/workflows/{this_run['workflow_id']}/runs"
+            f"?per_page=100&event=workflow_dispatch&created=%3E%3D{since}",
+            token,
+        )
+        return find_succeeded_twin(this_run, listing.get("workflow_runs", []) or [])
+    except Exception as exc:  # noqa: BLE001 - never block a scrape on this check
+        print(f"Twin-run check unavailable ({exc}); running")
+        return None
+
+
 def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, since: str,
-                schedule_slot: str = "") -> bool:
+                schedule_slot: str = "", twin_check=twin_already_succeeded) -> bool:
+    twin = twin_check() if twin_check else None
+    if twin:
+        print(f"Skipping — duplicate dispatch: same-slot run {twin.get('id')} "
+              f"({twin.get('display_title')}) created {twin.get('created_at')} already succeeded")
+        return True
     if force:
         print("Force-running — bypassing dedup guard")
         return False
