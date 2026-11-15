@@ -239,5 +239,56 @@ class OnlyTzTest(unittest.TestCase):
         self.assertTrue(excluded_by_only_tz("PT", "CT,MT"))
 
 
+class FailedLegRetryTest(unittest.TestCase):
+    """A regular leg that failed after adding rows leaves a marker; its retry
+    must still run (2026-11-15)."""
+
+    THIS = {"id": 30, "display_title": "box office scheduled regular scrape 07Z",
+            "created_at": "2026-11-15T10:10:00Z"}
+
+    def _runs(self):
+        return [
+            dict(self.THIS),
+            {"id": 20, "display_title": self.THIS["display_title"], "status": "completed",
+             "conclusion": "failure", "created_at": "2026-11-15T07:04:00Z"},
+            {"id": 10, "display_title": "box office scheduled snapshot 02:30Z", "status": "completed",
+             "conclusion": "failure", "created_at": "2026-11-15T02:37:00Z"},
+        ]
+
+    def _jobs(self, run_id):
+        return {
+            20: [{"name": "scrape (ET)", "conclusion": "success"},
+                 {"name": "scrape (CT)", "conclusion": "failure"},
+                 {"name": "finalize", "conclusion": "success"}],
+            10: [{"name": "scrape (ET)", "conclusion": "failure"}],
+        }[run_id]
+
+    def test_finds_the_failed_leg_of_the_same_slot(self):
+        from scripts.scrape_dedup_guard import find_run_with_leg_failed
+        self.assertEqual(find_run_with_leg_failed("CT", self.THIS, self._runs(), self._jobs)["id"], 20)
+
+    def test_a_leg_that_succeeded_is_not_a_retry(self):
+        from scripts.scrape_dedup_guard import find_run_with_leg_failed
+        self.assertIsNone(find_run_with_leg_failed("ET", self.THIS, self._runs(), self._jobs))
+
+    def test_manual_runs_are_left_to_the_marker_check(self):
+        from scripts.scrape_dedup_guard import find_run_with_leg_failed
+        manual = dict(self.THIS, display_title="box office scrape regular")
+        self.assertIsNone(find_run_with_leg_failed("CT", manual, self._runs(), self._jobs))
+
+    def test_failed_leg_overrides_the_marker_skip(self):
+        import scripts.scrape_dedup_guard as guard
+        original = (guard._marker_commits, guard._commit_changed_path)
+        guard._marker_commits = lambda *a, **k: ["abc123"]
+        guard._commit_changed_path = lambda *a, **k: True
+        self.addCleanup(lambda: (setattr(guard, "_marker_commits", original[0]),
+                                 setattr(guard, "_commit_changed_path", original[1])))
+        common = dict(twin_check=lambda: None, leg_check=lambda tz: None)
+        self.assertFalse(guard.should_skip(Path("."), "CT", False, False, "2026-11-15",
+                                           failed_check=lambda tz: {"id": 20}, **common))
+        self.assertTrue(guard.should_skip(Path("."), "CT", False, False, "2026-11-15",
+                                          failed_check=lambda tz: None, **common))
+
+
 if __name__ == "__main__":
     unittest.main()

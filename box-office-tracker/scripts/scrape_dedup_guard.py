@@ -202,6 +202,62 @@ def leg_already_done(tz: str, env: dict | None = None, fetch=_github_get) -> dic
         return None
 
 
+# 2026-11-15: finalize writes a "data: box office <tz> scrape" marker for every
+# zone that ADDED rows, whatever the leg's outcome. So a regular leg that went
+# red on a partial read (Cloudflare wave, timeout) still left a marker, and its
+# retry was skipped as "already has canonical data" — the slot then closed
+# green on the partial data. A zone whose leg failed in an earlier run of this
+# slot, with no later success, is a top-up and must run; it reads only the
+# showings still missing.
+FAILED_LEG = frozenset({"failure", "timed_out", "cancelled"})
+
+
+def find_run_with_leg_failed(tz: str, this_run: dict, runs: list[dict], jobs_for) -> dict | None:
+    """The earlier same-slot run whose `scrape (tz)` job did not succeed, or None."""
+    title = this_run.get("display_title") or ""
+    if not title.startswith(SCHEDULED_PREFIX):
+        return None
+    created = _parse_time(this_run["created_at"])
+    earlier = [r for r in runs
+               if r.get("display_title") == title and r.get("status") == "completed"
+               and int(r.get("id", 0)) < int(this_run.get("id", 0))
+               and created - RETRY_WINDOW <= _parse_time(r["created_at"]) <= created]
+    earlier.sort(key=lambda r: int(r.get("id", 0)), reverse=True)
+    for run in earlier[:MAX_EARLIER_RUNS]:
+        done = {j.get("name"): j.get("conclusion") for j in jobs_for(run["id"])}
+        if done.get(f"scrape ({tz})") in FAILED_LEG:
+            return run
+    return None
+
+
+def leg_failed_earlier(tz: str, env: dict | None = None, fetch=_github_get) -> dict | None:
+    """API lookup for find_run_with_leg_failed. None when there is no such run
+    or the lookup is unavailable (the marker check then decides)."""
+    env = os.environ if env is None else env
+    token, repo, run_id = env.get("GH_TOKEN"), env.get("GITHUB_REPOSITORY"), env.get("GITHUB_RUN_ID")
+    if not (token and repo and run_id):
+        return None
+    api = env.get("GITHUB_API_URL", "https://api.github.com")
+    try:
+        this_run = fetch(f"{api}/repos/{repo}/actions/runs/{run_id}", token)
+        if not (this_run.get("display_title") or "").startswith(SCHEDULED_PREFIX):
+            return None
+        since = (_parse_time(this_run["created_at"]) - RETRY_WINDOW).strftime("%Y-%m-%dT%H:%M:%SZ")
+        listing = fetch(
+            f"{api}/repos/{repo}/actions/workflows/{this_run['workflow_id']}/runs"
+            f"?per_page=100&event=workflow_dispatch&created=%3E%3D{since}",
+            token,
+        )
+
+        def jobs_for(rid):
+            return fetch(f"{api}/repos/{repo}/actions/runs/{rid}/jobs?per_page=100", token).get("jobs", []) or []
+
+        return find_run_with_leg_failed(tz, this_run, listing.get("workflow_runs", []) or [], jobs_for)
+    except Exception as exc:  # noqa: BLE001 - never block a scrape on this check
+        print(f"Failed-leg check unavailable ({exc}); using the marker check")
+        return None
+
+
 def excluded_by_only_tz(tz: str, only_tz: str) -> bool:
     """True when a manual dispatch named the zones to run and this is not one.
 
@@ -216,7 +272,7 @@ def excluded_by_only_tz(tz: str, only_tz: str) -> bool:
 
 def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, since: str,
                 schedule_slot: str = "", twin_check=twin_already_succeeded,
-                leg_check=leg_already_done) -> bool:
+                leg_check=leg_already_done, failed_check=leg_failed_earlier) -> bool:
     twin = twin_check() if twin_check else None
     if twin:
         print(f"Skipping — duplicate dispatch: same-slot run {twin.get('id')} "
@@ -248,6 +304,12 @@ def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, sin
                       f"committed in {commit[:12]} (since {slot_start})")
                 return True
         print(f"No {tz} snapshot committed since {slot_start} for slot '{schedule_slot}'; running")
+        return False
+
+    failed = failed_check(tz) if failed_check else None
+    if failed:
+        print(f"Running — retry: the {tz} leg did not succeed in run {failed.get('id')} "
+              f"(created {failed.get('created_at')}); topping up the showings still missing")
         return False
 
     commits = _marker_commits(repo_root, tz, since)
