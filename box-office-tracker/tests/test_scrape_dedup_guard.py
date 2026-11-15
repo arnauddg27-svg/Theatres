@@ -238,6 +238,13 @@ class OnlyTzTest(unittest.TestCase):
         self.assertTrue(excluded_by_only_tz("ET", "CT,MT"))
         self.assertTrue(excluded_by_only_tz("PT", "CT,MT"))
 
+    def test_named_zones_are_explicit_requests(self):
+        from scripts.scrape_dedup_guard import named_by_only_tz
+        self.assertTrue(named_by_only_tz("CT", "CT,MT"))
+        self.assertFalse(named_by_only_tz("ET", "CT,MT"))
+        for value in ("ALL", "", "all"):
+            self.assertFalse(named_by_only_tz("CT", value))
+
 
 class FailedLegRetryTest(unittest.TestCase):
     """A regular leg that failed after adding rows leaves a marker; its retry

@@ -534,7 +534,14 @@ def parse_utc(value: str) -> dt.datetime:
 # watchdog's 240 min lookback, so it was never retried and Friday's ET finals
 # (215 theatres) were lost. This slot stays due for longer; a retry re-runs
 # only the zones that did not finalize (scrape_dedup_guard.leg_already_done).
-SLOT_MIN_LOOKBACK_MINUTES = {"regular scrape 07Z": 600}
+#
+# The late snapshot has the same shape of problem. It queues behind the 22:30Z
+# slot (and that slot's retry) on the AMC lock: on 2026-11-15 it started at
+# 03:58Z, lost its PT leg to a Cloudflare wave and concluded at 06:27:45Z —
+# between the 06:27 and 06:32 watchdog ticks, the second one already past the
+# 240 min lookback, so PT was never re-read. No other AMC snapshot follows
+# until 14:30Z, and a retry re-runs only the failed zones, so six hours is safe.
+SLOT_MIN_LOOKBACK_MINUTES = {"regular scrape 07Z": 600, "snapshot 02:30Z": 360}
 
 
 def candidate_due_slots(

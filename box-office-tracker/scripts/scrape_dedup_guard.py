@@ -270,6 +270,12 @@ def excluded_by_only_tz(tz: str, only_tz: str) -> bool:
     return tz.strip().upper() not in wanted
 
 
+def named_by_only_tz(tz: str, only_tz: str) -> bool:
+    """True when a manual dispatch explicitly listed this zone."""
+    wanted = {part.strip().upper() for part in (only_tz or "").split(",") if part.strip()}
+    return bool(wanted) and "ALL" not in wanted and tz.strip().upper() in wanted
+
+
 def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, since: str,
                 schedule_slot: str = "", twin_check=twin_already_succeeded,
                 leg_check=leg_already_done, failed_check=leg_failed_earlier) -> bool:
@@ -346,6 +352,13 @@ def main() -> int:
     if excluded_by_only_tz(args.tz, args.only_tz):
         print(f"Skipping — this dispatch runs only {args.only_tz}; {args.tz} is not in it")
         _write_output(args.github_output, True)
+        return 0
+    if named_by_only_tz(args.tz, args.only_tz) and args.snapshots_only != "true":
+        # 2026-11-15: the first CT,MT top-up was skipped by the same-day marker
+        # ("already has canonical data") and read nothing. A dispatch that names
+        # its zones is asking for them; the leg reads only missing showings.
+        print(f"Running — this dispatch names {args.tz} ({args.only_tz}); top-up of missing showings")
+        _write_output(args.github_output, False)
         return 0
 
     skip = should_skip(

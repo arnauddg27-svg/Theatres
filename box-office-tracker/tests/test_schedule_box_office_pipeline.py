@@ -35,9 +35,16 @@ class RegularScrapeLateRetryTest(unittest.TestCase):
         self.assertNotIn("regular scrape 07Z", self._names("2026-11-14T17:01:00Z"))
         self.assertIn("regular scrape 07Z", self._names("2026-11-14T11:22:00Z", lookback=75, mode="primary"))
 
+    def test_late_snapshot_stays_due_for_six_hours(self):
+        # 2026-11-15: the run concluded 06:27:45Z; the 06:32Z tick must still see it.
+        self.assertIn("snapshot 02:30Z", self._names("2026-11-15T06:32:00Z"))
+        self.assertIn("snapshot 02:30Z", self._names("2026-11-15T08:29:00Z"))
+        self.assertNotIn("snapshot 02:30Z", self._names("2026-11-15T08:31:00Z"))
+
     def test_other_slots_keep_the_callers_lookback(self):
         names = self._names("2026-11-14T11:22:00Z")
         self.assertNotIn("snapshot 02:30Z", names)            # 8 h 52 min old
+        self.assertNotIn("snapshot 22:30Z", self._names("2026-11-15T02:31:00Z"))      # 4 h 01 min old
         self.assertNotIn("regular scrape 07Z", self._names("2026-11-12T11:22:00Z"))   # Thursday: not a scrape day
 
 

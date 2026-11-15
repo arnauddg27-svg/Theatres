@@ -109,5 +109,20 @@ class RegularCaptureShortfallTest(unittest.TestCase):
         self.assertIsNone(scraper.regular_capture_shortfall(1, 100, min_ratio=0.0))
 
 
+class WavePauseStreakTest(unittest.TestCase):
+    """2026-11-15: in-flight theatres burned the next pause 7 s into the last one."""
+
+    def test_blocks_during_a_pause_do_not_advance_the_streak(self):
+        self.assertEqual(scraper._hold_streak_during_pause(0, 1, None, paused=True), (0, None))
+        self.assertEqual(scraper._hold_streak_during_pause(5, 6, "why", paused=True), (5, None))
+
+    def test_blocks_outside_a_pause_count(self):
+        self.assertEqual(scraper._hold_streak_during_pause(5, 6, None, paused=False), (6, None))
+        self.assertEqual(scraper._hold_streak_during_pause(11, 12, "why", paused=False), (12, "why"))
+
+    def test_real_data_resets_the_streak_even_during_a_pause(self):
+        self.assertEqual(scraper._hold_streak_during_pause(4, 0, None, paused=True), (0, None))
+
+
 if __name__ == "__main__":
     unittest.main()

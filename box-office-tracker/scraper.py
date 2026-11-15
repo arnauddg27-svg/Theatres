@@ -986,6 +986,20 @@ def _proxy_block_outcome(seat_data, consecutive_blocked, proxy_on=None, giveup=N
     return "skip_showtime", consecutive_blocked
 
 
+def _hold_streak_during_pause(streak, new_streak, why, paused):
+    """Blocks that land while a wave pause is running do not count again.
+
+    Theatres already in flight when a pause starts finish blocked seconds
+    later. Counting them rebuilt the streak at once and spent the next pause
+    on the same wave: 2026-11-15 06:13:36Z and 06:13:43Z, the PT snapshot leg
+    used its second and third pause 7 s apart, waited 8 min instead of 12 and
+    died on the coverage floor. They are still queued for the end-of-leg retry.
+    """
+    if paused and new_streak > streak:
+        return streak, None
+    return new_streak, why
+
+
 def _next_block_streak(streak, results, snapshot_rows, issues):
     """(new_streak, why_or_None) after one theatre's outcome.
 
@@ -7134,8 +7148,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             results, issues, csv_rows, snapshot_rows = outcome
             all_results.extend(results)
             all_issues.extend(issues)
-            cf_block_streak, why = _next_block_streak(
-                cf_block_streak, results, snapshot_rows, issues)
+            cf_block_streak, why = _hold_streak_during_pause(
+                cf_block_streak,
+                *_next_block_streak(cf_block_streak, results, snapshot_rows, issues),
+                paused=asyncio.get_event_loop().time() < cf_pause_until,
+            )
             if (not results and not snapshot_rows
                     and any(CF_BLOCK_ISSUE in i for i in issues)
                     and name not in cf_retry_names):
