@@ -1026,6 +1026,20 @@ REGULAR_PHASE2_BASE_DEADLINE_SEC = _env_int("REGULAR_PHASE2_BASE_DEADLINE_SEC", 
 REGULAR_PHASE2_PER_THEATRE_SEC = _env_float("REGULAR_PHASE2_PER_THEATRE_SEC", 9.0, minimum=0.0)
 REGULAR_PHASE2_PER_SHOWTIME_SEC = _env_float("REGULAR_PHASE2_PER_SHOWTIME_SEC", 10.0, minimum=0.0)
 REGULAR_PHASE2_MIN_COVERAGE_RATIO = _env_float("REGULAR_PHASE2_MIN_COVERAGE_RATIO", 0.90, minimum=0.0)
+# Top-up (2026-11-15). The Saturday 11-14 post-show scrape went green with CT
+# at 62% and MT at 47% of their linked showings: a Cloudflare wave aborted
+# theatre after theatre, "partial capture stays green" kept the slot serviced,
+# and nothing ever went back for the rest while the seat maps were still up.
+# Two rules close that hole:
+#   - a regular leg skips showings that already have a post-show row, so a
+#     second pass over the same date reads only what is missing;
+#   - a regular leg that ends below this share of its linked showings exits
+#     red (its rows still merge), so the scheduler retries the slot and the
+#     per-zone retry skip re-runs just this leg as a top-up.
+# Normal nights capture 94-99.9% of linked showings (16 legs, 11-08..11-15).
+REGULAR_SKIP_CAPTURED = _env_bool("REGULAR_SKIP_CAPTURED", True)
+REGULAR_MIN_SHOWING_CAPTURE_RATIO = _env_float(
+    "REGULAR_MIN_SHOWING_CAPTURE_RATIO", 0.85, minimum=0.0)
 # Below this fresh-link ratio a partial Phase 1 cache is too sparse to trust
 # for a regular scrape (a Queue-It wall profile, not a thin night); between
 # this floor and PHASE1_MIN_FRESH_LINK_RATIO the leg proceeds LOUDLY on the
@@ -4180,6 +4194,86 @@ def phase2_saved_showtime_count(theatres, saved_links, movie_titles, expected_da
     return count
 
 
+_SEAT_URL_SHOWTIME_ID = re.compile(r"/showtimes/(\d+)")
+
+
+def captured_showtime_ids(show_dates, path=None):
+    """{show_date: {showtime_id}} for post-show seat rows already logged.
+
+    Reads only the live seat-counts file: the dates a regular leg asks about
+    are the ones it is about to scrape, which have not rotated to the archive.
+    """
+    wanted = {str(d) for d in (show_dates or ()) if d}
+    captured = {d: set() for d in wanted}
+    path = Path(path) if path else SEAT_CSV
+    if not wanted or not path.exists():
+        return captured
+    try:
+        with open(path, "r", newline="") as f:
+            for row in csv.DictReader(f):
+                date_str = str(row.get("date", "") or "")
+                if date_str not in wanted:
+                    continue
+                match = _SEAT_URL_SHOWTIME_ID.search(str(row.get("amc_seat_map_url", "") or ""))
+                if match:
+                    captured[date_str].add(match.group(1))
+    except OSError as e:
+        print(f"  ⚠️  could not read captured showings ({e}); re-reading everything")
+        return {d: set() for d in wanted}
+    return captured
+
+
+def drop_captured_showtimes(movies, captured_ids):
+    """Saved {movie: [showtime entries]} minus the showings already captured.
+
+    Returns (remaining_movies, skipped_count).
+    """
+    if not captured_ids:
+        return movies, 0
+    remaining = {}
+    skipped = 0
+    for movie, shows in (movies or {}).items():
+        kept = [
+            show for show in (shows or [])
+            if str(show.get("showtime_id", "") or "") not in captured_ids
+        ]
+        skipped += len(shows or []) - len(kept)
+        remaining[movie] = kept
+    return remaining, skipped
+
+
+def regular_showing_capture(theatres, saved_links, movie_titles, expected_dates,
+                            captured_by_date):
+    """(captured, linked) showings across this leg's tracked titles."""
+    movie_titles = set(movie_titles or [])
+    captured = linked = 0
+    for theatre in theatres:
+        entry = saved_links.get(theatre.get("name"))
+        if not entry:
+            continue
+        expected_date = phase2_theatre_expected_date(theatre, entry, expected_dates)
+        done = captured_by_date.get(expected_date) or ()
+        movies = phase1_entry_movies(entry, expected_date)
+        for title in movie_titles:
+            for show in movies.get(title) or []:
+                linked += 1
+                if str(show.get("showtime_id", "") or "") in done:
+                    captured += 1
+    return captured, linked
+
+
+def regular_capture_shortfall(captured, linked, min_ratio=None):
+    """Message when a regular leg captured too few of its linked showings."""
+    min_ratio = REGULAR_MIN_SHOWING_CAPTURE_RATIO if min_ratio is None else min_ratio
+    if not linked or min_ratio <= 0:
+        return None
+    ratio = captured / linked
+    if ratio >= min_ratio:
+        return None
+    return (f"captured {captured}/{linked} linked showings ({ratio:.1%}); "
+            f"minimum {min_ratio:.0%}")
+
+
 def phase2_runtime_deadline_sec(theatres, saved_links, movie_titles, expected_dates,
                                 snapshots_only=False, max_concurrent_tabs=None,
                                 configured_deadline_sec=None):
@@ -6852,6 +6946,21 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         f"{max_concurrent_tabs} tab(s), {linked_showtime_count} linked showtime(s)"
     )
 
+    # Top-up: showings that already have a post-show row are not read again.
+    regular_topup = not snapshots_only and not test_max and REGULAR_SKIP_CAPTURED
+    topup_dates = {
+        phase2_theatre_expected_date(t, saved_links[t["name"]], expected_dates)
+        for t in all_theatres
+    } if regular_topup else set()
+    captured_by_date = captured_showtime_ids(topup_dates) if regular_topup else {}
+    captured_skipped = 0
+    if regular_topup:
+        already, linked_total = regular_showing_capture(
+            all_theatres, saved_links, movie_titles, expected_dates, captured_by_date)
+        if already:
+            print(f"   Top-up: {already}/{linked_total} linked showings already have a "
+                  f"post-show row — reading the other {linked_total - already}")
+
     # Step 3: Parallel scrape with semaphore — flush each theatre to CSV immediately
     all_results = []
     all_issues = []
@@ -6909,6 +7018,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
             nonlocal cf_block_streak, browser, cf_pause_until, cf_pauses_left
+            nonlocal captured_skipped
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
                 all_issues.append(f"{name}: overall deadline reached — skipped")
@@ -6959,6 +7069,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     )
                 )
                 theatre_saved = phase1_entry_movies(saved_entry, t_date)
+                if regular_topup:
+                    theatre_saved, already_read = drop_captured_showtimes(
+                        theatre_saved, captured_by_date.get(t_date))
+                    captured_skipped += already_read
+                    if already_read and not any(
+                            theatre_saved.get(title) for title in movie_titles):
+                        return  # every linked showing here is already captured
                 if snapshots_only and _EGRESS_TIMEOUTS["fell_back"]:
                     if not direct_names:
                         leg_names = {t["name"] for t in all_theatres}
@@ -7236,6 +7353,20 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     if local_day in ("Saturday", "Sunday") and tz_group in ("PT", "ALL"):
         generate_weekend_summary()
 
+    capture_shortfall = None
+    if regular_topup:
+        captured_now, linked_now = regular_showing_capture(
+            all_theatres, saved_links, movie_titles, expected_dates,
+            captured_showtime_ids(topup_dates))
+        if linked_now:
+            print(f"🧮 Showing capture: {captured_now}/{linked_now} linked showings "
+                  f"({captured_now / linked_now:.1%}) have a post-show row "
+                  f"({captured_skipped} skipped as already captured)")
+        capture_shortfall = regular_capture_shortfall(captured_now, linked_now)
+    # A top-up that found everything already captured writes no rows and is
+    # still a complete leg, not a green-zero.
+    topup_complete = bool(captured_skipped) and not capture_shortfall
+
     print(f"\n{'='*60}")
     snapshot_msg = (
         f", {snapshot_rows_written} pre-reservation snapshots"
@@ -7253,9 +7384,15 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     # green run and a finalize that quietly freezes predictions. Partial
     # capture (>0 rows) stays green — partial post-show data is real revenue
     # and must commit; the completeness watchdog grades its volume.
-    if not snapshots_only and poly_markets and written_rows == 0:
+    if not snapshots_only and poly_markets and written_rows == 0 and not topup_complete:
         fail_phase("❌ Regular scrape wrote ZERO seat rows for tracked titles "
                    "— failing loudly instead of green-zero.")
+    if capture_shortfall:
+        # Rows are already flushed and the artifact uploads on any outcome, so
+        # red loses nothing: it only tells the scheduler this slot still needs
+        # a pass, and that pass reads just the showings still missing.
+        fail_phase(f"❌ Regular scrape {capture_shortfall} — failing the leg so "
+                   "the slot is retried as a top-up while the seat maps are still up.")
 
 
 def generate_weekend_summary():

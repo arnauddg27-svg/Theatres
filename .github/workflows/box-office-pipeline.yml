@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
     inputs:
       tz_group:
-        description: 'Timezone group (ET, CT, PT, or ALL). For phase=scrape this is ignored — the matrix always fans out to ET/CT/MT/PT.'
+        description: 'Timezone group (ET, CT, PT, or ALL). For phase=scrape the matrix fans out to ET/CT/MT/PT; a comma list such as CT,MT runs only those legs (top-up), ALL runs all four.'
         required: false
         default: 'ALL'
       phase:
@@ -464,6 +464,7 @@ jobs:
         run: |
           python3 box-office-tracker/scripts/scrape_dedup_guard.py \
             --tz "${{ matrix.tz }}" \
+            --only-tz "${{ github.event.inputs.tz_group }}" \
             --force "${{ github.event.inputs.force }}" \
             --snapshots-only "${{ github.event.inputs.snapshots_only }}" \
             --schedule-slot "${{ github.event.inputs.schedule_slot }}" \

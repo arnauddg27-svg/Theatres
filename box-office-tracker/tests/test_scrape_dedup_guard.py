@@ -220,5 +220,24 @@ class RetryLegTest(unittest.TestCase):
         self.assertFalse(should_skip(Path("."), "PT", leg_check=lambda tz: None, **kw))
 
 
+
+
+class OnlyTzTest(unittest.TestCase):
+    """A top-up dispatch names its zones in tz_group; the other legs skip."""
+
+    def test_scheduled_scrapes_run_every_leg(self):
+        from scripts.scrape_dedup_guard import excluded_by_only_tz
+        for value in ("ALL", "", "all", " ALL "):
+            for tz in ("ET", "CT", "MT", "PT"):
+                self.assertFalse(excluded_by_only_tz(tz, value))
+
+    def test_top_up_runs_only_the_named_zones(self):
+        from scripts.scrape_dedup_guard import excluded_by_only_tz
+        self.assertFalse(excluded_by_only_tz("CT", "CT,MT"))
+        self.assertFalse(excluded_by_only_tz("MT", "ct, mt"))
+        self.assertTrue(excluded_by_only_tz("ET", "CT,MT"))
+        self.assertTrue(excluded_by_only_tz("PT", "CT,MT"))
+
+
 if __name__ == "__main__":
     unittest.main()

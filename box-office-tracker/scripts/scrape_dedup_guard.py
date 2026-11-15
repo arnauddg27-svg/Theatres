@@ -202,6 +202,18 @@ def leg_already_done(tz: str, env: dict | None = None, fetch=_github_get) -> dic
         return None
 
 
+def excluded_by_only_tz(tz: str, only_tz: str) -> bool:
+    """True when a manual dispatch named the zones to run and this is not one.
+
+    `tz_group` is ALL on every scheduled scrape; a top-up dispatch sets it to
+    e.g. "CT,MT" so the other legs skip instead of re-reading a whole zone.
+    """
+    wanted = {part.strip().upper() for part in (only_tz or "").split(",") if part.strip()}
+    if not wanted or "ALL" in wanted:
+        return False
+    return tz.strip().upper() not in wanted
+
+
 def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, since: str,
                 schedule_slot: str = "", twin_check=twin_already_succeeded,
                 leg_check=leg_already_done) -> bool:
@@ -266,7 +278,13 @@ def main() -> int:
     parser.add_argument("--since", default=datetime.now(timezone.utc).strftime("%Y-%m-%d"))
     parser.add_argument("--schedule-slot", default="")
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT", ""))
+    parser.add_argument("--only-tz", default="")
     args = parser.parse_args()
+
+    if excluded_by_only_tz(args.tz, args.only_tz):
+        print(f"Skipping — this dispatch runs only {args.only_tz}; {args.tz} is not in it")
+        _write_output(args.github_output, True)
+        return 0
 
     skip = should_skip(
         Path(args.repo_root).resolve(),
