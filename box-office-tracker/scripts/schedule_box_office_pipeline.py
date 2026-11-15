@@ -526,6 +526,17 @@ def parse_utc(value: str) -> dt.datetime:
     return parsed.astimezone(dt.timezone.utc).replace(second=0, microsecond=0)
 
 
+# The regular scrape reads post-show FINAL seat maps, which AMC keeps for
+# about 18 h after a show (max 1,080 min in the canonical file) and which
+# nothing else can replace. Its run only concludes after all four zone legs:
+# on 2026-11-14 the ET leg timed out on the AMC lock at 09:05Z but the run
+# was not "failed" until 11:20Z — 260 min after the slot, outside the
+# watchdog's 240 min lookback, so it was never retried and Friday's ET finals
+# (215 theatres) were lost. This slot stays due for longer; a retry re-runs
+# only the zones that did not finalize (scrape_dedup_guard.leg_already_done).
+SLOT_MIN_LOOKBACK_MINUTES = {"regular scrape 07Z": 600}
+
+
 def candidate_due_slots(
     *,
     now: dt.datetime,
@@ -534,16 +545,17 @@ def candidate_due_slots(
     fallback_grace_minutes: int,
 ) -> list[tuple[dt.datetime, Slot]]:
     now = now.astimezone(dt.timezone.utc).replace(second=0, microsecond=0)
-    window_start = now - dt.timedelta(minutes=lookback_minutes)
     window_end = now
     if mode == "watchdog":
         window_end = now - dt.timedelta(minutes=fallback_grace_minutes)
-    if window_end < window_start:
+    if window_end < now - dt.timedelta(minutes=lookback_minutes):
         return []
 
     due: list[tuple[dt.datetime, Slot]] = []
-    days_to_check = (lookback_minutes // 1440) + 2
+    days_to_check = (max([lookback_minutes, *SLOT_MIN_LOOKBACK_MINUTES.values()]) // 1440) + 2
     for slot in SLOTS:
+        window_start = now - dt.timedelta(
+            minutes=max(lookback_minutes, SLOT_MIN_LOOKBACK_MINUTES.get(slot.name, 0)))
         for days_back in range(days_to_check):
             candidate_date = (now - dt.timedelta(days=days_back)).date()
             scheduled_at = dt.datetime(

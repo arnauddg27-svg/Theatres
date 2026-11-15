@@ -143,12 +143,77 @@ def twin_already_succeeded(env: dict | None = None, fetch=_github_get) -> dict |
         return None
 
 
+# 2026-11-15: a RETRY of a slot redid every zone. Snapshot 22:30Z failed on its
+# PT leg alone (Cloudflare block storm); the retry re-scraped ET, CT and MT
+# for 2 h 20 min before reaching PT, holding the AMC lock while the 02:30Z
+# slot queued behind it. The commit-marker check below cannot see it any more:
+# legs upload artifacts and finalize commits once ("scrape merge +
+# predictions"), and scheduled snapshots pass force=true. Ask the API instead:
+# a zone whose leg AND finalize both succeeded in an earlier run of this same
+# slot is already in the canonical files.
+RETRY_WINDOW = timedelta(hours=12)      # the same slot title recurs every 24 h
+MAX_EARLIER_RUNS = 4
+
+
+def find_run_with_leg_done(tz: str, this_run: dict, runs: list[dict], jobs_for) -> dict | None:
+    """The earlier same-slot run (any conclusion) whose `scrape (tz)` job and
+    finalize job both concluded success, or None. `jobs_for(run_id)` returns
+    that run's jobs."""
+    title = this_run.get("display_title") or ""
+    if not title.startswith(SCHEDULED_PREFIX):
+        return None
+    created = _parse_time(this_run["created_at"])
+    earlier = [r for r in runs
+               if r.get("display_title") == title and r.get("status") == "completed"
+               and int(r.get("id", 0)) < int(this_run.get("id", 0))
+               and created - RETRY_WINDOW <= _parse_time(r["created_at"]) <= created]
+    earlier.sort(key=lambda r: int(r.get("id", 0)), reverse=True)
+    for run in earlier[:MAX_EARLIER_RUNS]:
+        done = {j.get("name"): j.get("conclusion") for j in jobs_for(run["id"])}
+        if done.get(f"scrape ({tz})") == "success" and done.get("finalize") == "success":
+            return run
+    return None
+
+
+def leg_already_done(tz: str, env: dict | None = None, fetch=_github_get) -> dict | None:
+    """API lookup for find_run_with_leg_done. Fails OPEN (None, i.e. run)."""
+    env = os.environ if env is None else env
+    token, repo, run_id = env.get("GH_TOKEN"), env.get("GITHUB_REPOSITORY"), env.get("GITHUB_RUN_ID")
+    if not (token and repo and run_id):
+        return None
+    api = env.get("GITHUB_API_URL", "https://api.github.com")
+    try:
+        this_run = fetch(f"{api}/repos/{repo}/actions/runs/{run_id}", token)
+        if not (this_run.get("display_title") or "").startswith(SCHEDULED_PREFIX):
+            return None
+        since = (_parse_time(this_run["created_at"]) - RETRY_WINDOW).strftime("%Y-%m-%dT%H:%M:%SZ")
+        listing = fetch(
+            f"{api}/repos/{repo}/actions/workflows/{this_run['workflow_id']}/runs"
+            f"?per_page=100&event=workflow_dispatch&created=%3E%3D{since}",
+            token,
+        )
+
+        def jobs_for(rid):
+            return fetch(f"{api}/repos/{repo}/actions/runs/{rid}/jobs?per_page=100", token).get("jobs", []) or []
+
+        return find_run_with_leg_done(tz, this_run, listing.get("workflow_runs", []) or [], jobs_for)
+    except Exception as exc:  # noqa: BLE001 - never block a scrape on this check
+        print(f"Retry-leg check unavailable ({exc}); running")
+        return None
+
+
 def should_skip(repo_root: Path, tz: str, force: bool, snapshots_only: bool, since: str,
-                schedule_slot: str = "", twin_check=twin_already_succeeded) -> bool:
+                schedule_slot: str = "", twin_check=twin_already_succeeded,
+                leg_check=leg_already_done) -> bool:
     twin = twin_check() if twin_check else None
     if twin:
         print(f"Skipping — duplicate dispatch: same-slot run {twin.get('id')} "
               f"({twin.get('display_title')}) created {twin.get('created_at')} already succeeded")
+        return True
+    done = leg_check(tz) if leg_check else None
+    if done:
+        print(f"Skipping — retry: the {tz} leg of this slot already succeeded and was finalized in run "
+              f"{done.get('id')} (created {done.get('created_at')}, run concluded {done.get('conclusion')})")
         return True
     if force:
         print("Force-running — bypassing dedup guard")

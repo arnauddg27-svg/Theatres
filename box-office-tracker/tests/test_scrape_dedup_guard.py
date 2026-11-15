@@ -9,7 +9,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from datetime import datetime, timezone
 
 from scripts.scrape_dedup_guard import (
+    find_run_with_leg_done,
     find_succeeded_twin,
+    leg_already_done,
     should_skip,
     slot_since,
     twin_already_succeeded,
@@ -147,6 +149,75 @@ class TwinRunGuardTest(unittest.TestCase):
         self.assertFalse(should_skip(Path("."), "ET", force=True, snapshots_only=True,
                                      since="2000-01-01", schedule_slot="snapshot 02:30Z",
                                      twin_check=lambda: None))
+
+
+class RetryLegTest(unittest.TestCase):
+    """2026-11-15: the retry of snapshot 22:30Z (PT leg failed) re-scraped ET,
+    CT and MT for 2 h 20 min under the AMC lock before reaching PT."""
+
+    TITLE = "box office scheduled snapshot 22:30Z"
+
+    def _run(self, rid, created, conclusion="failure", title=TITLE, status="completed"):
+        return {"id": rid, "display_title": title, "created_at": created,
+                "status": status, "conclusion": conclusion, "workflow_id": 7}
+
+    JOBS = {1: [{"name": "scrape (ET)", "conclusion": "success"}, {"name": "scrape (CT)", "conclusion": "success"},
+                {"name": "scrape (MT)", "conclusion": "success"}, {"name": "scrape (PT)", "conclusion": "failure"},
+                {"name": "finalize", "conclusion": "success"}]}
+
+    def test_only_the_failed_leg_reruns(self):
+        me = self._run(2, "2026-11-15T01:07:12Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T22:37:41Z")
+        for tz, want in (("ET", first), ("CT", first), ("MT", first), ("PT", None)):
+            self.assertEqual(want, find_run_with_leg_done(tz, me, [me, first], self.JOBS.__getitem__), tz)
+
+    def test_leg_without_a_successful_finalize_reruns(self):
+        me = self._run(2, "2026-11-15T01:07:12Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T22:37:41Z")
+        jobs = [{"name": "scrape (ET)", "conclusion": "success"}, {"name": "finalize", "conclusion": "failure"}]
+        self.assertIsNone(find_run_with_leg_done("ET", me, [me, first], lambda rid: jobs))
+
+    def test_yesterdays_slot_other_slots_and_unfinished_runs_do_not_count(self):
+        me = self._run(9, "2026-11-15T22:37:41Z", None, status="in_progress")
+        ok = self.JOBS[1]
+        self.assertIsNone(find_run_with_leg_done("ET", me, [
+            self._run(1, "2026-11-14T22:37:41Z"),                                              # 24 h earlier
+            self._run(2, "2026-11-15T22:30:00Z", title="box office scheduled snapshot 14:30Z"),
+            self._run(3, "2026-11-15T22:37:00Z", None, status="in_progress"),
+            self._run(12, "2026-11-15T22:37:00Z"),                                             # newer id
+        ], lambda rid: ok))
+        manual = self._run(9, "2026-11-15T22:37:41Z", None, title="box office scrape snapshot")
+        self.assertIsNone(find_run_with_leg_done("ET", manual, [self._run(1, "2026-11-15T22:00:00Z",
+                                                                         title="box office scrape snapshot")],
+                                                 lambda rid: ok))
+
+    def test_api_lookup_and_fail_open(self):
+        me = self._run(2, "2026-11-15T01:07:12Z", None, status="in_progress")
+        first = self._run(1, "2026-11-14T22:37:41Z")
+        env = {"GH_TOKEN": "t", "GITHUB_REPOSITORY": "o/r", "GITHUB_RUN_ID": "2"}
+
+        def fetch(url, token):
+            if url.endswith("/runs/2"):
+                return me
+            if "/runs/1/jobs" in url:
+                return {"jobs": self.JOBS[1]}
+            return {"workflow_runs": [me, first]}
+
+        self.assertEqual(first, leg_already_done("ET", env, fetch))
+        self.assertIsNone(leg_already_done("PT", env, fetch))
+        self.assertIsNone(leg_already_done("ET", {}, fetch))
+
+        def boom(url, token):
+            raise OSError("api down")
+
+        self.assertIsNone(leg_already_done("ET", env, boom))
+
+    def test_done_leg_skips_even_when_forced(self):
+        first = self._run(1, "2026-11-14T22:37:41Z")
+        kw = dict(force=True, snapshots_only=True, since="2000-01-01", schedule_slot="snapshot 22:30Z",
+                  twin_check=lambda: None)
+        self.assertTrue(should_skip(Path("."), "ET", leg_check=lambda tz: first, **kw))
+        self.assertFalse(should_skip(Path("."), "PT", leg_check=lambda tz: None, **kw))
 
 
 if __name__ == "__main__":

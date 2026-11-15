@@ -20,6 +20,27 @@ sys.modules[spec.name] = schedule
 spec.loader.exec_module(schedule)
 
 
+class RegularScrapeLateRetryTest(unittest.TestCase):
+    """2026-11-14: the 07Z regular run failed its ET leg at 09:05Z but only
+    concluded at 11:20Z, 260 min after the slot — past the watchdog's 240 min
+    lookback, so Friday's ET post-show finals were never retried."""
+
+    def _names(self, now, lookback=240, mode="watchdog"):
+        return [slot.name for _, slot in schedule.candidate_due_slots(
+            now=schedule.parse_utc(now), lookback_minutes=lookback, mode=mode, fallback_grace_minutes=5)]
+
+    def test_regular_scrape_stays_due_for_ten_hours(self):
+        self.assertIn("regular scrape 07Z", self._names("2026-11-14T11:22:00Z"))          # Saturday
+        self.assertIn("regular scrape 07Z", self._names("2026-11-14T16:59:00Z"))
+        self.assertNotIn("regular scrape 07Z", self._names("2026-11-14T17:01:00Z"))
+        self.assertIn("regular scrape 07Z", self._names("2026-11-14T11:22:00Z", lookback=75, mode="primary"))
+
+    def test_other_slots_keep_the_callers_lookback(self):
+        names = self._names("2026-11-14T11:22:00Z")
+        self.assertNotIn("snapshot 02:30Z", names)            # 8 h 52 min old
+        self.assertNotIn("regular scrape 07Z", self._names("2026-11-12T11:22:00Z"))   # Thursday: not a scrape day
+
+
 class ScheduleBoxOfficePipelineTest(unittest.TestCase):
     def test_primary_catches_delayed_snapshot_tick_inside_lookback(self):
         due = schedule.candidate_due_slots(
