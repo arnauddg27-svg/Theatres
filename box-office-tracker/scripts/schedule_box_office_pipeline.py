@@ -773,12 +773,18 @@ def never_succeeded_slots(
     2026-11-11: GitHub's runners lost DNS for two hours; the 14:30Z AMC
     snapshot failed three times and five Cinemark shards exhausted their
     retries, and the ledger printed "64 expected, 64 dispatched, 0 missing".
-    A slot that fired and failed is as lost as one that never fired."""
+    A slot that fired and failed is as lost as one that never fired.
+
+    A slot whose retries are allowed longer than the default grace
+    (SLOT_MIN_LOOKBACK_MINUTES) gets that longer window here too: on
+    2026-11-17 the 02:30Z snapshot failed at 02:37Z, its retry succeeded at
+    05:57Z (207 min later), and the ledger still warned NEVER SUCCEEDED."""
     out = []
     for scheduled_at, slot in expected:
         titles = (scheduled_display_title(slot), slot.title)
         lower = scheduled_at - dt.timedelta(minutes=5)
-        upper = scheduled_at + dt.timedelta(minutes=grace_minutes)
+        upper = scheduled_at + dt.timedelta(
+            minutes=max(grace_minutes, SLOT_MIN_LOOKBACK_MINUTES.get(slot.name, 0)))
         mine = [r for r in runs
                 if r.get("display_title") in titles and r.get("created_at")
                 and lower <= parse_github_time(r["created_at"]) <= upper]

@@ -597,6 +597,23 @@ class SlotLedgerTests(unittest.TestCase):
         self.assertEqual(3, len(lost[0][2]))
         self.assertEqual([s3.name], [slot.name for _, slot in schedule.missing_slots(expected, runs)])
 
+    def test_late_snapshot_retry_inside_its_long_window_counts_as_serviced(self):
+        # 2026-11-17: 02:30Z snapshot failed at 02:37Z, retry succeeded at
+        # 05:57Z (207 min) -- inside its 360-min retry window, so not lost.
+        day = dt.date(2026, 11, 17)
+        hits = [(t, s) for t, s in schedule.expected_slots_for_date(day) if s.name == "snapshot 02:30Z"]
+        self.assertEqual(1, len(hits))
+        t0, s0 = hits[0]
+        stamp = lambda m: (t0 + dt.timedelta(minutes=m)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        title = schedule.scheduled_display_title(s0)
+        runs = [
+            {"display_title": title, "created_at": stamp(7), "status": "completed", "conclusion": "failure"},
+            {"display_title": title, "created_at": stamp(207), "status": "completed", "conclusion": "success"},
+        ]
+        self.assertEqual([], schedule.never_succeeded_slots(hits, runs))
+        # Without the retry it is still reported.
+        self.assertEqual(1, len(schedule.never_succeeded_slots(hits, runs[:1])))
+
     def test_reconcile_prints_never_succeeded(self):
         sat = dt.date(2026, 8, 22)
         t0, s0 = schedule.expected_slots_for_date(sat)[0]
