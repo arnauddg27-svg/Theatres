@@ -77,6 +77,7 @@ class FakeResp:
         self.chunk = chunk
         self.served = 0
         self.closed = False
+        self.content = self.body          # what a non-streamed GET hands back
 
     def iter_content(self, chunk_size=None):
         for i in range(0, len(self.body), self.chunk):
@@ -686,6 +687,47 @@ class ListingParserTest(unittest.TestCase):
         sess = FakeSession(FakeResp(b"<html><title>Attention Required! | Cloudflare</title><body>Sorry, you have been blocked</body></html>", {}))
         res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=sess)
         self.assertEqual("blocked", res["kind"])
+
+
+class ListingKeepaliveTest(unittest.TestCase):
+    """A streamed request runs on a duplicate curl handle and so never reuses
+    the proxy tunnel; the listing GET must be a plain one (2026-11-16: 22
+    failed link collections while the seat lane, which reuses tunnels, was
+    fine on the same proxy)."""
+
+    def setUp(self):
+        self.saved = sfh.LISTING_KEEPALIVE
+
+    def tearDown(self):
+        sfh.LISTING_KEEPALIVE = self.saved
+
+    def test_listing_get_is_not_streamed_by_default(self):
+        self.assertTrue(sfh.LISTING_KEEPALIVE)
+        resp = FakeResp(STREAMED_LISTING.encode())
+        sess = FakeSession(resp)
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/showtimes/all/2026-11-19/x/all",
+                                     "http://gw.example:823", session=sess)
+        self.assertIs(False, sess.calls[0][1]["stream"])
+        self.assertEqual("listing", res["kind"])
+        self.assertEqual(4, len(sfh.parse_listing_showtimes(res["html"])))
+        self.assertEqual(len(resp.body), res["raw_bytes"], "billed bytes are the compressed body")
+        self.assertEqual(0, resp.served, "the body is read whole, not iterated")
+
+    def test_switch_restores_the_streamed_read(self):
+        sfh.LISTING_KEEPALIVE = False
+        resp = FakeResp(STREAMED_LISTING.encode())
+        sess = FakeSession(resp)
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=sess)
+        self.assertIs(True, sess.calls[0][1]["stream"])
+        self.assertEqual("listing", res["kind"])
+        self.assertTrue(resp.closed)
+        self.assertEqual(len(resp.body), resp.served)
+
+    def test_undecodable_body_is_not_a_crash(self):
+        resp = FakeResp(b"<html><title>AMC</title></html>", encoding=None)
+        resp.headers = {"content-encoding": "gzip"}          # header lies about the body
+        res = sfh.fetch_listing_page("https://www.amctheatres.com/x", None, session=FakeSession(resp))
+        self.assertEqual("other", res["kind"])
 
 
 class ListingEmptyDayTest(unittest.TestCase):

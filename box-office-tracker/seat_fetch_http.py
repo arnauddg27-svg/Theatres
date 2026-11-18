@@ -20,6 +20,8 @@ falls back to the browser for that showtime — completeness is never traded.
 """
 from __future__ import annotations
 
+import os
+
 import re
 import zlib
 from html import unescape
@@ -636,13 +638,30 @@ def parse_listing_showtimes(html: str) -> list:
     return results
 
 
+# A STREAMED request never reuses a connection: curl_cffi runs it on a
+# duplicate of the thread's handle (`self.curl.duphandle()`), which has its own
+# empty connection cache, so every streamed listing opened a new proxy tunnel
+# and drew a new exit IP. Cloudflare walls most of the pool's exits for AMC
+# (65-98% of draws, 2026-11-09..17), so the listing lane paid that rate on
+# EVERY request while the seat lane — whose segment-diff GET is not streamed —
+# kept its good tunnels and was walled 2-4% of the time on the same proxy in
+# the same hours. On Monday 2026-11-16 the good-exit rate fell to ~2% for most
+# of the day and the cold-start link collection for the new weekend took 12 h
+# and 22 failed runs. A plain GET runs on the thread's own handle, so a tunnel
+# that answered with a real page serves the next listing too; a wall still
+# drops it (_drop_on_wall) and the retry is a fresh exit, exactly as before.
+# AMC_LISTING_KEEPALIVE=0 restores the streamed read.
+LISTING_KEEPALIVE = os.environ.get("AMC_LISTING_KEEPALIVE", "1").strip() != "0"
+
+
 def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0, session=None) -> dict:
     """GET a showtime listing (whole page; the sections stream throughout).
     Returns {'html', 'raw_bytes', 'status', 'kind', 'url'} where kind is
     'listing' when the page carries showtime sections, else classify_page's
     verdict (blocked / challenge / other). Network errors propagate."""
     sess = session or make_session()
-    kwargs = {"stream": True, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
+    keepalive = LISTING_KEEPALIVE
+    kwargs = {"stream": not keepalive, "timeout": timeout, "accept_encoding": ACCEPT_ENCODING,
               "headers": {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                           "Accept-Language": "en-US,en;q=0.9"}}
     if proxy_url:
@@ -650,20 +669,28 @@ def fetch_listing_page(url: str, proxy_url: str | None, *, timeout: float = 30.0
     resp = sess.get(url, **kwargs)
     raw = 0
     out = bytearray()
-    try:
-        inflater = _Inflater(resp.headers.get("content-encoding", ""))
-        for chunk in resp.iter_content(chunk_size=CHUNK):
-            if not chunk:
-                continue
-            raw += len(chunk)
-            out += inflater.feed(chunk)
-            if raw >= MAX_RAW_BYTES:
-                break
-    finally:
+    if keepalive:
+        body = (resp.content or b"")[:MAX_RAW_BYTES]
+        raw = len(body)
         try:
-            resp.close()
+            out += _Inflater(resp.headers.get("content-encoding", "")).feed(body)
         except Exception:
-            pass
+            out += body
+    else:
+        try:
+            inflater = _Inflater(resp.headers.get("content-encoding", ""))
+            for chunk in resp.iter_content(chunk_size=CHUNK):
+                if not chunk:
+                    continue
+                raw += len(chunk)
+                out += inflater.feed(chunk)
+                if raw >= MAX_RAW_BYTES:
+                    break
+        finally:
+            try:
+                resp.close()
+            except Exception:
+                pass
     html = bytes(out).decode("utf-8", "ignore")
     kind = _drop_on_wall(sess, classify_page(html))
     if kind == "other" and is_listing_page(html):
