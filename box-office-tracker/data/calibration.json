@@ -8583,89 +8583,566 @@
         "Friday",
         "Thursday"
       ]
+    },
+    {
+      "movie": "How to Rob a Bank",
+      "weekend_of": "2026-11-13",
+      "date": "2026-11-18",
+      "predicted_mid": 4.15,
+      "predicted_low": 2.3,
+      "predicted_high": 9.65,
+      "actual_total": 5.19,
+      "daily_actuals": {
+        "Thursday": 0.9,
+        "Friday": 1.34,
+        "Saturday": 1.8,
+        "Sunday": 1.15
+      },
+      "daily_predictions": {
+        "Thursday": 0.59,
+        "Saturday": 1.42,
+        "Sunday": 1.01
+      },
+      "error_pct": -20.0,
+      "n_theatres": 402,
+      "n_days": 3,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 5.21,
+        "low_m": 5.12,
+        "high_m": 5.31,
+        "logged_at": "2026-11-16T09:37:45Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 23,
+        "checkpoints": {
+          "tuesday_noon_et": {
+            "mid_m": 4.8,
+            "logged_at": "2026-11-10T16:51:53Z",
+            "cutoff": "2026-11-10T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 4.8,
+            "low_m": 1.4,
+            "high_m": 12.65,
+            "error_pct": -7.45,
+            "baseline_error_pct": -7.45,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "thursday_noon_et": {
+            "mid_m": 5.6,
+            "logged_at": "2026-11-12T16:35:52Z",
+            "cutoff": "2026-11-12T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.6,
+            "low_m": 1.63,
+            "high_m": 14.76,
+            "error_pct": 7.98,
+            "baseline_error_pct": 7.98,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 5.54,
+            "logged_at": "2026-11-13T16:59:48Z",
+            "cutoff": "2026-11-13T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 4.88,
+            "low_m": 3.7,
+            "high_m": 17.94,
+            "error_pct": 6.82,
+            "baseline_error_pct": -5.9,
+            "absolute_error_improvement_pp": -0.92,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 5.59,
+            "logged_at": "2026-11-14T11:18:23Z",
+            "cutoff": "2026-11-14T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 4.97,
+            "low_m": 3.74,
+            "high_m": 18.12,
+            "error_pct": 7.79,
+            "baseline_error_pct": -4.17,
+            "absolute_error_improvement_pp": -3.62,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 5.3,
+            "logged_at": "2026-11-15T16:28:15Z",
+            "cutoff": "2026-11-15T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.18,
+            "low_m": 5.18,
+            "high_m": 5.57,
+            "error_pct": 2.2,
+            "baseline_error_pct": -0.12,
+            "absolute_error_improvement_pp": -2.08,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 5.59,
+        "thursday_logged_at": "2026-11-14T11:18:23Z"
+      },
+      "live_error_pct": 0.5,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/How-to-Rob-a-Bank-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 0.54,
+        "Saturday": 1.26,
+        "Sunday": 0.92
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.49,
+        "Friday": 0.86,
+        "Saturday": 1.01,
+        "Sunday": 0.78
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.859,
+        "Friday": 0.885,
+        "Saturday": 0.904,
+        "Sunday": 0.913
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99624,
+        "adjustment_pct": -0.38,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.2704,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.2783,
+        "reach": 55.08,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 401,
+        "Saturday": 401,
+        "Sunday": 402
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.944,
+        "Saturday": 0.944,
+        "Sunday": 0.946
+      },
+      "coverage_ratio": 0.945
+    },
+    {
+      "movie": "Ebenezer",
+      "weekend_of": "2026-11-13",
+      "date": "2026-11-18",
+      "predicted_mid": 14.51,
+      "predicted_low": 8.03,
+      "predicted_high": 33.74,
+      "actual_total": 19.01,
+      "daily_actuals": {
+        "Thursday": 1.5,
+        "Friday": 5.35,
+        "Saturday": 7.3,
+        "Sunday": 4.86
+      },
+      "daily_predictions": {
+        "Thursday": 1.47,
+        "Saturday": 5.25,
+        "Sunday": 3.74
+      },
+      "error_pct": -23.7,
+      "n_theatres": 423,
+      "n_days": 3,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 18.81,
+        "low_m": 18.42,
+        "high_m": 19.21,
+        "logged_at": "2026-11-16T09:37:43Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 24,
+        "checkpoints": {
+          "tuesday_noon_et": {
+            "mid_m": 9.97,
+            "logged_at": "2026-11-10T16:51:53Z",
+            "cutoff": "2026-11-10T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 9.97,
+            "low_m": 2.91,
+            "high_m": 26.3,
+            "error_pct": -47.56,
+            "baseline_error_pct": -47.56,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "thursday_noon_et": {
+            "mid_m": 13.92,
+            "logged_at": "2026-11-12T16:35:29Z",
+            "cutoff": "2026-11-12T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 13.92,
+            "low_m": 4.06,
+            "high_m": 36.71,
+            "error_pct": -26.78,
+            "baseline_error_pct": -26.78,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 12.45,
+            "logged_at": "2026-11-13T16:59:47Z",
+            "cutoff": "2026-11-13T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 14.8,
+            "low_m": 8.33,
+            "high_m": 40.34,
+            "error_pct": -34.52,
+            "baseline_error_pct": -22.15,
+            "absolute_error_improvement_pp": -12.37,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 12.37,
+            "logged_at": "2026-11-14T11:18:22Z",
+            "cutoff": "2026-11-14T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 14.6,
+            "low_m": 8.27,
+            "high_m": 40.06,
+            "error_pct": -34.94,
+            "baseline_error_pct": -23.21,
+            "absolute_error_improvement_pp": -11.73,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 19.12,
+            "logged_at": "2026-11-15T16:28:14Z",
+            "cutoff": "2026-11-15T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 18.21,
+            "low_m": 18.62,
+            "high_m": 20.22,
+            "error_pct": 0.57,
+            "baseline_error_pct": -4.22,
+            "absolute_error_improvement_pp": 3.65,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 12.37,
+        "thursday_logged_at": "2026-11-14T11:18:22Z"
+      },
+      "live_error_pct": -1.1,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Ebenezer-(2026)",
+      "raw_daily_predictions": {
+        "Thursday": 1.34,
+        "Saturday": 4.82,
+        "Sunday": 3.52
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Saturday": 0.0043,
+        "Sunday": 0.0011
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 1.38,
+        "Friday": 3.31,
+        "Saturday": 4.82,
+        "Sunday": 3.61
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.955,
+        "Friday": 0.991,
+        "Saturday": 0.976,
+        "Sunday": 0.995
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 1.0096,
+        "adjustment_pct": 0.96,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.5407,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.3552,
+        "reach": 169.54,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 422,
+        "Saturday": 422,
+        "Sunday": 423
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.993,
+        "Saturday": 0.993,
+        "Sunday": 0.995
+      },
+      "coverage_ratio": 0.994
+    },
+    {
+      "movie": "Ghost Soldier",
+      "weekend_of": "2026-11-13",
+      "date": "2026-11-18",
+      "predicted_mid": 3.54,
+      "predicted_low": 1.96,
+      "predicted_high": 8.24,
+      "actual_total": 5.91,
+      "daily_actuals": {
+        "Thursday": 0.8,
+        "Friday": 1.57,
+        "Saturday": 2.17,
+        "Sunday": 1.36
+      },
+      "daily_predictions": {
+        "Thursday": 0.54,
+        "Saturday": 1.4,
+        "Sunday": 0.91
+      },
+      "error_pct": -40.0,
+      "n_theatres": 390,
+      "n_days": 3,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 5.85,
+        "low_m": 5.75,
+        "high_m": 5.96,
+        "logged_at": "2026-11-16T09:37:44Z",
+        "source": "sunday-seats",
+        "seat_days": "Thursday+Friday+Saturday+Sunday",
+        "rows": 23,
+        "checkpoints": {
+          "tuesday_noon_et": {
+            "mid_m": 2.34,
+            "logged_at": "2026-11-10T16:51:53Z",
+            "cutoff": "2026-11-10T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 2.34,
+            "low_m": 0.68,
+            "high_m": 6.17,
+            "error_pct": -60.38,
+            "baseline_error_pct": -60.38,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "thursday_noon_et": {
+            "mid_m": 3.07,
+            "logged_at": "2026-11-12T16:35:51Z",
+            "cutoff": "2026-11-12T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 3.07,
+            "low_m": 0.9,
+            "high_m": 8.1,
+            "error_pct": -48.02,
+            "baseline_error_pct": -48.02,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 4.28,
+            "logged_at": "2026-11-13T16:59:47Z",
+            "cutoff": "2026-11-13T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 3.14,
+            "low_m": 2.86,
+            "high_m": 13.85,
+            "error_pct": -27.54,
+            "baseline_error_pct": -46.84,
+            "absolute_error_improvement_pp": 19.3,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 4.4,
+            "logged_at": "2026-11-14T11:18:23Z",
+            "cutoff": "2026-11-14T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 3.32,
+            "low_m": 2.94,
+            "high_m": 14.25,
+            "error_pct": -25.51,
+            "baseline_error_pct": -43.79,
+            "absolute_error_improvement_pp": 18.28,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 6.08,
+            "logged_at": "2026-11-15T16:28:14Z",
+            "cutoff": "2026-11-15T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 5.41,
+            "low_m": 5.93,
+            "high_m": 6.41,
+            "error_pct": 2.94,
+            "baseline_error_pct": -8.41,
+            "absolute_error_improvement_pp": 5.47,
+            "in_range": false
+          }
+        },
+        "thursday_mid_m": 4.4,
+        "thursday_logged_at": "2026-11-14T11:18:23Z"
+      },
+      "live_error_pct": -1.0,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Ghost-Soldier-(2026)",
+      "non_preview_thursday": true,
+      "exclude_from_calibration": true,
+      "calibration_exclusion_reason": "Regular Thursday for a non-Friday opener; not preview revenue.",
+      "raw_daily_predictions": {
+        "Thursday": 0.5,
+        "Saturday": 1.25,
+        "Sunday": 0.82
+      },
+      "daily_sellout_fractions": {
+        "Thursday": 0.0,
+        "Saturday": 0.0015,
+        "Sunday": 0.0
+      },
+      "snapshot_daily_predictions": {
+        "Thursday": 0.23,
+        "Friday": 0.5,
+        "Saturday": 0.77,
+        "Sunday": 0.52
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.828,
+        "Friday": 0.873,
+        "Saturday": 0.873,
+        "Sunday": 0.894
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "same_day",
+        "Saturday": "same_day",
+        "Sunday": "same_day"
+      },
+      "social_signal": {
+        "factor": 0.99776,
+        "adjustment_pct": -0.22,
+        "sentiment_score": 0.0,
+        "buzz_score": -0.1548,
+        "buzz_source": "relative-volume",
+        "signal_quality": 0.2892,
+        "reach": 64.65,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      },
+      "daily_theatre_counts": {
+        "Thursday": 387,
+        "Saturday": 390,
+        "Sunday": 389
+      },
+      "daily_coverage_ratios": {
+        "Thursday": 0.911,
+        "Saturday": 0.918,
+        "Sunday": 0.915
+      },
+      "coverage_ratio": 0.915
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.2236,
+    "amc_market_share": 0.22,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.13275271497390095,
-      "Friday": 0.285395899688339,
-      "Saturday": 0.33313043832684097,
-      "Sunday": 0.24872094701091915
+      "Thursday": 0.13246599353278277,
+      "Friday": 0.28471824427893144,
+      "Saturday": 0.3345340980924432,
+      "Sunday": 0.24828166409584265
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "Primetime",
-        "weekend_of": "2026-09-25",
-        "abs_error_pct": 14.2,
-        "n_theatres": 426,
-        "n_days": 4,
-        "coverage_ratio": 0.993,
-        "daily_coverage_ratios": {
-          "Thursday": 0.988,
-          "Friday": 0.991,
-          "Saturday": 0.993,
-          "Sunday": 1.0
-        },
-        "daily_errors": {
-          "Thursday": 34.1,
-          "Friday": 0.5,
-          "Saturday": 10.6,
-          "Sunday": 13.3
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Heart of the Beast",
-        "weekend_of": "2026-09-25",
-        "abs_error_pct": 43.4,
-        "n_theatres": 419,
-        "n_days": 4,
-        "coverage_ratio": 0.97,
-        "daily_coverage_ratios": {
-          "Thursday": 0.96,
-          "Friday": 0.958,
-          "Saturday": 0.976,
-          "Sunday": 0.986
-        },
-        "daily_errors": {
-          "Thursday": 52.0,
-          "Friday": 51.8,
-          "Saturday": 35.8,
-          "Sunday": 29.2
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
-      {
-        "movie": "Forgotten Island",
-        "weekend_of": "2026-09-25",
-        "abs_error_pct": 2.7,
-        "n_theatres": 419,
-        "n_days": 4,
-        "coverage_ratio": 0.968,
-        "daily_coverage_ratios": {
-          "Thursday": 0.953,
-          "Friday": 0.969,
-          "Saturday": 0.967,
-          "Sunday": 0.984
-        },
-        "daily_errors": {
-          "Thursday": 2.7,
-          "Friday": 5.8,
-          "Saturday": 10.3,
-          "Sunday": 19.0
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Digger",
         "weekend_of": "2026-10-02",
@@ -8908,10 +9385,10 @@
           "Sunday": 0.713
         },
         "daily_errors": {
-          "Thursday": 61.4,
-          "Friday": 59.4,
-          "Saturday": 61.9,
-          "Sunday": 66.1
+          "Thursday": 61.5,
+          "Friday": 59.1,
+          "Saturday": 61.6,
+          "Sunday": 65.9
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -8974,9 +9451,9 @@
           "Sunday": 0.922
         },
         "daily_errors": {
-          "Friday": 44.1,
+          "Friday": 43.9,
           "Saturday": 13.2,
-          "Sunday": 10.3
+          "Sunday": 10.1
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -8984,7 +9461,7 @@
       {
         "movie": "Wild Horse Nine",
         "weekend_of": "2026-11-06",
-        "abs_error_pct": 16.0,
+        "abs_error_pct": 15.9,
         "n_theatres": 234,
         "n_days": 0,
         "coverage_ratio": null,
@@ -8996,7 +9473,7 @@
       {
         "movie": "Jimmy",
         "weekend_of": "2026-11-06",
-        "abs_error_pct": 3.9,
+        "abs_error_pct": 3.8,
         "n_theatres": 336,
         "n_days": 2,
         "coverage_ratio": 0.761,
@@ -9005,41 +9482,101 @@
           "Friday": 0.774
         },
         "daily_errors": {
-          "Friday": 20.5
+          "Friday": 20.2
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "How to Rob a Bank",
+        "weekend_of": "2026-11-13",
+        "abs_error_pct": 20.0,
+        "n_theatres": 402,
+        "n_days": 3,
+        "coverage_ratio": 0.945,
+        "daily_coverage_ratios": {
+          "Thursday": 0.944,
+          "Saturday": 0.944,
+          "Sunday": 0.946
+        },
+        "daily_errors": {
+          "Thursday": 34.9,
+          "Saturday": 20.8,
+          "Sunday": 11.9
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Ebenezer",
+        "weekend_of": "2026-11-13",
+        "abs_error_pct": 23.7,
+        "n_theatres": 423,
+        "n_days": 3,
+        "coverage_ratio": 0.994,
+        "daily_coverage_ratios": {
+          "Thursday": 0.993,
+          "Saturday": 0.993,
+          "Sunday": 0.995
+        },
+        "daily_errors": {
+          "Thursday": 2.2,
+          "Saturday": 28.1,
+          "Sunday": 23.1
+        },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "Ghost Soldier",
+        "weekend_of": "2026-11-13",
+        "abs_error_pct": 40.0,
+        "n_theatres": 390,
+        "n_days": 3,
+        "coverage_ratio": 0.915,
+        "daily_coverage_ratios": {
+          "Thursday": 0.911,
+          "Saturday": 0.918,
+          "Sunday": 0.915
+        },
+        "daily_errors": {
+          "Thursday": 32.4,
+          "Saturday": 35.4,
+          "Sunday": 33.3
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-11-11",
+    "last_updated": "2026-11-18",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
           "n": 14,
-          "support": 12.378
+          "support": 12.26
         },
         "Friday": {
           "n": 15,
-          "support": 11.406
+          "support": 11.31
         },
         "Saturday": {
           "n": 19,
-          "support": 14.092
+          "support": 13.993
         },
         "Sunday": {
           "n": 20,
-          "support": 18.009
+          "support": 17.936
         }
       },
       "leads": {
         "same_day": {
-          "n": 64,
-          "support": 52.432
+          "n": 65,
+          "support": 53.032
         },
         "next_day": {
-          "n": 4,
-          "support": 3.453
+          "n": 3,
+          "support": 2.467
         },
         "multi_day": {
           "n": 0,
@@ -9053,12 +9590,12 @@
     },
     "regression": {
       "version": 1,
-      "active_tier": "identity",
+      "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.13275271497390095,
-        "Friday": 0.285395899688339,
-        "Saturday": 0.33313043832684097,
-        "Sunday": 0.24872094701091915
+        "Thursday": 0.13246599353278277,
+        "Friday": 0.28471824427893144,
+        "Saturday": 0.3345340980924432,
+        "Sunday": 0.24828166409584265
       },
       "trained_on": [
         "Michael",
@@ -9104,14 +9641,16 @@
         "Wicker",
         "Godzilla Minus Zero",
         "The Cat in the Hat",
-        "Drummer Boy"
+        "Drummer Boy",
+        "How to Rob a Bank",
+        "Ebenezer"
       ],
       "global_ratio": {
-        "log_ratio_mean": 0.14604196618393536,
-        "resid_scale": 0.3161443047185422
+        "log_ratio_mean": 0.1529387542745484,
+        "resid_scale": 0.3128186630198706
       },
       "identity": {
-        "seat_sd": 0.34824628826857607
+        "seat_sd": 0.3482036451454666
       },
       "seat": {
         "features": [
@@ -9124,13 +9663,13 @@
           "sellout_frac"
         ],
         "coef": [
-          0.2582036907038553,
-          0.9181696141999558,
-          -0.03044061719905184,
-          0.041321531498628696,
-          0.037040318970893736,
-          0.0032415522614977783,
-          0.009890325510254358
+          0.2661482000057503,
+          0.9152299432871264,
+          -0.0312573939084872,
+          0.03893206615923269,
+          0.04134278733371355,
+          0.0021736041174640424,
+          0.009890126609530255
         ],
         "prior": [
           0.0,
@@ -9142,7 +9681,7 @@
           0.0
         ],
         "lambda": 10.0,
-        "daily_resid_sd": 0.3169946180253581
+        "daily_resid_sd": 0.31159366343475026
       },
       "snapshot": {
         "features": [
@@ -9156,12 +9695,12 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.4786808503979542,
-          0.7461973153005126,
-          -0.09458141121961693,
-          0.2779842914505054,
-          0.13670802340636345,
-          -0.018499177675772017,
+          0.4724714080480592,
+          0.7503829185074194,
+          -0.09692161782769783,
+          0.27099895277766584,
+          0.13946861509372285,
+          -0.017902725724126222,
           0.0,
           0.0
         ],
@@ -9176,284 +9715,296 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.4910071553849873
+        "daily_resid_sd": 0.47930260068984953
       },
       "weekend": {
-        "log_half_width": 0.4797,
-        "resid_mean": 0.12546874520117202,
-        "df": 42,
-        "loo_hit_rate": 0.9302,
+        "log_half_width": 0.5081,
+        "resid_mean": 0.028709975841855417,
+        "df": 44,
+        "loo_hit_rate": 0.9333,
         "loo_hit_rate_basis": "calibration-set coverage; validate on later weekends",
-        "loo_mae_pct": 20.32,
-        "loo_median_ae_pct": 11.61,
-        "n_movies": 43
+        "loo_mae_pct": 20.39,
+        "loo_median_ae_pct": 13.87,
+        "n_movies": 45
       },
       "loo_detail": [
         {
           "movie": "Michael",
-          "pred_m": 93.37,
+          "pred_m": 94.46,
           "actual_m": 97.21,
           "observed_share": 1.0
         },
         {
           "movie": "The Devil Wears Prada 2",
-          "pred_m": 74.78,
+          "pred_m": 46.77,
           "actual_m": 76.75,
-          "observed_share": 0.382
+          "observed_share": 0.716
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 46.02,
+          "pred_m": 36.34,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 23.8,
+          "pred_m": 17.02,
           "actual_m": 15.09,
-          "observed_share": 0.867
+          "observed_share": 0.868
         },
         {
           "movie": "Obsession",
-          "pred_m": 15.28,
+          "pred_m": 19.06,
           "actual_m": 17.2,
-          "observed_share": 0.666
+          "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 75.54,
+          "pred_m": 73.49,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 53.16,
+          "pred_m": 55.21,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 5.12,
+          "pred_m": 6.05,
           "actual_m": 7.35,
-          "observed_share": 0.867
+          "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 39.79,
+          "pred_m": 44.85,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 17.09,
+          "pred_m": 23.78,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 37.31,
+          "pred_m": 43.73,
           "actual_m": 44.53,
-          "observed_share": 0.582
+          "observed_share": 0.583
         },
         {
           "movie": "Toy Story 5",
-          "pred_m": 130.22,
+          "pred_m": 115.1,
           "actual_m": 159.68,
           "observed_share": 1.0
         },
         {
           "movie": "Supergirl",
-          "pred_m": 31.89,
+          "pred_m": 37.67,
           "actual_m": 37.1,
           "observed_share": 1.0
         },
         {
           "movie": "Jackass: Best and Last",
-          "pred_m": 7.99,
+          "pred_m": 10.52,
           "actual_m": 8.46,
           "observed_share": 1.0
         },
         {
           "movie": "Young Washington",
-          "pred_m": 12.44,
+          "pred_m": 14.92,
           "actual_m": 19.37,
-          "observed_share": 0.867
+          "observed_share": 1.0
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 31.16,
+          "pred_m": 36.3,
           "actual_m": 43.14,
-          "observed_share": 0.752
+          "observed_share": 1.0
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 18.87,
+          "pred_m": 21.99,
           "actual_m": 13.7,
-          "observed_share": 0.751
+          "observed_share": 1.0
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 123.36,
+          "pred_m": 108.23,
           "actual_m": 123.5,
-          "observed_share": 0.751
+          "observed_share": 1.0
         },
         {
           "movie": "One Night Only",
-          "pred_m": 3.46,
+          "pred_m": 4.97,
           "actual_m": 5.51,
           "observed_share": 0.87
         },
         {
           "movie": "The End of Oak Street",
-          "pred_m": 18.23,
+          "pred_m": 21.24,
           "actual_m": 21.01,
           "observed_share": 1.0
         },
         {
           "movie": "PAW Patrol: The Dino Movie",
-          "pred_m": 14.28,
+          "pred_m": 16.28,
           "actual_m": 20.25,
           "observed_share": 1.0
         },
         {
           "movie": "Insidious: Out of the Further",
-          "pred_m": 21.11,
+          "pred_m": 21.89,
           "actual_m": 25.11,
-          "observed_share": 0.618
+          "observed_share": 0.867
         },
         {
           "movie": "Mutiny",
-          "pred_m": 4.22,
+          "pred_m": 6.29,
           "actual_m": 7.71,
-          "observed_share": 0.618
+          "observed_share": 0.867
         },
         {
           "movie": "The Dog Stars",
-          "pred_m": 10.78,
+          "pred_m": 13.7,
           "actual_m": 7.71,
           "observed_share": 1.0
         },
         {
           "movie": "Coyote vs. Acme",
-          "pred_m": 18.79,
+          "pred_m": 21.66,
           "actual_m": 15.91,
-          "observed_share": 0.867
+          "observed_share": 1.0
         },
         {
           "movie": "Practical Magic 2",
-          "pred_m": 27.7,
+          "pred_m": 30.13,
           "actual_m": 30.0,
-          "observed_share": 0.418
+          "observed_share": 1.0
         },
         {
           "movie": "Resident Evil",
-          "pred_m": 58.17,
+          "pred_m": 57.72,
           "actual_m": 60.15,
           "observed_share": 1.0
         },
         {
           "movie": "Primetime",
-          "pred_m": 19.37,
+          "pred_m": 22.8,
           "actual_m": 19.2,
           "observed_share": 1.0
         },
         {
           "movie": "Heart of the Beast",
-          "pred_m": 10.44,
+          "pred_m": 10.15,
           "actual_m": 20.04,
           "observed_share": 1.0
         },
         {
           "movie": "Forgotten Island",
-          "pred_m": 12.26,
+          "pred_m": 14.29,
           "actual_m": 13.01,
           "observed_share": 1.0
         },
         {
           "movie": "Digger",
-          "pred_m": 7.72,
+          "pred_m": 10.5,
           "actual_m": 8.0,
           "observed_share": 1.0
         },
         {
           "movie": "Verity",
-          "pred_m": 30.51,
+          "pred_m": 32.93,
           "actual_m": 32.03,
           "observed_share": 1.0
         },
         {
           "movie": "Other Mommy",
-          "pred_m": 22.62,
+          "pred_m": 24.49,
           "actual_m": 27.81,
           "observed_share": 1.0
         },
         {
           "movie": "The Social Reckoning",
-          "pred_m": 4.9,
+          "pred_m": 6.94,
           "actual_m": 5.02,
           "observed_share": 1.0
         },
         {
           "movie": "Street Fighter",
-          "pred_m": 28.4,
+          "pred_m": 32.72,
           "actual_m": 30.78,
           "observed_share": 1.0
         },
         {
           "movie": "Whalefall",
-          "pred_m": 5.57,
+          "pred_m": 7.82,
           "actual_m": 7.84,
           "observed_share": 1.0
         },
         {
           "movie": "Sense and Sensibility",
-          "pred_m": 2.86,
+          "pred_m": 4.73,
           "actual_m": 7.2,
-          "observed_share": 0.583
+          "observed_share": 0.868
         },
         {
           "movie": "Wildwood",
-          "pred_m": 12.75,
+          "pred_m": 15.99,
           "actual_m": 12.27,
           "observed_share": 1.0
         },
         {
           "movie": "Clayface",
-          "pred_m": 21.17,
+          "pred_m": 24.51,
           "actual_m": 24.0,
           "observed_share": 1.0
         },
         {
           "movie": "Wicker",
-          "pred_m": 7.45,
+          "pred_m": 10.51,
           "actual_m": 5.75,
           "observed_share": 1.0
         },
         {
           "movie": "Godzilla Minus Zero",
-          "pred_m": 23.99,
+          "pred_m": 29.1,
           "actual_m": 30.61,
           "observed_share": 1.0
         },
         {
           "movie": "The Cat in the Hat",
-          "pred_m": 16.33,
+          "pred_m": 18.57,
           "actual_m": 20.0,
           "observed_share": 1.0
         },
         {
           "movie": "Drummer Boy",
-          "pred_m": 7.37,
+          "pred_m": 10.13,
           "actual_m": 9.42,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "How to Rob a Bank",
+          "pred_m": 5.63,
+          "actual_m": 5.19,
+          "observed_share": 1.0
+        },
+        {
+          "movie": "Ebenezer",
+          "pred_m": 16.8,
+          "actual_m": 19.01,
           "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 20.32,
-        "global_ratio": 20.7,
-        "regression": 20.87
+        "identity": 20.54,
+        "global_ratio": 21.0,
+        "regression": 20.39
       },
-      "bakeoff_winner": "identity",
+      "bakeoff_winner": "regression",
       "meets_mae_target": false
     }
   }
