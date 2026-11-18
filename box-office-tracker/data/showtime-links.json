@@ -110520,9 +110520,19 @@
           "movies": {
             "The Hunger Games: Sunrise on the Reaping": [
               {
+                "showtime": "10:15am",
+                "showtime_id": "148880574",
+                "format": "undefined"
+              },
+              {
                 "showtime": "11:00am",
                 "showtime_id": "148192287",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148880585",
+                "format": "undefined"
               },
               {
                 "showtime": "12:00pm",
@@ -110535,9 +110545,19 @@
                 "format": "RealD 3D"
               },
               {
+                "showtime": "2:00pm",
+                "showtime_id": "148880560",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:45pm",
                 "showtime_id": "148192286",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148880591",
+                "format": "undefined"
               },
               {
                 "showtime": "3:45pm",
@@ -110550,9 +110570,19 @@
                 "format": "RealD 3D"
               },
               {
+                "showtime": "5:45pm",
+                "showtime_id": "148880559",
+                "format": "undefined"
+              },
+              {
                 "showtime": "6:30pm",
                 "showtime_id": "148192285",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148880590",
+                "format": "undefined"
               },
               {
                 "showtime": "7:30pm",
@@ -110565,13 +110595,18 @@
                 "format": "RealD 3D"
               },
               {
+                "showtime": "9:30pm",
+                "showtime_id": "148880558",
+                "format": "undefined"
+              },
+              {
                 "showtime": "10:15pm",
                 "showtime_id": "148192284",
                 "format": "IMAX at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-16T23:55:17.655854+00:00",
+          "collected_at": "2026-11-18T04:44:35.781821+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -110921,7 +110956,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T17:01:22.923472+00:00",
+          "collected_at": "2026-11-18T04:44:35.781852+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -111013,6 +111048,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "1:10pm",
+                "showtime_id": "148780853",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:15pm",
                 "showtime_id": "148041423",
                 "format": "undefined"
@@ -111028,9 +111068,19 @@
                 "format": "undefined"
               },
               {
+                "showtime": "4:50pm",
+                "showtime_id": "148780852",
+                "format": "undefined"
+              },
+              {
                 "showtime": "6:00pm",
                 "showtime_id": "148041427",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "148783172",
+                "format": "undefined"
               },
               {
                 "showtime": "7:00pm",
@@ -111043,6 +111093,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "8:30pm",
+                "showtime_id": "148783169",
+                "format": "undefined"
+              },
+              {
                 "showtime": "9:00pm",
                 "showtime_id": "148743122",
                 "format": "undefined"
@@ -111050,6 +111105,11 @@
               {
                 "showtime": "9:45pm",
                 "showtime_id": "148041428",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148780935",
                 "format": "undefined"
               }
             ],
@@ -111068,10 +111128,15 @@
                 "showtime": "7:15pm",
                 "showtime_id": "148525353",
                 "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148780770",
+                "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-11-17T01:06:50.118372+00:00",
+          "collected_at": "2026-11-18T04:43:50.755337+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135077,7 +135142,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T23:40:28.725259+00:00",
+          "collected_at": "2026-11-18T04:43:50.755347+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -135388,6 +135453,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "12:45pm",
+                "showtime_id": "148903297",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "1:00pm",
                 "showtime_id": "148151429",
                 "format": "Dine-In Delivery to Seat"
@@ -135406,6 +135476,11 @@
                 "showtime": "3:45pm",
                 "showtime_id": "148151457",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148903562",
+                "format": "English Spoken with Spanish Subtitles"
               },
               {
                 "showtime": "4:30pm",
@@ -135438,13 +135513,23 @@
                 "format": "RealD 3D"
               },
               {
-                "showtime": "8:00pm",
+                "showtime": "7:45pm",
+                "showtime_id": "148903563",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:15pm",
                 "showtime_id": "148753262",
                 "format": "Dine-In Delivery to Seat"
               },
               {
                 "showtime": "8:30pm",
                 "showtime_id": "148151618",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148903381",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -135465,6 +135550,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "12:50pm",
+                "showtime_id": "148903480",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "3:00pm",
                 "showtime_id": "148590322",
                 "format": "Dine-In Delivery to Seat"
@@ -135481,7 +135571,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T17:01:22.923532+00:00",
+          "collected_at": "2026-11-18T04:44:35.781878+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -136425,7 +136515,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T23:40:01.505763+00:00",
+          "collected_at": "2026-11-18T04:43:02.493869+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -139668,8 +139758,18 @@
                 "format": "IMAX at AMC"
               },
               {
+                "showtime": "11:35am",
+                "showtime_id": "148772619",
+                "format": "undefined"
+              },
+              {
                 "showtime": "12:15pm",
                 "showtime_id": "147978391",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148772602",
                 "format": "undefined"
               },
               {
@@ -139688,9 +139788,19 @@
                 "format": "undefined"
               },
               {
+                "showtime": "4:55pm",
+                "showtime_id": "148772601",
+                "format": "undefined"
+              },
+              {
                 "showtime": "5:45pm",
                 "showtime_id": "147978772",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148772616",
+                "format": "undefined"
               },
               {
                 "showtime": "6:45pm",
@@ -139700,6 +139810,11 @@
               {
                 "showtime": "7:45pm",
                 "showtime_id": "147978389",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148772600",
                 "format": "undefined"
               },
               {
@@ -139725,8 +139840,23 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "11:00am",
+                "showtime_id": "148772923",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "1:05pm",
                 "showtime_id": "148445091",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "2:05pm",
+                "showtime_id": "148772922",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "3:10pm",
+                "showtime_id": "148772618",
                 "format": "AMC Artisan Films"
               },
               {
@@ -139735,8 +139865,23 @@
                 "format": "AMC Artisan Films"
               },
               {
+                "showtime": "5:10pm",
+                "showtime_id": "148772921",
+                "format": "AMC Artisan Films"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "148445088",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148772920",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "148772617",
                 "format": "AMC Artisan Films"
               },
               {
@@ -139746,7 +139891,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-16T19:10:02.588878+00:00",
+          "collected_at": "2026-11-18T04:43:50.755328+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -173516,7 +173661,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T05:18:02.940623+00:00",
+          "collected_at": "2026-11-18T04:45:33.439742+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -174271,6 +174416,11 @@
           "movies": {
             "The Hunger Games: Sunrise on the Reaping": [
               {
+                "showtime": "10:00am",
+                "showtime_id": "148886292",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "12:00pm",
                 "showtime_id": "148073773",
                 "format": "RealD 3D"
@@ -174278,6 +174428,11 @@
               {
                 "showtime": "1:30pm",
                 "showtime_id": "148073728",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148886287",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -174291,6 +174446,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "6:00pm",
+                "showtime_id": "148886288",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "148073775",
                 "format": "RealD 3D"
@@ -174299,10 +174459,42 @@
                 "showtime": "9:30pm",
                 "showtime_id": "148073731",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148886290",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "I Play Rocky": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148886561",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "148886562",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "148886563",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148886564",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148886266",
+                "format": "Dine-In Delivery to Seat"
               }
             ]
           },
-          "collected_at": "2026-11-17T02:13:21.864335+00:00",
+          "collected_at": "2026-11-18T04:44:35.781893+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -174605,7 +174797,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T22:16:14.133656+00:00",
+          "collected_at": "2026-11-18T04:44:35.781885+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -174860,9 +175052,24 @@
           "movies": {
             "The Hunger Games: Sunrise on the Reaping": [
               {
+                "showtime": "10:30am",
+                "showtime_id": "148863098",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148877380",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "12:00pm",
                 "showtime_id": "148132165",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148877392",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "1:15pm",
@@ -174875,9 +175082,24 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "3:15pm",
+                "showtime_id": "148877382",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "3:45pm",
                 "showtime_id": "148132166",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148877387",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148877421",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "6:00pm",
@@ -174885,17 +175107,52 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "148877385",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "148132167",
                 "format": "IMAX at AMC"
               },
               {
+                "showtime": "8:15pm",
+                "showtime_id": "148877389",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148877423",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148877376",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "9:45pm",
                 "showtime_id": "148132111",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148877371",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "11:00pm",
+                "showtime_id": "148863106",
+                "format": "IMAX at AMC"
               }
             ],
             "I Play Rocky": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148877415",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "12:30pm",
                 "showtime_id": "148589085",
@@ -174912,13 +175169,13 @@
                 "format": "Laser at AMC"
               },
               {
-                "showtime": "10:15pm",
+                "showtime": "9:10pm",
                 "showtime_id": "148589088",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-17T17:01:22.923491+00:00",
+          "collected_at": "2026-11-18T04:44:35.781872+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -175418,7 +175675,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T23:40:01.505773+00:00",
+          "collected_at": "2026-11-18T04:43:02.493833+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -175554,7 +175811,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T22:16:14.133676+00:00",
+          "collected_at": "2026-11-18T04:44:35.781862+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -175922,6 +176179,16 @@
           "movies": {
             "The Hunger Games: Sunrise on the Reaping": [
               {
+                "showtime": "10:00am",
+                "showtime_id": "148828985",
+                "format": "undefined"
+              },
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148829007",
+                "format": "RealD 3D"
+              },
+              {
                 "showtime": "12:00pm",
                 "showtime_id": "147943824",
                 "format": "undefined"
@@ -175930,6 +176197,11 @@
                 "showtime": "1:40pm",
                 "showtime_id": "148009425",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "2:40pm",
+                "showtime_id": "148829008",
+                "format": "undefined"
               },
               {
                 "showtime": "3:40pm",
@@ -175942,18 +176214,65 @@
                 "format": "undefined"
               },
               {
+                "showtime": "6:20pm",
+                "showtime_id": "148829009",
+                "format": "RealD 3D"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147943826",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148828969",
                 "format": "undefined"
               },
               {
                 "showtime": "9:00pm",
                 "showtime_id": "147943854",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148829010",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:50pm",
+                "showtime_id": "148828973",
+                "format": "undefined"
+              }
+            ],
+            "I Play Rocky": [
+              {
+                "showtime": "10:20am",
+                "showtime_id": "148828794",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "1:05pm",
+                "showtime_id": "148829059",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148829060",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148829048",
+                "format": "AMC Artisan Films"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148828798",
+                "format": "AMC Artisan Films"
               }
             ]
           },
-          "collected_at": "2026-11-17T05:15:52.463542+00:00",
+          "collected_at": "2026-11-18T04:43:50.755298+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -176053,7 +176372,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-17T22:16:14.133719+00:00",
+          "collected_at": "2026-11-18T04:45:33.439707+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
