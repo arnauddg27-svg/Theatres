@@ -146359,9 +146359,63 @@
                 "showtime_id": "148192284",
                 "format": "IMAX at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:20am",
+                "showtime_id": "148880501",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148880495",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148192327",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148192328",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "148880496",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148880719",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:50pm",
+                "showtime_id": "148880731",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148880730",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148880728",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148880729",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-18T22:15:53.933858+00:00",
+          "collected_at": "2026-11-19T22:34:26.063537+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -146547,6 +146601,60 @@
             "showtime_id": "148192284",
             "format": "IMAX at AMC"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "10:20am",
+            "showtime_id": "148880501",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "148880495",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "148192327",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "148192328",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:10pm",
+            "showtime_id": "148880496",
+            "format": "undefined"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "10:00am",
+            "showtime_id": "148880719",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:50pm",
+            "showtime_id": "148880731",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:45pm",
+            "showtime_id": "148880730",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148880728",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148880729",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -146683,7 +146791,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424587+00:00",
+          "collected_at": "2026-11-19T22:30:56.733221+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -146786,9 +146894,36 @@
                 "showtime_id": "148780768",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148780885",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148780831",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148780969",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148780828",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148780881",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:18:02.130685+00:00",
+          "collected_at": "2026-11-19T22:34:26.063568+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -146886,9 +147021,36 @@
                 "showtime_id": "148780883",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148780872",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148780822",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148780972",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148780829",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148780973",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257206+00:00",
+          "collected_at": "2026-11-19T22:35:55.489875+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -147408,9 +147570,43 @@
                 "showtime_id": "148767671",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148159984",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "7:10pm",
+                "showtime_id": "148159983",
+                "format": "XL at AMC"
+              },
+              {
+                "showtime": "10:05pm",
+                "showtime_id": "148159985",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147751623",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147751622",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147751624",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:14:10.868288+00:00",
+          "collected_at": "2026-11-19T22:30:56.733261+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -147528,9 +147724,58 @@
                 "showtime_id": "148579059",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "148770832",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:40pm",
+                "showtime_id": "148770830",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:35pm",
+                "showtime_id": "148770828",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148770824",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "148770826",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148770718",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "148770716",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "148770713",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148770711",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:18:02.130654+00:00",
+          "collected_at": "2026-11-19T22:34:26.063560+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -147653,9 +147898,58 @@
                 "showtime_id": "148579063",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "148770853",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:40pm",
+                "showtime_id": "148770851",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:35pm",
+                "showtime_id": "148770849",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148770845",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "148770847",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148770890",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148770888",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148770886",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148770884",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-18T22:15:53.933812+00:00",
+          "collected_at": "2026-11-19T22:35:55.489836+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -147778,6 +148072,55 @@
           {
             "showtime": "9:50pm",
             "showtime_id": "148579063",
+            "format": "Laser at AMC"
+          }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "10:45am",
+            "showtime_id": "148770853",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:40pm",
+            "showtime_id": "148770851",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:35pm",
+            "showtime_id": "148770849",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "148770845",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "148770847",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "10:30am",
+            "showtime_id": "148770890",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "148770888",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "148770886",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148770884",
             "format": "Laser at AMC"
           }
         ]
@@ -177987,7 +178330,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424595+00:00",
+          "collected_at": "2026-11-19T22:30:56.733241+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -178165,9 +178508,53 @@
                 "showtime_id": "148801475",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "148801466",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "148200580",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148200581",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148801465",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "12:10pm",
+                "showtime_id": "148801430",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148801455",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148801452",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "148801467",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257228+00:00",
+          "collected_at": "2026-11-19T22:35:55.489867+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -178207,6 +178594,11 @@
                 "showtime": "4:45pm",
                 "showtime_id": "148200542",
                 "format": "IMAX at AMC"
+              },
+              {
+                "showtime": "5:40pm",
+                "showtime_id": "148956705",
+                "format": "undefined"
               },
               {
                 "showtime": "6:30pm",
@@ -178306,7 +178698,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254403+00:00",
+          "collected_at": "2026-11-19T22:32:26.308350+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -178562,9 +178954,53 @@
                 "showtime_id": "148590325",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148903408",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148151360",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148151361",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148903373",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "1:15pm",
+                "showtime_id": "148903479",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148903594",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:20pm",
+                "showtime_id": "148903643",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148903522",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257221+00:00",
+          "collected_at": "2026-11-19T22:35:55.489871+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -178672,9 +179108,33 @@
                 "showtime_id": "148590309",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "5:30pm",
+                "showtime_id": "148151344",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148151346",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148903482",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148903653",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:32:47.332604+00:00",
+          "collected_at": "2026-11-19T22:30:56.733205+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -178978,7 +179438,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254384+00:00",
+          "collected_at": "2026-11-19T22:32:26.308358+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -179108,6 +179568,50 @@
             "showtime_id": "148590325",
             "format": "Dine-In Delivery to Seat"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "148903408",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148151360",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148151361",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "148903373",
+            "format": "Dine-In Delivery to Seat"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "1:15pm",
+            "showtime_id": "148903479",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "148903594",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:20pm",
+            "showtime_id": "148903643",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148903522",
+            "format": "RealD 3D"
+          }
         ]
       }
     },
@@ -179235,9 +179739,53 @@
                 "showtime_id": "148555153",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148121446",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148121445",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148121444",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148121443",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148834296",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148834297",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148834294",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148834295",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257174+00:00",
+          "collected_at": "2026-11-19T22:35:55.489848+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -179710,7 +180258,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254353+00:00",
+          "collected_at": "2026-11-19T22:32:26.308363+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -179959,9 +180507,31 @@
                 "showtime_id": "148091534",
                 "format": "undefined"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148767920",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148767919",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148767918",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148767917",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:52.250067+00:00",
+          "collected_at": "2026-11-19T22:34:26.063579+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -179997,9 +180567,38 @@
                 "showtime_id": "148091501",
                 "format": "undefined"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148767928",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148767927",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147941270",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:50pm",
+                "showtime_id": "147941271",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "147941272",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:14:10.868299+00:00",
+          "collected_at": "2026-11-19T22:30:56.733215+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -180045,9 +180644,26 @@
                 "showtime_id": "148767984",
                 "format": "undefined"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148767923",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148767922",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148767921",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:20:06.575558+00:00",
+          "collected_at": "2026-11-19T22:35:55.489813+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -180113,9 +180729,31 @@
                 "showtime_id": "148091543",
                 "format": "undefined"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148767916",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148767915",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148767914",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148767913",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:16:20.751185+00:00",
+          "collected_at": "2026-11-19T22:32:26.308381+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -180151,6 +180789,35 @@
           {
             "showtime": "8:15pm",
             "showtime_id": "148091501",
+            "format": "undefined"
+          }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148767928",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148767927",
+            "format": "undefined"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147941270",
+            "format": "undefined"
+          },
+          {
+            "showtime": "5:50pm",
+            "showtime_id": "147941271",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "147941272",
             "format": "undefined"
           }
         ]
@@ -181849,9 +182516,58 @@
                 "showtime_id": "148594421",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148852219",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148175342",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175341",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148175339",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148175340",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148852209",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148852218",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148852208",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148852223",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:52.250044+00:00",
+          "collected_at": "2026-11-19T22:34:26.063607+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -182020,7 +182736,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424578+00:00",
+          "collected_at": "2026-11-19T22:30:56.733190+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -182173,9 +182889,63 @@
                 "showtime_id": "148594425",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148859517",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148175338",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148175337",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148175335",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148175336",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:45pm",
+                "showtime_id": "148859528",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148859508",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148859516",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148859507",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148859521",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257253+00:00",
+          "collected_at": "2026-11-19T22:35:55.489827+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -182330,6 +183100,60 @@
             "showtime_id": "148594425",
             "format": "Laser at AMC"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "10:00am",
+            "showtime_id": "148859517",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "148175338",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148175337",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148175335",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148175336",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:45pm",
+            "showtime_id": "148859528",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "11:30am",
+            "showtime_id": "148859508",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "148859516",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148859507",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148859521",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -182407,9 +183231,53 @@
                 "showtime_id": "148517795",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148910591",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148138896",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "148138908",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:05pm",
+                "showtime_id": "148910609",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148910630",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148910631",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148910632",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148910633",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257193+00:00",
+          "collected_at": "2026-11-19T22:35:55.489822+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -182524,6 +183392,11 @@
                 "showtime": "8:45pm",
                 "showtime_id": "148910568",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148955502",
+                "format": "Laser at AMC"
               }
             ],
             "I Play Rocky": [
@@ -182536,10 +183409,49 @@
                 "showtime": "6:30pm",
                 "showtime_id": "148517722",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148955498",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148138705",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148138706",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148955496",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148910442",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148138733",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148910443",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-19T15:14:10.868313+00:00",
+          "collected_at": "2026-11-19T22:30:56.733226+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -184435,9 +185347,63 @@
                 "showtime_id": "148445089",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:25am",
+                "showtime_id": "148772603",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147978478",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147978477",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147978475",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147978476",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148772963",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148772964",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148772965",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148772966",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "148772828",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:16:20.751166+00:00",
+          "collected_at": "2026-11-19T22:32:26.308342+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -184590,9 +185556,63 @@
                 "showtime_id": "148445094",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:25am",
+                "showtime_id": "148772599",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147978482",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147978481",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147978479",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147978480",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148772947",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148772948",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148772949",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148772950",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "148772858",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:18:02.130714+00:00",
+          "collected_at": "2026-11-19T22:34:26.063593+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -184685,9 +185705,38 @@
                 "showtime_id": "148445087",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "147978473",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:35pm",
+                "showtime_id": "147978472",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "147978471",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "147765649",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "147765650",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:32:47.332591+00:00",
+          "collected_at": "2026-11-19T22:30:56.733256+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -184840,9 +185889,63 @@
                 "showtime_id": "148445099",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:25am",
+                "showtime_id": "148772593",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:40pm",
+                "showtime_id": "147978490",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:35pm",
+                "showtime_id": "147978489",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147978483",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:25pm",
+                "showtime_id": "147978484",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148772954",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "148772955",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "148772956",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148772957",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "148772875",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257241+00:00",
+          "collected_at": "2026-11-19T22:35:55.489808+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -184991,6 +186094,60 @@
             "showtime": "10:20pm",
             "showtime_id": "148445089",
             "format": "AMC Artisan Films"
+          }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "10:25am",
+            "showtime_id": "148772603",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:40pm",
+            "showtime_id": "147978478",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:35pm",
+            "showtime_id": "147978477",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:30pm",
+            "showtime_id": "147978475",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:25pm",
+            "showtime_id": "147978476",
+            "format": "undefined"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "10:30am",
+            "showtime_id": "148772963",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:20pm",
+            "showtime_id": "148772964",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:10pm",
+            "showtime_id": "148772965",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148772966",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:35pm",
+            "showtime_id": "148772828",
+            "format": "RealD 3D"
           }
         ]
       }
@@ -241959,7 +243116,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424571+00:00",
+          "collected_at": "2026-11-19T22:30:56.733210+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -242276,9 +243433,38 @@
                 "showtime_id": "148589440",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148761398",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "148761397",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148761404",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148761405",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:40am",
+                "showtime_id": "148845473",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:52.250079+00:00",
+          "collected_at": "2026-11-19T22:34:26.063600+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -242519,9 +243705,33 @@
                 "showtime_id": "148566212",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148170868",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:50pm",
+                "showtime_id": "148170869",
+                "format": "English Spoken with Spanish Subtitles"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147913668",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147913729",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:32:47.332536+00:00",
+          "collected_at": "2026-11-19T22:30:56.733169+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -242629,9 +243839,48 @@
                 "showtime_id": "148566225",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "11:20am",
+                "showtime_id": "148170858",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:20pm",
+                "showtime_id": "148170859",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148170723",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148170724",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "148930027",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148930185",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148930031",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257247+00:00",
+          "collected_at": "2026-11-19T22:35:55.489787+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -242839,9 +244088,48 @@
                 "showtime_id": "148566234",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:20pm",
+                "showtime_id": "148170856",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148170857",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148170719",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148170720",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "148930109",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148930180",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148930142",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:13.697787+00:00",
+          "collected_at": "2026-11-19T22:32:26.308308+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -242951,6 +244239,45 @@
             "showtime_id": "148566225",
             "format": "Laser at AMC"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "11:20am",
+            "showtime_id": "148170858",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "2:20pm",
+            "showtime_id": "148170859",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148170723",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:10pm",
+            "showtime_id": "148170724",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "148930027",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148930185",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "7:45pm",
+            "showtime_id": "148930031",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -243049,7 +244376,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424545+00:00",
+          "collected_at": "2026-11-19T22:30:56.733235+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -243253,7 +244580,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254414+00:00",
+          "collected_at": "2026-11-19T22:32:26.308375+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -243326,9 +244653,53 @@
                 "showtime_id": "148886256",
                 "format": "Dine-In Delivery to Seat"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148886505",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148886504",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148073962",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148073964",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148886159",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148886161",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148886163",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148886165",
+                "format": "RealD 3D"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:20:06.575565+00:00",
+          "collected_at": "2026-11-19T22:35:55.489817+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -243473,9 +244844,38 @@
                 "showtime_id": "148145160",
                 "format": "XL at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148120839",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148120880",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148120856",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148864612",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:30pm",
+                "showtime_id": "148864616",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:32:47.332530+00:00",
+          "collected_at": "2026-11-19T22:30:56.733231+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -243541,9 +244941,68 @@
                 "showtime_id": "148145149",
                 "format": "XL at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148854629",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148854660",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148854673",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148120834",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148120879",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148854616",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "11:30am",
+                "showtime_id": "148854625",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:30pm",
+                "showtime_id": "148854624",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148854653",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148854630",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148854649",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:52.250000+00:00",
+          "collected_at": "2026-11-19T22:34:26.063574+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -243614,9 +245073,68 @@
                 "showtime_id": "148145154",
                 "format": "XL at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148854597",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:45pm",
+                "showtime_id": "148120835",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "148854651",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148120855",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148854632",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148854620",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148854619",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148854638",
+                "format": "undefined"
+              },
+              {
+                "showtime": "5:45pm",
+                "showtime_id": "148854663",
+                "format": "undefined"
+              },
+              {
+                "showtime": "8:00pm",
+                "showtime_id": "148854621",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148854642",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:20:06.575572+00:00",
+          "collected_at": "2026-11-19T22:35:55.489831+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -243747,6 +245265,35 @@
             "showtime_id": "148145160",
             "format": "XL at AMC"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148120839",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148120880",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:00pm",
+            "showtime_id": "148120856",
+            "format": "undefined"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "4:45pm",
+            "showtime_id": "148864612",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148864616",
+            "format": "undefined"
+          }
         ]
       }
     },
@@ -243874,9 +245421,48 @@
                 "showtime_id": "148589092",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147974347",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147974346",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147974349",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147974348",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:40am",
+                "showtime_id": "148891131",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148891110",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148891112",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257187+00:00",
+          "collected_at": "2026-11-19T22:35:55.489842+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -244278,9 +245864,38 @@
                 "showtime_id": "148589080",
                 "format": "Laser at AMC"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147974334",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147974335",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:25pm",
+                "showtime_id": "147974337",
+                "format": "Laser at AMC"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "147898318",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147898319",
+                "format": "Laser at AMC"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:32:47.332597+00:00",
+          "collected_at": "2026-11-19T22:30:56.733265+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -244370,6 +245985,35 @@
             "showtime_id": "148589080",
             "format": "Laser at AMC"
           }
+        ],
+        "Ebenezer": [
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147974334",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:30pm",
+            "showtime_id": "147974335",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:25pm",
+            "showtime_id": "147974337",
+            "format": "Laser at AMC"
+          }
+        ],
+        "The Cat in the Hat": [
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "147898318",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:00pm",
+            "showtime_id": "147898319",
+            "format": "Laser at AMC"
+          }
         ]
       }
     },
@@ -244440,9 +246084,58 @@
                 "showtime_id": "148015776",
                 "format": "RealD 3D"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "11:20am",
+                "showtime_id": "148770698",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "148770470",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148015866",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148015867",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148770471",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "10:30am",
+                "showtime_id": "148770783",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "148770785",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "148770787",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148770789",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:20:06.575579+00:00",
+          "collected_at": "2026-11-19T22:35:55.489862+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -244508,9 +246201,43 @@
                 "showtime_id": "148015773",
                 "format": "RealD 3D"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "148015858",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148015859",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148731828",
+                "format": "undefined"
+              }
+            ],
+            "The Cat in the Hat": [
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "148731769",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148731770",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "148731771",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:14:10.868243+00:00",
+          "collected_at": "2026-11-19T22:30:56.733252+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -244632,7 +246359,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254391+00:00",
+          "collected_at": "2026-11-19T22:32:26.308334+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -244894,9 +246621,41 @@
                 "showtime_id": "148905076",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:35am",
+                "showtime_id": "148905133",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "148905135",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:40pm",
+                "showtime_id": "148905017",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148182673",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "148182674",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:45pm",
+                "showtime_id": "148905046",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:33:52.250020+00:00",
+          "collected_at": "2026-11-19T22:34:26.063613+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -244974,9 +246733,41 @@
                 "showtime_id": "148905007",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:40am",
+                "showtime_id": "148905130",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "148905131",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "148905020",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148182675",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:35pm",
+                "showtime_id": "148182676",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:35pm",
+                "showtime_id": "148905034",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T06:35:07.257215+00:00",
+          "collected_at": "2026-11-19T22:35:55.489855+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -245065,7 +246856,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424553+00:00",
+          "collected_at": "2026-11-19T22:30:56.733198+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -245187,7 +246978,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:49:22.254369+00:00",
+          "collected_at": "2026-11-19T22:32:26.308369+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -245605,9 +247396,36 @@
                 "showtime_id": "148828799",
                 "format": "AMC Artisan Films"
               }
+            ],
+            "Ebenezer": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148828884",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148828933",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148828934",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148828935",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148828936",
+                "format": "undefined"
+              }
             ]
           },
-          "collected_at": "2026-11-19T15:18:02.130696+00:00",
+          "collected_at": "2026-11-19T22:34:26.063586+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -245714,7 +247532,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T18:48:08.424535+00:00",
+          "collected_at": "2026-11-19T22:30:56.733247+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
