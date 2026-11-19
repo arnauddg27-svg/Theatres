@@ -201,12 +201,22 @@ class WaveRateTest(unittest.TestCase):
         self.assertFalse(scraper.wave_in_window([(0, 0, 0), (30, 0, 500)], share=0))
 
     def test_totals_come_from_the_http_lane_counters(self):
+        # a data-endpoint read bumps BOTH _RSC_STATE["ok"] and http_ok, so only
+        # http_ok is counted (summing them halved the measured wall share)
         saved = (scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"])
         try:
-            scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"] = 7, 3, 4
-            self.assertEqual((10, 4), scraper.seat_request_totals())
+            scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"] = 281, 281, 75
+            self.assertEqual((281, 75), scraper.seat_request_totals())
+            ok, walls = scraper.seat_request_totals()
+            self.assertTrue(scraper.wave_in_window([(0, 0, 0), (120, ok, walls)]))   # the 21% wave trips
         finally:
             scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"] = saved
+
+    def test_snapshot_floor_counts_showings_read_not_rows_written(self):
+        body = Path(scraper.__file__).read_text()
+        block = body[body.index("snapshot_shortfall = None\n    if snapshots_only and not test_max:"):][:900]
+        self.assertIn("snapshot_read = len(cf_read_ids)", block)
+        self.assertNotIn("snapshot_rows_written + snapshot_rows_skipped", block)
 
 
 class WaveRetryTest(unittest.TestCase):
@@ -235,6 +245,37 @@ class WaveRetryTest(unittest.TestCase):
         block = body[body.index("cf_read_ids.update(read_showtime_ids(csv_rows))"):][:900]
         self.assertIn("any(CF_BLOCK_ISSUE in i for i in issues)", block)
         self.assertNotIn("not results and not snapshot_rows", block)
+
+
+class PreShowRowsAreNotFinalsTest(unittest.TestCase):
+    """Review 2026-11-19: a seat row read before its showing started counted
+    as captured, so a later top-up would skip that showing for good."""
+
+    def _write(self, td, rows):
+        path = Path(td) / "seat.csv"
+        with open(path, "w", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=["date", "amc_seat_map_url", "minutes_after_showtime"])
+            w.writeheader()
+            w.writerows(rows)
+        return path
+
+    def test_negative_minutes_do_not_count(self):
+        url = "https://www.amctheatres.com/showtimes/{}/seats"
+        with tempfile.TemporaryDirectory() as td:
+            path = self._write(td, [
+                {"date": "2026-11-14", "amc_seat_map_url": url.format(1), "minutes_after_showtime": "95"},
+                {"date": "2026-11-14", "amc_seat_map_url": url.format(2), "minutes_after_showtime": "-400"},
+                {"date": "2026-11-14", "amc_seat_map_url": url.format(3), "minutes_after_showtime": "0"},
+                {"date": "2026-11-14", "amc_seat_map_url": url.format(4), "minutes_after_showtime": ""},
+            ])
+            self.assertEqual({"1", "3", "4"}, scraper.captured_showtime_ids({"2026-11-14"}, path=path)["2026-11-14"])
+
+    def test_afternoon_regular_leg_has_no_finals_to_read(self):
+        from datetime import datetime
+        for hour, unplayed in ((2, False), (9, False), (11, False), (12, True), (15, True), (20, True),
+                               (21, False), (23, False)):
+            self.assertEqual(unplayed, scraper.regular_leg_targets_unplayed_day(datetime(2026, 11, 15, hour, 30)), hour)
+        self.assertFalse(scraper.REGULAR_ALLOW_SAME_DAY)
 
 
 if __name__ == "__main__":

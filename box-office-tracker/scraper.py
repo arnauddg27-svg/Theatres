@@ -3036,8 +3036,10 @@ def wave_in_window(samples, window_sec=None, min_walls=None, share=None):
 
 
 def seat_request_totals():
-    """(ok, walled) seat requests this leg, from the HTTP lane's counters."""
-    return (_RSC_STATE["ok"] + _HTTP_STATE["http_ok"], _HTTP_STATE["http_blocked"])
+    """(ok, walled) seat requests this leg, from the HTTP lane's counters.
+    http_ok already includes the data-endpoint reads (_RSC_STATE["ok"] is a
+    subset of it); adding the two halved the measured wall share."""
+    return (_HTTP_STATE["http_ok"], _HTTP_STATE["http_blocked"])
 
 
 def cf_retry_key(theatre):
@@ -4294,6 +4296,36 @@ def phase2_saved_showtime_count(theatres, saved_links, movie_titles, expected_da
 _SEAT_URL_SHOWTIME_ID = re.compile(r"/showtimes/(\d+)")
 
 
+def _is_post_show_row(row):
+    """A seat row read before its showing started is not a final: counting it
+    as captured would make every later top-up skip that showing for good."""
+    raw = str(row.get("minutes_after_showtime", "") or "").strip()
+    if not raw:
+        return True
+    try:
+        return float(raw) >= 0
+    except ValueError:
+        return True
+
+
+# A regular leg reads the show date that was current 12 hours ago. Started
+# after local noon, that is TODAY, hours before most of it plays — and the
+# 07Z slot stays due for ten hours and can queue behind the AMC lock, so a
+# late retry could land there, pass its floor on pre-show reads and leave
+# yesterday's missing finals unread. Between these local hours a regular leg
+# does nothing. (Late evening is the normal case: the Pacific leg of the 07Z
+# slot starts around 23:00-01:00 local.)
+REGULAR_UNPLAYED_HOURS = (12, 21)
+REGULAR_ALLOW_SAME_DAY = _env_bool("REGULAR_ALLOW_SAME_DAY", False)
+
+
+def regular_leg_targets_unplayed_day(local, hours=None):
+    """True when a regular leg starting at this local time would read a show
+    date that has mostly not played yet."""
+    start, end = REGULAR_UNPLAYED_HOURS if hours is None else hours
+    return start <= local.hour < end
+
+
 def captured_showtime_ids(show_dates, path=None):
     """{show_date: {showtime_id}} for post-show seat rows already logged.
 
@@ -4310,6 +4342,8 @@ def captured_showtime_ids(show_dates, path=None):
             for row in csv.DictReader(f):
                 date_str = str(row.get("date", "") or "")
                 if date_str not in wanted:
+                    continue
+                if not _is_post_show_row(row):
                     continue
                 match = _SEAT_URL_SHOWTIME_ID.search(str(row.get("amc_seat_map_url", "") or ""))
                 if match:
@@ -7052,6 +7086,14 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         f"{max_concurrent_tabs} tab(s), {linked_showtime_count} linked showtime(s)"
     )
 
+    if (not snapshots_only and not test_max and not REGULAR_ALLOW_SAME_DAY
+            and tz_group in ("ET", "CT", "MT", "PT")
+            and regular_leg_targets_unplayed_day(local_now(tz_group))):
+        print(f"::warning::regular {tz_group} leg started at {local_now(tz_group):%H:%M} local — its "
+              "show date has not played yet, so there are no finals to read; doing nothing "
+              "(REGULAR_ALLOW_SAME_DAY=1 overrides)", flush=True)
+        return
+
     # Top-up: showings that already have a post-show row are not read again.
     regular_topup = not snapshots_only and not test_max and REGULAR_SKIP_CAPTURED
     topup_dates = {
@@ -7078,6 +7120,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
     written_rows = 0
     skipped_rows = 0
     snapshot_rows_written = 0
+    cf_read_ids = set()
     snapshot_rows_skipped = 0
     all_snapshot_rows = []
 
@@ -7117,7 +7160,6 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         cf_blocked_retry = []
         cf_retry_names = set()
         cf_samples = collections.deque()
-        cf_read_ids = set()
         cf_retry_pass = False
         fallback_names = set()
         relaunch_lock = asyncio.Lock()
@@ -7477,7 +7519,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
     snapshot_shortfall = None
     if snapshots_only and not test_max:
-        snapshot_read = snapshot_rows_written + snapshot_rows_skipped
+        # Showings READ, not snapshot rows written: a same-day showing that
+        # has already started is still read but is no longer a pre-sale
+        # snapshot, so on show days an evening leg writes rows for only
+        # 45-85% of what it read (11-13 22:30Z Eastern: 7,372 rows from
+        # 10,109 linked showings, 31 issues).
+        snapshot_read = len(cf_read_ids)
         if linked_showtime_count:
             print(f"🧮 Snapshot showing capture: {snapshot_read}/{linked_showtime_count} linked showings "
                   f"({snapshot_read / linked_showtime_count:.1%})")
