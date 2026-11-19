@@ -890,6 +890,15 @@ jobs:
             box-office-tracker/data/calibration-freezes \
             box-office-tracker/data/run-logs)"
           if [ -z "$canonical_status" ]; then
+            # A blocked AMC run merges nothing, yet the other chains' lanes and
+            # the model keep moving: do not let the forecast sit for hours
+            # behind this guard (2026-11-19).
+            forecast_due=$(python3 box-office-tracker/scripts/forecast_age_hours.py --due 2>/dev/null || echo 0)
+            if [ "$forecast_due" = "1" ]; then
+              echo "No canonical data changed, but the newest forecast is 6+ hours old; regenerating it."
+              echo "needs_finalize=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             if [ "$row_changes" -eq 0 ]; then
               echo "No canonical seat, snapshot, market rows, or seat metadata were merged; skipping finalize."
             else

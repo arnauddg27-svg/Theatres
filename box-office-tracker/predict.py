@@ -27,6 +27,9 @@ import theatre_weights
 from forecast_windows import window_profile
 import gzip
 import json, csv, os, sys, re, statistics
+import contextlib
+import copy
+import functools
 import seat_regression
 import holdover
 import small_film_gate
@@ -157,6 +160,32 @@ SOCIAL_LAYER_SENTIMENT_WEIGHT = 0.03
 SOCIAL_LAYER_BUZZ_WEIGHT = 0.05
 SOCIAL_LAYER_MIN_QUALITY_FOR_ADJUSTMENT = 0.05
 SNAPSHOT_MAX_SLICE_AGE_HOURS = float(os.environ.get("SNAPSHOT_MAX_SLICE_AGE_HOURS") or 8)
+# Which snapshot rows stand for a show date (latest_snapshot_window_rows).
+# "date" (default): each theatre's newest run, stale against the show date's
+# newest row anywhere — the rule the model is fitted and graded on.
+# "rescue": the same, except that a zone it leaves with under
+# SNAPSHOT_ZONE_RESCUE_RATIO of the showtimes the zone's own last full reads
+# hold is taken from those reads. It is used ONLY as the outage fallback, when
+# the date rule yields no forecast at all (SNAPSHOT_OUTAGE_FALLBACK): as the
+# default it moved 45 of 147 backtest forecasts and cost 1.4 points of MAPE on
+# the weekends since September (18.96% -> 20.36%, n=73).
+# "zone": the zone rule everywhere (research).
+# Under the zone rule a theatre visit that read under SNAPSHOT_SPARSE_VISIT_RATIO
+# of the showtimes its last full visit still had ahead is a walled read and is
+# skipped (0 turns that off), a theatre is stale against its zone's median read
+# time, and a zone more than SNAPSHOT_MAX_ZONE_LAG_HOURS behind the show date's
+# newest row is dropped.
+SNAPSHOT_ZONE_REFERENCE = (os.environ.get("SNAPSHOT_ZONE_REFERENCE") or "date").strip().lower()
+SNAPSHOT_SPARSE_VISIT_RATIO = float(os.environ.get("SNAPSHOT_SPARSE_VISIT_RATIO") or 0.5)
+SNAPSHOT_MAX_ZONE_LAG_HOURS = float(os.environ.get("SNAPSHOT_MAX_ZONE_LAG_HOURS") or 48)
+SNAPSHOT_ZONE_RESCUE_RATIO = float(os.environ.get("SNAPSHOT_ZONE_RESCUE_RATIO") or 0.5)
+SNAPSHOT_OUTAGE_FALLBACK = (os.environ.get("SNAPSHOT_OUTAGE_FALLBACK") or "1").strip() != "0"
+# The fallback also replaces a forecast that exists but stands on walled reads:
+# this share of the theatres the date rule keeps for a show date have a walled
+# visit as their newest. 11-19 22:30Z: 33% (62 of 186). The 11-19 night wave,
+# which the model forecast as usual, stays under it.
+SNAPSHOT_OUTAGE_WALLED_SHARE = float(os.environ.get("SNAPSHOT_OUTAGE_WALLED_SHARE") or 0.25)
+_SNAPSHOT_ZONE_OVERRIDE = []          # innermost snapshot_zone_mode() wins
 # Era boundary sits between the last legacy weekend's show dates (<= 2026-07-13)
 # and the first measured-era weekend's PREVIEW date (2026-07-16): the min
 # snapshot show-date is compared, so the cutoff must precede Thursday previews.
@@ -6645,16 +6674,199 @@ def _parse_snapshot_time(value):
     return parsed
 
 
-def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE_HOURS):
-    """Keep one coherent recent snapshot run per show-date/timezone slice."""
+def _snapshot_run_key(row):
+    return row.get("run_id", "") or row.get("snapshot_bucket", "")
+
+
+def _snapshot_zone_key(row):
+    """(show_date, zone). AMC-bridge rows carry IANA zone names; left raw they
+    formed their own one-theatre zones that could never be stale."""
+    raw = (row.get("timezone") or "").strip()
+    return (row.get("show_date", ""), IANA_TO_TZ_GROUP.get(raw.upper(), raw))
+
+
+def _snapshot_theatre_visit(timed, sparse_ratio, max_gap_hours=48.0):
+    """The visit (run) that represents one theatre-date: its newest one, unless
+    that visit is a walled read.
+
+    `timed` are the theatre-date's (idx, row, parsed_time) items. A visit that
+    read fewer than `sparse_ratio` of the showtimes its previous visit still
+    had ahead of it is a blocked read, not a schedule change (2026-11-19: AMC
+    refused 92-99% of seat requests for seven hours; the Pacific leg wrote 333
+    of 4,077 showings across 62 theatres). Such a visit is skipped and the
+    theatre falls back to the last visit that stood, unless that one is more
+    than `max_gap_hours` older. Returns (run_key, latest_time).
+    """
+    visits = {}
+    for item in timed:
+        visits.setdefault(_snapshot_run_key(item[1]), []).append(item)
+    ordered = sorted(
+        visits.items(),
+        key=lambda kv: (max(i[2] for i in kv[1]),
+                        max(i[1].get("snapshot_bucket", "") for i in kv[1]),
+                        kv[0]),
+    )
+    accepted = ordered[0]
+    for candidate in ordered[1:]:
+        if sparse_ratio > 0:
+            # Compared with the last visit that stood, not the one just before:
+            # a block lasts several runs and one walled read must not vouch
+            # for the next.
+            visit_start = min(i[2] for i in candidate[1])
+            accepted_at = max(i[2] for i in accepted[1])
+            if (visit_start - accepted_at).total_seconds() > max_gap_hours * 3600:
+                accepted = candidate       # too old to judge a schedule by
+                continue
+            ahead = set()
+            for _, row, parsed in accepted[1]:
+                lead = _parse_numeric(row.get("minutes_until_showtime"), default=None)
+                if lead is not None and parsed + timedelta(minutes=lead) > visit_start:
+                    ahead.add(_snapshot_showtime_key(row))
+            read = {_snapshot_showtime_key(i[1]) for i in candidate[1]}
+            if ahead and len(read) < sparse_ratio * len(ahead):
+                continue
+        accepted = candidate
+    run_key, items = accepted
+    return run_key, max(i[2] for i in items)
+
+
+@contextlib.contextmanager
+def snapshot_zone_mode(mode):
+    """Run the enclosed forecast under another snapshot window rule."""
+    _SNAPSHOT_ZONE_OVERRIDE.append(mode)
+    try:
+        yield
+    finally:
+        _SNAPSHOT_ZONE_OVERRIDE.pop()
+
+
+def predict_with_outage_fallback(predict, *args, **kwargs):
+    """`predict(*args, **kwargs)`; when that yields no forecast, once more with
+    each zone in outage taken from its own last full reads ("rescue").
+
+    2026-11-19, opening Thursday of Hunger Games: AMC refused 92-99% of seat
+    requests from 14:48Z. A Central-only re-read at 14:00Z had already made
+    all 216 Eastern theatres (read 02:44-04:41Z) stale against the show
+    date's newest row, the blocked legs then left a few rows per Pacific
+    theatre as its "latest run", coverage fell under the 50% gate and the
+    film had no forecast from 08:14Z on. The fallback forecast is flagged
+    (snapshot_outage_fallback, data_outage) so it is never graded or fitted
+    as a normal one. A forecast the date rule makes from unwalled reads is
+    never touched.
+    """
+    if not SNAPSHOT_OUTAGE_FALLBACK or _SNAPSHOT_ZONE_OVERRIDE:
+        return predict(*args, **kwargs)
+    # The first call may write to the calibration dict; the retry gets its own.
+    retry_args = [copy.deepcopy(a) if isinstance(a, dict) and "calibration_factors" in a else a
+                  for a in args]
+    pred = predict(*args, **kwargs)
+    walled = 0.0
+    if pred:
+        # A forecast exists, but on what? A walled visit still counts its
+        # theatre as covered: at 22:30Z on 11-19 the 62 Pacific theatres with a
+        # few rows each lifted coverage to exactly the 50% gate and the film
+        # was forecast at $64.6M from a third of its theatres ($98.9M with
+        # each zone on its last full read).
+        walled = max((snapshot_walled_share(rows)
+                      for rows in (kwargs.get("snapshot_data") or {}).values()), default=0.0)
+        if walled < SNAPSHOT_OUTAGE_WALLED_SHARE:
+            return pred
+    with snapshot_zone_mode("rescue"):
+        rescued = predict(*retry_args, **kwargs)
+    if not rescued:
+        return pred
+    rescued["snapshot_outage_fallback"] = True
+    rescued["snapshot_outage_walled_share"] = round(walled, 3)
+    rescued["data_outage"] = True
+    return rescued
+
+
+def snapshot_walled_share(rows, sparse_ratio=None):
+    """Share of the theatres the date rule keeps for one show date whose
+    newest visit is a walled read (see _snapshot_theatre_visit)."""
+    sparse_ratio = SNAPSHOT_SPARSE_VISIT_RATIO if sparse_ratio is None else sparse_ratio
+    kept = latest_snapshot_window_rows(rows, zone_reference="date")
+    kept_theatres = {(r.get("timezone", ""), r.get("theatre_name", "")) for r in kept}
+    if not kept_theatres or sparse_ratio <= 0:
+        return 0.0
+    by_theatre = {}
+    for row in rows:
+        key = (row.get("timezone", ""), row.get("theatre_name", ""))
+        if key in kept_theatres:
+            parsed = _parse_snapshot_time(row.get("snapshot_time", ""))
+            if parsed:
+                by_theatre.setdefault(key, []).append((0, row, parsed))
+    walled = 0
+    for timed in by_theatre.values():
+        newest = max(timed, key=lambda item: item[2])
+        if _snapshot_theatre_visit(timed, sparse_ratio)[0] != _snapshot_run_key(newest[1]):
+            walled += 1
+    return walled / len(kept_theatres)
+
+
+def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE_HOURS,
+                                zone_reference=None, sparse_ratio=None,
+                                max_zone_lag_hours=None, rescue_ratio=None):
+    """Keep one coherent recent snapshot run per show-date/timezone slice.
+
+    "date" (the default) is the long-standing rule: each theatre's newest
+    run, stale against the show date's newest row. "rescue" is that rule
+    except for a zone it leaves with under `rescue_ratio` of the showtimes
+    the zone's own last full reads hold — a zone in an outage (its leg failed
+    or was walled while another zone was read), taken from its own reads
+    instead; see _snapshot_window_keep and predict_with_outage_fallback.
+    """
+    if zone_reference is None:
+        zone_reference = (_SNAPSHOT_ZONE_OVERRIDE[-1] if _SNAPSHOT_ZONE_OVERRIDE
+                          else SNAPSHOT_ZONE_REFERENCE)
+    sparse_ratio = SNAPSHOT_SPARSE_VISIT_RATIO if sparse_ratio is None else sparse_ratio
+    max_zone_lag_hours = (SNAPSHOT_MAX_ZONE_LAG_HOURS if max_zone_lag_hours is None
+                          else max_zone_lag_hours)
+    rescue_ratio = SNAPSHOT_ZONE_RESCUE_RATIO if rescue_ratio is None else rescue_ratio
     parsed_rows = []
     for idx, row in enumerate(rows):
         parsed = _parse_snapshot_time(row.get("snapshot_time", ""))
         parsed_rows.append((idx, row, parsed))
-
-    latest_overall = max((parsed for _, _, parsed in parsed_rows if parsed), default=None)
-    if latest_overall is None:
+    if not any(parsed for _, _, parsed in parsed_rows):
         return list(rows)
+
+    def keep(per_zone):
+        return _snapshot_window_keep(
+            parsed_rows, max_slice_age_hours, per_zone,
+            sparse_ratio if per_zone else 0.0, max_zone_lag_hours)
+
+    if zone_reference == "zone":
+        keep_indexes = keep(True)
+    elif zone_reference == "rescue":
+        by_date = keep(False)
+        by_zone = keep(True)
+
+        def per_zone_counts(indexes):
+            counts = {}
+            for idx, row, _ in parsed_rows:
+                if idx in indexes:
+                    counts[_snapshot_zone_key(row)] = counts.get(_snapshot_zone_key(row), 0) + 1
+            return counts
+
+        date_counts = per_zone_counts(by_date)
+        rescued = {zone for zone, n in per_zone_counts(by_zone).items()
+                   if date_counts.get(zone, 0) < rescue_ratio * n}
+        keep_indexes = set()
+        for idx, row, _ in parsed_rows:
+            if idx in (by_zone if _snapshot_zone_key(row) in rescued else by_date):
+                keep_indexes.add(idx)
+    else:
+        keep_indexes = keep(False)
+    return [row for idx, row, _ in parsed_rows if idx in keep_indexes]
+
+
+def _snapshot_window_keep(parsed_rows, max_slice_age_hours, per_zone, sparse_ratio,
+                          max_zone_lag_hours):
+    """Indexes of the rows one rule keeps. `per_zone` False: each theatre's
+    newest run, stale against the show date's newest row anywhere. True: a
+    walled visit is skipped for the theatre's last full one, and a theatre is
+    stale against its own zone's median read time."""
+    latest_overall = max(parsed for _, _, parsed in parsed_rows if parsed)
     # Freshness is judged PER SHOW DATE (2026-10-18). The daytime snapshot
     # slots now read only the nearest two show dates on a crowded slate
     # (SNAPSHOT_MAX_DATES=2), so Saturday/Sunday slices are refreshed by the
@@ -6683,19 +6895,56 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
                row.get("theatre_name", ""))
         by_slice.setdefault(key, []).append(item)
 
+    # Which visit stands for each theatre-date, and when it was read.
+    chosen = {}
+    slice_zone = {}
+    for key, items in by_slice.items():
+        slice_zone[key] = _snapshot_zone_key(items[0][1])
+        timed = [item for item in items if item[2]]
+        if timed:
+            chosen[key] = _snapshot_theatre_visit(timed, sparse_ratio)
+
+    # Staleness reference PER ZONE (2026-11-19). Measured against the show
+    # date's newest row anywhere, a re-read of one zone made every other zone
+    # stale: the 14:00Z Central re-read dropped all 216 Eastern theatres (read
+    # 02:44-04:41Z) on all four days and Hunger Games had no forecast from then
+    # on, on its opening Thursday. A zone is now stale only against its OWN
+    # reads, and against the MEDIAN theatre's read time, so a handful of
+    # theatres read during a block cannot age out the rest of the zone. In a
+    # complete run the median sits inside the run, as the newest row did.
+    zone_reference_time = {}
+    if per_zone:
+        zone_times = {}
+        for key, (_, when) in chosen.items():
+            zone_times.setdefault(slice_zone[key], []).append(when)
+        for zone_key, times in zone_times.items():
+            times.sort()
+            zone_reference_time[zone_key] = times[len(times) // 2]
+
     keep_indexes = set()
     max_age_seconds = max_slice_age_hours * 3600
-    for items in by_slice.values():
+    max_zone_lag_seconds = max_zone_lag_hours * 3600
+    for key, items in by_slice.items():
         timed = [item for item in items if item[2]]
         if not timed:
             keep_indexes.update(idx for idx, _, _ in items)
             continue
-        latest_slice_time = max(parsed for _, _, parsed in timed)
-        reference = latest_by_date.get(timed[0][1].get("show_date", ""), latest_overall)
+        chosen_key, latest_slice_time = chosen[key]
+        show_date = timed[0][1].get("show_date", "")
+        date_latest = latest_by_date.get(show_date, latest_overall)
+        if per_zone:
+            reference = zone_reference_time.get(slice_zone[key], date_latest)
+            # A zone nobody has read for this long is an outage, not a forecast input.
+            if (max_zone_lag_seconds > 0
+                    and (date_latest - latest_slice_time).total_seconds() > max_zone_lag_seconds):
+                continue
+        else:
+            reference = date_latest
         if (reference - latest_slice_time).total_seconds() > max_age_seconds:
             continue
+        chosen_items = [item for item in timed if _snapshot_run_key(item[1]) == chosen_key]
         latest_item = max(
-            timed,
+            chosen_items,
             key=lambda item: (
                 item[2],
                 item[1].get("snapshot_bucket", ""),
@@ -6706,7 +6955,11 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
         latest_bucket = latest_item[1].get("snapshot_bucket", "")
         latest_run_time = latest_item[2]
         kept_showtimes = set()
-        for idx, row, _ in items:
+        skipped_indexes = set()
+        for idx, row, parsed in items:
+            if parsed is not None and parsed > latest_run_time:
+                skipped_indexes.add(idx)       # a walled visit newer than the chosen one
+                continue
             if latest_run_id and row.get("run_id", "") == latest_run_id:
                 keep_indexes.add(idx)
                 kept_showtimes.add(_snapshot_showtime_key(row))
@@ -6724,7 +6977,7 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
         # or de-listed show must not be resurrected from a stale read).
         started = {}
         for idx, row, parsed in items:
-            if idx in keep_indexes or parsed is None:
+            if idx in keep_indexes or idx in skipped_indexes or parsed is None:
                 continue
             key = _snapshot_showtime_key(row)
             if key in kept_showtimes:
@@ -6739,7 +6992,7 @@ def latest_snapshot_window_rows(rows, max_slice_age_hours=SNAPSHOT_MAX_SLICE_AGE
                 started[key] = (idx, parsed)
         keep_indexes.update(idx for idx, _ in started.values())
 
-    return [row for idx, row, _ in parsed_rows if idx in keep_indexes]
+    return keep_indexes
 
 
 def _snapshot_showtime_key(row):
@@ -10731,7 +10984,11 @@ def print_prediction(pred, verbose=False):
         print(f"    Source: {label}{basis_str}; Polymarket excluded from model")
     if pred.get("market_window_warning"):
         print(f"    Date window: {pred['market_window_warning']}")
-    if pred.get("data_outage"):
+    if pred.get("snapshot_outage_fallback"):
+        print("    ⚠️  OUTAGE FORECAST: the newest AMC reads are missing or walled; each zone "
+              "in outage is taken from its own last full reads (up to "
+              f"{SNAPSHOT_MAX_ZONE_LAG_HOURS:.0f}h old). Logged as a data outage, not graded.")
+    elif pred.get("data_outage"):
         cov = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
         quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
         print(f"    ⚠️  DATA OUTAGE: seat panel critically degraded "
@@ -11402,16 +11659,19 @@ def main():
 
     for movie in movies_to_predict:
         nat_count = national_theatre_count_for_movie(movie, theatre_counts, metadata=metadata)
-        pred = predict_movie(movie, movie_mapping_get(seat_data, movie, {}),
-                            movie_mapping_get(poly_data, movie, []), cal, verbose=verbose,
-                            national_theatre_count=nat_count,
-                            snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
-                            social_data=social_data,
-                            daily_actual_overrides=daily_actual_overrides,
-                            showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
-                            reviews_data=reviews_data,
-                            cross_chain_data=cross_chain_data,
-                            chain_census_data=chain_census_data)
+        # Live runs only: a replay is the model, not the outage fallback.
+        forecast = predict_movie if through_date else functools.partial(
+            predict_with_outage_fallback, predict_movie)
+        pred = forecast(movie, movie_mapping_get(seat_data, movie, {}),
+                        movie_mapping_get(poly_data, movie, []), cal, verbose=verbose,
+                        national_theatre_count=nat_count,
+                        snapshot_data=movie_mapping_get(snapshot_data, movie, {}),
+                        social_data=social_data,
+                        daily_actual_overrides=daily_actual_overrides,
+                        showtime_link_profiles=movie_mapping_get(showtime_link_profiles, movie, {}),
+                        reviews_data=reviews_data,
+                        cross_chain_data=cross_chain_data,
+                        chain_census_data=chain_census_data)
         if pred:
             print_prediction(pred, verbose=verbose)
             if not through_date:            # live runs only, never replays
