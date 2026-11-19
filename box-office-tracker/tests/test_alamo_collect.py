@@ -70,6 +70,23 @@ class AlamoLaneTest(unittest.TestCase):
             self.assertEqual(["1"], [x[0]["sessionId"] for x in got])
             self.assertEqual([], A.stored_post_sessions("2026-09-25", datetime(2026, 9, 26, 23, 0, tzinfo=timezone.utc), path=path))  # not started
             self.assertEqual([], A.stored_post_sessions("2026-09-25", datetime(2026, 9, 27, 3, 0, tzinfo=timezone.utc), path=path))   # window passed
+            # 2026-11-19: the same clock time one day EARLIER is not "just started"
+            day_before = datetime(2026, 9, 26, 0, 30, tzinfo=timezone.utc)
+            self.assertEqual([], A.stored_post_sessions("2026-09-25", day_before, path=path))
+
+    def test_after_midnight_show_starts_on_the_next_calendar_date(self):
+        row = {"weekend_of": "2026-11-20", "row_kind": "alamo-api", "showtime_id": "0801:9",
+               "timezone": "America/Chicago", "show_date": "2026-11-21", "showtime": "00:00",
+               "theatre_name": "Alamo Drafthouse Lake Highlands", "theatre_city": "Dallas",
+               "movie_title": "Film", "auditorium_name": "Screen 1", "auditorium_type": "x"}
+        import io
+        buf = io.StringIO()
+        w = csv.DictWriter(buf, fieldnames=list(row)); w.writeheader(); w.writerow(row)
+        missing = Path("/nonexistent/a.csv")
+        real = datetime(2026, 11, 22, 6, 10, tzinfo=timezone.utc)       # 10 min after Sunday 00:00 CST
+        self.assertEqual(1, len(A.stored_post_sessions("2026-11-20", real, path=missing, extra_text=buf.getvalue())))
+        listed = datetime(2026, 11, 21, 6, 10, tzinfo=timezone.utc)     # 10 min after the LISTED date's midnight
+        self.assertEqual([], A.stored_post_sessions("2026-11-20", listed, path=missing, extra_text=buf.getvalue()))
 
     def test_loop_pass_also_reads_sessions_from_origin_main_copy(self):
         """2026-10-31: the 15:10Z loop's checkout predated the holdover pre rows

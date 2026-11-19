@@ -14,6 +14,7 @@ alamo_collect (chain=HARK). Not wired into the model yet.
 """
 import json
 import os
+import random
 import sys
 import threading
 import time
@@ -38,6 +39,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
            "Referer": "https://www.harkins.com/"}
 SLEEP = float(os.environ.get("HARKINS_SLEEP_SEC", "0.25"))
 POST_WINDOW_MIN = int(os.environ.get("HARKINS_POST_WINDOW_MIN", "90"))
+BUSINESS_DAY_ROLLOVER_HOUR = 5
 # The step is killed at 45 min, losing every row read so far (pre 12:50Z
 # 2026-10-28: one request stalled for 45 min with no output). urlopen's
 # timeout is per socket read, so a trickling reply never trips it: cap each
@@ -182,8 +184,12 @@ def stored_post_performances(weekend_of, now_utc, path=None, window_min=None):
             seen.add(sid)
             local = datetime.strptime(f"{r['show_date']} {r['showtime']}", "%Y-%m-%d %H:%M")
             start = local.replace(tzinfo=ZoneInfo(r.get("timezone") or "America/Phoenix")).astimezone(timezone.utc)
-            if start > now_utc + timedelta(hours=12):
-                start -= timedelta(days=1)          # after-midnight show on the prior business date
+            # show_date is the business date, so an after-midnight show starts
+            # on the next calendar date. (Until 2026-11-19 any start more than
+            # 12 h ahead was moved BACK a day and tomorrow's show was read as
+            # if it had just begun: 43% of "post-show" rows were 24 h early.)
+            if local.hour < BUSINESS_DAY_ROLLOVER_HOUR:
+                start += timedelta(days=1)
             mins = (now_utc - start).total_seconds() / 60
             if not (0 <= mins <= window_min):
                 continue
@@ -294,6 +300,11 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                 totals["captured"] += 1
             time.sleep(SLEEP)
         theatres = []          # the schedule walk below is the pre pass only
+    # The API lists theatres in a fixed order, so a pass that ran out of time
+    # dropped the same tail every time (11-18 and 11-19: Arvada, Bricktown,
+    # Mountain Grove, Northfield). A shuffled walk spreads the loss.
+    random.shuffle(theatres)
+    totals["theatre_total"] = len(theatres)
     for i, th in enumerate(theatres, 1):
         if time.monotonic() > deadline:
             totals["deadline_skipped"] = len(theatres) - i + 1
@@ -346,6 +357,7 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
 
 
 LOUD_FAIL_MIN_MATCHED = int(os.environ.get("LANE_LOUD_FAIL_MIN_MATCHED", "5") or 5)
+MAX_UNREAD_SHARE = float(os.environ.get("LANE_MAX_UNREAD_SHARE", "0.2") or 0.2)
 
 
 def main():
@@ -356,6 +368,12 @@ def main():
     # is not a lane outage, and the failure only made the watchdog re-run it.
     if t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED and not t.get("captured", 0):
         print("❌ Harkins: every seat read failed — failing loudly.")
+        return 1
+    skipped, total = t.get("deadline_skipped", 0), t.get("theatre_total", 0)
+    if skipped:
+        print(f"::warning::Harkins {mode} pass left {skipped} of {total} theatre(s) unread at its deadline", flush=True)
+    if total and skipped > MAX_UNREAD_SHARE * total:
+        print("❌ Harkins: too many theatres unread — failing so the slot is retried (rows read are kept).")
         return 1
     return 0
 

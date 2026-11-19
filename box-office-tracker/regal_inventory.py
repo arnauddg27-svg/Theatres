@@ -214,7 +214,7 @@ def collect(max_theatres=0, dry_run=False):
           f"• titles={titles} • proxy={'ON' if f.proxy else 'off'} • ceiling {MAX_MB:.0f} MB", flush=True)
     stop = threading.Event()
     walls = {"streak": 0, "total": 0, "draws": 0}
-    totals = {"theatres": 0, "errors": 0, "rows": 0, "skipped_budget": 0}
+    totals = {"theatres": 0, "errors": 0, "rows": 0, "skipped_budget": 0, "directory": len(theatres)}
     rows, lock = [], threading.Lock()
     deadline = time.monotonic() + DEADLINE_SEC
 
@@ -297,6 +297,22 @@ def collect(max_theatres=0, dry_run=False):
     return totals
 
 
+# The census multiplies its sample means by this inventory's showing count, so
+# a partial pass scales Regal down by the missing share. Three passes went
+# green on a partial read (2026-11-14: 254 of 402 theatres, 11-15: 314, 11-19:
+# 135) because the only floor was "fewer than 50 theatres". Full passes read
+# 401-402.
+MIN_THEATRE_SHARE = float(os.environ.get("REGAL_MIN_THEATRE_SHARE") or 0.90)
+
+
+def inventory_shortfall(read, directory, min_share=None):
+    """Message when a pass read too few of the directory's theatres."""
+    min_share = MIN_THEATRE_SHARE if min_share is None else min_share
+    if not directory or min_share <= 0 or read >= min_share * directory:
+        return None
+    return f"read {read}/{directory} theatres ({read / directory:.0%}); minimum {min_share:.0%}"
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--max-theatres", type=int, default=int(os.environ.get("REGAL_MAX_THEATRES") or 0))
@@ -305,6 +321,13 @@ def main(argv=None):
     totals = collect(args.max_theatres, args.dry_run)
     # Loud failure when the lane is dark: the seed page walled, or most pages did.
     if totals.get("walled") or (totals.get("walls", 0) >= WALL_STOP and totals.get("theatres", 0) < 50):
+        return 1
+    shortfall = inventory_shortfall(totals.get("theatres", 0), totals.get("directory", 0))
+    if shortfall:
+        # The rows read are already written and the commit step runs on any
+        # outcome; the census de-duplicates by (theatre, showtime), so a red
+        # run's retry ADDS the theatres this pass missed.
+        print(f"::error::Regal inventory {shortfall} — failing so the slot is retried", flush=True)
         return 1
     return 0
 

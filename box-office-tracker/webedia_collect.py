@@ -324,6 +324,12 @@ def main():
     if t.get("theatres", 0) == 0:
         print("❌ Webedia: no theatre schedule read at all — failing loudly.")
         return 1
+    # theatres > 0 proves little: one chain's directory lists 53 theatres and
+    # never yields a row, so the floor above cannot fire while the chains that
+    # do carry data are down. Errors with nothing captured is an outage.
+    if not t.get("captured", 0) and (t.get("chain_errors", 0) or t.get("schedule_errors", 0)):
+        print("❌ Webedia: schedule errors and no showing captured — failing loudly.")
+        return 1
     return 0
 
 

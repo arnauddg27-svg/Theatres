@@ -19,6 +19,7 @@ fandango_collect.append_unique_fandango_rows. Not wired into the model yet.
 import csv
 import json
 import os
+import random
 import sys
 import time
 import urllib.request
@@ -44,6 +45,7 @@ UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit
 # first half hour: a 30-min window, polled every ALAMO_LOOP_EVERY_MIN by a
 # long-running loop job (ALAMO_LOOP_MIN > 0) instead of hourly one-shots.
 ALAMO_POST_WINDOW_MIN = int(os.environ.get("ALAMO_POST_WINDOW_MIN", "30"))
+BUSINESS_DAY_ROLLOVER_HOUR = 5
 ALAMO_LOOP_MIN = int(os.environ.get("ALAMO_LOOP_MIN", "0") or 0)
 ALAMO_LOOP_EVERY_MIN = int(os.environ.get("ALAMO_LOOP_EVERY_MIN", "15") or 15)
 ALAMO_SLEEP_SEC = float(os.environ.get("ALAMO_SLEEP_SEC", "0.25"))
@@ -198,9 +200,13 @@ def stored_post_sessions(weekend_of, now_utc, path=ALAMO_CSV, extra_text=None):
                 tz = ZoneInfo(r.get("timezone") or "America/Chicago")
                 local = datetime.strptime(f"{r['show_date']} {r['showtime']}", "%Y-%m-%d %H:%M").replace(tzinfo=tz)
                 start = local.astimezone(timezone.utc)
-                # a show after midnight belongs to the previous business date
-                if start > now_utc + timedelta(hours=12):
-                    start -= timedelta(days=1)
+                # show_date is the BUSINESS date: a 00:15 show listed under
+                # Saturday starts on Sunday's calendar date. (Until 2026-11-19
+                # this instead moved any start more than 12 h ahead back a day,
+                # which made tomorrow's show look like it began minutes ago:
+                # 39% of all "post-show" rows were read 24 h before the show.)
+                if local.hour < BUSINESS_DAY_ROLLOVER_HOUR:
+                    start += timedelta(days=1)
                 mins = (now_utc - start).total_seconds() / 60
                 if 0 <= mins <= ALAMO_POST_WINDOW_MIN:
                     cid, sess = sid.split(":", 1)
@@ -270,6 +276,10 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if ALAMO_MAX_SESSIONS:
         picks = picks[:ALAMO_MAX_SESSIONS]
     totals["matched"] = len(picks)
+    if mode == "pre":
+        # A pass that runs out of budget should not always lose the same tail
+        # (11-18 20:40Z read the first 736 of 2,027); a retry then covers more.
+        random.shuffle(picks)
     rows = []
     for i, (session, cinema, title) in enumerate(picks):
         if time.monotonic() > deadline:
@@ -299,6 +309,7 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
 
 
 LOUD_FAIL_MIN_MATCHED = int(os.environ.get("LANE_LOUD_FAIL_MIN_MATCHED", "5") or 5)
+MAX_UNREAD_SHARE = float(os.environ.get("LANE_MAX_UNREAD_SHARE", "0.2") or 0.2)
 
 
 def main():
@@ -329,6 +340,11 @@ def main():
     # is not a lane outage, and the failure only made the watchdog re-run it.
     if t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED and not t.get("captured", 0):
         print("❌ Alamo: every seat read failed — failing loudly.")
+        return 1
+    if (mode == "pre" and t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED
+            and t.get("budget_skipped", 0) > MAX_UNREAD_SHARE * t["matched"]):
+        print(f"❌ Alamo: {t['budget_skipped']} of {t['matched']} seat reads skipped at the budget — "
+              "failing so the slot is retried (rows read are kept).")
         return 1
     return 0
 

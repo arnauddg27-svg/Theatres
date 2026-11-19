@@ -58,6 +58,9 @@ class HarkinsLaneTest(unittest.TestCase):
             got = H.stored_post_performances("2026-09-25", datetime(2026, 9, 27, 2, 51, tzinfo=timezone.utc), path=path)
             self.assertEqual([(16, "573969", "0000000002")], [(t, p["sessionId"], p["vistaId"]) for t, p, _ in got])
             self.assertEqual([], H.stored_post_performances("2026-09-25", before, path=path))
+            # 2026-11-19: 24 h before the start is not "after the start"
+            day_early = datetime(2026, 9, 26, 2, 51, tzinfo=timezone.utc)
+            self.assertEqual([], H.stored_post_performances("2026-09-25", day_early, path=path))
 
 
 if __name__ == "__main__":
