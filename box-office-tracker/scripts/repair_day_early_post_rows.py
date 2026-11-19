@@ -99,7 +99,7 @@ def repair_file(path, lane, dry_run=False):
     out, relabelled, dropped = repair_rows(rows, lane)
     if (relabelled or dropped) and not dry_run:
         with _open(path, "w") as fh:
-            writer = csv.DictWriter(fh, fieldnames=fields, lineterminator="\n")
+            writer = csv.DictWriter(fh, fieldnames=fields)   # csv default CRLF, as the lanes write
             writer.writeheader()
             writer.writerows(out)
     return len(rows), relabelled, dropped
