@@ -78,6 +78,29 @@ def _report_http_error(exc: urllib.error.HTTPError, marker_path: str) -> int:
 
 # How many failures of the SAME slot to retry before giving up and alarming.
 MAX_SLOT_RETRIES = 3
+# Minimum wait after a FAILED AMC run before the same slot is dispatched again.
+# A leg that meets Cloudflare's wall or AMC's waiting room now stops within
+# minutes, and three back-to-back retries would spend the slot's attempts
+# inside the same bad spell (waves clear after ~13 min of silence; the
+# waiting room on 2026-11-16 lasted hours). Other lanes retry at once: a
+# fresh runner is what fixes them.
+AMC_RETRY_GAP_MINUTES = 45
+_AMC_SLOT_MARKERS = ("snapshot 02:30Z", "snapshot 14:30Z", "snapshot 22:30Z",
+                     "regular scrape", "collect-links")
+
+
+def retry_gap_minutes(title: str) -> int:
+    return AMC_RETRY_GAP_MINUTES if any(m in (title or "") for m in _AMC_SLOT_MARKERS) else 0
+
+
+def failed_run_cooling(failed: list[dict], title: str, now: dt.datetime) -> dt.datetime | None:
+    """When the slot may be retried, if its latest failed run ended too recently."""
+    gap = retry_gap_minutes(title)
+    if not gap or not failed:
+        return None
+    ended = max(parse_github_time(r.get("updated_at") or r["created_at"]) for r in failed)
+    ready = ended + dt.timedelta(minutes=gap)
+    return ready if now < ready else None
 
 API = "https://api.github.com"
 DEFAULT_WORKFLOW = "box-office-pipeline.yml"
@@ -455,11 +478,13 @@ SLOTS: tuple[Slot, ...] = (
     ],
     # Walk-in census as long-running LOOP jobs (2026-09-27): Alamo's seat data
     # 404s ~30-50 min after showtime, so each loop re-reads showings that
-    # started in the last 30 min every 15 min. Three loops cover weekend
-    # matinees (15:10Z, Sat/Sun) and every show evening (20:50Z Thu-Sun,
+    # started in the last 30 min every 15 min. Three loops cover the
+    # matinees (15:10Z, Thu-Sun) and every show evening (20:50Z Thu-Sun,
     # 02:40Z Fri-Mon early hours).
+    # Thu/Fri too since 2026-11-19: without a daytime loop only 71% (Thu) and
+    # 64.5% (Fri) of showings got a post read, against 91-93% on Sat/Sun.
     Slot("alamo post loop 15:10Z", "box office scrape-alamo ALL",
-         frozenset({6, 0}), 15, 10, alamo_slot_inputs("post")),
+         frozenset({4, 5, 6, 0}), 15, 10, alamo_slot_inputs("post")),
     Slot("alamo post loop 20:50Z", "box office scrape-alamo ALL",
          frozenset({4, 5, 6, 0}), 20, 50, alamo_slot_inputs("post")),
     Slot("alamo post loop 02:40Z", "box office scrape-alamo ALL",
@@ -708,6 +733,11 @@ def recent_pipeline_run_exists(
             f"Skipping {titles[0]}: existing run {run.get('display_title')} "
             f"{run.get('html_url')} created at {run['created_at']}"
         )
+        return True
+    ready = failed_run_cooling(failed, titles[0], now)
+    if ready is not None:
+        print(f"Holding {titles[0]}: its last failed run ended less than "
+              f"{retry_gap_minutes(titles[0])} min ago; retry due after {ready.isoformat()}")
         return True
     oldest = min((r.get("created_at", "") for r in runs), default="none")
     print(f"No servicing run for {titles[0]} since {lower_bound.isoformat()} "

@@ -936,7 +936,7 @@ def _sentinel_issue(seat_data, theatre_name):
     identity check per sentinel, unit-tested.
     """
     if seat_data is QUEUE_SENTINEL:
-        return f"{theatre_name}: AMC queue redirect — theatre skipped"
+        return f"{theatre_name}: {QUEUE_ISSUE} — theatre skipped"
     if seat_data is CF_BLOCK_SENTINEL:
         return f"{theatre_name}: {CF_BLOCK_ISSUE} — theatre skipped"
     if seat_data is PROXY_BLOCK_SENTINEL:
@@ -1012,12 +1012,15 @@ def _next_block_streak(streak, results, snapshot_rows, issues):
     if results or snapshot_rows:
         return 0, None
     proxy = any(PROXY_BLOCK_ISSUE in i for i in issues)
-    if not proxy and not any(CF_BLOCK_ISSUE in i for i in issues):
+    queue = any(QUEUE_ISSUE in i for i in issues)
+    if not proxy and not queue and not any(CF_BLOCK_ISSUE in i for i in issues):
         return streak, None
     streak += 1
     why = None
     if streak == CF_BLOCK_ABORT_AFTER:
         why = ("the residential proxy is refusing connections" if proxy
+               else "AMC's waiting room is redirecting seat requests (site-wide; "
+                    "nothing to read until it lifts)" if queue
                else ("the proxy pool keeps drawing Cloudflare-blocked IPs" if _SEAT_PROXY
                      else ("the proxy was unreachable from this runner and direct egress "
                            "is Cloudflare-blocked" if _EGRESS_TIMEOUTS.get("fell_back")
@@ -2785,12 +2788,18 @@ def phase1_next_timeout_streak(streak, reason, has_links):
     return 0
 
 
+_PHASE1_QUEUE = {"count": 0}
+
+
 def phase1_next_block_streak(streak, reason, has_links):
     """Pure: consecutive blocked/challenged listings. Any rendered AMC page
     (links or an authoritative empty) resets it; transient errors leave it."""
     if has_links or reason == "empty":
         return 0
-    if reason in PHASE1_BLOCK_REASONS:
+    # The waiting room advances the streak (so a pass stops asking) but is
+    # not in PHASE1_BLOCK_REASONS: a queue redirect is never redrawn on a
+    # fresh exit.
+    if reason in PHASE1_BLOCK_REASONS or reason == "queue":
         return streak + 1
     return streak
 
@@ -2959,6 +2968,11 @@ QUEUE_SENTINEL = {"__queue__": True}
 # render the map fine: it is datacenter-IP reputation, not a site change.
 CF_BLOCK_SENTINEL = {"__cf_block__": True}
 CF_BLOCK_ISSUE = "Cloudflare block page on seat map"
+# AMC's waiting room (Queue-It). It is site-wide and meant to be waited in,
+# never worked around: a leg that meets it stops and says so, and the slot is
+# retried later. 2026-11-16 ~14:00-20:00Z it redirected hundreds of requests
+# per run while the pipeline reported only "coverage below floor".
+QUEUE_ISSUE = "AMC queue redirect"
 # Residential-proxy refusal (CONNECT rejected): the first Decodo test run
 # failed 74/74 navigations with ERR_TUNNEL_CONNECTION_FAILED because the
 # provider restricts the target category. Distinct from a Cloudflare block —
@@ -3226,7 +3240,8 @@ async def fetch_amc_seat_map_pw(page, showtime_id):
 AMC_SEAT_FETCH = (os.environ.get("AMC_SEAT_FETCH") or "auto").strip().lower()
 AMC_HTTP_PARITY_CHECKS = _env_int("AMC_HTTP_PARITY_CHECKS", 20, minimum=0)
 _HTTP_STATE = {"checked": 0, "mismatch": 0, "disabled": False, "disabled_reason": "",
-               "http_ok": 0, "http_fallback": 0, "http_blocked": 0, "http_bytes": 0, "session": None}
+               "http_ok": 0, "http_fallback": 0, "http_blocked": 0, "http_bytes": 0, "session": None,
+               "queue": 0}
 AMC_HTTP_PARITY_STRIKES = 2   # mismatches before the HTTP path is switched off
 
 
@@ -3394,6 +3409,12 @@ async def _fetch_rsc(showtime_id, url):
                 _RSC_STATE["tree"] = learned
         _RSC_STATE["last_id"] = str(showtime_id)
     if _is_queue_url(res.get("url", "")):
+        # This path used to return without a word: on 2026-11-16 a snapshot
+        # leg made one redirected request at each of 72 theatres, finished in
+        # four seconds with nothing read and logged only a coverage failure.
+        _HTTP_STATE["queue"] += 1
+        if _HTTP_STATE["queue"] <= 5:
+            print("      🚧 AMC queue redirect on seat data (rsc) — aborting theatre")
         return QUEUE_SENTINEL
     if res["kind"] == "blocked":
         _HTTP_STATE["http_blocked"] += 1
@@ -3554,7 +3575,8 @@ def _http_fetch_summary():
             f"blocked={st['http_blocked']} parity_checked={st['checked']} "
             f"mismatch={st['mismatch']} disabled={st['disabled']} "
             f"dropped_tunnels={_dropped_tunnels()} "
-            f"http_bytes={st['http_bytes'] / 1048576:.1f} MB (~{per:.0f} KB/http page)")
+            f"http_bytes={st['http_bytes'] / 1048576:.1f} MB (~{per:.0f} KB/http page)"
+            + (f" queue_redirects={st['queue']}" if st.get("queue") else ""))
 
 
 def _dropped_tunnels():
@@ -6090,9 +6112,16 @@ async def run_collect_links_async(tz_group="ALL", target_date=None,
                     p1_block_streak, getattr(result, "reason", "empty"), bool(result))
                 if p1_block_streak >= phase1_abort_threshold() and not p1_aborted:
                     p1_aborted = True
-                    print(f"\n🧱 {p1_block_streak} consecutive listings blocked by Cloudflare — "
+                    print(f"\n🧱 {p1_block_streak} consecutive listings blocked by Cloudflare "
+                          f"or AMC's waiting room — "
                           f"abandoning this Phase 1 pass (egress IP is dead; coverage floor "
                           f"fails the run red, lock released).", flush=True)
+                if getattr(result, "reason", "") == "queue":
+                    _PHASE1_QUEUE["count"] += 1
+                    if _PHASE1_QUEUE["count"] == 20:
+                        print("::warning::AMC's waiting room (Queue-It) is redirecting listing "
+                              "requests — site-wide protection; this pass will not get far and "
+                              "the pipeline waits rather than work around it", flush=True)
                 p1_timeout_streak = phase1_next_timeout_streak(
                     p1_timeout_streak, getattr(result, "reason", "empty"), bool(result))
                 if (p1_timeout_streak >= AMC_EGRESS_TIMEOUT_ABORT_AFTER and not p1_aborted
@@ -7516,6 +7545,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 "Regular coverage below minimum: "
                 + "; ".join(regular_failures[:8])
             )
+
+    if _HTTP_STATE.get("queue"):
+        print(f"::warning::AMC's waiting room (Queue-It) redirected {_HTTP_STATE['queue']} seat "
+              "request(s) this leg — site-wide protection, not a fault of this run; the slot is "
+              "retried later rather than worked around", flush=True)
 
     snapshot_shortfall = None
     if snapshots_only and not test_max:
