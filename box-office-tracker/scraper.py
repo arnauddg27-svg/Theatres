@@ -3072,10 +3072,57 @@ CF_CANARY_SLOW_SEC = _env_int("CF_CANARY_SLOW_SEC", 90, minimum=5)
 CF_CANARY_UNKNOWN_MAX = _env_int("CF_CANARY_UNKNOWN_MAX", 3, minimum=1)
 
 
-def canary_verdict(results, snapshot_rows, csv_rows, issues):
-    """'read' — any row at all, the lane answers; 'blocked' — nothing read and
-    a wall, the waiting room or a proxy refusal is why; 'unknown' — neither."""
-    if results or snapshot_rows or csv_rows:
+# A canary that read "something" is not proof the lane is open. On 11-19 the
+# 14:30Z legs ran into a block that let 1-8% of seat requests through: a check
+# theatre with one lucky showing reopened the gate five times ("reads again
+# after the pause") and each time all 8 tabs went back into the wall — the
+# Pacific leg sent 5,457 refused requests for 333 showings. So the canary is
+# judged by its own seat requests: refused at least this share of them (and at
+# least CF_CANARY_MIN_WALLS) and the lane is still shut. Quiet legs wall 1-6%.
+CF_CANARY_BLOCKED_SHARE = _env_float("CF_CANARY_BLOCKED_SHARE", 0.5, minimum=0.0)
+CF_CANARY_MIN_WALLS = _env_int("CF_CANARY_MIN_WALLS", 3, minimum=1)
+# With no pause left (or in the end-of-leg retry, which never pauses) a lane
+# refusing this share of seat requests over CF_WAVE_WINDOW_SEC ends the leg;
+# the rows read are kept. Below it the leg carries on — a 20-80% wave still
+# lands most of its showings. The end-of-leg retry is nothing but showings a
+# wall already refused, some of them refused on every draw (29 on the 11-19
+# Central re-read, 87 walls), so there the count must be this many times
+# higher before it means the lane, not the list.
+CF_FULL_BLOCK_SHARE = _env_float("CF_FULL_BLOCK_SHARE", 0.8, minimum=0.0)
+CF_FULL_BLOCK_RETRY_WALLS_X = _env_int("CF_FULL_BLOCK_RETRY_WALLS_X", 4, minimum=1)
+
+
+def full_block_in_window(samples, retry_pass=False):
+    """True when the lane is refusing nearly everything (see CF_FULL_BLOCK_SHARE)."""
+    if CF_FULL_BLOCK_SHARE <= 0:
+        return False
+    min_walls = CF_WAVE_MIN_WALLS * (CF_FULL_BLOCK_RETRY_WALLS_X if retry_pass else 1)
+    return wave_in_window(samples, min_walls=min_walls, share=CF_FULL_BLOCK_SHARE)
+
+
+def canary_counts(base, now):
+    """(ok, walled) seat requests a canary sent: the counters when it settled
+    minus the counters when it claimed the gate. (None, None) without a base."""
+    if base is None or now is None:
+        return None, None
+    return now[0] - base[0], now[1] - base[1]
+
+
+def canary_verdict(results, snapshot_rows, csv_rows, issues, ok=None, walls=None):
+    """'read' — the lane answers; 'blocked' — a wall, the waiting room or a
+    proxy refusal is why it read nothing, or (given the canary's own seat
+    request counts) it was refused most of what it asked for; 'unknown' —
+    neither."""
+    read = bool(results or snapshot_rows or csv_rows)
+    if (CF_CANARY_BLOCKED_SHARE > 0 and walls
+            and walls >= CF_CANARY_BLOCKED_SHARE * (walls + max(ok or 0, 0))):
+        if walls >= CF_CANARY_MIN_WALLS:
+            return "blocked"
+        if read:
+            # One showing that got through on its second or third draw: too
+            # little to open every tab on, too little to call a block.
+            return "unknown"
+    if read:
         return "read"
     if any(marker in issue
            for issue in (issues or [])
@@ -3133,6 +3180,7 @@ class CanaryGate:
         self.unknown = 0
         self.after_pause = False     # shut by a pause, not just a fresh leg
         self.dead = False            # stayed shut through the last pause
+        self.epoch = 0               # counts shut(): a canary from before one is stale
 
     def claim(self, now, pause_until):
         """'go' | 'canary' | 'wait' | 'dead' for a theatre about to start."""
@@ -3164,10 +3212,17 @@ class CanaryGate:
         self.blocked = 0
         self.unknown = 0
         self.after_pause = True
+        self.epoch += 1
+        self.probing = False
 
-    def settle(self, verdict, pauses_left, can_pause):
+    def settle(self, verdict, pauses_left, can_pause, epoch=None):
         """Record the canary's verdict; returns canary_step's action. On
-        'pause' the caller starts the pause and the gate stays closed."""
+        'pause' the caller starts the pause and the gate stays closed.
+        'stale' — the canary claimed the gate before the last shut() (it was
+        slow, the gate opened, every tab sent, a pause was called): its
+        outcome is about the lane before the pause and decides nothing."""
+        if epoch is not None and epoch != self.epoch:
+            return "stale"
         self.probing = False
         if not self.closed:
             return "open"        # it was slow and the gate already opened
@@ -7438,6 +7493,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 # Canary gate (see CF_CANARY_CONFIRM): while it is closed one
                 # theatre at a time checks the lane; the rest wait here.
                 is_canary = False
+                canary_base = None
+                canary_epoch = None
                 while True:
                     gate_now = asyncio.get_event_loop().time()
                     role = cf_gate.claim(gate_now, cf_pause_until)
@@ -7445,6 +7502,8 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                         break
                     if role == "canary":
                         is_canary = True
+                        canary_base = seat_request_totals()
+                        canary_epoch = cf_gate.epoch
                         break
                     if role == "dead":
                         all_issues.append(
@@ -7511,10 +7570,13 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 was_after_pause = cf_gate.after_pause
                 # The end-of-leg retry never pauses: a lane still shut there
                 # ends the leg instead of restarting every tab into it.
+                canary_ok, canary_walls = canary_counts(canary_base, seat_request_totals())
                 action = cf_gate.settle(
-                    canary_verdict(results, snapshot_rows, csv_rows, issues),
+                    canary_verdict(results, snapshot_rows, csv_rows, issues,
+                                   ok=canary_ok, walls=canary_walls),
                     0 if cf_retry_pass else cf_pauses_left,
-                    now_t + CF_BLOCK_PAUSE_SEC < overall_deadline)
+                    now_t + CF_BLOCK_PAUSE_SEC < overall_deadline,
+                    epoch=canary_epoch)
                 if action == "open":
                     cf_samples.clear()
                     if was_after_pause:
@@ -7561,6 +7623,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                       f"the leg {CF_BLOCK_PAUSE_SEC}s to let the wave pass "
                       f"({cf_pauses_left} pause(s) left; blocked theatres retried at the end)",
                       flush=True)
+            elif (not cf_paused and not cf_gate.dead
+                    and (cf_retry_pass or cf_pauses_left <= 0
+                         or now_t + CF_BLOCK_PAUSE_SEC >= overall_deadline)
+                    and full_block_in_window(cf_samples, retry_pass=cf_retry_pass)):
+                # No pause left to take (or the end-of-leg retry): sending the
+                # rest of the leg into a full block reads almost nothing.
+                cf_gate.dead = True
+                cf_samples.clear()
+                print(f"\n🧱 seat lane refusing {CF_FULL_BLOCK_SHARE:.0%}+ of seat requests with "
+                      "no pause left — stopping the leg; the rows read are kept.", flush=True)
             elif why:
                 print(f"\n🧱 {cf_block_streak} consecutive theatres failed — {why}; "
                       f"aborting the leg fast (coverage floor will fail it red).",

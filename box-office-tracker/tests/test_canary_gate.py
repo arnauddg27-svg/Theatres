@@ -18,10 +18,11 @@ PAUSE = 900
 
 
 def run_leg(theatres, lane_opens_at, tabs=8, pauses=3, visit_sec=10, empty=(),
-            slow=(), can_pause=True):
+            slow=(), can_pause=True, leaky=False):
     """Replay a leg against a lane that refuses everything before
-    `lane_opens_at`. Returns (visits, pauses_used, gate, skipped) where a
-    visit is (start_time, theatre, role)."""
+    `lane_opens_at` — or, with `leaky`, lets one showing in fifteen through,
+    as the 11-19 afternoon block did. Returns (visits, pauses_used, gate,
+    skipped) where a visit is (start_time, theatre, role)."""
     gate = scraper.CanaryGate()
     queue = list(theatres)
     now = 0
@@ -54,13 +55,17 @@ def run_leg(theatres, lane_opens_at, tabs=8, pauses=3, visit_sec=10, empty=(),
             continue
         now, name, is_canary = in_flight.pop(0)
         if name in empty:
-            outcome = ([], [], [], [])
+            outcome, counts = ([], [], [], []), (0, 0)
         elif now >= lane_opens_at:
-            outcome = ([{"movie": "x"}], [], [], [])
+            outcome, counts = ([{"movie": "x"}], [], [], []), (15, 0)
+        elif leaky:
+            outcome, counts = ([{"movie": "x"}], [], [], [BLOCK]), (1, 14)
         else:
-            outcome = ([], [], [], [BLOCK])
+            outcome, counts = ([], [], [], [BLOCK]), (0, 15)
         if is_canary:
-            action = gate.settle(scraper.canary_verdict(*outcome), pauses_left, can_pause)
+            action = gate.settle(
+                scraper.canary_verdict(*outcome, ok=counts[0], walls=counts[1]),
+                pauses_left, can_pause)
             if action == "pause":
                 pauses_left -= 1
                 pause_until = now + PAUSE
@@ -216,8 +221,118 @@ class LegReplayTest(unittest.TestCase):
         self.assertEqual("dead", gate.claim(901, 900))
 
 
+class LeakyBlockTest(unittest.TestCase):
+    """2026-11-19 14:30Z legs: the block let 1-8% of seat requests through, a
+    check theatre with one lucky showing reopened the gate five times, and the
+    Pacific leg sent 5,457 refused requests for 333 showings."""
+
+    def test_one_lucky_showing_does_not_open_the_gate(self):
+        self.assertEqual("blocked", scraper.canary_verdict([{"m": 1}], [{"s": 1}], [], [BLOCK],
+                                                           ok=1, walls=14))
+
+    def test_a_quiet_leg_canary_still_reads(self):
+        # Quiet legs wall 1-6% of seat requests; a big theatre can meet two.
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=38, walls=2))
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [], ok=12, walls=0))
+
+    def test_a_mild_wave_canary_still_reads(self):
+        # 20-50% walled: most showings land, the rate trigger handles the rest.
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=20, walls=10))
+
+    def test_one_showing_read_on_a_later_draw_decides_nothing(self):
+        # A one-showing theatre is drawn three times: read on the third draw it
+        # has 2 refusals and 1 read — at an 8% leak that happened to 22% of them.
+        self.assertEqual("unknown", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=1, walls=2))
+        self.assertEqual("unknown", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=1, walls=1))
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=3, walls=1))
+
+    def test_canary_counts_are_the_counters_since_the_claim(self):
+        self.assertEqual((1, 14), scraper.canary_counts((300, 4000), (301, 4014)))
+        self.assertEqual((15, 0), scraper.canary_counts((0, 0), (15, 0)))
+        self.assertEqual((None, None), scraper.canary_counts(None, (15, 0)))
+
+    def test_a_canary_from_before_a_pause_decides_nothing(self):
+        gate = scraper.CanaryGate()
+        self.assertEqual("canary", gate.claim(0, 0))
+        epoch = gate.epoch
+        self.assertEqual("go", gate.claim(scraper.CF_CANARY_SLOW_SEC + 1, 0))   # slow: gate opens
+        gate.shut()                                                           # a wave, a pause
+        self.assertEqual("stale", gate.settle("read", 2, True, epoch=epoch))
+        self.assertTrue(gate.closed)
+        self.assertEqual("stale", gate.settle("blocked", 2, True, epoch=epoch))
+        self.assertEqual(0, gate.blocked)
+        self.assertEqual("canary", gate.claim(2000, 1000))                    # the pause's own canary
+        self.assertEqual("open", gate.settle("read", 2, True, epoch=gate.epoch))
+
+    def test_the_retry_pass_needs_far_more_refusals_to_call_a_block(self):
+        # 11-19 Central re-read: 29 showings refused on every draw = 87 walls, lane open.
+        always_refused = [(0, 0, 0), (60, 0, 45), (120, 2, 87)]
+        self.assertTrue(scraper.full_block_in_window(always_refused))
+        self.assertFalse(scraper.full_block_in_window(always_refused, retry_pass=True))
+        # 11-19 21:10Z Pacific retry: 114 read / 1,271 refused per 10 minutes.
+        blocked = [(0, 300, 4000), (60, 311, 4127), (120, 323, 4254)]
+        self.assertTrue(scraper.full_block_in_window(blocked, retry_pass=True))
+
+    def test_half_refused_is_blocked(self):
+        self.assertEqual("blocked", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=6, walls=6))
+
+    def test_without_counts_the_rows_decide_as_before(self):
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK]))
+        self.assertEqual("read", scraper.canary_verdict([{"m": 1}], [], [], [BLOCK], ok=0, walls=0))
+        self.assertEqual("blocked", scraper.canary_verdict([], [], [], [BLOCK], ok=0, walls=0))
+
+    def test_a_leaky_block_never_restarts_every_tab(self):
+        theatres = [f"T{i}" for i in range(72)]
+        visits, pauses_used, gate, skipped = run_leg(theatres, lane_opens_at=10 ** 9, leaky=True)
+        self.assertEqual(3, pauses_used)
+        self.assertTrue(gate.dead)
+        self.assertEqual({"canary"}, {role for _, _, role in visits})
+        self.assertEqual(12, len(visits))            # 3 check theatres x (start + 3 pauses)
+        self.assertEqual(60, skipped)
+
+    def test_a_leaky_block_that_lifts_is_read_at_full_width(self):
+        theatres = [f"T{i}" for i in range(40)]
+        visits, pauses_used, gate, skipped = run_leg(theatres, lane_opens_at=1000, leaky=True)
+        self.assertFalse(gate.dead)
+        self.assertEqual(0, skipped)
+        self.assertEqual(len(theatres), len(visits))
+        self.assertIn("go", {role for _, _, role in visits})
+
+    def test_full_block_share_separates_a_block_from_a_wave(self):
+        share = scraper.CF_FULL_BLOCK_SHARE
+        # 11-19 21:00-21:10Z Pacific: 82 read / 1,117 refused per 10 minutes.
+        self.assertTrue(scraper.wave_in_window([(0, 300, 4000), (60, 308, 4112), (120, 316, 4223)],
+                                               share=share))
+        # 11-19 05:00Z Central night wave: 800 read / 1,044 refused — carry on.
+        self.assertFalse(scraper.wave_in_window([(0, 5000, 3000), (60, 5080, 3104), (120, 5160, 3209)],
+                                                share=share))
+        # Too few requests in the window to call anything.
+        self.assertFalse(scraper.wave_in_window([(0, 0, 0), (120, 1, 40)], share=share))
+
+
 class WiringTest(unittest.TestCase):
     BODY = Path(scraper.__file__).read_text()
+
+    def test_the_canary_is_judged_by_its_own_seat_requests(self):
+        claim = self.BODY.index('if role == "canary":')
+        self.assertIn("canary_base = seat_request_totals()", self.BODY[claim:claim + 200])
+        self.assertIn("canary_epoch = cf_gate.epoch", self.BODY[claim:claim + 260])
+        self.assertIn(
+            "canary_ok, canary_walls = canary_counts(canary_base, seat_request_totals())",
+            self.BODY)
+        self.assertIn("ok=canary_ok, walls=canary_walls),", self.BODY)
+        self.assertIn("epoch=canary_epoch)", self.BODY)
+
+    def test_a_full_block_with_no_pause_left_stops_the_leg(self):
+        pause = self.BODY.index("if ((cf_block_streak >= CF_BLOCK_PAUSE_AFTER or wave)")
+        stop = self.BODY.index("full_block_in_window(cf_samples, retry_pass=cf_retry_pass)", pause)
+        self.assertIn("cf_gate.dead = True", self.BODY[stop:stop + 300])
+        # Only when the leg cannot pause, whatever CF_WAVE_SHARE is set to.
+        self.assertIn("""            elif (not cf_paused and not cf_gate.dead
+                    and (cf_retry_pass or cf_pauses_left <= 0
+                         or now_t + CF_BLOCK_PAUSE_SEC >= overall_deadline)
+                    and full_block_in_window(cf_samples, retry_pass=cf_retry_pass)):""",
+                      self.BODY[pause:stop + 80])
 
     def test_the_gate_is_asked_before_a_theatre_is_read(self):
         claim = self.BODY.index("role = cf_gate.claim(gate_now, cf_pause_until)")
