@@ -240,6 +240,11 @@ class WaveRetryTest(unittest.TestCase):
         remaining, skipped = scraper.drop_captured_showtimes(saved, {"1", "3"})
         self.assertEqual(([{"showtime_id": "2"}], 2), (remaining["Film"], skipped))
 
+    def test_the_retry_pass_never_pauses(self):
+        body = Path(scraper.__file__).read_text()
+        block = body[body.index("if ((cf_block_streak >= CF_BLOCK_PAUSE_AFTER or wave)"):][:260]
+        self.assertIn("and not cf_retry_pass", block)
+
     def test_partly_read_theatres_join_the_retry(self):
         body = Path(scraper.__file__).read_text()
         block = body[body.index("cf_read_ids.update(read_showtime_ids(csv_rows))"):][:900]

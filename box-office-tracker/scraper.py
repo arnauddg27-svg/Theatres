@@ -7343,7 +7343,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 while len(cf_samples) > 2 and now_t - cf_samples[1][0] > CF_WAVE_WINDOW_SEC:
                     cf_samples.popleft()
                 wave = wave_in_window(cf_samples)
+            # Never during the end-of-leg retry: that pass is nothing but the
+            # showings a wall already refused, so a streak there says nothing
+            # about a wave (11-19 Central re-read: 29 showings walled on every
+            # draw cost a 15-minute pause, and were walled again after it).
             if ((cf_block_streak >= CF_BLOCK_PAUSE_AFTER or wave)
+                    and not cf_retry_pass
                     and not cf_paused and cf_pauses_left > 0
                     and now_t + CF_BLOCK_PAUSE_SEC < overall_deadline):
                 cf_pauses_left -= 1
