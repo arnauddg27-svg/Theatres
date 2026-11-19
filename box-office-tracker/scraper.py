@@ -13,6 +13,7 @@ Usage:
 """
 
 import asyncio
+import collections
 import csv
 import functools
 import json
@@ -1054,6 +1055,17 @@ REGULAR_PHASE2_MIN_COVERAGE_RATIO = _env_float("REGULAR_PHASE2_MIN_COVERAGE_RATI
 REGULAR_SKIP_CAPTURED = _env_bool("REGULAR_SKIP_CAPTURED", True)
 REGULAR_MIN_SHOWING_CAPTURE_RATIO = _env_float(
     "REGULAR_MIN_SHOWING_CAPTURE_RATIO", 0.85, minimum=0.0)
+# The snapshot lane had the same blind spot: its gate counts theatre-date
+# slices, and a theatre the wall hit after two of its twelve showtimes still
+# counts as read. 2026-11-19 02:30Z: Central passed at 94.2% of slices with
+# 4,517 of 8,385 linked showings (53.9%), Mountain at 241 of 1,274 (18.9%);
+# quiet legs read 96.8-99.9%. Below this share the leg goes red — its rows are
+# kept (a snapshot-only leg's rows merge whatever its status) and the slot's
+# retry re-reads the zone. Legs with fewer linked showings than the second
+# number are not judged. 0 disables.
+SNAPSHOT_MIN_SHOWING_CAPTURE_RATIO = _env_float(
+    "SNAPSHOT_MIN_SHOWING_CAPTURE_RATIO", 0.85, minimum=0.0)
+SNAPSHOT_MIN_SHOWING_CAPTURE_LINKS = _env_int("SNAPSHOT_MIN_SHOWING_CAPTURE_LINKS", 50, minimum=1)
 # Below this fresh-link ratio a partial Phase 1 cache is too sparse to trust
 # for a regular scrape (a Queue-It wall profile, not a thin night); between
 # this floor and PHASE1_MIN_FRESH_LINK_RATIO the leg proceeds LOUDLY on the
@@ -2978,8 +2990,79 @@ CF_BLOCK_ABORT_AFTER = _env_int("CF_BLOCK_ABORT_AFTER", 12, minimum=3)
 # CF_BLOCK_PAUSE_SEC (up to CF_BLOCK_PAUSES times per leg) and the theatres
 # blocked during the wave are retried once at the end of the leg.
 CF_BLOCK_PAUSE_AFTER = _env_int("CF_BLOCK_PAUSE_AFTER", 6, minimum=2)
-CF_BLOCK_PAUSE_SEC = _env_int("CF_BLOCK_PAUSE_SEC", 240, minimum=30)
+# Back-off, not a breather (2026-11-19). Three nights of 02:30Z snapshots
+# (11-17/18/19) show the same shape: 11-14 thousand seat reads go through at
+# a 1-6% wall rate, then the wall rate jumps to 20-80% and STAYS there for as
+# long as the leg keeps asking — 3.6 hours on 11-19 (Eastern 87% read, Central
+# 54%, Mountain 19%) — and every time the next run, starting 13-14 minutes
+# after the last request, read cleanly from its first minute. The 4-minute
+# pauses never cleared it (11-19 06:10-06:26Z: two in a row, still walled).
+# So a pause is now 15 minutes of silence.
+CF_BLOCK_PAUSE_SEC = _env_int("CF_BLOCK_PAUSE_SEC", 900, minimum=30)
 CF_BLOCK_PAUSES = _env_int("CF_BLOCK_PAUSES", 3, minimum=0)
+# The streak above needs CF_BLOCK_PAUSE_AFTER theatres IN A ROW with no rows,
+# and a wave is rarely that clean: with a third of reads still landing the
+# streak kept resetting and the 11-19 Eastern leg never paused once in 65
+# walled minutes. The wave is also judged by its rate: over the last
+# CF_WAVE_WINDOW_SEC, at least CF_WAVE_MIN_WALLS walled seat requests making
+# up CF_WAVE_SHARE of all seat requests. Quiet legs peak at 6.5% (the cold
+# start) and ~20 walls per window; the mildest wave measured was 21% and ~75.
+# CF_WAVE_SHARE=0 turns the rate trigger off.
+CF_WAVE_WINDOW_SEC = _env_int("CF_WAVE_WINDOW_SEC", 120, minimum=10)
+CF_WAVE_MIN_WALLS = _env_int("CF_WAVE_MIN_WALLS", 60, minimum=1)
+CF_WAVE_SHARE = _env_float("CF_WAVE_SHARE", 0.15, minimum=0.0)
+
+
+def wave_in_window(samples, window_sec=None, min_walls=None, share=None):
+    """True when the seat lane is inside a Cloudflare wave.
+
+    `samples` are (time, ok_total, wall_total) readings of the leg's running
+    counters, oldest first. The newest reading is compared with the oldest one
+    no more than `window_sec` before it.
+    """
+    window_sec = CF_WAVE_WINDOW_SEC if window_sec is None else window_sec
+    min_walls = CF_WAVE_MIN_WALLS if min_walls is None else min_walls
+    share = CF_WAVE_SHARE if share is None else share
+    samples = list(samples or [])
+    if share <= 0 or len(samples) < 2:
+        return False
+    now, ok_now, wall_now = samples[-1]
+    base = next((smp for smp in samples if now - smp[0] <= window_sec), samples[-1])
+    walls = wall_now - base[2]
+    oks = ok_now - base[1]
+    if walls < min_walls or walls + oks <= 0:
+        return False
+    return walls / (walls + oks) >= share
+
+
+def seat_request_totals():
+    """(ok, walled) seat requests this leg, from the HTTP lane's counters."""
+    return (_RSC_STATE["ok"] + _HTTP_STATE["http_ok"], _HTTP_STATE["http_blocked"])
+
+
+def cf_retry_key(theatre):
+    """A snapshot leg visits a theatre once per show date; each visit is its
+    own retry candidate."""
+    return (theatre.get("name", ""), theatre.get("_date", ""))
+
+
+def read_showtime_ids(rows):
+    """Showtime ids among freshly read seat rows (CSV lists) or snapshot rows
+    (dicts): the end-of-leg retry reads only what is still missing."""
+    ids = set()
+    for row in rows or []:
+        if isinstance(row, dict):
+            if row.get("showtime_id"):
+                ids.add(str(row["showtime_id"]))
+            values = row.values()
+        else:
+            values = row
+        for value in values:
+            if isinstance(value, str) and "/showtimes/" in value:
+                match = _SEAT_URL_SHOWTIME_ID.search(value)
+                if match:
+                    ids.add(match.group(1))
+    return ids
 
 
 def _is_cloudflare_challenge(title, body_snippet=""):
@@ -4286,6 +4369,15 @@ def regular_capture_shortfall(captured, linked, min_ratio=None):
         return None
     return (f"captured {captured}/{linked} linked showings ({ratio:.1%}); "
             f"minimum {min_ratio:.0%}")
+
+
+def snapshot_capture_shortfall(captured, linked, min_ratio=None, min_links=None):
+    """Message when a snapshot leg read too few of its linked showings."""
+    min_ratio = SNAPSHOT_MIN_SHOWING_CAPTURE_RATIO if min_ratio is None else min_ratio
+    min_links = SNAPSHOT_MIN_SHOWING_CAPTURE_LINKS if min_links is None else min_links
+    if not linked or linked < min_links:
+        return None
+    return regular_capture_shortfall(captured, linked, min_ratio=min_ratio)
 
 
 def phase2_runtime_deadline_sec(theatres, saved_links, movie_titles, expected_dates,
@@ -7024,6 +7116,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         cf_pauses_left = CF_BLOCK_PAUSES
         cf_blocked_retry = []
         cf_retry_names = set()
+        cf_samples = collections.deque()
+        cf_read_ids = set()
+        cf_retry_pass = False
         fallback_names = set()
         relaunch_lock = asyncio.Lock()
         direct_gate = asyncio.Semaphore(AMC_DIRECT_FALLBACK_TABS)
@@ -7032,6 +7127,7 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         async def bounded_scrape(theatre):
             nonlocal written_rows, skipped_rows, snapshot_rows_written, snapshot_rows_skipped
             nonlocal cf_block_streak, browser, cf_pause_until, cf_pauses_left
+            # cf_retry_pass is read here and set by the enclosing scope
             nonlocal captured_skipped
             name = theatre["name"]
             if asyncio.get_event_loop().time() >= overall_deadline:
@@ -7090,6 +7186,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     if already_read and not any(
                             theatre_saved.get(title) for title in movie_titles):
                         return  # every linked showing here is already captured
+                if cf_retry_pass:
+                    # Only what the wave cost: a theatre it hit part-way keeps
+                    # the rows it already gave.
+                    theatre_saved, _ = drop_captured_showtimes(theatre_saved, cf_read_ids)
+                    if not any(theatre_saved.get(title) for title in movie_titles):
+                        return
                 if snapshots_only and _EGRESS_TIMEOUTS["fell_back"]:
                     if not direct_names:
                         leg_names = {t["name"] for t in all_theatres}
@@ -7153,17 +7255,34 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 *_next_block_streak(cf_block_streak, results, snapshot_rows, issues),
                 paused=asyncio.get_event_loop().time() < cf_pause_until,
             )
-            if (not results and not snapshot_rows
-                    and any(CF_BLOCK_ISSUE in i for i in issues)
-                    and name not in cf_retry_names):
-                cf_retry_names.add(name)
+            cf_read_ids.update(read_showtime_ids(csv_rows))
+            cf_read_ids.update(read_showtime_ids(snapshot_rows))
+            # A theatre the wall hit part-way is short of showings too: 11-19
+            # Central kept 94% of its theatres and 54% of its showings.
+            if (any(CF_BLOCK_ISSUE in i for i in issues)
+                    and not cf_retry_pass
+                    and cf_retry_key(theatre) not in cf_retry_names):
+                cf_retry_names.add(cf_retry_key(theatre))
                 cf_blocked_retry.append(theatre)
-            if (cf_block_streak >= CF_BLOCK_PAUSE_AFTER and cf_pauses_left > 0
-                    and asyncio.get_event_loop().time() + CF_BLOCK_PAUSE_SEC < overall_deadline):
+            now_t = asyncio.get_event_loop().time()
+            cf_paused = now_t < cf_pause_until
+            wave = False
+            if not cf_paused:
+                cf_samples.append((now_t, *seat_request_totals()))
+                while len(cf_samples) > 2 and now_t - cf_samples[1][0] > CF_WAVE_WINDOW_SEC:
+                    cf_samples.popleft()
+                wave = wave_in_window(cf_samples)
+            if ((cf_block_streak >= CF_BLOCK_PAUSE_AFTER or wave)
+                    and not cf_paused and cf_pauses_left > 0
+                    and now_t + CF_BLOCK_PAUSE_SEC < overall_deadline):
                 cf_pauses_left -= 1
-                cf_pause_until = asyncio.get_event_loop().time() + CF_BLOCK_PAUSE_SEC
+                cf_pause_until = now_t + CF_BLOCK_PAUSE_SEC
+                trigger = (f"{CF_BLOCK_PAUSE_AFTER} consecutive theatres blocked"
+                           if cf_block_streak >= CF_BLOCK_PAUSE_AFTER
+                           else f"Cloudflare is walling {CF_WAVE_SHARE:.0%}+ of seat requests")
                 cf_block_streak = 0
-                print(f"\n🧱 {CF_BLOCK_PAUSE_AFTER} consecutive theatres blocked — pausing "
+                cf_samples.clear()
+                print(f"\n🧱 {trigger} — pausing "
                       f"the leg {CF_BLOCK_PAUSE_SEC}s to let the wave pass "
                       f"({cf_pauses_left} pause(s) left; blocked theatres retried at the end)",
                       flush=True)
@@ -7257,7 +7376,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
             retry = list(cf_blocked_retry)
             cf_blocked_retry.clear()
             cf_block_streak = 0
-            print(f"\n🔁 retrying {len(retry)} theatre(s) blocked during a Cloudflare wave",
+            cf_retry_pass = True
+            print(f"\n🔁 retrying {len(retry)} theatre visit(s) a Cloudflare wall cut short "
+                  f"— only the showings still unread",
                   flush=True)
             await run_scrape_batch(retry, "cf-retry")
 
@@ -7354,6 +7475,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                 + "; ".join(regular_failures[:8])
             )
 
+    snapshot_shortfall = None
+    if snapshots_only and not test_max:
+        snapshot_read = snapshot_rows_written + snapshot_rows_skipped
+        if linked_showtime_count:
+            print(f"🧮 Snapshot showing capture: {snapshot_read}/{linked_showtime_count} linked showings "
+                  f"({snapshot_read / linked_showtime_count:.1%})")
+        snapshot_shortfall = snapshot_capture_shortfall(snapshot_read, linked_showtime_count)
+        if snapshot_shortfall:
+            all_issues.append(f"Snapshot showing capture below minimum: {snapshot_shortfall}")
+
     # Step 5: Log and summarize
     log_run(tz_group, movie_titles, all_results, all_issues, run_id=run_id)
 
@@ -7410,6 +7541,11 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
         # a pass, and that pass reads just the showings still missing.
         fail_phase(f"❌ Regular scrape {capture_shortfall} — failing the leg so "
                    "the slot is retried as a top-up while the seat maps are still up.")
+    if snapshot_shortfall:
+        # No fatal marker is written, so the rows this leg did read still
+        # merge; red only makes the scheduler re-read this zone.
+        fail_phase(f"❌ Snapshot {snapshot_shortfall} — failing the leg so the "
+                   "slot's retry re-reads this zone; the rows captured are kept.")
 
 
 def generate_weekend_summary():

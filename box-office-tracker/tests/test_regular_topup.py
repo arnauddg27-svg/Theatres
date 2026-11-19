@@ -124,5 +124,118 @@ class WavePauseStreakTest(unittest.TestCase):
         self.assertEqual(scraper._hold_streak_during_pause(4, 0, None, paused=True), (0, None))
 
 
+class SnapshotCaptureShortfallTest(unittest.TestCase):
+    """Theatre-slice coverage passed the 2026-11-19 02:30Z Central leg at
+    94.2% while it read 53.9% of its linked showings."""
+
+    def test_quiet_legs_pass(self):
+        for read, linked in ((7672, 7753), (2652, 2741), (13650, 16008)):
+            self.assertIsNone(scraper.snapshot_capture_shortfall(read, linked), (read, linked))
+
+    def test_walled_legs_fail_with_the_numbers(self):
+        msg = scraper.snapshot_capture_shortfall(4517, 8385)
+        self.assertIn("4517/8385", msg)
+        self.assertIn("53.9%", msg)
+        self.assertIsNotNone(scraper.snapshot_capture_shortfall(241, 1274))
+        self.assertIsNotNone(scraper.snapshot_capture_shortfall(2241, 2741))
+
+    def test_tiny_or_empty_legs_are_not_judged(self):
+        self.assertIsNone(scraper.snapshot_capture_shortfall(0, 0))
+        self.assertIsNone(scraper.snapshot_capture_shortfall(10, 49))
+        self.assertIsNotNone(scraper.snapshot_capture_shortfall(10, 50))
+
+    def test_zero_ratio_disables(self):
+        self.assertIsNone(scraper.snapshot_capture_shortfall(1, 1000, min_ratio=0))
+
+    def test_defaults(self):
+        self.assertEqual(0.85, scraper.SNAPSHOT_MIN_SHOWING_CAPTURE_RATIO)
+        self.assertEqual(50, scraper.SNAPSHOT_MIN_SHOWING_CAPTURE_LINKS)
+
+    def test_failed_snapshot_leg_keeps_its_rows_in_the_merge(self):
+        # the red leg writes no fatal marker; the merge keeps snapshot-only
+        # sources whatever the job status
+        src = (Path(scraper.__file__).parent / "scripts" / "merge_scrape_artifacts.py").read_text()
+        self.assertIn("if writes_snapshots and not successful and not snapshots_only:", src)
+        body = Path(scraper.__file__).read_text()
+        tail = body[body.index("if snapshot_shortfall:\n        # No fatal marker"):][:400]
+        self.assertNotIn("snapshot-fatal.marker", tail)
+
+
+class WaveRateTest(unittest.TestCase):
+    """2026-11-19: the Eastern snapshot leg was walled on 30-80% of its seat
+    requests for 65 minutes and never paused, because the consecutive-theatre
+    streak kept resetting on the reads that still landed."""
+
+    def test_defaults(self):
+        self.assertEqual(900, scraper.CF_BLOCK_PAUSE_SEC)
+        self.assertEqual((120, 60, 0.15), (scraper.CF_WAVE_WINDOW_SEC, scraper.CF_WAVE_MIN_WALLS,
+                                           scraper.CF_WAVE_SHARE))
+
+    def test_quiet_reading_is_not_a_wave(self):
+        # 11-19 03:10Z: 1,939 reads and 6 walls in ten minutes
+        self.assertFalse(scraper.wave_in_window([(0, 0, 0), (60, 190, 1), (120, 388, 2)]))
+
+    def test_cold_start_burst_is_not_a_wave(self):
+        # 11-19 02:44-02:50Z: 805 reads, 56 walls (6.5%) while threads find an exit
+        self.assertFalse(scraper.wave_in_window([(0, 0, 0), (60, 130, 25), (120, 270, 40)]))
+
+    def test_mild_wave_trips(self):
+        # 11-18 04:00Z Central: 1,403 reads / 374 walls per ten minutes (21%)
+        self.assertTrue(scraper.wave_in_window([(0, 5000, 100), (60, 5140, 137), (120, 5281, 175)]))
+
+    def test_deep_wave_trips(self):
+        # 11-19 04:20Z Eastern: 306 reads / 1,186 walls per ten minutes
+        self.assertTrue(scraper.wave_in_window([(0, 9000, 500), (120, 9061, 737)]))
+
+    def test_only_the_window_counts(self):
+        old_walls = [(0, 0, 0), (100, 50, 400), (1000, 3000, 405), (1100, 3300, 410)]
+        self.assertFalse(scraper.wave_in_window(old_walls))
+
+    def test_a_few_walls_with_no_reads_is_not_yet_a_wave(self):
+        self.assertFalse(scraper.wave_in_window([(0, 0, 0), (30, 0, 59)]))
+        self.assertTrue(scraper.wave_in_window([(0, 0, 0), (30, 0, 60)]))
+
+    def test_needs_two_readings_and_can_be_switched_off(self):
+        self.assertFalse(scraper.wave_in_window([]))
+        self.assertFalse(scraper.wave_in_window([(0, 0, 500)]))
+        self.assertFalse(scraper.wave_in_window([(0, 0, 0), (30, 0, 500)], share=0))
+
+    def test_totals_come_from_the_http_lane_counters(self):
+        saved = (scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"])
+        try:
+            scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"] = 7, 3, 4
+            self.assertEqual((10, 4), scraper.seat_request_totals())
+        finally:
+            scraper._RSC_STATE["ok"], scraper._HTTP_STATE["http_ok"], scraper._HTTP_STATE["http_blocked"] = saved
+
+
+class WaveRetryTest(unittest.TestCase):
+    def test_each_show_date_visit_is_its_own_retry(self):
+        a = {"name": "AMC Test 12", "_date": "2026-11-20"}
+        b = {"name": "AMC Test 12", "_date": "2026-11-21"}
+        self.assertNotEqual(scraper.cf_retry_key(a), scraper.cf_retry_key(b))
+        self.assertEqual(("AMC Test 12", ""), scraper.cf_retry_key({"name": "AMC Test 12"}))
+
+    def test_ids_from_seat_rows_and_snapshot_rows(self):
+        seat_row = ["2026-11-20", "run", "AMC Test 12", "7:00pm",
+                    "https://www.amctheatres.com/showtimes/148037756/seats", "note"]
+        snap_row = {"showtime_id": 148096033, "amc_seat_map_url": "https://www.amctheatres.com/showtimes/148096033/seats"}
+        url_only = {"showtime_id": "", "amc_seat_map_url": "https://www.amctheatres.com/showtimes/147929262/seats"}
+        self.assertEqual({"148037756", "148096033", "147929262"},
+                         scraper.read_showtime_ids([seat_row, snap_row, url_only]))
+        self.assertEqual(set(), scraper.read_showtime_ids(None))
+
+    def test_retry_reads_only_the_showings_still_missing(self):
+        saved = {"Film": [{"showtime_id": "1"}, {"showtime_id": "2"}, {"showtime_id": "3"}]}
+        remaining, skipped = scraper.drop_captured_showtimes(saved, {"1", "3"})
+        self.assertEqual(([{"showtime_id": "2"}], 2), (remaining["Film"], skipped))
+
+    def test_partly_read_theatres_join_the_retry(self):
+        body = Path(scraper.__file__).read_text()
+        block = body[body.index("cf_read_ids.update(read_showtime_ids(csv_rows))"):][:900]
+        self.assertIn("any(CF_BLOCK_ISSUE in i for i in issues)", block)
+        self.assertNotIn("not results and not snapshot_rows", block)
+
+
 if __name__ == "__main__":
     unittest.main()
