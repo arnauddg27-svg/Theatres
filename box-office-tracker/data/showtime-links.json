@@ -174876,7 +174876,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336324+00:00",
+          "collected_at": "2026-11-21T04:33:26.731296+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -175170,7 +175170,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386013+00:00",
+          "collected_at": "2026-11-21T04:37:38.404750+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -175712,7 +175712,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386128+00:00",
+          "collected_at": "2026-11-21T04:37:38.404698+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -175839,7 +175839,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336329+00:00",
+          "collected_at": "2026-11-21T04:33:26.731342+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -176139,7 +176139,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336277+00:00",
+          "collected_at": "2026-11-21T04:33:26.731269+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -176437,7 +176437,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367931+00:00",
+          "collected_at": "2026-11-21T04:35:08.312448+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -176611,7 +176611,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386160+00:00",
+          "collected_at": "2026-11-21T04:37:38.404717+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -210664,7 +210664,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386026+00:00",
+          "collected_at": "2026-11-21T04:37:38.404744+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -210808,7 +210808,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-21T00:30:46.004449+00:00",
+          "collected_at": "2026-11-21T04:33:26.731356+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -211110,7 +211110,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.385987+00:00",
+          "collected_at": "2026-11-21T04:37:38.404711+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -211344,6 +211344,11 @@
                 "showtime": "10:30pm",
                 "showtime_id": "148151641",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148966652",
+                "format": "Dine-In Delivery to Seat"
               }
             ],
             "I Play Rocky": [
@@ -211423,7 +211428,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-21T00:33:06.897081+00:00",
+          "collected_at": "2026-11-21T04:35:08.312476+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -211792,6 +211797,11 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "12:15pm",
+                "showtime_id": "148961841",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "12:30pm",
                 "showtime_id": "148834300",
                 "format": "Laser at AMC"
@@ -211815,6 +211825,11 @@
                 "showtime": "3:30pm",
                 "showtime_id": "148121204",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "148961842",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "4:00pm",
@@ -211845,6 +211860,11 @@
                 "showtime": "7:00pm",
                 "showtime_id": "148121205",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148961843",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "7:30pm",
@@ -211944,7 +211964,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T22:35:55.489848+00:00",
+          "collected_at": "2026-11-21T04:37:38.404684+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -212141,6 +212161,11 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "12:15pm",
+                "showtime_id": "148961840",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "12:30pm",
                 "showtime_id": "148834303",
                 "format": "Laser at AMC"
@@ -212171,6 +212196,11 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "3:45pm",
+                "showtime_id": "148961839",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "148834302",
                 "format": "Laser at AMC"
@@ -212194,6 +212224,11 @@
                 "showtime": "7:00pm",
                 "showtime_id": "148121224",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "148961838",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "7:30pm",
@@ -212298,7 +212333,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367998+00:00",
+          "collected_at": "2026-11-21T04:35:08.312524+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -212467,7 +212502,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:33:54.772060+00:00",
+          "collected_at": "2026-11-21T04:33:26.731363+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -212740,7 +212775,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.368023+00:00",
+          "collected_at": "2026-11-21T04:35:08.312519+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -212873,7 +212908,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386166+00:00",
+          "collected_at": "2026-11-21T04:37:38.404731+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -214543,6 +214578,11 @@
                 "showtime": "9:00pm",
                 "showtime_id": "148846375",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148964178",
+                "format": "Laser at AMC"
               }
             ],
             "Ebenezer": [
@@ -214573,7 +214613,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336312+00:00",
+          "collected_at": "2026-11-21T04:33:26.731328+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -214607,7 +214647,7 @@
               {
                 "showtime": "12:00pm",
                 "showtime_id": "148175364",
-                "format": "PRIME 3D"
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "1:00pm",
@@ -214672,7 +214712,7 @@
               {
                 "showtime": "7:30pm",
                 "showtime_id": "148175366",
-                "format": "PRIME 3D"
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "8:00pm",
@@ -214683,6 +214723,11 @@
                 "showtime": "8:30pm",
                 "showtime_id": "148175010",
                 "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148966081",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "9:15pm",
@@ -214774,10 +214819,15 @@
                 "showtime": "8:45pm",
                 "showtime_id": "148852223",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148966080",
+                "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.368011+00:00",
+          "collected_at": "2026-11-21T04:35:08.312470+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -215156,7 +215206,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386134+00:00",
+          "collected_at": "2026-11-21T04:37:38.404737+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -218031,7 +218081,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-21T00:30:46.004381+00:00",
+          "collected_at": "2026-11-21T04:33:26.731307+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -218126,6 +218176,11 @@
                 "showtime": "9:30pm",
                 "showtime_id": "147978781",
                 "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "148966352",
+                "format": "undefined"
               },
               {
                 "showtime": "10:30pm",
@@ -218245,7 +218300,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-21T00:33:06.897111+00:00",
+          "collected_at": "2026-11-21T04:35:08.312487+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -218447,6 +218502,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "8:05pm",
+                "showtime_id": "148963114",
+                "format": "undefined"
+              },
+              {
                 "showtime": "8:30pm",
                 "showtime_id": "148772590",
                 "format": "undefined"
@@ -218579,7 +218639,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.385950+00:00",
+          "collected_at": "2026-11-21T04:37:38.404654+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -275885,7 +275945,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.385978+00:00",
+          "collected_at": "2026-11-21T04:37:38.404676+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -276699,7 +276759,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367978+00:00",
+          "collected_at": "2026-11-21T04:35:08.312494+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -276843,7 +276903,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336308+00:00",
+          "collected_at": "2026-11-21T04:33:26.731321+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -277132,6 +277192,11 @@
                 "format": "Dine-In Delivery to Seat"
               },
               {
+                "showtime": "7:00pm",
+                "showtime_id": "148966965",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "148073775",
                 "format": "RealD 3D"
@@ -277224,7 +277289,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367940+00:00",
+          "collected_at": "2026-11-21T04:35:08.312512+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -277348,7 +277413,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-21T00:30:46.004424+00:00",
+          "collected_at": "2026-11-21T04:33:26.731334+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -277508,6 +277573,11 @@
           {
             "showtime": "6:00pm",
             "showtime_id": "148886288",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148966965",
             "format": "Dine-In Delivery to Seat"
           },
           {
@@ -277952,7 +278022,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-19T22:35:55.489831+00:00",
+          "collected_at": "2026-11-21T04:37:38.404704+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -278079,7 +278149,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:33:54.772049+00:00",
+          "collected_at": "2026-11-21T04:33:26.731350+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -278413,7 +278483,7 @@
               {
                 "showtime": "8:45pm",
                 "showtime_id": "148877423",
-                "format": "RealD 3D"
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "9:15pm",
@@ -278429,6 +278499,11 @@
                 "showtime": "10:00pm",
                 "showtime_id": "148877371",
                 "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:35pm",
+                "showtime_id": "148961834",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "11:00pm",
@@ -278450,6 +278525,11 @@
               {
                 "showtime": "3:30pm",
                 "showtime_id": "148589086",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148966205",
                 "format": "Laser at AMC"
               },
               {
@@ -278487,6 +278567,11 @@
             ],
             "The Cat in the Hat": [
               {
+                "showtime": "10:30am",
+                "showtime_id": "148966204",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "4:15pm",
                 "showtime_id": "148863101",
                 "format": "Laser at AMC"
@@ -278498,7 +278583,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367893+00:00",
+          "collected_at": "2026-11-21T04:35:08.312482+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -278597,7 +278682,7 @@
               {
                 "showtime": "9:15pm",
                 "showtime_id": "148871087",
-                "format": "RealD 3D"
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "9:45pm",
@@ -278607,6 +278692,11 @@
               {
                 "showtime": "10:00pm",
                 "showtime_id": "148871114",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148961544",
                 "format": "Laser at AMC"
               },
               {
@@ -278639,6 +278729,11 @@
               {
                 "showtime": "7:15pm",
                 "showtime_id": "148589083",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148963823",
                 "format": "Laser at AMC"
               },
               {
@@ -278682,7 +278777,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336294+00:00",
+          "collected_at": "2026-11-21T04:33:26.731315+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -278937,6 +279032,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "11:00am",
+                "showtime_id": "148964388",
+                "format": "undefined"
+              },
+              {
                 "showtime": "11:20am",
                 "showtime_id": "148770646",
                 "format": "RealD 3D"
@@ -279004,6 +279104,11 @@
                 "format": "undefined"
               },
               {
+                "showtime": "3:00pm",
+                "showtime_id": "148964387",
+                "format": "undefined"
+              },
+              {
                 "showtime": "4:00pm",
                 "showtime_id": "148015866",
                 "format": "undefined"
@@ -279042,7 +279147,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386142+00:00",
+          "collected_at": "2026-11-21T04:37:38.404691+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -279266,7 +279371,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:31:42.336343+00:00",
+          "collected_at": "2026-11-21T04:33:26.731370+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
@@ -279383,7 +279488,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367970+00:00",
+          "collected_at": "2026-11-21T04:35:08.312506+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -279611,7 +279716,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T17:33:07.367952+00:00",
+          "collected_at": "2026-11-21T04:35:08.312500+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-22": {
@@ -280282,7 +280387,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-20T06:36:35.386000+00:00",
+          "collected_at": "2026-11-21T04:37:38.404725+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
