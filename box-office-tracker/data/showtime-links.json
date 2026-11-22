@@ -211145,7 +211145,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592541+00:00",
+          "collected_at": "2026-11-22T11:32:56.956231+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-19": {
@@ -212948,7 +212948,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592394+00:00",
+          "collected_at": "2026-11-22T11:32:56.956240+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -215061,7 +215061,7 @@
               {
                 "showtime": "11:30am",
                 "showtime_id": "148175358",
-                "format": "PRIME 3D"
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "12:00pm",
@@ -215092,6 +215092,11 @@
                 "showtime": "2:45pm",
                 "showtime_id": "148174971",
                 "format": "IMAX with Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148971902",
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "3:15pm",
@@ -215125,8 +215130,13 @@
               },
               {
                 "showtime": "7:00pm",
+                "showtime_id": "148971903",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
                 "showtime_id": "148175355",
-                "format": "PRIME 3D"
+                "format": "PRIME at AMC"
               },
               {
                 "showtime": "7:30pm",
@@ -215136,7 +215146,7 @@
               {
                 "showtime": "8:00pm",
                 "showtime_id": "148859514",
-                "format": "RealD 3D"
+                "format": "Laser at AMC"
               },
               {
                 "showtime": "8:30pm",
@@ -215178,6 +215188,11 @@
               {
                 "showtime": "3:30pm",
                 "showtime_id": "148594423",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148971900",
                 "format": "Laser at AMC"
               },
               {
@@ -215240,13 +215255,18 @@
                 "format": "RealD 3D"
               },
               {
-                "showtime": "9:00pm",
+                "showtime": "8:45pm",
                 "showtime_id": "148859521",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148971901",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592522+00:00",
+          "collected_at": "2026-11-22T11:32:56.956205+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -215272,7 +215292,7 @@
           {
             "showtime": "11:30am",
             "showtime_id": "148175358",
-            "format": "PRIME 3D"
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "12:00pm",
@@ -215303,6 +215323,11 @@
             "showtime": "2:45pm",
             "showtime_id": "148174971",
             "format": "IMAX with Laser at AMC"
+          },
+          {
+            "showtime": "3:00pm",
+            "showtime_id": "148971902",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
@@ -215336,8 +215361,13 @@
           },
           {
             "showtime": "7:00pm",
+            "showtime_id": "148971903",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "7:00pm",
             "showtime_id": "148175355",
-            "format": "PRIME 3D"
+            "format": "PRIME at AMC"
           },
           {
             "showtime": "7:30pm",
@@ -215347,7 +215377,7 @@
           {
             "showtime": "8:00pm",
             "showtime_id": "148859514",
-            "format": "RealD 3D"
+            "format": "Laser at AMC"
           },
           {
             "showtime": "8:30pm",
@@ -215389,6 +215419,11 @@
           {
             "showtime": "3:30pm",
             "showtime_id": "148594423",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "6:15pm",
+            "showtime_id": "148971900",
             "format": "Laser at AMC"
           },
           {
@@ -215451,8 +215486,13 @@
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
+            "showtime": "8:45pm",
             "showtime_id": "148859521",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148971901",
             "format": "Laser at AMC"
           }
         ]
@@ -215578,7 +215618,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592496+00:00",
+          "collected_at": "2026-11-22T11:32:56.956248+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -278072,7 +278112,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592450+00:00",
+          "collected_at": "2026-11-22T11:32:56.956256+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-20": {
@@ -280447,7 +280487,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-22T04:28:37.592488+00:00",
+          "collected_at": "2026-11-22T11:32:56.956265+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-21": {
