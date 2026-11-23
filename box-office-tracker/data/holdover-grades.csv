@@ -1,37 +1,37 @@
 weekend_of,movie,weekend_num,forecast_stage,days_census,logged_at,forecast_m,low_m,high_m,actual_m,error_pct,in_band,poly_favorite,poly_favorite_prob,poly_favorite_hit,model_version,graded_at
-2026-10-30,Clayface,2,all_known,,2026-11-03T00:34:53Z,11.002,11.002,11.002,11.01,-0.1,,10m-12m,0.9995,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,Clayface,2,fri_known,,2026-10-31T17:59:56Z,10.589,9.172,12.186,11.01,-3.8,yes,10m-12m,0.82,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,Clayface,2,fri_sat_known,Saturday,2026-11-01T08:25:49Z,9.854,8.536,11.34,11.01,-10.5,yes,10m-12m,0.92,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,Wildwood,2,all_known,,2026-11-05T23:48:39Z,8.915,8.915,8.915,8.88,0.4,,,,,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,Wildwood,2,fri_known,,2026-10-31T17:59:56Z,9.816,8.502,11.296,8.88,10.5,yes,7m-9m,0.875,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,Wildwood,2,fri_sat_known,Saturday,2026-11-01T08:25:49Z,7.007,6.069,8.063,8.88,-21.1,no,7m-9m,0.9645,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,You Can See Everything,3,all_known,,2026-11-02T16:46:20Z,11.446,11.446,11.446,11.45,-0.0,,10-12M,0.99,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,You Can See Everything,3,fri_known,,2026-11-01T15:07:41Z,11.121,9.95,13.25,11.45,-2.9,yes,10-12M,0.9675,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-10-30,You Can See Everything,3,fri_sat_known,Saturday,2026-11-01T08:25:49Z,6.979,6.244,8.316,11.45,-39.0,no,10-12M,0.95,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Clayface,3,all_known,,2026-11-11T00:46:33Z,6.728,6.728,6.728,6.72,0.1,,,,,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Clayface,3,fri_known,,2026-11-07T21:12:51Z,6.856,6.134,8.169,6.72,2.0,yes,6m-7m,0.927,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Clayface,3,prior,,2026-11-06T08:09:38Z,6.112,4.457,7.918,6.72,-9.0,yes,5m-6m,0.475,no,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Wildwood,3,all_known,,2026-11-13T00:44:21Z,7.246,7.246,7.246,7.17,1.1,,,,,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Wildwood,3,fri_known,,2026-11-07T21:12:51Z,6.915,6.186,8.239,7.17,-3.6,yes,6m+,0.9845,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Wildwood,3,fri_sat_known,Saturday,2026-11-08T09:38:51Z,3.572,3.196,4.257,7.17,-50.2,no,6m+,0.9895,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-06,Wildwood,3,prior,,2026-11-06T23:16:35Z,5.01,3.654,6.491,7.17,-30.1,no,6m+,0.923,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,The Cat in the Hat,2,all_known,,2026-11-16T16:27:24Z,11.3,11.3,11.3,11.25,0.4,,11m-12m,0.9765,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,The Cat in the Hat,2,fri_known,,2026-11-14T17:00:49Z,11.144,9.653,12.824,11.25,-0.9,yes,11m-12m,0.475,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,The Cat in the Hat,2,fri_known,Friday,2026-11-14T11:18:24Z,11.247,8.098,15.243,11.25,-0.0,yes,11m-12m,0.445,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-13,The Cat in the Hat,2,fri_sat_known,Saturday,2026-11-15T10:04:24Z,11.437,9.907,13.162,11.25,1.7,yes,11m-12m,0.505,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-13,The Cat in the Hat,2,prior,,2026-11-12T16:35:52Z,9.103,6.554,12.338,11.25,-19.1,yes,10m-11m,0.365,no,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,Godzilla Minus Zero,2,all_known,,2026-11-16T16:27:24Z,8.509,8.509,8.509,8.48,0.3,,8m-9m,0.9995,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,Godzilla Minus Zero,2,fri_known,,2026-11-14T17:00:49Z,7.184,6.223,8.267,8.48,-15.3,no,8m-9m,0.745,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-13,Godzilla Minus Zero,2,fri_known,Friday,2026-11-14T11:18:24Z,6.816,4.908,9.238,8.48,-19.6,yes,8m-9m,0.665,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-13,Godzilla Minus Zero,2,fri_sat_known,Saturday,2026-11-15T10:04:24Z,8.191,7.095,9.427,8.48,-3.4,yes,8m-9m,0.855,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-13,Godzilla Minus Zero,2,prior,,2026-11-12T16:35:52Z,13.867,9.984,18.794,8.48,63.5,no,10m-11m,0.365,no,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,The Cat in the Hat,3,all_known,,2026-11-22T16:57:44Z,6.85,6.85,6.85,6.85,0.0,,6m-7m,0.935,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,The Cat in the Hat,3,fri_known,,2026-11-21T16:56:48Z,7.351,6.577,8.759,6.85,7.3,yes,6m-7m,0.495,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,The Cat in the Hat,3,fri_known,Friday,2026-11-21T10:43:29Z,6.957,5.073,9.013,6.85,1.6,yes,6m-7m,0.67,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-20,The Cat in the Hat,3,fri_sat_known,Saturday,2026-11-22T10:41:47Z,6.379,5.707,7.6,6.85,-6.9,yes,6m-7m,0.705,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-20,The Cat in the Hat,3,prior,,2026-11-19T16:14:30Z,6.277,4.578,8.133,6.85,-8.4,yes,6m-7m,0.525,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,Ebenezer,2,all_known,,2026-11-22T16:57:44Z,7.7,7.7,7.7,7.7,0.0,,7.5m-9m,0.92,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,Ebenezer,2,fri_known,,2026-11-21T16:56:48Z,7.553,6.543,8.692,7.7,-1.9,yes,7.5m-9m,0.765,yes,holdover-v1,2026-11-23T15:17:27Z
-2026-11-20,Ebenezer,2,fri_known,Friday,2026-11-21T10:43:29Z,8.07,5.81,10.937,7.7,4.8,yes,7.5m-9m,0.73,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-20,Ebenezer,2,fri_sat_known,Saturday,2026-11-22T10:41:47Z,7.586,6.571,8.73,7.7,-1.5,yes,7.5m-9m,0.945,yes,holdover-v1-census,2026-11-23T15:17:27Z
-2026-11-20,Ebenezer,2,prior,,2026-11-19T16:14:30Z,8.652,6.23,11.727,7.7,12.4,yes,9m-10.5m,0.48,no,holdover-v1,2026-11-23T15:17:27Z
+2026-10-30,Clayface,2,all_known,,2026-11-03T00:34:53Z,11.002,11.002,11.002,11.01,-0.1,,10m-12m,0.9995,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,Clayface,2,fri_known,,2026-10-31T17:59:56Z,10.589,9.172,12.186,11.01,-3.8,yes,10m-12m,0.82,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,Clayface,2,fri_sat_known,Saturday,2026-11-01T08:25:49Z,9.854,8.536,11.34,11.01,-10.5,yes,10m-12m,0.92,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,Wildwood,2,all_known,,2026-11-05T23:48:39Z,8.915,8.915,8.915,8.88,0.4,,,,,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,Wildwood,2,fri_known,,2026-10-31T17:59:56Z,9.816,8.502,11.296,8.88,10.5,yes,7m-9m,0.875,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,Wildwood,2,fri_sat_known,Saturday,2026-11-01T08:25:49Z,7.007,6.069,8.063,8.88,-21.1,no,7m-9m,0.9645,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,You Can See Everything,3,all_known,,2026-11-02T16:46:20Z,11.446,11.446,11.446,11.45,-0.0,,10-12M,0.99,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,You Can See Everything,3,fri_known,,2026-11-01T15:07:41Z,11.121,9.95,13.25,11.45,-2.9,yes,10-12M,0.9675,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-10-30,You Can See Everything,3,fri_sat_known,Saturday,2026-11-01T08:25:49Z,6.979,6.244,8.316,11.45,-39.0,no,10-12M,0.95,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Clayface,3,all_known,,2026-11-11T00:46:33Z,6.728,6.728,6.728,6.72,0.1,,,,,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Clayface,3,fri_known,,2026-11-07T21:12:51Z,6.856,6.134,8.169,6.72,2.0,yes,6m-7m,0.927,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Clayface,3,prior,,2026-11-06T08:09:38Z,6.112,4.457,7.918,6.72,-9.0,yes,5m-6m,0.475,no,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Wildwood,3,all_known,,2026-11-13T00:44:21Z,7.246,7.246,7.246,7.17,1.1,,,,,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Wildwood,3,fri_known,,2026-11-07T21:12:51Z,6.915,6.186,8.239,7.17,-3.6,yes,6m+,0.9845,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Wildwood,3,fri_sat_known,Saturday,2026-11-08T09:38:51Z,3.572,3.196,4.257,7.17,-50.2,no,6m+,0.9895,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-06,Wildwood,3,prior,,2026-11-06T23:16:35Z,5.01,3.654,6.491,7.17,-30.1,no,6m+,0.923,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,The Cat in the Hat,2,all_known,,2026-11-16T16:27:24Z,11.3,11.3,11.3,11.25,0.4,,11m-12m,0.9765,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,The Cat in the Hat,2,fri_known,,2026-11-14T17:00:49Z,11.144,9.653,12.824,11.25,-0.9,yes,11m-12m,0.475,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,The Cat in the Hat,2,fri_known,Friday,2026-11-14T11:18:24Z,11.247,8.098,15.243,11.25,-0.0,yes,11m-12m,0.445,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-13,The Cat in the Hat,2,fri_sat_known,Saturday,2026-11-15T10:04:24Z,11.437,9.907,13.162,11.25,1.7,yes,11m-12m,0.505,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-13,The Cat in the Hat,2,prior,,2026-11-12T16:35:52Z,9.103,6.554,12.338,11.25,-19.1,yes,10m-11m,0.365,no,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,Godzilla Minus Zero,2,all_known,,2026-11-16T16:27:24Z,8.509,8.509,8.509,8.48,0.3,,8m-9m,0.9995,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,Godzilla Minus Zero,2,fri_known,,2026-11-14T17:00:49Z,7.184,6.223,8.267,8.48,-15.3,no,8m-9m,0.745,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-13,Godzilla Minus Zero,2,fri_known,Friday,2026-11-14T11:18:24Z,6.816,4.908,9.238,8.48,-19.6,yes,8m-9m,0.665,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-13,Godzilla Minus Zero,2,fri_sat_known,Saturday,2026-11-15T10:04:24Z,8.191,7.095,9.427,8.48,-3.4,yes,8m-9m,0.855,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-13,Godzilla Minus Zero,2,prior,,2026-11-12T16:35:52Z,13.867,9.984,18.794,8.48,63.5,no,10m-11m,0.365,no,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,The Cat in the Hat,3,all_known,,2026-11-23T19:35:25Z,6.7,6.7,6.7,6.7,0.0,,,,,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,The Cat in the Hat,3,fri_known,,2026-11-21T16:56:48Z,7.351,6.577,8.759,6.7,9.7,yes,6m-7m,0.495,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,The Cat in the Hat,3,fri_known,Friday,2026-11-21T10:43:29Z,6.957,5.073,9.013,6.7,3.8,yes,6m-7m,0.67,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-20,The Cat in the Hat,3,fri_sat_known,Saturday,2026-11-22T10:41:47Z,6.379,5.707,7.6,6.7,-4.8,yes,6m-7m,0.705,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-20,The Cat in the Hat,3,prior,,2026-11-19T16:14:30Z,6.277,4.578,8.133,6.7,-6.3,yes,6m-7m,0.525,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,Ebenezer,2,all_known,,2026-11-22T16:57:44Z,7.7,7.7,7.7,7.7,0.0,,7.5m-9m,0.92,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,Ebenezer,2,fri_known,,2026-11-21T16:56:48Z,7.553,6.543,8.692,7.7,-1.9,yes,7.5m-9m,0.765,yes,holdover-v1,2026-11-23T19:35:43Z
+2026-11-20,Ebenezer,2,fri_known,Friday,2026-11-21T10:43:29Z,8.07,5.81,10.937,7.7,4.8,yes,7.5m-9m,0.73,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-20,Ebenezer,2,fri_sat_known,Saturday,2026-11-22T10:41:47Z,7.586,6.571,8.73,7.7,-1.5,yes,7.5m-9m,0.945,yes,holdover-v1-census,2026-11-23T19:35:43Z
+2026-11-20,Ebenezer,2,prior,,2026-11-19T16:14:30Z,8.652,6.23,11.727,7.7,12.4,yes,9m-10.5m,0.48,no,holdover-v1,2026-11-23T19:35:43Z
