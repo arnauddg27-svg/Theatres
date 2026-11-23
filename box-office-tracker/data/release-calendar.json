@@ -1,42 +1,50 @@
 {
-  "weekend_of": "2026-11-20",
-  "fetched_at": "2026-11-19T21:27:00+00:00",
-  "source": "https://www.boxofficemojo.com/calendar/2026-11-18/",
+  "weekend_of": "2026-11-27",
+  "fetched_at": "2026-11-23T20:41:19+00:00",
+  "source": "https://www.boxofficemojo.com/calendar/2026-11-25/",
   "titles": [
     {
-      "title": "I Play Rocky",
-      "distributor": "Amazon MGM Studios",
-      "date": "November 20, 2026",
+      "title": "Bitter Christmas",
+      "distributor": "Sony Pictures Classics",
+      "date": "November 25, 2026",
+      "scale": "Wide",
+      "genres": [
+        "Comedy",
+        "Drama"
+      ]
+    },
+    {
+      "title": "Focker In-Law",
+      "distributor": "Paramount Pictures International",
+      "date": "November 27, 2026",
+      "scale": "Wide",
+      "genres": [
+        "Comedy"
+      ]
+    },
+    {
+      "title": "Hershey",
+      "distributor": "Angel",
+      "date": "November 25, 2026",
       "scale": "Wide",
       "genres": [
         "Biography",
-        "Comedy",
         "Drama",
-        "Sport"
+        "History",
+        "Romance"
       ]
     },
     {
-      "title": "Paper Tiger",
-      "distributor": "Neon",
-      "date": "November 20, 2026",
+      "title": "Hexed",
+      "distributor": "Walt Disney Studios Motion Pictures",
+      "date": "November 25, 2026",
       "scale": "Wide",
       "genres": [
-        "Crime",
-        "Drama",
-        "Thriller"
-      ]
-    },
-    {
-      "title": "The Hunger Games: Sunrise on the Reaping",
-      "distributor": "Lionsgate",
-      "date": "November 20, 2026",
-      "scale": "Wide",
-      "genres": [
-        "Action",
         "Adventure",
-        "Fantasy",
-        "Sci-Fi",
-        "Thriller"
+        "Animation",
+        "Comedy",
+        "Family",
+        "Fantasy"
       ]
     }
   ]
