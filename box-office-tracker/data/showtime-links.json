@@ -2,7 +2,7 @@
   "date": "2026-11-27",
   "weekend_of": "2026-11-27",
   "collected_local_date": "2026-11-23",
-  "collected_at": "2026-11-23T22:29:35.107122+00:00",
+  "collected_at": "2026-11-23T22:38:05.292195+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -101,7 +101,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345418+00:00",
+          "collected_at": "2026-11-23T22:38:05.277170+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -166,7 +166,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345654+00:00",
+          "collected_at": "2026-11-23T22:38:05.277313+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -236,7 +236,77 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345676+00:00",
+          "collected_at": "2026-11-23T22:38:05.277287+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-27": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147766006",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147765894",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:05am",
+                "showtime_id": "148987853",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:35am",
+                "showtime_id": "148987745",
+                "format": "undefined"
+              },
+              {
+                "showtime": "11:05am",
+                "showtime_id": "147765668",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "147765666",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147765664",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "147254641",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147254642",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148987213",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148987215",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148987362",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277297+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -396,37 +466,103 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345689+00:00",
+          "collected_at": "2026-11-23T22:38:05.277283+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147912602",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148936936",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147912636",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147912739",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147912741",
+                "format": "RealD 3D"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277266+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-27": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "147912637",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147912735",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147912737",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "147912606",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148932730",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277431+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-29",
+      "show_date": "2026-11-28",
       "movies": {
         "Hexed": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "147912604",
+            "showtime_id": "147912602",
             "format": "Laser at AMC"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "148936931",
+            "showtime_id": "148936936",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147912634",
+            "showtime_id": "147912636",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147912743",
+            "showtime_id": "147912739",
             "format": "RealD 3D"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147912744",
+            "showtime_id": "147912741",
             "format": "RealD 3D"
           }
         ]
@@ -495,6 +631,11 @@
                 "format": "Spanish Language Dubbed with No Subtitles"
               },
               {
+                "showtime": "3:15pm",
+                "showtime_id": "147913752",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "6:15pm",
                 "showtime_id": "147913690",
                 "format": "RealD 3D"
@@ -503,23 +644,18 @@
                 "showtime": "9:00pm",
                 "showtime_id": "147913689",
                 "format": "RealD 3D"
-              },
-              {
-                "showtime": "3:15pm",
-                "showtime_id": "147913752",
-                "format": "Laser at AMC"
               }
             ],
             "Hershey": [
               {
-                "showtime": "3:15pm",
-                "showtime_id": "147371731",
-                "format": "Open Caption (On-screen Subtitles)"
-              },
-              {
                 "showtime": "12:15pm",
                 "showtime_id": "147371695",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147371731",
+                "format": "Open Caption (On-screen Subtitles)"
               },
               {
                 "showtime": "7:10pm",
@@ -533,7 +669,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207552+00:00",
+          "collected_at": "2026-11-23T22:38:05.277395+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -583,54 +719,114 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345637+00:00",
+          "collected_at": "2026-11-23T22:38:05.277401+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-29": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "10:00am",
+                "showtime_id": "147913687",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "12:45pm",
+                "showtime_id": "147913688",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "147913747",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "147913746",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148929992",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "11:15am",
+                "showtime_id": "147371696",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:15pm",
+                "showtime_id": "147371732",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "5:00pm",
+                "showtime_id": "148930203",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "8:15pm",
+                "showtime_id": "148930081",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277353+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-29",
       "movies": {
         "Hexed": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "147913760",
-            "format": "Laser at AMC"
+            "showtime": "10:00am",
+            "showtime_id": "147913687",
+            "format": "RealD 3D"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "147913759",
-            "format": "Laser at AMC"
+            "showtime": "12:45pm",
+            "showtime_id": "147913688",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "147913747",
+            "format": "Open Caption (On-screen Subtitles)"
           },
           {
             "showtime": "6:15pm",
-            "showtime_id": "147913698",
-            "format": "RealD 3D"
+            "showtime_id": "147913746",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147913699",
-            "format": "RealD 3D"
+            "showtime": "10:00pm",
+            "showtime_id": "148929992",
+            "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147371699",
+            "showtime": "11:15am",
+            "showtime_id": "147371696",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147371735",
+            "showtime": "2:15pm",
+            "showtime_id": "147371732",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148929980",
+            "showtime": "5:00pm",
+            "showtime_id": "148930203",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "148930151",
+            "showtime": "8:15pm",
+            "showtime_id": "148930081",
             "format": "Laser at AMC"
           }
         ]
@@ -677,7 +873,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207435+00:00",
+          "collected_at": "2026-11-23T22:38:05.277230+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -722,7 +918,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345664+00:00",
+          "collected_at": "2026-11-23T22:38:05.277369+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -767,31 +963,31 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345546+00:00",
+          "collected_at": "2026-11-23T22:38:05.277409+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
           "movies": {
             "Hexed": [
               {
-                "showtime": "12:45pm",
-                "showtime_id": "147892312",
-                "format": "RealD 3D"
-              },
-              {
-                "showtime": "6:30pm",
-                "showtime_id": "147892316",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "10:00am",
                 "showtime_id": "147892320",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "12:45pm",
+                "showtime_id": "147892312",
+                "format": "RealD 3D"
+              },
+              {
                 "showtime": "3:30pm",
                 "showtime_id": "148138720",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147892316",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "9:15pm",
@@ -812,49 +1008,44 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207573+00:00",
+          "collected_at": "2026-11-23T22:38:05.277303+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-29",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "147892340",
+            "showtime": "2:30pm",
+            "showtime_id": "148517646",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "12:45pm",
-            "showtime_id": "147892332",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "3:30pm",
-            "showtime_id": "148138722",
+            "showtime": "5:15pm",
+            "showtime_id": "147892362",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147892336",
-            "format": "RealD 3D"
+            "showtime": "8:00pm",
+            "showtime_id": "147892360",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "147892338",
+            "showtime": "9:00pm",
+            "showtime_id": "147892608",
             "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147315762",
-            "format": "Open Caption (On-screen Subtitles)"
+            "showtime": "2:15pm",
+            "showtime_id": "147315728",
+            "format": "Laser at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147315763",
+            "showtime": "5:15pm",
+            "showtime_id": "147315729",
             "format": "Laser at AMC"
           }
         ]
@@ -901,12 +1092,18 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207449+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-11-23T22:38:05.277428+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-11-29": {
           "movies": {
             "Hexed": [
+              {
+                "showtime": "1:25pm",
+                "showtime_id": "147922428",
+                "format": "RealD 3D"
+              },
               {
                 "showtime": "3:00pm",
                 "showtime_id": "147922456",
@@ -916,11 +1113,6 @@
                 "showtime": "4:15pm",
                 "showtime_id": "147922429",
                 "format": "Open Caption (On-screen Subtitles)"
-              },
-              {
-                "showtime": "1:25pm",
-                "showtime_id": "147922428",
-                "format": "RealD 3D"
               },
               {
                 "showtime": "7:00pm",
@@ -941,8 +1133,9 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207480+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-11-23T22:38:05.277404+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         },
         "2026-11-26": {
           "movies": {
@@ -983,6 +1176,11 @@
           "movies": {
             "Hexed": [
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147922443",
+                "format": "undefined"
+              },
+              {
                 "showtime": "2:45pm",
                 "showtime_id": "147922445",
                 "format": "Dolby Cinema at AMC"
@@ -991,11 +1189,6 @@
                 "showtime": "3:45pm",
                 "showtime_id": "147922423",
                 "format": "RealD 3D"
-              },
-              {
-                "showtime": "1:00pm",
-                "showtime_id": "147922443",
-                "format": "undefined"
               },
               {
                 "showtime": "6:30pm",
@@ -1016,8 +1209,9 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345682+00:00",
-          "showtime_window_version": "sat-sun-10-23-v1"
+          "collected_at": "2026-11-23T22:38:05.277293+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1",
+          "empty": false
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
@@ -1110,17 +1304,12 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207465+00:00",
+          "collected_at": "2026-11-23T22:38:05.277419+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
           "movies": {
             "Hexed": [
-              {
-                "showtime": "7:15pm",
-                "showtime_id": "147909241",
-                "format": "RealD 3D"
-              },
               {
                 "showtime": "1:15pm",
                 "showtime_id": "148903648",
@@ -1130,6 +1319,11 @@
                 "showtime": "4:15pm",
                 "showtime_id": "147909240",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147909241",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "10:15pm",
@@ -1155,7 +1349,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207602+00:00",
+          "collected_at": "2026-11-23T22:38:05.277306+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -1212,11 +1406,6 @@
           "movies": {
             "Hexed": [
               {
-                "showtime": "7:00pm",
-                "showtime_id": "147909243",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "1:30pm",
                 "showtime_id": "147909246",
                 "format": "Dine-In Delivery to Seat"
@@ -1225,6 +1414,11 @@
                 "showtime": "4:15pm",
                 "showtime_id": "147909245",
                 "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147909243",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "9:45pm",
@@ -1250,54 +1444,49 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345508+00:00",
+          "collected_at": "2026-11-23T22:38:05.277319+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-27",
       "movies": {
         "Hexed": [
           {
-            "showtime": "12:40pm",
-            "showtime_id": "148903583",
+            "showtime": "1:15pm",
+            "showtime_id": "148903648",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "3:30pm",
-            "showtime_id": "147909237",
+            "showtime": "4:15pm",
+            "showtime_id": "147909240",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:15pm",
-            "showtime_id": "147909238",
+            "showtime": "7:15pm",
+            "showtime_id": "147909241",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147909239",
+            "showtime": "10:15pm",
+            "showtime_id": "147909242",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Hershey": [
           {
-            "showtime": "1:40pm",
-            "showtime_id": "148903466",
+            "showtime": "2:45pm",
+            "showtime_id": "148903426",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "148903465",
+            "showtime": "5:30pm",
+            "showtime_id": "148903417",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148903464",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "10:10pm",
-            "showtime_id": "148903471",
+            "showtime": "8:15pm",
+            "showtime_id": "148903420",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -1369,7 +1558,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345619+00:00",
+          "collected_at": "2026-11-23T22:38:05.277366+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -1434,31 +1623,21 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345644+00:00",
+          "collected_at": "2026-11-23T22:38:05.277327+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
           "movies": {
             "Hexed": [
               {
-                "showtime": "1:00pm",
-                "showtime_id": "147900813",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
                 "showtime": "11:15am",
                 "showtime_id": "147900733",
                 "format": "RealD 3D"
               },
               {
-                "showtime": "4:45pm",
-                "showtime_id": "147900735",
-                "format": "RealD 3D"
-              },
-              {
-                "showtime": "10:15pm",
-                "showtime_id": "148385032",
-                "format": "RealD 3D"
+                "showtime": "1:00pm",
+                "showtime_id": "147900813",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "2:00pm",
@@ -1466,9 +1645,19 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:45pm",
+                "showtime_id": "147900735",
+                "format": "RealD 3D"
+              },
+              {
                 "showtime": "7:30pm",
                 "showtime_id": "147900736",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148385032",
+                "format": "RealD 3D"
               }
             ],
             "Hershey": [
@@ -1499,69 +1688,124 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345632+00:00",
+          "collected_at": "2026-11-23T22:38:05.277389+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147900816",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147900721",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147900722",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147900723",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147900724",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148855246",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "147390546",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:45pm",
+                "showtime_id": "147390547",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "148855264",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:15pm",
+                "showtime_id": "148855265",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277245+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-28",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "147900729",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147900814",
+            "showtime": "12:00pm",
+            "showtime_id": "147900816",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147900730",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147900731",
+            "showtime": "1:00pm",
+            "showtime_id": "147900721",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147900732",
+            "showtime": "3:45pm",
+            "showtime_id": "147900722",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148385031",
+            "showtime": "6:30pm",
+            "showtime_id": "147900723",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147900724",
+            "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "148877393",
+            "showtime": "12:30pm",
+            "showtime_id": "148855246",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147390556",
+            "showtime_id": "147390546",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147390557",
+            "showtime_id": "147390547",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "148877396",
+            "showtime_id": "148855264",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "148877397",
+            "showtime_id": "148855265",
             "format": "Laser at AMC"
           }
         ]
@@ -1598,30 +1842,172 @@
           },
           "collected_at": "2026-11-23T21:02:46.345528+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147941217",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "1:45pm",
+                "showtime_id": "147941278",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "149009400",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "147941277",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147941287",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147941279",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "148767885",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "148767884",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148767883",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "149009287",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277196+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147941222",
+                "format": "PRIME at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147941304",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147941305",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147941306",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147941307",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "149009310",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "149009309",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "149009308",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277412+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-29",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147941224",
+            "showtime": "1:00pm",
+            "showtime_id": "147941217",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147941301",
-            "format": "undefined"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "147941302",
+            "showtime": "1:45pm",
+            "showtime_id": "147941278",
             "format": "RealD 3D"
           },
           {
-            "showtime": "8:30pm",
-            "showtime_id": "147941303",
+            "showtime": "3:45pm",
+            "showtime_id": "149009400",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "147941277",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "147941287",
+            "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "147941279",
+            "format": "undefined"
+          }
+        ],
+        "Hershey": [
+          {
+            "showtime": "1:30pm",
+            "showtime_id": "148767885",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:15pm",
+            "showtime_id": "148767884",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:00pm",
+            "showtime_id": "148767883",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:50pm",
+            "showtime_id": "149009287",
             "format": "undefined"
           }
         ]
@@ -1678,31 +2064,31 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207528+00:00",
+          "collected_at": "2026-11-23T22:38:05.277383+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
           "movies": {
             "Hexed": [
               {
-                "showtime": "12:25pm",
-                "showtime_id": "147849510",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:20pm",
-                "showtime_id": "147849440",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "10:30am",
                 "showtime_id": "147849438",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "12:25pm",
+                "showtime_id": "147849510",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "1:25pm",
                 "showtime_id": "147849439",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147849440",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "7:15pm",
@@ -1728,7 +2114,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207546+00:00",
+          "collected_at": "2026-11-23T22:38:05.277359+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -1783,31 +2169,31 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345499+00:00",
+          "collected_at": "2026-11-23T22:38:05.277206+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
           "movies": {
             "Hexed": [
               {
-                "showtime": "12:25pm",
-                "showtime_id": "147849512",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:20pm",
-                "showtime_id": "147849432",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "10:30am",
                 "showtime_id": "147849429",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "12:25pm",
+                "showtime_id": "147849512",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "1:25pm",
                 "showtime_id": "147849431",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:20pm",
+                "showtime_id": "147849432",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "7:15pm",
@@ -1833,7 +2219,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345540+00:00",
+          "collected_at": "2026-11-23T22:38:05.277345+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -1962,7 +2348,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207536+00:00",
+          "collected_at": "2026-11-23T22:38:05.277398+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -2022,12 +2408,17 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345483+00:00",
+          "collected_at": "2026-11-23T22:38:05.277224+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
           "movies": {
             "Hexed": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148770655",
+                "format": "undefined"
+              },
               {
                 "showtime": "1:50pm",
                 "showtime_id": "147774570",
@@ -2037,11 +2428,6 @@
                 "showtime": "4:40pm",
                 "showtime_id": "147774569",
                 "format": "RealD 3D"
-              },
-              {
-                "showtime": "11:00am",
-                "showtime_id": "148770655",
-                "format": "undefined"
               },
               {
                 "showtime": "7:30pm",
@@ -2077,7 +2463,72 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345576+00:00",
+          "collected_at": "2026-11-23T22:38:05.277372+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "4:40pm",
+                "showtime_id": "147774572",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148770635",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147774573",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:30pm",
+                "showtime_id": "147774571",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:20pm",
+                "showtime_id": "148770636",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148770835",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147271450",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148594910",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147271452",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:40pm",
+                "showtime_id": "147271451",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148770837",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277386+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -2206,7 +2657,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207579+00:00",
+          "collected_at": "2026-11-23T22:38:05.277380+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -2266,64 +2717,184 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345626+00:00",
+          "collected_at": "2026-11-23T22:38:05.277392+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148828989",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147853378",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147853377",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147853374",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147853375",
+                "format": "RealD 3D"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "10:35am",
+                "showtime_id": "148828963",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148594532",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148594533",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148828814",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148828815",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277260+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-29": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147853396",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147853394",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148828988",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147853398",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147853392",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "11:10am",
+                "showtime_id": "148828823",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:00pm",
+                "showtime_id": "148594538",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:50pm",
+                "showtime_id": "148594539",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148828824",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:30pm",
+                "showtime_id": "148828825",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277407+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-28",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
             "showtime": "10:10am",
-            "showtime_id": "148828987",
+            "showtime_id": "148828989",
             "format": "undefined"
           },
           {
             "showtime": "1:00pm",
-            "showtime_id": "147853390",
+            "showtime_id": "147853378",
             "format": "undefined"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "147853389",
+            "showtime_id": "147853377",
             "format": "RealD 3D"
           },
           {
             "showtime": "6:30pm",
-            "showtime_id": "147853385",
+            "showtime_id": "147853374",
             "format": "undefined"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "147853387",
+            "showtime_id": "147853375",
             "format": "RealD 3D"
           }
         ],
         "Hershey": [
           {
-            "showtime": "11:10am",
-            "showtime_id": "148828820",
+            "showtime": "10:35am",
+            "showtime_id": "148828963",
             "format": "undefined"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "148594536",
+            "showtime_id": "148594532",
             "format": "undefined"
           },
           {
             "showtime": "4:50pm",
-            "showtime_id": "148594537",
+            "showtime_id": "148594533",
             "format": "undefined"
           },
           {
-            "showtime": "7:40pm",
-            "showtime_id": "148828821",
+            "showtime": "7:45pm",
+            "showtime_id": "148828814",
             "format": "undefined"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "148828822",
+            "showtime_id": "148828815",
             "format": "undefined"
           }
         ]
@@ -2370,7 +2941,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207587+00:00",
+          "collected_at": "2026-11-23T22:38:05.277316+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -2410,7 +2981,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345591+00:00",
+          "collected_at": "2026-11-23T22:38:05.277300+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -2435,11 +3006,16 @@
                 "showtime": "6:30pm",
                 "showtime_id": "147895940",
                 "format": "undefined"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148994529",
+                "format": "undefined"
               }
             ],
             "Hershey": [
               {
-                "showtime": "12:30pm",
+                "showtime": "1:00pm",
                 "showtime_id": "147382449",
                 "format": "undefined"
               },
@@ -2447,10 +3023,20 @@
                 "showtime": "3:15pm",
                 "showtime_id": "147382457",
                 "format": "undefined"
+              },
+              {
+                "showtime": "6:45pm",
+                "showtime_id": "148994545",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148994532",
+                "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345491+00:00",
+          "collected_at": "2026-11-23T22:38:05.277235+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -2490,7 +3076,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345562+00:00",
+          "collected_at": "2026-11-23T22:38:05.277333+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -2517,17 +3103,32 @@
             "showtime": "6:30pm",
             "showtime_id": "147895940",
             "format": "undefined"
+          },
+          {
+            "showtime": "10:00pm",
+            "showtime_id": "148994529",
+            "format": "undefined"
           }
         ],
         "Hershey": [
           {
-            "showtime": "12:30pm",
+            "showtime": "1:00pm",
             "showtime_id": "147382449",
             "format": "undefined"
           },
           {
             "showtime": "3:15pm",
             "showtime_id": "147382457",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:45pm",
+            "showtime_id": "148994545",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148994532",
             "format": "undefined"
           }
         ]
@@ -2572,7 +3173,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T20:51:35.207594+00:00",
+          "collected_at": "2026-11-23T22:38:05.277425+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -2610,7 +3211,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345518+00:00",
+          "collected_at": "2026-11-23T22:38:05.277339+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -2622,24 +3223,14 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
-                "showtime": "1:00pm",
-                "showtime_id": "147931756",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "4:30pm",
-                "showtime_id": "147931784",
-                "format": "RealD 3D"
-              },
-              {
-                "showtime": "10:00pm",
-                "showtime_id": "147931786",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "11:00am",
                 "showtime_id": "147931782",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147931756",
+                "format": "Dolby Cinema at AMC"
               },
               {
                 "showtime": "1:45pm",
@@ -2647,49 +3238,87 @@
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "4:30pm",
+                "showtime_id": "147931784",
+                "format": "RealD 3D"
+              },
+              {
                 "showtime": "7:15pm",
                 "showtime_id": "147931785",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147931786",
+                "format": "RealD 3D"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277362+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147930447",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147931796",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:45pm",
+                "showtime_id": "147931797",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:30pm",
+                "showtime_id": "147931798",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "147931799",
                 "format": "Laser at AMC"
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345585+00:00",
+          "collected_at": "2026-11-23T22:38:05.277240+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-27",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "147931787",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147931754",
+            "showtime": "12:00pm",
+            "showtime_id": "147930447",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147931788",
+            "showtime": "1:00pm",
+            "showtime_id": "147931796",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147931789",
+            "showtime": "3:45pm",
+            "showtime_id": "147931797",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147931790",
+            "showtime": "6:30pm",
+            "showtime_id": "147931798",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147931791",
-            "format": "RealD 3D"
+            "showtime": "9:15pm",
+            "showtime_id": "147931799",
+            "format": "Laser at AMC"
           }
         ]
       }
@@ -2735,44 +3364,184 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345555+00:00",
+          "collected_at": "2026-11-23T22:38:05.277280+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147837809",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147837810",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147837811",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147837812",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:10pm",
+                "showtime_id": "148886173",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148886174",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "5:55pm",
+                "showtime_id": "148886216",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "8:45pm",
+                "showtime_id": "148886217",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277250+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-27": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147837813",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147837815",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147837814",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147837817",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:25pm",
+                "showtime_id": "148886176",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148886179",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277276+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147837819",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147837823",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147837821",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "147837825",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:25pm",
+                "showtime_id": "148886184",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148886186",
+                "format": "Dine-In Delivery to Seat"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277422+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-29",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "147837827",
+            "showtime": "1:00pm",
+            "showtime_id": "147837809",
             "format": "RealD 3D"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147837828",
+            "showtime": "4:00pm",
+            "showtime_id": "147837810",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "6:00pm",
-            "showtime_id": "147837830",
+            "showtime": "7:00pm",
+            "showtime_id": "147837811",
             "format": "RealD 3D"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "147837832",
+            "showtime": "10:00pm",
+            "showtime_id": "147837812",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Hershey": [
           {
-            "showtime": "12:05pm",
-            "showtime_id": "148886192",
+            "showtime": "12:10pm",
+            "showtime_id": "148886173",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "2:55pm",
-            "showtime_id": "148886193",
+            "showtime": "3:00pm",
+            "showtime_id": "148886174",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "5:55pm",
+            "showtime_id": "148886216",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:45pm",
+            "showtime_id": "148886217",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -2786,11 +3555,6 @@
           "movies": {
             "Hexed": [
               {
-                "showtime": "4:00pm",
-                "showtime_id": "147800181",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "10:10am",
                 "showtime_id": "148780825",
                 "format": "undefined"
@@ -2799,6 +3563,11 @@
                 "showtime": "1:00pm",
                 "showtime_id": "147800182",
                 "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147800181",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "7:00pm",
@@ -2829,17 +3598,12 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345477+00:00",
+          "collected_at": "2026-11-23T22:38:05.277218+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
           "movies": {
             "Hexed": [
-              {
-                "showtime": "4:00pm",
-                "showtime_id": "147800187",
-                "format": "RealD 3D"
-              },
               {
                 "showtime": "10:10am",
                 "showtime_id": "148272294",
@@ -2849,6 +3613,11 @@
                 "showtime": "1:00pm",
                 "showtime_id": "147800188",
                 "format": "undefined"
+              },
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147800187",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "7:00pm",
@@ -2879,7 +3648,107 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345671+00:00",
+          "collected_at": "2026-11-23T22:38:05.277342+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-27": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147800184",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148272295",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147800185",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147800183",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:15pm",
+                "showtime_id": "148780840",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148597298",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148597299",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148780906",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277330+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-29": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "4:00pm",
+                "showtime_id": "147800190",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:10am",
+                "showtime_id": "148272290",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147800191",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147800189",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "148780837",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:15pm",
+                "showtime_id": "148597302",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "148597303",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:45pm",
+                "showtime_id": "148780900",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277357+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -2887,11 +3756,6 @@
       "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
-          {
-            "showtime": "4:00pm",
-            "showtime_id": "147800181",
-            "format": "RealD 3D"
-          },
           {
             "showtime": "10:10am",
             "showtime_id": "148780825",
@@ -2901,6 +3765,11 @@
             "showtime": "1:00pm",
             "showtime_id": "147800182",
             "format": "undefined"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "147800181",
+            "format": "RealD 3D"
           },
           {
             "showtime": "7:00pm",
@@ -2940,8 +3809,8 @@
           "movies": {
             "Hexed": [
               {
-                "showtime": "4:25pm",
-                "showtime_id": "147860294",
+                "showtime": "10:00am",
+                "showtime_id": "148997515",
                 "format": "RealD 3D"
               },
               {
@@ -2950,8 +3819,28 @@
                 "format": "undefined"
               },
               {
+                "showtime": "12:30pm",
+                "showtime_id": "148997501",
+                "format": "undefined"
+              },
+              {
                 "showtime": "1:35pm",
                 "showtime_id": "147860292",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148997499",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147860294",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148997498",
                 "format": "undefined"
               },
               {
@@ -2960,43 +3849,227 @@
                 "format": "undefined"
               },
               {
+                "showtime": "9:10pm",
+                "showtime_id": "148997496",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
                 "showtime": "10:10pm",
                 "showtime_id": "147860298",
                 "format": "undefined"
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345569+00:00",
+          "collected_at": "2026-11-23T22:38:05.277435+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "10:45am",
+                "showtime_id": "147860282",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148997430",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147860284",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148997429",
+                "format": "undefined"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147860286",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148997427",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147860288",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148997426",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277213+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148997508",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "10:45am",
+                "showtime_id": "147860300",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147860304",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00am",
+                "showtime_id": "148997438",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148997513",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147860302",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:20pm",
+                "showtime_id": "148997511",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148997510",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147860306",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147860308",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277376+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-29": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "3:25pm",
+                "showtime_id": "148997502",
+                "format": "English Spoken with Spanish Subtitles"
+              },
+              {
+                "showtime": "10:45am",
+                "showtime_id": "148997359",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147860312",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "10:00am",
+                "showtime_id": "147860309",
+                "format": "undefined"
+              },
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "148997507",
+                "format": "undefined"
+              },
+              {
+                "showtime": "1:35pm",
+                "showtime_id": "147860311",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:15pm",
+                "showtime_id": "148997504",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147860314",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:10pm",
+                "showtime_id": "148997505",
+                "format": "undefined"
+              },
+              {
+                "showtime": "10:10pm",
+                "showtime_id": "147860315",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277416+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-27",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "4:25pm",
-            "showtime_id": "147860294",
-            "format": "RealD 3D"
+            "showtime": "10:45am",
+            "showtime_id": "147860282",
+            "format": "undefined"
           },
           {
-            "showtime": "10:45am",
-            "showtime_id": "147860290",
+            "showtime": "12:30pm",
+            "showtime_id": "148997430",
             "format": "undefined"
           },
           {
             "showtime": "1:35pm",
-            "showtime_id": "147860292",
+            "showtime_id": "147860284",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:20pm",
+            "showtime_id": "148997429",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:25pm",
+            "showtime_id": "147860286",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148997427",
             "format": "undefined"
           },
           {
             "showtime": "7:15pm",
-            "showtime_id": "147860296",
+            "showtime_id": "147860288",
             "format": "undefined"
           },
           {
-            "showtime": "10:10pm",
-            "showtime_id": "147860298",
+            "showtime": "9:10pm",
+            "showtime_id": "148997426",
             "format": "undefined"
           }
         ]
@@ -3010,24 +4083,24 @@
           "movies": {
             "Hexed": [
               {
-                "showtime": "1:00pm",
-                "showtime_id": "147898254",
-                "format": "Dolby Cinema at AMC"
-              },
-              {
-                "showtime": "3:00pm",
-                "showtime_id": "148940611",
-                "format": "RealD 3D"
-              },
-              {
                 "showtime": "11:00am",
                 "showtime_id": "148940631",
                 "format": "Laser at AMC"
               },
               {
+                "showtime": "1:00pm",
+                "showtime_id": "147898254",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
                 "showtime": "1:50pm",
                 "showtime_id": "148940629",
                 "format": "Laser at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148940611",
+                "format": "RealD 3D"
               },
               {
                 "showtime": "6:00pm",
@@ -3063,12 +4136,17 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345600+00:00",
+          "collected_at": "2026-11-23T22:38:05.277349+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
           "movies": {
             "Hexed": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148932957",
+                "format": "Laser at AMC"
+              },
               {
                 "showtime": "1:00pm",
                 "showtime_id": "147898249",
@@ -3078,11 +4156,6 @@
                 "showtime": "3:00pm",
                 "showtime_id": "148932958",
                 "format": "RealD 3D"
-              },
-              {
-                "showtime": "12:00pm",
-                "showtime_id": "148932957",
-                "format": "Laser at AMC"
               },
               {
                 "showtime": "6:00pm",
@@ -3118,64 +4191,119 @@
               }
             ]
           },
-          "collected_at": "2026-11-23T21:02:46.345649+00:00",
+          "collected_at": "2026-11-23T22:38:05.277323+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147898251",
+                "format": "Dolby Cinema at AMC"
+              },
+              {
+                "showtime": "3:00pm",
+                "showtime_id": "148934352",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "148934350",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "6:00pm",
+                "showtime_id": "147898371",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "9:40pm",
+                "showtime_id": "147898372",
+                "format": "Laser at AMC"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "11:00am",
+                "showtime_id": "148755241",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "1:50pm",
+                "showtime_id": "148755242",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "4:30pm",
+                "showtime_id": "148934372",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "148934367",
+                "format": "Laser at AMC"
+              },
+              {
+                "showtime": "10:00pm",
+                "showtime_id": "148934366",
+                "format": "Laser at AMC"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277336+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-29",
+      "show_date": "2026-11-27",
       "movies": {
         "Hexed": [
           {
+            "showtime": "12:00pm",
+            "showtime_id": "148932957",
+            "format": "Laser at AMC"
+          },
+          {
             "showtime": "1:00pm",
-            "showtime_id": "147898254",
+            "showtime_id": "147898249",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "148940611",
+            "showtime_id": "148932958",
             "format": "RealD 3D"
           },
           {
-            "showtime": "11:00am",
-            "showtime_id": "148940631",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "1:50pm",
-            "showtime_id": "148940629",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "6:00pm",
-            "showtime_id": "147898373",
+            "showtime_id": "147898369",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "147898374",
+            "showtime_id": "147898370",
             "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148755243",
+            "showtime": "12:30pm",
+            "showtime_id": "148755239",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148755244",
+            "showtime": "3:15pm",
+            "showtime_id": "148755240",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148940622",
+            "showtime": "7:00pm",
+            "showtime_id": "148932966",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "148940621",
+            "showtime_id": "148932967",
             "format": "Laser at AMC"
           }
         ]
@@ -98288,12 +99416,271 @@
           }
         ]
       }
+    },
+    "AMC Shiloh 14": {
+      "tz": "MT",
+      "cohort": "mountain",
+      "dates": {
+        "2026-11-26": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147774264",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147774262",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147774263",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148818233",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147381683",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "147381684",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:30pm",
+                "showtime_id": "148818351",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148818328",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148818267",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277255+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-27": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "4:10pm",
+                "showtime_id": "147774265",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "7:00pm",
+                "showtime_id": "147774266",
+                "format": "RealD 3D"
+              },
+              {
+                "showtime": "1:20pm",
+                "showtime_id": "147774267",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:50pm",
+                "showtime_id": "148818246",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:30pm",
+                "showtime_id": "147381685",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:15pm",
+                "showtime_id": "147381686",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:05pm",
+                "showtime_id": "148818278",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:55pm",
+                "showtime_id": "148818279",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277271+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-28": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:30pm",
+                "showtime_id": "147774270",
+                "format": "Open Caption (On-screen Subtitles)"
+              },
+              {
+                "showtime": "4:25pm",
+                "showtime_id": "147774268",
+                "format": "undefined"
+              },
+              {
+                "showtime": "7:15pm",
+                "showtime_id": "147774269",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148917423",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147381687",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "147381677",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148917424",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277290+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        },
+        "2026-11-29": {
+          "movies": {
+            "Hexed": [
+              {
+                "showtime": "1:00pm",
+                "showtime_id": "147774273",
+                "format": "undefined"
+              },
+              {
+                "showtime": "3:50pm",
+                "showtime_id": "147774271",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:40pm",
+                "showtime_id": "147774272",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:00pm",
+                "showtime_id": "148917421",
+                "format": "undefined"
+              }
+            ],
+            "Hershey": [
+              {
+                "showtime": "12:00pm",
+                "showtime_id": "147381678",
+                "format": "undefined"
+              },
+              {
+                "showtime": "2:50pm",
+                "showtime_id": "147381679",
+                "format": "undefined"
+              },
+              {
+                "showtime": "6:10pm",
+                "showtime_id": "148917425",
+                "format": "undefined"
+              },
+              {
+                "showtime": "9:30pm",
+                "showtime_id": "148917384",
+                "format": "undefined"
+              }
+            ]
+          },
+          "collected_at": "2026-11-23T22:38:05.277310+00:00",
+          "showtime_window_version": "sat-sun-10-23-v1"
+        }
+      },
+      "showtime_window_version": "sat-sun-10-23-v1",
+      "show_date": "2026-11-26",
+      "movies": {
+        "Hexed": [
+          {
+            "showtime": "1:00pm",
+            "showtime_id": "147774264",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:50pm",
+            "showtime_id": "147774262",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "147774263",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148818233",
+            "format": "undefined"
+          }
+        ],
+        "Hershey": [
+          {
+            "showtime": "12:00pm",
+            "showtime_id": "147381683",
+            "format": "undefined"
+          },
+          {
+            "showtime": "2:50pm",
+            "showtime_id": "147381684",
+            "format": "undefined"
+          },
+          {
+            "showtime": "3:30pm",
+            "showtime_id": "148818351",
+            "format": "undefined"
+          },
+          {
+            "showtime": "6:10pm",
+            "showtime_id": "148818328",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:30pm",
+            "showtime_id": "148818267",
+            "format": "undefined"
+          }
+        ]
+      }
     }
   },
   "link_coverage": {
-    "ratio": 0.963,
-    "fresh": 443,
-    "expected": 460,
+    "ratio": 0.9722,
+    "fresh": 70,
+    "expected": 72,
     "min_ratio": 0.9,
     "degraded": false
   }
