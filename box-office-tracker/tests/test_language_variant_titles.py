@@ -56,3 +56,21 @@ class LanguageVariantTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# Audit 2026-11-24: Cinemark listed the tracked 'Hexed' as 'disneys-hexed' (and
+# 'en-espanol-disneys-hexed'); the studio possessive zeroed the film on every
+# lane that shares this matcher.
+def test_studio_possessive_prefix_matches_tracked_title():
+    from cinemark_collect import match_movie_slug
+    from fandango_collect import match_target_title, resolve_target_title, strip_studio_prefix
+    targets = {"hexed": "Hexed", "toy-story-5": "Toy Story 5", "the-marvels": "The Marvels"}
+    assert match_movie_slug("/movies/disneys-hexed", targets) == "Hexed"
+    assert match_movie_slug("/movies/en-espanol-disneys-hexed", targets) == "Hexed"
+    assert match_movie_slug("/movies/disney-pixars-toy-story-5", targets) == "Toy Story 5"
+    assert resolve_target_title("Disney's Hexed", targets) == "Hexed"
+    assert match_target_title("/disneys-hexed-2026-245001/movie-overview", targets) == "Hexed"
+    # only a leading studio possessive is dropped; real titles are untouched
+    assert strip_studio_prefix("the-marvels") == "the-marvels"
+    assert strip_studio_prefix("disney") == "disney"
+    assert resolve_target_title("Disney", targets) is None

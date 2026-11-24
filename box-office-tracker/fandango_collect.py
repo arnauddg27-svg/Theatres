@@ -252,8 +252,21 @@ _NUMERAL_TOKENS = {
 _NEAR_MISS_LOGGED = set()
 
 
+# A chain can brand a film with its studio's possessive: Cinemark lists the
+# tracked 'Hexed' as 'disneys-hexed' and 'en-espanol-disneys-hexed' (audit
+# 2026-11-24: zero Cinemark/Webedia/Fandango rows for the Thanksgiving opener).
+# The possessive prefix is not part of the title, so drop it before matching.
+_STUDIO_PREFIX_RE = re.compile(
+    r"(?:^|(?<=-))(?:disney-pixar-?s|disney-?s|pixar-?s|illumination-?s)-(?=[a-z0-9])")
+
+
+def strip_studio_prefix(slug):
+    """'disneys-hexed' / 'disney-s-hexed' -> 'hexed'; other slugs unchanged."""
+    return _STUDIO_PREFIX_RE.sub("", slug or "")
+
+
 def _slug_tokens(slug):
-    return frozenset(_NUMERAL_TOKENS.get(t, t) for t in (slug or "").split("-") if t)
+    return frozenset(_NUMERAL_TOKENS.get(t, t) for t in strip_studio_prefix(slug).split("-") if t)
 
 
 # A chain lists a film's foreign-language or subtitled showings as a separate
@@ -290,7 +303,11 @@ def resolve_target_title(title, target_slugs):
     """Tracked title for a chain's film title: exact slug, else a language
     variant of one."""
     slug = slugify_title(title)
-    return target_slugs.get(slug) or language_variant_title(slug, target_slugs)
+    hit = target_slugs.get(slug) or language_variant_title(slug, target_slugs)
+    bare = strip_studio_prefix(slug)
+    if not hit and bare != slug:
+        hit = target_slugs.get(bare)
+    return hit
 
 
 def match_target_title(overview_href, target_slugs):
