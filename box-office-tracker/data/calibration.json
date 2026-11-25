@@ -9126,45 +9126,178 @@
         "Sunday": 0.915
       },
       "coverage_ratio": 0.915
+    },
+    {
+      "movie": "The Hunger Games: Sunrise on the Reaping",
+      "weekend_of": "2026-11-20",
+      "date": "2026-11-25",
+      "predicted_mid": 65.61,
+      "predicted_low": 19.15,
+      "predicted_high": 173.01,
+      "actual_total": 119.32,
+      "daily_actuals": {
+        "Thursday": 21.0,
+        "Friday": 34.64,
+        "Saturday": 36.17,
+        "Sunday": 27.51
+      },
+      "daily_predictions": {},
+      "error_pct": -45.0,
+      "n_theatres": 411,
+      "n_days": 0,
+      "model_version": "seat-regression-v31-evidence-integrity",
+      "live_headline": {
+        "mid_m": 119.63,
+        "low_m": 116.53,
+        "high_m": 125.43,
+        "logged_at": "2026-11-23T10:47:57Z",
+        "source": "sunday-ratio",
+        "seat_days": "Thursday+Friday+Saturday",
+        "rows": 30,
+        "checkpoints": {
+          "tuesday_noon_et": {
+            "mid_m": 93.84,
+            "logged_at": "2026-11-17T16:11:10Z",
+            "cutoff": "2026-11-17T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 93.84,
+            "low_m": 27.4,
+            "high_m": 247.47,
+            "error_pct": -21.35,
+            "baseline_error_pct": -21.35,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "thursday_noon_et": {
+            "mid_m": 88.23,
+            "logged_at": "2026-11-19T08:14:23Z",
+            "cutoff": "2026-11-19T17:00:00Z",
+            "source": "presale-only",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "presales",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 88.23,
+            "low_m": 25.76,
+            "high_m": 232.66,
+            "error_pct": -26.06,
+            "baseline_error_pct": -26.06,
+            "absolute_error_improvement_pp": 0.0,
+            "in_range": true
+          },
+          "friday_noon_et": {
+            "mid_m": 137.09,
+            "logged_at": "2026-11-20T16:41:04Z",
+            "cutoff": "2026-11-20T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-previews",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 128.75,
+            "low_m": 91.71,
+            "high_m": 444.13,
+            "error_pct": 14.89,
+            "baseline_error_pct": 7.9,
+            "absolute_error_improvement_pp": -6.99,
+            "in_range": true
+          },
+          "saturday_noon_et": {
+            "mid_m": 126.57,
+            "logged_at": "2026-11-21T16:56:47Z",
+            "cutoff": "2026-11-21T17:00:00Z",
+            "source": "stage-daily-evidence",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-friday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 124.81,
+            "low_m": 100.72,
+            "high_m": 217.17,
+            "error_pct": 6.08,
+            "baseline_error_pct": 4.6,
+            "absolute_error_improvement_pp": -1.48,
+            "in_range": true
+          },
+          "sunday_noon_et": {
+            "mid_m": 119.63,
+            "logged_at": "2026-11-22T16:57:44Z",
+            "cutoff": "2026-11-22T17:00:00Z",
+            "source": "sunday-ratio",
+            "model_version": "seat-regression-v31-evidence-integrity",
+            "forecast_stage": "after-saturday",
+            "model_gross_window": "Thursday-Sunday",
+            "market_window_compatible": "1",
+            "baseline_mid_m": 119.64,
+            "low_m": 116.53,
+            "high_m": 125.43,
+            "error_pct": 0.26,
+            "baseline_error_pct": 0.27,
+            "absolute_error_improvement_pp": 0.01,
+            "in_range": true
+          }
+        },
+        "thursday_mid_m": 137.09,
+        "thursday_logged_at": "2026-11-21T13:24:20Z"
+      },
+      "live_error_pct": 0.3,
+      "model_cohort_key": "core,expansion",
+      "reference_amc_theatres": 425,
+      "actual_source": "The Numbers auto-calibrate",
+      "actual_status": "final",
+      "daily_actuals_source": "https://www.the-numbers.com/movie/Hunger-Games-The-Sunrise-on-the-Reaping-(2026)",
+      "snapshot_daily_predictions": {
+        "Thursday": 9.68,
+        "Friday": 14.67,
+        "Saturday": 24.4,
+        "Sunday": 18.03
+      },
+      "snapshot_daily_coverage_ratios": {
+        "Thursday": 0.221,
+        "Friday": 0.221,
+        "Saturday": 0.229,
+        "Sunday": 0.238
+      },
+      "snapshot_daily_lead_buckets": {
+        "Thursday": "same_day",
+        "Friday": "next_day",
+        "Saturday": "multi_day",
+        "Sunday": "multi_day"
+      },
+      "social_signal": {
+        "factor": 1.0,
+        "adjustment_pct": 0.0,
+        "sentiment_score": 0.0,
+        "buzz_score": 0.0,
+        "buzz_source": "neutral",
+        "signal_quality": 0.4092,
+        "reach": 371.2,
+        "rows": 1,
+        "platforms": [
+          "wikipedia"
+        ]
+      }
     }
   ],
   "calibration_factors": {
-    "amc_market_share": 0.22,
+    "amc_market_share": 0.2208,
     "reference_amc_theatres": 376,
     "reference_amc_theatres_by_cohort": {
       "core": 376,
       "core,expansion": 425
     },
     "day_weights": {
-      "Thursday": 0.13246599353278277,
-      "Friday": 0.28471824427893144,
-      "Saturday": 0.3345340980924432,
-      "Sunday": 0.24828166409584265
+      "Thursday": 0.13339219192859814,
+      "Friday": 0.28483725539380184,
+      "Saturday": 0.3338660200144712,
+      "Sunday": 0.24790453266312892
     },
     "format_scale_factors": {},
     "historical_accuracy": [
-      {
-        "movie": "Digger",
-        "weekend_of": "2026-10-02",
-        "abs_error_pct": 4.6,
-        "n_theatres": 424,
-        "n_days": 4,
-        "coverage_ratio": 0.994,
-        "daily_coverage_ratios": {
-          "Thursday": 0.995,
-          "Friday": 0.995,
-          "Saturday": 0.991,
-          "Sunday": 0.993
-        },
-        "daily_errors": {
-          "Thursday": 15.0,
-          "Friday": 13.5,
-          "Saturday": 4.5,
-          "Sunday": 17.3
-        },
-        "model_cohort_key": "core,expansion",
-        "reference_amc_theatres": 425
-      },
       {
         "movie": "Verity",
         "weekend_of": "2026-10-02",
@@ -9500,9 +9633,9 @@
           "Sunday": 0.946
         },
         "daily_errors": {
-          "Thursday": 34.9,
-          "Saturday": 20.8,
-          "Sunday": 11.9
+          "Thursday": 34.4,
+          "Saturday": 21.1,
+          "Sunday": 12.2
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -9520,9 +9653,9 @@
           "Sunday": 0.995
         },
         "daily_errors": {
-          "Thursday": 2.2,
+          "Thursday": 2.0,
           "Saturday": 28.1,
-          "Sunday": 23.1
+          "Sunday": 23.0
         },
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
@@ -9530,7 +9663,7 @@
       {
         "movie": "Ghost Soldier",
         "weekend_of": "2026-11-13",
-        "abs_error_pct": 40.0,
+        "abs_error_pct": 40.1,
         "n_theatres": 390,
         "n_days": 3,
         "coverage_ratio": 0.915,
@@ -9540,47 +9673,59 @@
           "Sunday": 0.915
         },
         "daily_errors": {
-          "Thursday": 32.4,
-          "Saturday": 35.4,
-          "Sunday": 33.3
+          "Thursday": 32.5,
+          "Saturday": 35.5,
+          "Sunday": 33.1
         },
+        "model_cohort_key": "core,expansion",
+        "reference_amc_theatres": 425
+      },
+      {
+        "movie": "The Hunger Games: Sunrise on the Reaping",
+        "weekend_of": "2026-11-20",
+        "abs_error_pct": 45.0,
+        "n_theatres": 411,
+        "n_days": 0,
+        "coverage_ratio": null,
+        "daily_coverage_ratios": {},
+        "daily_errors": {},
         "model_cohort_key": "core,expansion",
         "reference_amc_theatres": 425
       }
     ],
-    "last_updated": "2026-11-18",
+    "last_updated": "2026-11-25",
     "last_snapshot_calibration_backfill": "2026-05-15",
     "snapshot_calibration_support": {
       "days": {
         "Thursday": {
-          "n": 14,
-          "support": 12.26
+          "n": 15,
+          "support": 12.481
         },
         "Friday": {
-          "n": 15,
-          "support": 11.31
+          "n": 16,
+          "support": 11.531
         },
         "Saturday": {
-          "n": 19,
-          "support": 13.993
+          "n": 20,
+          "support": 14.222
         },
         "Sunday": {
           "n": 20,
-          "support": 17.936
+          "support": 17.221
         }
       },
       "leads": {
         "same_day": {
           "n": 65,
-          "support": 53.032
+          "support": 52.3
         },
         "next_day": {
-          "n": 3,
-          "support": 2.467
+          "n": 4,
+          "support": 2.688
         },
         "multi_day": {
-          "n": 0,
-          "support": 0.0
+          "n": 2,
+          "support": 0.467
         },
         "long_lead": {
           "n": 0,
@@ -9592,10 +9737,10 @@
       "version": 1,
       "active_tier": "regression",
       "day_shares": {
-        "Thursday": 0.13246599353278277,
-        "Friday": 0.28471824427893144,
-        "Saturday": 0.3345340980924432,
-        "Sunday": 0.24828166409584265
+        "Thursday": 0.13339219192859814,
+        "Friday": 0.28483725539380184,
+        "Saturday": 0.3338660200144712,
+        "Sunday": 0.24790453266312892
       },
       "trained_on": [
         "Michael",
@@ -9695,13 +9840,13 @@
           "lead_long_lead"
         ],
         "coef": [
-          0.4724714080480592,
-          0.7503829185074194,
-          -0.09692161782769783,
-          0.27099895277766584,
-          0.13946861509372285,
-          -0.017902725724126222,
-          0.0,
+          0.45722610589761764,
+          0.7670532354477478,
+          -0.07240701321779357,
+          0.28002854879927536,
+          0.131279126126623,
+          0.03000654013356429,
+          0.2376573178022211,
           0.0
         ],
         "prior": [
@@ -9715,16 +9860,16 @@
           0.0
         ],
         "lambda": 3.0,
-        "daily_resid_sd": 0.47930260068984953
+        "daily_resid_sd": 0.48803846697908065
       },
       "weekend": {
-        "log_half_width": 0.5081,
+        "log_half_width": 0.5071,
         "resid_mean": 0.028709975841855417,
         "df": 44,
         "loo_hit_rate": 0.9333,
         "loo_hit_rate_basis": "calibration-set coverage; validate on later weekends",
-        "loo_mae_pct": 20.39,
-        "loo_median_ae_pct": 13.87,
+        "loo_mae_pct": 20.12,
+        "loo_median_ae_pct": 14.17,
         "n_movies": 45
       },
       "loo_detail": [
@@ -9736,103 +9881,103 @@
         },
         {
           "movie": "The Devil Wears Prada 2",
-          "pred_m": 46.77,
+          "pred_m": 46.76,
           "actual_m": 76.75,
-          "observed_share": 0.716
+          "observed_share": 0.715
         },
         {
           "movie": "Mortal Kombat II",
-          "pred_m": 36.34,
+          "pred_m": 36.8,
           "actual_m": 38.5,
           "observed_share": 1.0
         },
         {
           "movie": "The Sheep Detectives",
-          "pred_m": 17.02,
+          "pred_m": 17.18,
           "actual_m": 15.09,
-          "observed_share": 0.868
+          "observed_share": 0.867
         },
         {
           "movie": "Obsession",
-          "pred_m": 19.06,
+          "pred_m": 19.13,
           "actual_m": 17.2,
           "observed_share": 1.0
         },
         {
           "movie": "The Mandalorian and Grogu",
-          "pred_m": 73.49,
+          "pred_m": 76.66,
           "actual_m": 81.0,
           "observed_share": 1.0
         },
         {
           "movie": "Backrooms",
-          "pred_m": 55.21,
+          "pred_m": 55.63,
           "actual_m": 81.4,
           "observed_share": 1.0
         },
         {
           "movie": "The Breadwinner",
-          "pred_m": 6.05,
+          "pred_m": 6.06,
           "actual_m": 7.35,
           "observed_share": 1.0
         },
         {
           "movie": "Scary Movie",
-          "pred_m": 44.85,
+          "pred_m": 45.26,
           "actual_m": 54.34,
           "observed_share": 1.0
         },
         {
           "movie": "Masters of the Universe",
-          "pred_m": 23.78,
+          "pred_m": 23.88,
           "actual_m": 29.44,
           "observed_share": 1.0
         },
         {
           "movie": "Disclosure Day",
-          "pred_m": 43.73,
+          "pred_m": 44.1,
           "actual_m": 44.53,
-          "observed_share": 0.583
+          "observed_share": 0.582
         },
         {
           "movie": "Toy Story 5",
-          "pred_m": 115.1,
+          "pred_m": 117.3,
           "actual_m": 159.68,
           "observed_share": 1.0
         },
         {
           "movie": "Supergirl",
-          "pred_m": 37.67,
+          "pred_m": 37.88,
           "actual_m": 37.1,
           "observed_share": 1.0
         },
         {
           "movie": "Jackass: Best and Last",
-          "pred_m": 10.52,
+          "pred_m": 10.5,
           "actual_m": 8.46,
           "observed_share": 1.0
         },
         {
           "movie": "Young Washington",
-          "pred_m": 14.92,
+          "pred_m": 14.94,
           "actual_m": 19.37,
           "observed_share": 1.0
         },
         {
           "movie": "Moana (2026)",
-          "pred_m": 36.3,
+          "pred_m": 36.76,
           "actual_m": 43.14,
           "observed_share": 1.0
         },
         {
           "movie": "Evil Dead Burn",
-          "pred_m": 21.99,
+          "pred_m": 22.1,
           "actual_m": 13.7,
           "observed_share": 1.0
         },
         {
           "movie": "The Odyssey",
-          "pred_m": 108.23,
+          "pred_m": 109.48,
           "actual_m": 123.5,
           "observed_share": 1.0
         },
@@ -9840,31 +9985,31 @@
           "movie": "One Night Only",
           "pred_m": 4.97,
           "actual_m": 5.51,
-          "observed_share": 0.87
+          "observed_share": 0.869
         },
         {
           "movie": "The End of Oak Street",
-          "pred_m": 21.24,
+          "pred_m": 21.32,
           "actual_m": 21.01,
           "observed_share": 1.0
         },
         {
           "movie": "PAW Patrol: The Dino Movie",
-          "pred_m": 16.28,
+          "pred_m": 16.31,
           "actual_m": 20.25,
           "observed_share": 1.0
         },
         {
           "movie": "Insidious: Out of the Further",
-          "pred_m": 21.89,
+          "pred_m": 21.98,
           "actual_m": 25.11,
-          "observed_share": 0.867
+          "observed_share": 0.866
         },
         {
           "movie": "Mutiny",
-          "pred_m": 6.29,
+          "pred_m": 6.25,
           "actual_m": 7.71,
-          "observed_share": 0.867
+          "observed_share": 0.866
         },
         {
           "movie": "The Dog Stars",
@@ -9874,135 +10019,135 @@
         },
         {
           "movie": "Coyote vs. Acme",
-          "pred_m": 21.66,
+          "pred_m": 21.85,
           "actual_m": 15.91,
           "observed_share": 1.0
         },
         {
           "movie": "Practical Magic 2",
-          "pred_m": 30.13,
+          "pred_m": 30.57,
           "actual_m": 30.0,
           "observed_share": 1.0
         },
         {
           "movie": "Resident Evil",
-          "pred_m": 57.72,
+          "pred_m": 58.42,
           "actual_m": 60.15,
           "observed_share": 1.0
         },
         {
           "movie": "Primetime",
-          "pred_m": 22.8,
+          "pred_m": 23.01,
           "actual_m": 19.2,
           "observed_share": 1.0
         },
         {
           "movie": "Heart of the Beast",
-          "pred_m": 10.15,
+          "pred_m": 10.17,
           "actual_m": 20.04,
           "observed_share": 1.0
         },
         {
           "movie": "Forgotten Island",
-          "pred_m": 14.29,
+          "pred_m": 14.43,
           "actual_m": 13.01,
           "observed_share": 1.0
         },
         {
           "movie": "Digger",
-          "pred_m": 10.5,
+          "pred_m": 10.48,
           "actual_m": 8.0,
           "observed_share": 1.0
         },
         {
           "movie": "Verity",
-          "pred_m": 32.93,
+          "pred_m": 33.17,
           "actual_m": 32.03,
           "observed_share": 1.0
         },
         {
           "movie": "Other Mommy",
-          "pred_m": 24.49,
+          "pred_m": 24.63,
           "actual_m": 27.81,
           "observed_share": 1.0
         },
         {
           "movie": "The Social Reckoning",
-          "pred_m": 6.94,
+          "pred_m": 6.91,
           "actual_m": 5.02,
           "observed_share": 1.0
         },
         {
           "movie": "Street Fighter",
-          "pred_m": 32.72,
+          "pred_m": 32.95,
           "actual_m": 30.78,
           "observed_share": 1.0
         },
         {
           "movie": "Whalefall",
-          "pred_m": 7.82,
+          "pred_m": 7.79,
           "actual_m": 7.84,
           "observed_share": 1.0
         },
         {
           "movie": "Sense and Sensibility",
-          "pred_m": 4.73,
+          "pred_m": 4.69,
           "actual_m": 7.2,
-          "observed_share": 0.868
+          "observed_share": 0.867
         },
         {
           "movie": "Wildwood",
-          "pred_m": 15.99,
+          "pred_m": 16.01,
           "actual_m": 12.27,
           "observed_share": 1.0
         },
         {
           "movie": "Clayface",
-          "pred_m": 24.51,
+          "pred_m": 24.64,
           "actual_m": 24.0,
           "observed_share": 1.0
         },
         {
           "movie": "Wicker",
-          "pred_m": 10.51,
+          "pred_m": 10.5,
           "actual_m": 5.75,
           "observed_share": 1.0
         },
         {
           "movie": "Godzilla Minus Zero",
-          "pred_m": 29.1,
+          "pred_m": 29.26,
           "actual_m": 30.61,
           "observed_share": 1.0
         },
         {
           "movie": "The Cat in the Hat",
-          "pred_m": 18.57,
+          "pred_m": 18.63,
           "actual_m": 20.0,
           "observed_share": 1.0
         },
         {
           "movie": "Drummer Boy",
-          "pred_m": 10.13,
+          "pred_m": 10.1,
           "actual_m": 9.42,
           "observed_share": 1.0
         },
         {
           "movie": "How to Rob a Bank",
-          "pred_m": 5.63,
+          "pred_m": 5.59,
           "actual_m": 5.19,
           "observed_share": 1.0
         },
         {
           "movie": "Ebenezer",
-          "pred_m": 16.8,
+          "pred_m": 16.89,
           "actual_m": 19.01,
           "observed_share": 1.0
         }
       ],
       "bakeoff": {
-        "identity": 20.54,
-        "global_ratio": 21.0,
-        "regression": 20.39
+        "identity": 20.51,
+        "global_ratio": 20.98,
+        "regression": 20.12
       },
       "bakeoff_winner": "regression",
       "meets_mae_target": false
