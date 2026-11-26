@@ -2,7 +2,7 @@
   "date": "2026-11-27",
   "weekend_of": "2026-11-27",
   "collected_local_date": "2026-11-26",
-  "collected_at": "2026-11-26T19:13:25.353464+00:00",
+  "collected_at": "2026-11-26T19:26:17.397226+00:00",
   "showtime_window_version": "sat-sun-10-23-v1",
   "showtime_windows": {
     "default": "17:00-23:00",
@@ -217,7 +217,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:13:43.321648+00:00",
+          "collected_at": "2026-11-26T19:26:17.339720+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -438,7 +438,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595558+00:00",
+          "collected_at": "2026-11-26T19:26:17.339791+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -890,7 +890,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174139+00:00",
+          "collected_at": "2026-11-26T19:26:17.339801+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -1301,7 +1301,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267901+00:00",
+          "collected_at": "2026-11-26T19:26:17.339731+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -1507,7 +1507,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595602+00:00",
+          "collected_at": "2026-11-26T19:26:17.339806+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -1713,7 +1713,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711987+00:00",
+          "collected_at": "2026-11-26T19:26:17.339925+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -1919,210 +1919,205 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174069+00:00",
+          "collected_at": "2026-11-26T19:26:17.339879+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-27",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
             "showtime": "12:15pm",
-            "showtime_id": "147912606",
+            "showtime_id": "147912599",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148932730",
+            "showtime": "3:00pm",
+            "showtime_id": "147912598",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "147912637",
+            "showtime_id": "147912638",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "147912735",
+            "showtime_id": "147912722",
             "format": "RealD 3D"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "147912737",
+            "showtime_id": "147912724",
             "format": "RealD 3D"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "148932713",
+            "showtime": "10:45am",
+            "showtime_id": "148395653",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148742315",
+            "showtime": "12:15pm",
+            "showtime_id": "148930520",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "148395631",
+            "showtime_id": "148395630",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148395646",
-            "format": "Laser at AMC"
-          },
-          {
             "showtime": "4:00pm",
-            "showtime_id": "148932749",
+            "showtime_id": "148395650",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "148932724",
+            "showtime_id": "148919316",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "148395647",
+            "showtime_id": "148395651",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148932714",
+            "showtime": "7:50pm",
+            "showtime_id": "148902444",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148395648",
+            "showtime": "8:30pm",
+            "showtime_id": "148919294",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148395652",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "148932748",
+            "showtime_id": "148919336",
             "format": "PRIME at AMC"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
             "showtime": "10:30am",
-            "showtime_id": "148932712",
+            "showtime_id": "148919293",
             "format": "Laser at AMC"
           },
           {
             "showtime": "11:15am",
-            "showtime_id": "148175179",
+            "showtime_id": "148174950",
             "format": "Laser at AMC"
           },
           {
             "showtime": "12:15pm",
-            "showtime_id": "148932746",
+            "showtime_id": "148919334",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "12:45pm",
-            "showtime_id": "148932726",
+            "showtime_id": "148919312",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:15pm",
-            "showtime_id": "148932711",
+            "showtime_id": "148919292",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:00pm",
-            "showtime_id": "148932716",
+            "showtime_id": "148930519",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "148175106",
+            "showtime_id": "148175104",
             "format": "RealD 3D"
           },
           {
             "showtime": "4:30pm",
-            "showtime_id": "148932728",
+            "showtime_id": "148919311",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "148932717",
+            "showtime_id": "148919295",
             "format": "RealD 3D"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "148175182",
+            "showtime_id": "148174948",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:45pm",
-            "showtime_id": "148932747",
+            "showtime_id": "148919335",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "8:15pm",
-            "showtime_id": "148932729",
+            "showtime_id": "148919310",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:00pm",
-            "showtime_id": "148932725",
+            "showtime_id": "148919314",
             "format": "Laser at AMC"
           },
           {
             "showtime": "9:45pm",
-            "showtime_id": "148175180",
+            "showtime_id": "148174952",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:45pm",
-            "showtime_id": "148932715",
+            "showtime": "10:30pm",
+            "showtime_id": "148902445",
             "format": "Dolby Cinema at AMC"
           }
         ],
         "Paper Tiger": [
           {
             "showtime": "11:00am",
-            "showtime_id": "148932744",
+            "showtime_id": "148919326",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "148932742",
+            "showtime_id": "148395718",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
-            "showtime_id": "148932743",
+            "showtime_id": "148395719",
             "format": "Laser at AMC"
           },
           {
             "showtime": "8:00pm",
-            "showtime_id": "148395721",
+            "showtime_id": "148395720",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "148932719",
+            "showtime_id": "148919305",
             "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "10:45am",
-            "showtime_id": "149103573",
+            "showtime": "10:30am",
+            "showtime_id": "149103580",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "149103553",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "149103574",
+            "showtime": "4:15pm",
+            "showtime_id": "149103579",
             "format": "Laser at AMC"
           }
         ]
@@ -2310,7 +2305,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267875+00:00",
+          "collected_at": "2026-11-26T19:26:17.339726+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -2682,7 +2677,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174075+00:00",
+          "collected_at": "2026-11-26T19:26:17.339796+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -2873,7 +2868,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T05:08:00.824181+00:00",
+          "collected_at": "2026-11-26T19:26:17.339888+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -3224,7 +3219,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267958+00:00",
+          "collected_at": "2026-11-26T19:26:17.339709+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -3606,7 +3601,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T05:08:00.824217+00:00",
+          "collected_at": "2026-11-26T19:26:17.339892+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -3792,7 +3787,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174122+00:00",
+          "collected_at": "2026-11-26T19:26:17.339843+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -4108,7 +4103,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711970+00:00",
+          "collected_at": "2026-11-26T19:26:17.339826+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -4265,7 +4260,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595581+00:00",
+          "collected_at": "2026-11-26T19:26:17.339861+00:00",
           "showtime_window_version": "sat-sun-10-23-v1",
           "empty": false
         },
@@ -4565,145 +4560,145 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-28",
       "movies": {
         "Hexed": [
           {
-            "showtime": "10:05am",
-            "showtime_id": "149010536",
+            "showtime": "10:45am",
+            "showtime_id": "149010533",
             "format": "RealD 3D"
           },
           {
-            "showtime": "12:50pm",
-            "showtime_id": "149010538",
+            "showtime": "1:30pm",
+            "showtime_id": "147922425",
             "format": "undefined"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147922460",
+            "showtime": "2:55pm",
+            "showtime_id": "147922458",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "3:35pm",
-            "showtime_id": "147922421",
+            "showtime": "4:15pm",
+            "showtime_id": "147922426",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:10pm",
-            "showtime_id": "147922422",
+            "showtime": "7:00pm",
+            "showtime_id": "147922427",
             "format": "RealD 3D"
           },
           {
             "showtime": "9:55pm",
-            "showtime_id": "149010537",
+            "showtime_id": "149010524",
             "format": "undefined"
           }
         ],
         "Hershey": [
           {
             "showtime": "12:00pm",
-            "showtime_id": "147382957",
+            "showtime_id": "147382969",
             "format": "undefined"
           },
           {
             "showtime": "2:45pm",
-            "showtime_id": "147382958",
+            "showtime_id": "147382970",
             "format": "undefined"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "148402218",
+            "showtime": "10:30am",
+            "showtime_id": "149010522",
             "format": "undefined"
           },
           {
-            "showtime": "12:05pm",
-            "showtime_id": "148402234",
+            "showtime": "11:55am",
+            "showtime_id": "148402231",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "1:40pm",
-            "showtime_id": "148402219",
+            "showtime": "1:20pm",
+            "showtime_id": "148402197",
             "format": "undefined"
           },
           {
-            "showtime": "4:20pm",
-            "showtime_id": "148402220",
+            "showtime": "4:05pm",
+            "showtime_id": "148402198",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148402221",
+            "showtime": "7:15pm",
+            "showtime_id": "148402223",
             "format": "undefined"
           },
           {
-            "showtime": "9:10pm",
-            "showtime_id": "149010520",
+            "showtime": "9:40pm",
+            "showtime_id": "149010505",
             "format": "undefined"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
-            "showtime": "10:00am",
-            "showtime_id": "149141632",
+            "showtime": "10:40am",
+            "showtime_id": "149010526",
             "format": "undefined"
           },
           {
-            "showtime": "10:50am",
-            "showtime_id": "148184602",
-            "format": "undefined"
-          },
-          {
-            "showtime": "1:35pm",
-            "showtime_id": "149141634",
-            "format": "undefined"
+            "showtime": "11:45am",
+            "showtime_id": "149141629",
+            "format": "RealD 3D"
           },
           {
             "showtime": "2:25pm",
-            "showtime_id": "148184607",
+            "showtime_id": "148184611",
             "format": "RealD 3D"
           },
           {
-            "showtime": "5:10pm",
-            "showtime_id": "149141627",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148184608",
+            "showtime": "3:20pm",
+            "showtime_id": "149141633",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "149010583",
+            "showtime": "5:50pm",
+            "showtime_id": "149010575",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "9:00pm",
-            "showtime_id": "149010540",
+            "showtime": "6:00pm",
+            "showtime_id": "148184612",
             "format": "undefined"
+          },
+          {
+            "showtime": "7:20pm",
+            "showtime_id": "149141630",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:35pm",
+            "showtime_id": "149010576",
+            "format": "Dolby Cinema at AMC"
           }
         ],
         "Paper Tiger": [
           {
-            "showtime": "12:25pm",
-            "showtime_id": "149010543",
+            "showtime": "1:10pm",
+            "showtime_id": "149010544",
             "format": "undefined"
           },
           {
-            "showtime": "3:15pm",
-            "showtime_id": "149010542",
+            "showtime": "4:00pm",
+            "showtime_id": "149010545",
             "format": "undefined"
           },
           {
-            "showtime": "6:05pm",
-            "showtime_id": "149010541",
+            "showtime": "7:10pm",
+            "showtime_id": "149010546",
             "format": "undefined"
           },
           {
-            "showtime": "9:40pm",
-            "showtime_id": "149010523",
+            "showtime": "10:00pm",
+            "showtime_id": "149010547",
             "format": "undefined"
           }
         ]
@@ -4891,7 +4886,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595539+00:00",
+          "collected_at": "2026-11-26T19:26:17.339934+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -4944,6 +4939,11 @@
               {
                 "showtime": "3:00pm",
                 "showtime_id": "148404131",
+                "format": "Dine-In Delivery to Seat"
+              },
+              {
+                "showtime": "4:15pm",
+                "showtime_id": "149171121",
                 "format": "Dine-In Delivery to Seat"
               },
               {
@@ -5062,7 +5062,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174082+00:00",
+          "collected_at": "2026-11-26T19:26:17.339919+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -5248,7 +5248,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267916+00:00",
+          "collected_at": "2026-11-26T19:26:17.339745+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -5439,7 +5439,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711916+00:00",
+          "collected_at": "2026-11-26T19:26:17.339786+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -5850,7 +5850,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711945+00:00",
+          "collected_at": "2026-11-26T19:26:17.339770+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -6066,7 +6066,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:14:31.528276+00:00",
+          "collected_at": "2026-11-26T19:26:17.339821+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -6282,7 +6282,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595528+00:00",
+          "collected_at": "2026-11-26T19:26:17.339816+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -6478,220 +6478,200 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267981+00:00",
+          "collected_at": "2026-11-26T19:26:17.339678+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-27",
+      "show_date": "2026-11-26",
       "movies": {
         "Hexed": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "147900725",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "147900815",
+            "showtime": "12:00pm",
+            "showtime_id": "147900816",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "147900726",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:45pm",
-            "showtime_id": "147900727",
+            "showtime": "1:00pm",
+            "showtime_id": "147900721",
             "format": "RealD 3D"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "147900728",
+            "showtime": "3:45pm",
+            "showtime_id": "147900722",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148385030",
+            "showtime": "6:30pm",
+            "showtime_id": "147900723",
             "format": "RealD 3D"
+          },
+          {
+            "showtime": "9:15pm",
+            "showtime_id": "147900724",
+            "format": "Laser at AMC"
           }
         ],
         "Hershey": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "148871135",
+            "showtime": "12:30pm",
+            "showtime_id": "148855246",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:00pm",
-            "showtime_id": "147390554",
+            "showtime_id": "147390546",
             "format": "Laser at AMC"
           },
           {
             "showtime": "4:45pm",
-            "showtime_id": "147390555",
+            "showtime_id": "147390547",
             "format": "Laser at AMC"
           },
           {
             "showtime": "5:45pm",
-            "showtime_id": "149054026",
+            "showtime_id": "149026621",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "148871133",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "149054027",
+            "showtime_id": "148855264",
             "format": "Laser at AMC"
           },
           {
             "showtime": "10:15pm",
-            "showtime_id": "148871134",
+            "showtime_id": "148855265",
             "format": "Laser at AMC"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "11:30am",
-            "showtime_id": "148385087",
+            "showtime": "1:30pm",
+            "showtime_id": "148385079",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "2:15pm",
-            "showtime_id": "148385088",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "3:45pm",
-            "showtime_id": "148385035",
+            "showtime": "2:45pm",
+            "showtime_id": "148385038",
             "format": "Dolby Cinema at AMC"
           },
           {
-            "showtime": "5:00pm",
-            "showtime_id": "148385089",
+            "showtime": "4:15pm",
+            "showtime_id": "148385080",
             "format": "Laser at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148871136",
-            "format": "PRIME at AMC"
+            "showtime_id": "148385077",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "7:45pm",
-            "showtime_id": "148385090",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "9:45pm",
-            "showtime_id": "148871137",
+            "showtime_id": "148855267",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "10:30pm",
-            "showtime_id": "148385086",
+            "showtime": "9:45pm",
+            "showtime_id": "148385078",
             "format": "Laser at AMC"
+          },
+          {
+            "showtime": "10:30pm",
+            "showtime_id": "148855266",
+            "format": "PRIME at AMC"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "148871116",
-            "format": "RealD 3D"
-          },
-          {
-            "showtime": "11:30am",
-            "showtime_id": "148871139",
+            "showtime": "12:15pm",
+            "showtime_id": "148855269",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "12:15pm",
-            "showtime_id": "149054023",
+            "showtime": "1:00pm",
+            "showtime_id": "148855271",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148871142",
+            "showtime": "2:00pm",
+            "showtime_id": "149026622",
             "format": "Laser at AMC"
           },
           {
             "showtime": "2:30pm",
-            "showtime_id": "148121154",
+            "showtime_id": "148121148",
             "format": "Laser at AMC"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "148871138",
+            "showtime_id": "148855247",
+            "format": "RealD 3D"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148855268",
             "format": "PRIME 3D"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "149054024",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "4:30pm",
-            "showtime_id": "148871141",
+            "showtime": "4:45pm",
+            "showtime_id": "149026625",
             "format": "Laser at AMC"
           },
           {
             "showtime": "6:00pm",
-            "showtime_id": "149054021",
-            "format": "Laser at AMC"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148871117",
+            "showtime_id": "148855249",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "7:00pm",
-            "showtime_id": "148121152",
+            "showtime_id": "148121146",
             "format": "RealD 3D"
           },
           {
-            "showtime": "8:00pm",
-            "showtime_id": "148871140",
+            "showtime": "8:15pm",
+            "showtime_id": "148855270",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "149054022",
+            "showtime": "8:45pm",
+            "showtime_id": "149026620",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148871118",
+            "showtime": "9:15pm",
+            "showtime_id": "149026619",
+            "format": "Laser at AMC"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "148855248",
             "format": "Dolby Cinema at AMC"
           },
           {
             "showtime": "10:30pm",
-            "showtime_id": "148121150",
+            "showtime_id": "148121144",
             "format": "RealD 3D"
           }
         ],
         "Paper Tiger": [
           {
-            "showtime": "12:45pm",
-            "showtime_id": "148871132",
+            "showtime": "12:30pm",
+            "showtime_id": "148855263",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "148871131",
+            "showtime": "3:30pm",
+            "showtime_id": "148855262",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "6:45pm",
-            "showtime_id": "148871130",
+            "showtime": "6:30pm",
+            "showtime_id": "148855261",
             "format": "Laser at AMC"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "148871129",
+            "showtime": "9:30pm",
+            "showtime_id": "148855260",
             "format": "Laser at AMC"
           }
         ]
@@ -7081,7 +7061,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711935+00:00",
+          "collected_at": "2026-11-26T19:26:17.339856+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -7222,140 +7202,145 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174145+00:00",
+          "collected_at": "2026-11-26T19:26:17.339833+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-27",
       "movies": {
         "Hexed": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147941217",
+            "showtime": "12:00pm",
+            "showtime_id": "147941219",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "147941278",
+            "showtime": "1:00pm",
+            "showtime_id": "147941273",
             "format": "RealD 3D"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "149009400",
+            "showtime_id": "147941274",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147941277",
+            "showtime": "6:30pm",
+            "showtime_id": "147941275",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "147941287",
-            "format": "undefined"
-          },
-          {
-            "showtime": "10:00pm",
-            "showtime_id": "147941279",
+            "showtime": "9:15pm",
+            "showtime_id": "147941276",
             "format": "undefined"
           }
         ],
         "Hershey": [
           {
-            "showtime": "1:30pm",
-            "showtime_id": "148767885",
+            "showtime": "12:30pm",
+            "showtime_id": "149009314",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "148767884",
+            "showtime": "3:15pm",
+            "showtime_id": "149009313",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148767883",
-            "format": "undefined"
-          },
-          {
-            "showtime": "9:50pm",
-            "showtime_id": "149009287",
+            "showtime": "6:00pm",
+            "showtime_id": "149009312",
             "format": "undefined"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "149009402",
+            "showtime": "1:45pm",
+            "showtime_id": "149009315",
             "format": "undefined"
           },
           {
-            "showtime": "3:45pm",
-            "showtime_id": "148318403",
+            "showtime": "2:45pm",
+            "showtime_id": "148318404",
             "format": "PRIME at AMC"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "149009403",
+            "showtime": "4:30pm",
+            "showtime_id": "149009316",
+            "format": "undefined"
+          },
+          {
+            "showtime": "7:15pm",
+            "showtime_id": "149009317",
             "format": "undefined"
           },
           {
             "showtime": "10:00pm",
-            "showtime_id": "149009338",
-            "format": "PRIME at AMC"
+            "showtime_id": "149009318",
+            "format": "undefined"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148091446",
+            "showtime": "12:00pm",
+            "showtime_id": "149009377",
+            "format": "undefined"
+          },
+          {
+            "showtime": "12:45pm",
+            "showtime_id": "149009352",
             "format": "undefined"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "148767992",
+            "showtime_id": "149009378",
+            "format": "undefined"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "149009351",
             "format": "undefined"
           },
           {
             "showtime": "5:30pm",
-            "showtime_id": "148091448",
-            "format": "undefined"
-          },
-          {
-            "showtime": "6:30pm",
-            "showtime_id": "148767943",
+            "showtime_id": "149009348",
             "format": "PRIME at AMC"
           },
           {
             "showtime": "7:30pm",
-            "showtime_id": "148767991",
+            "showtime_id": "149009379",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "149009350",
             "format": "undefined"
           },
           {
             "showtime": "9:15pm",
-            "showtime_id": "148091449",
-            "format": "undefined"
+            "showtime_id": "149009349",
+            "format": "PRIME at AMC"
           }
         ],
         "Paper Tiger": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "149009285",
+            "showtime": "12:00pm",
+            "showtime_id": "149009262",
             "format": "undefined"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "149009284",
+            "showtime": "3:00pm",
+            "showtime_id": "149009261",
             "format": "undefined"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "149009283",
+            "showtime": "6:00pm",
+            "showtime_id": "149009260",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "149009282",
+            "showtime": "9:00pm",
+            "showtime_id": "149009259",
             "format": "undefined"
           }
         ]
@@ -7553,7 +7538,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595608+00:00",
+          "collected_at": "2026-11-26T19:26:17.339811+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -7744,7 +7729,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711883+00:00",
+          "collected_at": "2026-11-26T19:26:17.339776+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -7935,7 +7920,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:13:43.321616+00:00",
+          "collected_at": "2026-11-26T19:26:17.339697+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -8738,7 +8723,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:13:43.321579+00:00",
+          "collected_at": "2026-11-26T19:26:17.339702+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -8919,7 +8904,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174133+00:00",
+          "collected_at": "2026-11-26T19:26:17.339782+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -9652,7 +9637,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711892+00:00",
+          "collected_at": "2026-11-26T19:26:17.339910+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -9818,7 +9803,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267987+00:00",
+          "collected_at": "2026-11-26T19:26:17.339650+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -9974,7 +9959,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595614+00:00",
+          "collected_at": "2026-11-26T19:26:17.339848+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -10793,160 +10778,170 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595596+00:00",
+          "collected_at": "2026-11-26T19:26:17.339759+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-29",
       "movies": {
         "Hexed": [
           {
-            "showtime": "11:15am",
-            "showtime_id": "149160220",
+            "showtime": "11:00am",
+            "showtime_id": "149098142",
             "format": "undefined"
           },
           {
             "showtime": "1:30pm",
-            "showtime_id": "147895891",
+            "showtime_id": "147895889",
             "format": "RealD 3D"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "147895850",
+            "showtime": "3:30pm",
+            "showtime_id": "147895854",
             "format": "undefined"
           },
           {
-            "showtime": "4:30pm",
-            "showtime_id": "147895924",
+            "showtime": "5:30pm",
+            "showtime_id": "147895926",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "147895940",
+            "showtime": "6:45pm",
+            "showtime_id": "147895936",
             "format": "undefined"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148994529",
+            "showtime": "8:00pm",
+            "showtime_id": "149098079",
             "format": "undefined"
           }
         ],
         "Hershey": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147382449",
+            "showtime": "1:30pm",
+            "showtime_id": "147382455",
             "format": "undefined"
           },
           {
             "showtime": "3:15pm",
-            "showtime_id": "147382457",
+            "showtime_id": "147382460",
             "format": "undefined"
           },
           {
-            "showtime": "7:30pm",
-            "showtime_id": "148994545",
+            "showtime": "6:00pm",
+            "showtime_id": "149098071",
             "format": "undefined"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148994532",
+            "showtime": "8:45pm",
+            "showtime_id": "149098069",
             "format": "undefined"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148394251",
+            "showtime": "11:00am",
+            "showtime_id": "148394235",
             "format": "undefined"
           },
           {
-            "showtime": "1:45pm",
-            "showtime_id": "148394226",
+            "showtime": "12:45pm",
+            "showtime_id": "148394198",
             "format": "undefined"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148394250",
+            "showtime": "4:15pm",
+            "showtime_id": "148394258",
             "format": "undefined"
           },
           {
-            "showtime": "7:15pm",
-            "showtime_id": "148394229",
+            "showtime": "4:15pm",
+            "showtime_id": "149098041",
             "format": "undefined"
           },
           {
-            "showtime": "9:15pm",
-            "showtime_id": "148394255",
+            "showtime": "6:15pm",
+            "showtime_id": "148394199",
+            "format": "undefined"
+          },
+          {
+            "showtime": "8:15pm",
+            "showtime_id": "148394233",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:45pm",
+            "showtime_id": "149098114",
             "format": "undefined"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
-            "showtime": "11:45am",
-            "showtime_id": "148994534",
-            "format": "undefined"
-          },
-          {
-            "showtime": "1:00pm",
-            "showtime_id": "148994552",
+            "showtime": "11:30am",
+            "showtime_id": "149098162",
             "format": "XL at AMC"
           },
           {
-            "showtime": "2:45pm",
-            "showtime_id": "148145125",
+            "showtime": "1:45pm",
+            "showtime_id": "148145094",
             "format": "undefined"
           },
           {
-            "showtime": "4:15pm",
-            "showtime_id": "148145081",
+            "showtime": "3:15pm",
+            "showtime_id": "149098163",
+            "format": "XL at AMC"
+          },
+          {
+            "showtime": "4:00pm",
+            "showtime_id": "148145064",
             "format": "RealD 3D"
           },
           {
-            "showtime": "4:45pm",
-            "showtime_id": "148994553",
-            "format": "XL at AMC"
-          },
-          {
-            "showtime": "6:00pm",
-            "showtime_id": "148145043",
+            "showtime": "4:30pm",
+            "showtime_id": "148145084",
             "format": "undefined"
           },
           {
-            "showtime": "7:45pm",
-            "showtime_id": "148145095",
-            "format": "undefined"
-          },
-          {
-            "showtime": "8:30pm",
-            "showtime_id": "148994554",
+            "showtime": "7:00pm",
+            "showtime_id": "149098164",
             "format": "XL at AMC"
           },
           {
-            "showtime": "10:15pm",
-            "showtime_id": "148994548",
+            "showtime": "7:30pm",
+            "showtime_id": "149098144",
+            "format": "undefined"
+          },
+          {
+            "showtime": "9:00pm",
+            "showtime_id": "148145128",
             "format": "undefined"
           }
         ],
         "Paper Tiger": [
           {
-            "showtime": "11:00am",
-            "showtime_id": "148994530",
+            "showtime": "11:15am",
+            "showtime_id": "149098101",
+            "format": "undefined"
+          },
+          {
+            "showtime": "1:45pm",
+            "showtime_id": "149098143",
             "format": "undefined"
           },
           {
             "showtime": "3:45pm",
-            "showtime_id": "148994517",
+            "showtime_id": "149098135",
             "format": "undefined"
           },
           {
-            "showtime": "6:30pm",
-            "showtime_id": "148994533",
+            "showtime": "7:00pm",
+            "showtime_id": "149098110",
             "format": "undefined"
           },
           {
-            "showtime": "9:45pm",
-            "showtime_id": "148994520",
+            "showtime": "10:00pm",
+            "showtime_id": "149098042",
             "format": "undefined"
           }
         ]
@@ -11187,7 +11182,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174100+00:00",
+          "collected_at": "2026-11-26T19:26:17.339839+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -11411,7 +11406,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267953+00:00",
+          "collected_at": "2026-11-26T19:26:17.339714+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -11636,7 +11631,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595548+00:00",
+          "collected_at": "2026-11-26T19:26:17.339937+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -12018,118 +12013,118 @@
         }
       },
       "showtime_window_version": "sat-sun-10-23-v1",
-      "show_date": "2026-11-26",
+      "show_date": "2026-11-29",
       "movies": {
         "Hexed": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "147837809",
+            "showtime": "12:00pm",
+            "showtime_id": "147837827",
             "format": "RealD 3D"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "147837810",
+            "showtime": "3:00pm",
+            "showtime_id": "147837828",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "147837811",
+            "showtime": "6:00pm",
+            "showtime_id": "147837830",
             "format": "RealD 3D"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "147837812",
+            "showtime": "9:00pm",
+            "showtime_id": "147837832",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Hershey": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148886173",
+            "showtime": "10:10am",
+            "showtime_id": "149029321",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "3:00pm",
-            "showtime_id": "148886174",
+            "showtime": "12:05pm",
+            "showtime_id": "148886192",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "5:55pm",
-            "showtime_id": "148886216",
+            "showtime": "2:55pm",
+            "showtime_id": "148886193",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "8:45pm",
-            "showtime_id": "148886217",
+            "showtime": "7:00pm",
+            "showtime_id": "149029293",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "Focker In-Law": [
           {
-            "showtime": "1:00pm",
-            "showtime_id": "148237812",
+            "showtime": "11:55am",
+            "showtime_id": "148886348",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "4:00pm",
-            "showtime_id": "148237813",
+            "showtime": "2:55pm",
+            "showtime_id": "148237826",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:00pm",
-            "showtime_id": "148237814",
+            "showtime": "5:55pm",
+            "showtime_id": "148237824",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148237815",
+            "showtime": "8:55pm",
+            "showtime_id": "148237825",
             "format": "Dine-In Delivery to Seat"
           }
         ],
         "The Hunger Games: Sunrise on the Reaping": [
           {
-            "showtime": "12:00pm",
-            "showtime_id": "148886315",
+            "showtime": "10:00am",
+            "showtime_id": "148886333",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "2:00pm",
-            "showtime_id": "148074002",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "2:40pm",
-            "showtime_id": "148886235",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "3:40pm",
-            "showtime_id": "148886317",
-            "format": "Dine-In Delivery to Seat"
-          },
-          {
-            "showtime": "5:45pm",
-            "showtime_id": "148074003",
+            "showtime": "1:00pm",
+            "showtime_id": "148074016",
             "format": "RealD 3D"
           },
           {
-            "showtime": "6:20pm",
-            "showtime_id": "148886233",
+            "showtime": "1:40pm",
+            "showtime_id": "148886334",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "7:20pm",
-            "showtime_id": "148886319",
+            "showtime": "3:00pm",
+            "showtime_id": "148886494",
             "format": "Dine-In Delivery to Seat"
           },
           {
-            "showtime": "9:30pm",
-            "showtime_id": "148074004",
+            "showtime": "4:45pm",
+            "showtime_id": "148074014",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "5:20pm",
+            "showtime_id": "148886336",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "6:40pm",
+            "showtime_id": "148886496",
+            "format": "Dine-In Delivery to Seat"
+          },
+          {
+            "showtime": "8:30pm",
+            "showtime_id": "148074013",
             "format": "RealD 3D"
           },
           {
-            "showtime": "10:00pm",
-            "showtime_id": "148886231",
+            "showtime": "9:00pm",
+            "showtime_id": "149029249",
             "format": "Dine-In Delivery to Seat"
           }
         ]
@@ -12297,7 +12292,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:29:30.267943+00:00",
+          "collected_at": "2026-11-26T19:26:17.339752+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -12780,7 +12775,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595589+00:00",
+          "collected_at": "2026-11-26T19:26:17.339901+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13112,7 +13107,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174094+00:00",
+          "collected_at": "2026-11-26T19:26:17.339874+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -13441,7 +13436,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.711907+00:00",
+          "collected_at": "2026-11-26T19:26:17.339906+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -13608,7 +13603,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595506+00:00",
+          "collected_at": "2026-11-26T19:26:17.339867+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -13918,7 +13913,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595570+00:00",
+          "collected_at": "2026-11-26T19:26:17.339765+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -14057,7 +14052,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T16:31:37.174106+00:00",
+          "collected_at": "2026-11-26T19:26:17.339915+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-28": {
@@ -14216,7 +14211,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.712026+00:00",
+          "collected_at": "2026-11-26T19:26:17.339929+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-26": {
@@ -14297,6 +14292,11 @@
                 "format": "Dolby Cinema at AMC"
               },
               {
+                "showtime": "4:30pm",
+                "showtime_id": "149171110",
+                "format": "Laser at AMC"
+              },
+              {
                 "showtime": "5:00pm",
                 "showtime_id": "148226926",
                 "format": "Laser at AMC"
@@ -14370,7 +14370,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:13:43.321657+00:00",
+          "collected_at": "2026-11-26T19:26:17.339738+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -14451,6 +14451,11 @@
             "showtime": "3:00pm",
             "showtime_id": "148226887",
             "format": "Dolby Cinema at AMC"
+          },
+          {
+            "showtime": "4:30pm",
+            "showtime_id": "149171110",
+            "format": "Laser at AMC"
           },
           {
             "showtime": "5:00pm",
@@ -323584,7 +323589,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:13:43.321722+00:00",
+          "collected_at": "2026-11-26T19:26:17.339689+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-27": {
@@ -323901,7 +323906,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:15:15.712003+00:00",
+          "collected_at": "2026-11-26T19:26:17.339883+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         },
         "2026-11-29": {
@@ -324067,7 +324072,7 @@
               }
             ]
           },
-          "collected_at": "2026-11-26T10:16:52.595620+00:00",
+          "collected_at": "2026-11-26T19:26:17.339896+00:00",
           "showtime_window_version": "sat-sun-10-23-v1"
         }
       },
@@ -402684,8 +402689,8 @@
   },
   "link_coverage": {
     "ratio": 1.0,
-    "fresh": 460,
-    "expected": 460,
+    "fresh": 72,
+    "expected": 72,
     "min_ratio": 0.9,
     "degraded": false
   }
