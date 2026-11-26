@@ -2003,6 +2003,48 @@ def _movie_lookup_key(value):
     return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
 
 
+def fold_title_spellings(mapping):
+    """Merge {movie: {show_date: [rows]}} entries whose titles differ only in
+    case/punctuation onto one spelling (the one with the most rows).
+
+    2026-11-26 audit: Polymarket lists "Focker-In-Law", the release calendar
+    "Focker In-Law". Cinemark/Fandango-bridge rows were stored under both, and
+    prediction_movie_names kept whichever came first — the forecast read 14
+    snapshot rows and silently dropped the other 73."""
+    if not isinstance(mapping, dict):
+        return mapping
+    groups = {}
+    for title in mapping:
+        groups.setdefault(_movie_lookup_key(title) or title, []).append(title)
+    if all(len(titles) == 1 for titles in groups.values()):
+        return mapping
+
+    def size(value):
+        if isinstance(value, dict):
+            return sum(len(v) if hasattr(v, "__len__") else 1 for v in value.values())
+        return len(value) if hasattr(value, "__len__") else 1
+
+    out = {}
+    for titles in groups.values():
+        if len(titles) == 1:
+            out[titles[0]] = mapping[titles[0]]
+            continue
+        canonical = max(titles, key=lambda t: (size(mapping[t]), -titles.index(t)))
+        merged = {}
+        for title in [canonical] + [t for t in titles if t != canonical]:
+            value = mapping[title]
+            if not isinstance(value, dict):
+                merged = value if title == canonical else merged
+                continue
+            for day, rows in value.items():
+                if isinstance(rows, list):
+                    merged.setdefault(day, []).extend(rows)
+                else:
+                    merged.setdefault(day, rows)
+        out[canonical] = merged
+    return out
+
+
 def movie_mapping_get(mapping, movie, default=None):
     """Fetch a movie-keyed side input with punctuation/case-tolerant matching."""
     if not isinstance(mapping, dict):
@@ -11576,11 +11618,12 @@ def main():
         replay_weekend = max(seat_weekends + snapshot_weekends, default=None)
         if replay_weekend and replay_weekend not in seat_weekends:
             seat_data = filter_seat_data_through(load_seat_data(weekend_of=replay_weekend), through_date)
+    seat_data = fold_title_spellings(seat_data)
     poly_data = load_polymarket_data(weekend_of=replay_weekend, through_date=through_date)
-    snapshot_data = load_pre_reservation_data(
+    snapshot_data = fold_title_spellings(load_pre_reservation_data(
         weekend_of=replay_weekend,
         through_date=through_date,
-    )
+    ))
     social_data = load_social_signal_data(
         weekend_of=replay_weekend,
         through_date=through_date,

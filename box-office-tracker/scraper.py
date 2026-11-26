@@ -2096,11 +2096,20 @@ def canonicalise_market_titles(markets, weekend, phase_label):
     a short prefix) of a release-calendar title, recording the alias."""
     markets = list(markets or [])
     titles = [m.get("movie_title") or "" for m in markets]
-    amap = canonical_title_map(titles + calendar_titles_for_weekend(weekend), weekend)
+    calendar = calendar_titles_for_weekend(weekend)
+    amap = canonical_title_map(titles + calendar, weekend)
+    # Same film, spelling differs only in punctuation/case ("Focker-In-Law" on
+    # Polymarket, "Focker In-Law" on the calendar, 2026-11-26): the calendar
+    # spelling wins, or the lanes store the film under both.
+    calendar_by_key = {_title_key(t): t for t in calendar}
     out = []
     for m in markets:
         title = m.get("movie_title") or ""
         canonical = amap.get(title)
+        if not canonical:
+            same_key = calendar_by_key.get(_title_key(title))
+            if same_key and same_key != title:
+                canonical = same_key
         if canonical and canonical != title and market_matches_collection_weekend(m, weekend):
             print(f"  🔗 {phase_label}: Polymarket lists '{title}'; tracking it as "
                   f"'{canonical}' (release-calendar title) for weekend {weekend}")
