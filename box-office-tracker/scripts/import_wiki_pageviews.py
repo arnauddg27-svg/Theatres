@@ -11,9 +11,14 @@ established opening-weekend predictor.
 Leak-free window: the Monday-Thursday immediately before the opening Friday.
   * Live (weekend_of known): window = [Fri-4, Fri-1].
   * Backfill: the opening Friday is read from the comp row's own sources (the
-    dated the-numbers chart, else the Box Office Mojo release page), then the
+    weekend in its Box Office Mojo daily table that has the row's grosses, else
+    the dated the-numbers chart, else the page's release date), then the
     Mon-Thu before it. It was located from the year's biggest pageview spike
     until 2026-11-27, which is the awards or streaming date for many films.
+
+Article: the page of the Wikidata item holding the film's IMDb id; without an
+id, a search hit Wikidata confirms as a film of that title and year
+(wiki_film_article.py). No article is better than another film's.
 
 Usage:
   python3 scripts/import_wiki_pageviews.py --backfill   # fill historical-comps.csv
@@ -37,6 +42,8 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 
 import predict as P  # noqa: E402
+import bom_release_page as BOM  # noqa: E402
+import wiki_film_article as WA  # noqa: E402
 
 # Wikimedia asks automated clients for a contact. It is read from the
 # environment (set WIKIMEDIA_CONTACT in the workflow) instead of being
@@ -87,34 +94,6 @@ def _get(url, tries=4):
 
 def _norm(s):
     return "".join(c for c in (s or "").lower() if c.isalnum())
-
-
-def pick_article(title, year, hits):
-    """Choose the film's article among search hits (pure; unit-tested).
-
-    An article whose own title (before any disambiguator) IS the film title
-    wins. Until 2026-11-27 a substring test ran first, so "The Accountant 2"
-    took "The Accountant (2016 film)" ("theaccountant2" + "016film") and
-    "Nobody 2" took "Nobody (2025 film)"."""
-    nt = _norm(title)
-    same_title = [c for c in hits if _norm(c.split("(")[0]) == nt]
-    dated = [c for c in same_title if str(year) in c]
-    # Two same-year films share a title ("Beast (2022 Indian film)" / "Beast
-    # (2022 American film)"): the comps are domestic releases.
-    for c in dated:
-        if "american" in c.lower():
-            return c
-    if dated:
-        return dated[0]
-    for c in same_title:
-        if "film" in c.lower() or "(" not in c:
-            return c
-    if same_title:
-        return same_title[0]
-    for c in hits:
-        if nt in _norm(c.split("(")[0]) and ("film" in c.lower() or str(year) in c):
-            return c
-    return hits[0] if hits else None
 
 
 def search_query(title, year):
@@ -188,33 +167,31 @@ def redirect_titles(articles, batch=20, strict=False):
     return out
 
 
-def reusable_article(title, year, article):
-    """True when a stored article is plainly this film's, so no search is needed.
-
-    Its own title must be the film's, and a disambiguator must name a film (not
-    a series or a list) of the release year: "No Time to Die (1958 film)" and
-    "M3GAN (film series)" are searched again."""
-    if not article or _norm(article.split("(")[0]) != _norm(title):
-        return False
-    if "(" not in article:
-        return True
-    tag = article.split("(", 1)[1].lower()
-    if "film" not in tag or "series" in tag:
-        return False
-    years = [int(y) for y in re.findall(r"\b(?:19|20)\d{2}\b", tag)]
-    try:
-        return not years or any(abs(y - int(year)) <= 1 for y in years)
-    except (TypeError, ValueError):
-        return not years
-
-
-def resolve_article(title, year):
-    """Map a film title to its exact English Wikipedia article (film-biased)."""
+def search_hits(title, year):
     url = ("https://en.wikipedia.org/w/api.php?action=query&list=search&format=json"
            "&srlimit=8&srsearch=" + urllib.parse.quote(search_query(title, year)))
     data = _get(url) or {}
-    hits = [h["title"] for h in data.get("query", {}).get("search", [])]
-    return pick_article(title, year, hits)
+    return [h["title"] for h in data.get("query", {}).get("search", [])]
+
+
+def resolve_article(title, year, imdb="", facts_by_imdb=None):
+    """This film's English Wikipedia article, or None — never another film's.
+
+    With an IMDb id the article is the page of the Wikidata item holding that
+    id. Without one (or when Wikidata does not know the id) a search hit is
+    taken only if Wikidata says it is a film of this title and year
+    (wiki_film_article). Until 2026-11-27 the first hit containing the title
+    won: "Beast" read "The Sea Beast", "Longlegs" read "Daddy Longlegs (2009
+    film)", and 9 of 217 comps carried another page's traffic.
+    `facts_by_imdb`: WA.facts_for_imdb_ids() when already read for many films."""
+    imdb = WA.imdb_id(imdb)
+    if imdb:
+        facts = facts_by_imdb if facts_by_imdb is not None else WA.facts_for_imdb_ids([imdb])
+        exact = WA.article_for_imdb(imdb, facts, title, year)
+        if exact:
+            return exact
+    hits = search_hits(title, year)
+    return WA.choose_from_hits(title, year, hits, WA.facts_for_titles(hits)) if hits else None
 
 
 # ── opening Friday of a comp (read, never inferred from traffic) ─────────────
@@ -241,34 +218,41 @@ def _get_text(url):
         return r.read().decode("utf-8", "ignore")
 
 
+def release_page(release_url, fetch_text=None):
+    """A Box Office Mojo release page's HTML, or "" (no link, or unreadable)."""
+    if not BOM.release_id(release_url):
+        return ""
+    try:
+        return (fetch_text or _get_text)(release_url) or ""
+    except Exception:  # noqa: BLE001
+        return ""
+
+
 def bom_release_date(release_url, fetch_text=None):
     """Domestic release date from a Box Office Mojo release page, or None."""
-    if not re.search(r"boxofficemojo\.com/release/rl\d+", release_url or ""):
-        return None
-    try:
-        page = (fetch_text or _get_text)(release_url)
-    except Exception:  # noqa: BLE001
-        return None
-    m = re.search(r"Release Date.{0,400}?([A-Z][a-z]{2} \d{1,2}, \d{4})", page or "", re.S)
-    try:
-        return datetime.strptime(m[1], "%b %d, %Y") if m else None
-    except ValueError:
-        return None
+    return BOM.release_date(release_page(release_url, fetch_text))
 
 
 def comp_opening_friday(row, fetch_text=None):
     """(YYYY-MM-DD, basis) for one historical-comps row, or (None, "").
 
-    The dated chart the row's grosses came from decides when the row has one;
-    every row also links its Box Office Mojo release page, which states the
-    release date. Both are records of the release. The old method, the Friday
+    First the Friday in the row's Box Office Mojo daily table whose Friday /
+    Saturday / Sunday grosses are the row's own: the weekend the comp's numbers
+    describe, whatever ran before it (a limited opening, previews, a
+    re-release). Failing that, the dated chart the row's grosses came from,
+    then the release date the page states — the first US date, which for a
+    platform release is the limited opening. The old method, the Friday
     nearest the article's biggest traffic day of the year, landed on awards
-    season or the streaming debut for 18 of the 90 rows that can be checked
-    (One Battle After Another: 2026-01-09 instead of 2025-09-26)."""
+    season or the streaming debut (One Battle After Another: 2026-01-09
+    instead of 2025-09-26); 31 of 217 rows were wrong or blank."""
+    page = release_page(row.get("daily_source_url"), fetch_text)
+    matched = BOM.opening_friday_for_row(row, page)
+    if matched:
+        return matched, "bom-daily"
     charted = chart_date(row.get("source_url"))
     if charted:
         return opening_friday_for_date(charted).strftime("%Y-%m-%d"), "numbers-chart"
-    released = bom_release_date(row.get("daily_source_url"), fetch_text)
+    released = BOM.release_date(page)
     if released:
         return opening_friday_for_date(released).strftime("%Y-%m-%d"), "bom-release"
     return None, ""
@@ -327,6 +311,37 @@ def anticipation_for_weekend(article, weekend_of, titles=None, touched=None):
     return total, friday.strftime("%Y-%m-%d")
 
 
+def views_from(items, mon, since="", days=4):
+    """Views on the window's days, counting only days on or after `since`
+    (YYYY-MM-DD): before that the name belonged to another page."""
+    by = {i["timestamp"][:8]: i["views"] for i in items}
+    total = 0
+    for k in range(days):
+        day = mon + timedelta(days=k)
+        if day.strftime("%Y-%m-%d") >= (since or ""):
+            total += by.get(day.strftime("%Y%m%d"), 0)
+    return total
+
+
+def anticipation_under_past_names(article, weekend_of, fetch_revisions=None):
+    """(Mon-Thu views, names) summed over every name the page carried by that
+    week, read from the page's move history. The fallback for a page whose
+    release-week name was later given to something else."""
+    friday = datetime.strptime(weekend_of, "%Y-%m-%d")
+    mon, thu = friday - timedelta(days=4), friday - timedelta(days=1)
+    try:
+        names = WA.past_names(article, thu.strftime("%Y-%m-%d"), fetch_revisions)
+    except Exception as e:  # noqa: BLE001 — stays unknown
+        print(f"  could not read the move history of '{article}': {e}")
+        return 0, {}
+    total = 0
+    for name, since in names.items():
+        items = daily_pageviews(name, mon.strftime("%Y%m%d"), thu.strftime("%Y%m%d"))
+        total += views_from(items, mon, since)
+        time.sleep(0.15)
+    return total, names
+
+
 def opening_friday_from_peak(d):
     """Map a pageview-peak day to the opening Friday (pure; leak-free anchor).
 
@@ -381,19 +396,27 @@ def backfill_comps(dry_run=False, throttle=0.25):
     def cache_key(row):                 # v1 entries hold traffic-inferred Fridays
         return f"v2|{row['movie']}|{row.get('release_year', '')}"
 
-    # Articles first (a stored one that is plainly the film's needs no search),
-    # then every article's redirects in a few batched requests.
+    # Articles first: each film's own page by its IMDb id, one Wikidata query
+    # for the whole file. A cached row is kept only while it holds that page
+    # and a view count; then every article's redirects in a few batched
+    # requests. If Wikidata cannot be reached this raises and nothing is
+    # written: an article is never guessed.
+    facts = WA.facts_for_imdb_ids([WA.imdb_id(r.get("imdb_url")) for r in rows])
     articles = {}
     for r in rows:
         key = cache_key(r)
-        if key in cache:
-            continue
         title, year = r["movie"], r.get("release_year", "")
-        if reusable_article(title, year, r.get("wiki_article")):
-            articles[key] = r["wiki_article"]
+        imdb = WA.imdb_id(r.get("imdb_url"))
+        exact = WA.article_for_imdb(imdb, facts, title, year)
+        cached = cache.get(key)
+        if cached and cached.get("views") and (not exact or cached.get("article") == exact):
+            continue
+        cache.pop(key, None)
+        if exact:
+            articles[key] = exact
             continue
         try:
-            articles[key] = resolve_article(title, year)
+            articles[key] = resolve_article(title, year, imdb, facts)
             print(f"  searched: {title} -> {articles[key]}")
         except Exception as e:  # noqa: BLE001
             articles[key] = e
@@ -450,11 +473,19 @@ def _resolve_comp(r, title, year, throttle, art, titles=None, touched=None):
         antic, _ = anticipation_for_weekend(art, friday, titles=titles, touched=touched)
         peak = 0
         if antic < MIN_PLAUSIBLE_VIEWS:
-            # The page had another title that week and that title now points
-            # elsewhere (Tarot 2024: 37 views). Unknown, not ~0.
-            print(f"  ⚠️  {title}: {antic} views in release week under "
-                  f"'{art}' — recorded as unknown")
-            antic = 0
+            # The page had another name that week and that name now points
+            # elsewhere, so it is not among the redirects (Tarot 2024: 37
+            # views; 68,698 under the names in the page's own move history).
+            recovered, names = anticipation_under_past_names(art, friday)
+            if recovered >= MIN_PLAUSIBLE_VIEWS:
+                print(f"  {title}: {antic} views under '{art}' and its redirects; "
+                      f"{recovered:,} under the names it had that week {sorted(names)}")
+                antic = recovered
+            else:
+                # Unknown, not ~0.
+                print(f"  ⚠️  {title}: {antic} views in release week under "
+                      f"'{art}' — recorded as unknown")
+                antic = 0
     elif art:
         # No dated source at all: the traffic spike is the last resort.
         friday, antic, peak = detect_opening_and_anticipation(art, year)
@@ -469,13 +500,32 @@ def _resolve_comp(r, title, year, throttle, art, titles=None, touched=None):
 
 
 # ── live fetch -> social-signals.csv ─────────────────────────────────────────
+def review_imdb_ids(path=None):
+    """{movie title: IMDb id} from reviews.csv, whose notes hold the IMDb link
+    import_reviews.py matched for each film (the latest row wins)."""
+    path = path or P.REVIEWS_CSV
+    out = {}
+    if os.path.exists(path):
+        with open(path, newline="") as f:
+            for r in csv.DictReader(f):
+                found = WA.imdb_id(r.get("notes"))
+                if found:
+                    out[r.get("movie_title", "")] = found
+    return out
+
+
 def fetch_current(weekend, films, dry_run=False):
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    imdb_ids = review_imdb_ids()
     rows = []
     for title in films:
-        art = resolve_article(title, int(weekend[:4]))
+        try:
+            art = resolve_article(title, int(weekend[:4]), imdb_ids.get(title, ""))
+        except Exception as e:  # noqa: BLE001 — diagnostic signal: skip, never guess
+            print(f"  {title}: article lookup failed ({e}) — skipped")
+            continue
         if not art:
-            print(f"  {title}: no Wikipedia article — skipped")
+            print(f"  {title}: no Wikipedia article verified as this film — skipped")
             continue
         views, friday = anticipation_for_weekend(art, weekend)
         print(f"  {title}: {art} release-week (Mon-Thu) views={views:,}")

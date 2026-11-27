@@ -53,27 +53,51 @@ if __name__ == "__main__":
     unittest.main()
 
 
-class ArticlePickTests(unittest.TestCase):
-    """2026-11-27: a substring test matched 'theaccountant2' inside
-    'theaccountant2016film' and 'nobody2' inside 'nobody2025film'."""
+def _fact(title, film=True, years=(), us=True, imdb=()):
+    return {"item": "Q1", "title": title, "film": film, "us": us,
+            "years": list(years), "imdb": list(imdb)}
 
-    def test_sequel_number_does_not_match_a_year(self):
+
+class ArticleResolveTests(unittest.TestCase):
+    """2026-11-27: the first search hit containing the title won, so 9 of 217
+    comps read another page ('theaccountant2' sits inside
+    'theaccountant2016film'). The choosing itself is tested in
+    test_wiki_film_article.py; here, how the importer uses it."""
+
+    def test_imdb_id_decides_without_a_search(self):
+        from unittest import mock
+        facts = {"tt0000001": [_fact("The Accountant 2", years=[2025], imdb=["tt0000001"])]}
+        with mock.patch.object(W, "search_hits", side_effect=AssertionError("no search needed")):
+            self.assertEqual("The Accountant 2", W.resolve_article(
+                "The Accountant 2", 2025, "https://www.imdb.com/title/tt0000001/", facts))
+
+    def test_without_an_id_only_a_verified_hit_is_taken(self):
+        from unittest import mock
         hits = ["The Accountant (2016 film)", "The Accountant 2", "Ben Affleck"]
-        self.assertEqual("The Accountant 2", W.pick_article("The Accountant 2", 2025, hits))
-        self.assertEqual("Nobody 2", W.pick_article("Nobody 2", 2025, ["Nobody (2025 film)", "Nobody 2"]))
+        known = {"The Accountant (2016 film)": _fact("The Accountant (2016 film)", years=[2016]),
+                 "The Accountant 2": _fact("The Accountant 2", years=[2025]),
+                 "Ben Affleck": _fact("Ben Affleck", film=False)}
+        with mock.patch.object(W, "search_hits", return_value=hits), \
+                mock.patch.object(W.WA, "facts_for_titles", return_value=known):
+            self.assertEqual("The Accountant 2", W.resolve_article("The Accountant 2", 2025))
 
-    def test_same_title_prefers_the_release_year(self):
-        hits = ["Last Breath (2019 film)", "Last Breath (2025 film)", "Last Breath"]
-        self.assertEqual("Last Breath (2025 film)", W.pick_article("Last Breath", 2025, hits))
+    def test_no_verified_hit_is_no_article(self):
+        from unittest import mock
+        known = {"The Sea Beast (2022 film)": _fact("The Sea Beast (2022 film)", years=[2022])}
+        with mock.patch.object(W, "search_hits", return_value=["The Sea Beast (2022 film)"]), \
+                mock.patch.object(W.WA, "facts_for_titles", return_value=known):
+            self.assertIsNone(W.resolve_article("Beast", 2022))
+        with mock.patch.object(W, "search_hits", return_value=[]):
+            self.assertIsNone(W.resolve_article("Unlisted", 2025))
 
-    def test_punctuation_differences_still_match(self):
-        hits = ["Inuyasha", "Demon Slayer: Kimetsu no Yaiba – The Movie: Infinity Castle"]
-        self.assertEqual(hits[1], W.pick_article(
-            "Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle", 2025, hits))
-
-    def test_falls_back_to_the_first_hit(self):
-        self.assertEqual("Something Else", W.pick_article("Unlisted", 2025, ["Something Else"]))
-        self.assertIsNone(W.pick_article("Unlisted", 2025, []))
+    def test_an_id_for_another_film_falls_back_to_the_search(self):
+        from unittest import mock
+        facts = {"tt0000009": [_fact("Villeneuve: The Rise of a Legend", years=[2026], imdb=["tt0000009"])]}
+        known = {"Ramayana: Rise of A Legend": _fact("Ramayana: Rise of A Legend", years=[2026])}
+        with mock.patch.object(W, "search_hits", return_value=["Ramayana: Rise of A Legend"]), \
+                mock.patch.object(W.WA, "facts_for_titles", return_value=known):
+            self.assertEqual("Ramayana: Rise of A Legend", W.resolve_article(
+                "Ramayana: Rise of A Legend", 2026, "tt0000009", facts))
 
     def test_search_text_carries_no_operators(self):
         q = W.search_query("Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle", 2025)
@@ -91,11 +115,32 @@ class CompOpeningFridayTests(unittest.TestCase):
         self.assertEqual("2025-11-28", f("2025-11-26"))   # Wednesday opener
         self.assertEqual("2025-09-26", f("2025-09-27"))   # a Saturday date
 
-    def test_dated_chart_decides(self):
+    @staticmethod
+    def _daily(n, date, gross):
+        return (f'<tr><td><a class="a-link-normal" href="/date/{date}/?ref_=bo_rl_table_{n}">x</a></td>'
+                f'<td>1</td><td class="mojo-field-type-money">${gross:,}</td></tr>')
+
+    def test_the_weekend_with_the_rows_grosses_decides(self):
+        # A limited opening on Sep 12, the wide weekend two weeks later: the
+        # stated release date and a chart of the limited run are both wrong.
+        page = (self.PAGE + self._daily(1, "2025-09-12", 90_000) + self._daily(2, "2025-09-13", 120_000)
+                + self._daily(3, "2025-09-14", 80_000) + self._daily(15, "2025-09-26", 8_800_000)
+                + self._daily(16, "2025-09-27", 7_600_000) + self._daily(17, "2025-09-28", 5_600_000))
+        row = {"source_url": "https://www.the-numbers.com/box-office-chart/daily/2025/09/11",
+               "daily_source_url": self.BOM,
+               "friday_m": "8.8", "saturday_m": "7.6", "sunday_m": "5.6"}
+        self.assertEqual(("2025-09-26", "bom-daily"), W.comp_opening_friday(row, fetch_text=lambda u: page))
+
+    def test_dated_chart_when_no_weekend_matches(self):
         row = {"source_url": "https://www.the-numbers.com/box-office-chart/daily/2025/09/25",
-               "daily_source_url": self.BOM}
+               "daily_source_url": self.BOM,
+               "friday_m": "8.8", "saturday_m": "7.6", "sunday_m": "5.6"}
         self.assertEqual(("2025-09-26", "numbers-chart"),
-                         W.comp_opening_friday(row, fetch_text=lambda u: self.fail("not needed")))
+                         W.comp_opening_friday(row, fetch_text=lambda u: self.PAGE))
+
+        def boom(url):
+            raise OSError("blocked")
+        self.assertEqual(("2025-09-26", "numbers-chart"), W.comp_opening_friday(row, fetch_text=boom))
 
     def test_bom_release_page_otherwise(self):
         row = {"source_url": "https://www.the-numbers.com/box-office-records/domestic/all-movies/previews/any",
@@ -117,10 +162,6 @@ class CompOpeningFridayTests(unittest.TestCase):
 
 
 class ArticleRefinementTests(unittest.TestCase):
-    def test_same_year_namesakes_prefer_the_american_film(self):
-        hits = ["Beast (2022 Indian film)", "The Sea Beast (2022 film)", "Beast (2022 American film)"]
-        self.assertEqual("Beast (2022 American film)", W.pick_article("Beast", 2022, hits))
-
     def test_apostrophes_survive_the_search_text(self):
         self.assertEqual("Don't Worry Darling 2022 film", W.search_query("Don't Worry Darling", 2022))
 
@@ -165,20 +206,45 @@ class RedirectViewsTests(unittest.TestCase):
 class BackfillLoadTests(unittest.TestCase):
     """2026-11-27: one search + one redirect request per film was throttled."""
 
-    def test_a_plainly_correct_stored_article_is_reused(self):
-        self.assertTrue(W.reusable_article("Black Bag", 2025, "Black Bag"))
-        self.assertTrue(W.reusable_article("Last Breath", 2025, "Last Breath (2025 film)"))
-        self.assertTrue(W.reusable_article("The Monkey", 2025, "The Monkey (film)"))
+    def test_only_rows_whose_page_or_views_are_wrong_are_read_again(self):
+        import csv
+        import json
+        import tempfile
+        from unittest import mock
+        cols = ["movie", "release_year", "imdb_url", "wiki_release_week_views",
+                "wiki_article", "wiki_opening_friday"]
+        comps = [["Elvis", "2022", "https://www.imdb.com/title/tt0000001/", "169847", "Elvis (2022 film)", "2022-06-24"],
+                 ["The Menu", "2022", "https://www.imdb.com/title/tt0000002/", "241738", "The Menu (2022 film)", "2022-11-18"],
+                 ["Tarot", "2024", "https://www.imdb.com/title/tt0000003/", "", "Tarot (2024 American film)", "2024-05-03"]]
+        cache = {f"v2|{m}|{y}": {"article": a, "friday": f, "views": int(v or 0), "peak": 0, "basis": "x"}
+                 for m, y, _, v, a, f in comps}
+        facts = {"tt0000001": [_fact("Elvis (2022 film)", years=[2022], imdb=["tt0000001"])],
+                 "tt0000002": [_fact("The Menu", years=[2022], imdb=["tt0000002"])],       # the page was renamed
+                 "tt0000003": [_fact("Tarot (2024 American film)", years=[2024], imdb=["tt0000003"])]}
+        read = []
 
-    def test_a_doubtful_one_is_searched_again(self):
-        for title, year, article in (
-                ("No Time to Die", 2021, "No Time to Die (1958 film)"),
-                ("M3GAN", 2023, "M3GAN (film series)"),
-                ("Nobody 2", 2025, "Nobody (2025 film)"),
-                ("The Accountant 2", 2025, "The Accountant (2016 film)"),
-                ("Demon Slayer -Kimetsu no Yaiba- The Movie: Infinity Castle", 2025, "Inuyasha"),
-                ("Weapons", 2025, "")):
-            self.assertFalse(W.reusable_article(title, year, article), article)
+        def fake_resolve(r, title, year, throttle, art, titles=None, touched=None):
+            read.append((title, art))
+            return {"article": art, "friday": r["wiki_opening_friday"], "views": 5000, "peak": 0, "basis": "x"}
+
+        with tempfile.TemporaryDirectory() as tmp:
+            comps_csv, cache_path = os.path.join(tmp, "comps.csv"), os.path.join(tmp, "cache.json")
+            with open(comps_csv, "w", newline="") as f:
+                csv.writer(f).writerows([cols] + comps)
+            json.dump(cache, open(cache_path, "w"))
+            with mock.patch.object(W, "COMPS_CSV", comps_csv), mock.patch.object(W, "CACHE_PATH", cache_path), \
+                    mock.patch.object(W.WA, "facts_for_imdb_ids", return_value=facts), \
+                    mock.patch.object(W, "redirect_titles", lambda arts, strict=False: {a: [a] for a in arts}), \
+                    mock.patch.object(W, "redirect_last_touched", lambda names: {}), \
+                    mock.patch.object(W, "_resolve_comp", fake_resolve), mock.patch.object(W.time, "sleep"):
+                self.assertEqual(0, W.backfill_comps())
+            rows = {r["movie"]: r for r in csv.DictReader(open(comps_csv))}
+        # Elvis: right page, has views -> untouched. The Menu: page renamed.
+        # Tarot: views unknown -> tried again.
+        self.assertEqual([("The Menu", "The Menu"), ("Tarot", "Tarot (2024 American film)")], read)
+        self.assertEqual("The Menu", rows["The Menu"]["wiki_article"])
+        self.assertEqual("169847", rows["Elvis"]["wiki_release_week_views"])
+        self.assertEqual("5000", rows["Tarot"]["wiki_release_week_views"])
 
     def test_redirects_are_read_in_batches(self):
         from unittest import mock
@@ -231,3 +297,68 @@ class RedirectDateTests(unittest.TestCase):
             self.assertEqual({"Black Bag (film)": "2025-04-02"},
                              W.redirect_last_touched(["Black Bag (film)", "Gone"]))
         self.assertEqual(1, len(calls))
+
+
+
+class PastNameViewsTests(unittest.TestCase):
+    """Tarot (2024): its release-week name now leads elsewhere, so the film's
+    page and redirects show 37 views; the page's move history has the name."""
+    MOVES = [
+        {"timestamp": "2023-12-18T09:00:00Z",
+         "comment": "X moved page [[Draft:Horrorscope (film)]] to [[Horrorscope (film)]]"},
+        {"timestamp": "2024-01-30T12:00:00Z",
+         "comment": "X moved page [[Horrorscope (film)]] to [[Tarot (2024 film)]]"},
+        {"timestamp": "2024-07-23T18:00:00Z",
+         "comment": "X moved page [[Tarot (2024 film)]] to [[Tarot (2024 American film)]]"},
+    ]
+
+    def test_views_under_the_names_the_page_had_that_week(self):
+        from unittest import mock
+        views = {"Horrorscope (film)": 9, "Tarot (2024 film)": 17000, "Tarot (2024 American film)": 0}
+        asked = []
+
+        def fake_views(name, start, end):
+            asked.append(name)
+            return [{"timestamp": f"202404{d}00", "views": views[name]} for d in ("29", "30")] + \
+                   [{"timestamp": f"202405{d}00", "views": views[name]} for d in ("01", "02")]
+
+        with mock.patch.object(W, "daily_pageviews", fake_views), mock.patch.object(W.time, "sleep"):
+            total, names = W.anticipation_under_past_names(
+                "Tarot (2024 American film)", "2024-05-03", fetch_revisions=lambda a: self.MOVES)
+        self.assertEqual(4 * 17000 + 4 * 9, total)
+        self.assertEqual(["Horrorscope (film)", "Tarot (2024 film)"], sorted(asked))
+
+    def test_a_name_counts_only_from_the_day_the_page_took_it(self):
+        mon = datetime(2025, 3, 10)
+        items = [{"timestamp": f"202503{d}00", "views": 100} for d in ("10", "11", "12", "13")]
+        self.assertEqual(400, W.views_from(items, mon))
+        self.assertEqual(200, W.views_from(items, mon, since="2025-03-12"))
+
+    def test_an_unreadable_history_stays_unknown(self):
+        def boom(article):
+            raise OSError("blocked")
+        self.assertEqual((0, {}), W.anticipation_under_past_names("Tarot", "2024-05-03", fetch_revisions=boom))
+
+
+class LiveArticleTests(unittest.TestCase):
+    def test_imdb_ids_come_from_the_review_rows(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as f:
+            f.write("weekend_of,as_of_date,movie_title,notes\n"
+                    "2026-09-11,2026-09-10,Runner,https://www.imdb.com/title/tt31349844/\n"
+                    "2026-09-11,2026-09-10,Hope,https://www.rottentomatoes.com/m/hope_2026\n")
+        try:
+            self.assertEqual({"Runner": "tt31349844"}, W.review_imdb_ids(f.name))
+        finally:
+            os.unlink(f.name)
+        self.assertEqual({}, W.review_imdb_ids("/nonexistent/reviews.csv"))
+
+    def test_a_film_without_a_verified_page_is_skipped_not_guessed(self):
+        from unittest import mock
+        written = []
+        with mock.patch.object(W, "review_imdb_ids", return_value={"Runner": "tt31349844"}), \
+                mock.patch.object(W, "resolve_article", side_effect=[None, OSError("wikidata down")]) as res, \
+                mock.patch.object(W, "_append_social", written.append):
+            W.fetch_current("2026-09-11", ["Runner", "Hope"])
+        self.assertEqual(("Runner", 2026, "tt31349844"), res.call_args_list[0].args)
+        self.assertEqual([[]], written)

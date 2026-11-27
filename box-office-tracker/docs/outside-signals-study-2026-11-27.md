@@ -156,6 +156,19 @@ named above.
   are blank because its 2024 title can no longer be traced. Wikipedia views against the
   opening: correlation 0.55 → 0.70, views-only miss 68.5% → 57.6%; added to Thursday
   previews they still do not help (21.7% → 22.1%).
+- **The article can no longer be another film's.** It is now the page of the Wikidata item
+  holding the film's IMDb id (216 of 217 comps); without an id, a search hit is taken only
+  if Wikidata confirms a film of that title and year, else nothing is recorded
+  (`scripts/wiki_film_article.py`, used by the backfill and the daily fetch). The Friday is
+  first the weekend in the Box Office Mojo daily table that has the row's own
+  Friday/Saturday/Sunday grosses, which a limited opening cannot move; all 217 match one
+  exactly. Tarot's views (68,698) come from the page's move history: it was "Tarot (2024
+  film)" that week. "The Menu" now holds the page's current name. Final: 217 usable comps,
+  correlation 0.70, views-only miss 57.6%, Thursday 21.6% → Thursday + wiki 22.1%.
+  `scripts/audit_comp_wiki_columns.py` re-checks both columns against those sources
+  (exit 1 on any disagreement; 0 today). The daily fetch had the same fault: it read the
+  soundtrack page for The Hunger Games: Sunrise on the Reaping on 2026-11-27 and another
+  2026 film's page for Runner; those logged rows are left as recorded.
 
 Graded errors moved little, because the model headline and the corrected Thursday–Sunday
 actual cover the same days: stage backtest 21.93% → 21.98% (133 forecasts), calibration
