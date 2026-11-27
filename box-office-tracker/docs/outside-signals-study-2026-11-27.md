@@ -54,6 +54,33 @@ Trade forecast and our model make different errors, so mixing them helps
 | After previews | 24% | 23% | 16–17% (0.5) | 24 |
 | After Friday | 11–17% | 23% | 10–15% (0.75) | 24 |
 
+## More sources and the literature
+
+Second sweep (2026 films; correlation of each signal with the market's / the trade
+forecast's remaining error after removing its level):
+
+| Signal | n | vs market | vs trade | Notes |
+|---|---|---|---|---|
+| Greenlight (ex-Quorum) theatrical intent % | 16–17 | +0.17 | +0.40 | Strongest raw signal (ρ 0.87 with the opening) but published as table screenshots, about one film a week, none since 2026-10-20. |
+| TMDB daily-export popularity | 34–36 | +0.09 | +0.28 | No key, scriptable; files kept ~120 days. |
+| Bluesky posts, prior 7 days | 52–56 | −0.13 | +0.30 | Exact history; noisy on ambiguous titles. |
+| Wikipedia edits, prior 30 days | 52–55 | +0.15 | +0.19 | |
+| RT critic review count, Letterboxd rating count (Wayback) | 24–39 | −0.16 / −0.08 | +0.15 / +0.04 | |
+
+None explains the market's error. A few lean the right way against the trade forecast
+(films without a market), on samples too small to build on.
+
+Blocked or login-gated: IMDb MOVIEmeter, Trakt, Letterboxd watchlists, TikTok,
+Instagram/X, Spotify, GDELT (429). No public metric: Fandango, Atom, EntTelligence,
+Comscore.
+
+Literature: trade forecasts miss by a median 19.9% and are no better on opening day
+than three weeks out (Follows, 1,184 films); a forward-tested public-signal model
+misses by 32% a week out (Meiler, 2025 holdout); search adds nothing once a prediction
+market is in the model (Goel et al.) — the same result as here. The famous high
+figures (Asur & Huberman R² 0.97, Google 94%) are in-sample fits. No published study
+measures pre-sale ticketing against openings.
+
 ## Shipped
 
 - `scripts/fetch_trade_forecasts.py` → `data/trade-forecasts.csv` (weekly forecast,
