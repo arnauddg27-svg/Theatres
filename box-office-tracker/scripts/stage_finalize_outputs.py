@@ -24,6 +24,8 @@ OUTPUT_FILES = [
     "box-office-tracker/data/census-coverage.csv",
     "box-office-tracker/data/prediction-log.csv",
     "box-office-tracker/data/polymarket-odds-log.csv",
+    "box-office-tracker/data/trade-forecasts.csv",
+    "box-office-tracker/data/ensemble-log.csv",
     "box-office-tracker/data/paper-trades.csv",
     "box-office-tracker/data/bracket-probabilities.csv",
     "box-office-tracker/data/chain-census-log.csv",

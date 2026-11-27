@@ -1019,6 +1019,20 @@ jobs:
         # every prediction-log row has the market odds of the same moment.
         run: python3 scripts/log_polymarket_odds.py
 
+      - name: Fetch published trade forecasts
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Advisory (exits 0): the weekly published opening forecasts, timestamped,
+        # into data/trade-forecasts.csv — an input to the combined forecast only.
+        run: python3 scripts/fetch_trade_forecasts.py || echo "::warning::trade forecast fetch crashed — the combined forecast uses what is on file"
+
+      - name: Combined forecast (seat model + market + trade forecast)
+        if: steps.finalize_guard.outputs.needs_finalize == 'true'
+        working-directory: box-office-tracker
+        # Advisory (exits 0): data/ensemble-log.csv, one row per prediction-log
+        # row. Runs after the odds step so each row has its market price.
+        run: python3 scripts/ensemble_forecast.py || echo "::warning::combined forecast crashed — data/ensemble-log.csv not refreshed"
+
       - name: Paper-trade the forecasts against Polymarket
         if: steps.finalize_guard.outputs.needs_finalize == 'true'
         working-directory: box-office-tracker
