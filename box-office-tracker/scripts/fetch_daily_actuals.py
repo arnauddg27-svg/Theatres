@@ -30,6 +30,8 @@ from datetime import datetime, timedelta, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from actuals_quality import REGULAR_THURSDAY_NOTE, ReportedDailyGrosses  # noqa: E402
+
 OVERRIDES_CSV = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "data", "daily-actual-overrides.csv",
@@ -79,8 +81,14 @@ def merge_override_rows(existing_rows, weekend_of, movie, day_gross, as_of_date)
     appending is an upsert. Skip appending when the latest existing value is
     within UPSERT_TOLERANCE of the fetched one, so repeated finalizes do not
     grow the file with identical rows.
+
+    A Thursday that The Numbers ranks (the film opened before Friday) is
+    written with REGULAR_THURSDAY_NOTE: it is a full day outside the 3-day
+    opening, and the forecast's market comparison and the paper-trade
+    settlement must not treat it as previews. An unmarked row is re-appended.
     """
-    latest = {}
+    regular_thursday = bool(getattr(day_gross, "non_preview_thursday", False))
+    latest, latest_notes = {}, {}
     for row in existing_rows:
         if (row.get("weekend_of") or "").strip() != weekend_of:
             continue
@@ -90,13 +98,21 @@ def merge_override_rows(existing_rows, weekend_of, movie, day_gross, as_of_date)
             latest[key] = float(row.get("gross_m") or 0)
         except (TypeError, ValueError):
             continue
+        latest_notes[key] = row.get("notes") or ""
     new_rows = []
     for day, gross in sorted(day_gross.items()):
         if not (MIN_GROSS_M <= gross <= MAX_GROSS_M):
             continue
-        prev = latest.get((movie.strip().lower(), day))
-        if prev and prev > 0 and abs(gross - prev) / prev <= UPSERT_TOLERANCE:
+        key = (movie.strip().lower(), day)
+        prev = latest.get(key)
+        mark = regular_thursday and day == "Thursday"
+        marked = REGULAR_THURSDAY_NOTE in latest_notes.get(key, "")
+        if (prev and prev > 0 and abs(gross - prev) / prev <= UPSERT_TOLERANCE
+                and marked == mark):
             continue
+        notes = "auto-fetched daily gross (revisions re-append)"
+        if mark:
+            notes += f"; {REGULAR_THURSDAY_NOTE}: film opened before Friday, not previews"
         new_rows.append({
             "weekend_of": weekend_of,
             "movie_title": movie,
@@ -105,7 +121,7 @@ def merge_override_rows(existing_rows, weekend_of, movie, day_gross, as_of_date)
             "source": "The Numbers auto-fetch",
             "status": "reported",
             "as_of_date": as_of_date,
-            "notes": "auto-fetched daily gross (revisions re-append)",
+            "notes": notes,
         })
     return new_rows
 
@@ -166,7 +182,9 @@ def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
     days = N.opening_days(daily, weekend_of) if daily else {}
     if "Friday" in days and "Thursday" not in days and "Saturday" not in days:
         days.pop("Friday")
-    return {d: g for d, g in days.items() if MIN_GROSS_M <= g <= MAX_GROSS_M}
+    return ReportedDailyGrosses(
+        {d: g for d, g in days.items() if MIN_GROSS_M <= g <= MAX_GROSS_M},
+        non_preview_thursday=N.thursday_is_regular(daily, weekend_of))
 
 
 def main():
@@ -211,8 +229,9 @@ def main():
         except Exception as e:
             print(f"  ⚠️  fetch failed for {movie}: {e}")
             continue
-        day_gross = {d: g for d, g in fetched.items()
-                     if d in days and d in SAFE_ANCHOR_DAYS}
+        day_gross = ReportedDailyGrosses(
+            {d: g for d, g in fetched.items() if d in days and d in SAFE_ANCHOR_DAYS},
+            non_preview_thursday=getattr(fetched, "non_preview_thursday", False))
         if not day_gross:
             print(f"  {movie}: no published days yet ({', '.join(days)} expected)")
             continue

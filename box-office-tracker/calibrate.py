@@ -30,6 +30,8 @@ import seat_regression
 import holdover
 import small_film_gate
 from forecast_evaluation import grade_forecast_checkpoints
+from actuals_quality import (model_window_actual, revise_reported_daily_actuals,
+                             standard_opening_total)
 from calibration_freeze import (calibration_has_weekend,
                                 load_calibration_freeze,
                                 save_calibration_freeze)
@@ -265,7 +267,8 @@ def reset_calibration_factors_to_prediction_baseline(cal, prediction_cal):
 
 def accuracy_entry_from_history(entry):
     """Build the historical_accuracy row implied by one calibration history row."""
-    total_actual = _positive_float(entry.get("actual_total", entry.get("actual")))
+    # predicted_mid covers Thursday-Sunday: grade it on the matching window.
+    total_actual = model_window_actual(entry)
     total_predicted = _positive_float(entry.get("predicted_mid"))
     if not total_actual or not total_predicted:
         return None
@@ -475,15 +478,24 @@ def numbers_chart_movie_urls(movie_title, friday_date):
                 "https://www.the-numbers.com/box-office-chart/daily/" + friday_date.replace("-", "/"),
                 headers={"User-Agent": "Mozilla/5.0 BoxOfficeTracker/1.0"}, timeout=30)
             if chart.status_code == 200:
-                matches = set()
+                matches, prefixed = set(), set()
+                wanted = title_key(movie_title)
                 for href, label in re.findall(r'<a[^>]+href=[\"\']([^\"\']+)[\"\'][^>]*>(.*?)</a>', chart.text, re.DOTALL):
                     if not href.startswith("/movie/"):
                         continue
-                    title = re.sub(r'<[^>]+>', '', label)
-                    if title_key(title) == title_key(movie_title):
-                        matches.add("https://www.the-numbers.com" + href.split("#")[0])
+                    key = title_key(re.sub(r'<[^>]+>', '', label))
+                    link = "https://www.the-numbers.com" + href.split("#")[0]
+                    if key == wanted:
+                        matches.add(link)
+                    elif len(wanted) >= 2 and key[-len(wanted):] == wanted:
+                        # A franchise prefix on the chart only ('Star Wars: The
+                        # Mandalorian and Grogu' for 'The Mandalorian and
+                        # Grogu', never re-read until 2026-11-27).
+                        prefixed.add(link)
                 if len(matches) == 1:
                     candidates.extend(matches)
+                elif not matches and len(prefixed) == 1:
+                    candidates.extend(prefixed)
         except Exception:
             pass
     return candidates
@@ -628,11 +640,17 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     weekends the two differ a lot (2026-09-11: Practical Magic 2 shown
     $32.4M, replay $23.0M, actual $30.0M), and grading the replay made the
     model look worse than it was."""
-    total_actual = sum(daily_actuals.values())
+    # actual_total is the 3-day opening (Fri-Sun + Thursday PREVIEWS). The
+    # model's replay and live headline cover Thursday-Sunday, so for a film
+    # that opened before Friday they are graded against the Thu-Sun total
+    # (graded_actual) while actual_total keeps the figure markets settle on.
+    non_preview_thursday = bool(getattr(daily_actuals, "non_preview_thursday", False))
+    total_actual = standard_opening_total(daily_actuals, non_preview_thursday)
+    graded_actual = sum(daily_actuals.values())
     total_predicted = predicted_mid
 
-    error_pct = ((total_predicted - total_actual) / total_actual * 100
-                 if total_actual > 0 else None)
+    error_pct = ((total_predicted - graded_actual) / graded_actual * 100
+                 if graded_actual > 0 else None)
 
     entry = {
         "movie": movie,
@@ -653,10 +671,10 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
     if live_headline and live_headline.get("mid_m"):
         entry["live_headline"] = dict(live_headline)
         entry["live_headline"]["checkpoints"] = grade_forecast_checkpoints(
-            live_headline.get("checkpoints"), total_actual)
-        if total_actual > 0:
+            live_headline.get("checkpoints"), graded_actual)
+        if graded_actual > 0:
             entry["live_error_pct"] = round(
-                (float(live_headline["mid_m"]) - total_actual) / total_actual * 100, 1)
+                (float(live_headline["mid_m"]) - graded_actual) / graded_actual * 100, 1)
     if exclude_from_day_weights:
         entry["exclude_from_day_weights"] = True
     if data_outage:
@@ -686,6 +704,7 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         entry["non_preview_thursday"] = True
         entry["exclude_from_calibration"] = True
         entry["calibration_exclusion_reason"] = "Regular Thursday for a non-Friday opener; not preview revenue."
+        entry["actual_thu_sun_total"] = round(graded_actual, 2)
     if raw_daily_predictions:
         entry["raw_daily_predictions"] = {
             k: round(v, 2) for k, v in raw_daily_predictions.items()
@@ -796,8 +815,8 @@ def record_result(cal, movie, weekend_of, predicted_mid, predicted_low,
         factors["amc_market_share"] = round(statistics.median(share_estimates), 4)
 
     # 5. Update historical accuracy (drives trading confidence)
-    if total_actual > 0 and total_predicted > 0:
-        abs_error = abs(total_predicted - total_actual) / total_actual
+    if graded_actual > 0 and total_predicted > 0:
+        abs_error = abs(total_predicted - graded_actual) / graded_actual
         accuracy_entry = {
             "movie": movie,
             "weekend_of": weekend_of,
@@ -905,6 +924,96 @@ def predict_pre_actual_movie(predict_movie_fn, movie, seat_data, poly_data, cal,
     return predict_movie_fn(movie, seat_data, poly_data, cal, **kwargs)
 
 
+# ── Re-verification of recorded actuals ─────────────────────────────────────
+
+# calibrate records a weekend once (Wednesday) and final_calibrated_movies then
+# skips the film for good, so whatever The Numbers showed that morning stayed
+# on file: Primetime (2026-09-25) kept a $4.59M Sunday that settled at $4.22M
+# ($19.2M recorded vs the $18.83M the market resolved on). Each run therefore
+# re-reads the films of the last few weekends and revises what moved.
+REVERIFY_WEEKS = 6
+# Stored days are rounded to $0.01M; anything inside this is rounding, not a
+# revision, and must not grow the actuals_revision chain.
+REVERIFY_DAY_TOLERANCE_M = 0.011
+REVERIFY_TOTAL_TOLERANCE = 0.002
+
+
+def reported_actuals_differ(entry, daily):
+    """True when a fresh daily table changes the record (pure; unit-tested)."""
+    non_preview = bool(getattr(daily, "non_preview_thursday", False))
+    if non_preview != bool(entry.get("non_preview_thursday")):
+        return True
+    if non_preview and not entry.get("actual_thu_sun_total"):
+        return True
+    stored = entry.get("daily_actuals") or {}
+    days = [d for d in OPENING_WEEKEND_DAYS if d in daily or d in stored]
+    if any(abs(float(daily.get(d) or 0) - float(stored.get(d) or 0)) > REVERIFY_DAY_TOLERANCE_M
+           for d in days):
+        return True
+    total = standard_opening_total({d: daily[d] for d in OPENING_WEEKEND_DAYS if d in daily},
+                                   non_preview)
+    recorded = _positive_float(entry.get("actual_total", entry.get("actual")))
+    return bool(not recorded or abs(total - recorded) / recorded > REVERIFY_TOTAL_TOLERANCE)
+
+
+def refresh_fitted_factors(cal):
+    """Refit everything record_result derives from history (after a revision)."""
+    factors = cal.setdefault("calibration_factors", {})
+    factors["regression"] = seat_regression.fit_regression_calibration(cal["history"])
+    factors["snapshot_calibration_support"] = snapshot_calibration_support(
+        seat_regression.fitting_history(cal["history"]))
+    factors["day_weights"] = seat_regression.learn_day_shares(cal["history"])
+    rebuild_historical_accuracy(cal)
+    factors["last_updated"] = datetime.now().strftime("%Y-%m-%d")
+
+
+def reverify_recent_actuals(cal, today=None, weeks=REVERIFY_WEEKS, fetch=None,
+                            skip_weekends=()):
+    """Re-read The Numbers for recently recorded films; revise what changed.
+
+    Returns the list of (movie, weekend_of, old_total, new_total) revised. The
+    prior record is kept under actuals_revision, so historical replays still
+    see what was known at the time (actuals_quality.actuals_as_of)."""
+    fetch = fetch or fetch_movie_daily_history
+    today = today or datetime.now().strftime("%Y-%m-%d")
+    earliest = (datetime.strptime(today, "%Y-%m-%d")
+                - timedelta(weeks=weeks)).strftime("%Y-%m-%d")
+    revised = []
+    for entry in cal.get("history", []):
+        weekend = entry.get("weekend_of") or ""
+        if not (earliest <= weekend < today) or weekend in skip_weekends:
+            continue
+        if entry.get("data_outage") and not entry.get("daily_actuals"):
+            continue
+        try:
+            daily = fetch(entry.get("movie"), weekend)
+        except Exception as e:  # a fetch hiccup must not break calibration
+            print(f"    ⚠️  re-verify fetch failed for {entry.get('movie')}: {e}")
+            continue
+        if not daily or not {"Friday", "Saturday", "Sunday"} <= set(daily):
+            continue
+        if not reported_actuals_differ(entry, daily):
+            entry["actuals_verified_at"] = today
+            continue
+        old = entry.get("actual_total")
+        source = getattr(daily, "source_url", "") or "the-numbers.com per-movie daily table"
+        if revise_reported_daily_actuals(entry, daily, source, today):
+            revised.append((entry.get("movie"), weekend, old, entry.get("actual_total")))
+            print(f"    Revised {entry.get('movie')} ({weekend}): "
+                  f"${float(old or 0):.2f}M -> ${entry['actual_total']:.2f}M")
+    if revised:
+        refresh_fitted_factors(cal)
+    return revised
+
+
+def _reverify_and_save(cal, current_weekend):
+    print("\n  Re-verifying recently recorded actuals against The Numbers:")
+    revised = reverify_recent_actuals(cal, skip_weekends=(current_weekend,))
+    if not revised:
+        print("    No recorded actual changed.")
+    save_calibration(cal)
+
+
 # ── Auto-Calibration Pipeline ──────────────────────────────────────────────
 
 def _last_friday():
@@ -983,6 +1092,7 @@ def auto_calibrate():
 
     if not seat_data:
         print(f"\n  No seat data for weekend {last_fri}. Nothing to calibrate.")
+        _reverify_and_save(cal, last_fri)
         return
 
     eligible_movies = [movie for movie in seat_data if movie not in already_done]
@@ -1048,6 +1158,10 @@ def auto_calibrate():
             continue
 
         total_actual = sum(daily_actuals.values())
+        if getattr(daily_actuals, "non_preview_thursday", False):
+            print(f"    Opened before Friday: 3-day opening "
+                  f"${standard_opening_total(daily_actuals, True):.1f}M "
+                  f"(recorded as actual_total); Thursday-Sunday below")
         print(f"    Actual total: ${total_actual:.1f}M")
         for day, gross in sorted(daily_actuals.items(),
                                   key=lambda x: ["Thursday","Friday","Saturday","Sunday"].index(x[0])):
@@ -1088,6 +1202,11 @@ def auto_calibrate():
         })
 
     entries = record_pending_calibrations(cal, prediction_cal, last_fri, pending)
+
+    # After this weekend's fits (frozen above): earlier weekends' finals drift
+    # for days after they are first recorded. The revision is dated today, so
+    # a replay of any earlier date still sees the record as it stood.
+    _reverify_and_save(cal, last_fri)
 
     for item, entry in zip(pending, entries):
         movie = item["movie"]
@@ -1140,7 +1259,8 @@ def show_history():
     print(f"  {'─'*25} {'─'*12} {'─'*10} {'─'*10} {'─'*8}")
     for h in history:
         pred = f"${h['predicted_mid']:.1f}M"
-        actual = f"${h['actual_total']:.1f}M" if h.get("actual_total") else "—"
+        # Thu-Sun for a pre-Friday opener: the window the prediction covers.
+        actual = f"${model_window_actual(h):.1f}M" if model_window_actual(h) else "—"
         err = f"{h['error_pct']:+.1f}%" if h.get("error_pct") is not None else "—"
         print(f"  {h['movie'][:25]:<25} {h.get('weekend_of','?'):<12} {pred:>10} {actual:>10} {err:>8}")
 

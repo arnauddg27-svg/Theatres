@@ -44,8 +44,8 @@ CHECKPOINTS = (("Mon", -4), ("Tue", -3), ("Wed", -2), ("Thu", -1))
 def actuals():
     out = {}
     for e in json.load(open(os.path.join(P.DATA_DIR, "calibration.json")))["history"]:
-        if e.get("actual_total") and not e.get("data_outage"):
-            out[(e["weekend_of"], e["movie"])] = float(e["actual_total"])
+        if P.model_window_actual(e) and not e.get("data_outage"):
+            out[(e["weekend_of"], e["movie"])] = P.model_window_actual(e)
     latest = {}
     with open(os.path.join(P.DATA_DIR, "daily-actual-overrides.csv"), newline="") as f:
         for r in csv.DictReader(f):

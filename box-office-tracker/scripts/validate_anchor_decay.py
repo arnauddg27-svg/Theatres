@@ -53,7 +53,7 @@ def main():
     results = {k: {"fixed": [], **{f"floor{fl:g}": [] for fl in FLOORS}} for k in offsets}
 
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         try:
             cal = P.load_calibration_freeze(P.DATA_DIR, w)
         except Exception:

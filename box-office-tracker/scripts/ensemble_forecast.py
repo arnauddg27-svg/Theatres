@@ -235,8 +235,10 @@ def load_actuals(path=CALIBRATION):
             history = json.load(fh).get("history") or []
     except (OSError, ValueError):
         return {}
+    # A film that opened before Friday is left out: its model number covers
+    # Thursday-Sunday, the market and trade numbers Friday-Sunday.
     return {(h.get("movie"), h.get("weekend_of")): float(h["actual_total"])
-            for h in history if h.get("actual_total")}
+            for h in history if h.get("actual_total") and not h.get("non_preview_thursday")}
 
 
 def report(rows, actuals, out=sys.stdout):

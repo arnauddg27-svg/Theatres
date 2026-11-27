@@ -41,6 +41,7 @@ from datetime import datetime, timezone
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bracket_model as B  # noqa: E402
+from actuals_quality import REGULAR_THURSDAY_NOTE  # noqa: E402
 from log_polymarket_odds import ODDS_LOG, PREDICTION_LOG, bracket_range  # noqa: E402
 
 DATA_DIR = B.DATA_DIR
@@ -134,8 +135,10 @@ def kelly(p, cost):
     return max(0.0, (p * b - (1 - p)) / b) if b > 0 else 0.0
 
 
-def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios=None, row_ratios=None):
+def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios=None, row_ratios=None,
+               off_window=None):
     trades = {} if trades is None else trades
+    off_window = off_window_films(pred_path) if off_window is None else off_window
     snaps = load_snapshots(odds_path)
     # 2026-11-10: sigma from every graded headline of the stage and source path
     # (bracket_model.fit_headline), not the last headline per stage — the bet
@@ -156,6 +159,8 @@ def place_bets(pred_path=PREDICTION_LOG, odds_path=ODDS_LOG, trades=None, ratios
         if not r.get("poly_logged_at") or not r.get("poly_event"):
             continue
         key = (r["weekend_of"], B.movie_key(r["movie"]), r["poly_logged_at"], r["poly_event"])
+        if (key[0], key[1]) in off_window:
+            continue          # the headline does not cover this market's window
         snapshot = snaps.get(key)
         stage = r.get("forecast_stage") or ""
         if not snapshot or stage not in STAGES:
@@ -229,7 +234,7 @@ def final_actuals(cal_path=B.CALIBRATION_JSON):
 def provisional_actuals(path=OVERRIDES_CSV):
     """Latest The Numbers daily per (weekend, film, day); a total only when
     Friday, Saturday and Sunday are all present (Thursday added when split)."""
-    latest = {}
+    latest, regular = {}, set()
     try:
         with open(path, newline="") as f:
             for r in csv.DictReader(f):
@@ -237,6 +242,8 @@ def provisional_actuals(path=OVERRIDES_CSV):
                 if g is None or (r.get("status") or "reported") != "reported":
                     continue
                 k = (r["weekend_of"], B.movie_key(r["movie_title"]), r["day_of_week"])
+                if r["day_of_week"] == "Thursday" and REGULAR_THURSDAY_NOTE in (r.get("notes") or ""):
+                    regular.add(k[:2])
                 if r.get("as_of_date", "") >= latest.get(k, ("", 0))[0]:
                     latest[k] = (r.get("as_of_date", ""), g)
     except OSError:
@@ -244,7 +251,50 @@ def provisional_actuals(path=OVERRIDES_CSV):
     days = defaultdict(dict)
     for (w, mk, d), (_, g) in latest.items():
         days[(w, mk)][d] = g
-    return {k: sum(v.values()) for k, v in days.items() if {"Friday", "Saturday", "Sunday"} <= set(v)}
+    # A ranked (regular) Thursday is a full day before the 3-day opening.
+    return {k: sum(g for d, g in v.items() if not (d == "Thursday" and k in regular))
+            for k, v in days.items() if {"Friday", "Saturday", "Sunday"} <= set(v)}
+
+
+def off_window_films(pred_path=PREDICTION_LOG, cal_path=B.CALIBRATION_JSON):
+    """{(weekend, movie_key)} whose headline did not cover the market's window.
+
+    The headline is a Thursday-Sunday subtotal. It is not a forecast of a 4- or
+    5-day market (prediction-log market_window_compatible = 0), nor of a 3-day
+    market when the film opened before Friday and Thursday was a full day
+    (calibration non_preview_thursday). Ramayana (2026-11-06) drew 12 bets on a
+    $12M headline against an $8.94M Friday-Sunday market, and they were scored
+    +$37.5 against the 4-day actual; the 2026-11-27 Wednesday openers drew 6
+    more on 5-day markets. Such forecasts place no bet and earlier ones are void."""
+    out = set()
+    try:
+        with open(pred_path, newline="") as f:
+            for r in csv.DictReader(f):
+                if (r.get("market_window_compatible") or "").strip() == "0":
+                    out.add((r.get("weekend_of"), B.movie_key(r.get("movie"))))
+    except OSError:
+        pass
+    try:
+        with open(cal_path) as f:
+            for e in json.load(f).get("history", []) or []:
+                if e.get("non_preview_thursday") and e.get("weekend_of") and e.get("movie"):
+                    out.add((e["weekend_of"], B.movie_key(e["movie"])))
+    except (OSError, ValueError):
+        pass
+    return out
+
+
+def void_off_window(trades, off_window, now=None):
+    """Mark every bet of an off-window film void (no P&L). Returns the count."""
+    now = now or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    changed = 0
+    for t in trades.values():
+        if t.get("status") == "void" or (t["weekend_of"], B.movie_key(t["movie"])) not in off_window:
+            continue
+        t.update({"status": "void", "actual_m": "", "outcome_bracket": "", "pnl": "0.0000",
+                  "settled_at": now})
+        changed += 1
+    return changed
 
 
 def outcome_bracket(actual, event_brackets):
@@ -288,9 +338,12 @@ def settle(trades, snaps=None, finals=None, provisionals=None, now=None):
         labels[(w, mk, slug)].update(r["bracket"] for r in rows)
     changed = 0
     for t in trades.values():
-        if t.get("status") == "settled":
+        if t.get("status") == "void":
             continue
         k = (t["weekend_of"], B.movie_key(t["movie"]))
+        was_settled = t.get("status") == "settled"
+        if was_settled and k not in finals:
+            continue
         actual, status = (finals.get(k), "settled") if k in finals else (provisionals.get(k), "provisional")
         if actual is None:
             continue
@@ -300,9 +353,14 @@ def settle(trades, snaps=None, finals=None, provisionals=None, now=None):
         if ob is None:
             continue
         won = (ob == t["bracket"]) == (t["side"] == "YES")
+        # A settled bet is re-scored when calibrate revises the final actual
+        # (reverify_recent_actuals): Primetime's $19.2M would have paid the
+        # 19m+ bracket, the market resolved 16-19m on $18.83M. The original
+        # settlement time is kept unless the outcome itself moved.
+        keep_time = was_settled and ob == t.get("outcome_bracket") and t.get("settled_at")
         new = {"status": status, "actual_m": f"{actual:.2f}", "outcome_bracket": ob,
                "pnl": f"{pnl(t['side'], float(t['cost']), won):.4f}",
-               "settled_at": now if status == "settled" else ""}
+               "settled_at": (t["settled_at"] if keep_time else now) if status == "settled" else ""}
         if any(t.get(f) != v for f, v in new.items()):
             t.update(new)
             changed += 1
@@ -380,6 +438,11 @@ def report(trades, new=()):
         lines.append(f"  {'TOTAL':15} {'':4} {len(rows):4d} {sum(1 for t in rows if float(t['pnl']) > 0):4d} {net:+7.2f} {net / len(rows):+6.0%}")
     open_rows = [t for t in trades.values() if t["status"] == "open"]
     lines.append(f"\nPaper trades open (no actuals yet): {len(open_rows)}")
+    void_rows = [t for t in trades.values() if t["status"] == "void"]
+    if void_rows:
+        films = sorted({t["movie"] for t in void_rows})
+        lines.append(f"Paper trades void (headline window differs from the market's): "
+                     f"{len(void_rows)} on {', '.join(films)}")
     return "\n".join(lines)
 
 
@@ -391,7 +454,9 @@ def main(argv=None):
     new, prob_rows = [], []
     try:
         if not args.report:
-            trades, new, prob_rows = place_bets(trades=trades)
+            off_window = off_window_films()
+            void_off_window(trades, off_window)
+            trades, new, prob_rows = place_bets(trades=trades, off_window=off_window)
             settle(trades)
             save_trades(trades)
             save_probabilities(prob_rows)

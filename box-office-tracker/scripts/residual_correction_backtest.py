@@ -9,7 +9,7 @@ parser.add_argument('--replays',type=Path,required=True)
 parser.add_argument('--output',type=Path,required=True)
 args=parser.parse_args()
 import seat_regression as SR
-from actuals_quality import actuals_as_of
+from actuals_quality import actuals_as_of, model_window_actual
 R=json.loads(args.replays.read_text())['rows'];H=json.loads((REPO/'data/calibration.json').read_text())['history'];H={h['movie']:h for h in H}
 R=[r for r in R if r.get('unweighted') and not r.get('data_outage') and r['training_movies']>=8]
 
@@ -17,7 +17,7 @@ def key(r):return r['unweighted']['forecast_stage']
 def clip(x,lo=-.7,hi=.7):return min(hi,max(lo,x))
 def y(r,weekend):
  h=actuals_as_of(H[r['movie']],weekend)
- return clip(math.log(h['actual_total']/r['unweighted']['regression_mid_m']))
+ return clip(math.log(model_window_actual(h)/r['unweighted']['regression_mid_m']))
 def features(r,kind):
  p=r['unweighted'];st=key(r);mid=p['regression_mid_m'];a=p.get('audience_type','')
  if kind=='stage_bias':return [1,int(st=='presales'),int(st=='after-previews'),int(st=='after-friday')]

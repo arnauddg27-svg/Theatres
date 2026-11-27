@@ -56,7 +56,7 @@ def main():
     load_md = getattr(P, "load_movie_metadata", None)
     rows = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         if (since and w < since) or (until and w > until):
             continue
         thu = (datetime.strptime(w, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")

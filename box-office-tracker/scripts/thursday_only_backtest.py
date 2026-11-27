@@ -51,7 +51,7 @@ def main():
 
     rows = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         thu = thursday_of(w)
         da = h.get("daily_actuals") or {}
         thu_actual = da.get("Thursday")

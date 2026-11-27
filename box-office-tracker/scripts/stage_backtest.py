@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import predict as P
 from forecast_evaluation import utc_timestamp
 from calibration_backtest import earlier_history
+import actuals_quality as AQ
 
 ET = ZoneInfo("America/New_York")
 CHECKPOINTS = {"thursday_noon": -1, "friday_noon": 0,
@@ -73,7 +74,7 @@ def build(output):
                 movie = h["movie"]
                 sd = P.movie_mapping_get(seat_now, movie, {})
                 sn = P.movie_mapping_get(snap_now, movie, {})
-                row = {"movie": movie, "weekend_of": weekend, "actual_m": h["actual_total"],
+                row = {"movie": movie, "weekend_of": weekend, "actual_m": AQ.model_window_actual(h),
                        "actual_recorded": h.get("date"), "checkpoint": name,
                        "cutoff": cutoff.isoformat(), "data_outage": bool(h.get("data_outage")),
                        "training_movies": len(cal["history"])}

@@ -81,7 +81,7 @@ def main():
 
     rows = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         try:
             cal = P.load_calibration_freeze(P.DATA_DIR, w)
         except Exception:

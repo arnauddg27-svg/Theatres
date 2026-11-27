@@ -10,7 +10,8 @@ stored scale factor.
 from __future__ import annotations
 
 import seat_regression
-from actuals_quality import independent_daily_actuals, unusable_actual_days
+from actuals_quality import (independent_daily_actuals, model_window_actual,
+                             unusable_actual_days)
 
 MIN_SCALE_FACTOR = 0.5
 MAX_SCALE_FACTOR = 2.0
@@ -63,7 +64,7 @@ def opening_day_actuals(daily_actuals: dict) -> dict[str, float]:
 
 
 def _total_actual_for_entry(entry: dict) -> float:
-    total = _as_float(entry.get("actual_total", entry.get("actual")), 0.0)
+    total = _as_float(model_window_actual(entry), 0.0)
     if total > 0:
         return total
     return sum(_as_float(v, 0.0) for v in (entry.get("daily_actuals", {}) or {}).values())
@@ -130,7 +131,7 @@ def recalibrate_scale_factor(history: list[dict],
     # Use recent history and support both predict.py and calibrate.py schemas.
     recent = history[-20:]
     for entry in recent:
-        actual = entry.get("actual_total", entry.get("actual"))
+        actual = model_window_actual(entry)
         predicted = entry.get("predicted_mid")
         n_theatres = entry.get("n_theatres", 0)
         n_days = entry.get("n_days", entry.get("days_collected", 0))

@@ -33,7 +33,7 @@ def main():
     md = P.load_movie_metadata()
     rows = []
     for h in hist:
-        movie, w, actual = h["movie"], h["weekend_of"], h["actual_total"]
+        movie, w, actual = h["movie"], h["weekend_of"], P.model_window_actual(h)
         da = h.get("daily_actuals") or {}
         if not da:
             continue

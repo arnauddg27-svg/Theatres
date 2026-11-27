@@ -118,7 +118,7 @@ def main(argv=None):
     panel = []
     films = []
     for h in hist:
-        movie, w, actual = h.get("movie"), h.get("weekend_of"), h.get("actual_total")
+        movie, w, actual = h.get("movie"), h.get("weekend_of"), P.model_window_actual(h)
         if not movie or not w or not actual or h.get("data_outage"):
             continue
         seat = P.load_seat_data(weekend_of=w).get(movie)

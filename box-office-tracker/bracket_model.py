@@ -22,6 +22,8 @@ import os
 import re
 import statistics
 
+from actuals_quality import model_window_actual
+
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 PREDICTION_LOG = os.path.join(DATA_DIR, "prediction-log.csv")
 CALIBRATION_JSON = os.path.join(DATA_DIR, "calibration.json")
@@ -44,8 +46,10 @@ def graded_log_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON):
     try:
         with open(cal_path) as f:
             for e in json.load(f).get("history", []) or []:
-                if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
-                    actual[(e["weekend_of"], movie_key(e["movie"]))] = float(e["actual_total"])
+                # Headlines cover Thursday-Sunday: grade them on that window
+                # (differs from actual_total only for pre-Friday openers).
+                if model_window_actual(e) and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
+                    actual[(e["weekend_of"], movie_key(e["movie"]))] = model_window_actual(e)
     except (OSError, ValueError):
         return {}
     latest = {}
@@ -110,8 +114,10 @@ def graded_row_ratios(pred_path=PREDICTION_LOG, cal_path=CALIBRATION_JSON, extra
     try:
         with open(cal_path) as f:
             for e in json.load(f).get("history", []) or []:
-                if e.get("actual_total") and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
-                    actual[(e["weekend_of"], movie_key(e["movie"]))] = float(e["actual_total"])
+                # Headlines cover Thursday-Sunday: grade them on that window
+                # (differs from actual_total only for pre-Friday openers).
+                if model_window_actual(e) and e.get("weekend_of") and e.get("movie") and not e.get("data_outage"):
+                    actual[(e["weekend_of"], movie_key(e["movie"]))] = model_window_actual(e)
     except (OSError, ValueError):
         return {}
     actual.update(extra_actuals or {})
