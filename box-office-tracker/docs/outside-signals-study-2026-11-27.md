@@ -121,3 +121,48 @@ forecast for films without a market.
   Circus $20.27M vs under $19M (ours is probably the 4-day figure).
 - historical-comps `wiki_opening_friday` is wrong for Demon Slayer, One Battle After
   Another, Nobody 2, The Accountant 2, The Monkey, Black Bag, Last Breath, King of Kings.
+
+### Resolved the same day
+
+Both were code faults, fixed at the source and re-read for every film, not only the ones
+named above.
+
+- **A full Thursday counted as previews.** `calibrate.py` summed every reported day into
+  `actual_total`. For a film that opens before Friday the Thursday row is a ranked full
+  day, so the recorded "opening" was Thursday–Sunday. Five films: Ramayana $12.45M →
+  $8.94M, The Amazing Digital Circus $20.27M → $12.39M, Ghost Soldier $5.91M → $5.10M,
+  Hope $3.82M → $3.23M, Minions & Monsters $47.81M → $37.00M. `actual_total` is now always
+  the 3-day opening (Friday–Sunday, previews included); those films keep the
+  Thursday–Sunday figure in `actual_thu_sun_total`, which is what the model's
+  Thursday–Sunday headline is graded against (`actuals_quality.model_window_actual`).
+- **Finals never re-read.** A weekend was recorded once, on Wednesday, and then skipped.
+  Primetime kept a $4.59M Sunday that settled at $4.22M ($19.20M → $18.83M); Wildwood
+  moved $12.27M → $12.30M and The Mandalorian and Grogu $81.00M → $81.67M (its page was
+  never found: the chart lists it under "Star Wars:"). `calibrate.py` now re-reads the
+  last six weekends on every run and revises what moved, keeping the earlier record for
+  replays.
+- **Off-window market comparisons.** A pre-Friday opener is now flagged
+  `market_window_compatible = 0` (release calendar, or a ranked Thursday on The Numbers),
+  and `paper_trade.py` places no bet on a flagged forecast and voids earlier ones: 29 bets
+  (Ramayana 12, Ghost Soldier 11, and 6 placed today on the 5-day Hershey/Hexed markets).
+  Ramayana's 12 had been scored +$36.53 against the 4-day figure. Settled paper P&L:
+  121 bets +$52.87 → 98 bets +$24.95.
+- **`wiki_opening_friday` came from the year's biggest pageview day**, which is awards
+  season or the streaming debut for many films, and the article search matched "The
+  Accountant 2" to "The Accountant (2016 film)". The Friday is now read from the row's own
+  dated chart link, else its Box Office Mojo release page; release-week views are recounted
+  for that week, including the title the article had at the time. Of 217 comps: 31 Fridays,
+  9 articles and 70 view counts changed (all eight named above among them); Tarot's views
+  are blank because its 2024 title can no longer be traced. Wikipedia views against the
+  opening: correlation 0.55 → 0.70, views-only miss 68.5% → 57.6%; added to Thursday
+  previews they still do not help (21.7% → 22.1%).
+
+Graded errors moved little, because the model headline and the corrected Thursday–Sunday
+actual cover the same days: stage backtest 21.93% → 21.98% (133 forecasts), calibration
+backtest 22.20% → 22.26% (40 films), live-headline miss 3.18% → 3.28% (25 films). Against
+the 3-day figure the market settles on, the Ramayana headline was 38% high and Ghost
+Soldier's 15% high; that gap is the window, not the seats.
+
+Still open: on a midweek opener the stage model treats the reported full Thursday as
+previews and multiplies it (Hershey, 2026-11-27: $24.3M headline against a 5-day market
+at $7.5M).
