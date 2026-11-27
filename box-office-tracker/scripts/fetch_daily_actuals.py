@@ -126,6 +126,32 @@ def logged_movies(weekend_of, path=PREDICTION_LOG_CSV):
     return out
 
 
+CALENDAR_JSON = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "release-calendar.json",
+)
+
+
+def calendar_movies(weekend_of, path=CALENDAR_JSON):
+    """Release-calendar titles for weekend_of. 2026-11-27 audit: with the AMC
+    lane blocked, the Thanksgiving openers had no seat rows and no logged
+    forecast, so their reported days were never fetched."""
+    try:
+        import json
+        with open(path) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    if str(data.get("weekend_of")) != str(weekend_of):
+        return []
+    out = []
+    for t in data.get("titles") or []:
+        title = (t.get("title") if isinstance(t, dict) else str(t or "")).strip()
+        if title and title not in out:
+            out.append(title)
+    return out
+
+
 def fetch_split_opening_days(movie, weekend_of, fetch_table=None):
     """{day: gross_m} for the opening Thu-Sun, previews split out of Friday.
     Friday is dropped unless Thursday is known (otherwise it may still carry
@@ -167,6 +193,8 @@ def main():
     # prediction log but never got actuals).
     have = {holdover.title_key(m) for m in movies}
     movies += [m for m in logged_movies(weekend_of) if holdover.title_key(m) not in have]
+    have = {holdover.title_key(m) for m in movies}
+    movies += [m for m in calendar_movies(weekend_of) if holdover.title_key(m) not in have]
     if not movies:
         print(f"daily-actuals fetch: no tracked films with seat data for {weekend_of}")
         return 0

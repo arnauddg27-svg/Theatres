@@ -106,6 +106,17 @@ class SafeAnchorDaysTest(unittest.TestCase):
         days = mod.fetch_split_opening_days("Everest: The Other Side", "2026-10-30", fetch_table=lambda t, y: table)
         self.assertEqual({"Friday": 0.39, "Saturday": 0.31}, days)
 
+    def test_calendar_movies_reads_this_weekend_only(self):
+        import json, os, tempfile
+        with tempfile.TemporaryDirectory() as td:
+            p = os.path.join(td, "cal.json")
+            with open(p, "w") as f:
+                json.dump({"weekend_of": "2026-11-27", "titles": [
+                    {"title": "Hexed"}, {"title": "Focker In-Law"}, {"title": "Hexed"}, {"title": ""}]}, f)
+            self.assertEqual(mod.calendar_movies("2026-11-27", p), ["Hexed", "Focker In-Law"])
+            self.assertEqual(mod.calendar_movies("2026-12-04", p), [])
+            self.assertEqual(mod.calendar_movies("2026-11-27", os.path.join(td, "missing.json")), [])
+
     def test_logged_movies_reads_prediction_log_for_the_weekend(self):
         import tempfile, os
         with tempfile.TemporaryDirectory() as d:
