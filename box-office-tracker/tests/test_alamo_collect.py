@@ -153,6 +153,7 @@ class AlamoResumeTest(unittest.TestCase):
         sessions = [dict(SCHEDULE["sessions"][0], sessionId=str(i)) for i in range(1, n + 1)]
         sched = dict(SCHEDULE, sessions=sessions)
         clock, asked = [0.0], []
+        seat_timeouts = self.seat_timeouts = []
 
         def fake_get(path, timeout=30):
             if path.startswith("/v1/page/cclamp"):
@@ -161,6 +162,7 @@ class AlamoResumeTest(unittest.TestCase):
                 return {"data": sched}
             sid = path.rsplit("/", 1)[1]
             asked.append(sid)
+            seat_timeouts.append(timeout)
             clock[0] += step_sec
             if sid in fail:
                 raise TimeoutError("timed out")
@@ -223,6 +225,13 @@ class AlamoResumeTest(unittest.TestCase):
             self.assertEqual({f"0007:{s}" for s in good}, set(self._progress(td)["read"]))
             _, asked2 = self._attempt(td, NOW + timedelta(minutes=30))
             self.assertFalse(set(asked2[:min(6, 10 - len(good))]) & good)   # timed-out showings are retried first
+
+    def test_seat_reads_use_the_short_timeout(self):
+        # 2026-11-28: a hung read held the default 30 s; schedule fetches keep it.
+        self.assertEqual(A.ALAMO_SEAT_TIMEOUT_SEC, 10)
+        with tempfile.TemporaryDirectory() as td:
+            self._attempt(td, NOW, step_sec=1)
+        self.assertEqual(set(self.seat_timeouts), {A.ALAMO_SEAT_TIMEOUT_SEC})
 
     def test_progress_from_an_earlier_slot_or_another_weekend_is_ignored(self):
         from datetime import timedelta

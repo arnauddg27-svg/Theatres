@@ -63,6 +63,11 @@ ALAMO_LOOP_COMMIT_EVERY = max(1, int(os.environ.get("ALAMO_LOOP_COMMIT_EVERY", "
 # timeout and were killed before writing a single row. Past the budget the pass
 # stops reading seats and writes what it has.
 ALAMO_BUDGET_MIN = float(os.environ.get("ALAMO_BUDGET_MIN", "25") or 25)
+# Seat-read timeout (2026-11-28, owner sign-off): a normal read answers in
+# ~0.4 s, but a hung one held the default 30 s -- about 50 reads' worth. 24 of
+# them ate ~12 of the 25 minutes on the 11-28 12:40Z slot. A read that times
+# out is not marked read, so the slot's retry asks for it again.
+ALAMO_SEAT_TIMEOUT_SEC = float(os.environ.get("ALAMO_SEAT_TIMEOUT_SEC", "10") or 10)
 # Resume (2026-11-28): a pre pass cut at the budget fails so the slot is
 # retried, but every retry fetched the schedule again, reshuffled and started
 # from zero, and was judged on its own skips. The 11-28 12:40Z slot read 1,260,
@@ -351,7 +356,8 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
                   f"skipped {len(picks) - i} of {len(picks)} seat reads, writing the rest", flush=True)
             break
         try:
-            seating = _get(f"/v1/app/seats/{session['cinemaId']}/{session['sessionId']}")["data"]["seatingData"]
+            seating = _get(f"/v1/app/seats/{session['cinemaId']}/{session['sessionId']}",
+                           timeout=ALAMO_SEAT_TIMEOUT_SEC)["data"]["seatingData"]
             counts = seat_counts(seating)
         except Exception as e:
             totals["errors"] += 1
@@ -374,7 +380,7 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     elif mode == "pre" and already_read:
         save_progress(weekend_of, started, set())             # slot complete: nothing left to resume
     if error_kinds:
-        # Failed reads were counted but never named; a 30 s timeout costs ~50 reads.
+        # Failed reads were counted but never named; each timeout costs ALAMO_SEAT_TIMEOUT_SEC.
         print("  seat read errors: " + ", ".join(f"{k}×{v}" for k, v in error_kinds.most_common()), flush=True)
     print(f"=== Alamo collect summary [{mode}] === " + " ".join(f"{k}={v}" for k, v in sorted(totals.items())), flush=True)
     return totals
