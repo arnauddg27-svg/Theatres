@@ -11960,7 +11960,8 @@ def main():
         movie for movie in prediction_movie_names(seat_data, snapshot_data)
         if not movie_filter or movie_filter in movie.lower()
     ]
-    if not through_date and replay_weekend and CHAIN_FORECAST_MODE in ("outage", "always"):
+    if (not through_date and replay_weekend and CHAIN_FORECAST_MODE in ("outage", "always")
+            and prediction_log_append_enabled()):      # the pipeline's runs only, like the headline log
         # Friday pre-sales pace per film and chain (chain_pace.py): recorded
         # once, by the first live run after Friday 10:00 UTC.
         try:

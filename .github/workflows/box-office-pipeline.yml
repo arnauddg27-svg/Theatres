@@ -27,7 +27,7 @@ on:
         required: false
         default: 'ALL'
       phase:
-        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), scrape-harkins (Harkins API lane), scrape-webedia (Landmark/Showcase/MJR/Flix/Epic/Marquee occupancy lane), scrape-regal (Regal showing inventory), probe-chains (read-only feasibility probe), or calibrate'
+        description: 'Phase to run: collect-links (Phase 1), scrape (Phase 2), scrape-fandango (Regal/Cinemark snapshot lane), scrape-cinemark (Cinemark DIRECT lane), scrape-alamo (Alamo Drafthouse API lane), scrape-harkins (Harkins API lane), scrape-webedia (Landmark/Showcase/MJR/Flix/Epic/Marquee occupancy lane), scrape-regal (Regal showing inventory), forecast (forecast + logs without the AMC scrape), probe-chains (read-only feasibility probe), or calibrate'
         required: false
         default: 'scrape'
       force:
@@ -1719,3 +1719,46 @@ jobs:
           name: cinemark-${{ github.run_id }}
           path: cinemark-logs/
           retention-days: 14
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Forecast without the AMC scrape (2026-11-28).
+  #
+  # The forecast used to exist only as the tail of finalize, i.e. after an AMC
+  # scrape run. With AMC unreadable those runs spend one to five hours failing
+  # their legs first, so the forecast's timing followed the one source that is
+  # dead. The model now rests on reported grosses and the other chains' counted
+  # seats (chain_forecast.py), which change at known times; the scheduler
+  # dispatches this phase at those times:
+  #   10:20Z Fri-Mon          yesterday's seat counts are complete (Friday:
+  #                           the pre-sales pace table, chain_pace.py)
+  #   16:20 / 18:20 / 20:20Z  Fri-Mon, as The Numbers posts the day's gross
+  #   13:20 / 21:20Z Tue-Thu  pre-release: market, trade forecast, pre-sales
+  # Touches no cinema site. Derived files only; never pushes while a scrape
+  # run's finalize is writing (scripts/run_forecast.sh).
+  # ──────────────────────────────────────────────────────────────────────────
+  forecast:
+    if: github.event.inputs.phase == 'forecast'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50
+      - name: Sync to latest main
+        run: |
+          git fetch --deepen=50 origin main
+          git reset --hard origin/main
+      - name: Install dependencies
+        working-directory: box-office-tracker
+        run: pip install -r requirements.txt
+      - name: Forecast, log and commit
+        timeout-minutes: 35
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          SCHEDULE_SLOT: ${{ github.event.inputs.schedule_slot }}
+          # Only the FACT that a proxy is configured (see finalize's predict step).
+          HAS_PROXY: ${{ secrets.AMC_SEAT_PROXY_URL != '' }}
+          WIKIMEDIA_CONTACT: ${{ vars.WIKIMEDIA_CONTACT }}
+        run: bash box-office-tracker/scripts/run_forecast.sh

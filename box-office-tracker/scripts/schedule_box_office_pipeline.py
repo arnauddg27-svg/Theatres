@@ -167,6 +167,19 @@ def regal_inventory_slot_inputs() -> dict[str, str]:
     return pipeline_inputs("scrape-regal", "ALL", "false", "true", "true")
 
 
+def forecast_slot(hour: int, minute: int, cron_days: frozenset[int]) -> "Slot":
+    """A forecast-only run (pipeline phase=forecast, scripts/run_forecast.sh):
+    predictions, odds, combined forecast and paper trades without the AMC
+    scrape. Touches no cinema site."""
+    return Slot(f"forecast {hour:02d}:{minute:02d}Z", "box office forecast ALL", cron_days, hour, minute,
+                pipeline_inputs("forecast", "ALL"))
+
+
+# Forecast clock (2026-11-28). cron weekdays: Sunday=0 ... Saturday=6.
+FORECAST_WEEKEND_DAYS = frozenset({5, 6, 0, 1})      # Fri-Mon: a day played or reported the day before
+FORECAST_PRERELEASE_DAYS = frozenset({2, 3, 4})      # Tue-Thu
+
+
 def harkins_slot_inputs(mode: str = "") -> dict[str, str]:
     """Inputs for a Harkins API lane slot (mode via the cinemark_mode input)."""
     inputs = pipeline_inputs("scrape-harkins", "ALL", "false", "true", "true")
@@ -269,6 +282,18 @@ class Slot:
 # capture was lost). The early slot in each group also runs Thursday so a
 # late-listed market still gets links before previews.
 SLOTS: tuple[Slot, ...] = (
+    # Forecast without the AMC scrape. 10:20Z: the other chains' seat counts
+    # of the day before are complete at 10:00Z (chain_forecast.DAY_COMPLETE_UTC_HOUR)
+    # and, on Friday, the pre-sales pace table is cut at 10:00Z. 16:20-20:20Z:
+    # The Numbers posts the previous day's gross through the US morning and
+    # early afternoon. Tue-Thu: two pre-release reads of market, trade and
+    # pre-sales.
+    forecast_slot(10, 20, FORECAST_WEEKEND_DAYS),
+    forecast_slot(16, 20, FORECAST_WEEKEND_DAYS),
+    forecast_slot(18, 20, FORECAST_WEEKEND_DAYS),
+    forecast_slot(20, 20, FORECAST_WEEKEND_DAYS),
+    forecast_slot(13, 20, FORECAST_PRERELEASE_DAYS),
+    forecast_slot(21, 20, FORECAST_PRERELEASE_DAYS),
     Slot(
         "collect-links ET 13Z",
         "box office collect-links ET",

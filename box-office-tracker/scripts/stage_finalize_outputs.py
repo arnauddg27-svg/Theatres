@@ -42,6 +42,26 @@ OUTPUT_FILES = [
     # Link slices the scrape legs repaired (merge_scrape_artifacts, 2026-11-01).
     "box-office-tracker/data/showtime-links.json",
 ]
+# What the forecast-only job (scripts/run_forecast.sh, phase=forecast) may
+# commit: the files its own steps write. Never the scrape's canonical CSVs,
+# calibration.json or showtime-links.json -- those have other single writers.
+FORECAST_OUTPUT_FILES = [
+    "box-office-tracker/data/daily-actual-overrides.csv",
+    "box-office-tracker/data/midweek-opening-dailies.csv",
+    "box-office-tracker/data/movie-metadata.csv",
+    "box-office-tracker/data/prediction-log.csv",
+    "box-office-tracker/data/polymarket-odds-log.csv",
+    "box-office-tracker/data/trade-forecasts.csv",
+    "box-office-tracker/data/ensemble-log.csv",
+    "box-office-tracker/data/chain-presale-features.csv",
+    "box-office-tracker/data/chain-pace.csv",
+    "box-office-tracker/data/paper-trades.csv",
+    "box-office-tracker/data/bracket-probabilities.csv",
+    "box-office-tracker/data/chain-census-log.csv",
+    "box-office-tracker/data/holdover-titles.csv",
+    "box-office-tracker/data/holdover-prediction-log.csv",
+    "box-office-tracker/data/holdover-grades.csv",
+]
 RUN_LOG_DIR = "box-office-tracker/data/run-logs"
 CALIBRATION_FREEZE_DIR = "box-office-tracker/data/calibration-freezes"
 # Rotation moves settled weekends OUT of the canonical CSVs and INTO these
@@ -141,11 +161,19 @@ def _strip_scrape_markers(marker_file: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", default=".")
-    parser.add_argument("--summary-file", required=True)
-    parser.add_argument("--marker-file", required=True)
+    parser.add_argument("--summary-file")
+    parser.add_argument("--marker-file")
+    parser.add_argument("--forecast", action="store_true",
+                        help="stage only the forecast job's derived files (no scrape merge)")
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
+    if args.forecast:
+        for rel_path in FORECAST_OUTPUT_FILES:
+            _stage_if_exists(repo_root, rel_path)
+        return 0
+    if not args.summary_file or not args.marker_file:
+        parser.error("--summary-file and --marker-file are required unless --forecast is given")
     summary = _load_summary(Path(args.summary_file))
     marker_file = Path(args.marker_file)
 
