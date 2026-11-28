@@ -3023,6 +3023,80 @@ CF_BLOCK_PAUSE_AFTER = _env_int("CF_BLOCK_PAUSE_AFTER", 6, minimum=2)
 # So a pause is now 15 minutes of silence.
 CF_BLOCK_PAUSE_SEC = _env_int("CF_BLOCK_PAUSE_SEC", 900, minimum=30)
 CF_BLOCK_PAUSES = _env_int("CF_BLOCK_PAUSES", 3, minimum=0)
+# Standing block (2026-11-28). Since 11-19 14:48Z the lane has refused every
+# leg from its first request and no pause has cleared it (9 days, 12 legs a
+# day). Each leg still waited its three 15-minute pauses before stopping:
+# ~55 minutes a zone, four zones in a row, so the 22:30Z slot's forecast
+# landed at 02:25Z. When the newest AMC row on file is older than
+# CF_DARK_AFTER_HOURS the lane is treated as dark: a leg refused on its first
+# check stops at once (minutes, not an hour). The first check that READS
+# gives the leg its normal pause budget back, so a wave on the day the lane
+# returns is still waited out. 0 disables.
+CF_DARK_AFTER_HOURS = _env_float("CF_DARK_AFTER_HOURS", 24.0, minimum=0.0)
+PRE_RESERVATION_ARCHIVE_DIR = DATA_DIR / "pre-reservation-archive"
+
+
+def newest_snapshot_time(path=None, archive_dir=None, tail_bytes=262144):
+    """UTC time of the newest AMC seat row on file, or None when unknown.
+
+    Rows are appended in time order, so the tail of the live file is enough.
+    A live file holding only its header (every kept weekend rotated out with
+    nothing new read) falls back to the newest archive's weekend date plus
+    four days — the latest a row of that weekend can be."""
+    path = Path(path or PRE_RESERVATION_CSV)
+    try:
+        size = path.stat().st_size
+        with open(path, "rb") as fh:
+            header = fh.readline().decode("utf-8", "ignore").strip().split(",")
+            fh.seek(max(fh.tell(), size - tail_bytes))
+            tail = fh.read().decode("utf-8", "ignore").splitlines()
+    except OSError:
+        return None
+    if "snapshot_time" not in header:
+        return None
+    col = header.index("snapshot_time")
+    newest = None
+    for line in tail:
+        parts = line.split(",", col + 1)
+        if len(parts) <= col:
+            continue
+        try:
+            stamp = datetime.fromisoformat(parts[col].replace("Z", "+00:00"))
+        except ValueError:
+            continue                  # the cut first line, or a header
+        if stamp.tzinfo is None:
+            stamp = stamp.replace(tzinfo=timezone.utc)
+        if newest is None or stamp > newest:
+            newest = stamp
+    if newest is not None:
+        return newest
+    if size > len(",".join(header)) + 2:
+        return None                   # rows exist but none parsed: unknown
+    weekends = []
+    try:
+        names = os.listdir(archive_dir or PRE_RESERVATION_ARCHIVE_DIR)
+    except OSError:
+        return None
+    for name in names:
+        m = re.search(r"(\d{4}-\d{2}-\d{2})\.csv(?:\.gz)?$", name)
+        if m:
+            try:
+                weekends.append(datetime.strptime(m.group(1), "%Y-%m-%d"))
+            except ValueError:
+                pass
+    if not weekends:
+        return None
+    return max(weekends).replace(tzinfo=timezone.utc) + timedelta(days=4)
+
+
+def lane_dark(newest, now=None, after_hours=None):
+    """True when the last AMC row on file is older than CF_DARK_AFTER_HOURS.
+    Unknown (None) is never dark: the leg keeps its pauses."""
+    after_hours = CF_DARK_AFTER_HOURS if after_hours is None else after_hours
+    if after_hours <= 0 or newest is None:
+        return False
+    now = now or datetime.now(timezone.utc)
+    return (now - newest) > timedelta(hours=after_hours)
 # The streak above needs CF_BLOCK_PAUSE_AFTER theatres IN A ROW with no rows,
 # and a wave is rarely that clean: with a third of reads still landing the
 # streak kept resetting and the 11-19 Eastern leg never paused once in 65
@@ -7383,7 +7457,16 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
 
         cf_block_streak = 0
         cf_pause_until = 0.0
-        cf_pauses_left = CF_BLOCK_PAUSES
+        try:
+            cf_newest_row = newest_snapshot_time()
+        except Exception:                 # a shortcut must never cost the leg
+            cf_newest_row = None
+        cf_dark = lane_dark(cf_newest_row)
+        cf_pauses_left = 0 if cf_dark else CF_BLOCK_PAUSES
+        if cf_dark:
+            print(f"🌑 no AMC seat row on file since {cf_newest_row:%Y-%m-%d %H:%MZ} "
+                  f"(over {CF_DARK_AFTER_HOURS:g}h): a leg refused on its first check stops "
+                  "without pausing; a check that reads restores the pauses", flush=True)
         cf_blocked_retry = []
         cf_retry_names = set()
         cf_samples = collections.deque()
@@ -7588,6 +7671,12 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                     epoch=canary_epoch)
                 if action == "open":
                     cf_samples.clear()
+                    if cf_dark:
+                        # The lane is back: waves get their pauses again.
+                        cf_dark = False
+                        cf_pauses_left = CF_BLOCK_PAUSES
+                        print("\n🌕 seat lane reads again after the standing block — "
+                              f"{CF_BLOCK_PAUSES} pause(s) restored", flush=True)
                     if was_after_pause:
                         print("\n✅ seat lane reads again after the pause — back to every tab",
                               flush=True)
@@ -7601,7 +7690,9 @@ async def run_async(tz_group="ALL", force=False, test_max=None,
                           f"no full restart) — pausing the leg {CF_BLOCK_PAUSE_SEC}s "
                           f"({cf_pauses_left} pause(s) left)", flush=True)
                 elif action == "stop":
-                    print("\n🧱 seat lane still blocked after the last pause — stopping the leg; "
+                    last = ("on the first check (standing block, no pause taken)"
+                            if cf_dark else "after the last pause")
+                    print(f"\n🧱 seat lane still blocked {last} — stopping the leg; "
                           "the rows read are kept and the slot's retry re-reads this zone.",
                           flush=True)
             elif not cf_paused:
