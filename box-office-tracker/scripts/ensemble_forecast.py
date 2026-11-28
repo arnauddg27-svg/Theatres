@@ -202,11 +202,26 @@ def trade_forecast(movie, weekend_of, as_of_utc, trade_rows, aliases=None, frame
     return best[1] if best else None
 
 
+# A film that opened before Friday logs midweek-after-<last reported day>.
+# Those stages had no weight, so the market stood alone to the end of the
+# weekend (2026-11-28 Hershey, Friday reported: ours $7.1M, market $6.8M,
+# combined $6.8M). Each maps to the regular stage holding the same number of
+# reported full days; the opener lane's own backtest sits at or under that
+# stage's miss (scripts/midweek_opening_backtest.py: one day 9.2% n=32 against
+# 8-10% after Friday; two days 2-12% against 3-4% after Saturday; three 1-3%).
+STAGE_ALIAS = {
+    "midweek-after-tuesday": "after-previews", "midweek-after-wednesday": "after-previews",
+    "midweek-after-thursday": "after-friday", "midweek-after-friday": "after-saturday",
+    "midweek-after-saturday": "after-sunday", "midweek-after-sunday": "complete",
+}
+
+
 def combine(model_mid, market_mid, trade, stage, seats=None):
     """Return (ensemble_mid, source, w_model). `seats`: the other chains'
     pre-sales estimate ($M); mixed before release only, and only while its
     weight is above 0 (see W_SEATS_WITH_MARKET)."""
     stage = (stage or "").strip() or "presales"
+    stage = STAGE_ALIAS.get(stage, stage)
     if seats and stage == "presales":
         if market_mid and W_SEATS_WITH_MARKET > 0:
             w = W_SEATS_WITH_MARKET

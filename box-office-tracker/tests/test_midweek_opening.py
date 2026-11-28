@@ -317,8 +317,13 @@ class ConsumersTest(unittest.TestCase):
     def test_ensemble_compares_on_the_market_dates(self):
         row = E.ensemble_row(self.pred_row(), [self.trade()])
         self.assertEqual((33.07, 33.92, 33.0), (row["model_mid_m"], row["market_mid_m"], row["trade_mid_m"]))
-        self.assertEqual(("market", "Wednesday-Sunday (5 days)"), (row["ensemble_source"], row["frame"]))
-        self.assertAlmostEqual(33.92, row["ensemble_mid_m"])
+        # 2026-11-28: an opener stage carries the weight of the regular stage
+        # with as many reported days (it used to have none: market alone).
+        stage = E.STAGE_ALIAS[self.pred_row()["forecast_stage"]]
+        w = E.W_MODEL_WITH_MARKET[stage]
+        self.assertEqual("Wednesday-Sunday (5 days)", row["frame"])
+        self.assertEqual("market+model" if 0 < w < 1 else ("model" if w >= 1 else "market"), row["ensemble_source"])
+        self.assertAlmostEqual(33.07 ** w * 33.92 ** (1 - w), row["ensemble_mid_m"], places=2)
         no_market = E.ensemble_row(self.pred_row(poly_implied_mid_m=""), [self.trade()])
         self.assertEqual(33.0, no_market["trade_mid_m"])
         self.assertEqual(3, E._frame_days("Friday-Sunday (3 days)"))
