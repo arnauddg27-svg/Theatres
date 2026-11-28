@@ -63,6 +63,18 @@ ALAMO_LOOP_COMMIT_EVERY = max(1, int(os.environ.get("ALAMO_LOOP_COMMIT_EVERY", "
 # timeout and were killed before writing a single row. Past the budget the pass
 # stops reading seats and writes what it has.
 ALAMO_BUDGET_MIN = float(os.environ.get("ALAMO_BUDGET_MIN", "25") or 25)
+# Resume (2026-11-28): a pre pass cut at the budget fails so the slot is
+# retried, but every retry fetched the schedule again, reshuffled and started
+# from zero, and was judged on its own skips. The 11-28 12:40Z slot read 1,260,
+# 924 and 1,397 of 1,785 showings in three attempts and failed three times; 8
+# of the 13 slots since 11-25 went the same way. By the third attempt 850 of
+# 1,373 reads were showings an earlier attempt had already read (unchanged, so
+# nothing was written). A cut pass now records the showings it read; a retry
+# inside the window reads the others first and the slot is judged on what NO
+# attempt has read. The record lives beside the lane CSV and is committed with
+# it (commit_lane.sh extra file).
+ALAMO_PROGRESS_NAME = "alamo-pre-progress.json"
+ALAMO_RESUME_WINDOW_MIN = float(os.environ.get("ALAMO_RESUME_WINDOW_MIN", "120") or 120)
 
 
 def commit_pass():
@@ -99,6 +111,47 @@ def seat_counts(seating):
     prices.sort()
     return {"total": sold + avail, "sold": sold, "available": avail, "broken": c.get("BROKEN", 0),
             "price_cents": prices[len(prices) // 2] if prices else None}
+
+
+def session_key(session):
+    return f"{session.get('cinemaId')}:{session.get('sessionId')}"
+
+
+def progress_path():
+    return Path(ALAMO_CSV).with_name(ALAMO_PROGRESS_NAME)
+
+
+def load_progress(weekend_of, now_utc, path=None):
+    """(first attempt's start, showings already read) left by a budget-cut pre
+    pass of the same slot; (None, empty) when there is none, it is for another
+    weekend, or it is older than the resume window (the next slot is 4 h on)."""
+    try:
+        with open(path or progress_path()) as f:
+            data = json.load(f)
+        started = datetime.fromisoformat(data["started"])
+        age_min = (now_utc - started).total_seconds() / 60
+        read = {str(x) for x in data["read"]}
+    except (OSError, ValueError, KeyError, TypeError):
+        return None, set()
+    if data.get("weekend_of") != weekend_of or not 0 <= age_min <= ALAMO_RESUME_WINDOW_MIN:
+        return None, set()
+    return data["started"], read
+
+
+def save_progress(weekend_of, started, read, path=None):
+    path = Path(path or progress_path())
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as f:
+        json.dump({"weekend_of": weekend_of, "started": started, "read": sorted(read)}, f)
+        f.write("\n")
+
+
+def order_for_resume(picks, already_read, rng=random):
+    """Shuffled, with the showings no earlier attempt read in front (stable)."""
+    rng.shuffle(picks)
+    if already_read:
+        picks.sort(key=lambda p: session_key(p[0]) in already_read)
+    return picks
 
 
 def window_dates(weekend_of):
@@ -276,14 +329,24 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     if ALAMO_MAX_SESSIONS:
         picks = picks[:ALAMO_MAX_SESSIONS]
     totals["matched"] = len(picks)
+    started, already_read, read_now, error_kinds = None, set(), set(), Counter()
     if mode == "pre":
         # A pass that runs out of budget should not always lose the same tail
-        # (11-18 20:40Z read the first 736 of 2,027); a retry then covers more.
-        random.shuffle(picks)
+        # (11-18 20:40Z read the first 736 of 2,027), and a retry reads what the
+        # earlier attempt of the slot did not reach before anything else.
+        started, already_read = load_progress(weekend_of, now_utc)
+        order_for_resume(picks, already_read)
+        if already_read:
+            todo = sum(1 for p in picks if session_key(p[0]) not in already_read)
+            totals["resume_unread"] = todo
+            print(f"Resuming the pass cut at {started}: {todo} of {len(picks)} showings "
+                  f"not read by the earlier attempt(s) go first", flush=True)
     rows = []
     for i, (session, cinema, title) in enumerate(picks):
         if time.monotonic() > deadline:
             totals["budget_skipped"] = len(picks) - i
+            # Unread by ANY attempt of the slot: what the retry rule judges.
+            totals["budget_unread"] = sum(1 for p in picks[i:] if session_key(p[0]) not in already_read)
             print(f"::warning::Alamo pass hit its {ALAMO_BUDGET_MIN:g}-min budget; "
                   f"skipped {len(picks) - i} of {len(picks)} seat reads, writing the rest", flush=True)
             break
@@ -292,7 +355,9 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
             counts = seat_counts(seating)
         except Exception as e:
             totals["errors"] += 1
+            error_kinds[type(e).__name__] += 1
             continue
+        read_now.add(session_key(session))
         if not counts["total"]:
             totals["empty"] += 1
             continue
@@ -304,6 +369,13 @@ def collect(weekend_of=None, titles=None, mode="pre", now_utc=None):
     totals["unchanged"] = before - len(rows)
     written, deduped = append_unique_fandango_rows(rows, csv_path=ALAMO_CSV)
     totals["written"], totals["deduped"] = written, deduped
+    if mode == "pre" and totals["budget_skipped"]:
+        save_progress(weekend_of, started or now_utc.isoformat(), already_read | read_now)
+    elif mode == "pre" and already_read:
+        save_progress(weekend_of, started, set())             # slot complete: nothing left to resume
+    if error_kinds:
+        # Failed reads were counted but never named; a 30 s timeout costs ~50 reads.
+        print("  seat read errors: " + ", ".join(f"{k}×{v}" for k, v in error_kinds.most_common()), flush=True)
     print(f"=== Alamo collect summary [{mode}] === " + " ".join(f"{k}={v}" for k, v in sorted(totals.items())), flush=True)
     return totals
 
@@ -341,11 +413,19 @@ def main():
     if t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED and not t.get("captured", 0):
         print("❌ Alamo: every seat read failed — failing loudly.")
         return 1
+    # Judged on the showings no attempt of the slot has read: a retry that
+    # finishes what the cut pass left turns the slot green (2026-11-28).
+    skipped = t.get("budget_skipped", 0)
+    unread = t.get("budget_unread", skipped)
     if (mode == "pre" and t.get("matched", 0) >= LOUD_FAIL_MIN_MATCHED
-            and t.get("budget_skipped", 0) > MAX_UNREAD_SHARE * t["matched"]):
-        print(f"❌ Alamo: {t['budget_skipped']} of {t['matched']} seat reads skipped at the budget — "
+            and unread > MAX_UNREAD_SHARE * t["matched"]):
+        earlier = f" ({skipped - unread} more were read by the earlier attempt)" if skipped > unread else ""
+        print(f"❌ Alamo: {unread} of {t['matched']} seat reads skipped at the budget{earlier} — "
               "failing so the slot is retried (rows read are kept).")
         return 1
+    if skipped > unread:
+        print(f"Alamo: {skipped} seat reads skipped at the budget, {skipped - unread} of them read by the "
+              f"earlier attempt of this slot; {unread} of {t['matched']} unread.")
     return 0
 
 

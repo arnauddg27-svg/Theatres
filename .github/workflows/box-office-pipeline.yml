@@ -1456,8 +1456,11 @@ jobs:
         run: python -u alamo_collect.py
       - name: Commit Alamo data
         if: always()
+        # The progress file rides along (2026-11-28): a pre pass cut at the
+        # budget records what it read so the slot's retry resumes instead of
+        # starting over.
         run: |
-          bash box-office-tracker/scripts/commit_lane.sh alamo box-office-tracker/data/alamo-pre-reservation-snapshots.csv "data: box office alamo lane"
+          bash box-office-tracker/scripts/commit_lane.sh alamo box-office-tracker/data/alamo-pre-reservation-snapshots.csv "data: box office alamo lane" box-office-tracker/data/alamo-pre-progress.json
 
   scrape-harkins:
     # Harkins (2026-09-27): open JSON services, full census of every tracked

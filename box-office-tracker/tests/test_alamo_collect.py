@@ -140,3 +140,139 @@ class AlamoBudgetTest(unittest.TestCase):
         self.assertEqual(3, t["captured"])                    # reads at 0, 10, 20 min; 30 > 25 stops
         self.assertEqual(2, t["budget_skipped"])
         self.assertEqual(3, len(rows))
+
+
+class AlamoResumeTest(unittest.TestCase):
+    """2026-11-28 12:40Z: three attempts read 1,260, 924 and 1,397 of 1,785
+    showings, each from zero and in a fresh random order, and each failed on
+    its own skips. A retry now reads what the cut pass left before anything
+    else, and the slot is judged on what no attempt has read."""
+
+    def _attempt(self, td, now, fail=(), n=10, step_sec=300):
+        from unittest import mock
+        sessions = [dict(SCHEDULE["sessions"][0], sessionId=str(i)) for i in range(1, n + 1)]
+        sched = dict(SCHEDULE, sessions=sessions)
+        clock, asked = [0.0], []
+
+        def fake_get(path, timeout=30):
+            if path.startswith("/v1/page/cclamp"):
+                return {"data": {"marketSummaries": [{"slug": "austin"}]}}
+            if path.startswith("/v2/schedule/market/"):
+                return {"data": sched}
+            sid = path.rsplit("/", 1)[1]
+            asked.append(sid)
+            clock[0] += step_sec
+            if sid in fail:
+                raise TimeoutError("timed out")
+            return {"data": {"seatingData": SEATING}}
+
+        with mock.patch.object(A, "_get", fake_get), \
+                mock.patch.object(A, "ALAMO_CSV", Path(td) / "a.csv"), \
+                mock.patch.object(A, "ALAMO_SLEEP_SEC", 0), \
+                mock.patch.object(A, "ALAMO_BUDGET_MIN", 25), \
+                mock.patch.object(A.time, "monotonic", lambda: clock[0]):
+            t = A.collect(weekend_of="2026-09-25", titles=["Primetime"], now_utc=now)
+        return t, asked
+
+    def _main(self, totals):
+        from unittest import mock
+        with mock.patch.object(A, "collect", return_value=totals), mock.patch.dict(os.environ, {"ALAMO_MODE": ""}), \
+                mock.patch.object(A, "ALAMO_LOOP_MIN", 0):
+            return A.main()
+
+    def _progress(self, td):
+        import json
+        return json.load(open(Path(td) / A.ALAMO_PROGRESS_NAME))
+
+    def test_retry_reads_the_unread_showings_first_and_turns_the_slot_green(self):
+        from datetime import timedelta
+        with tempfile.TemporaryDirectory() as td:
+            t1, asked1 = self._attempt(td, NOW)
+            self.assertEqual((10, 6, 4, 4), (t1["matched"], t1["captured"], t1["budget_skipped"], t1["budget_unread"]))
+            self.assertEqual(1, self._main(t1))                       # 4 of 10 unread: retry the slot
+            left = {str(i) for i in range(1, 11)} - set(asked1)
+            self.assertEqual({f"0007:{s}" for s in asked1}, set(self._progress(td)["read"]))
+
+            t2, asked2 = self._attempt(td, NOW + timedelta(minutes=30))
+            self.assertEqual(left, set(asked2[:4]))                   # the cut pass's tail goes first
+            self.assertEqual((4, 0), (t2["budget_skipped"], t2["budget_unread"]))
+            self.assertEqual(0, self._main(t2))                       # every showing read within the slot
+            progress = self._progress(td)
+            self.assertEqual(10, len(progress["read"]))
+            self.assertEqual(NOW.isoformat(), progress["started"])   # the window runs from the first attempt
+
+    def test_a_retry_that_still_leaves_too_much_unread_stays_red(self):
+        from datetime import timedelta
+        with tempfile.TemporaryDirectory() as td:
+            t1, asked1 = self._attempt(td, NOW, n=20)
+            t2, asked2 = self._attempt(td, NOW + timedelta(minutes=30), n=20)
+            self.assertFalse(set(asked1) & set(asked2))               # nothing re-read while unread remain
+            self.assertEqual((14, 8), (t2["budget_skipped"], t2["budget_unread"]))
+            self.assertEqual(1, self._main(t2))                       # 8 of 20 still unread by any attempt
+            t3, _ = self._attempt(td, NOW + timedelta(minutes=60), n=20)
+            self.assertEqual(2, t3["budget_unread"])
+            self.assertEqual(0, self._main(t3))                       # 2 of 20 is under the 20% floor
+
+    def test_failed_reads_are_not_recorded_as_read(self):
+        from datetime import timedelta
+        odd = {str(i) for i in range(1, 11, 2)}
+        with tempfile.TemporaryDirectory() as td:
+            t1, asked1 = self._attempt(td, NOW, fail=odd)
+            good = {s for s in asked1 if s not in odd}
+            self.assertEqual(6 - len(good), t1["errors"])
+            self.assertEqual({f"0007:{s}" for s in good}, set(self._progress(td)["read"]))
+            _, asked2 = self._attempt(td, NOW + timedelta(minutes=30))
+            self.assertFalse(set(asked2[:min(6, 10 - len(good))]) & good)   # timed-out showings are retried first
+
+    def test_progress_from_an_earlier_slot_or_another_weekend_is_ignored(self):
+        from datetime import timedelta
+        with tempfile.TemporaryDirectory() as td:
+            self._attempt(td, NOW)
+            later = NOW + timedelta(minutes=A.ALAMO_RESUME_WINDOW_MIN + 1)        # the next slot is 4 h on
+            self.assertEqual((None, set()), A.load_progress("2026-09-25", later, Path(td) / A.ALAMO_PROGRESS_NAME))
+            self.assertEqual((None, set()), A.load_progress("2026-10-02", NOW, Path(td) / A.ALAMO_PROGRESS_NAME))
+            self.assertEqual((None, set()), A.load_progress("2026-09-25", NOW - timedelta(minutes=1),
+                                                            Path(td) / A.ALAMO_PROGRESS_NAME))
+            t, _ = self._attempt(td, later)
+            self.assertEqual((4, 4), (t["budget_skipped"], t["budget_unread"]))   # judged as a first attempt
+            self.assertEqual(later.isoformat(), self._progress(td)["started"])
+            for junk in ("", "[]", '{"weekend_of": "2026-09-25", "started": "soon", "read": []}',
+                         '{"weekend_of": "2026-09-25", "started": "%s"}' % NOW.isoformat()):
+                (Path(td) / A.ALAMO_PROGRESS_NAME).write_text(junk)
+                self.assertEqual((None, set()), A.load_progress("2026-09-25", NOW, Path(td) / A.ALAMO_PROGRESS_NAME))
+
+    def test_a_pass_that_finishes_leaves_nothing_to_resume(self):
+        from datetime import timedelta
+        with tempfile.TemporaryDirectory() as td:
+            t, _ = self._attempt(td, NOW, step_sec=1)
+            self.assertEqual((10, 0), (t["captured"], t["budget_skipped"]))
+            self.assertFalse((Path(td) / A.ALAMO_PROGRESS_NAME).exists())         # no file churn on a normal pass
+            self._attempt(td, NOW)                                                # cut
+            t, _ = self._attempt(td, NOW + timedelta(minutes=30), step_sec=1)     # retry reads all ten
+            self.assertEqual((10, 0), (t["captured"], t["budget_skipped"]))
+            self.assertEqual([], self._progress(td)["read"])
+
+    def test_first_attempt_order_is_still_shuffled_and_post_mode_is_untouched(self):
+        import random
+        picks = [({"cinemaId": "0007", "sessionId": str(i)}, {}, "Primetime") for i in range(50)]
+        first = [p[0]["sessionId"] for p in A.order_for_resume(list(picks), set(), random.Random(1))]
+        self.assertNotEqual([str(i) for i in range(50)], first)
+        self.assertEqual(sorted(first, key=int), [str(i) for i in range(50)])
+        read = {f"0007:{i}" for i in range(0, 50, 2)}
+        again = [p[0]["sessionId"] for p in A.order_for_resume(list(picks), read, random.Random(2))]
+        self.assertTrue(all(int(s) % 2 for s in again[:25]))                      # unread half first
+        self.assertNotEqual(sorted(again[:25], key=int), again[:25])              # and still shuffled
+
+    def test_the_11_28_third_attempt_would_have_passed(self):
+        # 388 skipped at the budget; attempts 1 and 2 had read 1,260 and 924 of the 1,785.
+        self.assertEqual(1, self._main({"markets": 22, "matched": 1785, "captured": 1373, "budget_skipped": 388}))
+        self.assertEqual(0, self._main({"markets": 22, "matched": 1785, "captured": 1373, "budget_skipped": 388,
+                                        "budget_unread": 0}))
+        self.assertEqual(1, self._main({"markets": 22, "matched": 1785, "captured": 903, "budget_skipped": 861,
+                                        "budget_unread": 400}))
+
+    def test_the_commit_step_carries_the_progress_file(self):
+        workflow = (Path(__file__).resolve().parents[2] / ".github/workflows/box-office-pipeline.yml").read_text()
+        line = next(l for l in workflow.splitlines() if "commit_lane.sh alamo " in l)
+        self.assertTrue(line.rstrip().endswith(f"box-office-tracker/data/{A.ALAMO_PROGRESS_NAME}"), line)
+        self.assertEqual(A.ALAMO_CSV.parent / A.ALAMO_PROGRESS_NAME, A.progress_path())
