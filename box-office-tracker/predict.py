@@ -3359,8 +3359,12 @@ def seat_panel_coverage_ratio(daily_details, cal):
     day counts at theatres read / theatres expected."""
     if not daily_details:
         return None
+    return weighted_weekend_coverage_ratio(_panel_day_coverages(daily_details), cal)
+
+
+def _panel_day_coverages(daily_details):
     coverages = {}
-    for day, details in daily_details.items():
+    for day, details in (daily_details or {}).items():
         if details.get("actual_override"):
             expected = _positive_float(details.get("expected_theatres"))
             read = 0.0 if details.get("reported_actual_without_seat_rows") else (
@@ -3368,7 +3372,16 @@ def seat_panel_coverage_ratio(daily_details, cal):
             coverages[day] = _clamp(read / expected, 0.0, 1.0) if expected else 0.0
         else:
             coverages[day] = details.get("effective_coverage_ratio", details.get("coverage_ratio"))
-    return weighted_weekend_coverage_ratio(coverages, cal)
+    return coverages
+
+
+def amc_played_day_coverage(daily_details):
+    """Mean share of the expected AMC theatres actually read, over the days
+    that have a row. Unlike the weekend-weighted ratio it does not fall just
+    because Saturday and Sunday have not played yet, so it separates "AMC is
+    dark" (2026-11-21: 0.00) from "it is only Friday" (healthy: 0.3-1.0)."""
+    values = [_coverage_value(v, default=0.0) for v in _panel_day_coverages(daily_details).values()]
+    return sum(values) / len(values) if values else None
 
 
 def detect_data_outage(pred):
@@ -5733,6 +5746,103 @@ def complete_snapshot_covers_missing_days(pred):
     return weight > 0 or support >= 0.20
 
 
+# AMC-free headline (2026-11-28, chain_forecast.py): AMC's seat maps have been
+# unreadable since 2026-11-19 and every layer above starts from AMC rows, so an
+# outage headline was a seat regression on a dozen theatres (I Play Rocky,
+# 2026-11-21: $16.6M on a reported $3.8M Friday; actual $9.35M). In an outage
+# the headline is rebuilt from reported days, the other chains' counted seats
+# and the day shape of earlier openings. Backtest without AMC, 26 openings
+# 2026-09-25..11-20: Friday reported 8.8% (live AMC model 9.9%), Saturday seats
+# 7.9%, Saturday reported 3.1% (4.2%), Sunday seats 2.2%.
+# off | outage (default: AMC read under CHAIN_FORECAST_MAX_AMC_COVERAGE of its
+# theatres on the played days) | always
+CHAIN_FORECAST_MODE = (os.environ.get("CHAIN_FORECAST_MODE") or "outage").strip().lower()
+# The usual outage flag (detect_data_outage) stayed off on 2026-11-21 with AMC
+# at 0 of 425 theatres: a few bridge reads kept quality and snapshot weight
+# over its floors. Healthy weeks read 30-100% of a film's theatres.
+CHAIN_FORECAST_MAX_AMC_COVERAGE = float(os.environ.get("CHAIN_FORECAST_MAX_AMC_COVERAGE") or 0.10)
+
+
+def chain_evidence_forecast(pred, cal, reported):
+    """chain_forecast.for_movie() result when it should replace the headline,
+    else None. Needs the caller's chain data (main / the stage harnesses), like
+    the census overlay, so calibration replays stay raw."""
+    if CHAIN_FORECAST_MODE not in ("outage", "always") or _CHAIN_CENSUS_DATA is None:
+        return None
+    if CHAIN_FORECAST_MODE == "outage":
+        played = amc_played_day_coverage(pred.get("daily_details"))
+        if played is not None and played >= CHAIN_FORECAST_MAX_AMC_COVERAGE:
+            return None
+    try:
+        import chain_census as _cc
+        import chain_forecast as _cf
+        weekend = pred.get("weekend_of") or _cc.weekend_from_dates(
+            v.get("date") for v in (pred.get("daily_details") or {}).values())
+        forecast = _cf.for_movie(pred.get("movie", ""), weekend, reported, chain_data=_CHAIN_CENSUS_DATA,
+                                 audience_type=pred.get("audience_type")) if weekend else None
+    except Exception as exc:      # never break a forecast over the fallback
+        pred["chain_forecast_error"] = f"{type(exc).__name__}: {exc}"
+        return None
+    if not forecast or forecast.get("stage") == "complete":
+        return None
+    pred["chain_forecast"] = forecast
+    return forecast
+
+
+def chain_only_prediction(movie, weekend_of, daily_actual_overrides, chain_census_data,
+                          poly_data=None, metadata=None):
+    """Forecast for a film the AMC-based path could not forecast at all (no
+    usable AMC rows: I Play Rocky on 2026-11-20 printed "no forecast" while
+    Cinemark, Alamo and Harkins had counted its Thursday and Friday). Same
+    chain_forecast as the outage headline; None before anything has played or
+    been reported, and for a film that opened before Friday (its own lane)."""
+    if CHAIN_FORECAST_MODE not in ("outage", "always") or chain_census_data is None or not weekend_of:
+        return None
+    if opened_before_friday(movie, weekend_of, daily_actual_overrides):
+        return None
+    try:
+        import chain_forecast as _cf
+        days = movie_mapping_get(daily_actual_overrides or {}, movie, {}) or {}
+        reported = {d: v.get("gross_m") for d, v in days.items()
+                    if d in OPENING_WEEKEND_DAYS and isinstance(v, dict) and v.get("gross_m") is not None}
+        meta = movie_mapping_get(metadata or {}, movie, None)
+        audience = getattr(meta, "audience_type", None)
+        forecast = _cf.for_movie(movie, weekend_of, reported, chain_data=chain_census_data,
+                                 audience_type=audience)
+    except Exception as exc:      # the fallback must never break the run
+        print(f"  ({movie}: chain forecast unavailable: {type(exc).__name__}: {exc})")
+        return None
+    if not forecast or forecast.get("stage") == "complete":
+        return None
+    stage = ("after-saturday" if "Saturday" in reported else
+             "after-friday" if "Friday" in reported else "after-previews")
+    basis = (f"no usable AMC rows; {forecast['basis']} (evidence stage {forecast['stage']}, "
+             f"day shape from {forecast['library_n']} openings"
+             + (f", {forecast['shape_group_n']} {forecast['shape_group']}" if forecast.get("shape_group") else "") + ")")
+    pred = {
+        "movie": movie, "weekend_of": weekend_of, "audience_type": audience, "chain_forecast": forecast,
+        "daily_details": {}, "poly_result": polymarket_expected_value(poly_data) if poly_data else None,
+        "forecast_stage": stage, "model_version": MODEL_VERSION, "data_outage": True, "chain_only": True,
+        "regression_uses_comps": False, "regression_uses_polymarket": False,
+    }
+    for prefix in ("regression", "model_forecast"):
+        pred[f"{prefix}_mid_m"], pred[f"{prefix}_low_m"], pred[f"{prefix}_high_m"] = (
+            forecast["mid_m"], forecast["low_m"], forecast["high_m"])
+        pred[f"{prefix}_source"], pred[f"{prefix}_basis"] = "chain-evidence", basis
+    pred.update(window_profile(movie, weekend_of, poly_data))
+    return pred
+
+
+def print_chain_only_prediction(pred):
+    print(f"\n  {pred['movie'].upper()}")
+    print(f"  {'─' * len(pred['movie'])}")
+    print(f"  PREDICTION:    {fmt_m(pred['regression_mid_m']):>10}  "
+          f"({fmt_m(pred['regression_low_m'])} - {fmt_m(pred['regression_high_m'])})")
+    print(f"    Source: chain evidence, basis {pred['regression_basis']}; Polymarket excluded from model")
+    print("    ⚠️  AMC NOT READABLE: no AMC rows for this film; the headline is built from reported "
+          "days, the other chains' counted seats and the day shape of earlier openings")
+
+
 def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
     """Attach the forecast for the available opening-weekend evidence.
 
@@ -5899,6 +6009,7 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
                 if d in OPENING_WEEKEND_DAYS and v.get("actual_override")}
     reported_total = sum(reported.values())
     midweek_total = midweek_reported_days_forecast(pred)
+    chain_total = None if midweek_total else chain_evidence_forecast(pred, cal, reported)
     if midweek_total:
         # The film opened before Friday: the days already reported are
         # actuals and the rest of the run follows the day shape of earlier
@@ -5923,6 +6034,14 @@ def select_regression_prediction(pred, cal=None, *, apply_stage_model=True):
         pred["forecast_provisional"] = any(
             v.get("actual_override_status") == "provisional"
             for v in (pred.get("daily_details") or {}).values())
+    elif chain_total:
+        # AMC outage: reported days, the other chains' counted seats and the
+        # day shape of earlier openings replace the starved seat regression.
+        mid, low, high = chain_total["mid_m"], chain_total["low_m"], chain_total["high_m"]
+        source = "chain-evidence"
+        basis = (f"AMC not readable; {chain_total['basis']} "
+                 f"(evidence stage {chain_total['stage']}, day shape from {chain_total['library_n']} openings"
+                 + (f", {chain_total['shape_group_n']} {chain_total['shape_group']}" if chain_total.get("shape_group") else "") + ")")
     elif ({"Friday", "Saturday"} <= set(reported) and "Sunday" not in reported
           and SUNDAY_RATIO_MODE == "on"):
         # Only Sunday is left: Sunday/Saturday is the most stable ratio in the
@@ -11189,6 +11308,9 @@ def print_prediction(pred, verbose=False):
         print("    ⚠️  OUTAGE FORECAST: the newest AMC reads are missing or walled; each zone "
               "in outage is taken from its own last full reads (up to "
               f"{SNAPSHOT_MAX_ZONE_LAG_HOURS:.0f}h old). Logged as a data outage, not graded.")
+    elif pred.get("regression_source") == "chain-evidence":
+        print("    ⚠️  AMC NOT READABLE: the headline is built without AMC, from reported days, "
+              "the other chains' counted seats and the day shape of earlier openings")
     elif pred.get("data_outage"):
         cov = _coverage_value(pred.get("seat_weighted_coverage_ratio"), default=1.0)
         quality = _coverage_value(pred.get("seat_data_quality"), default=1.0)
@@ -11894,6 +12016,14 @@ def main():
                 append_prediction_log(pred, weekend_of=pred.get("weekend_of") or replay_weekend)
                 append_chain_census_log(pred, weekend_of=pred.get("weekend_of") or replay_weekend)
         else:
+            fallback = chain_only_prediction(
+                movie, replay_weekend, daily_actual_overrides, chain_census_data,
+                poly_data=movie_mapping_get(poly_data, movie, []), metadata=metadata)
+            if fallback:
+                print_chain_only_prediction(fallback)
+                if not through_date:
+                    append_prediction_log(fallback, weekend_of=replay_weekend)
+                continue
             print(f"\n  {movie.upper()}: no forecast — insufficient usable seat or reservation evidence.")
 
     diag = price_diagnostic(replay_weekend) if movies_to_predict else None
